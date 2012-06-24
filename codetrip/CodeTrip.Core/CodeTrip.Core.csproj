@@ -105,7 +105,6 @@
     <Compile Include="ArgumentValidation.cs" />
     <Compile Include="Auditing\AuditingController.cs" />
     <Compile Include="Auditing\Auditors\ComponentAuditorBase.cs" />
-    <Compile Include="Auditing\Auditors\DebugTraceComponentAuditor.cs" />
     <Compile Include="Auditing\Auditors\DelegateComponentAuditor.cs" />
     <Compile Include="Auditing\Auditors\Log4NetComponentAuditor.cs" />
     <Compile Include="Auditing\ComponentAuditorFactory.cs" />
