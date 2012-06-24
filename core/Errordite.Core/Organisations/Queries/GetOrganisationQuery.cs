@@ -31,7 +31,7 @@ namespace Errordite.Core.Organisations.Queries
             if(organisation != null)
             {
                 var paymentPlans = _getPaymentPlansQuery.Invoke(new GetPaymentPlansRequest()).Plans;
-                organisation.PaymentPlan = paymentPlans.First(p => p.Id == organisation.PaymentPlanId);
+                organisation.PaymentPlan = paymentPlans.FirstOrDefault(p => p.Id == organisation.PaymentPlanId);
             }
 
             return new GetOrganisationResponse
