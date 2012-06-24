@@ -1,0 +1,181 @@
+﻿@using Errordite.Web.Models.Help
+@using Errordite.Web.Extensions
+@{
+    ViewBag.Title = "The Errordite Client";
+}
+
+@section contentHeader
+{
+   @* <div id="pagetitle">
+        <h1><i class="icon-arrow-right"></i>The Errordite Client</h1>
+    </div>*@
+    
+}
+
+<div class="span12">
+    <div class="base">
+            
+        @Html.Partial("Help/Tabs", HelpTab.Client) 
+
+        <div class="base-noheader help">
+            <div class="title">
+                <h1>The Errordite Client</h1>
+            </div>
+            
+            <p>
+                The <strong>Errorite client</strong> is a lightweight .NET library, which plugs into your application and will respond to exception events, sending the details to the Errordite servers.
+                The client is an open source project hosted on CodePlex <a href="@Url.ClientCodeplex()">here</a>, feel free to download the source code.  The guide below provides information on how to use the client.           
+            </p>
+            <h3>1. Install the Client.</h3>
+            <p>
+                The latest recommended release can be downloaded from <a href="@Url.ClientDownload()">here</a>, however we have also created a NuGet package for the client which is the simplest 
+                way to get the latest version of the client. Type one of the following commands in the NuGet package manager to install the appropriate version of the client depending upon your application type.
+               
+            </p> 
+            <ul>
+                <li>.NET applications (appropriate framework version will be installed, .NET 2.0, 3.5 & 4 are supported)
+                    <div class="nuget">
+                        <p>
+                            <code>PM&gt; Install-Package Errordite.Client</code>
+                        </p>
+                    </div>
+                </li>
+                <li>ASP.NET MVC 2 Applications
+                    <div class="nuget">
+                        <p>
+                            <code>PM&gt; Install-Package Errordite.Client.Mvc2</code>
+                        </p>
+                    </div>
+                </li>
+                <li>ASP.NET MVC 3 Applications
+                    <div class="nuget">
+                        <p>
+                            <code>PM&gt; Install-Package Errordite.Client.Mvc3</code>
+                        </p>
+                    </div>
+                </li>
+            </ul>
+            <h3>2. Configure the client.</h3>
+            <p>
+                The following section describes the available configuration options for the Errordite client. When adding client configuration to your applications configuration file, ensure
+                you specify the correct assembly name which will be different depending upon the installed version.
+            </p>
+            <p>
+                Firstly add the Errordite configuration section to your app config file.
+            </p>
+            <pre class="xml">
+<span class="tag">&lt;configSections&gt;</span>
+    <span class="tag">&lt;section </span><span class="att">name=</span><span class="atv">"errordite"</span><span class="att"> type=</span><span class="atv">"Errordite.Client.Configuration.ClientConfiguration, Errordite.Client.v3.5"</span><span class="tag"> /&gt;</span>
+<span class="tag">&lt;/configSections&gt;</span>
+            </pre>
+            <p>
+                Next add the Errordite configuration node to your app config file.
+            </p>
+            <pre class="xml">
+<span class="tag">&lt;errordite</span><span class="att"> token=</span><span class="atv">"**YOUR TOKEN HERE**"</span><span class="att"> enabled=</span><span class="atv">"true"</span><span class="att"> endpoint=</span><span class="atv">"https://www.errordite.com/receiveerror"</span><span class="tag">&gt;</span> 
+    <span class="tag">&lt;dataCollectors&gt;</span>
+        <span class="tag">&lt;dataCollector</span><span class="att"> prefix=</span><span class="atv">"HttpContext"</span><span class="att"> type=</span><span class="atv">"Errordite.Client.DataCollectors.HttpContextDataCollector, Errordite.Client.v3.5"</span><span class="tag"> /&gt;</span>
+    <span class="tag">&lt;/dataCollectors&gt;</span>
+    <span class="tag">&lt;sanitiseParams&gt;</span>
+        <span class="tag">&lt;param</span><span class="att"> name=</span><span class="atv">"Password"</span><span class="att"> match=</span><span class="atv">"Contains"</span><span class="tag"> /&gt;</span>
+    <span class="tag">&lt;/sanitiseParams&gt;</span>
+    <span class="tag">&lt;unwrapExceptions&gt;</span>
+        <span class="tag">&lt;exception</span><span class="att"> typeName=</span><span class="atv">"System.Web.HttpUnhandledException"</span><span class="tag"> /&gt;</span>
+    <span class="tag">&lt;/unwrapExceptions&gt;</span>
+    <span class="tag">&lt;ignoreExceptions&gt;</span>
+        <span class="tag">&lt;exception</span><span class="att"> typeName=</span><span class="atv">"System.Web.HttpException"</span><span class="att"> httpStatusCode=</span><span class="atv">"404"</span><span class="tag"> /&gt;</span>
+    <span class="tag">&lt;/ignoreExceptions&gt;</span>
+<span class="tag">&lt;/errordite&gt;</span>
+            </pre>
+            <p>
+                The following section describes each configuration option available.
+            </p>
+            <ul>
+                <li>
+                    <strong>Endpoint: </strong>You must specify the endpoint for the client, this will always be <a href="">https://www.errordite.com/receiveerror</a>
+                </li>
+                <li>
+                    <strong>Token: </strong>This is the token for the Errordite application you want to report exception for, see your <a href="@Url.Applications()">applications home page</a> to find your token.
+                </li>
+                <li>
+                    <strong>Enabled: </strong>true or false value indicating whether errors should be reported to Errordite.
+                </li>
+                <li>
+                    <strong>Data Collectors: </strong>
+                    Data collectors allow you to customise the data sent to Errordite, we have supplied a data collector which gathers information relating to the current 
+                    HTTP request. You can easily write your own data collectors by implementing the Errordite.Client.Interfaces.IDataCollector interface and adding this new 
+                    class to the data collectors collection in your configuration.
+                </li>
+                <li>
+                    <strong>Sanitise Params: </strong>
+                    This section allows you to prevent sensitive data from being send to Errordite. By adding a <i>param</i> node to the sanitiseParams collection you can tell the client
+                    to mask any data in the specified field. The match attribute tells the client how to match the field, this can either be "Exact" for an exact match or "Contains" to 
+                    match any parameter which contains the specified text. Data that is sanitised by the client includes, form parameters, headers and exception data
+                </li>
+                <li>
+                    <strong>Unwrap Exceptions: </strong>
+                    This section allows you to tell the client to unwrap an exception and send the first inner exception to Errordite rather than the outer exception. This is useful
+                    for things like an System.Web.HttpUnhandledException which is thrown from an ASP.NET application whenever an exception is unhandled. The inner exception is invariably
+                    the exception you are interested in.
+                </li>
+                <li>
+                    <strong>Ignore Exceptions: </strong>
+                    This section allows you to tell the client to ignore exceptions of a specific type. For example if you do not want any 404's to be reported to Errordite.
+                </li>
+            </ul>
+            <h3>3. Application Types.</h3>
+            <p>
+                The following section contains information on how to configure the client for different .NET application types. The differences between applications boil down to how the client can
+                hook into exception events (HTTP Module, Action Filters etc), however it is worth noting that you can ignore all that and simply add the following line of code to your 
+                global error handling code.
+            </p>
+            <p>
+                <div class="img"><img src="@Url.Content("~/images/UI/report-error.png")" alt="Report error to Errordite" /></div>
+            </p>
+            <ul>
+                <li>
+                    <strong>ASP.NET Web Forms</strong><br />
+                    For an ASP.NET Web Forms application, in order to send all exceptions to Errordite you need to add the following line of code to the Application_Error event handler 
+                    in the global.asax file, or in your global error handling module if you have one.
+                    <p>
+                        <div class="img"><img src="@Url.Content("~/images/UI/webforms-errorhandler.png")" alt="Report error to Errordite" /></div>
+                    </p>
+                </li>
+                <li>
+                    <strong>ASP.NET MVC 2.0</strong><br />
+                    If you are running an ASP.NET MVC 2 application the client library contains an exception filter (<strong>Errordite.Client.Mvc2.ErrorditeHandleErrorAttribute</strong>) which you should place on your base controller from which all other controllers inherit.
+                    This filter inherits from the System.Web.Mvc.HandleErrorAttribute, it will report the exception to Errordite, then invoke the OnException method on the base class.  
+                    <p>
+                        <div class="img"><img src="@Url.Content("~/images/UI/mvc2-handleerror.png")" alt="MVC 2 Handle Error Attribute" /></div>
+                    </p>
+                </li>
+                <li>
+                    <strong>ASP.NET MVC 3.0</strong><br />
+                    If you are running an ASP.NET MVC 3 application the client library contains an exception filter (<strong>Errordite.Client.Mvc3.ErrorditeExceptionFilter</strong>) 
+                    which you should add to your GlobalFilters.Filters collection on application start up. With MVC 3 you can specify multiple exception filters, you must add the 
+                    Errordite filter as the first in the list to ensure it is invoked when an error occurs.
+                    <p>
+                        <div class="img"><img src="@Url.Content("~/images/UI/mvc-global-filters.png")" alt="MVC 3 Handle Error Filter" /></div>
+                    </p>
+                </li>
+                <li>
+                    <strong>Any other (Console, Windows Service etc.)</strong>
+                    For all other application types simply add the following line of code to your global error handling routine.
+                    <p>
+                        <div class="img"><img src="@Url.Content("~/images/UI/report-error.png")" alt="Report error to Errordite" /></div>
+                    </p>
+                </li>
+            </ul>
+            <h3>4. Client Error Notifications.</h3>
+            <p>
+                The Errordite client will silently fail if there is an exception generated whilst attempting to send an error to Errordite. 
+                If you want to be notified of any exceptions generated within the client you can provide a delegate to the client which will be invoked
+                whenever an exception is generated. Add the following line of code to your application startup, replacing the call to Trace.Write(exception.ToString()) with your
+                own logging code.
+            </p>
+            <p>
+                <div class="img"><img src="@Url.Content("~/images/UI/error-notification.png")" alt="Client error notifications" /></div>
+            </p>
+        </div>
+    </div>
+</div>

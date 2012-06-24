@@ -1,0 +1,46 @@
+﻿@using Errordite.Core.Configuration
+@using CodeTrip.Core.Extensions
+
+@if (ErrorditeConfiguration.Current.RenderMinifiedContent)
+{
+    <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'></script>
+    <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js'></script>
+    <script type='text/javascript' src='@Url.Content("~/js/{0}.min.js".FormatWith(ErrorditeConfiguration.CurrentBuildNumber))'></script>
+}
+else
+{
+    <script type='text/javascript' src='@Url.Content("~/js/001.jquery-1.7.2.js")'></script>
+    <script type='text/javascript' src='@Url.Content("~/js/002.jquery.validate.js")'></script>
+    <script type='text/javascript' src='@Url.Content("~/js/003.jquery.unobtrusive-ajax.js")'></script>
+    <script type='text/javascript' src='@Url.Content("~/js/004.jquery.validate.unobtrusive.js")'></script>
+    <script type='text/javascript' src='@Url.Content("~/js/005.jquery.placeholder.js")'></script>
+    <script type='text/javascript' src='@Url.Content("~/js/006.jquery-ui-1.8.18.custom.min.js")'></script>
+    <script type='text/javascript' src='@Url.Content("~/js/007.jquery.datepicker.js")'></script>
+    <script type='text/javascript' src='@Url.Content("~/js/008.jquery.form.js")'></script>
+    <script type='text/javascript' src='@Url.Content("~/js/009.jquery.history.js")'></script>
+    <script type='text/javascript' src='@Url.Content("~/js/010.jquery.cookie.js")'></script>
+    <script type='text/javascript' src='@Url.Content("~/js/011.jquery.dropdownchecklist.js")'></script>
+    
+    <script type='text/javascript' src='@Url.Content("~/js/020.bootstrap.min.js")'></script>
+    <script type='text/javascript' src='@Url.Content("~/js/021.bootstrap.tooltip.js")'></script>
+    <script type='text/javascript' src='@Url.Content("~/js/022.bootstrap.modal.js")'></script>
+    <script type='text/javascript' src='@Url.Content("~/js/023.bootstrap.alerts.js")'></script>
+    <script type='text/javascript' src='@Url.Content("~/js/024.bootstrap.dropdown.js")'></script>
+    <script type='text/javascript' src='@Url.Content("~/js/030.knockout-2.0.0.js")'></script>
+    
+    <script type='text/javascript' src='@Url.Content("~/js/050.underscore.js")'></script>
+    
+    <script type='text/javascript' src="@Url.Content("~/js/060.global.js")"></script>
+    
+    <script type='text/javascript' src="@Url.Content("~/js/applications.js")"></script>
+    <script type='text/javascript' src="@Url.Content("~/js/users.js")"></script>
+    <script type='text/javascript' src="@Url.Content("~/js/groups.js")"></script>
+    <script type='text/javascript' src="@Url.Content("~/js/errors.js")"></script>
+    <script type='text/javascript' src="@Url.Content("~/js/issues.js")"></script>
+    <script type='text/javascript' src="@Url.Content("~/js/issue.js")"></script>
+    <script type='text/javascript' src="@Url.Content("~/js/common.js")"></script>
+    <script type='text/javascript' src="@Url.Content("~/js/rules.js")"></script>
+    <script type='text/javascript' src="@Url.Content("~/js/dashboard.js")"></script>
+    <script type='text/javascript' src="@Url.Content("~/js/audit.js")"></script>
+    <script type='text/javascript' src="@Url.Content("~/js/alerts.js")"></script>
+}

@@ -1,0 +1,17 @@
+﻿@using Errordite.Web.Extensions
+@{
+    var breadcrumbs = ViewData.GetBreadcrumbs();   
+}
+
+@if(breadcrumbs != null)
+{
+    <ul class="breadcrumb">
+        @foreach(var breadcrumb in breadcrumbs)
+        {
+            <li>
+                <a href="@breadcrumb.Link">@breadcrumb.Title</a> <span class="divider">/</span>
+            </li>
+        }
+        <li class="active">@(ViewBag.FinalBreadcrumb ?? ViewBag.Title)</li>
+    </ul>
+}

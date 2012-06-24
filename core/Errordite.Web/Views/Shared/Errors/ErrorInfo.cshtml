@@ -1,0 +1,31 @@
+﻿
+@using CodeTrip.Core.Extensions
+@model Errordite.Web.Models.Errors.ExceptionViewModel
+           
+<div class="error-info">
+    <dl class="dl-horizontal">
+        @if (!Model.InnerException)
+        {
+            <dt>Method</dt>
+            <dd data-error-attr="MethodName">@(Model.Info.MethodName.IsNullOrEmpty() ? "-" : Model.Info.MethodName)</dd>
+            <dt>Module</dt>
+            <dd data-error-attr="Module">@(Model.Info.Module.IsNullOrEmpty() ? "-" : Model.Info.Module)</dd>
+            <dt>Url</dt>
+            <dd data-error-attr="Url">@(Model.Url.IsNullOrEmpty() ? "-" : Model.Url)</dd>
+            <dt>User Agent</dt>
+            <dd data-error-attr="UserAgent">@(Model.UserAgent.IsNullOrEmpty() ? "-" : Model.UserAgent)</dd>
+        }
+        
+        @if (Model.Info.ExtraData != null)
+        {
+            foreach (var kvp in Model.Info.ExtraData)
+            {
+                <dt>@kvp.Key.Replace("_", ".")</dt>
+                <dd>@kvp.Value</dd>
+            }
+        }
+    </dl>
+</div>
+<div class="error-stack">
+<pre><span class="st-type" data-error-attr="Type">@Model.Info.Type</span>: <span data-error-attr="Message" class="st-message">@Model.Info.Message</span><div data-error-attr="StackTrace">Model.Info.StackTrace</div></pre>
+</div> 

@@ -1,0 +1,113 @@
+﻿@using CodeTrip.Core.Caching.Entities
+@using Errordite.Core.Domain.Organisation
+@using Errordite.Core.Identity
+@using Errordite.Web.Extensions
+
+@{
+    var appContext = ViewData.GetAppContext();
+}
+<div id="head-left">
+    <span class="logo"><a href="@Url.Home(ViewData.GetAppContext())">Errordite</a></span>
+</div>
+<div class="floatright">
+    <div id="head-links">
+        <ul>
+            @if (appContext.AuthenticationStatus == AuthenticationStatus.Authenticated)
+            {
+                <li class="menu-trigger">
+                    <ul class="menu">
+                        <li><a href="@ViewData.GetIssuesUrl(Url.Issues())">Issues</a></li>
+                        <li><a href="@ViewData.GetErrorsUrl(Url.Errors())">Errors</a></li>
+                        <li><a href="@Url.AddIssue()">Create Issue</a></li>
+                        <li><a id="show-alerts" href="#">Alerts</a></li>
+                    </ul>
+                    <a href="@Url.Dashboard()">Dashboard</a>
+                </li>
+                <li>|</li>
+                if (appContext.CurrentUser.IsAdministrator())
+                {
+                    <li class="menu-trigger">
+                        <ul class="menu">
+                            <li><a href="@Url.Applications()">Applications</a></li>
+                            <li><a href="@Url.Users()">Users</a></li>
+                            <li><a href="@Url.Groups()">Groups</a></li>
+                        </ul>
+                        <a href="@Url.Organisation()">Organisation</a>
+                    </li>
+                    <li>|</li>
+                }
+            }
+            
+            <li class="menu-trigger">
+                <ul class="menu pull-right">
+                    <li><a href="@Url.WhatIsErrordite()">What Is Errordite</a></li>
+                    <li><a href="@Url.GettingStarted()">Getting Started</a></li>
+                    @*<li><a href="@Url.Faq()">FAQ</a></li>*@
+                    @*<li><a href="@Url.Pricing()">Pricing</a></li>*@
+                    <li><a href="@Url.Client()">Client Help</a></li>
+                    <li><a href="@Url.Features()">Features</a></li>
+                </ul>
+                <a href="@Url.WhatIsErrordite()">Help</a>
+            </li>
+            @if (appContext.AuthenticationStatus == AuthenticationStatus.Authenticated && (appContext.CurrentUser.Role == UserRole.SuperUser || appContext.ImpersonatorAppContext != null))
+            {
+                <li>|</li>
+                <li class="menu-trigger">
+                    <ul class="menu">
+                        <li><a href="@Url.Organisations()">Organisations</a></li> 
+                        <li><a href="@Url.Impersonate()">Impersonate</a></li> 
+                        <li><a href="@Url.ErrorditeErrors()">Errors</a></li> 
+                        <li><a href="@Url.FlushAllCaches()">Flush Caches</a></li> 
+                        @foreach(var cache in Enum.GetNames(typeof(CacheProfiles)))
+                        {
+                            <li><a href="@Url.Cache(cache)">@cache</a></li> 
+                        }
+                    </ul>
+                    <a href="@Url.Administration()">Admin</a>
+                </li>
+            }
+            <li>|</li>
+            <li><a href="@Url.Contact()">Contact Us</a></li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+    <div id="auth">
+        @if (appContext.AuthenticationStatus == AuthenticationStatus.Anonymous)
+        {
+            @: Welcome to Errordite you can <a href="@Url.SignIn()">Sign In</a> or <a href="@Url.SignUp()">Sign Up</a>.
+        }
+        else if (appContext.AuthenticationStatus == AuthenticationStatus.NotAuthenticated)
+        {
+            @: Welcome back to Errordite <strong>@appContext.CurrentUser.FirstName</strong> | <a href="@Url.SignIn()">Sign In</a> | <a href="@Url.SignOut()">Not @appContext.CurrentUser.FirstName?</a>
+        }
+        else
+        {
+            @: Welcome to Errordite <strong>@appContext.CurrentUser.FirstName </strong><span>&nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.EditUser()">Your Details</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.SignOut()">Sign Out</a></span>
+        }			
+    </div>
+</div>
+
+@if (appContext.AuthenticationStatus == AuthenticationStatus.Authenticated)
+{
+    <div class="floatright">
+        <div class="issue-link">
+            <form method="GET" action="/issue">
+               <div class="input-group">
+                     <input autocomplete="off" id="Id" name="Id" placeholder="Issue Id" type="text" value="" />
+                     <input type="submit" class="btn-mini btn-success" value="Go" />
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="floatright">
+        <div class="issue-link search">
+            @using (Html.BeginForm("index", "errors", new {Area = string.Empty}, FormMethod.Get))
+            {
+                <div class="input-group">
+                    <input autocomplete="off" id="Query" name="Query" placeholder="Search your errors" type="text" value="" />
+                    <input type="submit" class="btn-mini btn-success" value="Go" />
+                </div>
+            }
+        </div>
+    </div>
+}
