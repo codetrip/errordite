@@ -10,7 +10,7 @@ using CodeTrip.Core.Extensions;
 using System.Linq;
 using Errordite.Web.Models.Navigation;
 
-namespace Errordite.Web.Areas.Admin.Controllers
+namespace Errordite.Web.Areas.System.Controllers
 {
     [Authorize, RoleAuthorize]
     public class CacheController : ErrorditeController
@@ -44,7 +44,7 @@ namespace Errordite.Web.Areas.Admin.Controllers
                 cacheEngine.Clear();
 
             ConfirmationNotification("Successfully flushed all caches");
-            return Redirect(Request.UrlReferrer == null ? Url.Administration() : Request.UrlReferrer.AbsoluteUri);
+            return Redirect(Request.UrlReferrer == null ? Url.SysAdmin() : Request.UrlReferrer.AbsoluteUri);
         }
 
         [ExportViewData]

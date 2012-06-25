@@ -6,10 +6,18 @@
 @if(breadcrumbs != null)
 {
     <ul class="breadcrumb">
-        @foreach(var breadcrumb in breadcrumbs)
+        
+        @foreach(var breadcrumb in breadcrumbs.Take(breadcrumbs.Count - 1))
         {
             <li>
-                <a href="@breadcrumb.Link">@breadcrumb.Title</a> <span class="divider">/</span>
+                @if (breadcrumb.Link != null)
+                {
+                    <a href="@breadcrumb.Link">@breadcrumb.Title</a>
+                } else
+                {
+                    <span>@breadcrumb.Title</span>
+                }
+                <span class="divider">&rarr;</span>
             </li>
         }
         <li class="active">@(ViewBag.FinalBreadcrumb ?? ViewBag.Title)</li>

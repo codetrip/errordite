@@ -5,7 +5,7 @@ namespace Errordite.Web
     {
         public static class AreaNames
         {
-            public const string Admin = "admin";
+            public const string System = "system";
         }
         public static class CookieSettings
         {

@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
 
-namespace Errordite.Web.Areas.Admin
+namespace Errordite.Web.Areas.System
 {
     public class AdminAreaRegistration : AreaRegistration
     {
@@ -8,15 +8,15 @@ namespace Errordite.Web.Areas.Admin
         {
             get
             {
-                return "Admin";
+                return "System";
             }
         }
 
         public override void RegisterArea(AreaRegistrationContext context)
         {
             context.MapRoute(
-                "Admin_default",
-                "admin/{controller}/{action}/{id}",
+                "system_default",
+                "system/{controller}/{action}/{id}",
                 new { action = "Index", id = UrlParameter.Optional }
             );
         }

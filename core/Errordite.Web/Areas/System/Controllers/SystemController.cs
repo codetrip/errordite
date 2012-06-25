@@ -18,7 +18,7 @@ using Errordite.Web.Models.Navigation;
 using Raven.Abstractions.Data;
 using Raven.Abstractions.Linq;
 
-namespace Errordite.Web.Areas.Admin.Controllers
+namespace Errordite.Web.Areas.System.Controllers
 {
     [Authorize, RoleAuthorize]
     public class SystemController : ErrorditeController
@@ -42,7 +42,7 @@ namespace Errordite.Web.Areas.Admin.Controllers
             _encryptor = encryptor;
         }
 
-        [HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.Admin)]
+        [HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.SysAdmin)]
         public ActionResult Index()
         {
             return View();

@@ -224,31 +224,31 @@ namespace Errordite.Web.Extensions
 
         #endregion
 
-        #region Organisation
+        #region Admin
 
-        public static string Organisation(this UrlHelper helper)
+        public static string PaymentPlan(this UrlHelper helper)
         {
-            return helper.Action("index", "organisation", new {Area = string.Empty});
+            return helper.Action("paymentplan", "admin", new {Area = string.Empty});
         }
 
         public static string Billing(this UrlHelper helper)
         {
-            return helper.Action("billing", "organisation", new { Area = string.Empty });
+            return helper.Action("billing", "admin", new { Area = string.Empty });
         }
 
         public static string Settings(this UrlHelper helper)
         {
-            return helper.Action("settings", "organisation", new { Area = string.Empty });
+            return helper.Action("settings", "admin", new { Area = string.Empty });
         }
 
         public static string Upgrade(this UrlHelper helper)
         {
-            return helper.Action("upgrade", "organisation", new { Area = string.Empty });
+            return helper.Action("upgrade", "admin", new { Area = string.Empty });
         }
 
         public static string Downgrade(this UrlHelper helper)
         {
-            return helper.Action("downgrade", "organisation", new { Area = string.Empty });
+            return helper.Action("downgrade", "admin", new { Area = string.Empty });
         }
 
         #endregion
@@ -276,42 +276,42 @@ namespace Errordite.Web.Extensions
 
         public static string Cache(this UrlHelper helper, string cacheProfile)
         {
-            return helper.Action("index", "cache", new { id = cacheProfile, Area = WebConstants.AreaNames.Admin });
+            return helper.Action("index", "cache", new { id = cacheProfile, Area = WebConstants.AreaNames.System });
         }
 
         public static string FlushAllCaches(this UrlHelper helper)
         {
-            return helper.Action("flushallcaches", "cache", new { Area = WebConstants.AreaNames.Admin });
+            return helper.Action("flushallcaches", "cache", new { Area = WebConstants.AreaNames.System });
         }
 
-        public static string Administration(this UrlHelper helper)
+        public static string SysAdmin(this UrlHelper helper)
         {
-            return helper.Action("index", "system", new { Area = WebConstants.AreaNames.Admin });
+            return helper.Action("index", "system", new { Area = WebConstants.AreaNames.System });
         }
 
         public static string ErrorditeErrors(this UrlHelper helper)
         {
-            return helper.Action("errorditeerrors", "system", new { Area = WebConstants.AreaNames.Admin });
+            return helper.Action("errorditeerrors", "system", new { Area = WebConstants.AreaNames.System });
         }
 
         public static string Organisations(this UrlHelper helper)
         {
-            return helper.Action("index", "organisations", new {Area = WebConstants.AreaNames.Admin});
+            return helper.Action("index", "organisations", new {Area = WebConstants.AreaNames.System});
         }
 
         public static string Impersonate(this UrlHelper helper, string userId = null, string organisationId = null)
         {
-            return helper.Action("index", "impersonation", new { userId, organisationId, Area = WebConstants.AreaNames.Admin });
+            return helper.Action("index", "impersonation", new { userId, organisationId, Area = WebConstants.AreaNames.System });
         }
 
         public static string OrganisationUsers(this UrlHelper helper, string organisationId)
         {
-            return helper.Action("users", "organisations", new { organisationId, Area = WebConstants.AreaNames.Admin});
+            return helper.Action("users", "organisations", new { organisationId, Area = WebConstants.AreaNames.System});
         }
 
         public static string OrganisationApplications(this UrlHelper helper, string organisationId)
         {
-            return helper.Action("applications", "organisations", new { organisationId, Area = WebConstants.AreaNames.Admin });
+            return helper.Action("applications", "organisations", new { organisationId, Area = WebConstants.AreaNames.System });
         }
 
         #endregion

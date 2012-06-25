@@ -12,17 +12,17 @@
     <div id="pagetitle">
         <h1><i class="icon-arrow-right"></i>Applications</h1>
     </div>
-    @Html.Partial("Organisation/Tabs", OrganisationTab.Applications)
+    @Html.Partial("Admin/Tabs")
 }
 
 <div id="applications" class="colfull">
-    <p>Your current applications are displayed below. <a href="@Url.AddApplication()">Click here to add a new application</a></p>
+    <p>Your applications are displayed below. <a href="@Url.AddApplication()">Click here to add a new application</a></p>
     @if (Model.Applications.Count > 0)
     {
         @Html.Partial("Applications/List")
     }
     else
     {
-        <p>You do not currently have any applications set up.</p>
+        <p>You have no applications.</p>
     }
 </div>

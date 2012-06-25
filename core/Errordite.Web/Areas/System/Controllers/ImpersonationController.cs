@@ -7,7 +7,7 @@ using Errordite.Web.ActionFilters;
 using Errordite.Web.Controllers;
 using Errordite.Web.Models.Navigation;
 
-namespace Errordite.Web.Areas.Admin.Controllers
+namespace Errordite.Web.Areas.System.Controllers
 {
     [Authorize, RoleAuthorize]
     public class ImpersonationController : ErrorditeController

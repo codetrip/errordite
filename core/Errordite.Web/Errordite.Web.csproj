@@ -195,19 +195,19 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Shared.resx</DependentUpon>
     </Compile>
-    <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
-    <Compile Include="Areas\Admin\Controllers\SystemController.cs" />
-    <Compile Include="Areas\Admin\Models\Organisations\SuspendOrganisationViewModel.cs" />
+    <Compile Include="Areas\System\SysAdminAreaRegistration.cs" />
+    <Compile Include="Areas\System\Controllers\SystemController.cs" />
+    <Compile Include="Areas\System\Models\Organisations\SuspendOrganisationViewModel.cs" />
     <Compile Include="ActionFilters\GenerateBreadcrumbs.cs" />
     <Compile Include="Controllers\AlertsController.cs" />
     <Compile Include="Controllers\ApplicationsController.cs" />
     <Compile Include="Controllers\AuditController.cs" />
-    <Compile Include="Areas\Admin\Controllers\CacheController.cs" />
-    <Compile Include="Areas\Admin\Controllers\OrganisationsController.cs" />
+    <Compile Include="Areas\System\Controllers\CacheController.cs" />
+    <Compile Include="Areas\System\Controllers\OrganisationsController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\EmailTestController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
-    <Compile Include="Areas\Admin\Controllers\ImpersonationController.cs" />
+    <Compile Include="Areas\System\Controllers\ImpersonationController.cs" />
     <Compile Include="Controllers\IssueController.cs" />
     <Compile Include="Controllers\HelpController.cs" />
     <Compile Include="Controllers\GroupsController.cs" />
@@ -225,7 +225,7 @@
     <Compile Include="Mappings\GroupToGroupViewModel.cs" />
     <Compile Include="Mappings\UserToEditUserViewModel.cs" />
     <Compile Include="Mappings\UserToUserViewModel.cs" />
-    <Compile Include="Areas\Admin\Models\System\ErrorditeErrorsViewModel.cs" />
+    <Compile Include="Areas\System\Models\System\ErrorditeErrorsViewModel.cs" />
     <Compile Include="Models\Applications\AddApplicationViewModel.cs" />
     <Compile Include="Models\Applications\ApplicationViewModel.cs" />
     <Compile Include="Models\Applications\EditApplicationViewModel.cs" />
@@ -234,7 +234,7 @@
     <Compile Include="Models\Authentication\PasswordViewModel.cs" />
     <Compile Include="Models\Common\IWizardViewModel.cs" />
     <Compile Include="Models\Issues\MergeIssuesViewModel.cs" />
-    <Compile Include="Areas\Admin\Models\Cache\CacheViewModel.cs" />
+    <Compile Include="Areas\System\Models\Cache\CacheViewModel.cs" />
     <Compile Include="Models\Errors\ExceptionViewModel.cs" />
     <Compile Include="Models\Issues\AddIssueViewModel.cs" />
     <Compile Include="Models\Issues\IssueItemViewModel.cs" />
@@ -250,16 +250,15 @@
     <Compile Include="Models\Issues\IssueViewModel.cs" />
     <Compile Include="Models\Navigation\Breadcrumbs.cs" />
     <Compile Include="Models\Notifications\NotificationsViewModel.cs" />
-    <Compile Include="Models\Organisation\OrganisationsViewModel.cs" />
-    <Compile Include="Models\Organisation\OrganisationTab.cs" />
-    <Compile Include="Models\Organisation\OrganisationViewModel.cs" />
+    <Compile Include="Models\Admin\OrganisationsViewModel.cs" />
+    <Compile Include="Models\Admin\OrganisationViewModel.cs" />
     <Compile Include="Models\Users\AddUserViewModel.cs" />
     <Compile Include="Models\Beta\SignUpViewModel.cs" />
     <Compile Include="Models\Users\UserViewModel.cs" />
     <Compile Include="Models\Users\EditUserViewModel.cs" />
     <Compile Include="Models\Users\UserViewModelBase.cs" />
     <Compile Include="Models\Errors\ErrorCriteriaViewModel.cs" />
-    <Compile Include="Controllers\OrganisationController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\ErrorditeController.cs" />
     <Compile Include="Controllers\ErrorsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -486,7 +485,7 @@
     <Content Include="Views\Shared\Notifications.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Organisation\Index.cshtml" />
+    <Content Include="Views\Admin\PaymentPlan.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\EditorTemplates\RuleViewModel.cshtml" />
@@ -599,7 +598,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\Admin\Views\Cache\Index.cshtml" />
+    <Content Include="Areas\System\Views\Cache\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\Errordite.Build\Configuration\errordite.config">
@@ -609,7 +608,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\Admin\Views\System\Index.cshtml" />
+    <Content Include="Areas\System\Views\System\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\Errordite.Build\Configuration\email.config">
@@ -624,7 +623,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\Admin\Views\System\ErrorditeErrors.cshtml" />
+    <Content Include="Areas\System\Views\System\ErrorditeErrors.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\Administration\Errors.cshtml" />
@@ -702,7 +701,7 @@
     <Content Include="Views\Shared\Dashboard\Tabs.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\Organisation\Tabs.cshtml" />
+    <Content Include="Views\Shared\Admin\Tabs.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\Help\Tabs.cshtml" />
@@ -759,10 +758,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Issue\Reports.cshtml" />
-    <Content Include="Areas\Admin\Views\Web.config" />
-    <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
-    <Content Include="Areas\Admin\Views\Shared\Organisations\SuspendModal.cshtml" />
-    <Content Include="Areas\Admin\Views\Organisations\Applications.cshtml" />
+    <Content Include="Areas\System\Views\Web.config" />
+    <Content Include="Areas\System\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\System\Views\Shared\Organisations\SuspendModal.cshtml" />
+    <Content Include="Areas\System\Views\Organisations\Applications.cshtml" />
     <None Include="Js\060.global.coffee" />
     <None Include="Js\alerts.coffee" />
     <None Include="Js\errors.coffee" />
@@ -774,25 +773,25 @@
     <Content Include="Views\Help\Features.cshtml" />
     <Content Include="Views\Shared\Dashboard\RecentErrors.cshtml" />
     <Content Include="Views\Shared\Footer.cshtml" />
-    <Content Include="Areas\Admin\Views\Cache\Item.cshtml" />
+    <Content Include="Areas\System\Views\Cache\Item.cshtml" />
     <Content Include="Views\Shared\NotAuthorised.cshtml" />
     <Content Include="Views\Shared\NotFound.cshtml" />
-    <Content Include="Views\Organisation\Upgrade.cshtml" />
+    <Content Include="Views\Admin\Upgrade.cshtml" />
     <Content Include="Views\Shared\Help\SmallPlan.cshtml" />
     <Content Include="Views\Shared\Help\MediumPlan.cshtml" />
     <Content Include="Views\Shared\Help\LargePlan.cshtml" />
     <Content Include="Views\Help\Privacy.cshtml" />
     <Content Include="Views\Help\TermsAndConditions.cshtml" />
-    <Content Include="Views\Organisation\Billing.cshtml" />
-    <Content Include="Views\Organisation\Downgrade.cshtml" />
+    <Content Include="Views\Admin\Billing.cshtml" />
+    <Content Include="Views\Admin\Downgrade.cshtml" />
     <Content Include="Views\EmailTest\List.cshtml" />
     <Content Include="Views\EmailTest\Index.cshtml" />
-    <Content Include="Views\Organisation\Settings.cshtml" />
+    <Content Include="Views\Admin\Settings.cshtml" />
     <Content Include="Views\Help\Client.cshtml" />
     <Content Include="Views\Shared\Users\List.cshtml" />
-    <Content Include="Areas\Admin\Views\Organisations\Users.cshtml" />
-    <Content Include="Areas\Admin\Views\Organisations\Index.cshtml" />
-    <Content Include="Areas\Admin\Views\Impersonation\Index.cshtml" />
+    <Content Include="Areas\System\Views\Organisations\Users.cshtml" />
+    <Content Include="Areas\System\Views\Organisations\Index.cshtml" />
+    <Content Include="Areas\System\Views\Impersonation\Index.cshtml" />
     <Content Include="Views\Shared\Applications\List.cshtml" />
     <Content Include="Views\Shared\Breadcrumb.cshtml" />
     <Content Include="Views\Issue\History.cshtml" />

@@ -255,6 +255,7 @@ a.button.spaced, input.button.spaced {margin-bottom: 10px;}
 .menu-trigger ul.pull-right {right:0;left:auto;}
 .menu-trigger ul.menu li:hover { background-color: #9C9C9C;}
 .menu-trigger ul.menu li a {display: block;}
+.menu-trigger>span { cursor: default;}
 
 
 /*-----------------------------------------------------------------------------------*/
