@@ -13,11 +13,11 @@
     <div id="pagetitle">
         <h1><i class="icon-arrow-right"></i>Users</h1>
     </div>
-    @Html.Partial("Organisation/Tabs", OrganisationTab.Users)
+    @Html.Partial("Admin/Tabs")
 }
 
 <div id="users" class="colfull">
-    <p>The current users within your organisation are displayed below. <a href="@Url.AddUser()">Click here to add a user to your organisation</a></p>
+    <p>Your organisation's users are listed below. <a href="@Url.AddUser()">Click here to add a user</a></p>
     @if (Model.Users != null && Model.Users.Any())
     {
         @Html.Partial("Users/List", Model)

@@ -1,7 +1,7 @@
 ﻿
 using Errordite.Core.Domain.Organisation;
 
-namespace Errordite.Web.Areas.Admin.Models.Organisations
+namespace Errordite.Web.Areas.System.Models.Organisations
 {
     public class SuspendOrganisationViewModel
     {

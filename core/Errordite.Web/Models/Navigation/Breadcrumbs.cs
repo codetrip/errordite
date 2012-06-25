@@ -9,37 +9,51 @@ namespace Errordite.Web.Models.Navigation
     {
         private static IEnumerable<Breadcrumb> _breadcrumbs;
         private static readonly object _syncLock = new object();
+        
+        public static Breadcrumb GetById(BreadcrumbId id, UrlHelper urlHelper)
+        {
+            CreateBreadcrumbsIfRequired(urlHelper);
+
+            var item = _breadcrumbs.FirstOrDefaultFromMany(n => n.Children, n => n.Id == id);
+
+            return item;
+        }
 
         public static List<Breadcrumb> GetBreadcrumbsForRoute(BreadcrumbId id, UrlHelper urlHelper)
         {
-            if(_breadcrumbs == null)
+            CreateBreadcrumbsIfRequired(urlHelper);
+
+            var item = _breadcrumbs.FirstOrDefaultFromMany(n => n.Children, n => n.Id == id);
+
+            if(item != null)
+                return GetPath(item);
+
+            return null;
+        }
+
+        private static void CreateBreadcrumbsIfRequired(UrlHelper urlHelper)
+        {
+            if (_breadcrumbs == null)
             {
-                lock(_syncLock)
+                lock (_syncLock)
                 {
-                    if(_breadcrumbs == null)
+                    if (_breadcrumbs == null)
                     {
                         CreateBreadcrumbs(urlHelper);
                     }
                 }
             }
-
-            var item = _breadcrumbs.FirstOrDefaultFromMany(n => n.Children, n => n.Id == id);
-
-            if(item != null)
-                return GetTree(item);
-
-            return null;
         }
 
-        public static List<Breadcrumb> GetTree(Breadcrumb child)
+        public static List<Breadcrumb> GetPath(Breadcrumb child)
         {
             List<Breadcrumb> items = new List<Breadcrumb>();
 
             Breadcrumb current = child;
 
-            while (current.Parent != null)
+            while (current != null)
             {
-                items.Add(current.Parent);
+                items.Add(current);
                 current = current.Parent;
             }
 
@@ -72,12 +86,8 @@ namespace Errordite.Web.Models.Navigation
                     new Breadcrumb(BreadcrumbId.Privacy, string.Empty, "Privacy"),
                     new Breadcrumb(BreadcrumbId.TermsAndConditions, string.Empty, "Terms and Conditions")
                 }),  
-                new Breadcrumb(BreadcrumbId.Organisation, urlHelper.Organisation(), "Organisation", new []
+                new Breadcrumb(BreadcrumbId.Admin, null, "Admin", new []
                 {
-                    new Breadcrumb(BreadcrumbId.Settings, string.Empty, "Settings"),
-                    new Breadcrumb(BreadcrumbId.Upgrade, string.Empty, "Upgrade"),
-                    new Breadcrumb(BreadcrumbId.Downgrade, string.Empty, "Downgrade"),
-                    new Breadcrumb(BreadcrumbId.Billing, string.Empty, "Billing"),
                     new Breadcrumb(BreadcrumbId.Applications, urlHelper.Applications(), "Applications", new []
                     {
                         new Breadcrumb(BreadcrumbId.AddApplication, string.Empty, "Add Application"),
@@ -92,9 +102,17 @@ namespace Errordite.Web.Models.Navigation
                     {
                         new Breadcrumb(BreadcrumbId.AddGroup, string.Empty, "Add Group"),
                         new Breadcrumb(BreadcrumbId.EditGroup, string.Empty, "Edit Group")
-                    })
+                    }),
+                    new Breadcrumb(BreadcrumbId.PaymentPlan, urlHelper.PaymentPlan(), "Payment Plan", new[]
+                    {
+                        new Breadcrumb(BreadcrumbId.Upgrade, string.Empty, "Upgrade"),
+                        new Breadcrumb(BreadcrumbId.Downgrade, string.Empty, "Downgrade"),
+                    }),
+                    new Breadcrumb(BreadcrumbId.Billing, urlHelper.Billing(), "Billing"),
+                    new Breadcrumb(BreadcrumbId.OrgSettings, urlHelper.Settings(), "Settings"),
+                    
                 }),
-                new Breadcrumb(BreadcrumbId.Admin, urlHelper.Administration(), "Admin", new []
+                new Breadcrumb(BreadcrumbId.SysAdmin, urlHelper.SysAdmin(), "SysAdmin", new []
                 {
                     new Breadcrumb(BreadcrumbId.AdminErrors, string.Empty, "Errors"),
                     new Breadcrumb(BreadcrumbId.AdminImpersonation, string.Empty, "Impersonation"),
@@ -151,10 +169,10 @@ namespace Errordite.Web.Models.Navigation
         TermsAndConditions,
         Privacy,
 
-        Organisation,
+        Admin,
         Upgrade,
         Billing,
-        Settings,
+        OrgSettings,
         Downgrade,
 
         Applications,
@@ -169,13 +187,14 @@ namespace Errordite.Web.Models.Navigation
         AddGroup,
         EditGroup,
 
-        Admin,
+        SysAdmin,
         AdminErrors,
         AdminImpersonation,
         AdminUsers,
         AdminApplications,
         AdminOrganisations,
         AdminFlushCaches,
-        AdminCache
+        AdminCache,
+        PaymentPlan
     }
 }

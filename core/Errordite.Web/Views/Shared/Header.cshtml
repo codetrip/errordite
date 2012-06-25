@@ -2,6 +2,7 @@
 @using Errordite.Core.Domain.Organisation
 @using Errordite.Core.Identity
 @using Errordite.Web.Extensions
+@using Errordite.Web.Models.Navigation
 
 @{
     var appContext = ViewData.GetAppContext();
@@ -28,11 +29,12 @@
                 {
                     <li class="menu-trigger">
                         <ul class="menu">
-                            <li><a href="@Url.Applications()">Applications</a></li>
-                            <li><a href="@Url.Users()">Users</a></li>
-                            <li><a href="@Url.Groups()">Groups</a></li>
+                            @foreach (var adminPage in Breadcrumbs.GetById(BreadcrumbId.Admin, Url).Children)
+                            {
+                                <li><a href="@adminPage.Link">@adminPage.Title</a></li>
+                            }
                         </ul>
-                        <a href="@Url.Organisation()">Organisation</a>
+                        <span>Admin</span>  
                     </li>
                     <li>|</li>
                 }
@@ -47,7 +49,7 @@
                     <li><a href="@Url.Client()">Client Help</a></li>
                     <li><a href="@Url.Features()">Features</a></li>
                 </ul>
-                <a href="@Url.WhatIsErrordite()">Help</a>
+                <a href="@Url.WhatIsErrordite()">About</a>
             </li>
             @if (appContext.AuthenticationStatus == AuthenticationStatus.Authenticated && (appContext.CurrentUser.Role == UserRole.SuperUser || appContext.ImpersonatorAppContext != null))
             {
@@ -63,7 +65,7 @@
                             <li><a href="@Url.Cache(cache)">@cache</a></li> 
                         }
                     </ul>
-                    <a href="@Url.Administration()">Admin</a>
+                    <a href="@Url.SysAdmin()">SysAdmin</a>
                 </li>
             }
             <li>|</li>

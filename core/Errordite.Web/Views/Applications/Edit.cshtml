@@ -12,7 +12,7 @@
     <div id="pagetitle">
         <h1><i class="icon-arrow-right"></i>Applications</h1>
     </div>
-    @Html.Partial("Organisation/Tabs", OrganisationTab.Applications)
+    @Html.Partial("Admin/Tabs")
 }
 
 @using (Html.BeginForm("edit", "applications", FormMethod.Post, new { id = "editapplicationForm" }))

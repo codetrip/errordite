@@ -11,19 +11,19 @@ using System.Linq;
 namespace Errordite.Web.Controllers
 {
     [Authorize]
-    public class OrganisationController : ErrorditeController
+    public class AdminController : ErrorditeController
     {
         private readonly IGetPaymentPlansQuery _getPaymentPlansQuery;
         private readonly ISetOrganisationTimezoneCommand _setOrganisationTimezoneCommand;
 
-        public OrganisationController(IGetPaymentPlansQuery getPaymentPlansQuery, ISetOrganisationTimezoneCommand setOrganisationTimezoneCommand)
+        public AdminController(IGetPaymentPlansQuery getPaymentPlansQuery, ISetOrganisationTimezoneCommand setOrganisationTimezoneCommand)
         {
             _getPaymentPlansQuery = getPaymentPlansQuery;
             _setOrganisationTimezoneCommand = setOrganisationTimezoneCommand;
         }
 
-        [HttpGet, ImportViewData]
-        public ActionResult Index()
+        [HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.PaymentPlan)]
+        public ActionResult PaymentPlan()
         {
             var plans = _getPaymentPlansQuery.Invoke(new GetPaymentPlansRequest()).Plans;
 
@@ -47,7 +47,7 @@ namespace Errordite.Web.Controllers
             return View();
         }
 
-        [HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.Settings)]
+        [HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.OrgSettings)]
         public ActionResult Settings()
         {
             return View(new OrganisationSettingsViewModel

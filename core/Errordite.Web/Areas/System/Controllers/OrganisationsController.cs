@@ -11,14 +11,14 @@ using Errordite.Core.Organisations.Queries;
 using Errordite.Core.Users.Queries;
 using Errordite.Web.ActionFilters;
 using Errordite.Web.ActionResults;
-using Errordite.Web.Areas.Admin.Models.Organisations;
+using Errordite.Web.Areas.System.Models.Organisations;
 using Errordite.Web.Controllers;
 using Errordite.Web.Models.Applications;
 using Errordite.Web.Models.Navigation;
 using Errordite.Web.Models.Organisation;
 using Errordite.Web.Models.Users;
 
-namespace Errordite.Web.Areas.Admin.Controllers
+namespace Errordite.Web.Areas.System.Controllers
 {
     [Authorize, RoleAuthorize]
     public class OrganisationsController : ErrorditeController

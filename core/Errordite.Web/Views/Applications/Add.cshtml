@@ -12,7 +12,7 @@
     <div id="pagetitle">
         <h1><i class="icon-arrow-right"></i>Applications</h1>
     </div>
-    @Html.Partial("Organisation/Tabs", OrganisationTab.Applications)
+    @Html.Partial("Admin/Tabs")
 }
 
 @using (Html.BeginForm("add", "applications", FormMethod.Post, new { id = "addapplicationForm" }))
@@ -20,7 +20,7 @@
      if(Model.NewOrganisation)
      {
          <p class="heading">
-             Welcome to Errordite, before you can start using Errordite, you must create an application, complete the form below to set up your first application, hover over the 
+             Welcome to Errordite. To use Errordite, you first must create an application, complete the form below to do this.  Hover over the 
              <i rel="tooltip" title="These icons provide you with tool tips and information relating to the form field they appear next to." class="icon-info-sign"></i> icons for
             help and information.
          </p>
