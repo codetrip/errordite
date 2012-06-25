@@ -44,9 +44,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\Errordite.Client\Errordite.Client.Mvc3.dll</HintPath>
     </Reference>
-    <Reference Include="Errordite.Client.v3.5">
-      <HintPath>..\..\lib\Errordite\$(Configuration)\Errordite.Client.v3.5.dll</HintPath>
-    </Reference>
     <Reference Include="log4net">
       <HintPath>..\..\lib\log4net\log4net.dll</HintPath>
     </Reference>

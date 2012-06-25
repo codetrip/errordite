@@ -12,7 +12,13 @@ namespace Errordite.Test.Misc
          [Test]
         public void EncryptSomething()
          {
-             Console.WriteLine(Get<IEncryptor>().Encrypt("{0}|{1}".FormatWith(1, 1)));
+             Console.WriteLine(Get<IEncryptor>().Encrypt("{0}|{1}|{2}".FormatWith(1, 1, "s@1x")));
          }
+
+        [Test]
+        public void DecryptSomething()
+        {
+            Console.WriteLine(Get<IEncryptor>().Decrypt("6zWOe7cZAboXtelhECTVxw=="));
+        }
     }
 }
