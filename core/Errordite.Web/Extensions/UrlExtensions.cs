@@ -102,7 +102,7 @@ namespace Errordite.Web.Extensions
 
         public static string ClientDownload(this UrlHelper helper)
         {
-            return "http://errordite.codeplex.com/releases/view/88648";
+            return "http://errordite.codeplex.com/releases";
         }
 
         public static string ClientSource(this UrlHelper helper)
