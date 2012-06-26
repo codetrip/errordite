@@ -35,6 +35,7 @@ namespace Errordite.Core.Domain.Organisation
         [JsonIgnore]
         public string FriendlyId { get { return Id == null ? string.Empty : Id.Split('/')[1]; } }
 
+        [ProtoMember(11)]
         public string TokenSalt { get; set; }
 
         public static string GetId(string friendlyId)

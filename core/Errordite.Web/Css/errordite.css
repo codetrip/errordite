@@ -500,3 +500,8 @@ table.features tr td.img div{ background-color: #fff;padding: 10px 0;border: 1px
 table.features tr td.blurb { background-color: #F7F7F7;padding: 15px;}
 
 div.img { background-color: #fff;padding: 10px 0;border: 1px solid #D8DEE2; }
+
+/*-----------------------------------------------------------------------------------*/
+/*	17.	Admin Pages
+/*-----------------------------------------------------------------------------------*/
+input#Token { cursor: text;}
