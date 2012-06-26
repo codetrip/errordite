@@ -25,11 +25,12 @@ namespace Errordite.Web.ActionFilters
             _cookieKey = cookieKey;
         }
 
-        public override void OnActionExecuting(ActionExecutingContext filterContext)
+        public override void OnResultExecuting(ResultExecutingContext filterContext)
         {
+            var viewResult = filterContext.Result as ViewResult;
             var controller = filterContext.Controller as ErrorditeController;
 
-            if (controller == null)
+            if (controller == null || viewResult == null)
                 return;
 
             var breadcrumbs = Breadcrumbs.GetBreadcrumbsForRoute(_breadcrumbId, controller.Url);
@@ -46,11 +47,11 @@ namespace Errordite.Web.ActionFilters
                             new Breadcrumb(breadcrumb.Id, breadcrumb.Link + value, breadcrumb.Title) : 
                             breadcrumb).ToList();
 
-                        controller.ViewData.SetBreadcrumbs(overriddenCrumbs);
+                        viewResult.ViewData.SetBreadcrumbs(overriddenCrumbs);
                     }
                     else
                     {
-                        controller.ViewData.SetBreadcrumbs(breadcrumbs);
+                        viewResult.ViewData.SetBreadcrumbs(breadcrumbs);
                     }
                     
                 }
