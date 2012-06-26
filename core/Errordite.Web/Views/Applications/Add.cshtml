@@ -42,12 +42,12 @@
                         <i rel="tooltip" title="Who will the default assignee be for issues creataed within this application?" class="icon-info-sign"></i>
                         @Html.ValidationMessageFor(m => m.UserId)
                     </li>
-                    <li>
+                    @*<li>
                         @Html.LabelFor(m => m.MatchRuleFactoryId, "Group Errors By")
                         @Html.DropDownListFor(m => m.MatchRuleFactoryId, Model.ErrorConfigurations)
                         <i rel="tooltip" title="This defines the default method by which Errordite groups exceptions." class="icon-info-sign"></i>
                         @Html.ValidationMessageFor(m => m.MatchRuleFactoryId)
-                    </li>
+                    </li>*@
                     <li class="cbox">
                         @Html.CheckBoxFor(m => m.Active) 
                         @Html.LabelFor(m => m.Active, "Activate application")

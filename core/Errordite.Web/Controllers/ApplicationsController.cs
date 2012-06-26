@@ -92,7 +92,7 @@ namespace Errordite.Web.Controllers
             if (applications.PagingStatus.TotalItems >= Core.AppContext.CurrentUser.Organisation.PaymentPlan.MaximumApplications)
             {
                 SetNotification(AddApplicationStatus.PlanThresholdReached, Resources.Application.ResourceManager);
-                return RedirectToAction("upgrade", "organisation");
+                return RedirectToAction("upgrade", "admin");
             }
 
             var viewModel = ViewData.Model == null ? new AddApplicationViewModel{Active = true} : (AddApplicationViewModel)ViewData.Model;
@@ -129,7 +129,7 @@ namespace Errordite.Web.Controllers
                 Name = viewModel.Name,
                 IsActive = viewModel.Active,
                 CurrentUser = Core.AppContext.CurrentUser,
-                MatchRuleFactoryId = viewModel.MatchRuleFactoryId,
+                MatchRuleFactoryId = new MethodAndTypeMatchRuleFactory().Id,
                 UserId = viewModel.UserId,
                 HipChatAuthToken = viewModel.HipChatAuthToken,
                 HipChatRoomId = viewModel.HipChatRoomId,
@@ -308,11 +308,12 @@ namespace Errordite.Web.Controllers
                             {"Url", "http://myapp.com/test?foo=1234"}
                         },
                     },
-                    MachineName = "Test Machine Name",
-                    TimestampUtc = DateTime.UtcNow,
-                    ApplicationId = application.Id,
-                    OrganisationId = application.OrganisationId
-                }
+                MachineName = "Test Machine Name",
+                TimestampUtc = DateTime.UtcNow,
+                ApplicationId = application.Id,
+                OrganisationId = application.OrganisationId
+                },
+                ApplicationId = application.Id,
             });
 
 
