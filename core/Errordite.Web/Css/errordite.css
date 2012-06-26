@@ -15,6 +15,7 @@
     14. Issues Page
     15. Audit Page
     16. Home Page
+    17. Help
 */
 
 /*-----------------------------------------------------------------------------------*/
@@ -82,6 +83,7 @@ p.heading {font-size:1.1em}
 .panel { margin-left: 20px; float:left}
 .panel.first { margin-left: 0;}
 
+a { cursor: pointer;}
 
 /*-----------------------------------------------------------------------------------*/
 /*	2. Common
@@ -101,8 +103,9 @@ p.heading {font-size:1.1em}
 
 .base .base-content {padding: 10px;background-color: #fff;overflow: hidden;border-style: solid;border-width: 1px 1px 2px;border-color: #E9F1F4 #D8DEE2 #D8DEE2;border-radius: 0 0 5px 5px;-webkit-border-radius: 0 0 5px 5px;-moz-border-radius: 0 0 5px 5px;}
 .base .base-noheader {background-color: #F7F7F7;padding: 15px;overflow: hidden;border-style: solid;border-color: #D8DEE2;border-width: 1px;-webkit-border-radius: 2px;-moz-border-radius: 2px;border-radius: 3px;}
-.base .base-noheader h1 { font-size: 1.4em;margin: 0 0 20px 0;border-bottom: 1px solid #D8DEE2; padding-bottom:5px}
-.base .base-noheader h1.noborder { border:0; margin: 0 0 5px 0;}
+.base .base-noheader h1 { font-size: 1.4em;}
+.base .base-noheader .title {margin: 0 0 20px 0;border-bottom: 1px solid #D8DEE2;padding-bottom: 5px;}
+.base .base-noheader .title.noborder { border:0; margin: 0 0 5px 0;}
 
 .nav-centered .nav {margin-bottom: 0;}
 .nav-centered .nav-tabs { border: 0;}
@@ -478,7 +481,7 @@ pre, code { font-family: "Courier New", Courier;background-color: #ffffcc;}
 .home-features { padding-top: 10px}
 
 /*-----------------------------------------------------------------------------------*/
-/*	16.	Help Pages
+/*	17.	Help Pages
 /*-----------------------------------------------------------------------------------*/
 .help { font-size: 1.05em;}
 .help p { font-size: 1.1em;}
@@ -489,6 +492,7 @@ pre, code { font-family: "Courier New", Courier;background-color: #ffffcc;}
 .help h3.all-plans span i { margin-top: 2px;}
 .help .base.left-slim { padding-right:25px;}
 .help .base.left-slim ul { padding:10px 0 10px 0;}
+.help .download { margin: 2em 0 1em 41%;}
 
 table.features {border: 0;border-collapse:separate;}
 table.features tr td.img{ width: 220px;text-align: center;background-color: #F7F7F7;padding: 10px 0;}
