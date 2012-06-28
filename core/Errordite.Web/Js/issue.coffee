@@ -3,16 +3,15 @@ jQuery ->
 
 	if $issue.length > 0
 
-		$(document).ready () -> 
-			loadTabData($ 'ul#issue-tabs li.active a.tablink')
-
-		$issue.delegate 'input[type="button"].confirm', 'click', () ->
-			$this = $ this
-			if confirm "Are you sure you want to delete all errors associated with this issue?" 
-				$.post '/issue/purge', 'issueId=' + $this.attr('data-val'), (data) -> 
-					renderErrors '/issue/errors?issueId=' + $this.attr('data-val')
-					$('span#instance-count').text "0"
-
+		setReferenceLink = ->
+			input = $(':input[name=Reference]')
+			reference = input.val()
+			$('#reference-link').empty()
+			$('#reference-link').html($('<a>')
+				.attr('href', reference)
+				.attr('target', '_blank')
+				.text('link')) if /^https?:\/\//.test(reference)			
+		
 		loadTabData = ($tab) ->
 			if not $tab.data 'loaded'
 				if $tab.data("val") == "reports"				
@@ -47,25 +46,39 @@ jQuery ->
 					#init.init(true,	(uri) -> renderErrors uri);
 					init.datepicker($issue);
 					$('div.content').animate({scrollTop : 0},'slow')
+		
+		$(document).ready () -> 
+			loadTabData($ 'ul#issue-tabs li.active a.tablink')
+			
+			setReferenceLink()
 
-		$issue.delegate 'form#errorsForm', 'submit', (e) ->
-			e.preventDefault()
-			$this = $ this
-			renderErrors '/issue/errors?' + $this.serialize()
+			$issue.delegate ':input[name=Reference]', 'change', setReferenceLink
 
-		$issue.delegate 'select#Status', 'change', () -> 
-			$this = $ this
+			$issue.delegate 'input[type="button"].confirm', 'click', () ->
+				$this = $ this
+				if confirm "Are you sure you want to delete all errors associated with this issue?" 
+					$.post '/issue/purge', 'issueId=' + $this.attr('data-val'), (data) -> 
+						renderErrors '/issue/errors?issueId=' + $this.attr('data-val')
+						$('span#instance-count').text "0"
 
-			if $this.val() == 'Ignorable'
-				$issue.find('li.checkbox').removeClass('hidden');
-			else
-				$issue.find('li.checkbox').addClass('hidden');
+			$issue.delegate 'form#errorsForm', 'submit', (e) ->
+				e.preventDefault()
+				$this = $ this
+				renderErrors '/issue/errors?' + $this.serialize()
 
-			false	
+			$issue.delegate 'select#Status', 'change', () -> 
+				$this = $ this
 
-		if $issue.find('select#Status').val() == 'Ignorable'
-			$issue.find('li.checkbox').removeClass('hidden')
+				if $this.val() == 'Ignorable'
+					$issue.find('li.checkbox').removeClass('hidden');
+				else
+					$issue.find('li.checkbox').addClass('hidden');
 
-		$('#issue-tabs .tablink').bind 'shown', (e) -> 
-			loadTabData $ e.currentTarget		
+		
+
+			if $issue.find('select#Status').val() == 'Ignorable'
+				$issue.find('li.checkbox').removeClass('hidden')
+
+			$('#issue-tabs .tablink').bind 'shown', (e) -> 
+				loadTabData $ e.currentTarget		
 

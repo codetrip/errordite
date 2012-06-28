@@ -21,7 +21,7 @@
             foreach (var kvp in Model.Info.ExtraData)
             {
                 <dt>@kvp.Key.Replace("_", ".")</dt>
-                <dd>@kvp.Value</dd>
+                <dd>@(kvp.Value ?? "-")</dd>
             }
         }
     </dl>

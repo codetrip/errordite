@@ -1,22 +1,18 @@
 (function() {
 
   jQuery(function() {
-    var $issue, loadTabData, renderDistribution, renderErrors;
+    var $issue, loadTabData, renderDistribution, renderErrors, setReferenceLink;
     $issue = $('div#issue');
     if ($issue.length > 0) {
-      $(document).ready(function() {
-        return loadTabData($('ul#issue-tabs li.active a.tablink'));
-      });
-      $issue.delegate('input[type="button"].confirm', 'click', function() {
-        var $this;
-        $this = $(this);
-        if (confirm("Are you sure you want to delete all errors associated with this issue?")) {
-          return $.post('/issue/purge', 'issueId=' + $this.attr('data-val'), function(data) {
-            renderErrors('/issue/errors?issueId=' + $this.attr('data-val'));
-            return $('span#instance-count').text("0");
-          });
+      setReferenceLink = function() {
+        var input, reference;
+        input = $(':input[name=Reference]');
+        reference = input.val();
+        $('#reference-link').empty();
+        if (/^https?:\/\//.test(reference)) {
+          return $('#reference-link').html($('<a>').attr('href', reference).attr('target', '_blank').text('link'));
         }
-      });
+      };
       loadTabData = function($tab) {
         if (!$tab.data('loaded')) {
           if ($tab.data("val") === "reports") {
@@ -57,27 +53,41 @@
           }, 'slow');
         });
       };
-      $issue.delegate('form#errorsForm', 'submit', function(e) {
-        var $this;
-        e.preventDefault();
-        $this = $(this);
-        return renderErrors('/issue/errors?' + $this.serialize());
-      });
-      $issue.delegate('select#Status', 'change', function() {
-        var $this;
-        $this = $(this);
-        if ($this.val() === 'Ignorable') {
+      return $(document).ready(function() {
+        loadTabData($('ul#issue-tabs li.active a.tablink'));
+        setReferenceLink();
+        $issue.delegate(':input[name=Reference]', 'change', setReferenceLink);
+        $issue.delegate('input[type="button"].confirm', 'click', function() {
+          var $this;
+          $this = $(this);
+          if (confirm("Are you sure you want to delete all errors associated with this issue?")) {
+            return $.post('/issue/purge', 'issueId=' + $this.attr('data-val'), function(data) {
+              renderErrors('/issue/errors?issueId=' + $this.attr('data-val'));
+              return $('span#instance-count').text("0");
+            });
+          }
+        });
+        $issue.delegate('form#errorsForm', 'submit', function(e) {
+          var $this;
+          e.preventDefault();
+          $this = $(this);
+          return renderErrors('/issue/errors?' + $this.serialize());
+        });
+        $issue.delegate('select#Status', 'change', function() {
+          var $this;
+          $this = $(this);
+          if ($this.val() === 'Ignorable') {
+            return $issue.find('li.checkbox').removeClass('hidden');
+          } else {
+            return $issue.find('li.checkbox').addClass('hidden');
+          }
+        });
+        if ($issue.find('select#Status').val() === 'Ignorable') {
           $issue.find('li.checkbox').removeClass('hidden');
-        } else {
-          $issue.find('li.checkbox').addClass('hidden');
         }
-        return false;
-      });
-      if ($issue.find('select#Status').val() === 'Ignorable') {
-        $issue.find('li.checkbox').removeClass('hidden');
-      }
-      return $('#issue-tabs .tablink').bind('shown', function(e) {
-        return loadTabData($(e.currentTarget));
+        return $('#issue-tabs .tablink').bind('shown', function(e) {
+          return loadTabData($(e.currentTarget));
+        });
       });
     }
   });

@@ -33,7 +33,7 @@ namespace Errordite.Web.Models.Issues
     public class IssueDetailsPostModel
     {
         public string Comment { get; set; }
-        public string Changeset { get; set; }
+        public string Reference { get; set; }
         public string IssueId { get; set; }
         [Required(ErrorMessageResourceType = typeof(Resources.Issue), ErrorMessageResourceName = "Name_Required")]
         public string Name { get; set; }
@@ -50,7 +50,7 @@ namespace Errordite.Web.Models.Issues
         public string UserEmail { get; set; }
         public DateTime DateAddedUtc { get; set; }
         public bool SystemMessage { get; set; }
-        public string Changeset { get; set; }
+        public string Reference { get; set; }
     }
 
     public class IssueHistoryPostModel
