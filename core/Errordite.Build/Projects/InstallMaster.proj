@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <UsingTask TaskName="GenerateBuildProject" AssemblyFile="$(MSBuildProjectDirectory)\Errordite.Build.dll" />
+
+  <Target Name="InstallWeb">
+    <GenerateBuildProject
+          ConfigFile="$(MSBuildProjectDirectory)\ConfigFileChangerInstructions\InstructionReplacements.inst"
+          SourceProjectPath="$(MSBuildProjectDirectory)\InstallWeb.proj"
+          OutputProjectPath="$(MSBuildProjectDirectory)\InstallWeb_Gen.proj"
+          Properties="Configuration=Release;Environment=$(TargetEnvironment)"
+          Environment="$(TargetEnvironment)">
+    </GenerateBuildProject>
+  </Target>
+
+  <Target Name="InstallReceptionWeb">
+    <GenerateBuildProject
+          ConfigFile="$(MSBuildProjectDirectory)\ConfigFileChangerInstructions\InstructionReplacements.inst"
+          SourceProjectPath="$(MSBuildProjectDirectory)\InstallReceptionWeb.proj"
+          OutputProjectPath="$(MSBuildProjectDirectory)\InstallReceptionWeb_Gen.proj"
+          Properties="Configuration=Release;Environment=$(TargetEnvironment)"
+          Environment="$(TargetEnvironment)">
+    </GenerateBuildProject>
+  </Target>
+
+  <Target Name="InstallReceptionService">
+    <GenerateBuildProject
+          ConfigFile="$(MSBuildProjectDirectory)\ConfigFileChangerInstructions\InstructionReplacements.inst"
+          SourceProjectPath="$(MSBuildProjectDirectory)\InstallReceptionService.proj"
+          OutputProjectPath="$(MSBuildProjectDirectory)\InstallReceptionService_Gen.proj"
+          Properties="Configuration=Release;Environment=$(TargetEnvironment)"
+          Environment="$(TargetEnvironment)">
+    </GenerateBuildProject>
+  </Target>
+
+  <Target Name="InstallNotificationsService">
+    <GenerateBuildProject
+          ConfigFile="$(MSBuildProjectDirectory)\ConfigFileChangerInstructions\InstructionReplacements.inst"
+          SourceProjectPath="$(MSBuildProjectDirectory)\InstallNotificationsService.proj"
+          OutputProjectPath="$(MSBuildProjectDirectory)\InstallNotificationsService_Gen.proj"
+          Properties="Configuration=Release;Environment=$(TargetEnvironment)"
+          Environment="$(TargetEnvironment)">
+    </GenerateBuildProject>
+  </Target>
+
+  <Target Name="InstallEventsService">
+    <GenerateBuildProject
+          ConfigFile="$(MSBuildProjectDirectory)\ConfigFileChangerInstructions\InstructionReplacements.inst"
+          SourceProjectPath="$(MSBuildProjectDirectory)\InstallEventsService.proj"
+          OutputProjectPath="$(MSBuildProjectDirectory)\InstallEventsService_Gen.proj"
+          Properties="Configuration=Release;Environment=$(TargetEnvironment)"
+          Environment="$(TargetEnvironment)">
+    </GenerateBuildProject>
+  </Target>
+</Project>

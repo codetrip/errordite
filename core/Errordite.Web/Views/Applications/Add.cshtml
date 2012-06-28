@@ -1,0 +1,84 @@
+﻿@using Errordite.Web.Extensions
+@using Errordite.Web.Models.Applications
+@using Errordite.Web.Models.Organisation
+@model AddApplicationViewModel
+           
+@{
+    ViewBag.Title = "Add Application";
+}
+
+@section contentHeader
+{
+    <div id="pagetitle">
+        <h1><i class="icon-arrow-right"></i>Applications</h1>
+    </div>
+    @Html.Partial("Admin/Tabs")
+}
+
+@using (Html.BeginForm("add", "applications", FormMethod.Post, new { id = "addapplicationForm" }))
+{
+     if(Model.NewOrganisation)
+     {
+         <p class="heading">
+             Welcome to Errordite. To use Errordite, you first must create an application, complete the form below to do this.  Hover over the 
+             <i rel="tooltip" title="These icons provide you with tool tips and information relating to the form field they appear next to." class="icon-info-sign"></i> icons for
+            help and information.
+         </p>
+     }
+    <div class="base left-extra-wide">
+        <h1>Add an application</h1>
+        <div class="base-content">
+            <div class="left">
+                <h3>Application Settings</h3>
+                <ul class="errorditeform">
+                    <li>
+                        @Html.LabelFor(m => m.Name, "Name")
+                        @Html.TextBoxFor(m => m.Name)
+                        @Html.ValidationMessageFor(m => m.Name)
+                    </li>
+                    <li>
+                        @Html.LabelFor(m => m.UserId, "Default Assigned User")
+                        @Html.DropDownListFor(m => m.UserId, Model.Users)
+                        <i rel="tooltip" title="Who will the default assignee be for issues creataed within this application?" class="icon-info-sign"></i>
+                        @Html.ValidationMessageFor(m => m.UserId)
+                    </li>
+                    @*<li>
+                        @Html.LabelFor(m => m.MatchRuleFactoryId, "Group Errors By")
+                        @Html.DropDownListFor(m => m.MatchRuleFactoryId, Model.ErrorConfigurations)
+                        <i rel="tooltip" title="This defines the default method by which Errordite groups exceptions." class="icon-info-sign"></i>
+                        @Html.ValidationMessageFor(m => m.MatchRuleFactoryId)
+                    </li>*@
+                    <li class="cbox">
+                        @Html.CheckBoxFor(m => m.Active) 
+                        @Html.LabelFor(m => m.Active, "Activate application")
+                        <i rel="tooltip" title="Only active applications will receive errors and have issues created." class="icon-info-sign"></i>
+                    </li>
+                </ul>
+            </div>
+            <div class="right">
+                <div class="content custom-select-overflow">
+                    <h3>Notification Settings</h3>
+                    <ul class="errorditeform">
+                        <li>
+                            @Html.LabelFor(m => m.HipChatRoomId, "HipChat Room Number")
+                            @Html.TextBoxFor(m => m.HipChatRoomId)
+                            <i rel="tooltip" title="Tell us the HipChat room number you want notifications for this application to go to." class="icon-info-sign"></i>
+                            @Html.ValidationMessageFor(m => m.HipChatRoomId)
+                        </li>
+                        <li>
+                            @Html.LabelFor(m => m.HipChatAuthToken, "HipChat Auth Token")
+                            @Html.TextBoxFor(m => m.HipChatAuthToken)
+                            <i rel="tooltip" title="We need your HipChat auth token to allow us to post to your room." class="icon-info-sign"></i>
+                            @Html.ValidationMessageFor(m => m.HipChatAuthToken)
+                        </li>
+                        @Html.EditorFor(m => m.Notifications)
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="colfull buttons">
+        <input type="submit" class="btn btn-success" value="Add Application" />
+        <a class="btn" href="@Url.Applications()" >Cancel</a>
+    </div>
+}

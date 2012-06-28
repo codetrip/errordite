@@ -1,0 +1,26 @@
+﻿
+@model IEnumerable<Errordite.Core.Domain.Error.TraceMessage>
+           
+<div>
+    <table class="table table-bordered nogradient">
+        <thead>
+            <tr>
+                <th>Logger</th>    
+                <th>Log Level</th> 
+                <th>Message</th>
+                <th>Elapsed Milliseconds</th> 
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var msg in Model)
+            {
+                <tr> 
+                    <td>@msg.Logger</td>
+                    <td>@msg.Level</td>
+                    <td>@msg.Message</td>
+                    <td>@msg.Milliseconds<span>ms</span></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

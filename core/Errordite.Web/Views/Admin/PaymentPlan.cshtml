@@ -1,0 +1,57 @@
+﻿
+@using Errordite.Web.Models.Organisation
+@using Errordite.Web.Extensions
+@model OrganisationViewModel
+           
+@{
+    ViewBag.Title = "Payment Plan";
+}
+
+@section contentHeader
+{
+    <div id="pagetitle">
+        <h1><i class="icon-arrow-right"></i>Payment Plan</h1>
+    </div>
+    
+    @Html.Partial("Admin/Tabs")
+}
+
+<div id="organisation">
+    <h2 class="subtitle">Available Payment Plans</h2>
+    <table class="table table-striped table-bordered payments" style="width:800px">
+        <thead>
+            <tr>
+                <th>Plan</th>
+                <th>Users</th>
+                <th>Applications</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var plan in Model.Plans)
+            {
+                <tr @(plan.CurrentPlan ? "class=current-plan" : "")>
+                    <td>@plan.Plan.PlanType.ToString()@* <span>(@string.Format("{0:C}", @plan.Plan.Price))</span>*@</td>
+                    <td>@(plan.Plan.MaximumUsers.ToString())</td>
+                    <td>@(plan.Plan.MaximumApplications.ToString())</td>
+                    <td>
+                        @if(plan.Upgrade)
+                        {
+                            <a href="@Url.Upgrade()" class="btn btn-success">Upgrade</a>
+                        }
+                        @if (@plan.Downgrade)
+                        {
+                            <a href="@Url.Upgrade()" class="btn btn-warning">Downgrade</a>
+                        }
+                        @if(plan.CurrentPlan)
+                        {
+                            <span>Current Plan</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+

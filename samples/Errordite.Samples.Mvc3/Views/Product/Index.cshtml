@@ -1,0 +1,74 @@
+﻿@model dynamic
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html><head><style type="text/css"></style></head>
+    <body>
+        <div class="container">
+            <div class="header">Real-life Products Inc.</div>
+            <div class="content">
+                <h2 class="title" >ACME Anvil</h2>
+                <div class="image"><img src="http://4.bp.blogspot.com/-AhJgXjW5USc/TdVvywGABeI/AAAAAAAAABM/tlvmLlJoWP8/s1600/acme-anvil.jpg" height="270px" width="270px"></div>
+
+                <div class="details">
+                    <div class="description" >This anvil is super good</div>
+                <div class="basketcontrols"><span class="price">$16.50</span>
+                    @using (Html.BeginForm("AddToBasket", "product", FormMethod.Post)) { 
+                        <input type="submit" value="Add To Basket" class="add-to-basket"/>
+                        <input type="hidden" value="anvil" name="productId"/>
+                    }
+                </div>
+                </div>
+            </div>
+        </div>
+    </body>
+
+<style>
+	.container {
+margin: 3em 0 0 15%;
+width: 43em;
+}
+
+.title {
+padding: 0 0 0.7em .5em;
+border-bottom: dashed 1px;
+}
+
+.image {
+width: 18em;
+float: left;
+}
+
+.details {
+float: left;
+}
+
+.price {
+display: block;
+}
+
+.add-to-basket {
+border-radius: 4px;
+background-color: #DDD;
+}
+
+.content {
+	overflow: hidden;
+border: 1px solid;
+}
+
+.header {
+	background-color: black;
+	color: white;
+	padding: .5em;
+}
+
+.description {
+	min-height: 7em;
+	}
+</style>
+</html>

@@ -1,0 +1,39 @@
+﻿@using Errordite.Web.Models.Help
+@{
+    ViewBag.Title = "Help";
+}
+
+<div class="span12">
+    <div class="base">
+        @Html.Partial("Help/Tabs", HelpTab.WhatIsIt) 
+
+        <div class="base-noheader help">
+            <div class="title">
+                <h1>What is Errordite?</h1>
+            </div>
+            <p>
+               <strong>Errordite is a new way of tackling application errors.</strong>
+            </p>
+            <p>Dealing with error logs is often a big headache:</p>
+            <ul>
+                <li>Often <strong>large numbers</strong> of errors generated: <strong>only some of which are important</strong>; many of which are not</li>
+                <li>Each error is an <strong>individual</strong>; no sense of grouping</li>
+                <li><strong>More context needed</strong> around the error to work out how to fix it</li>
+                <li>No way to assign <strong>ownership</strong> of the cases</li>
+                <li>Different parts of the system running on different boxes meaning <strong>no single unified view</strong> of errors</li>
+                <li><strong>Conflict</strong> between operations and development teams</li>
+            </ul>
+            
+            <p>
+                Errordite aims to solve these problems.  It provides:
+            </p>
+            <ul>
+                <li>Intelligent automatic grouping of incoming errors into <strong>issues</strong></li>
+                <li><strong>Graphical configuration</strong> of rules to widen or narrow the definition of an issue as appropriate</li>
+                <li><strong>Configurable client tool</strong> to provide as much context as you could want</li>
+                <li>Multiple users and a <strong>workflow</strong> to assign issues to be fixed and track their progress</li>
+            </ul>
+            
+        </div>
+    </div>
+</div>

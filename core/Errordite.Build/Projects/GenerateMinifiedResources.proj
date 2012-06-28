@@ -1,0 +1,13 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+
+  <Import Project="$(MSBuildProjectDirectory)\..\Targets\Minify.target" />
+  
+  <Target Name="Build" DependsOnTargets="MinifyResources">
+    <Message Text="Done..." />
+  </Target>
+
+  <!--<Target Name="MinifyJqPlotBuild" DependsOnTargets="MinifyJqPlot">
+    <Message Text="Done..." />
+  </Target>-->
+</Project>
+
