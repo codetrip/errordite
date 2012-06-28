@@ -168,7 +168,7 @@
     <Compile Include="Issues\Commands\AddIssueCommand.cs" />
     <Compile Include="Issues\Commands\BatchStatusUpdateCommand.cs" />
     <Compile Include="Errors\Queries\GetErrorsThatDoNotMatchNewRulesQuery.cs" />
-    <Compile Include="Issues\Commands\ReceiveIssueErrorsAgainCommand.cs" />
+    <Compile Include="Issues\Commands\ReprocessIssueErrorsCommand.cs" />
     <Compile Include="Issues\Commands\MergeIssuesCommand.cs" />
     <Compile Include="Issues\Commands\DeleteIssueCommand.cs" />
     <Compile Include="Issues\Commands\PurgeIssueCommand.cs" />

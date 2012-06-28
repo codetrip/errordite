@@ -79,7 +79,7 @@ namespace Errordite.Core.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A new issue has been created named {0}, &lt;a href=&quot;{3}issue/{4}&quot;  target=&quot;_blank&quot;&gt;click here to view the issue&lt;/a&gt;..
+        ///   Looks up a localized string similar to A new issue has been created named {0}, &lt;a href=&quot;{1}issue/{2}&quot;  target=&quot;_blank&quot;&gt;click here to view the issue&lt;/a&gt;..
         /// </summary>
         internal static string SimpleMessage_NewIssue {
             get {
