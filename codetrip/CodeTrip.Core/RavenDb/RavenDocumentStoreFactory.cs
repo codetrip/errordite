@@ -1,5 +1,4 @@
 ﻿using System;
-using CodeTrip.Core.IoC;
 using Raven.Client;
 using Raven.Client.Document;
 using Raven.Imports.Newtonsoft.Json;
@@ -32,7 +31,7 @@ namespace CodeTrip.Core.RavenDb
                     CustomizeJsonSerializer = ser => ser.TypeNameHandling = TypeNameHandling.All
                 },
             }
-            .RegisterListener(new AddProdProfInfoListener())
+            //.RegisterListener(new AddProdProfInfoListener())
             .Initialize();
             return store;
         }

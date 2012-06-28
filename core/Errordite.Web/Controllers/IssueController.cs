@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Linq;
+using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using CodeTrip.Core.Extensions;
 using CodeTrip.Core.Paging;
 using Errordite.Core.Configuration;
-using Errordite.Core.Domain;
 using Errordite.Core.Domain.Error;
+using Errordite.Core.Domain.Exceptions;
 using Errordite.Core.Errors.Queries;
 using Errordite.Core.Indexing;
 using Errordite.Core.Issues.Commands;
@@ -36,7 +37,7 @@ namespace Errordite.Web.Controllers
         private readonly IUpdateIssueDetailsCommand _updateIssueDetailsCommand;
         private readonly ErrorditeConfiguration _configuration;
         private readonly IPurgeIssueCommand _purgeIssueCommand;
-        private readonly IReceiveIssueErrorsAgainCommand _receiveIssueErrorsAgainCommand;
+        private readonly IReprocessIssueErrorsCommand _reprocessIssueErrorsCommand;
         private readonly IDeleteIssueCommand _deleteIssueCommand;
 
         public IssueController(IGetIssueQuery getIssueQuery, 
@@ -46,7 +47,7 @@ namespace Errordite.Web.Controllers
             IUpdateIssueDetailsCommand updateIssueDetailsCommand, 
             ErrorditeConfiguration configuration, 
             IPurgeIssueCommand purgeIssueCommand, 
-            IReceiveIssueErrorsAgainCommand receiveIssueErrorsAgainCommand, 
+            IReprocessIssueErrorsCommand reprocessIssueErrorsCommand, 
             IDeleteIssueCommand deleteIssueCommand)
         {
             _getIssueQuery = getIssueQuery;
@@ -56,7 +57,7 @@ namespace Errordite.Web.Controllers
             _updateIssueDetailsCommand = updateIssueDetailsCommand;
             _configuration = configuration;
             _purgeIssueCommand = purgeIssueCommand;
-            _receiveIssueErrorsAgainCommand = receiveIssueErrorsAgainCommand;
+            _reprocessIssueErrorsCommand = reprocessIssueErrorsCommand;
             _deleteIssueCommand = deleteIssueCommand;
         }
 
@@ -392,20 +393,33 @@ namespace Errordite.Web.Controllers
         [HttpPost, ExportViewData]
         public ActionResult Import(string issueId)
         {
-            var response = _receiveIssueErrorsAgainCommand.Invoke(new ReceiveIssueErrorsAgainRequest
+            var request = new ReprocessIssueErrorsRequest
             {
                 IssueId = issueId,
-                CurrentUser = Core.AppContext.CurrentUser,
-                BaseIssueUrl = Url.BaseIssueUrl()
-            });
+                CurrentUser = Core.AppContext.CurrentUser
+            };
 
-            if (response.AttachedIssueIds == null || response.AttachedIssueIds.Count == 0)
+            var httpTask = new HttpClient().PostAsJsonAsync("{0}/api/errors".FormatWith(_configuration.ReceptionHttpEndpoint), request);
+            httpTask.Wait();
+
+            if (!httpTask.Result.IsSuccessStatusCode)
             {
-                Warning("There were no errors attached to this issue.");
-                return RedirectToAction("index", new { id = issueId, tab = IssueTab.Details.ToString() });
+                ErrorNotification("An error has occured while attempting to reprocess errors, please try again.");
             }
+            else
+            {
+                var contentTask = httpTask.Result.Content.ReadAsStringAsync();
+                contentTask.Wait();
 
-            ConfirmationNotification(response.GetMessage(Url.BaseIssueUrl(), Errordite.Core.Domain.Error.Issue.GetId(issueId)));
+                var response = JsonConvert.DeserializeObject<ReprocessIssueErrorsResponse>(contentTask.Result);
+
+                if (response.Status == ReprocessIssueErrorsStatus.NotAuthorised)
+                {
+                    throw new ErrorditeAuthorisationException(new Core.Domain.Error.Issue { Id = issueId }, Core.AppContext.CurrentUser);
+                }
+
+                ConfirmationNotification(response.GetMessage(Errordite.Core.Domain.Error.Issue.GetId(issueId)));
+            }
 
             return RedirectToAction("index", new { id = issueId, tab = IssueTab.Details.ToString() });
         }
