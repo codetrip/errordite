@@ -1,0 +1,29 @@
+﻿
+@model Errordite.Web.Models.Users.UsersViewModel
+                   
+@{
+    ViewBag.Title = "Organisation Users";
+}
+
+@section contentHeader
+{
+    <div id="pagetitle">
+        <h1><i class="icon-arrow-right"></i>Organisation Users</h1>
+    </div>
+    
+    <div class="border"></div>
+}
+
+<div id="users" class="colfull">
+
+    @if (Model.Users != null && Model.Users.Any())
+    {
+        @Html.Partial("Users/List", Model)
+    }
+    else
+    {
+        <div>
+            <p>No users were found.</p>   
+        </div> 
+    }
+</div>

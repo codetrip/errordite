@@ -1,0 +1,842 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{CEF8FB25-38DC-403F-A783-2AF2B8717193}</ProjectGuid>
+    <ProjectTypeGuids>{E53F8FEA-EAE0-44A6-8774-FFD645390401};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Errordite.Web</RootNamespace>
+    <AssemblyName>Errordite.Web</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>false</UseIISExpress>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper">
+      <HintPath>..\..\lib\AutoMapper\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Core, Version=2.5.1.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Castle\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Facilities.FactorySupport">
+      <HintPath>..\..\lib\Castle\Castle.Facilities.FactorySupport.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Windsor, Version=2.5.1.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Castle\Castle.Windsor.dll</HintPath>
+    </Reference>
+    <Reference Include="Errordite.Client.Log4net">
+      <HintPath>..\..\lib\Errordite.Client\Errordite.Client.Log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Errordite.Client.Mvc3, Version=0.9.19.3, Culture=neutral, PublicKeyToken=0c2d28c225f773ee, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Errordite.Client\Errordite.Client.Mvc3.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\..\lib\log4net\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Lucene.Net, Version=2.9.4.1, Culture=neutral, PublicKeyToken=85089178b9ac3181, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\RavenDb\Web\bin\Lucene.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.0.8.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Json.NET\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NServiceBus, Version=3.0.0.0, Culture=neutral, PublicKeyToken=9fc386479f8a226c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\NServiceBus\NServiceBus.dll</HintPath>
+    </Reference>
+    <Reference Include="NServiceBus.Core, Version=3.0.0.0, Culture=neutral, PublicKeyToken=9fc386479f8a226c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\NServiceBus\NServiceBus.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Raven.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\RavenDb\Client\Raven.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Raven.Client.Lightweight">
+      <HintPath>..\..\lib\RavenDb\Client\Raven.Client.Lightweight.dll</HintPath>
+    </Reference>
+    <Reference Include="Raven.Database">
+      <HintPath>..\..\lib\RavenDb\Web\bin\Raven.Database.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\MVC3.0\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages" />
+    <Reference Include="System.Web.Helpers" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Errordite.Build\Assembly\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="ActionFilters\StoreQueryInCookie.cs" />
+    <Compile Include="ActionFilters\ViewDataActionFilter.cs" />
+    <Compile Include="ActionFilters\RoleAuthorisation.cs" />
+    <Compile Include="ActionFilters\ImportViewData.cs" />
+    <Compile Include="ActionFilters\ExportViewData.cs" />
+    <Compile Include="ActionResults\JsonErrorResult.cs" />
+    <Compile Include="ActionResults\JsonResultObject.cs" />
+    <Compile Include="ActionResults\JsonSuccessHtmlResult.cs" />
+    <Compile Include="ActionResults\JsonSuccessResult.cs" />
+    <Compile Include="ActionSelectors\IfButtonClickedAttribute.cs" />
+    <Compile Include="App_GlobalResources\Admin.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Admin.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Alerts.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Alerts.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Application.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Application.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Audit.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Audit.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Authentication.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Authentication.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Account.designer.cs">
+      <DependentUpon>Account.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\StatusUpdate.designer.cs">
+      <DependentUpon>StatusUpdate.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Home.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Home.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Issue.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Issue.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Errors.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Errors.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\History.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>History.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Notifications.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Notifications.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Rules.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Rules.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Shared.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Shared.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\System\SysAdminAreaRegistration.cs" />
+    <Compile Include="Areas\System\Controllers\SystemController.cs" />
+    <Compile Include="Areas\System\Models\Organisations\SuspendOrganisationViewModel.cs" />
+    <Compile Include="ActionFilters\GenerateBreadcrumbs.cs" />
+    <Compile Include="Controllers\AlertsController.cs" />
+    <Compile Include="Controllers\ApplicationsController.cs" />
+    <Compile Include="Controllers\AuditController.cs" />
+    <Compile Include="Areas\System\Controllers\CacheController.cs" />
+    <Compile Include="Areas\System\Controllers\OrganisationsController.cs" />
+    <Compile Include="Controllers\DashboardController.cs" />
+    <Compile Include="Controllers\EmailTestController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Areas\System\Controllers\ImpersonationController.cs" />
+    <Compile Include="Controllers\IssueController.cs" />
+    <Compile Include="Controllers\HelpController.cs" />
+    <Compile Include="Controllers\GroupsController.cs" />
+    <Compile Include="Controllers\UsersController.cs" />
+    <Compile Include="Controllers\AuthenticationController.cs" />
+    <Compile Include="Controllers\IssuesController.cs" />
+    <Compile Include="Extensions\EnumExtensions.cs" />
+    <Compile Include="Extensions\SelectListExtensions.cs" />
+    <Compile Include="Mappings\ApplicationToApplicationViewModel.cs" />
+    <Compile Include="Mappings\ApplicationToEditApplicationViewModel.cs" />
+    <Compile Include="Mappings\AddApplicationPostModelToViewModel.cs" />
+    <Compile Include="Mappings\AddIssuePostModelToViewModel.cs" />
+    <Compile Include="Mappings\EditApplicationPostModelToViewModel.cs" />
+    <Compile Include="Mappings\GroupToEditGroupViewModel.cs" />
+    <Compile Include="Mappings\GroupToGroupViewModel.cs" />
+    <Compile Include="Mappings\UserToEditUserViewModel.cs" />
+    <Compile Include="Mappings\UserToUserViewModel.cs" />
+    <Compile Include="Areas\System\Models\System\ErrorditeErrorsViewModel.cs" />
+    <Compile Include="Models\Applications\AddApplicationViewModel.cs" />
+    <Compile Include="Models\Applications\ApplicationViewModel.cs" />
+    <Compile Include="Models\Applications\EditApplicationViewModel.cs" />
+    <Compile Include="Models\Audit\AuditViewModel.cs" />
+    <Compile Include="Models\Authentication\ResetPasswordViewModel.cs" />
+    <Compile Include="Models\Authentication\PasswordViewModel.cs" />
+    <Compile Include="Models\Common\IWizardViewModel.cs" />
+    <Compile Include="Models\Issues\MergeIssuesViewModel.cs" />
+    <Compile Include="Areas\System\Models\Cache\CacheViewModel.cs" />
+    <Compile Include="Models\Errors\ExceptionViewModel.cs" />
+    <Compile Include="Models\Issues\AddIssueViewModel.cs" />
+    <Compile Include="Models\Issues\IssueItemViewModel.cs" />
+    <Compile Include="Models\Issues\RuleViewModel.cs" />
+    <Compile Include="Models\Dashboard\DashboardViewModel.cs" />
+    <Compile Include="Models\Groups\AddGroupViewModel.cs" />
+    <Compile Include="Models\Groups\EditGroupViewModel.cs" />
+    <Compile Include="Models\Groups\GroupViewModel.cs" />
+    <Compile Include="Models\Help\HelpTab.cs" />
+    <Compile Include="Models\Home\ContactUsViewModel.cs" />
+    <Compile Include="Models\Issues\IssueNotFoundViewModel.cs" />
+    <Compile Include="Models\Issues\IssueCriteriaViewModel.cs" />
+    <Compile Include="Models\Issues\IssueViewModel.cs" />
+    <Compile Include="Models\Navigation\Breadcrumbs.cs" />
+    <Compile Include="Models\Notifications\NotificationsViewModel.cs" />
+    <Compile Include="Models\Admin\OrganisationsViewModel.cs" />
+    <Compile Include="Models\Admin\OrganisationViewModel.cs" />
+    <Compile Include="Models\Users\AddUserViewModel.cs" />
+    <Compile Include="Models\Beta\SignUpViewModel.cs" />
+    <Compile Include="Models\Users\UserViewModel.cs" />
+    <Compile Include="Models\Users\EditUserViewModel.cs" />
+    <Compile Include="Models\Users\UserViewModelBase.cs" />
+    <Compile Include="Models\Errors\ErrorCriteriaViewModel.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\ErrorditeController.cs" />
+    <Compile Include="Controllers\ErrorsController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Extensions\UrlExtensions.cs" />
+    <Compile Include="Extensions\ViewDataExtensions.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="IoC\WebInstaller.cs" />
+    <Compile Include="Models\Authentication\RegisterViewModel.cs" />
+    <Compile Include="Models\Authentication\LoginViewModel.cs" />
+    <Compile Include="Models\Notifications\UiNotification.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Validation\MatchAttribute.cs" />
+    <Compile Include="Validation\Resources.cs" />
+    <Compile Include="WebConstants.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Css\bootstrap-responsive.min.css" />
+    <Content Include="Css\bootstrap.min.css" />
+    <Content Include="Css\errordite.css" />
+    <Content Include="Css\ie.css" />
+    <Content Include="Css\img\1px-D8D8D8.gif" />
+    <Content Include="Css\img\ajax-loader.gif" />
+    <Content Include="Css\img\buttons\button_blue.png" />
+    <Content Include="Css\img\buttons\button_green.png" />
+    <Content Include="Css\img\buttons\button_grey.png" />
+    <Content Include="Css\img\buttons\button_navy.png" />
+    <Content Include="Css\img\buttons\button_orange.png" />
+    <Content Include="Css\img\buttons\button_purple.png" />
+    <Content Include="Css\img\buttons\button_red.png" />
+    <Content Include="Css\img\buttons\button_teal.png" />
+    <Content Include="Css\img\buttons\button_white.png" />
+    <Content Include="Css\img\dotted_border.png" />
+    <Content Include="Css\img\filter.png" />
+    <Content Include="Css\img\glyphicons-halflings-white.png" />
+    <Content Include="Css\img\glyphicons-halflings.png" />
+    <Content Include="Css\img\jquery\ui-bg_flat_30_cccccc_40x100.png" />
+    <Content Include="Css\img\jquery\ui-bg_flat_50_5c5c5c_40x100.png" />
+    <Content Include="Css\img\jquery\ui-bg_glass_20_555555_1x400.png" />
+    <Content Include="Css\img\jquery\ui-bg_glass_40_0078a3_1x400.png" />
+    <Content Include="Css\img\jquery\ui-bg_glass_40_ffc73d_1x400.png" />
+    <Content Include="Css\img\jquery\ui-bg_gloss-wave_25_333333_500x100.png" />
+    <Content Include="Css\img\jquery\ui-bg_highlight-soft_80_eeeeee_1x100.png" />
+    <Content Include="Css\img\jquery\ui-bg_inset-soft_25_000000_1x100.png" />
+    <Content Include="Css\img\jquery\ui-bg_inset-soft_30_f58400_1x100.png" />
+    <Content Include="Css\img\jquery\ui-icons_222222_256x240.png" />
+    <Content Include="Css\img\jquery\ui-icons_4b8e0b_256x240.png" />
+    <Content Include="Css\img\jquery\ui-icons_a83300_256x240.png" />
+    <Content Include="Css\img\jquery\ui-icons_cccccc_256x240.png" />
+    <Content Include="Css\img\jquery\ui-icons_ffffff_256x240.png" />
+    <Content Include="Css\img\menu\menu-arrow.png" />
+    <Content Include="Css\img\minus-grey.png" />
+    <Content Include="Css\img\minus.png" />
+    <Content Include="Css\img\plus-grey.png" />
+    <Content Include="Css\img\plus.png" />
+    <Content Include="Css\img\toggle\toggle-closed.png" />
+    <Content Include="Css\img\toggle\toggle-open.png" />
+    <Content Include="Css\jquery-ui-1.8.21.custom.css" />
+    <Content Include="Css\jquery.jqplot.css" />
+    <Content Include="Css\ui.daterangepicker.css" />
+    <Content Include="favicon.ico" />
+    <Content Include="Global.asax" />
+    <Content Include="Images\UI\ajax-loader.gif" />
+    <Content Include="Images\UI\applications.png" />
+    <Content Include="Images\UI\client-config-section.png" />
+    <Content Include="Images\UI\client-config.png" />
+    <Content Include="Images\UI\config.png" />
+    <Content Include="Images\UI\data-collectors.png" />
+    <Content Include="Images\UI\email.png" />
+    <Content Include="Images\UI\error-notification.png" />
+    <Content Include="Images\UI\godaddy-ssl.png" />
+    <Content Include="Images\UI\hipchat.png" />
+    <Content Include="Images\UI\history.png" />
+    <Content Include="Images\UI\logo.png" />
+    <Content Include="Images\UI\lucene.png" />
+    <Content Include="Images\UI\microsoft.net.png" />
+    <Content Include="Images\UI\mvc-global-filters.png" />
+    <Content Include="Images\UI\mvc2-handleerror.png" />
+    <Content Include="Images\UI\nServiceBus.png" />
+    <Content Include="Images\UI\report-error.png" />
+    <Content Include="Images\UI\reports.png" />
+    <Content Include="Images\UI\rules.png" />
+    <Content Include="Images\UI\sanitise.png" />
+    <Content Include="Images\UI\users.png" />
+    <Content Include="Images\UI\webforms-errorhandler.png" />
+    <Content Include="Js\009.jquery.history.js" />
+    <Content Include="Js\010.jquery.cookie.js" />
+    <Content Include="Js\011.jquery.dropdownchecklist.js" />
+    <Content Include="Js\020.bootstrap.min.js" />
+    <Content Include="Js\021.bootstrap.tooltip.js" />
+    <Content Include="Js\022.bootstrap.modal.js" />
+    <Content Include="Js\023.bootstrap.alerts.js" />
+    <Content Include="Js\024.bootstrap.dropdown.js" />
+    <Content Include="Js\024.jquery.loader.js" />
+    <Content Include="Js\030.knockout-2.0.0.js" />
+    <Content Include="Js\050.underscore.js" />
+    <Content Include="Js\060.global.js">
+      <DependentUpon>060.global.coffee</DependentUpon>
+    </Content>
+    <Content Include="Js\alerts.js">
+      <DependentUpon>alerts.coffee</DependentUpon>
+    </Content>
+    <Content Include="Js\applications.js">
+      <DependentUpon>applications.coffee</DependentUpon>
+    </Content>
+    <Content Include="Js\audit.js">
+      <DependentUpon>audit.coffee</DependentUpon>
+    </Content>
+    <Content Include="Js\errors.js">
+      <DependentUpon>errors.coffee</DependentUpon>
+    </Content>
+    <Content Include="Js\issue.js">
+      <DependentUpon>issue.coffee</DependentUpon>
+    </Content>
+    <Content Include="Js\issues.js">
+      <DependentUpon>issues.coffee</DependentUpon>
+    </Content>
+    <Content Include="Js\jqplot\102.jqplot.axisLabelRenderer.js" />
+    <Content Include="Js\jqplot\103.jqplot.axisTickRenderer.js" />
+    <Content Include="Js\jqplot\114.jqplot.barRenderer.js" />
+    <Content Include="Js\jqplot\104.jqplot.canvasGridRenderer.js" />
+    <Content Include="Js\jqplot\115.jqplot.categoryAxisRenderer.js" />
+    <Content Include="Js\jqplot\100.jqplot.core.js" />
+    <Content Include="Js\005.jquery.placeholder.js" />
+    <Content Include="Js\007.jquery.datepicker.js" />
+    <Content Include="Js\008.jquery.form.js" />
+    <Content Include="Js\006.jquery-ui-1.8.18.custom.min.js" />
+    <Content Include="Js\001.jquery-1.7.2.js" />
+    <Content Include="Js\003.jquery.unobtrusive-ajax.js" />
+    <Content Include="Js\002.jquery.validate.js" />
+    <Content Include="Js\004.jquery.validate.unobtrusive.js" />
+    <Content Include="Js\jqplot\105.jqplot.divTitleRenderer.js" />
+    <Content Include="Js\jqplot\106.jqplot.linearAxisRenderer.js" />
+    <Content Include="Js\jqplot\107.jqplot.linearTickGenerator.js" />
+    <Content Include="Js\jqplot\108.jqplot.lineRenderer.js" />
+    <Content Include="Js\jqplot\109.jqplot.markerRenderer.js" />
+    <Content Include="Js\jqplot\110.jqplot.shadowRenderer.js" />
+    <Content Include="Js\jqplot\111.jqplot.shapeRenderer.js" />
+    <Content Include="Js\jqplot\113.jqplot.sprintf.js" />
+    <Content Include="Js\jqplot\112.jqplot.tableLegendRenderer.js" />
+    <Content Include="Js\jqplot\101.jqplot.themeEngine.js" />
+    <Content Include="Js\jqplot\jqplot.min.js" />
+    <Content Include="Js\dashboard.js">
+      <DependentUpon>dashboard.coffee</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Content>
+    <Content Include="Js\groups.js">
+      <DependentUpon>groups.coffee</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Content>
+    <Content Include="Js\admin\organisations.js">
+      <DependentUpon>organisations.coffee</DependentUpon>
+    </Content>
+    <Content Include="Js\rules.js">
+      <DependentUpon>rules.coffee</DependentUpon>
+    </Content>
+    <Content Include="Js\users.js">
+      <DependentUpon>users.coffee</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Content>
+    <Content Include="Js\common.js" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\ServerError.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\codetrip\CodeTrip.Core\CodeTrip.Core.csproj">
+      <Project>{7AD42F34-0629-45B8-BF45-87F8B791376E}</Project>
+      <Name>CodeTrip.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Errordite.Core\Errordite.Core.csproj">
+      <Project>{418F4BC8-7042-49B1-9F69-95189A2A5837}</Project>
+      <Name>Errordite.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Errors\Index.cshtml" />
+    <Content Include="Views\Issue\Index.cshtml" />
+    <Content Include="Views\Shared\Pagination.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Config\paging.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Authentication\SignUp.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Authentication\SignIn.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Authentication.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Authentication.designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Account.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Account.designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Users\Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Notifications.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Admin\PaymentPlan.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\EditorTemplates\RuleViewModel.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Applications\Add.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Application.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Application.Designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Applications\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Js\applications.coffee">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Users\Add.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Users\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Authentication\Password.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Authentication\ResetPassword.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Applications\Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Js\users.coffee">
+      <Generator>CoffeeScriptGenerator</Generator>
+      <LastGenOutput>users.js</LastGenOutput>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\Errordite.Build\Configuration\log4net.config">
+      <Link>Config\log4net.config</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\Errordite.Build\Configuration\raven.config">
+      <Link>Config\raven.config</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Rules.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Rules.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Errors.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Errors.Designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Js\issue.coffee">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Errors\ErrorCriteria.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Groups\Add.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Groups\Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Groups\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Js\groups.coffee">
+      <Generator>CoffeeScriptGenerator</Generator>
+      <LastGenOutput>groups.js</LastGenOutput>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\Errordite.Build\Configuration\cache.config">
+      <Link>Config\cache.config</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Errors\ErrorItem.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Help\Faq.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\History.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>History.Designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\System\Views\Cache\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\Errordite.Build\Configuration\errordite.config">
+      <Link>Config\errordite.config</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\System\Views\System\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\Errordite.Build\Configuration\email.config">
+      <Link>Config\email.config</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Issue.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Issue.designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\System\Views\System\ErrorditeErrors.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Administration\Errors.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Shared.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Shared.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\EditorTemplates\GroupViewModel.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\EditorTemplates\GroupMemberViewModel.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\EditorTemplates\NotificationViewModel.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Notifications.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Notifications.Designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\EditorTemplates\NotificationGroupViewModel.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Issues\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Issue\Details.cshtml" />
+    <Content Include="Views\Issue\Rules.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\Contact.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Home.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Home.Designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Master.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Js.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Header.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Issue\NotFound.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Dashboard\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Errors\ErrorItems.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Js\dashboard.coffee">
+      <Generator>CoffeeScriptGenerator</Generator>
+      <LastGenOutput>dashboard.js</LastGenOutput>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Dashboard\Statistics.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Dashboard\Tabs.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Admin\Tabs.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Help\Tabs.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Help\GettingStarted.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Help\Pricing.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Issues\IssuesCriteria.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Issues\Issues.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Audit\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Audit.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Audit.Designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Audit\AuditCriteria.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Audit\AuditRecords.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Js\audit.coffee">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Errors\ErrorInfo.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Issues\Add.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\StatusUpdate.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>StatusUpdate.designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Issues\Merge.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Css.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Issue\Reports.cshtml" />
+    <Content Include="Areas\System\Views\Web.config" />
+    <Content Include="Areas\System\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\System\Views\Shared\Organisations\SuspendModal.cshtml" />
+    <Content Include="Areas\System\Views\Organisations\Applications.cshtml" />
+    <None Include="Js\060.global.coffee" />
+    <None Include="Js\alerts.coffee" />
+    <None Include="Js\errors.coffee" />
+    <None Include="Js\issues.coffee" />
+    <Content Include="Views\Issue\RuleUpdates.cshtml" />
+    <None Include="Js\admin\organisations.coffee" />
+    <None Include="Js\rules.coffee" />
+    <Content Include="Views\Shared\Dashboard\RecentIssues.cshtml" />
+    <Content Include="Views\Help\Features.cshtml" />
+    <Content Include="Views\Shared\Dashboard\RecentErrors.cshtml" />
+    <Content Include="Views\Shared\Footer.cshtml" />
+    <Content Include="Areas\System\Views\Cache\Item.cshtml" />
+    <Content Include="Views\Shared\NotAuthorised.cshtml" />
+    <Content Include="Views\Shared\NotFound.cshtml" />
+    <Content Include="Views\Admin\Upgrade.cshtml" />
+    <Content Include="Views\Shared\Help\SmallPlan.cshtml" />
+    <Content Include="Views\Shared\Help\MediumPlan.cshtml" />
+    <Content Include="Views\Shared\Help\LargePlan.cshtml" />
+    <Content Include="Views\Help\Privacy.cshtml" />
+    <Content Include="Views\Help\TermsAndConditions.cshtml" />
+    <Content Include="Views\Admin\Billing.cshtml" />
+    <Content Include="Views\Admin\Downgrade.cshtml" />
+    <Content Include="Views\EmailTest\List.cshtml" />
+    <Content Include="Views\EmailTest\Index.cshtml" />
+    <Content Include="Views\Admin\Settings.cshtml" />
+    <Content Include="Views\Help\Client.cshtml" />
+    <Content Include="Views\Shared\Users\List.cshtml" />
+    <Content Include="Areas\System\Views\Organisations\Users.cshtml" />
+    <Content Include="Areas\System\Views\Organisations\Index.cshtml" />
+    <Content Include="Areas\System\Views\Impersonation\Index.cshtml" />
+    <Content Include="Views\Shared\Applications\List.cshtml" />
+    <Content Include="Views\Shared\Breadcrumb.cshtml" />
+    <Content Include="Views\Issue\History.cshtml" />
+    <Content Include="Views\Help\WhatIsIt.cshtml" />
+    <Content Include="Views\Shared\Errors\TraceMessages.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Alerts.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Alerts.Designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Admin.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Admin.Designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>2289</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://dev-site.errordite.com</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>http://errordite</CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>
