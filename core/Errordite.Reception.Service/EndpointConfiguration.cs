@@ -25,6 +25,8 @@ namespace Errordite.Reception.Service
             var httpConfig = ObjectFactory.GetObject<HttpServerConfiguration>();
             var config = new HttpSelfHostConfiguration(httpConfig.Endpoint);
 
+            config.MaxReceivedMessageSize = int.MaxValue;
+            config.MaxBufferSize = int.MaxValue;
             config.Formatters.XmlFormatter.SupportedMediaTypes.Clear();
             config.Routes.MapHttpRoute(
                 name: "issueapi",
