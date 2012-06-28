@@ -119,7 +119,7 @@ namespace Errordite.Web.Controllers
                 UserId = viewModel.UserId,
                 CurrentUser = Core.AppContext.CurrentUser,
                 GroupIds = viewModel.CurrentUser ? null : viewModel.Groups.Where(g => g.Selected).Select(g => g.Id.GetFriendlyId()).ToList(),
-                Administrator = viewModel.CurrentUser ? null : (bool?)viewModel.IsAdministrator,
+                Administrator = (!AppContext.CurrentUser.IsAdministrator() || viewModel.CurrentUser) ? null : (bool?)viewModel.IsAdministrator,
                 TimezoneId = viewModel.TimezoneId.IsNullOrEmpty() ? null : viewModel.TimezoneId,
             });
 
@@ -129,14 +129,14 @@ namespace Errordite.Web.Controllers
             return RedirectWithViewModel(viewModel, "index", result.Status.MapToResource(Resources.Account.ResourceManager), result.Status != EditUserStatus.Ok, new {userId = viewModel.UserId});
         }
 
-        [HttpGet, ImportViewData]
-        public ActionResult Edit()
+        [HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.YourDetails)]
+        public ActionResult YourDetails()
         {
             return EditUser(Core.AppContext.CurrentUser, true);
         }
 
         [HttpGet, ImportViewData, RoleAuthorize(UserRole.Administrator), GenerateBreadcrumbs(BreadcrumbId.EditUser)]
-        public ActionResult EditUser(string userId)
+        public ActionResult Edit(string userId)
         {
             return EditUser(_getUserQuery.Invoke(new GetUserRequest
             {

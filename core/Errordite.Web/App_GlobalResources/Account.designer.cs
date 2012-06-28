@@ -106,15 +106,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please select at least one group for this user..
-        /// </summary>
-        internal static string AddUserStatus_NoGroupsSelected {
-            get {
-                return ResourceManager.GetString("AddUserStatus_NoGroupsSelected", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to You have reached the maximum number of users allowed under your current billing plan, you can upgrade using the page below..
         /// </summary>
         internal static string AddUserStatus_PlanThresholdReached {

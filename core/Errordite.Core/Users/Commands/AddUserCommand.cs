@@ -32,15 +32,7 @@ namespace Errordite.Core.Users.Commands
         public AddUserResponse Invoke(AddUserRequest request)
         {
             Trace("Starting...");
-
-            if (request.GroupIds == null || request.GroupIds.Count == 0)
-            {
-                return new AddUserResponse(true)
-                {
-                    Status = AddUserStatus.NoGroupsSelected
-                };
-            }
-
+            
             var existingUser = Session.Raven.Query<User, Users_Search>().FirstOrDefault(u => u.Email == request.Email);
 
             if (existingUser != null)
@@ -134,7 +126,6 @@ namespace Errordite.Core.Users.Commands
     {
         Ok,
         EmailExists,
-        NoGroupsSelected,
         PlanThresholdReached
     }
 }

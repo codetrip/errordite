@@ -108,6 +108,5 @@ namespace Errordite.Core.Users.Commands
         Ok,
         UserNotFound,
         EmailExists,
-        NoGroupsSelected
     }
 }
