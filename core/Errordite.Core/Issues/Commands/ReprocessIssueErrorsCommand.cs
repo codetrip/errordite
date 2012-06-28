@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net.Http;
 using System.Web.Mvc;
 using CodeTrip.Core.Interfaces;
 using CodeTrip.Core.Paging;
 using CodeTrip.Core.Session;
-using Errordite.Core.Applications.Queries;
 using Errordite.Core.Configuration;
 using Errordite.Core.Authorisation;
 using Errordite.Core.Domain;
 using Errordite.Core.Domain.Error;
+using Errordite.Core.Domain.Exceptions;
 using Errordite.Core.Errors.Queries;
 using Errordite.Core.Indexing;
 using Errordite.Core.Organisations;
@@ -17,30 +16,29 @@ using Errordite.Core.Reception.Commands;
 using Errordite.Core.Resources;
 using CodeTrip.Core.Extensions;
 using System.Linq;
-using Newtonsoft.Json;
 
 namespace Errordite.Core.Issues.Commands
 {
-    public class ReceiveIssueErrorsAgainCommand : SessionAccessBase, IReceiveIssueErrorsAgainCommand
+    public class ReprocessIssueErrorsCommand : SessionAccessBase, IReprocessIssueErrorsCommand
     {
         private readonly IAuthorisationManager _authorisationManager;
         private readonly IGetApplicationErrorsQuery _getApplicationErrorsQuery;
         private readonly ErrorditeConfiguration _configuration;
-        private readonly IGetApplicationQuery _getApplicationQuery;
+        private readonly IReceiveErrorCommand _receiveErrorCommand;
 
-        public ReceiveIssueErrorsAgainCommand( 
+        public ReprocessIssueErrorsCommand( 
             IAuthorisationManager authorisationManager, 
             IGetApplicationErrorsQuery getApplicationErrorsQuery, 
             ErrorditeConfiguration configuration,
-            IGetApplicationQuery getApplicationQuery)
+            IReceiveErrorCommand receiveErrorCommand)
         {
             _authorisationManager = authorisationManager;
             _getApplicationErrorsQuery = getApplicationErrorsQuery;
             _configuration = configuration;
-            _getApplicationQuery = getApplicationQuery;
+            _receiveErrorCommand = receiveErrorCommand;
         }
 
-        public ReceiveIssueErrorsAgainResponse Invoke(ReceiveIssueErrorsAgainRequest request)
+        public ReprocessIssueErrorsResponse Invoke(ReprocessIssueErrorsRequest request)
         {
             Trace("Starting...");
             TraceObject(request);
@@ -49,14 +47,17 @@ namespace Errordite.Core.Issues.Commands
 
             if(issue != null)
             {
-                _authorisationManager.Authorise(issue, request.CurrentUser);
-                
-                var application = _getApplicationQuery.Invoke(new GetApplicationRequest
+                try
                 {
-                    CurrentUser = request.CurrentUser,
-                    Id = issue.ApplicationId,
-                    OrganisationId = issue.OrganisationId,
-                }).Application;
+                    _authorisationManager.Authorise(issue, request.CurrentUser);
+                }
+                catch (ErrorditeAuthorisationException)
+                {
+                    return new ReprocessIssueErrorsResponse
+                    {
+                        Status = ReprocessIssueErrorsStatus.NotAuthorised
+                    };
+                }
 
                 var errors = _getApplicationErrorsQuery.Invoke(new GetApplicationErrorsRequest
                 {
@@ -66,62 +67,67 @@ namespace Errordite.Core.Issues.Commands
                     Paging = new PageRequestWithSort(1, _configuration.MaxPageSize)
                 }).Errors;
 
-                var requests = errors.Items.Select(error => new ReceiveErrorRequest
+                var responses = errors.Items.Select(error => _receiveErrorCommand.Invoke(new ReceiveErrorRequest
                 {
-                    ApplicationId = issue.ApplicationId,
-                    Error = error,
-                    ExistingIssueId = issue.Id,
-                    OrganisationId = issue.OrganisationId,
-                    Token = application.Token,
-                });
+                    ApplicationId = issue.ApplicationId, 
+                    Error = error, 
+                    ExistingIssueId = issue.Id, 
+                    OrganisationId = issue.OrganisationId
+                })).ToList();
 
-                //send the errors to the reception service, wait for the response and extract the responses from the response
-                var processErrorsTask = new HttpClient().PostAsJsonAsync("{0}/api/errors".FormatWith(_configuration.ReceptionHttpEndpoint), requests);
-                processErrorsTask.Wait();
-
-                var read = processErrorsTask.Result.Content.ReadAsStringAsync();
-                read.Wait();
-
-                var responses = JsonConvert.DeserializeObject<IEnumerable<ReceiveErrorResponse>>(read.Result);
-
-                var response = new ReceiveIssueErrorsAgainResponse
+                var response = new ReprocessIssueErrorsResponse
                 {
-                    AttachedIssueIds = responses.GroupBy(r => r.IssueId).ToDictionary(g => g.Key, g => g.Count())
+                    AttachedIssueIds = responses.GroupBy(r => r.IssueId).ToDictionary(g => g.Key, g => g.Count()),
+                    Status = ReprocessIssueErrorsStatus.Ok
                 };
-                
+
                 issue.History.Add(new IssueHistory
                 {
                     DateAddedUtc = DateTime.UtcNow,
                     Message = CoreResources.HistoryIssueErrorsReceivedAgain.FormatWith(
-                        request.CurrentUser.FullName, 
+                        request.CurrentUser.FullName,
                         request.CurrentUser.Email,
-                        response.GetMessage(request.BaseIssueUrl, issue.Id)),
+                        response.GetMessage(issue.Id)),
                     UserId = request.CurrentUser.Id,
                 });
 
-                issue.ErrorCount = 0;
-                issue.LimitStatus = ErrorLimitStatus.Ok;
+                if (response.AttachedIssueIds.Any(i => i.Key == issue.Id))
+                {
+                    var issueCount = response.AttachedIssueIds.First(i => i.Key == issue.Id);
+                    issue.LimitStatus = issueCount.Value >= _configuration.IssueErrorLimit
+                        ? ErrorLimitStatus.Exceeded
+                        : ErrorLimitStatus.Ok;
+                    issue.ErrorCount = issueCount.Value;
+                }
+                else
+                {
+                    issue.LimitStatus = ErrorLimitStatus.Ok;
+                    issue.ErrorCount = 0;
+                }
 
                 Session.SynchroniseIndexes<Issues_Search, Errors_Search>();
-
                 return response;
             }
 
-            return new ReceiveIssueErrorsAgainResponse();
+            return new ReprocessIssueErrorsResponse
+            {
+                Status = ReprocessIssueErrorsStatus.IssueNotFound
+            };
         }
     }
 
-    public interface IReceiveIssueErrorsAgainCommand : ICommand<ReceiveIssueErrorsAgainRequest, ReceiveIssueErrorsAgainResponse>
+    public interface IReprocessIssueErrorsCommand : ICommand<ReprocessIssueErrorsRequest, ReprocessIssueErrorsResponse>
     { }
 
-    public class ReceiveIssueErrorsAgainResponse
+    public class ReprocessIssueErrorsResponse
     {
+        public ReprocessIssueErrorsStatus Status { get; set; }
         public IDictionary<string, int> AttachedIssueIds { get; set; }
 
-        public MvcHtmlString GetMessage(string baseIssueUrl, string issueId)
+        public MvcHtmlString GetMessage(string issueId)
         {
-            if (AttachedIssueIds == null)
-                return new MvcHtmlString("Failed to locate issue");
+            if (Status == ReprocessIssueErrorsStatus.IssueNotFound)
+                return new MvcHtmlString("Failed to load the requested issue for reprocessing");
 
             string message;
             int attachedToThis;
@@ -137,30 +143,36 @@ namespace Errordite.Core.Issues.Commands
                     message = "{0} error{1} remain attached to this issue. The rest became attached to issue{2} {3}"
                         .FormatWith(attachedToThis, attachedToThis == 1 ? "" : "s", otherAttachedIssueIds.Count() == 1 ? "" : "s",
                                     otherAttachedIssueIds
-                                        .StringConcat(k => " {0}:{1}".FormatWith(GetIssueLink(baseIssueUrl, k), AttachedIssueIds[k])));
+                                        .StringConcat(k => " {0}:{1}".FormatWith(GetIssueLink(k), AttachedIssueIds[k])));
                 }
             }
             else if (AttachedIssueIds.Count == 1)
             {
-                message = "All errors became attached to issue {0}".FormatWith(GetIssueLink(baseIssueUrl, AttachedIssueIds.First().Key));
+                message = "All errors became attached to issue {0}".FormatWith(GetIssueLink(AttachedIssueIds.First().Key));
             }
             else
             {
-                message = "All errors became attached to other issues: {0}".FormatWith(AttachedIssueIds.StringConcat(k => " {0}:{1}".FormatWith(GetIssueLink(baseIssueUrl, k.Key), k.Value)));
+                message = "All errors became attached to other issues: {0}".FormatWith(AttachedIssueIds.StringConcat(k => " {0}:{1}".FormatWith(GetIssueLink(k.Key), k.Value)));
             }
 
             return new MvcHtmlString("Errors re-processed successfully. " + message);
         }
 
-        private string GetIssueLink(string baseIssueUrl, string issueId)
+        private string GetIssueLink(string issueId)
         {
-            return "<a href='{0}'>{1}</a>".FormatWith(baseIssueUrl.FormatWith(issueId), IdHelper.GetFriendlyId(issueId));
+            return "<a href='/issue/{0}'>{0}</a>".FormatWith(IdHelper.GetFriendlyId(issueId));
         }
     }
 
-    public class ReceiveIssueErrorsAgainRequest : OrganisationRequestBase
+    public enum ReprocessIssueErrorsStatus
+    {
+        Ok,
+        IssueNotFound,
+        NotAuthorised
+    }
+
+    public class ReprocessIssueErrorsRequest : OrganisationRequestBase
     {
         public string IssueId { get; set; }
-        public string BaseIssueUrl { get; set; }
     }
 }

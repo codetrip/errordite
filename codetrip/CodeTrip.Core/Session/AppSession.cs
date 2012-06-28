@@ -95,7 +95,7 @@ namespace CodeTrip.Core.Session
                     return _session;
 
                 _session = _documentStore.OpenSession();
-                _session.Advanced.MaxNumberOfRequestsPerSession = RequestLimit == 0 ? 50 : RequestLimit;
+                _session.Advanced.MaxNumberOfRequestsPerSession = RequestLimit == 0 ? 250 : RequestLimit;
                 return _session;
             }
         }

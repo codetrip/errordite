@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using CodeTrip.Core.Interfaces;
 using CodeTrip.Core.Session;
 using Errordite.Core.Configuration;
@@ -22,14 +24,21 @@ namespace Errordite.Core.Errors.Commands
             Trace("Starting...");
             TraceObject(request);
 
-            var errors = Session.Raven.Query<ErrorDocument, Errors_Search>()
-                .Where(e => e.IssueId == request.IssueId)
-                .OrderByDescending(e => e.TimestampUtc)
-                .Skip(_configuration.IssueErrorLimit)
-                .As<Error>()
-                .ToList();
+            IEnumerable<Error> errors;
 
-            Trace("Identified {0} errors to make unlogged", errors.Count);
+            //aggresively cache this query, when reprocessing errors this gets called for eacah error we reprocess, its unnecessary 
+            //as the extra errors will be deleted next time round anyway, so aggresively cache for 3 minutes
+            using (Session.Raven.Advanced.DocumentStore.AggressivelyCacheFor(TimeSpan.FromMinutes(3)))
+            {
+                errors = Session.Raven.Query<ErrorDocument, Errors_Search>()
+                     .Where(e => e.IssueId == request.IssueId)
+                     .OrderByDescending(e => e.TimestampUtc)
+                     .Skip(_configuration.IssueErrorLimit)
+                     .As<Error>()
+                     .ToList();
+            }
+
+            Trace("Identified {0} errors to make unlogged", errors.Count());
 
             foreach (var error in errors)
             {

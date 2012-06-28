@@ -149,8 +149,9 @@ namespace Errordite.Core.Reception.Commands
 
             SetLimitStatus(application, issue);
 
-            //always store the last error
-            StoreError(error);
+            //always store the last error, but only if its a new error
+            if (error.Id.IsNullOrEmpty())
+                StoreError(error);
 
             //if LimitStatus == ErrorLimitStatus.Exceeded make a any errors over the limit UnloggedErrors
             if (issue.LimitStatus == ErrorLimitStatus.Exceeded)
