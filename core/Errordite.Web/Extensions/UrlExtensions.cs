@@ -193,14 +193,14 @@ namespace Errordite.Web.Extensions
             return helper.Action("add", "users", new { Area = string.Empty });
         }
 
-        public static string EditUser(this UrlHelper helper)
+        public static string YourDetails(this UrlHelper helper)
         {
-            return helper.Action("edit", "users", new { Area = string.Empty });
+            return helper.Action("yourdetails", "users", new { Area = string.Empty });
         }
 
         public static string EditUser(this UrlHelper helper, string userId)
         {
-            return helper.Action("edituser", "users", new { userId, Area = string.Empty });
+            return helper.Action("edit", "users", new { userId, Area = string.Empty });
         }
 
         #endregion

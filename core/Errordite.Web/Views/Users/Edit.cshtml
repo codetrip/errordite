@@ -53,24 +53,27 @@
                 <li>
                     @Html.LabelFor(m => m.TimezoneId, "Timezone")
                     @Html.DropDownListFor(m => m.TimezoneId, 
-                        new[]
-                        {
-                            new SelectListItem
-                            {
-                                Selected = Model.TimezoneId == null,
-                                Text = "Organisation Default",
-                                Value = "",
-                            }, 
-                        }.Union(
-                        TimeZoneInfo.GetSystemTimeZones().Select(t => new SelectListItem
-                        {
-                            Selected = Model.TimezoneId == t.Id, Value = t.Id, Text = t.DisplayName
-                        })), new {@style = "width:330px;"})
+                            new[]
+                                {
+                                    new SelectListItem
+                                        {
+                                            Selected = Model.TimezoneId == null,
+                                            Text = "Organisation Default",
+                                            Value = "",
+                                        }, 
+                                }.Union(
+                                    TimeZoneInfo.GetSystemTimeZones().Select(t => new SelectListItem
+                                                                                      {
+                                                                                          Selected = Model.TimezoneId == t.Id, Value = t.Id, Text = t.DisplayName
+                                                                                      })), new {@style = "width:330px;"})
                 </li>
-                <li class="cbox">
-                    @Html.CheckBoxFor(m => m.IsAdministrator, (Model.CurrentUser && !Model.IsAdministrator ? new { disabled = "disabled" } : null)) @Html.LabelFor(m => m.IsAdministrator, "User is administrator?")
-                    <i rel="tooltip" title="Only administrators can manage your organisation (managing users, groups and applications)." class="icon-info-sign"></i>
-                </li>
+                @if (Model.IsAdministrator && !Model.CurrentUser)
+                {
+                    <li class="cbox">
+                        @Html.CheckBoxFor(m => m.IsAdministrator) @Html.LabelFor(m => m.IsAdministrator, "User is administrator?")
+                        <i rel="tooltip" title="Only administrators can manage your organisation (managing users, groups and applications)." class="icon-info-sign"></i>
+                    </li>
+                }
             </ul>
         </div>
     </div>

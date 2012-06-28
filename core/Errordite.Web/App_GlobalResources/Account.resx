@@ -132,9 +132,6 @@
   <data name="AddUserStatus_EmailExists" xml:space="preserve">
     <value>The email address supplied already exists in the system.</value>
   </data>
-  <data name="AddUserStatus_NoGroupsSelected" xml:space="preserve">
-    <value>Please select at least one group for this user.</value>
-  </data>
   <data name="AddUserStatus_PlanThresholdReached" xml:space="preserve">
     <value>You have reached the maximum number of users allowed under your current billing plan, you can upgrade using the page below.</value>
   </data>
