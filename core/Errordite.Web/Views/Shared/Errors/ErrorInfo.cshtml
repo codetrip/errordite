@@ -6,14 +6,26 @@
     <dl class="dl-horizontal">
         @if (!Model.InnerException)
         {
-            <dt>Method</dt>
-            <dd data-error-attr="MethodName">@(Model.Info.MethodName.IsNullOrEmpty() ? "-" : Model.Info.MethodName)</dd>
-            <dt>Module</dt>
-            <dd data-error-attr="Module">@(Model.Info.Module.IsNullOrEmpty() ? "-" : Model.Info.Module)</dd>
-            <dt>Url</dt>
-            <dd data-error-attr="Url">@(Model.Url.IsNullOrEmpty() ? "-" : Model.Url)</dd>
-            <dt>User Agent</dt>
-            <dd data-error-attr="UserAgent">@(Model.UserAgent.IsNullOrEmpty() ? "-" : Model.UserAgent)</dd>
+            if(Model.Info.MethodName.IsNotNullOrEmpty())
+            {
+                <dt>Method</dt>
+                <dd data-error-attr="MethodName">@Model.Info.MethodName</dd>
+            }
+            if (Model.Info.Module.IsNotNullOrEmpty())
+            {
+                <dt>Module</dt>
+                <dd data-error-attr="Module">@Model.Info.Module</dd>
+            }
+            if (Model.Url.IsNotNullOrEmpty())
+            {
+                <dt>Url</dt>
+                <dd data-error-attr="Url">@Model.Url</dd>
+            }
+            if (Model.UserAgent.IsNotNullOrEmpty())
+            {
+                <dt>User Agent</dt>
+                <dd data-error-attr="UserAgent">@Model.UserAgent</dd>
+            }
         }
         
         @if (Model.Info.ExtraData != null)

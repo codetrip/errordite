@@ -19,8 +19,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Errordite.Notifications.Ser
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Errordite.Reception.Service", "Errordite.Reception.Service\Errordite.Reception.Service.csproj", "{7FB81ADE-C385-4B4B-AA09-2CD2A79CAECC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Errordite.Events.Service", "Errordite.Events.Service\Errordite.Events.Service.csproj", "{C1C856B3-DE5E-498D-817A-87D152F80909}"
-EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Errordite.Web.vsmdi
@@ -66,10 +64,6 @@ Global
 		{7FB81ADE-C385-4B4B-AA09-2CD2A79CAECC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7FB81ADE-C385-4B4B-AA09-2CD2A79CAECC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7FB81ADE-C385-4B4B-AA09-2CD2A79CAECC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C1C856B3-DE5E-498D-817A-87D152F80909}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C1C856B3-DE5E-498D-817A-87D152F80909}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C1C856B3-DE5E-498D-817A-87D152F80909}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C1C856B3-DE5E-498D-817A-87D152F80909}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
