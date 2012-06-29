@@ -9,7 +9,6 @@ using Errordite.Core.Issues.Queries;
 using Errordite.Core.Matching;
 using Errordite.Core.Organisations;
 using Errordite.Core.Session;
-using Errordite.Core.Extensions;
 
 namespace Errordite.Core.Issues.Commands
 {
@@ -48,7 +47,7 @@ namespace Errordite.Core.Issues.Commands
                         UserId = request.CurrentUser.Id
                     }
                 },
-                MatchPriority = request.Priority,
+                MatchPriority = MatchPriority.Low,
             };
 
             var issuesWithSameRules = _getIssueWithMatchingRulesQuery.Invoke(new GetIssueWithMatchingRulesRequest

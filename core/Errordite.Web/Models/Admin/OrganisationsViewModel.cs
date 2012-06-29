@@ -1,8 +1,7 @@
-﻿
-using CodeTrip.Core.Paging;
+﻿using CodeTrip.Core.Paging;
 using Errordite.Web.Models.Users;
 
-namespace Errordite.Web.Models.Organisation
+namespace Errordite.Web.Models.Admin
 {
     public class OrganisationsViewModel
     {
@@ -11,7 +10,5 @@ namespace Errordite.Web.Models.Organisation
     }
 
     public class OrganisationUsersViewModel : UsersViewModel
-    {
-        public string OrganisationId { get; set; }
-    }
+    { }
 }

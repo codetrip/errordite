@@ -385,8 +385,8 @@ pre, code { font-family: "Courier New", Courier;background-color: #ffffcc;}
 .rule-controls .btn-mini {padding: 1px;margin-right: 2px; margin-left: 2px;}
 .rule-controls { position: absolute; background-color: white; padding: 3px; display: inline;padding-left: 6px;}
 .error-stack .rule-controls { background-color: #FFC;}
-#errors .st-type { display: inline-block;font-weight: bold;}
-#errors .st-message { display: inline-block;font-weight: bold;}
+#errors .st-type { display: inline-block;font-weight: bold;vertical-align: top;}
+#errors .st-message { display: inline-block;font-weight: bold;vertical-align: top;}
 
 /*-----------------------------------------------------------------------------------*/
 /*	13.	Issue Page

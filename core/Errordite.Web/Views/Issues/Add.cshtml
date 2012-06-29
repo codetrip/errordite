@@ -44,11 +44,11 @@
                         @Html.DropDownListFor(m => m.UserId, Model.Users)
                         <i rel="tooltip" title="Assign a user to this issue." class="icon-info-sign"></i>
                     </li>
-                    <li class="left">
+                    @*<li class="left">
                         @Html.LabelFor(m => m.Priority, "Match Priority")
                         @Html.DropDownListFor(m => m.Priority, Model.Priorities)
                         <i rel="tooltip" title="Setting the match priority for an issue controls which issue an error is assigned to when there are multiple matches. An issue with a higher match priority will have the error assigned to it." class="icon-info-sign"></i>
-                    </li>
+                    </li>*@
                 </ul>
             </div>
         </div>
