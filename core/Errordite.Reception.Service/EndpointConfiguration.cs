@@ -25,8 +25,9 @@ namespace Errordite.Reception.Service
             var httpConfig = ObjectFactory.GetObject<HttpServerConfiguration>();
             var config = new HttpSelfHostConfiguration(httpConfig.Endpoint);
 
-            config.MaxReceivedMessageSize = int.MaxValue;
-            config.MaxBufferSize = int.MaxValue;
+            config.MaxReceivedMessageSize = 655360;
+            config.MaxBufferSize = 655360;
+            //this has the effect of always defaulting to Json serialization as there are no Xml formatters registered
             config.Formatters.XmlFormatter.SupportedMediaTypes.Clear();
             config.Routes.MapHttpRoute(
                 name: "issueapi",
