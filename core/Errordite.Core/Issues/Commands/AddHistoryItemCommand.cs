@@ -37,7 +37,7 @@ namespace Errordite.Core.Issues.Commands
                 UserId = request.CurrentUser.Id,
                 DateAddedUtc = DateTime.UtcNow,
                 Message = request.Message,
-                Changeset = request.Changeset
+                Reference = request.Reference
             });
 
             return new AddHistoryItemResponse
@@ -59,7 +59,7 @@ namespace Errordite.Core.Issues.Commands
     {
         public string IssueId { get; set; }
         public string Message { get; set; }
-        public string Changeset { get; set; }
+        public string Reference { get; set; }
     }
 
     public enum AddHistoryItemStatus

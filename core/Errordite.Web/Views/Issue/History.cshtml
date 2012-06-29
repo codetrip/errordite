@@ -4,7 +4,6 @@
 @model IssueDetailsViewModel
 
 <div class="base fullwidth" id="history">
-    <h2>Issue History</h2>
     <div class="base-content">
         <div class="history-items">
             @{
@@ -12,12 +11,12 @@
             }
             @foreach (var item in Model.History)
             {
-                <div class="alert alert-@(count % 2 == 0 ? "info" : "success")">
+                <div class="alert">
                     <h4 class="alert-heading">@(item.SystemMessage ? "System Message" : item.Username) - @item.DateAddedUtc.ToLocalTimeFormatted()</h4>
                     @Html.Raw(item.Message)
-                    @if (item.Changeset.IsNotNullOrEmpty())
+                    @if (item.Reference.IsNotNullOrEmpty())
                     {
-                        <br /><i>Changeset info: @item.Changeset</i>
+                        <br /><i>Reference set: @item.Reference</i>
                     }
                 </div>
                 count++;

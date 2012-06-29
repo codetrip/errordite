@@ -76,6 +76,8 @@ namespace Errordite.Core.Domain.Error
         public bool TestIssue { get; set; }
         [ProtoMember(16)]
         public bool AlwaysNotify { get; set; }
+        [ProtoMember(17)]
+        public string Reference { get; set; }
 
         [JsonIgnore]
         public string FriendlyId { get { return Id == null ? string.Empty : Id.Split('/')[1]; } }

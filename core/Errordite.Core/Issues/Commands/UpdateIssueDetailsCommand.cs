@@ -88,6 +88,7 @@ namespace Errordite.Core.Issues.Commands
             issue.Name = request.Name;
             issue.AlwaysNotify = request.AlwaysNotify;
             //issue.MatchPriority = request.Priority;
+            issue.Reference = request.Reference;
 
             string message = Resources.CoreResources.HistoryIssueUpdated.FormatWith(request.CurrentUser.FullName,
                 request.CurrentUser.Email,
@@ -100,7 +101,7 @@ namespace Errordite.Core.Issues.Commands
 
             issue.History.Add(new IssueHistory
             {
-                Changeset = request.Changeset,
+                Reference = request.Reference,
                 DateAddedUtc = DateTime.UtcNow,
                 Message = message,
                 UserId = request.CurrentUser.Id,
@@ -127,12 +128,12 @@ namespace Errordite.Core.Issues.Commands
     {
         public string IssueId { get; set; }
         public string Name { get; set; }
-        public string Changeset { get; set; }
         public string Comment { get; set; }
         public string AssignedUserId { get; set; }
         public bool AlwaysNotify { get; set; }
         public IssueStatus Status { get; set; }
         public MatchPriority Priority { get; set; }
+        public string Reference { get; set; }
     }
 
     public enum UpdateIssueDetailsStatus

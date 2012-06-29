@@ -28,9 +28,13 @@
                     @Html.ValidationMessageFor(m => m.Status)   
                 </li>
                 <li class="right">
-                    @Html.LabelFor(m => m.Changeset, "Changeset Info (Url, Number etc)")
-                    @Html.TextBoxFor(m => m.Changeset)
-                    <i rel="tooltip" title="Optionally specify a changeset, this will be added to the issues history" class="icon-info-sign"></i>
+                    <div class="reference">
+                    @Html.LabelFor(m => m.Reference, "External Reference (bug tracker etc)")
+                    <span id="reference-link"></span>
+                    </div>
+                    @Html.TextBoxFor(m => m.Reference)
+                    <i rel="tooltip" title="Add a reference to your bug tracking software or source control system, if appropriate" class="icon-info-sign"></i>
+                    
                 </li>
                 <li class="left">
                     @Html.LabelFor(m => m.UserId, "Assigned To")
@@ -39,8 +43,9 @@
                     @Html.ValidationMessageFor(m => m.UserId)
                 </li>
                 <li class="right">
-                    @Html.LabelFor(m => m.Comment, "Comment")
-                    @Html.TextAreaFor(m => m.Comment)
+                    <span>@Model.Comment</span>
+                    @Html.LabelFor(m => m.Comment, "Update Comment")
+                    <textarea name="Comment">@Model.Comment</textarea>
                     <i rel="tooltip" title="Optionally add a comment, this will be added to the issues history." class="icon-info-sign"></i>
                 </li>
                 @*<li class="left">
