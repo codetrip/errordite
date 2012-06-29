@@ -16,6 +16,6 @@ namespace Errordite.Core.Domain.Error
         [ProtoMember(4)]
         public bool SystemMessage { get; set; }
         [ProtoMember(5)]
-        public string Changeset { get; set; }
+        public string Reference { get; set; }
     }
 }

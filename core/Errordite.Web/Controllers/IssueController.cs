@@ -85,7 +85,7 @@ namespace Errordite.Web.Controllers
                     viewModel.Details.UserId = postedModel.UserId;
                     viewModel.Details.Name = postedModel.Name;
                     viewModel.Details.Priority = postedModel.Priority;
-                    viewModel.Details.Changeset = postedModel.Changeset;
+                    viewModel.Details.Reference = postedModel.Reference;
                     viewModel.Details.Comment = postedModel.Comment;
                     viewModel.Details.AlwaysNotify = postedModel.AlwaysNotify;
                 }
@@ -227,6 +227,7 @@ namespace Errordite.Web.Controllers
                     ErrorLimitStatus = Issue.ResourceManager.GetString("ErrorLimitStatus_{0}".FormatWith(issue.LimitStatus)) ,
                     //ProdProfRecords = issue.ProdProfRecords,
                     AlwaysNotify = issue.AlwaysNotify,
+                    Reference = issue.Reference,
                     History = issue.History.OrderByDescending(h => h.DateAddedUtc).Select(h => 
                     {
                         var user = users.Items.FirstOrDefault(u => u.Id == h.UserId);
@@ -237,7 +238,7 @@ namespace Errordite.Web.Controllers
                             UserEmail = user != null ? user.Email : string.Empty,
                             Username = user != null ? user.FullName : string.Empty,
                             SystemMessage = h.SystemMessage,
-                            Changeset = h.Changeset
+                            Reference = h.Reference
                         };
                     }).ToList(),
                     TestIssue = issue.TestIssue,
@@ -358,7 +359,7 @@ namespace Errordite.Web.Controllers
                 Name = postModel.Name,
                 CurrentUser = Core.AppContext.CurrentUser,
                 AlwaysNotify = postModel.AlwaysNotify,
-                Changeset = postModel.Changeset,
+                Reference = postModel.Reference,
                 Comment = postModel.Comment,
                 AssignedUserId = postModel.UserId
             });
