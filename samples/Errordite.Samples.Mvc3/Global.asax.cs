@@ -12,7 +12,6 @@ namespace Errordite.Samples.Mvc3
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
-            filters.Add(new ErrorditeExceptionFilter());
             filters.Add(new HandleErrorAttribute());
         }
 

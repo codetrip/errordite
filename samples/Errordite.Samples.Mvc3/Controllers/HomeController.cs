@@ -21,6 +21,16 @@ namespace Errordite.Samples.Mvc3.Controllers
             return View();
         }
 
+        public ActionResult NeedsParam(int param)
+        {
+            return Content(param.ToString());
+        }
+
+        public ActionResult ErrorInView()
+        {
+            return View();
+        }
+
         public ActionResult Error(int? index, string errorMessage)
         {
             switch (index)
