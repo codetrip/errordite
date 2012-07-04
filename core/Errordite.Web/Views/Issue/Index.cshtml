@@ -48,12 +48,12 @@
         <li @(Model.Tab == IssueTab.Errors ? " class=active" : " class=inactive") >
             <a href="@Url.Issue(Model.Details.IssueId, IssueTab.Errors)" class="tablink" data-val="errors"><span>Errors</span></a>
         </li>
-        @*@if (Model.Details.ProdProfRecords.Any() && ViewData.GetAppContext().CurrentUser.Role == UserRole.SuperUser)
+        @if (Model.Details.ProdProfRecords.Any() && ViewData.GetAppContext().CurrentUser.Role == UserRole.SuperUser)
         {
             <li @(Model.Tab == IssueTab.Debug ? "class=active" : " class=inactive")>
                 <a href="@Url.Issue(Model.Details.IssueId, IssueTab.Debug)" class="tablink" data-val="debug"><span>Debug</span></a>
             </li>
-        }*@
+        }
     </ul>
 }
            
@@ -83,7 +83,7 @@
             @Html.Partial("Errors/ErrorCriteria", Model.Errors)
         </div>
     </div>
-    @*@if (Model.Details.ProdProfRecords.Any() && ViewData.GetAppContext().CurrentUser.Role == UserRole.SuperUser)
+    @if (Model.Details.ProdProfRecords.Any() && ViewData.GetAppContext().CurrentUser.Role == UserRole.SuperUser)
     {
         <div id="debug" class="tab @(Model.Tab == IssueTab.Debug ? "" : "hidden")">
             <ul>
@@ -93,7 +93,7 @@
                 }
             </ul>
         </div>
-    }*@
+    }
 </div>
 
     

@@ -36,7 +36,7 @@ namespace Errordite.Core.Issues
         {
             lock(_syncLock)
             {
-                var issues = GetCachedIssues(Application.GetId(applicationId));
+                var issues = GetCachedIssues(applicationId);
                 return issues.OrderByDescending(i => i.MatchPriority).ThenByDescending(i => i.LastErrorUtc);
             }
         }
@@ -47,8 +47,18 @@ namespace Errordite.Core.Issues
             {
                 var issues = GetCachedIssues(issue.ApplicationId);
 
-                if (issues.FindIndex(m => m.Id == issue.Id) == -1)
+                var index = issues.FindIndex(m => m.Id == issue.Id);
+
+                if (index == -1)
+                {
+                    Trace("Adding new issue to cache with Id:-{0}", issue.Id);
                     issues.Add(issue);
+                }
+                else
+                {
+                    Error("Updating issue in cache (from add method!) at index {0} with Id:={1}", index, issue.Id);
+                    issues[index] = issue;
+                } 
             }
         }
 
@@ -61,7 +71,15 @@ namespace Errordite.Core.Issues
                 var index = issues.FindIndex(m => m.Id == issue.Id);
 
                 if (index >= 0)
+                {
+                    Trace("Updating issue in cache at index {0} with Id:={1}", index, issue.Id);
                     issues[index] = issue;
+                }
+                else
+                {
+                    Error("Adding new issue to cache (from update method!) with Id:-{0}", issue.Id);
+                    issues.Add(issue);
+                }
             }
         }
 
@@ -69,17 +87,25 @@ namespace Errordite.Core.Issues
         {
             lock (_syncLock)
             {
-                var issues = GetCachedIssues(Application.GetId(applicationId));
+                var issues = GetCachedIssues(applicationId);
 
                 var index = issues.FindIndex(m => m.Id == Issue.GetId(issueId));
 
                 if (index >= 0)
+                {
                     issues.RemoveAt(index);
+                }
+                else
+                {
+                    Error("Failed to locate issue with Id {0} in the issue cache for applicationId:={1}", issueId, applicationId);
+                }
             }
         }
 
         private List<IssueBase> GetCachedIssues(string applicationId)
         {
+            applicationId = Application.GetId(applicationId);
+
             var issues = _cache.Get(applicationId);
 
             if (issues == null)

@@ -26,7 +26,6 @@
                 The client is an open source project hosted on CodePlex <a href="@Url.ClientCodeplex()">here</a>, feel free to download the source code.  The guide below provides information on how to use the client.           
             </p>
             
-            
             <div class="download">
                 <a href="@Url.ClientDownload()" class="btn-primary btn-large btn-download">Download Here</a>
             </div>
@@ -35,7 +34,7 @@
             <p>
                 The latest recommended release can be downloaded from <a href="@Url.ClientDownload()">here</a>, however we have also created a NuGet package for the client which is the simplest 
                 way to get the latest version of the client. Type one of the following commands in the NuGet package manager to install the appropriate version of the client depending upon your application type.
-               
+                The NuGet packages will automatically configure your application to use Errordite, so you can safely ignore the application specific set up steps below if you install the Errordite Client this way.
             </p> 
             <ul>
                 <li>.NET applications (appropriate framework version will be installed, .NET 2.0, 3.5 & 4 are supported)
@@ -156,11 +155,12 @@
                 </li>
                 <li>
                     <strong>ASP.NET MVC 3.0</strong><br />
-                    If you are running an ASP.NET MVC 3 application the client library contains an exception filter (<strong>Errordite.Client.Mvc3.ErrorditeExceptionFilter</strong>) 
-                    which you should add to your GlobalFilters.Filters collection on application start up. With MVC 3 you can specify multiple exception filters, you must add the 
-                    Errordite filter as the first in the list to ensure it is invoked when an error occurs.
+                    If you are running an ASP.NET MVC 3 application the client library contains an HttpModule which configures your application error handling to post errors to Errordite.
+                    Simply add the following line to your HttpModules section of your web.config file. 
                     <p>
-                        <div class="img"><img src="@Url.Content("~/images/UI/mvc-global-filters.png")" alt="MVC 3 Handle Error Filter" /></div>
+                        <pre class="xml">
+<span class="tag">&lt;add </span><span class="att">name=</span><span class="atv">"ErrorditeModule"</span><span class="att"> type=</span><span class="atv">"Errordite.Client.Mvc3.ErrorditeModule, Errordite.Client.Mvc3"</span><span class="tag"> /&gt;</span>
+                        </pre>
                     </p>
                 </li>
                 <li>

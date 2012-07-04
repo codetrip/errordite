@@ -70,7 +70,7 @@ namespace Errordite.Core.Reception.Commands
             //if we are re-ingesting an issues errors and we cant find another match, attach the error to the original issue
             if (matchingIssue == null && existingIssue != null)
             {
-                Trace("Attach to existing home issue: {0}", existingIssue.Id);
+                Trace("No issues matched, attaching to the existing issue with Id:={0}", existingIssue.Id);
                 matchingIssue = existingIssue;
             }
 
@@ -84,11 +84,6 @@ namespace Errordite.Core.Reception.Commands
             {
                 IssueId = issue.Id
             };
-        }
-
-        private void StoreError(Error error)
-        {
-            Store(error);
         }
 
         private Application GetApplication(ReceiveErrorRequest request)
@@ -138,20 +133,35 @@ namespace Errordite.Core.Reception.Commands
                     issue.Status = IssueStatus.Acknowledged;
             }
 
-            //should the error be classified, yes if the issue has been acknowledged
-            if (issue.Status != IssueStatus.Unacknowledged)
-                error.Classified = true;
-
-            error.IssueId = issue.Id;
-
             issue.ErrorCount++;
             issue.LastErrorUtc = DateTime.UtcNow;
 
             SetLimitStatus(application, issue);
 
-            //always store the last error, but only if its a new error
+            //should the error be classified, yes if the issue has been acknowledged
+            if (issue.Status != IssueStatus.Unacknowledged)
+                error.Classified = true;
+
+            Trace("Assigning issue Id to error with Id:={0}, Existing Error IssueId:={1}, New IssueId:={2}", error.Id, error.IssueId, issue.Id);
+            error.IssueId = issue.Id;
+
+            //only store the error is it is a new error, not the result of reprocessing
             if (error.Id.IsNullOrEmpty())
-                StoreError(error);
+            {
+                Trace("Its a new error, so Store it");
+                Store(error);
+            }
+
+            if (issue.RulesMatch(error))
+            {
+                Trace("Error definately matches issue we are about to assign it to");
+            }
+            else
+            {
+                throw new InvalidOperationException(
+                    "ERROR DOES NOT MATCH RULES Error with Id:={0} does not match issue {1} which it has been assigned to, applicationID:={2}"
+                        .FormatWith(error.Id, issue.Id, issue.ApplicationId));
+            }
 
             //if LimitStatus == ErrorLimitStatus.Exceeded make a any errors over the limit UnloggedErrors
             if (issue.LimitStatus == ErrorLimitStatus.Exceeded)
@@ -219,10 +229,21 @@ namespace Errordite.Core.Reception.Commands
             error.IssueId = issue.Id;
             MaybeSendNotification(issue, application, NotificationType.NotifyOnNewClassCreated, error);
 
-            //tell the issue manager we have a new issue
+            //tell the issue cache we have a new issue
             _receptionServiceIssueCache.Add(issue);
 
-            StoreError(error);
+            Store(error);
+
+            if (issue.RulesMatch(error))
+            {
+                Trace("Error definately matches issue we are about to assign it to");
+            }
+            else
+            {
+                throw new InvalidOperationException(
+                    "ERROR DOES NOT MATCH RULES Error with Id:={0} does not match issue {1} which it has been assigned to, applicationID:={2}"
+                        .FormatWith(error.Id, issue.Id, issue.ApplicationId));
+            }
 
             return issue;
         }

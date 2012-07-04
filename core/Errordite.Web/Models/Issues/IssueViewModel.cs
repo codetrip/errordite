@@ -26,7 +26,7 @@ namespace Errordite.Web.Models.Issues
         public IEnumerable<SelectListItem> Statuses { get; set; }
         public IEnumerable<SelectListItem> Priorities { get; set; }
         public IList<IssueHistoryItemViewModel> History { get; set; }
-        //public IList<ProdProfRecord> ProdProfRecords { get; set; }
+        public IList<ProdProfRecord> ProdProfRecords { get; set; }
         public bool TestIssue { get; set; }
     }
 

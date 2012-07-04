@@ -26,7 +26,7 @@ namespace Errordite.Core.Errors.Commands
 
             IEnumerable<Error> errors;
 
-            //aggresively cache this query, when reprocessing errors this gets called for eacah error we reprocess, its unnecessary 
+            //aggresively cache this query, when reprocessing errors this gets called for each error we reprocess, its unnecessary 
             //as the extra errors will be deleted next time round anyway, so aggresively cache for 3 minutes
             using (Session.Raven.Advanced.DocumentStore.AggressivelyCacheFor(TimeSpan.FromMinutes(3)))
             {
