@@ -225,7 +225,7 @@ namespace Errordite.Web.Controllers
                     UserId = issue.UserId,
                     ApplicationName = applications.Items.First(a => a.Id == issue.ApplicationId).Name,
                     ErrorLimitStatus = Issue.ResourceManager.GetString("ErrorLimitStatus_{0}".FormatWith(issue.LimitStatus)) ,
-                    //ProdProfRecords = issue.ProdProfRecords,
+                    ProdProfRecords = issue.ProdProfRecords,
                     AlwaysNotify = issue.AlwaysNotify,
                     Reference = issue.Reference,
                     History = issue.History.OrderByDescending(h => h.DateAddedUtc).Select(h => 

@@ -6,6 +6,7 @@ using Errordite.Core.Authorisation;
 using Errordite.Core.Matching;
 using System.Linq;
 using Newtonsoft.Json;
+using ProductionProfiler.Core.Profiling.Entities;
 using ProtoBuf;
 using Errordite.Core.Extensions;
 
@@ -50,7 +51,7 @@ namespace Errordite.Core.Domain.Error
     }
 
     [ProtoContract]
-    public class Issue : IssueBase, IOrganisationEntity//, IWantToKnowAboutProdProf
+    public class Issue : IssueBase, IOrganisationEntity, IWantToKnowAboutProdProf
     {
         [ProtoMember(6)]
         public ErrorLimitStatus LimitStatus { get; set; }
@@ -70,13 +71,13 @@ namespace Errordite.Core.Domain.Error
         public DateTime LastModifiedUtc { get; set; }
         [ProtoMember(14)]
         public string OrganisationId { get; set; }
-        //[ProtoMember(15)]
-        //public IList<ProdProfRecord> ProdProfRecords { get; set; }
         [ProtoMember(15)]
-        public bool TestIssue { get; set; }
+        public IList<ProdProfRecord> ProdProfRecords { get; set; }
         [ProtoMember(16)]
-        public bool AlwaysNotify { get; set; }
+        public bool TestIssue { get; set; }
         [ProtoMember(17)]
+        public bool AlwaysNotify { get; set; }
+        [ProtoMember(18)]
         public string Reference { get; set; }
 
         [JsonIgnore]
@@ -87,20 +88,20 @@ namespace Errordite.Core.Domain.Error
             return friendlyId.Contains("/") ? friendlyId : "issues/{0}".FormatWith(friendlyId);
         }
 
-        //void IWantToKnowAboutProdProf.TellMe(ProfiledRequestData data)
-        //{
-        //    ProdProfRecords.Add(new ProdProfRecord
-        //    {
-        //        RequestId = data.Id,
-        //        TimestampUtc = DateTime.UtcNow,
-        //        Url = data.Url,
-        //    });
-        //}
+        void IWantToKnowAboutProdProf.TellMe(ProfiledRequestData data)
+        {
+            ProdProfRecords.Add(new ProdProfRecord
+            {
+                RequestId = data.Id,
+                TimestampUtc = DateTime.UtcNow,
+                Url = data.Url,
+            });
+        }
 
-        //public Issue()
-        //{
-        //    ProdProfRecords = new List<ProdProfRecord>();
-        //}
+        public Issue()
+        {
+            ProdProfRecords = new List<ProdProfRecord>();
+        }
 
         public IssueBase ToIssueBase()
         {
@@ -115,17 +116,16 @@ namespace Errordite.Core.Domain.Error
         }
     }
 
-    //[ProtoContract]
-    //public class ProdProfRecord
-    //{
-    //    [ProtoMember(1)]
-    //    public string Url { get; set; }
-    //    [ProtoMember(2)]
-    //    public Guid RequestId { get; set; }
-    //    [ProtoMember(3)]
-    //    public DateTime TimestampUtc { get; set; }
-
-    //}
+    [ProtoContract]
+    public class ProdProfRecord
+    {
+        [ProtoMember(1)]
+        public string Url { get; set; }
+        [ProtoMember(2)]
+        public Guid RequestId { get; set; }
+        [ProtoMember(3)]
+        public DateTime TimestampUtc { get; set; }
+    }
 
     public enum ErrorLimitStatus
     {

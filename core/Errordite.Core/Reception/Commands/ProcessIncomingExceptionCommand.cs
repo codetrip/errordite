@@ -44,8 +44,8 @@ namespace Errordite.Core.Reception.Commands
             {
                 case ApplicationStatus.Inactive:
                 case ApplicationStatus.NotFound:
-                    //Trace("Application not found.");
-                    //return new ProcessIncomingExceptionResponse();
+                    Trace("Application not found.");
+                    return new ProcessIncomingExceptionResponse();
                 case ApplicationStatus.Ok:
                     {
                         applicationId = application == null ? null : application.Id;

@@ -42,6 +42,7 @@ namespace Errordite.Core.Issues.Queries
 
             if(stats.TotalResults > _configuration.MaxPageSize)
             {
+                Trace("Total issues is greater than default page size, iterating to get all issues");
                 int pageNumber = stats.TotalResults/_configuration.MaxPageSize;
 
                 for(int i=1;i<pageNumber;i++)
@@ -61,6 +62,8 @@ namespace Errordite.Core.Issues.Queries
                         }));
                 }
             }
+
+            Trace("Found a total of {0} issues for application Id:={1}", issues.Count, request.ApplicationId);
 
             return new GetAllApplicationIssuesResponse
             {
