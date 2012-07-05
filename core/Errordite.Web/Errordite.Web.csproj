@@ -348,6 +348,11 @@
     <Content Include="Css\ui.daterangepicker.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Images\alerts.jpg" />
+    <Content Include="Images\assign.jpg" />
+    <Content Include="Images\config.jpg" />
+    <Content Include="Images\rules.jpg" />
+    <Content Include="Images\solve.jpg" />
     <Content Include="Images\UI\ajax-loader.gif" />
     <Content Include="Images\UI\applications.png" />
     <Content Include="Images\UI\client-config-section.png" />

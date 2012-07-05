@@ -503,6 +503,27 @@ table.features tr td.blurb { background-color: #F7F7F7;padding: 15px;}
 
 div.img { background-color: #fff;padding: 10px 0;border: 1px solid #D8DEE2; }
 
+.help-step {
+padding: 10px 5% 10px 5%;
+border: dotted 1px;
+margin: 5px;}
+
+.help-step .step-number{
+font-size: 60px;
+    line-height: 1em;}
+
+.help-step .step-info {
+    width: 24%;
+
+    display: inline-block;
+}
+
+.help-step .step-img {
+    display: inline;
+}
+
+.help-step img { vertical-align: top;}
+
 /*-----------------------------------------------------------------------------------*/
 /*	17.	Admin Pages
 /*-----------------------------------------------------------------------------------*/
