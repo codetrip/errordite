@@ -6,12 +6,6 @@ namespace Errordite.Web.Controllers
 {
     public class HelpController : ErrorditeController
     {
-        [GenerateBreadcrumbs(BreadcrumbId.WhatIsIt)]
-        public ActionResult WhatIsIt()
-        {
-            return View();
-        }
-
         [GenerateBreadcrumbs(BreadcrumbId.Faq)]
         public ActionResult Faq()
         {
@@ -38,6 +32,12 @@ namespace Errordite.Web.Controllers
 
         [GenerateBreadcrumbs(BreadcrumbId.Client)]
         public ActionResult Client()
+        {
+            return View();
+        }
+
+        [GenerateBreadcrumbs(BreadcrumbId.Client)]
+        public ActionResult SendErrorWithJson()
         {
             return View();
         }

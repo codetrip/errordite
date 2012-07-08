@@ -5,11 +5,14 @@
 {
     <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'></script>
     <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/jquery-ui.min.js'></script>
+    <script type="text/javascript" src="http://balupton.github.com/jquery-syntaxhighlighter/scripts/jquery.syntaxhighlighter.min.js"></script>
     <script type='text/javascript' src='@Url.Content("~/js/{0}.min.js".FormatWith(ErrorditeConfiguration.CurrentBuildNumber))'></script>
 }
 else
 {
     <script type='text/javascript' src='@Url.Content("~/js/001.jquery-1.7.2.js")'></script>
+    @*<script type="text/javascript" src="http://balupton.github.com/jquery-syntaxhighlighter/scripts/jquery.syntaxhighlighter.min.js"></script>*@
+    <script type="text/javascript" src="/Js/prettify.js"></script>
     <script type='text/javascript' src='@Url.Content("~/js/002.jquery.validate.js")'></script>
     <script type='text/javascript' src='@Url.Content("~/js/003.jquery.unobtrusive-ajax.js")'></script>
     <script type='text/javascript' src='@Url.Content("~/js/004.jquery.validate.unobtrusive.js")'></script>

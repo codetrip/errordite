@@ -78,10 +78,11 @@ namespace Errordite.Web.Models.Navigation
                 new Breadcrumb(BreadcrumbId.YourDetails, urlHelper.YourDetails(), "Your Details"), 
                 new Breadcrumb(BreadcrumbId.Home, urlHelper.Home(), "Home", new []
                 {
-                    new Breadcrumb(BreadcrumbId.WhatIsIt, string.Empty, "What Is It"),
+                    //new Breadcrumb(BreadcrumbId.WhatIsIt, string.Empty, "What Is It"),
                     new Breadcrumb(BreadcrumbId.Help, string.Empty, "Getting Started"),
                     new Breadcrumb(BreadcrumbId.Client, string.Empty, "Client"),
                     new Breadcrumb(BreadcrumbId.Faq, string.Empty, "FAQ"),
+                    new Breadcrumb(BreadcrumbId.SendErrorWithJson, string.Empty, "Send error with JSON"),
                     new Breadcrumb(BreadcrumbId.Pricing, string.Empty, "Pricing"),
                     new Breadcrumb(BreadcrumbId.Features, string.Empty, "Features"),
                     new Breadcrumb(BreadcrumbId.Privacy, string.Empty, "Privacy"),
@@ -162,11 +163,12 @@ namespace Errordite.Web.Models.Navigation
         YourDetails,
 
         Help,
-        WhatIsIt,
+        //WhatIsIt,
         Pricing,
         Client,
         Faq,
         Features,
+        SendErrorWithJson,
         TermsAndConditions,
         Privacy,
 
@@ -196,6 +198,6 @@ namespace Errordite.Web.Models.Navigation
         AdminOrganisations,
         AdminFlushCaches,
         AdminCache,
-        PaymentPlan
+        PaymentPlan,
     }
 }

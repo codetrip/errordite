@@ -115,6 +115,11 @@ namespace Errordite.Web.Extensions
             return "http://errordite.codeplex.com";
         }
 
+        public static string ClientNuget(this UrlHelper helper)
+        {
+            return "http://nuget.org/packages?q=errordite";
+        }
+
         public static string Client(this UrlHelper helper)
         {
             return helper.Action("client", "help", new { Area = string.Empty });
@@ -130,11 +135,11 @@ namespace Errordite.Web.Extensions
             return helper.Action("faq", "help", new { Area = string.Empty });
         }
 
-        public static string WhatIsErrordite(this UrlHelper helper)
+        public static string JsonFormat(this UrlHelper helper)
         {
-            return helper.Action("whatisit", "help", new {Area = ""});
+            return helper.Action("senderrorwithjson", "help", new { Area = string.Empty });
         }
-
+        
         public static string GettingStarted(this UrlHelper helper)
         {
             return helper.Action("gettingstarted", "help", new { Area = string.Empty });

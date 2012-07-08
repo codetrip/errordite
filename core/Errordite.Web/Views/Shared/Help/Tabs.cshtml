@@ -5,9 +5,9 @@
 <div class="clear"></div>   
 <div class="nav-centered">
     <ul class="nav nav-tabs">
-        <li @(Model == HelpTab.WhatIsIt ? " class=active" : " class=inactive") >
-            <a href="@Url.WhatIsErrordite()"><span>What is it?</span></a>
-        </li>
+        @*<li @(Model == HelpTab.HowItWorks ? " class=active" : " class=inactive") >
+            <a href="@Url.WhatIsErrordite()"><span>How it works</span></a>
+        </li>*@
         <li @(Model == HelpTab.GettingStarted ? " class=active" : " class=inactive") >
             <a href="@Url.GettingStarted()"><span>Getting Started</span></a>
         </li>
@@ -17,11 +17,14 @@
         @*<li @(Model == HelpTab.Faq ? " class=active" : " class=inactive") >
             <a href="@Url.Faq()"><span>FAQ</span></a>
         </li>*@
-        <li @(Model == HelpTab.Client ? " class=active" : " class=inactive") >
-            <a href="@Url.Client()"><span>Client Help</span></a>
-        </li>
         <li @(Model == HelpTab.Features ? " class=active" : " class=inactive") >
             <a href="@Url.Features()"><span>Features</span></a>
+        </li>
+        <li @(Model == HelpTab.Client ? " class=active" : " class=inactive") >
+            <a href="@Url.Client()"><span>.net Client</span></a>
+        </li>
+        <li @(Model == HelpTab.SendErrorWithJson ? " class=active" : " class=inactive") >
+            <a href="@Url.JsonFormat()"><span>Send error with JSON</span></a>
         </li>
     </ul>
 </div>

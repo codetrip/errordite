@@ -3,11 +3,12 @@ namespace Errordite.Web.Models.Help
 {
     public enum HelpTab
     {
-        WhatIsIt,
+        //HowItWorks,
         Faq,
         GettingStarted,
         Pricing,
         Features,
-        Client
+        Client,
+        SendErrorWithJson
     }
 }

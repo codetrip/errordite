@@ -22,6 +22,7 @@
       paging = new Paging(pagingFunc);
       paging.init(ajax);
       $tabHolders = $('.tabs');
+      prettyPrint();
       for (_i = 0, _len = $tabHolders.length; _i < _len; _i++) {
         tabHolder = $tabHolders[_i];
         controller = new Tabs(tabHolder);
