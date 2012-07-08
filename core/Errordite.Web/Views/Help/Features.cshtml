@@ -20,8 +20,8 @@
                             <div><img width="190" height="140" src="@Url.Content("~/images/ui/rules.png")" alt="Intelligent Grouping" /></div>
                         </td>
                         <td class="blurb">
-                            <h4>Intelligent Grouping</h4>
-                            <p>Errordite will automatically group your exceptions into issues, and allows you to set up custom rules to match incoming exceptions.</p>
+                            <h4>Intelligent grouping</h4>
+                            <p>Errordite will automatically group your exceptions into issues, and allows you to set up custom rules to match incoming exceptions</p>
                         </td>
                     </tr>
                     <tr>
@@ -30,25 +30,26 @@
                         </td>
                         <td class="blurb">
                             <h4>Multiple applications</h4>
-                            <p>Use Errordite to manage exceptions from multiple applications within your organisation.</p>
+                            <p>Use Errordite to manage exceptions from multiple applications within your organisation</p>
                         </td>
                     </tr>
+                    @* GT: Removed cos it doesn't really sound like much of a feature to me
                     <tr>
                         <td class="img">
                             <div><img width="190" height="140" src="@Url.Content("~/images/ui/users.png")" alt="Manage users & groups" /></div>
                         </td>
                         <td class="blurb">
                             <h4>Manage users & groups</h4>
-                            <p>Errordite allows you to create groups and users to effectively manage your organisation.</p>
+                            <p>Control who receives what notifications</p>
                         </td>
-                    </tr>
+                    </tr>*@
                     <tr>
                         <td class="img">
                             <div><img width="190" height="140" src="@Url.Content("~/images/ui/email.png")" alt="Intelligent Alerts" /></div>
                         </td>
                         <td class="blurb">
                             <h4>Intelligent Alerts</h4>
-                            <p>Lets face it, you don't want an email every time an error occures in your application, Errordite puts you in control of alerting.</p>
+                            <p>Lets face it, you don't want an email every time an error occurs in your application, Errordite puts you in control of alerting</p>
                         </td>
                     </tr>
                     <tr>
@@ -57,7 +58,7 @@
                         </td>
                         <td class="blurb">
                             <h4>Issue history</h4>
-                            <p>Errordite tracks the history of an issue, and allows you to add your own information / messages to the issue history.</p>
+                            <p>Errordite tracks the history of an issue, and allows you to post your own updates</p>
                         </td>
                     </tr>
                     <tr>
@@ -66,7 +67,7 @@
                         </td>
                         <td class="blurb">
                             <h4>Reporting</h4>
-                            <p>Time distributed view of when errors have been occuring over the course of a day.</p>
+                            <p>Graphical illustration of how the occurences of an issue are distributed over 24 hours</p>
                         </td>
                     </tr>
                     <tr>
@@ -74,8 +75,8 @@
                             <div><img width="190" height="140" src="@Url.Content("~/images/ui/sanitise.png")" alt="Filter Sensitive Data" /></div>
                         </td>
                         <td class="blurb">
-                            <h4>Filter Sensitive Data</h4>
-                            <p>Configure the Errordite client to filter out sensitive data before sending to Errordite.</p>
+                            <h4>Filter sensitive data</h4>
+                            <p>Configure the Errordite client to filter out sensitive data before sending to Errordite</p>
                         </td>
                     </tr>
                     <tr>
@@ -83,8 +84,8 @@
                             <div><img width="190" height="140" src="@Url.Content("~/images/ui/data-collectors.png")" alt="Custom Data Collectors" /></div>
                         </td>
                         <td class="blurb">
-                            <h4>Custom data collectors</h4>
-                            <p>Plugin your own custom data collectors to send the data you want with your exceptions.</p>
+                            <h4>Include custom data</h4>
+                            <p>Plug your own custom data collectors into the client to send extra data with your errors, for example the username of the logged in user</p>
                         </td>
                     </tr>
                     <tr>
@@ -92,26 +93,37 @@
                             <div><img width="190" height="140" src="@Url.Content("~/images/ui/hipchat.png")" alt="Hipchat notifications" /></div>
                         </td>
                         <td class="blurb">
-                            <h4>Hipchat notifications</h4>
-                            <p>New issues appear immediately in your Hipchat room, just tell us the room id and auth token.</p>
+                            <h4>HipChat integration</h4>
+                            <p>If you're a <a href="http://www.hipchat.com" target="_blank">HipChat</a> user, get immediate notifications of new or recurring issues sent to a HipChat room</p>
                         </td>
                     </tr>
+                    @*
+                    GT: removed cos it doesn't really add up to security but instead begs the question, what else are you doing about security
                     <tr>
                         <td class="img">
                             <div><img width="190" height="140" src="@Url.Content("~/images/ui/godaddy-ssl.png")" alt="Secure by Default" /></div>
                         </td>
                         <td class="blurb">
-                            <h4>Secure by default</h4>
-                            <p>All data you send to Errordite is transmitted over SSL.</p>
+                            <h4>Data security</h4>
+                            <p>All data you send to Errordite is transmitted over SSL</p>
                         </td>
-                    </tr>
+                    </tr>*@
                     <tr>
                         <td class="img">
                             <div><img width="190" height="140" src="@Url.Content("~/images/ui/microsoft.net.png")" alt="Microsoft .NET" /></div>
                         </td>
                         <td class="blurb">
-                            <h4>Supports all .NET applications</h4>
-                            <p>The Errordite Client has support for all .NET application types, including ASP.NET Webforms, MVC 1, 2 & 3, Windows Services, Console Applications WPF etc.</p>
+                            <h4>.net client</h4>
+                            <p>General purpose .net client plus specialist ASP.NET MVC 2/3 versions</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="img">
+                            <div><img width="140" height="140" src="@Url.Content("~/images/ui/json.gif")" alt="JSON" /></div>
+                        </td>
+                        <td class="blurb">
+                            <h4>Send errors over JSON</h4>
+                            <p>Documented JSON interface for sending errors - use with any technology stack!</p>
                         </td>
                     </tr>
                 </tbody>

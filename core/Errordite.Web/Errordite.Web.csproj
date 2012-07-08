@@ -345,6 +345,7 @@
     <Content Include="Css\img\toggle\toggle-open.png" />
     <Content Include="Css\jquery-ui-1.8.21.custom.css" />
     <Content Include="Css\jquery.jqplot.css" />
+    <Content Include="Css\prettify.css" />
     <Content Include="Css\ui.daterangepicker.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -364,6 +365,7 @@
     <Content Include="Images\UI\godaddy-ssl.png" />
     <Content Include="Images\UI\hipchat.png" />
     <Content Include="Images\UI\history.png" />
+    <Content Include="Images\UI\json.gif" />
     <Content Include="Images\UI\logo.png" />
     <Content Include="Images\UI\lucene.png" />
     <Content Include="Images\UI\microsoft.net.png" />
@@ -446,6 +448,7 @@
     <Content Include="Js\admin\organisations.js">
       <DependentUpon>organisations.coffee</DependentUpon>
     </Content>
+    <Content Include="Js\prettify.js" />
     <Content Include="Js\rules.js">
       <DependentUpon>rules.coffee</DependentUpon>
     </Content>
@@ -826,8 +829,9 @@
     <Content Include="Views\Shared\Applications\List.cshtml" />
     <Content Include="Views\Shared\Breadcrumb.cshtml" />
     <Content Include="Views\Issue\History.cshtml" />
-    <Content Include="Views\Help\WhatIsIt.cshtml" />
     <Content Include="Views\Shared\Errors\TraceMessages.cshtml" />
+    <Content Include="Views\Help\SendErrorWithJson.cshtml" />
+    <Content Include="Views\Shared\HowItWorksPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_GlobalResources\Alerts.resx">

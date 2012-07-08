@@ -19,6 +19,8 @@ class Initialisation
 
 		$tabHolders = $('.tabs')
 
+		prettyPrint();		
+
 		for tabHolder in $tabHolders			
 			controller = new Tabs(tabHolder)
 			#GT: we do not actually use the fact that we are storing the controller against the tab holder

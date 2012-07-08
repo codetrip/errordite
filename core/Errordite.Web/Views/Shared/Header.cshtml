@@ -42,14 +42,13 @@
             
             <li class="menu-trigger">
                 <ul class="menu pull-right">
-                    <li><a href="@Url.WhatIsErrordite()">What Is Errordite</a></li>
                     <li><a href="@Url.GettingStarted()">Getting Started</a></li>
                     @*<li><a href="@Url.Faq()">FAQ</a></li>*@
                     @*<li><a href="@Url.Pricing()">Pricing</a></li>*@
                     <li><a href="@Url.Client()">Client Help</a></li>
                     <li><a href="@Url.Features()">Features</a></li>
                 </ul>
-                <a href="@Url.WhatIsErrordite()">About</a>
+                <a href="@Url.GettingStarted()">About</a>
             </li>
             @if (appContext.AuthenticationStatus == AuthenticationStatus.Authenticated && (appContext.CurrentUser.Role == UserRole.SuperUser || appContext.ImpersonatorAppContext != null))
             {
