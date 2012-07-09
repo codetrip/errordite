@@ -26,7 +26,7 @@ body, html { margin: 0; padding: 0; font-family: 'Open Sans', sans-serif; color:
 
 #body { width:100%;height:100%;min-width:950px;min-height: 100%;height: auto !important;margin: 0 auto -40px;}
 
-#head {z-index: 1010; min-width:950px;position: fixed;width:100%; height: 50px;font-size: 0.85em;background: #555; filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#242424', endColorstr='#555555'); background: -webkit-gradient(linear, left top, left bottom, from(#242424), to(#555555)); background: -moz-linear-gradient(top,  #242424,  #555555); }
+#head {min-width:950px;position: fixed;width:100%; height: 50px;font-size: 0.85em;background: #555; filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#242424', endColorstr='#555555'); background: -webkit-gradient(linear, left top, left bottom, from(#242424), to(#555555)); background: -moz-linear-gradient(top,  #242424,  #555555); }
 
 #head-left {float: left; width: 110px; padding-top:15px;color: #fff;font-size: 2.0em;font-weight: bold;}
 #head-left .logo { padding-left: 10px;}
