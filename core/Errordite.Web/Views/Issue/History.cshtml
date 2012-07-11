@@ -1,0 +1,26 @@
+﻿@using CodeTrip.Core.Extensions
+@using Errordite.Core.Extensions
+@using Errordite.Web.Models.Issues
+@model IssueDetailsViewModel
+
+<div class="base fullwidth" id="history">
+    <div class="base-content">
+        <div class="history-items">
+            @{
+                int count = 0;
+            }
+            @foreach (var item in Model.History)
+            {
+                <div class="alert">
+                    <h4 class="alert-heading">@(item.SystemMessage ? "System Message" : item.Username) - @item.DateAddedUtc.ToLocalTimeFormatted()</h4>
+                    @Html.Raw(item.Message)
+                    @if (item.Reference.IsNotNullOrEmpty())
+                    {
+                        <br /><i>Reference set: @item.Reference</i>
+                    }
+                </div>
+                count++;
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,68 @@
+﻿
+@using Errordite.Web.Extensions
+@using Errordite.Web.Models.Dashboard
+@model DashboardViewModel
+           
+@{
+    ViewBag.Title = "Dashboard";
+}
+
+@section contentHeader
+{
+    <div id="pagetitle">
+        <h1><i class="icon-arrow-right"></i>My Dashboard</h1>
+    </div>
+    
+    @Html.Partial("Dashboard/Tabs", DashboardTab.Home)
+}
+
+<div id="dashboard">
+
+    @if (!Model.HasApplications)
+    {
+        <h4>
+            You do not have no applications configured in Errordite. to start getting your errors sent to Errordite check out our <a href="@Url.GettingStarted()">getting started</a> guide, alternatively <a href="@Url.AddApplication()">click here</a> to create your first application.<br /><br />
+        </h4>
+    }
+    else if (Model.SingleApplicationId != null && Model.Stats.Issues < 3)
+    {
+        <div class="hero-unit welcome-to-errodite">
+            <h2 class="heading-small">Welcome to Errordite</h2>
+            <p>
+                <span class="hero-small">
+                    This is your <strong>dashboard</strong>, where you can see the most recent issues and errors affecting your system, the issues that need your attention, and overall statistics.
+                </span>
+            </p>
+            <p>
+                <span class="hero-small">
+                    You do not have much going on at the moment.  
+                    Click @Html.ActionLink("here", "generateerror", "applications", new {applicationId = Model.SingleApplicationId, returnUrl = Html.ViewContext.HttpContext.Request.Url}, new{@class="post"}) to generate a test error and get things going.
+                </span>
+            </p>
+            <p>
+                <span class="hero-small">
+                    To get started for real download the client and configure it into your application - details @Html.ActionLink("here", "client", "help").
+                </span>
+            </p>
+            @if (Model.TestIssueId != null)
+            {
+                <p>
+                    <span class="hero-small">
+                        You've created a test issue - to see it, click <a href="@Url.Issue(Model.TestIssueId)">here</a>.
+                    </span>
+                </p>
+            }
+        </div>
+    }
+    
+    @Html.Partial("Dashboard/Statistics", Model.Stats)
+
+    @if (Model.HasApplications)
+    {
+        @Html.Partial("Dashboard/RecentIssues", Model.RecentIssues)
+        @Html.Partial("Dashboard/RecentErrors", Model.RecentErrors)
+    }
+    
+</div>
+
+

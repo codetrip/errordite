@@ -1,0 +1,12 @@
+﻿
+@using Errordite.Web.Models.Groups
+@model GroupViewModel
+
+<li class="cbox">
+    @Html.HiddenFor(m => m.Id)
+    @Html.HiddenFor(m => m.Name)
+    @Html.CheckBoxFor(m => m.Selected, Model.Disabled ? new { disabled = "disabled" } : null) <span>@Html.LabelFor(m => m.Selected, Model.Name)</span>
+</li>
+
+
+

@@ -1,0 +1,18 @@
+﻿@using Errordite.Web.Extensions
+@using Errordite.Web.Models.Issues
+@model IssueNotFoundViewModel
+
+@{
+    ViewBag.Title = "Issue not found";
+}   
+
+<div class="span12">
+    <div class="hero-unit">
+        <h1 class="heading">Oh dear...</h1>
+        <p>Issue with Id "@Model.Id" does not exists, it is possible it was removed from the system by adjusting its rules.</p>
+        <p class="buttons">
+            <a class="btn-large btn-primary" href="@Url.Issues()">Go to your Issues</a>
+            <a class="btn-large btn-primary" href="@Url.Dashboard()">Go to your Dashboard</a>
+        </p>
+    </div>
+</div>   
