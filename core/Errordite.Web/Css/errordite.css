@@ -488,78 +488,27 @@ pre.lang-cs .typ { color: #2b91af; }
 
 .home-features { padding-top: 10px}
 
-#welcome-container .hero-unit { border: none;}
-#welcome-container { background: #eeeeee;}
+#welcome-container .hero-unit { width:80%;}
 .btn-signup { padding-left: 60px;padding-right: 60px;}
 #welcome-container .other-welcome-actions { font-size: 12px;line-height: 1em;text-align: center;}
 
-#how-it-works-container {border-top: solid 1px;
-margin-top: 25px;
-padding-top: 18px;}
-#how-it-works-container h2 {
-text-align: center;
-font-size: 46px;
-line-height: 50px;}
+#how-it-works-container {margin-top: 25px;padding-top: 18px;}
+#how-it-works-container h2 {text-align: center;font-size: 46px;line-height: 50px;}
 
-
-.help-step 
-{
-    padding: 10px 10px 10px 10px;
-margin: 9px auto;
-background: #eee;
-border-radius: 3px;
-width: 800px;
-border: 1px solid #D8D8D8;
-}
-
-.help-step .step-number{
-font-size: 60px;
-    line-height: 1em;}
-
-.help-step .step-info {
-    width: 16%;
-    display: inline-block;
-}
-
-.help-step.step-1 .step-info {margin-left: 54px;}
-
-.help-step.step-2 .step-info {
-    margin-left: 26px;
-}
-
-.help-step.step-3 .step-info {
-    width: 100%;
-}
-.help-step.step-3 img {
-    margin-left: 127px;
-}
-
-.help-step.step-4 .step-info {
-    margin-left: 30px;
-    width:43%;
-}
-
-.help-step.step-5 .step-info {
-    margin-right: 100px;
-}
-
-.help-step .step-img {
-    display: inline;
-}
-
-.help-step img { vertical-align: top;
-border: white solid 3px;
-padding: 12px;
-border-radius: 10px;
-background: white;}
-
-.help-step.step-final .plus {
-    font-size: 18px;
-    line-height: 1em;
-}
-
+.help-step { padding: 10px 10px 10px 10px;margin: 9px auto;background: #eee;border-radius: 3px;width: 800px;border: 1px solid #D8D8D8;}
+.help-step .step-number{font-size: 60px; line-height: 1em;}
+.help-step .step-info {width: 16%; display: inline-block;}
+.help-step.step-1 .step-info {margin-left: 4px;}
+.help-step.step-1 .step-img {margin-left: 50px;}
+.help-step.step-2 .step-info {margin-left: 26px;}
+.help-step.step-3 .step-info {}
+.help-step.step-3 .step-img {margin-left: 10px;}
+.help-step.step-4 .step-info { margin-left: 30px; width:43%;}
+.help-step.step-5 .step-info {margin-right: 100px;}
+.help-step .step-img {display: inline;}
+.help-step img { vertical-align: top;border: white solid 3px;padding: 12px;border-radius: 10px;background: white;}
+.help-step.step-final .plus { font-size: 18px; line-height: 1em;}
 .help-step.step-final .buttons { text-align: center;padding: 20px 0 0 0;}
-
 
 /*-----------------------------------------------------------------------------------*/
 /*	17.	Help Pages
