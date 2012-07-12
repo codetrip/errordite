@@ -38,7 +38,7 @@ namespace Errordite.Reception.Service.Controllers
         {
             foreach(var issue in issues)
             {
-                _auditor.Trace(GetType(), "Request to put issue with Id:={0}, ApplicationId:={1}", issue.Id, issue.ApplicationId);
+                _auditor.Trace(GetType(), "Request to put issue with Id:={0}, ApplicationId:={1}, RuleCount:={2}", issue.Id, issue.ApplicationId, issue.Rules.Count);
                 _issueCache.Update(issue);
             }
         }
