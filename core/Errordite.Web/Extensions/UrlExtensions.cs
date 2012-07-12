@@ -12,6 +12,23 @@ namespace Errordite.Web.Extensions
 {
     public static class UrlExtensions
     {
+        /// <summary>
+        /// Request.Url will not work as we will get the port-mapped value when in live.
+        /// Instead using Url.CurrentRequest() will ensure we get the correctly mapped one.
+        /// </summary>
+        public static string CurrentRequest(this UrlHelper helper)
+        {
+            var uriBuilder = new UriBuilder(helper.RequestContext.HttpContext.Request.Url);
+
+            if (!helper.RequestContext.HttpContext.Request.IsLocal)
+            {
+                uriBuilder.Port = 443;
+                uriBuilder.Scheme = "https";
+            }
+
+            return uriBuilder.ToString();
+        }
+
         #region Dashboard
 
         public static string Audit(this UrlHelper helper)
