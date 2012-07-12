@@ -7,6 +7,7 @@ using CodeTrip.Core.Auditing.Entities;
 using CodeTrip.Core.IoC;
 using Errordite.Core.Configuration;
 using Errordite.Reception.Service.IoC;
+using Newtonsoft.Json;
 using log4net.Config;
 using NServiceBus;
 using CodeTrip.Core.Extensions;
@@ -29,6 +30,7 @@ namespace Errordite.Reception.Service
             config.MaxBufferSize = 655360;
             //this has the effect of always defaulting to Json serialization as there are no Xml formatters registered
             config.Formatters.XmlFormatter.SupportedMediaTypes.Clear();
+            config.Formatters.JsonFormatter.SerializerSettings = new JsonSerializerSettings(){TypeNameHandling = TypeNameHandling.All};
             config.Routes.MapHttpRoute(
                 name: "issueapi",
                 routeTemplate: "api/{controller}/{id}",

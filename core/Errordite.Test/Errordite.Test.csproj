@@ -108,6 +108,7 @@
     <Compile Include="ErrorditeTestBase.cs" />
     <Compile Include="IntegrationTests\ReceptionIssueCacheTests.cs" />
     <Compile Include="IntegrationTests\ReceptionTests.cs" />
+    <Compile Include="Json\SerialisationTests.cs" />
     <Compile Include="Misc\EncryptorTests.cs" />
     <Compile Include="Mocks\MockServiceBus.cs" />
     <Compile Include="Redis\RedisTests.cs" />
