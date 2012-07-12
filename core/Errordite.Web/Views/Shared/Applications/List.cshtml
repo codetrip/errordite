@@ -46,7 +46,7 @@
                 <td>
                     @using (Html.BeginForm("generateerror", "applications", new {applicationId = application.Id}, FormMethod.Post))
                     {
-                        <input type="hidden" name="returnUrl" value="@Request.Url"/>
+                        <input type="hidden" name="returnUrl" value="@Url.CurrentRequest()"/>
                         <a class="generate-error" href="#">Generate Test Error</a>
                     }
                 </td>  
