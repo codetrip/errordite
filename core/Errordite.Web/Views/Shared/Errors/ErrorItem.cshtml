@@ -21,7 +21,7 @@
             <ul class="nav">
                 <li class="ui-tabs-selected">
                     <a href="#" data-val="exception" title="@Model.Error.ExceptionInfo.Type">
-                        <i class="icon-zoom-out"></i>Outer: @Model.Error.ExceptionInfo.Type.LastElement('.')
+                        <i class="icon-zoom-out"></i>@(Model.Error.ExceptionInfo.InnerExceptionInfo == null ? "" :  "Outer: ")@Model.Error.ExceptionInfo.Type.LastElement('.')
                     </a>
                 </li>
                 @{
