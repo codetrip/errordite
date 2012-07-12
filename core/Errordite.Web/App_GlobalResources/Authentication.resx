@@ -133,7 +133,7 @@
     <value>Please enter your password.</value>
   </data>
   <data name="ResetPasswordStatus_InvalidEmail" xml:space="preserve">
-    <value>We could not find the email you entered in the system, please enter a valid email address.</value>
+    <value>We could not find the email you entered in the system; please try another email.</value>
   </data>
   <data name="SetPasswordStatus_InvalidToken" xml:space="preserve">
     <value>The token supplied is invalid or has expired.</value>

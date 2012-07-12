@@ -106,7 +106,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to We could not find the email you entered in the system, please enter a valid email address..
+        ///   Looks up a localized string similar to We could not find the email you entered in the system; please try another email..
         /// </summary>
         internal static string ResetPasswordStatus_InvalidEmail {
             get {
