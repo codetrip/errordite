@@ -296,6 +296,8 @@
     <Compile Include="Users\Queries\GetUserQuery.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reception\Commands\ReceiveErrorCommand.cs" />
+    <Compile Include="WebApi\HttpClientExtensions.cs" />
+    <Compile Include="WebApi\WebApiSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\codetrip\CodeTrip.Core\CodeTrip.Core.csproj">
