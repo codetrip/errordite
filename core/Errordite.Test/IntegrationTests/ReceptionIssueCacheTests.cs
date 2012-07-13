@@ -7,6 +7,7 @@ using CodeTrip.Core.Extensions;
 using Errordite.Core.Domain;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Reception.Commands;
+using Errordite.Core.WebApi;
 using NUnit.Framework;
 using Newtonsoft.Json;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace Errordite.Test.IntegrationTests
         {
             var errors = GetErrors();
 
-            var postTask = new HttpClient().PostAsJsonAsync("{0}/api/errors".FormatWith(Core.Configuration.ErrorditeConfiguration.Current.ReceptionHttpEndpoint), errors);
+            var postTask = new HttpClient().PostJsonAsync("{0}/api/errors".FormatWith(Core.Configuration.ErrorditeConfiguration.Current.ReceptionHttpEndpoint), errors);
 
             postTask.Wait();
             Assert.That(postTask.Result.StatusCode == HttpStatusCode.OK);
@@ -37,7 +38,7 @@ namespace Errordite.Test.IntegrationTests
         {
             var issue = GetIssue();
 
-            var postTask = new HttpClient().PostAsJsonAsync("{0}/api/issue".FormatWith(Core.Configuration.ErrorditeConfiguration.Current.ReceptionHttpEndpoint), issue);
+            var postTask = new HttpClient().PostJsonAsync("{0}/api/issue".FormatWith(Core.Configuration.ErrorditeConfiguration.Current.ReceptionHttpEndpoint), issue);
 
             postTask.Wait();
             Assert.That(postTask.Result.StatusCode == HttpStatusCode.Created);
@@ -45,7 +46,7 @@ namespace Errordite.Test.IntegrationTests
             issue.LastErrorUtc = DateTime.UtcNow;
 
             //now update
-            var putTask = new HttpClient().PutAsJsonAsync("{0}/api/issue".FormatWith(Core.Configuration.ErrorditeConfiguration.Current.ReceptionHttpEndpoint), new []{issue});
+            var putTask = new HttpClient().PutJsonAsync("{0}/api/issue".FormatWith(Core.Configuration.ErrorditeConfiguration.Current.ReceptionHttpEndpoint), new []{issue});
             putTask.Wait();
             Assert.That(putTask.Result.StatusCode == HttpStatusCode.OK);
 
@@ -67,7 +68,7 @@ namespace Errordite.Test.IntegrationTests
         {
             var issue = GetIssue();
 
-            var postTask = new HttpClient().PostAsJsonAsync("{0}/api/issue".FormatWith(Core.Configuration.ErrorditeConfiguration.Current.ReceptionHttpEndpoint), issue);
+            var postTask = new HttpClient().PostJsonAsync("{0}/api/issue".FormatWith(Core.Configuration.ErrorditeConfiguration.Current.ReceptionHttpEndpoint), issue);
 
             postTask.Wait();
             Console.Write(postTask.Result.StatusCode);

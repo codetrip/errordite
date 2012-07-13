@@ -8,6 +8,7 @@ using Errordite.Core.Domain;
 using Errordite.Core.Domain.Error;
 using CodeTrip.Core.Extensions;
 using System.Linq;
+using Errordite.Core.WebApi;
 using Newtonsoft.Json;
 
 namespace Errordite.Core.Session
@@ -24,7 +25,7 @@ namespace Errordite.Core.Session
 
         public override void Execute(IAppSession session)
         {
-            new HttpClient().PostAsJsonAsync("{0}/api/issue".FormatWith(Configuration.ErrorditeConfiguration.Current.ReceptionHttpEndpoint), _issue.ToIssueBase());
+            new HttpClient().PutJsonAsync("{0}/api/issue".FormatWith(Configuration.ErrorditeConfiguration.Current.ReceptionHttpEndpoint), _issue.ToIssueBase());
         }
     }
 
@@ -45,8 +46,8 @@ namespace Errordite.Core.Session
         public override void Execute(IAppSession session)
         {
             var issues = _issues.Select(i => i.ToIssueBase());
-            new HttpClient().PutAsync("{0}/api/issue".FormatWith(Configuration.ErrorditeConfiguration.Current.ReceptionHttpEndpoint),
-                new ObjectContent<IEnumerable<IssueBase>>(issues, new JsonMediaTypeFormatter() { SerializerSettings = new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All } }));
+            new HttpClient().PutJsonAsync(
+                "{0}/api/issue".FormatWith(Configuration.ErrorditeConfiguration.Current.ReceptionHttpEndpoint), issues);
         }
     }
 
