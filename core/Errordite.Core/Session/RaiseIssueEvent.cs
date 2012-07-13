@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Net.Http.Formatting;
 using System.Text;
 using CodeTrip.Core.Session;
 using Errordite.Core.Domain;
 using Errordite.Core.Domain.Error;
 using CodeTrip.Core.Extensions;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace Errordite.Core.Session
 {
@@ -43,7 +45,8 @@ namespace Errordite.Core.Session
         public override void Execute(IAppSession session)
         {
             var issues = _issues.Select(i => i.ToIssueBase());
-            new HttpClient().PutAsJsonAsync("{0}/api/issue".FormatWith(Configuration.ErrorditeConfiguration.Current.ReceptionHttpEndpoint), issues);
+            new HttpClient().PutAsync("{0}/api/issue".FormatWith(Configuration.ErrorditeConfiguration.Current.ReceptionHttpEndpoint),
+                new ObjectContent<IEnumerable<IssueBase>>(issues, new JsonMediaTypeFormatter() { SerializerSettings = new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All } }));
         }
     }
 

@@ -97,12 +97,14 @@ namespace Errordite.Web.Controllers
         }
 
         [HttpGet]
+        [ImportViewData]
         public ActionResult ResetPassword(string token)
         {
             return View(ViewData.Model == null ? new ResetPasswordViewModel() : ViewData.Model as ResetPasswordViewModel);
         }
 
         [HttpPost]
+        [ExportViewData]
         public ActionResult ResetPassword(ResetPasswordViewModel viewModel)
         {
             if (!ModelState.IsValid)
@@ -119,6 +121,8 @@ namespace Errordite.Web.Controllers
             {
                 return RedirectWithViewModel(viewModel, "resetpassword", result.Status.MapToResource(Authentication.ResourceManager));
             }
+
+            ConfirmationNotification("We have sent a password reminder to {0}".FormatWith(viewModel.Email));
 
             return Redirect(Url.SignIn());
         }
