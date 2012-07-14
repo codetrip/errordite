@@ -33,6 +33,7 @@ the config file.  If you wish to allow a choice of folders, they can be separate
   <File match="errordite.config">
     <BaseSiteUrl theRest="$(BaseSiteUrl)" />
     <ReceptionEndpoint theRest="$(ReceptionEndpoint)" />
+    <ReceptionHttpEndpoint theRest="http://localhost" />
     <RenderMinifiedContent theRest="true" />
   </File>
 
