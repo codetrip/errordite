@@ -2,14 +2,15 @@ using System.Collections.Generic;
 using CodeTrip.Core;
 using CodeTrip.Core.Interfaces;
 using CodeTrip.Core.Paging;
-using CodeTrip.Core.Session;
 using Errordite.Core.Configuration;
 using CodeTrip.Core.Extensions;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Messages;
+using Errordite.Core.Session;
 using Errordite.Core.Users.Queries;
 using Errordite.Core.Notifications.EmailInfo;
 using System.Linq;
+using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
 
 namespace Errordite.Core.Notifications.Commands
 {

@@ -22,7 +22,7 @@ namespace Errordite.Test.IntegrationTests
         {
             var errors = GetErrors();
 
-            var postTask = new HttpClient().PostJsonAsync("{0}/api/errors".FormatWith(Core.Configuration.ErrorditeConfiguration.Current.ReceptionHttpEndpoint), errors);
+            var postTask = new HttpClient().PostJsonAsync("{0}/api/ReprocessIssueErrors".FormatWith(Core.Configuration.ErrorditeConfiguration.Current.ReceptionHttpEndpoint), errors);
 
             postTask.Wait();
             Assert.That(postTask.Result.StatusCode == HttpStatusCode.OK);

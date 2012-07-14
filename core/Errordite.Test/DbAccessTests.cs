@@ -5,7 +5,6 @@ using Castle.Core;
 using Castle.MicroKernel.Registration;
 using Castle.Windsor;
 using CodeTrip.Core.IoC;
-using CodeTrip.Core.Session;
 using Errordite.Client.Abstractions;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Indexing;

@@ -1,8 +1,7 @@
 using System.Web.Mvc;
 using CodeTrip.Core.IoC;
-using CodeTrip.Core.Session;
 
-namespace CodeTrip.Core.Web
+namespace Errordite.Core.Session
 {
     public class SessionActionFilterAttribute : ActionFilterAttribute
     {

@@ -9,6 +9,7 @@ using CodeTrip.Core.Web;
 using Errordite.Client.Abstractions;
 using Errordite.Client.Mvc3;
 using Errordite.Core.IoC;
+using Errordite.Core.Session;
 using Errordite.Reception.Web.Binders;
 using Errordite.Reception.Web.IoC;
 using NServiceBus;

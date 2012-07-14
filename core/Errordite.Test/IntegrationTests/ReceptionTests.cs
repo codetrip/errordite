@@ -1,5 +1,4 @@
 ﻿using System;
-using CodeTrip.Core.Session;
 using Errordite.Core.Applications.Commands;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Domain.Organisation;
@@ -7,6 +6,7 @@ using Errordite.Core.Indexing;
 using Errordite.Core.Matching;
 using Errordite.Core.Organisations.Commands;
 using Errordite.Core.Reception.Commands;
+using Errordite.Core.Session;
 using NUnit.Framework;
 using System.Linq;
 

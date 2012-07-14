@@ -1,8 +1,7 @@
-﻿
-using CodeTrip.Core.Session;
-using Errordite.Core.Domain.Organisation;
+﻿using Errordite.Core.Domain.Organisation;
 using System.Linq;
 using Errordite.Core.Indexing;
+using Errordite.Core.Session;
 
 namespace Errordite.Test.Automation.Drivers
 {

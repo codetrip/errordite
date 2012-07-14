@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Web.Mvc;
 using AutoMapper;
 using CodeTrip.Core.Extensions;
@@ -21,6 +22,7 @@ using Errordite.Web.Models.Navigation;
 using Errordite.Web.Models.Notifications;
 using Resources;
 using Application = Errordite.Core.Domain.Organisation.Application;
+using Errordite.Core.WebApi;
 
 namespace Errordite.Web.Controllers
 {
@@ -292,9 +294,9 @@ namespace Errordite.Web.Controllers
                 return HttpNotFound();
             }
 
-            var receiveErrorResponse = _receiveErrorCommand.Invoke(new ReceiveErrorRequest
+            var task = Core.Session.ReceptionServiceHttpClient.PostJsonAsync("api/error", new ReceiveErrorRequest
             {
-                Error = new TestError
+                Error = new Error
                 {
                     ExceptionInfo = new ExceptionInfo
                     {
@@ -302,20 +304,26 @@ namespace Errordite.Web.Controllers
                         Message = "Test exception",
                         MethodName = "TestMethod",
                         Module = "Test.Module",
-                        StackTrace = " at Errordite.TestComponent.TestMethod(TestParam param) in E:\\SourcCode\\Errordite.Test\\TestComponent.cs:line 70\n   at System.Web.Mvc.ActionMethodDispatcher.Execute(ControllerBase controller, Object[] parameters)",
+                        StackTrace = " at Errordite.TestComponent.TestMethod(TestParam param) in E:\\SourceCode\\Errordite.Test\\TestComponent.cs:line 70\n   at System.Web.Mvc.ActionMethodDispatcher.Execute(ControllerBase controller, Object[] parameters)",
                         ExtraData = new Dictionary<string, string>
                         {
                             {"Url", "http://myapp.com/test?foo=1234"}
                         },
                     },
-                MachineName = "Test Machine Name",
-                TimestampUtc = DateTime.UtcNow,
-                ApplicationId = application.Id,
-                OrganisationId = application.OrganisationId
+                    MachineName = "Test Machine Name",
+                    TimestampUtc = DateTime.UtcNow,
+                    ApplicationId = application.Id,
+                    OrganisationId = application.OrganisationId,
+                    TestError = true,
                 },
                 ApplicationId = application.Id,
-            });
+            }).ContinueWith(t =>
+                                {
+                                    t.Result.EnsureSuccessStatusCode();
+                                    return t.Result.Content.ReadAsAsync<ReceiveErrorResponse>().Result;
+                                });
 
+            var receiveErrorResponse = task.Result;
 
             ConfirmationNotification(new MvcHtmlString("Test error generated - attached to issue <a href='{0}'>{1}</a>"
                 .FormatWith(Url.Issue(IdHelper.GetFriendlyId(receiveErrorResponse.IssueId)), IdHelper.GetFriendlyId(receiveErrorResponse.IssueId))));

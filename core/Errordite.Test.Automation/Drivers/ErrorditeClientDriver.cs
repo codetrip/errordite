@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
-using CodeTrip.Core.Session;
 using Errordite.Client;
 using Errordite.Client.Configuration;
 using Errordite.Client.Web;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Domain.Organisation;
+using Errordite.Core.Session;
 using Errordite.Test.Automation.Tests;
 
 namespace Errordite.Test.Automation.Drivers

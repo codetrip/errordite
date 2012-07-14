@@ -115,7 +115,4 @@ namespace Errordite.Core.Domain.Error
             return ret;
         }
     }
-
-    public class TestError : Error
-    { }
 }

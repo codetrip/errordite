@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using CodeTrip.Core.Interfaces;
 using CodeTrip.Core.Paging;
-using CodeTrip.Core.Session;
 using Errordite.Core.Configuration;
 using Errordite.Core.Authorisation;
 using Errordite.Core.Domain;
@@ -16,6 +15,7 @@ using Errordite.Core.Reception.Commands;
 using Errordite.Core.Resources;
 using CodeTrip.Core.Extensions;
 using System.Linq;
+using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
 
 namespace Errordite.Core.Issues.Commands
 {

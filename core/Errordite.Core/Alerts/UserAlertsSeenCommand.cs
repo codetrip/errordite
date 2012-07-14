@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using CodeTrip.Core.Interfaces;
-using CodeTrip.Core.Session;
 using Errordite.Core.Authorisation;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Organisations;
 using Raven.Client.Linq;
+using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
 
 namespace Errordite.Core.Alerts
 {

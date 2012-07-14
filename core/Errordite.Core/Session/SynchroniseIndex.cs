@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using Raven.Client.Indexes;
 
-namespace CodeTrip.Core.Session
+namespace Errordite.Core.Session
 {
     /// <summary>
     /// Session commit action used to ensure we dont get stale results after writing to Raven. Can be used in PRG and should be 

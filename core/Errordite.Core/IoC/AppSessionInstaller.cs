@@ -1,15 +1,16 @@
 ﻿using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
+using CodeTrip.Core.IoC;
 using CodeTrip.Core.RavenDb;
-using CodeTrip.Core.Session;
+using Errordite.Core.Session;
 using ProductionProfiler.Core.Profiling;
 using ProductionProfiler.Core.Profiling.Entities;
 using Raven.Client;
 using Raven.Client.Listeners;
 using Raven.Json.Linq;
 
-namespace CodeTrip.Core.IoC
+namespace Errordite.Core.IoC
 {
     public class PerWebRequestAppSessionInstaller : AppSessionInstallerBase
     {

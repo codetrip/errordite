@@ -400,7 +400,7 @@ namespace Errordite.Web.Controllers
                 CurrentUser = Core.AppContext.CurrentUser
             };
 
-            var httpTask = new HttpClient().PostJsonAsync("{0}/api/errors".FormatWith(_configuration.ReceptionHttpEndpoint), request);
+            var httpTask = Core.Session.ReceptionServiceHttpClient.PostJsonAsync("api/ReprocessIssueErrors", request);
             httpTask.Wait();
 
             if (!httpTask.Result.IsSuccessStatusCode)
