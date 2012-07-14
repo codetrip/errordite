@@ -23,7 +23,7 @@ namespace Errordite.Core.Notifications.EmailInfo
         {
             return Resources.Notifications.SimpleMessage_NewIssue.FormatWith(
                 IssueName,
-                configuration.Endpoint,
+                configuration.SiteBaseUrl,
                 IssueId);
         }
     }
