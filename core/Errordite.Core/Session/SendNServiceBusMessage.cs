@@ -1,6 +1,6 @@
 ﻿using NServiceBus;
 
-namespace CodeTrip.Core.Session
+namespace Errordite.Core.Session
 {
     public class SendNServiceBusMessage : SessionCommitAction
     {

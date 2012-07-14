@@ -3,12 +3,12 @@ using System.Linq;
 using System.Text;
 using CodeTrip.Core.Interfaces;
 using CodeTrip.Core.Paging;
-using CodeTrip.Core.Session;
 using Errordite.Core.Auditing;
 using Raven.Abstractions.Linq;
 using Raven.Client;
 using Raven.Client.Linq;
 using CodeTrip.Core.Extensions;
+using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
 
 namespace Errordite.Core.Errors.Queries
 {

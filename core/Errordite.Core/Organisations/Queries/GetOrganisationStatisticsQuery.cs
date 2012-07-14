@@ -1,11 +1,11 @@
 ﻿using System;
 using CodeTrip.Core.Interfaces;
-using CodeTrip.Core.Session;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Indexing;
 using Raven.Client.Linq;
 using System.Linq;
+using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
 
 namespace Errordite.Core.Organisations.Queries
 {

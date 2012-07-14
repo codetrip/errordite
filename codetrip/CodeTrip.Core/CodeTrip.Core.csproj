@@ -81,6 +81,9 @@
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http">
+      <HintPath>..\..\lib\WebApi\System.Net.Http.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
@@ -186,7 +189,6 @@
     <Compile Include="Interfaces\IQuery.cs" />
     <Compile Include="Interfaces\IWantToBeProfiled.cs" />
     <Compile Include="Interfaces\IWorkflow.cs" />
-    <Compile Include="IoC\AppSessionInstaller.cs" />
     <Compile Include="IoC\ArrayResolver.cs" />
     <Compile Include="IoC\ConfigurationOverrideContainerInitialiser.cs" />
     <Compile Include="IoC\CoreInstallerBase.cs" />
@@ -216,19 +218,15 @@
     <Compile Include="ServiceBus\NServiceBusConfigurationExtensions.cs" />
     <Compile Include="ServiceBus\NServiceBusInstallerBase.cs" />
     <Compile Include="ServiceBus\NServiceBusMessageBase.cs" />
-    <Compile Include="Session\AppSession.cs" />
-    <Compile Include="Session\SendNServiceBusMessage.cs" />
-    <Compile Include="Session\SessionAccessBase.cs" />
-    <Compile Include="Session\SessionExtensions.cs" />
-    <Compile Include="Session\SessionCommitAction.cs" />
-    <Compile Include="Session\SynchroniseIndex.cs" />
     <Compile Include="Test\NullCacheInstaller.cs" />
     <Compile Include="Web\BaseController.cs" />
     <Compile Include="Web\CookieManager.cs" />
     <Compile Include="Web\HtmlExtensions.cs" />
     <Compile Include="Web\ICookieManager.cs" />
     <Compile Include="Web\JsonNetJsonValueProvider.cs" />
-    <Compile Include="Web\SessionActionFilterAttribute.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Session\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

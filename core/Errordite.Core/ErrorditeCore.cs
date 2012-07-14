@@ -1,12 +1,12 @@
 ﻿
 using CodeTrip.Core.Extensions;
 using CodeTrip.Core.Paging;
-using CodeTrip.Core.Session;
 using Errordite.Core.Applications.Queries;
 using Errordite.Core.Configuration;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Groups.Queries;
 using Errordite.Core.Identity;
+using Errordite.Core.Session;
 using Errordite.Core.Users.Queries;
 
 namespace Errordite.Core

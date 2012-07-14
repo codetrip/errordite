@@ -1,12 +1,12 @@
 ﻿using System.Linq;
 using CodeTrip.Core.Interfaces;
-using CodeTrip.Core.Session;
 using Errordite.Core.Authorisation;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Extensions;
 using Errordite.Core.Indexing;
 using Errordite.Core.Organisations;
 using CodeTrip.Core.Extensions;
+using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
 
 namespace Errordite.Core.Issues.Queries
 {

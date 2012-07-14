@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using CodeTrip.Core.Interfaces;
-using CodeTrip.Core.Session;
 using System.Linq;
 using Errordite.Core.Domain.Organisation;
+using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
 
 namespace Errordite.Core.Alerts
 {

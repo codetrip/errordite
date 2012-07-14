@@ -1,6 +1,6 @@
 ﻿
 
-namespace CodeTrip.Core.Session
+namespace Errordite.Core.Session
 {
     public abstract class SessionCommitAction
     {

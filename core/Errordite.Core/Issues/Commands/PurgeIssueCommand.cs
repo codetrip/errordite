@@ -1,12 +1,12 @@
 ﻿using System;
 using CodeTrip.Core.Interfaces;
-using CodeTrip.Core.Session;
 using Errordite.Core.Authorisation;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Errors.Commands;
 using Errordite.Core.Organisations;
 using Errordite.Core.Resources;
 using CodeTrip.Core.Extensions;
+using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
 
 namespace Errordite.Core.Issues.Commands
 {

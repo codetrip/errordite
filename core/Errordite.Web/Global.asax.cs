@@ -17,6 +17,7 @@ using Errordite.Client.Mvc3;
 using Errordite.Core.Domain.Exceptions;
 using Errordite.Core.Indexing;
 using Errordite.Core.IoC;
+using Errordite.Core.Session;
 using Errordite.Web.ActionFilters;
 using Errordite.Web.Controllers;
 using Errordite.Web.IoC;

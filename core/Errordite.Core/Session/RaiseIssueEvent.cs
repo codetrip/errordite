@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Text;
-using CodeTrip.Core.Session;
 using Errordite.Core.Domain;
 using Errordite.Core.Domain.Error;
 using CodeTrip.Core.Extensions;
@@ -25,7 +24,7 @@ namespace Errordite.Core.Session
 
         public override void Execute(IAppSession session)
         {
-            new HttpClient().PutJsonAsync("{0}/api/issue".FormatWith(Configuration.ErrorditeConfiguration.Current.ReceptionHttpEndpoint), _issue.ToIssueBase());
+            session.ReceptionServiceHttpClient.PostJsonAsync("api/issue", _issue.ToIssueBase());
         }
     }
 
@@ -46,8 +45,7 @@ namespace Errordite.Core.Session
         public override void Execute(IAppSession session)
         {
             var issues = _issues.Select(i => i.ToIssueBase());
-            new HttpClient().PutJsonAsync(
-                "{0}/api/issue".FormatWith(Configuration.ErrorditeConfiguration.Current.ReceptionHttpEndpoint), issues);
+            session.ReceptionServiceHttpClient.PutJsonAsync("api/issue", issues);
         }
     }
 
@@ -76,7 +74,7 @@ namespace Errordite.Core.Session
                 ids.Append("{0}|{1}^".FormatWith(IdHelper.GetFriendlyId(idparts[0]), IdHelper.GetFriendlyId(idparts[1])));
             }
 
-            new HttpClient().DeleteAsync("{0}/api/issue/{1}".FormatWith(Configuration.ErrorditeConfiguration.Current.ReceptionHttpEndpoint, ids.ToString().TrimEnd(new []{'^'})));
+            session.ReceptionServiceHttpClient.DeleteAsync("api/issue/{1}".FormatWith(ids.ToString().TrimEnd(new []{'^'})));
         }
     }
 }

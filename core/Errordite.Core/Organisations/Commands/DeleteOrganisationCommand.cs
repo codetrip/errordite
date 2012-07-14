@@ -5,7 +5,6 @@ using CodeTrip.Core.Caching.Interceptors;
 using CodeTrip.Core.Extensions;
 using CodeTrip.Core.Interfaces;
 using CodeTrip.Core.Paging;
-using CodeTrip.Core.Session;
 using Errordite.Core.Applications.Commands;
 using Errordite.Core.Applications.Queries;
 using Errordite.Core.Caching;
@@ -14,6 +13,7 @@ using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Indexing;
 using System.Linq;
 using Raven.Abstractions.Data;
+using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
 
 namespace Errordite.Core.Organisations.Commands
 {
