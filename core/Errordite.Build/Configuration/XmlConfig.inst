@@ -31,13 +31,13 @@ the config file.  If you wish to allow a choice of folders, they can be separate
   </File>
   
   <File match="errordite.config">
-    <Endpoint theRest="$(ErrorditeEndpoint)" />
+    <BaseSiteUrl theRest="$(BaseSiteUrl)" />
     <ReceptionEndpoint theRest="$(ReceptionEndpoint)" />
     <RenderMinifiedContent theRest="true" />
   </File>
 
   <File match="email.config">
-    <ErrorditeUrl theRest="$(ErrorditeEndpoint)" />
+    <ErrorditeUrl theRest="$(BaseSiteUrl)" />
     <TemplateLocation theRest="$(EmailTemplateLocation)" />
   </File>
 
