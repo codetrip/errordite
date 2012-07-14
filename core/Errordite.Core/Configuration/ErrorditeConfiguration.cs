@@ -11,7 +11,7 @@ namespace Errordite.Core.Configuration
         public static ErrorditeConfiguration Current { get { return ObjectFactory.GetObject<ErrorditeConfiguration>(); } }
 
         public static readonly string CurrentBuildNumber = Assembly.GetExecutingAssembly().GetCurrentBuildNumber();
-        public string Endpoint { get; set; }
+        public string SiteBaseUrl { get; set; }
         public string ReceptionEndpoint { get; set; }
         public bool RenderMinifiedContent { get; set; }
         public bool ServiceBusEnabled { get; set; }

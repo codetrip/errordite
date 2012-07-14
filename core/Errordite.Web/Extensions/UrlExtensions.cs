@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Web.Mvc;
+using Errordite.Core.Configuration;
 using Errordite.Core.Domain;
 using Errordite.Core.Domain.Error;
 using CodeTrip.Core.Extensions;
@@ -18,15 +19,14 @@ namespace Errordite.Web.Extensions
         /// </summary>
         public static string CurrentRequest(this UrlHelper helper)
         {
-            var uriBuilder = new UriBuilder(helper.RequestContext.HttpContext.Request.Url);
+            var uriBuilder = new UriBuilder(ErrorditeConfiguration.Current.SiteBaseUrl);
 
-            if (!helper.RequestContext.HttpContext.Request.IsLocal)
-            {
-                uriBuilder.Port = 443;
-                uriBuilder.Scheme = "https";
-            }
+            var currentUri = helper.RequestContext.HttpContext.Request.Url;
 
-            return uriBuilder.ToString();
+            uriBuilder.Path = currentUri.AbsolutePath;
+            uriBuilder.Query = currentUri.Query;
+            
+            return uriBuilder.Uri.ToString();
         }
 
         #region Dashboard
