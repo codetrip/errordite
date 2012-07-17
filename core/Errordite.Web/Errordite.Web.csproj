@@ -812,7 +812,7 @@
     <Content Include="Views\Shared\NotAuthorised.cshtml" />
     <Content Include="Views\Shared\NotFound.cshtml" />
     <Content Include="Views\Admin\Upgrade.cshtml" />
-    <Content Include="Views\Shared\Help\SmallPlan.cshtml" />
+    <Content Include="Views\Shared\Help\MicroPlan.cshtml" />
     <Content Include="Views\Shared\Help\MediumPlan.cshtml" />
     <Content Include="Views\Shared\Help\LargePlan.cshtml" />
     <Content Include="Views\Help\Privacy.cshtml" />

@@ -32,7 +32,7 @@ namespace Errordite.Core.Authentication.Commands
 
                 var organisation = Session.Raven.Query<Organisation, Organisations_Search>().FirstOrDefault(o => o.Id == Organisation.GetId(user.OrganisationId));
 
-                if (organisation == null || organisation.Status != OrganisationStatus.Active)
+                if (organisation == null || organisation.Status == OrganisationStatus.Suspended)
                 {
                     return new AuthenticateUserResponse
                     {
