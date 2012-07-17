@@ -50,7 +50,9 @@ namespace Errordite.Core.Domain.Organisation
         [ProtoMember(1)]
         Active,
         [ProtoMember(2)]
-        Suspended
+        Suspended,
+        [ProtoMember(3)]
+        PlanQuotaExceeded
     }
 
     [ProtoContract]

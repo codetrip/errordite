@@ -1,4 +1,5 @@
 ﻿@using Errordite.Web.Models.Help
+@using Errordite.Web.Extensions
 @{
     ViewBag.Title = "Pricing & Usage";
 }
@@ -11,19 +12,25 @@
             <div class="title">
                 <h1>Errordite Pricing & Usage</h1>
             </div>
+
             <p>
-                Errordite is a <strong>subscription based service</strong>, hosted on the <strong>Amazon's EC2</strong> platform. 
+                Errordite is a <strong>subscription based service</strong>, hosted on <strong>Amazon's EC2</strong> platform. 
                 We price the service based on your <strong>usage</strong>, everyone starts off with a 1 month free trial, at the end of the trial
-                if you wish to continue to use the service you can choose from one of the 3 plans outlined below.
+                if you wish to continue to use the service you can choose from one of the 3 plans below.
             </p>
 
             <div class="clear-space"></div>
 
-            @Html.Partial("Help/SmallPlan")
+            @Html.Partial("Help/MicroPlan")
             @Html.Partial("Help/MediumPlan")
             @Html.Partial("Help/LargePlan")
 
             <div class="clear-space"></div>
+
+            <p>
+                If you you need a bigger plan than we offer as standard, <a href="@Url.Contact()">contact us</a> and we will see what we can do.
+            </p>
+
             <h3 class="all-plans">
                 <span>All plans come with...</span>
                 <span><i class="icon-ok-sign"></i> Free setup</span>

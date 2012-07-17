@@ -28,7 +28,7 @@ namespace Errordite.Core.Organisations.Commands
         {
             var organisation = Load<Organisation>(request.OrganisationId);
 
-            if (organisation.Status == OrganisationStatus.Active)
+            if (organisation.Status != OrganisationStatus.Suspended)
             {
                 return new ActivateOrganisationResponse(organisation.Id, true)
                 {
