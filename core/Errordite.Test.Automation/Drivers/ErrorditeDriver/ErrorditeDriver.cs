@@ -2,10 +2,10 @@
 using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 using CodeTrip.Core.Extensions;
-using CodeTrip.Core.Session;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Matching;
+using Errordite.Core.Session;
 using Errordite.Test.Automation.Configuration;
 using Errordite.Test.Automation.Data;
 using Errordite.Test.Automation.Tests;

@@ -11,7 +11,7 @@ namespace Errordite.Core.Notifications.EmailInfo
 
         public override string ConvertToSimpleMessage(Configuration.ErrorditeConfiguration configuration)
         {
-            return Resources.Notifications.SimpleMessage_ErrorThresholdReached.FormatWith(IssueName, configuration.Endpoint, IssueId);
+            return Resources.Notifications.SimpleMessage_ErrorThresholdReached.FormatWith(IssueName, configuration.SiteBaseUrl, IssueId);
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿
-using CodeTrip.Core.Session;
+﻿using Errordite.Core.Session;
 using Errordite.Test.Automation.Drivers;
 using Errordite.Test.Automation.Drivers.ErrorditeDriver;
 

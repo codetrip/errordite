@@ -3,12 +3,12 @@ using CodeTrip.Core;
 using CodeTrip.Core.Encryption;
 using CodeTrip.Core.Extensions;
 using CodeTrip.Core.Interfaces;
-using CodeTrip.Core.Session;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Indexing;
 using Errordite.Core.Notifications.Commands;
 using Errordite.Core.Notifications.EmailInfo;
 using System.Linq;
+using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
 
 namespace Errordite.Core.Authentication.Commands
 {

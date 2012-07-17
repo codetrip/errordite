@@ -4,7 +4,6 @@ using Castle.Core;
 using CodeTrip.Core.Caching.Entities;
 using CodeTrip.Core.Caching.Interceptors;
 using CodeTrip.Core.Interfaces;
-using CodeTrip.Core.Session;
 using Errordite.Core.Applications.Commands;
 using Errordite.Core.Caching;
 using Errordite.Core.Domain.Organisation;
@@ -13,6 +12,7 @@ using System.Linq;
 using Errordite.Core.Indexing;
 using Errordite.Core.Matching;
 using Errordite.Core.Organisations.Queries;
+using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
 
 namespace Errordite.Core.Organisations.Commands
 {

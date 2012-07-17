@@ -13,6 +13,7 @@ using Errordite.Core.Indexing;
 using Errordite.Core.Issues.Commands;
 using Errordite.Core.Issues.Queries;
 using Errordite.Core.Matching;
+using Errordite.Core.WebApi;
 using Errordite.Web.ActionFilters;
 using Errordite.Web.ActionResults;
 using Errordite.Web.Extensions;
@@ -399,7 +400,7 @@ namespace Errordite.Web.Controllers
                 CurrentUser = Core.AppContext.CurrentUser
             };
 
-            var httpTask = new HttpClient().PostAsJsonAsync("{0}/api/errors".FormatWith(_configuration.ReceptionHttpEndpoint), request);
+            var httpTask = Core.Session.ReceptionServiceHttpClient.PostJsonAsync("api/ReprocessIssueErrors", request);
             httpTask.Wait();
 
             if (!httpTask.Result.IsSuccessStatusCode)

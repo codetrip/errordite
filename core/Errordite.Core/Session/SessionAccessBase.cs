@@ -1,10 +1,11 @@
 using System;
 using System.Linq.Expressions;
+using CodeTrip.Core;
 using CodeTrip.Core.Paging;
 using Raven.Client.Indexes;
 using Raven.Client.Linq;
 
-namespace CodeTrip.Core.Session
+namespace Errordite.Core.Session
 {
     public abstract class SessionAccessBase : ComponentBase
     {

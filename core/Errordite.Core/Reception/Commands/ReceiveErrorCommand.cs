@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using CodeTrip.Core.Extensions;
 using CodeTrip.Core.Interfaces;
-using CodeTrip.Core.Session;
 using Errordite.Core.Applications.Queries;
 using Errordite.Core.Configuration;
 using Errordite.Core.Domain.Error;
@@ -14,6 +13,7 @@ using Errordite.Core.Issues;
 using Errordite.Core.Matching;
 using Errordite.Core.Notifications.Commands;
 using Errordite.Core.Notifications.EmailInfo;
+using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
 
 namespace Errordite.Core.Reception.Commands
 {
@@ -285,7 +285,6 @@ namespace Errordite.Core.Reception.Commands
         public string OrganisationId { get; set; }
         public string Token { get; set; }
         public string ExistingIssueId { get; set; }
-        public bool ExecutingInProcess { get; set; }
     }
 
     public class ReceiveErrorResponse

@@ -2,10 +2,10 @@
 using System.Diagnostics;
 using CodeTrip.Core;
 using CodeTrip.Core.Extensions;
-using CodeTrip.Core.Session;
 using Errordite.Client;
 using Errordite.Core.Domain.Organisation;
 using NServiceBus;
+using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
 
 namespace Errordite.Core.ServiceBus
 {

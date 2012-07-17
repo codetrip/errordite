@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using CodeTrip.Core.Extensions;
 using CodeTrip.Core.IoC;
 using Errordite.Core.Authorisation;
+using Errordite.Core.IoC;
 using Errordite.Core.Matching;
 using System.Linq;
 using Newtonsoft.Json;

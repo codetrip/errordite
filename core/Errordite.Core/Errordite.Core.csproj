@@ -22,6 +22,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -168,6 +169,7 @@
     <Compile Include="Indexing\ErrorditeErrors.cs" />
     <Compile Include="Indexing\Errors_ByIssueByHour.cs" />
     <Compile Include="Indexing\Errors_Search.cs" />
+    <Compile Include="IoC\AppSessionInstaller.cs" />
     <Compile Include="Issues\Commands\AdjustRulesCommand.cs" />
     <Compile Include="Issues\Commands\AddIssueCommand.cs" />
     <Compile Include="Issues\Commands\BatchStatusUpdateCommand.cs" />
@@ -283,7 +285,15 @@
     </Compile>
     <Compile Include="ServiceBus\ErrorditeNServiceBusMessageBase.cs" />
     <Compile Include="ServiceBus\MessageHandlerSessionBase.cs" />
+    <Compile Include="Session\AppSession.cs" />
+    <Compile Include="WebApi\LoggingHttpMessageHandler.cs" />
     <Compile Include="Session\RaiseIssueEvent.cs" />
+    <Compile Include="Session\SendNServiceBusMessage.cs" />
+    <Compile Include="Session\SessionAccessBase.cs" />
+    <Compile Include="Session\SessionActionFilterAttribute.cs" />
+    <Compile Include="Session\SessionCommitAction.cs" />
+    <Compile Include="Session\SessionExtensions.cs" />
+    <Compile Include="Session\SynchroniseIndex.cs" />
     <Compile Include="Users\Commands\AddUserCommand.cs" />
     <Compile Include="Users\Commands\DeleteUserCommand.cs" />
     <Compile Include="Users\Commands\EditUserCommand.cs" />
@@ -296,6 +306,8 @@
     <Compile Include="Users\Queries\GetUserQuery.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reception\Commands\ReceiveErrorCommand.cs" />
+    <Compile Include="WebApi\HttpClientExtensions.cs" />
+    <Compile Include="WebApi\WebApiSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\codetrip\CodeTrip.Core\CodeTrip.Core.csproj">
