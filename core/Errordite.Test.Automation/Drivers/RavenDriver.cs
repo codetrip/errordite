@@ -1,7 +1,7 @@
 ﻿
 using System;
 using System.Linq.Expressions;
-using CodeTrip.Core.Session;
+using Errordite.Core.Session;
 using Raven.Client;
 using Raven.Client.Linq;
 

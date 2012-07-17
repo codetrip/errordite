@@ -1,10 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using CodeTrip.Core.Auditing.Entities;
 using CodeTrip.Core.Redis;
+using Errordite.Core.Configuration;
+using Errordite.Core.WebApi;
 using NServiceBus;
 using Raven.Client;
 using Raven.Client.Indexes;
 
-namespace CodeTrip.Core.Session
+namespace Errordite.Core.Session
 {
     public interface IAppSession
     {
@@ -43,6 +48,8 @@ namespace CodeTrip.Core.Session
         /// </summary>
         int RequestLimit { get; set; }
 
+        HttpClient ReceptionServiceHttpClient { get; }
+
         /// <summary>
         /// Synchronise the index specified in the type parameter
         /// </summary>
@@ -73,13 +80,22 @@ namespace CodeTrip.Core.Session
         private readonly IBus _bus;
         private readonly IRedisSession _redisSession;
         private readonly List<SessionCommitAction> _sessionCommitActions;
+        private readonly HttpClient _receptionServiceHttpClient;
 
-        public AppSession(IDocumentStore documentStore, IBus bus, IRedisSession redisSession)
+        public AppSession(IDocumentStore documentStore, IBus bus, IRedisSession redisSession, ErrorditeConfiguration config, IComponentAuditor auditor)
         {
             _sessionCommitActions = new List<SessionCommitAction>();
             _documentStore = documentStore;
             _bus = bus;
             _redisSession = redisSession;
+            _receptionServiceHttpClient = new HttpClient(new LoggingHttpMessageHandler(auditor))
+                                              {BaseAddress = new Uri(config.ReceptionHttpEndpoint)};
+        }
+
+        public HttpClient ReceptionServiceHttpClient
+        {
+            //TODO: think about disposing + also creating derived class (and so add more specific methods)
+            get { return _receptionServiceHttpClient; }
         }
 
         public IBus Bus

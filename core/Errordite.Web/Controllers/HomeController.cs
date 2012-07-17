@@ -1,11 +1,11 @@
 ﻿
 using System;
 using System.Web.Mvc;
-using CodeTrip.Core.Session;
 using Errordite.Core.Configuration;
 using Errordite.Core.Identity;
 using Errordite.Core.Notifications.Commands;
 using Errordite.Core.Notifications.EmailInfo;
+using Errordite.Core.Session;
 using Errordite.Web.ActionFilters;
 using Errordite.Web.Models.Home;
 using CodeTrip.Core.Extensions;

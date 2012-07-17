@@ -20,7 +20,7 @@ In time we hope to use this for replacing values in sql files as well, but we ar
     
     <RavenEndpoint dev="http://dev-raven.errordite.com" test="http://test-raven.errordite.com" production="http://raven.errordite.com" />
     <RavenPort theRest="80" />
-    <ErrorditeEndpoint dev="http://dev-site.errordite.com/" test="http://test.errordite.com/" production="https://www.errordite.com/" />
+    <BaseSiteUrl dev="http://dev-site.errordite.com/" test="http://test.errordite.com/" production="https://www.errordite.com/" />
     <ReceptionEndpoint dev="http://dev-reception.errordite.com/" test="http://test-reception.errordite.com/" production="http://internal-reception.errordite.com:8001/" />
     <InternalReceptionEndpoint dev="http://dev-reception.errordite.com/receiveerror" test="http://reception.errordite.com/receiveerror" production="http://internal-reception.errordite.com:8001/receiveerror" />
 

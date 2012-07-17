@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using CodeTrip.Core.Extensions;
 using CodeTrip.Core.Interfaces;
-using CodeTrip.Core.Session;
 using Errordite.Core.Authorisation;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Domain.Organisation;
@@ -11,6 +10,7 @@ using Errordite.Core.Organisations;
 using Errordite.Core.Session;
 using Errordite.Core.Users.Queries;
 using Raven.Abstractions.Data;
+using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
 
 namespace Errordite.Core.Issues.Commands
 {

@@ -5,13 +5,13 @@ using CodeTrip.Core.Caching.Entities;
 using CodeTrip.Core.Caching.Interceptors;
 using CodeTrip.Core.Encryption;
 using CodeTrip.Core.Interfaces;
-using CodeTrip.Core.Session;
 using Errordite.Core.Domain.Organisation;
 using System.Linq;
 using Errordite.Core.Indexing;
 using Errordite.Core.Organisations;
 using Raven.Client.Linq;
 using CodeTrip.Core.Extensions;
+using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
 
 namespace Errordite.Core.Applications.Commands
 {

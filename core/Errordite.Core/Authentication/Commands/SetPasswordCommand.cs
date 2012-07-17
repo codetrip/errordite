@@ -2,11 +2,11 @@
 using CodeTrip.Core;
 using CodeTrip.Core.Encryption;
 using CodeTrip.Core.Interfaces;
-using CodeTrip.Core.Session;
 using Errordite.Core.Domain.Organisation;
 using CodeTrip.Core.Extensions;
 using Errordite.Core.Indexing;
 using System.Linq;
+using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
 
 namespace Errordite.Core.Authentication.Commands
 {

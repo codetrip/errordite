@@ -2,9 +2,9 @@
 using System.Linq;
 using CodeTrip.Core.Interfaces;
 using CodeTrip.Core.Paging;
-using CodeTrip.Core.Session;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Issues.Commands;
+using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
 
 namespace Errordite.Core.Errors.Queries
 {

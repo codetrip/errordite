@@ -6,7 +6,7 @@ using Raven.Client;
 using Raven.Client.Indexes;
 using Raven.Client.Linq;
 
-namespace CodeTrip.Core.Session
+namespace Errordite.Core.Session
 {
     public static class SessionExtensions
     {
