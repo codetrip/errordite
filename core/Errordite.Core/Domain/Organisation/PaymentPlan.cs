@@ -16,6 +16,8 @@ namespace Errordite.Core.Domain.Organisation
         [ProtoMember(4)]
         public int MaximumApplications { get; set; }
         [ProtoMember(5)]
+        public int MaximumIssues { get; set; }
+        [ProtoMember(6)]
         public decimal Price { get; set; }
     }
 
@@ -25,10 +27,12 @@ namespace Errordite.Core.Domain.Organisation
         [ProtoMember(1)]
         Trial = 1,
         [ProtoMember(2)]
-        Small = 2,
+        Micro = 2,
         [ProtoMember(3)]
-        Medium = 3,
+        Small = 3,
         [ProtoMember(4)]
-        Large = 4
+        Big = 4,
+        [ProtoMember(5)]
+        Huge = 5
     }
 }

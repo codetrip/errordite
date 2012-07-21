@@ -61,7 +61,7 @@ namespace Errordite.Core.Applications.Commands
                 IsActive = request.IsActive,
                 MatchRuleFactoryId = request.MatchRuleFactoryId,
                 DefaultUserId = User.GetId(request.UserId),
-                Notifications = request.Notifications,
+                NotificationGroups = request.NotificationGroups,
                 HipChatRoomId = request.HipChatRoomId,
                 HipChatAuthToken = request.HipChatAuthToken,
                 TokenSalt = Membership.GeneratePassword(4, 0),
@@ -69,11 +69,7 @@ namespace Errordite.Core.Applications.Commands
 
             Store(application);
 
-            application.Token = _encryptor.Encrypt("{0}|{1}|{2}"
-                                                       .FormatWith(
-                                                           application.FriendlyId,
-                                                           application.OrganisationId.GetFriendlyId(),
-                                                           application.TokenSalt));
+            application.Token = _encryptor.Encrypt("{0}|{1}|{2}".FormatWith(application.FriendlyId, application.OrganisationId.GetFriendlyId(), application.TokenSalt));
 
             Session.SynchroniseIndexes<Applications_Search>();
             
@@ -118,7 +114,7 @@ namespace Errordite.Core.Applications.Commands
         public string HipChatAuthToken { get; set; }
         public string WebHookUri { get; set; }
         public bool IsActive { get; set; }
-        public IList<Notification> Notifications { get; set; }
+        public List<string> NotificationGroups { get; set; }
     }
 
     public enum AddApplicationStatus

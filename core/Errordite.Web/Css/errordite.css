@@ -96,7 +96,7 @@ ul.bullet-list li { margin: .5em 0;}
 .base.centered-narrow { width: 450px;}
 .base.centered-wide { width: 710px;}
 .base.left { float: left;}
-.base.left-slim { width: 275px;float: left;}
+.base.left-slim { width: 201px;float: left;}
 .base.left-narrow { width: 400px; float:left}
 .base.left-wide { width: 735px; float:left}
 .base.left-extra-wide { width: 825px; float:left}
@@ -215,7 +215,7 @@ form { margin: 0;}
 .custom-select { width: 328px;height: 150px; overflow-y: auto;overflow-x: hidden;margin-bottom: 10px;margin-top: 3px; -webkit-border-radius: 5px 5px 5px 5px; -moz-border-radius: 5px 5px 5px 5px; border-radius: 5px 5px 5px 5px;}
 .custom-select.border { border: 1px solid #CFCFCF;}
 .custom-select ul {margin: 5px;padding: 0;}
-.custom-select.notifications { height: 100px; width: 340px;}
+.custom-select.notifications { height: 180px; width: 329px;}
 .custom-select li.cbox label { display: block; padding-left:20px}
 .custom-select-overflow { height: 385px; overflow-y:auto}
 

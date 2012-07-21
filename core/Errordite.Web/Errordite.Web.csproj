@@ -276,7 +276,6 @@
     <Compile Include="Models\Issues\IssueCriteriaViewModel.cs" />
     <Compile Include="Models\Issues\IssueViewModel.cs" />
     <Compile Include="Models\Navigation\Breadcrumbs.cs" />
-    <Compile Include="Models\Notifications\NotificationsViewModel.cs" />
     <Compile Include="Models\Admin\OrganisationsViewModel.cs" />
     <Compile Include="Models\Admin\OrganisationViewModel.cs" />
     <Compile Include="Models\Users\AddUserViewModel.cs" />
@@ -677,16 +676,10 @@
     <Content Include="Views\Shared\EditorTemplates\GroupMemberViewModel.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\EditorTemplates\NotificationViewModel.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="App_GlobalResources\Notifications.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>Notifications.Designer.cs</LastGenOutput>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shared\EditorTemplates\NotificationGroupViewModel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Issues\Index.cshtml" />
@@ -813,8 +806,8 @@
     <Content Include="Views\Shared\NotFound.cshtml" />
     <Content Include="Views\Admin\Upgrade.cshtml" />
     <Content Include="Views\Shared\Help\MicroPlan.cshtml" />
-    <Content Include="Views\Shared\Help\MediumPlan.cshtml" />
-    <Content Include="Views\Shared\Help\LargePlan.cshtml" />
+    <Content Include="Views\Shared\Help\BigPlan.cshtml" />
+    <Content Include="Views\Shared\Help\HugePlan.cshtml" />
     <Content Include="Views\Help\Privacy.cshtml" />
     <Content Include="Views\Help\TermsAndConditions.cshtml" />
     <Content Include="Views\Admin\Billing.cshtml" />
@@ -833,6 +826,7 @@
     <Content Include="Views\Shared\Errors\TraceMessages.cshtml" />
     <Content Include="Views\Help\SendErrorWithJson.cshtml" />
     <Content Include="Views\Shared\HowItWorks.cshtml" />
+    <Content Include="Views\Shared\Help\SmallPlan.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_GlobalResources\Alerts.resx">

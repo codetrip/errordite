@@ -33,9 +33,6 @@ namespace Errordite.Core.Applications.Queries
             if(application != null)
             {
                 _authorisationManager.Authorise(application, request.CurrentUser);
-
-                if (application.Notifications == null)
-                    application.Notifications = new List<Notification>();
             }
 
             return new GetApplicationResponse

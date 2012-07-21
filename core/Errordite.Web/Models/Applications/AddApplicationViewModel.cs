@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
-using Errordite.Web.Models.Notifications;
+using Errordite.Web.Models.Groups;
 
 namespace Errordite.Web.Models.Applications
 {
@@ -23,7 +23,7 @@ namespace Errordite.Web.Models.Applications
     {
         public AddApplicationPostModel()
         {
-            Notifications = new List<NotificationViewModel>();
+            NotificationGroups = new List<GroupViewModel>();
         }
 
         [Required(ErrorMessageResourceType = typeof(Resources.Application), ErrorMessageResourceName = "Name_Required")]
@@ -33,6 +33,6 @@ namespace Errordite.Web.Models.Applications
         public bool Active { get; set; }
         public int? HipChatRoomId { get; set; }
         public string HipChatAuthToken { get; set; }
-        public IList<NotificationViewModel> Notifications { get; set; }
+        public List<GroupViewModel> NotificationGroups { get; set; }
     }
 }

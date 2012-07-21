@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using CodeTrip.Core.Extensions;
-using CodeTrip.Core.IoC;
 using Errordite.Core.Authorisation;
 using Errordite.Core.IoC;
 using Errordite.Core.Matching;
 using System.Linq;
-using Newtonsoft.Json;
 using ProductionProfiler.Core.Profiling.Entities;
 using ProtoBuf;
 using Errordite.Core.Extensions;
@@ -81,7 +79,7 @@ namespace Errordite.Core.Domain.Error
         [ProtoMember(18)]
         public string Reference { get; set; }
 
-        [JsonIgnore]
+        [Raven.Imports.Newtonsoft.Json.JsonIgnore]
         public string FriendlyId { get { return Id == null ? string.Empty : Id.Split('/')[1]; } }
 
         public static string GetId(string friendlyId)

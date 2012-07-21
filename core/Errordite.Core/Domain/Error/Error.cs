@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using CodeTrip.Core.Extensions;
-using Newtonsoft.Json;
 using ProtoBuf;
 using System.Linq;
 
@@ -56,7 +55,7 @@ namespace Errordite.Core.Domain.Error
         /// <summary>
         /// The inner exception infos flattened into an IEnumerable, used for querying in the Errors_Search index.
         /// </summary>
-        [JsonIgnore]
+        [Raven.Imports.Newtonsoft.Json.JsonIgnore]
         public IEnumerable<ExceptionInfo> ExceptionInfos
         {
             get
@@ -65,7 +64,7 @@ namespace Errordite.Core.Domain.Error
             }
         }
 
-        [JsonIgnore]
+        [Raven.Imports.Newtonsoft.Json.JsonIgnore]
         public string FriendlyId { get { return Id == null ? string.Empty : Id.Split('/')[1]; } }
 
         public static string GetId(string friendlyId)
