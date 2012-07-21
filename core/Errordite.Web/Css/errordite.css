@@ -529,16 +529,13 @@ font-size: 60px;
     margin-left: 26px;
 }
 
-.help-step.step-3 .step-info {
-    width: 100%;
-}
-.help-step.step-3 img {
-    margin-left: 127px;
-}
-
 .help-step.step-4 .step-info {
     margin-left: 30px;
     width:43%;
+}
+
+.help-step.step-4 .rock-star-disclaimer {
+    margin-top: 52%;
 }
 
 .help-step.step-5 .step-info {
