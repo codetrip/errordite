@@ -93,6 +93,7 @@ if "%MSBUILDTARGET%" == "ALL" (
 ) else (
 	echo.
 	%windir%\Microsoft.NET\Framework64\v4.0.30319\msbuild "%CD%\Errordite.Install\InstallMaster.proj" /logger:FileLogger,Microsoft.Build.Engine;Deploy_%MSBUILDTARGET%.log /v:diag /t:%MSBUILDTARGET% /p:TargetEnvironment=%TARGETENVIRONMENT% /p:Install=true
+	%windir%\Microsoft.NET\Framework64\v4.0.30319\msbuild "%CD%\Errordite.Install\%MSBUILDTARGET%_Gen.proj" /logger:FileLogger,Microsoft.Build.Engine;Deploy_%MSBUILDTARGET%.log /v:diag /t:%MSBUILDTARGET% /p:TargetEnvironment=%TARGETENVIRONMENT% /p:Install=true
 
 	if "%ERRORLEVEL%" == "0" (
 		echo.
