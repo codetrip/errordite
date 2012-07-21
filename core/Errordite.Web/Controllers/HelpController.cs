@@ -1,4 +1,6 @@
-﻿using System.Web.Mvc;
+﻿using System.Linq;
+using System.Web.Mvc;
+using Errordite.Core.Organisations.Queries;
 using Errordite.Web.ActionFilters;
 using Errordite.Web.Models.Navigation;
 
@@ -6,6 +8,13 @@ namespace Errordite.Web.Controllers
 {
     public class HelpController : ErrorditeController
     {
+        private IGetAvailablePaymentPlansQuery _getAvailablePaymentPlansQuery;
+
+        public HelpController(IGetAvailablePaymentPlansQuery getAvailablePaymentPlansQuery)
+        {
+            _getAvailablePaymentPlansQuery = getAvailablePaymentPlansQuery;
+        }
+
         [GenerateBreadcrumbs(BreadcrumbId.Faq)]
         public ActionResult Faq()
         {
@@ -15,7 +24,10 @@ namespace Errordite.Web.Controllers
         [GenerateBreadcrumbs(BreadcrumbId.Pricing)]
         public ActionResult Pricing()
         {
-            return View();
+            var paymentPlans =
+                _getAvailablePaymentPlansQuery.Invoke(new GetAvailablePaymentPlansRequest()).Plans.Where(p => !p.IsTrial);
+            
+            return View(paymentPlans);
         }
 
         [GenerateBreadcrumbs(BreadcrumbId.Help)]

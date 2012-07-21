@@ -1,43 +1,43 @@
 ﻿@using Errordite.Web.Models.Help
 @using Errordite.Web.Extensions
+@model IEnumerable<Errordite.Core.Domain.Organisation.PaymentPlan>
 @{
-    ViewBag.Title = "Pricing & Usage";
+    ViewBag.Title = "Pricing";
 }
-
+           
 <div class="span12">
     <div class="base">
         @Html.Partial("Help/Tabs", HelpTab.Pricing) 
 
         <div class="base-noheader help">
             <div class="title">
-                <h1>Errordite Pricing & Usage</h1>
+                <h1>Pricing</h1>
             </div>
 
             <p>
-                Errordite is a <strong>subscription based service</strong>, hosted on <strong>Amazon's EC2</strong> platform. 
-                We price the service based on your <strong>usage</strong>, everyone starts off with a 1 month free trial, at the end of the trial
-                if you wish to continue to use the service you can choose from one of the 3 plans below.
+                Errordite is a subscription-based service, with payments made monthly. The first 30 days is a free trial, after which you may select
+                from one of 4 different plans - details below.  (At present we are in beta - the 30 day trials will not start until the beta period is over.)
             </p>
 
             <div class="clear-space"></div>
-
-            @Html.Partial("Help/MicroPlan")
-            @Html.Partial("Help/SmallPlan")
-            @Html.Partial("Help/BigPlan")
-            @Html.Partial("Help/HugePlan")
+            
+            @foreach (var paymentPlan in Model)
+            {
+                @Html.Partial("Help/PaymentPlan", paymentPlan)
+            }
 
             <div class="clear-space"></div>
 
             <p>
-                If you you need a bigger plan than we offer as standard, <a href="@Url.Contact()">contact us</a> and we will see what we can do.
+                If you needs are not met by what is here, please <a href="@Url.Contact()">contact us</a>.
             </p>
 
-            <h3 class="all-plans">
+            @*<h3 class="all-plans">
                 <span>All plans come with...</span>
                 <span><i class="icon-ok-sign"></i> Free setup</span>
                 <span><i class="icon-ok-sign"></i> SSL protection</span>
                 <span><i class="icon-ok-sign"></i> Free email support</span>
-            </h3>
+            </h3>*@
         </div>
     </div>
 </div>
