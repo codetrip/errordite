@@ -36,7 +36,7 @@
             <p>
                 <span class="hero-small">
                     You do not have much going on at the moment.  
-                    Click @Html.ActionLink("here", "generateerror", "applications", new {applicationId = Model.SingleApplicationId, returnUrl = Html.ViewContext.HttpContext.Request.Url}, new{@class="post"}) to generate a test error and get things going.
+                    Click @Html.ActionLink("here", "generateerror", "applications", new {applicationId = Model.SingleApplicationId, returnUrl = Url.CurrentRequest()}, new{@class="post"}) to generate a test error and get things going.
                 </span>
             </p>
             <p>
