@@ -21,6 +21,7 @@
           CreateQueues;
           UpdateWebIISDirectoryPathAndPermissions;
           SetCacheEngineToRedis;
+          RunConfigFileChanger;
           RecycleWebReceptionAppPool">
   </Target>
 
