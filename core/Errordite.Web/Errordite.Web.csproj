@@ -825,7 +825,7 @@
     <Content Include="Views\Issue\History.cshtml" />
     <Content Include="Views\Shared\Errors\TraceMessages.cshtml" />
     <Content Include="Views\Help\SendErrorWithJson.cshtml" />
-    <Content Include="Views\Shared\HowItWorks.cshtml" />
+    <Content Include="Views\Shared\HowItWorksPartial.cshtml" />
     <Content Include="Views\Shared\Help\SmallPlan.cshtml" />
   </ItemGroup>
   <ItemGroup>

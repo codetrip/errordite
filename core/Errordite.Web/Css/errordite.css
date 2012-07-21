@@ -96,7 +96,7 @@ ul.bullet-list li { margin: .5em 0;}
 .base.centered-narrow { width: 450px;}
 .base.centered-wide { width: 710px;}
 .base.left { float: left;}
-.base.left-slim { width: 201px;float: left;}
+.base.left-slim { width: 275px;float: left;}
 .base.left-narrow { width: 400px; float:left}
 .base.left-wide { width: 735px; float:left}
 .base.left-extra-wide { width: 825px; float:left}
@@ -215,7 +215,7 @@ form { margin: 0;}
 .custom-select { width: 328px;height: 150px; overflow-y: auto;overflow-x: hidden;margin-bottom: 10px;margin-top: 3px; -webkit-border-radius: 5px 5px 5px 5px; -moz-border-radius: 5px 5px 5px 5px; border-radius: 5px 5px 5px 5px;}
 .custom-select.border { border: 1px solid #CFCFCF;}
 .custom-select ul {margin: 5px;padding: 0;}
-.custom-select.notifications { height: 180px; width: 329px;}
+.custom-select.notifications { height: 100px; width: 340px;}
 .custom-select li.cbox label { display: block; padding-left:20px}
 .custom-select-overflow { height: 385px; overflow-y:auto}
 
@@ -488,32 +488,78 @@ pre.lang-cs .typ { color: #2b91af; }
 
 .home-features { padding-top: 10px}
 
-#welcome-container .hero-unit { width:80%;}
+#welcome-container .hero-unit { border: none;}
+#welcome-container { background: #eeeeee;}
 .btn-signup { padding-left: 60px;padding-right: 60px;}
 #welcome-container .other-welcome-actions { font-size: 12px;line-height: 1em;text-align: center;}
 
-#how-it-works-container {margin-top: 25px;padding-top: 18px;}
-#how-it-works-container h2 {text-align: center;font-size: 46px;line-height: 50px;}
+#how-it-works-container {border-top: solid 1px;
+margin-top: 25px;
+padding-top: 18px;}
+#how-it-works-container h2 {
+text-align: center;
+font-size: 46px;
+line-height: 50px;}
 
 
-.help-step { padding: 10px 10px 10px 10px;margin: 9px auto;background: #eee;border-radius: 3px;width: 800px;border: 1px solid #D8D8D8;}
-.help-step .step-number{font-size: 60px; line-height: 1em;}
-.help-step .step-info {width: 16%; display: inline-block;}
-.help-step.step-1 .step-info {margin-left: 4px;}
-.help-step.step-1 .step-img {margin-left: 50px;}
-.help-step.step-2 .step-info {margin-left: 26px;}
-.help-step.step-3 .step-info {width:17%;}
-.help-step.step-3 .step-img {margin-left: 127px;}
-.help-step.step-4 .step-info { margin-left: 30px; width:43%;}
-.help-step.step-4 .step-info { margin-left: 30px; width:43%;}
-.help-step.step-4 .rock-star-disclaimer {
-    margin-top: 52%;
+.help-step 
+{
+    padding: 10px 10px 10px 10px;
+margin: 9px auto;
+background: #eee;
+border-radius: 3px;
+width: 800px;
+border: 1px solid #D8D8D8;
 }
-.help-step.step-5 .step-info {margin-right: 100px;}
-.help-step .step-img {display: inline;}
-.help-step img { vertical-align: top;border: white solid 3px;padding: 12px;border-radius: 10px;background: white;}
-.help-step.step-final .plus { font-size: 18px; line-height: 1em;}
+
+.help-step .step-number{
+font-size: 60px;
+    line-height: 1em;}
+
+.help-step .step-info {
+    width: 16%;
+    display: inline-block;
+}
+
+.help-step.step-1 .step-info {margin-left: 54px;}
+
+.help-step.step-2 .step-info {
+    margin-left: 26px;
+}
+
+.help-step.step-3 .step-info {
+    width: 100%;
+}
+.help-step.step-3 img {
+    margin-left: 127px;
+}
+
+.help-step.step-4 .step-info {
+    margin-left: 30px;
+    width:43%;
+}
+
+.help-step.step-5 .step-info {
+    margin-right: 100px;
+}
+
+.help-step .step-img {
+    display: inline;
+}
+
+.help-step img { vertical-align: top;
+border: white solid 3px;
+padding: 12px;
+border-radius: 10px;
+background: white;}
+
+.help-step.step-final .plus {
+    font-size: 18px;
+    line-height: 1em;
+}
+
 .help-step.step-final .buttons { text-align: center;padding: 20px 0 0 0;}
+
 
 /*-----------------------------------------------------------------------------------*/
 /*	17.	Help Pages
