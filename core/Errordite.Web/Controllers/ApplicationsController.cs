@@ -7,20 +7,17 @@ using CodeTrip.Core.Extensions;
 using CodeTrip.Core.Paging;
 using Errordite.Core.Applications.Commands;
 using Errordite.Core.Applications.Queries;
-using Errordite.Core.Authorisation;
 using Errordite.Core.Domain;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Matching;
-using Errordite.Core.Notifications.Queries;
 using Errordite.Core.Reception.Commands;
 using Errordite.Web.ActionFilters;
 using Errordite.Web.Extensions;
 using System.Linq;
 using Errordite.Web.Models.Applications;
+using Errordite.Web.Models.Groups;
 using Errordite.Web.Models.Navigation;
-using Errordite.Web.Models.Notifications;
-using Resources;
 using Application = Errordite.Core.Domain.Organisation.Application;
 using Errordite.Core.WebApi;
 
@@ -35,17 +32,13 @@ namespace Errordite.Web.Controllers
         private readonly IDeleteApplicationCommand _deleteApplicationCommand;
         private readonly IPagingViewModelGenerator _pagingViewModelGenerator;
         private readonly IMatchRuleFactoryFactory _matchRuleFactoryFactory;
-        private readonly IGetNotificationsQuery _getNotificationsQuery;
-        private readonly IReceiveErrorCommand _receiveErrorCommand;
 
         public ApplicationsController(IAddApplicationCommand addApplicationCommand, 
             IGetApplicationQuery getApplicationQuery, 
             IEditApplicationCommand editApplicationCommand, 
             IDeleteApplicationCommand deleteApplicationCommand, 
             IPagingViewModelGenerator pagingViewModelGenerator,
-            IMatchRuleFactoryFactory matchRuleFactoryFactory, 
-            IGetNotificationsQuery getNotificationsQuery, 
-            IReceiveErrorCommand receiveErrorCommand)
+            IMatchRuleFactoryFactory matchRuleFactoryFactory)
         {
             _addApplicationCommand = addApplicationCommand;
             _getApplicationQuery = getApplicationQuery;
@@ -53,8 +46,6 @@ namespace Errordite.Web.Controllers
             _deleteApplicationCommand = deleteApplicationCommand;
             _pagingViewModelGenerator = pagingViewModelGenerator;
             _matchRuleFactoryFactory = matchRuleFactoryFactory;
-            _getNotificationsQuery = getNotificationsQuery;
-            _receiveErrorCommand = receiveErrorCommand;
         }
 
         [HttpGet, ImportViewData, PagingView, ExportViewData, GenerateBreadcrumbs(BreadcrumbId.Applications)]
@@ -91,6 +82,8 @@ namespace Errordite.Web.Controllers
         public ActionResult Add(bool? newOrganisation)
         {
             var applications = Core.GetApplications();
+            var groups = Core.GetGroups();
+
             if (applications.PagingStatus.TotalItems >= Core.AppContext.CurrentUser.Organisation.PaymentPlan.MaximumApplications)
             {
                 SetNotification(AddApplicationStatus.PlanThresholdReached, Resources.Application.ResourceManager);
@@ -107,9 +100,9 @@ namespace Errordite.Web.Controllers
                 .Items
                 .ToSelectList(u => u.FriendlyId, u => "{0} {1}".FormatWith(u.FirstName, u.LastName), sortListBy: SortSelectListBy.Text);
 
-            if (viewModel.Notifications == null || !viewModel.Notifications.Any())
+            if (viewModel.NotificationGroups == null || !viewModel.NotificationGroups.Any())
             {
-                viewModel.Notifications = GetNotifications().ToList();
+                viewModel.NotificationGroups = groups.Items.Select(g => new GroupViewModel {Id = g.Id, Name = g.Name}).ToList();
             }
 
             if (newOrganisation.HasValue && newOrganisation.Value)
@@ -135,13 +128,7 @@ namespace Errordite.Web.Controllers
                 UserId = viewModel.UserId,
                 HipChatAuthToken = viewModel.HipChatAuthToken,
                 HipChatRoomId = viewModel.HipChatRoomId,
-                Notifications = viewModel.Notifications
-                    .Select(n => new Notification
-                    {
-                        Id = n.Id,
-                        Type = n.Type,
-                        Groups = n.Groups.Where(g => g.Selected).Select(g => g.Id).ToList()
-                    }).ToList()
+                NotificationGroups = viewModel.NotificationGroups.Where(n => n.Selected).Select(g => g.Id).ToList()
             });
 
             if (response.Status != AddApplicationStatus.Ok)
@@ -160,6 +147,7 @@ namespace Errordite.Web.Controllers
 
             if(viewModel == null)
             {
+                var groups = Core.GetGroups();
                 var application = _getApplicationQuery.Invoke(new GetApplicationRequest
                 {
                     Id = applicationId,
@@ -168,11 +156,12 @@ namespace Errordite.Web.Controllers
                 }).Application;
 
                 viewModel = Mapper.Map<Application, EditApplicationViewModel>(application);
-                viewModel.Notifications = GetNotifications(application).ToList();
-            }
-            else if (viewModel.Notifications == null)
-            {
-                viewModel.Notifications = GetNotifications().ToList();
+                viewModel.NotificationGroups = groups.Items.Select(g => new GroupViewModel
+                {
+                    Id = g.Id, 
+                    Name = g.Name, 
+                    Selected = application.NotificationGroups.Any(n => n == g.Id)
+                }).ToList();
             }
 
             viewModel.ErrorConfigurations = _matchRuleFactoryFactory
@@ -204,13 +193,7 @@ namespace Errordite.Web.Controllers
                 HipChatAuthToken = viewModel.HipChatAuthToken,
                 HipChatRoomId = viewModel.HipChatRoomId,
                 UserId = Errordite.Core.Domain.Organisation.User.GetId(viewModel.UserId),
-                Notifications = viewModel.Notifications
-                    .Select(n => new Notification
-                        {
-                            Id = n.Id, 
-                            Type = n.Type, 
-                            Groups = n.Groups.Where(g => g.Selected).Select(g => g.Id).ToList()
-                        }).ToList()
+                NotificationGroups = viewModel.NotificationGroups.Where(n => n.Selected).Select(g => g.Id).ToList()
             });
 
             if (response.Status != EditApplicationStatus.Ok)
@@ -240,43 +223,6 @@ namespace Errordite.Web.Controllers
                 ConfirmationNotification(Resources.Application.DeleteApplicationStatus_Ok);
 
             return Redirect(Url.Applications());
-        }
-
-        private IEnumerable<NotificationViewModel> GetNotifications(Application application = null)
-        {
-            var groups = Core.GetGroups();
-            var notifications = _getNotificationsQuery.Invoke(new GetNotificationsRequest()).Notifications;
-
-            foreach (var notification in notifications)
-            {
-                var viewModel = new NotificationViewModel
-                {
-                    Name = Notifications.ResourceManager.GetString(notification.Type.ToString()),
-                    Id = notification.Id,
-                    Type = notification.Type
-                };
-
-                if (application != null && application.Notifications != null && application.Notifications.Count > 0)
-                {
-                    viewModel.Groups = groups.Items.Select(group => new NotificationGroupViewModel
-                    {
-                        Id = group.Id,
-                        Name = group.Name,
-                        Selected = application.Notifications.Where(n => n.Id == notification.Id).Any(n => n.Groups != null && n.Groups.Any(g => g == group.Id))
-                    }).ToList();
-                }
-                else
-                {
-                    viewModel.Groups = groups.Items.Select(group => new NotificationGroupViewModel
-                    {
-                        Id = group.Id,
-                        Name = group.Name,
-                        Selected = false
-                    }).ToList();
-                }
-
-                yield return viewModel;
-            }
         }
 
         [ExportViewData]

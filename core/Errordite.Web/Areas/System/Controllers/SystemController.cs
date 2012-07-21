@@ -106,49 +106,54 @@ namespace Errordite.Web.Areas.System.Controllers
         }
 
         [ExportViewData]
-        public ActionResult CreateNotifications()
-        {
-            foreach (var name in Enum.GetNames(typeof(NotificationType)))
-            {
-                _session.Raven.Store(new Notification { Type = (NotificationType)Enum.Parse(typeof(NotificationType), name) });
-            }
-
-            ConfirmationNotification("Successfully seeded site data");
-            return RedirectToAction("index");
-        }
-
-        [ExportViewData]
         public ActionResult CreatePaymentPlans()
         {
             if (!_session.Raven.Query<PaymentPlan>().Any())
             {
                 _session.Raven.Store(new PaymentPlan
                 {
-                    MaximumApplications = 1,
+                    Id = "PaymentPlans/1",
+                    MaximumApplications = 5,
                     MaximumUsers = 5,
+                    MaximumIssues = 100,
                     PlanType = PaymentPlanType.Trial,
                     Price = 0m
                 });
                 _session.Raven.Store(new PaymentPlan
                 {
+                    Id = "PaymentPlans/2",
                     MaximumApplications = 1,
-                    MaximumUsers = 5,
-                    PlanType = PaymentPlanType.Small,
-                    Price = 25.00m
+                    MaximumUsers = 1,
+                    MaximumIssues = 25,
+                    PlanType = PaymentPlanType.Micro,
+                    Price = 10.00m
                 });
                 _session.Raven.Store(new PaymentPlan
                 {
+                    Id = "PaymentPlans/3",
                     MaximumApplications = 5,
-                    MaximumUsers = 10,
-                    PlanType = PaymentPlanType.Medium,
+                    MaximumUsers = 5,
+                    MaximumIssues = 100,
+                    PlanType = PaymentPlanType.Small,
                     Price = 35.00m
                 });
                 _session.Raven.Store(new PaymentPlan
                 {
-                    MaximumApplications = 50,
+                    Id = "PaymentPlans/4",
+                    MaximumApplications = 30,
+                    MaximumUsers = 30,
+                    MaximumIssues = 250,
+                    PlanType = PaymentPlanType.Big,
+                    Price = 70.00m
+                });
+                _session.Raven.Store(new PaymentPlan
+                {
+                    Id = "PaymentPlans/5",
+                    MaximumApplications = 100,
                     MaximumUsers = 100,
-                    PlanType = PaymentPlanType.Large,
-                    Price = 50.00m
+                    MaximumIssues = 1000,
+                    PlanType = PaymentPlanType.Huge,
+                    Price = 100.00m
                 });
             }
 

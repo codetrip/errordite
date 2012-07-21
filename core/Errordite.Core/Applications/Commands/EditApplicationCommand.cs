@@ -55,7 +55,7 @@ namespace Errordite.Core.Applications.Commands
             application.IsActive = request.IsActive;
             application.DefaultUserId = User.GetId(request.UserId);
             application.MatchRuleFactoryId = request.MatchRuleFactoryId;
-            application.Notifications = request.Notifications;
+            application.NotificationGroups = request.NotificationGroups;
             application.HipChatRoomId = request.HipChatRoomId;
             application.HipChatAuthToken = request.HipChatAuthToken;
 
@@ -99,9 +99,8 @@ namespace Errordite.Core.Applications.Commands
         public string UserId { get; set; }
         public int? HipChatRoomId { get; set; }
         public string HipChatAuthToken { get; set; }
-        public string WebHookUri { get; set; }
         public bool IsActive { get; set; }
-        public IList<Notification> Notifications { get; set; }
+        public List<string> NotificationGroups { get; set; }
     }
 
     public enum EditApplicationStatus

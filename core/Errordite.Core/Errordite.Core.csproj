@@ -249,7 +249,6 @@
     <Compile Include="Notifications\Parsing\TimeOnlyAttribute.cs" />
     <Compile Include="Notifications\Queries\EmailParameterType.cs" />
     <Compile Include="Notifications\Queries\GetEmailInfoQuery.cs" />
-    <Compile Include="Notifications\Queries\GetNotificationsQuery.cs" />
     <Compile Include="Notifications\Rendering\EmailRenderer.cs" />
     <Compile Include="Notifications\Rendering\EmailRendererState.cs" />
     <Compile Include="Notifications\Rendering\IEmailRenderer.cs" />

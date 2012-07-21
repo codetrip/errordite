@@ -24,6 +24,7 @@
                 <th>Plan</th>
                 <th>Users</th>
                 <th>Applications</th>
+                <th>Issues</th>
                 <th></th>
             </tr>
         </thead>
@@ -34,6 +35,7 @@
                     <td>@plan.Plan.PlanType.ToString()@* <span>(@string.Format("{0:C}", @plan.Plan.Price))</span>*@</td>
                     <td>@(plan.Plan.MaximumUsers.ToString())</td>
                     <td>@(plan.Plan.MaximumApplications.ToString())</td>
+                    <td>@(plan.Plan.MaximumIssues.ToString())</td>
                     <td>
                         @if(plan.Upgrade)
                         {

@@ -95,13 +95,7 @@ namespace Errordite.Core.Organisations.Commands
                 IsActive = true,
                 MatchRuleFactoryId = new MethodAndTypeMatchRuleFactory().Id,
                 Name = request.OrganisationName,
-                Notifications = Enum.GetValues(typeof (NotificationType)).Cast<NotificationType>()
-                    .Select(n =>
-                        new Notification
-                        {
-                            Groups = new List<string> {group.Id}, 
-                            Type = n
-                        }).ToList(),
+                NotificationGroups = new List<string> { group.Id },
                 UserId = user.Id,
             });
 

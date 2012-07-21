@@ -250,12 +250,10 @@ namespace Errordite.Core.Reception.Commands
 
         private void MaybeSendNotification(Issue issue, Application application, NotificationType notificationType, Error instance)
         {
-            var notification = application.GetNotification(notificationType);
-
             _sendNotificationCommand.Invoke(new SendNotificationRequest
             {
                 OrganisationId = application.OrganisationId,
-                Groups = notification != null ? notification.Groups : new List<string>(),
+                Groups = application.NotificationGroups ?? new List<string>(),
                 EmailInfo = issue.ToEmailInfo(notificationType, instance, application),
                 Application = application
             });
@@ -263,12 +261,10 @@ namespace Errordite.Core.Reception.Commands
 
         private void SendWarningNotification(Application application, EmailInfoBase emailInfo)
         {
-            var notification = application.GetNotification(NotificationType.NotifySystemWarnings);
-
             _sendNotificationCommand.Invoke(new SendNotificationRequest
             {
                 OrganisationId = application.OrganisationId,
-                Groups = notification != null ? notification.Groups : new List<string>(),
+                Groups = application.NotificationGroups ?? new List<string>(),
                 EmailInfo = emailInfo,
                 Application = application
             });

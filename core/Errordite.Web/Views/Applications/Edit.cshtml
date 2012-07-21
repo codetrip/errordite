@@ -18,6 +18,7 @@
 @using (Html.BeginForm("edit", "applications", FormMethod.Post, new { id = "editapplicationForm" }))
 {
     @Html.HiddenFor(m => m.Id)
+    @Html.HiddenFor(m => m.MatchRuleFactoryId)
 
     <div class="base left-extra-wide">
         <h1>Edit an application</h1>
@@ -31,7 +32,7 @@
                         @Html.ValidationMessageFor(m => m.Name)
                     </li>
                     <li>
-                        @Html.LabelFor(m => m.UserId, "Default Assigned User")
+                        @Html.LabelFor(m => m.UserId, "Default assigned user")
                         @Html.DropDownListFor(m => m.UserId, Model.Users)
                         <i rel="tooltip" title="Who will the default assignee be for issues creataed within this application?" class="icon-info-sign"></i>
                         @Html.ValidationMessageFor(m => m.UserId)
@@ -58,18 +59,25 @@
                     <h3>Notification Settings</h3>
                     <ul class="errorditeform">
                         <li>
-                            @Html.LabelFor(m => m.HipChatRoomId, "HipChat Room Number")
+                            @Html.LabelFor(m => m.NotificationGroups, "Send notifications to the following groups")
+                            <div class="custom-select notifications border">
+                                <ul>
+                                    @Html.EditorFor(m => m.NotificationGroups)
+                                </ul>
+                            </div>
+                        </li>
+                        <li>
+                            @Html.LabelFor(m => m.HipChatRoomId, "HipChat room number")
                             @Html.TextBoxFor(m => m.HipChatRoomId)
                             <i rel="tooltip" title="Tell us the HipChat room number you want notifications for this application to go to." class="icon-info-sign"></i>
                             @Html.ValidationMessageFor(m => m.HipChatRoomId)
                         </li>
                         <li>
-                            @Html.LabelFor(m => m.HipChatAuthToken, "HipChat Auth Token")
+                            @Html.LabelFor(m => m.HipChatAuthToken, "HipChat auth token")
                             @Html.TextBoxFor(m => m.HipChatAuthToken)
                             <i rel="tooltip" title="We need your HipChat auth token to allow us to post to your room." class="icon-info-sign"></i>
                             @Html.ValidationMessageFor(m => m.HipChatAuthToken)
                         </li>
-                        @Html.EditorFor(m => m.Notifications)
                     </ul>
                 </div>
             </div>
