@@ -48,10 +48,10 @@ namespace Errordite.Web.Controllers
             return View();
         }
 
-        [GenerateBreadcrumbs(BreadcrumbId.TermsAndConditions)]
-        public ActionResult TermsAndConditions()
-        {
-            return View();
-        }
+        //[GenerateBreadcrumbs(BreadcrumbId.TermsAndConditions)]
+        //public ActionResult TermsAndConditions()
+        //{
+        //    return View();
+        //}
     }
 }
