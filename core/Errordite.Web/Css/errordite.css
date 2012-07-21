@@ -16,6 +16,8 @@
     15. Audit Page
     16. Home Page
     17. Help
+    18. Admin area
+    19. Code pretty printing
 */
 
 /*-----------------------------------------------------------------------------------*/
@@ -271,7 +273,7 @@ table { border-collapse: collapse; border-spacing: 0; }
 table {	border: 1px solid #DDD;	margin: 0 0 10px 0;text-align: left;width:100%}
 
 table.payments th { padding: 10px;}
-table.payments td { vertical-align: middle;}
+table.payments td { vertical-align: middle;width: 100px;}
 table.payments tr.current-plan { font-weight:bold;}
 table.nogradient { margin-top: 15px;}
 
@@ -585,12 +587,13 @@ div.img { background-color: #fff;padding: 10px 0;border: 1px solid #D8DEE2; }
 .json-api .str { color: black;}
 pre.json-api { background-color: white;}
 /*-----------------------------------------------------------------------------------*/
-/*	17.	Admin Pages
+/*	18.	Admin Pages
 /*-----------------------------------------------------------------------------------*/
 input#Token { cursor: text;}
+.payment-plans p { width: 799px;padding: 0 0 0 2px;}
 
 /*-----------------------------------------------------------------------------------*/
-/*	18.	Pretty printing styles. Used with prettify.js. (Google code prettifier).  Overridden elsewhere.
+/*	19.	Pretty printing styles. Used with prettify.js. (Google code prettifier).  Overridden elsewhere.
 /*-----------------------------------------------------------------------------------*/
 
 /* SPAN elements with the classes below are added by prettyprint. */
