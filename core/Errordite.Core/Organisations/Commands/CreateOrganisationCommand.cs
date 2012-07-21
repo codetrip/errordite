@@ -19,12 +19,12 @@ namespace Errordite.Core.Organisations.Commands
     [Interceptor(CacheInvalidationInterceptor.IoCName)]
     public class CreateOrganisationCommand : SessionAccessBase, ICreateOrganisationCommand
     {
-        private readonly IGetPaymentPlansQuery _getPaymentPlansQuery;
+        private readonly IGetAvailablePaymentPlansQuery _getAvailablePaymentPlansQuery;
         private readonly IAddApplicationCommand _addApplicationCommand;
 
-        public CreateOrganisationCommand(IGetPaymentPlansQuery getPaymentPlansQuery, IAddApplicationCommand addApplicationCommand)
+        public CreateOrganisationCommand(IGetAvailablePaymentPlansQuery getAvailablePaymentPlansQuery, IAddApplicationCommand addApplicationCommand)
         {
-            _getPaymentPlansQuery = getPaymentPlansQuery;
+            _getAvailablePaymentPlansQuery = getAvailablePaymentPlansQuery;
             _addApplicationCommand = addApplicationCommand;
         }
 
@@ -52,7 +52,7 @@ namespace Errordite.Core.Organisations.Commands
                 };
             }
 
-            var freeTrialPlan = _getPaymentPlansQuery.Invoke(new GetPaymentPlansRequest()).Plans.First(p => p.PlanType == PaymentPlanType.Trial);
+            var freeTrialPlan = _getAvailablePaymentPlansQuery.Invoke(new GetAvailablePaymentPlansRequest()).Plans.First(p => p.IsTrial && p.IsAvailable);
 
             var organisation = new Organisation
             {

@@ -11,34 +11,36 @@ using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
 namespace Errordite.Core.Organisations.Queries
 {
     [Interceptor(CacheInterceptor.IoCName)]
-    public class GetPaymentPlansQuery : SessionAccessBase, IGetPaymentPlansQuery
+    public class GetAvailableAvailablePaymentPlansQuery : SessionAccessBase, IGetAvailablePaymentPlansQuery
     {
-        public GetPaymentPlansResponse Invoke(GetPaymentPlansRequest request)
+        public GetAvailablePaymentPlansResponse Invoke(GetAvailablePaymentPlansRequest request)
         {
             Trace("Starting...");
 
-            var plans = Session.Raven.Query<PaymentPlan>().ToList();
+            var plans = Session.Raven.Query<PaymentPlan>()
+                .Where(p => p.IsAvailable)
+                .ToList();
 
             Trace("Found {0} Payment Plans.", plans.Count);
 
-            return new GetPaymentPlansResponse
+            return new GetAvailablePaymentPlansResponse
             {
                 Plans = plans
             };
         }
     }
 
-    public interface IGetPaymentPlansQuery : IQuery<GetPaymentPlansRequest, GetPaymentPlansResponse>
+    public interface IGetAvailablePaymentPlansQuery : IQuery<GetAvailablePaymentPlansRequest, GetAvailablePaymentPlansResponse>
     { }
 
     [ProtoContract]
-    public class GetPaymentPlansResponse
+    public class GetAvailablePaymentPlansResponse
     {
         [ProtoMember(1)]
         public List<PaymentPlan> Plans { get; set; }
     }
 
-    public class GetPaymentPlansRequest : CacheableRequestBase<GetPaymentPlansResponse>
+    public class GetAvailablePaymentPlansRequest : CacheableRequestBase<GetAvailablePaymentPlansResponse>
     {
         protected override string GetCacheKey()
         {

@@ -14,24 +14,19 @@ namespace Errordite.Core.Organisations.Queries
     [Interceptor(CacheInterceptor.IoCName)]
     public class GetOrganisationQuery : SessionAccessBase, IGetOrganisationQuery
     {
-        private readonly IGetPaymentPlansQuery _getPaymentPlansQuery;
-
-        public GetOrganisationQuery(IGetPaymentPlansQuery getPaymentPlansQuery)
-        {
-            _getPaymentPlansQuery = getPaymentPlansQuery;
-        }
-
         public GetOrganisationResponse Invoke(GetOrganisationRequest request)
         {
             Trace("Starting...");
 
             var organisationId = Organisation.GetId(request.OrganisationId);
-            var organisation = Load<Organisation>(organisationId);
+            var organisation = 
+                Session.Raven
+                    .Include<Organisation>(o => o.PaymentPlanId)
+                    .Load<Organisation>(organisationId);
 
             if(organisation != null)
             {
-                var paymentPlans = _getPaymentPlansQuery.Invoke(new GetPaymentPlansRequest()).Plans;
-                organisation.PaymentPlan = paymentPlans.FirstOrDefault(p => p.Id == organisation.PaymentPlanId);
+                organisation.PaymentPlan = Load<PaymentPlan>(organisation.PaymentPlanId);
             }
 
             return new GetOrganisationResponse

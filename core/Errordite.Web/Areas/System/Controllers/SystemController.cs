@@ -116,8 +116,11 @@ namespace Errordite.Web.Areas.System.Controllers
                     MaximumApplications = 5,
                     MaximumUsers = 5,
                     MaximumIssues = 100,
-                    PlanType = PaymentPlanType.Trial,
-                    Price = 0m
+                    Name = PaymentPlanNames.Trial,
+                    Rank = 0,
+                    Price = 0m,
+                    IsAvailable = true,
+                    IsTrial = true,
                 });
                 _session.Raven.Store(new PaymentPlan
                 {
@@ -125,8 +128,10 @@ namespace Errordite.Web.Areas.System.Controllers
                     MaximumApplications = 1,
                     MaximumUsers = 1,
                     MaximumIssues = 25,
-                    PlanType = PaymentPlanType.Micro,
-                    Price = 10.00m
+                    Name = PaymentPlanNames.Micro,
+                    Rank = 100,
+                    Price = 10.00m,
+                    IsAvailable = true,
                 });
                 _session.Raven.Store(new PaymentPlan
                 {
@@ -134,8 +139,10 @@ namespace Errordite.Web.Areas.System.Controllers
                     MaximumApplications = 5,
                     MaximumUsers = 5,
                     MaximumIssues = 100,
-                    PlanType = PaymentPlanType.Small,
-                    Price = 35.00m
+                    Name = PaymentPlanNames.Small,
+                    Rank = 200,
+                    Price = 35.00m,
+                    IsAvailable = true,
                 });
                 _session.Raven.Store(new PaymentPlan
                 {
@@ -143,8 +150,10 @@ namespace Errordite.Web.Areas.System.Controllers
                     MaximumApplications = 30,
                     MaximumUsers = 30,
                     MaximumIssues = 250,
-                    PlanType = PaymentPlanType.Big,
-                    Price = 70.00m
+                    Name = PaymentPlanNames.Big,
+                    Rank = 300,
+                    Price = 70.00m,
+                    IsAvailable = true,
                 });
                 _session.Raven.Store(new PaymentPlan
                 {
@@ -152,8 +161,10 @@ namespace Errordite.Web.Areas.System.Controllers
                     MaximumApplications = 100,
                     MaximumUsers = 100,
                     MaximumIssues = 1000,
-                    PlanType = PaymentPlanType.Huge,
-                    Price = 100.00m
+                    Name = PaymentPlanNames.Huge,
+                    Rank = 400,
+                    Price = 100.00m,
+                    IsAvailable = true,
                 });
             }
 

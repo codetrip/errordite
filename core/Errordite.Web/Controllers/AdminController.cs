@@ -13,29 +13,30 @@ namespace Errordite.Web.Controllers
     [Authorize]
     public class AdminController : ErrorditeController
     {
-        private readonly IGetPaymentPlansQuery _getPaymentPlansQuery;
+        private readonly IGetAvailablePaymentPlansQuery _getAvailablePaymentPlansQuery;
         private readonly ISetOrganisationTimezoneCommand _setOrganisationTimezoneCommand;
 
-        public AdminController(IGetPaymentPlansQuery getPaymentPlansQuery, ISetOrganisationTimezoneCommand setOrganisationTimezoneCommand)
+        public AdminController(IGetAvailablePaymentPlansQuery getAvailablePaymentPlansQuery, ISetOrganisationTimezoneCommand setOrganisationTimezoneCommand)
         {
-            _getPaymentPlansQuery = getPaymentPlansQuery;
+            _getAvailablePaymentPlansQuery = getAvailablePaymentPlansQuery;
             _setOrganisationTimezoneCommand = setOrganisationTimezoneCommand;
         }
 
         [HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.PaymentPlan)]
         public ActionResult PaymentPlan()
         {
-            var plans = _getPaymentPlansQuery.Invoke(new GetPaymentPlansRequest()).Plans;
+            var plans = _getAvailablePaymentPlansQuery.Invoke(new GetAvailablePaymentPlansRequest()).Plans;
+
+            var currentPlan = Core.AppContext.CurrentUser.Organisation.PaymentPlan;
 
             return View(new OrganisationViewModel
             {
                 Plans = plans
-                    .Where(p => p.PlanType == PaymentPlanType.Trial || AppContext.CurrentUser.Role == UserRole.SuperUser)
                     .Select(p => new PaymentPlanViewModel
                 {
-                    CurrentPlan = p.Id == Core.AppContext.CurrentUser.Organisation.PaymentPlanId,
-                    Upgrade = p.PlanType > Core.AppContext.CurrentUser.Organisation.PaymentPlan.PlanType && (int)p.PlanType > (int)PaymentPlanType.Small,
-                    Downgrade = p.PlanType < Core.AppContext.CurrentUser.Organisation.PaymentPlan.PlanType && p.PlanType != PaymentPlanType.Trial,
+                    CurrentPlan = p.Id == currentPlan.Id,
+                    Upgrade = p.Rank > currentPlan.Rank,
+                    Downgrade = p.Rank < currentPlan.Rank && !p.IsTrial,
                     Plan = p
                 }),
             });

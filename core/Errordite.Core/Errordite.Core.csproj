@@ -267,7 +267,7 @@
     <Compile Include="Organisations\Commands\SetOrganisationTimezoneCommand.cs" />
     <Compile Include="Organisations\OrganisationRequestBase.cs" />
     <Compile Include="Organisations\Queries\GetOrganisationsQuery.cs" />
-    <Compile Include="Organisations\Queries\GetPaymentPlansQuery.cs" />
+    <Compile Include="Organisations\Queries\GetAvailablePaymentPlansQuery.cs" />
     <Compile Include="Organisations\Queries\GetOrganisationStatisticsQuery.cs" />
     <Compile Include="Organisations\Queries\GetOrganisationQuery.cs" />
     <Compile Include="Issues\ReceptionServiceIssueCache.cs" />

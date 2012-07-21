@@ -10,7 +10,7 @@ namespace Errordite.Core.Domain.Organisation
         [ProtoMember(1)]
         public string Id { get; set; }
         [ProtoMember(2)]
-        public PaymentPlanType PlanType { get; set; }
+        public string Name { get; set; }
         [ProtoMember(3)]
         public int MaximumUsers { get; set; }
         [ProtoMember(4)]
@@ -19,20 +19,20 @@ namespace Errordite.Core.Domain.Organisation
         public int MaximumIssues { get; set; }
         [ProtoMember(6)]
         public decimal Price { get; set; }
+        [ProtoMember(7)]
+        public int Rank { get; set; }
+        [ProtoMember(8)]
+        public bool IsAvailable { get; set; }
+        [ProtoMember(9)]
+        public bool IsTrial { get; set; }
     }
 
-    [ProtoContract]
-    public enum PaymentPlanType
+    public static class PaymentPlanNames
     {
-        [ProtoMember(1)]
-        Trial = 1,
-        [ProtoMember(2)]
-        Micro = 2,
-        [ProtoMember(3)]
-        Small = 3,
-        [ProtoMember(4)]
-        Big = 4,
-        [ProtoMember(5)]
-        Huge = 5
+        public const string Trial = "Trial";
+        public const string Micro = "Micro";
+        public const string Small = "Small";
+        public const string Big = "Big";
+        public const string Huge = "Huge";
     }
 }
