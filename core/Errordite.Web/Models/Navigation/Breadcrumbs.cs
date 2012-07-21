@@ -105,7 +105,7 @@ namespace Errordite.Web.Models.Navigation
                         new Breadcrumb(BreadcrumbId.AddGroup, string.Empty, "Add Group"),
                         new Breadcrumb(BreadcrumbId.EditGroup, string.Empty, "Edit Group")
                     }),
-                    new Breadcrumb(BreadcrumbId.PaymentPlan, urlHelper.PaymentPlan(), "Payment Plan", new[]
+                    new Breadcrumb(BreadcrumbId.PaymentPlan, urlHelper.PaymentPlan(), "Payment Plans", new[]
                     {
                         new Breadcrumb(BreadcrumbId.Upgrade, string.Empty, "Upgrade"),
                         new Breadcrumb(BreadcrumbId.Downgrade, string.Empty, "Downgrade"),
