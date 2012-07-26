@@ -16,7 +16,7 @@ namespace Errordite.Core.Notifications.EmailInfo
 
         string IAlertInfo.MessageTemplate
         {
-            get { return "{0} application ({1}). <a href='/issue/index/{2}'>View issue</a>."; }
+            get { return "{0} application ({1}). <a href='/issue/{2}'>View issue</a>."; }
         }
 
         public override string ConvertToSimpleMessage(ErrorditeConfiguration configuration)
