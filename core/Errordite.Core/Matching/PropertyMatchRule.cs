@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using CodeTrip.Core.Exceptions;
 using Errordite.Core.Domain.Error;
@@ -28,9 +29,20 @@ namespace Errordite.Core.Matching
             Value = value;
         }
 
+        private string TreatValue(string value)
+        {
+            if (value == null)
+                return null;
+            value = value.ToLowerInvariant().Trim();
+            //cope with the different (or at least likely) line endings we might hope by converting them
+            //all to Windows endings (which the rule values will have)
+            //regex from http://stackoverflow.com/a/8196219/3856
+            return Regex.Replace(value, @"\r\n?|\n", Environment.NewLine);
+        }
+
         public override bool IsMatch(Error error)
         {
-            var ruleValue = Value != null ? Value.ToLowerInvariant().Trim() : null;
+            var ruleValue = TreatValue(Value);
 
             var valuesFromError = GetValuesFromError(error);
 
@@ -73,18 +85,13 @@ namespace Errordite.Core.Matching
                 return error.ExceptionInfos.Select(i =>
                 {
                     var value = prop.GetValue(i, null) as string;
-                    return TrimValue(value);
+                    return TreatValue(value);
                 });
             }
 
             prop = typeof(Error).GetProperty(ErrorProperty);
             var otherValue = prop.GetValue(error, null) as string;
-            return new[] { TrimValue(otherValue) };
-        }
-
-        private string TrimValue(string value)
-        {
-            return value != null ? value.ToLowerInvariant().Trim() : null;
+            return new[] { TreatValue(otherValue) };
         }
 
         public override string GetDescription()
