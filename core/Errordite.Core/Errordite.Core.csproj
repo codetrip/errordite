@@ -243,6 +243,7 @@
     <Compile Include="Notifications\Naming\IEmailNamingMapper.cs" />
     <Compile Include="Notifications\Parsing\DateOnlyAttribute.cs" />
     <Compile Include="Notifications\Parsing\EmailInfoParser.cs" />
+    <Compile Include="Notifications\Parsing\FriendlyIdAttribute.cs" />
     <Compile Include="Notifications\Parsing\IEmailInfoParser.cs" />
     <Compile Include="Notifications\Parsing\IStructConverter.cs" />
     <Compile Include="Notifications\Parsing\MoneyAttribute.cs" />

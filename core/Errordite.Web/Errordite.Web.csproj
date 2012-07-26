@@ -806,8 +806,6 @@
     <Content Include="Views\Shared\NotFound.cshtml" />
     <Content Include="Views\Admin\Upgrade.cshtml" />
     <Content Include="Views\Shared\Help\PaymentPlan.cshtml" />
-    <Content Include="Views\Shared\Help\BigPlan.cshtml" />
-    <Content Include="Views\Shared\Help\HugePlan.cshtml" />
     <Content Include="Views\Help\Privacy.cshtml" />
     <Content Include="Views\Help\TermsAndConditions.cshtml" />
     <Content Include="Views\Admin\Billing.cshtml" />
@@ -826,7 +824,6 @@
     <Content Include="Views\Shared\Errors\TraceMessages.cshtml" />
     <Content Include="Views\Help\SendErrorWithJson.cshtml" />
     <Content Include="Views\Shared\HowItWorksPartial.cshtml" />
-    <Content Include="Views\Shared\Help\SmallPlan.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_GlobalResources\Alerts.resx">
