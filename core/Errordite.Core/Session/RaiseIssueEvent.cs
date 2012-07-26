@@ -74,7 +74,7 @@ namespace Errordite.Core.Session
                 ids.Append("{0}|{1}^".FormatWith(IdHelper.GetFriendlyId(idparts[0]), IdHelper.GetFriendlyId(idparts[1])));
             }
 
-            session.ReceptionServiceHttpClient.DeleteAsync("api/issue/{1}".FormatWith(ids.ToString().TrimEnd(new []{'^'})));
+            session.ReceptionServiceHttpClient.DeleteAsync("api/issue/{0}".FormatWith(ids.ToString().TrimEnd(new []{'^'})));
         }
     }
 }
