@@ -9,6 +9,10 @@ namespace Errordite.Core.Domain.Organisation
     [ProtoContract]
     public class Application : IOrganisationEntity
     {
+        public Application()
+        {
+            NotificationGroups = new List<string>();
+        }
         [ProtoMember(1)]
         public string Id { get; set; }
         [ProtoMember(2)]
