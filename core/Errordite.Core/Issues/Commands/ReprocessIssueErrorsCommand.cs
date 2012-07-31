@@ -84,11 +84,13 @@ namespace Errordite.Core.Issues.Commands
                 issue.History.Add(new IssueHistory
                 {
                     DateAddedUtc = DateTime.UtcNow,
-                    Message = CoreResources.HistoryIssueErrorsReceivedAgain.FormatWith(
-                        request.CurrentUser.FullName,
-                        request.CurrentUser.Email,
-                        response.GetMessage(issue.Id)),
+                    //Message = CoreResources.HistoryIssueErrorsReceivedAgain.FormatWith(
+                    //    request.CurrentUser.FullName,
+                    //    request.CurrentUser.Email,
+                    //    response.GetMessage(issue.Id)),
                     UserId = request.CurrentUser.Id,
+                    Type = HistoryItemType.ErrorsReprocessed,
+                    ReprocessingResult = response.AttachedIssueIds,
                 });
 
                 if (response.AttachedIssueIds.Any(i => i.Key == issue.Id))

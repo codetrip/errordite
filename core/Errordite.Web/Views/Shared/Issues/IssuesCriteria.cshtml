@@ -13,7 +13,7 @@
             @Html.DropDownListFor(m => m.ApplicationId, Model.Applications)
         </div>
         <div class="dropdown-normal">
-            @Html.DropDownListFor(m => m.AssignedTo, new[] { new SelectListItem { Text = Resources.Issue.AssignedUser, Value = Resources.Shared.DefaultSelectValue } }.Union(Model.Users))
+            @Html.DropDownListFor(m => m.AssignedTo, new[] { new SelectListItem { Text = Resources.IssueResources.AssignedUser, Value = Resources.Shared.DefaultSelectValue } }.Union(Model.Users))
         </div>
         <div class="action">
             <ul class="nav nav-pills pull-right">

@@ -77,8 +77,10 @@ namespace Errordite.Core.Issues.Commands
             mergeToIssue.History.Add(new IssueHistory
             {
                 DateAddedUtc = DateTime.UtcNow,
-                Message = CoreResources.HIstoryIssueMerged.FormatWith(mergeFromIssue.FriendlyId, mergeFromIssue.Name),
+                SpawningIssueId = mergeFromIssue.Id,
+                //Message = CoreResources.HIstoryIssueMerged.FormatWith(mergeFromIssue.FriendlyId, mergeFromIssue.Name),
                 SystemMessage = true,
+                Type = HistoryItemType.MergedTo,
             });
 
             Delete(mergeFromIssue);

@@ -416,7 +416,7 @@ pre.lang-cs .typ { color: #2b91af; }
 #details .reference { margin-bottom: 3px;}
 
 #history .history-items { padding-right:10px;}
-#history .alert { margin-bottom: 5px; }
+.history-item.well { margin-bottom: 15px;}
 
 #rules-table .property { width: 15%;vertical-align: middle;}
 #rules-table .operator { width: 15%; vertical-align: middle;}

@@ -35,7 +35,7 @@ namespace Errordite.Web.Models.Issues
         public string Comment { get; set; }
         public string Reference { get; set; }
         public string IssueId { get; set; }
-        [Required(ErrorMessageResourceType = typeof(Resources.Issue), ErrorMessageResourceName = "Name_Required")]
+        [Required(ErrorMessageResourceType = typeof(Resources.IssueResources), ErrorMessageResourceName = "Name_Required")]
         public string Name { get; set; }
         public string UserId { get; set; }
         public IssueStatus Status { get; set; }

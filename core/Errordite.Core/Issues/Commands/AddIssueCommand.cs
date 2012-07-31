@@ -43,8 +43,9 @@ namespace Errordite.Core.Issues.Commands
                     new IssueHistory
                     {
                         DateAddedUtc = DateTime.UtcNow,
-                        Message = Resources.CoreResources.HistoryIssueCreatedBy.FormatWith(request.CurrentUser.FullName, request.CurrentUser.Email),
-                        UserId = request.CurrentUser.Id
+                        //Message = Resources.CoreResources.HistoryIssueCreatedBy.FormatWith(request.CurrentUser.FullName, request.CurrentUser.Email),
+                        UserId = request.CurrentUser.Id,
+                        Type = HistoryItemType.ManuallyCreated,
                     }
                 },
                 MatchPriority = MatchPriority.Low,

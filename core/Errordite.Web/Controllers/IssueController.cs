@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text.RegularExpressions;
@@ -6,13 +7,17 @@ using System.Web.Mvc;
 using CodeTrip.Core.Extensions;
 using CodeTrip.Core.Paging;
 using Errordite.Core.Configuration;
+using Errordite.Core.Domain;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Domain.Exceptions;
+using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Errors.Queries;
 using Errordite.Core.Indexing;
 using Errordite.Core.Issues.Commands;
 using Errordite.Core.Issues.Queries;
 using Errordite.Core.Matching;
+using Errordite.Core.Resources;
+using Errordite.Core.Users.Queries;
 using Errordite.Core.WebApi;
 using Errordite.Web.ActionFilters;
 using Errordite.Web.ActionResults;
@@ -23,7 +28,6 @@ using Errordite.Web.Models.Navigation;
 using Newtonsoft.Json;
 using Resources;
 using CoreConstants = Errordite.Core.CoreConstants;
-using Issue = Resources.Issue;
 using Errordite.Core.Extensions;
 
 namespace Errordite.Web.Controllers
@@ -40,6 +44,8 @@ namespace Errordite.Web.Controllers
         private readonly IPurgeIssueCommand _purgeIssueCommand;
         private readonly IReprocessIssueErrorsCommand _reprocessIssueErrorsCommand;
         private readonly IDeleteIssueCommand _deleteIssueCommand;
+        private readonly IGetUserQuery _getUserQuery;
+
 
         public IssueController(IGetIssueQuery getIssueQuery, 
             IAdjustRulesCommand adjustRulesCommand, 
@@ -49,7 +55,7 @@ namespace Errordite.Web.Controllers
             ErrorditeConfiguration configuration, 
             IPurgeIssueCommand purgeIssueCommand, 
             IReprocessIssueErrorsCommand reprocessIssueErrorsCommand, 
-            IDeleteIssueCommand deleteIssueCommand)
+            IDeleteIssueCommand deleteIssueCommand, IGetUserQuery getUserQuery)
         {
             _getIssueQuery = getIssueQuery;
             _adjustRulesCommand = adjustRulesCommand;
@@ -60,6 +66,7 @@ namespace Errordite.Web.Controllers
             _purgeIssueCommand = purgeIssueCommand;
             _reprocessIssueErrorsCommand = reprocessIssueErrorsCommand;
             _deleteIssueCommand = deleteIssueCommand;
+            _getUserQuery = getUserQuery;
         }
 
         [ImportViewData, GenerateBreadcrumbs(BreadcrumbId.Issue, BreadcrumbId.Issues, WebConstants.CookieSettings.IssueSearchCookieKey)]
@@ -209,6 +216,13 @@ namespace Errordite.Web.Controllers
                 UnmatchedIssuePriority = issue.MatchPriority,
             };
 
+            var userMemoizer =
+                new LocalMemoizer<string, User>(
+                    id =>
+                    _getUserQuery.Invoke(new GetUserRequest() {OrganisationId = issue.OrganisationId, UserId = id}).User);
+            var issueMemoizer = new LocalMemoizer<string, Issue>(id =>
+                    _getIssueQuery.Invoke(new GetIssueRequest() { CurrentUser = Core.AppContext.CurrentUser, IssueId = id }).Issue);
+
             var viewModel = new IssueViewModel
             {
                 Details = new IssueDetailsViewModel
@@ -221,11 +235,11 @@ namespace Errordite.Web.Controllers
                     Priority = issue.MatchPriority,
                     UserName = assignedUser == null ? string.Empty : assignedUser.FullName,
                     Users = users.Items.ToSelectList(u => u.Id, u => "{0} {1}".FormatWith(u.FirstName, u.LastName), sortListBy: SortSelectListBy.Text, selected: u => u.Id == issue.UserId),
-                    Statuses = issue.Status.ToSelectedList(Issue.ResourceManager, false, issue.Status.ToString()),
+                    Statuses = issue.Status.ToSelectedList(IssueResources.ResourceManager, false, issue.Status.ToString()),
                     //Priorities = priorities,
                     UserId = issue.UserId,
                     ApplicationName = applications.Items.First(a => a.Id == issue.ApplicationId).Name,
-                    ErrorLimitStatus = Issue.ResourceManager.GetString("ErrorLimitStatus_{0}".FormatWith(issue.LimitStatus)) ,
+                    ErrorLimitStatus = IssueResources.ResourceManager.GetString("ErrorLimitStatus_{0}".FormatWith(issue.LimitStatus)) ,
                     ProdProfRecords = issue.ProdProfRecords,
                     AlwaysNotify = issue.AlwaysNotify,
                     Reference = issue.Reference,
@@ -234,7 +248,7 @@ namespace Errordite.Web.Controllers
                         var user = users.Items.FirstOrDefault(u => u.Id == h.UserId);
                         return new IssueHistoryItemViewModel
                         {
-                            Message = h.Message,
+                            Message = GetMessage(h, userMemoizer, issueMemoizer, issue),
                             DateAddedUtc = h.DateAddedUtc,
                             UserEmail = user != null ? user.Email : string.Empty,
                             Username = user != null ? user.FullName : string.Empty,
@@ -264,6 +278,76 @@ namespace Errordite.Web.Controllers
             }
 
             return viewModel;
+        }
+
+        private class LocalMemoizer<TKey, TValue>
+        {
+            private Dictionary<TKey, TValue> _store = new Dictionary<TKey, TValue>();
+            private Func<TKey, TValue> _func;
+
+            public LocalMemoizer(Func<TKey, TValue> func)
+            {
+                _func = func;
+            }
+
+            public TValue Get(TKey key)
+            {
+                TValue ret;
+                if (!_store.TryGetValue(key, out ret))
+                {
+                    ret = _func(key);
+                    _store[key] = ret;
+                }
+
+                return ret;
+            }
+        }
+
+        private string GetMessage(IssueHistory h, LocalMemoizer<string, User> userMemoizer, LocalMemoizer<string, Issue> issueMemoizer, Issue issue)
+        {
+            if (h.Message != null)
+                return "LEGACY MESSAGE: " + h.Message;
+
+            var user = h.UserId.IfPoss(id => userMemoizer.Get(h.UserId));
+
+            switch (h.Type)
+            {
+                case HistoryItemType.CreatedByRuleAdjustment:
+                    return CoreResources.HistoryCreatedByRulesAdjustment.FormatWith(IdHelper.GetFriendlyId(h.SpawningIssueId),
+                        user.IfPoss(u => u.FullName),
+                        user.IfPoss(u => u.FirstName));
+                case HistoryItemType.ManuallyCreated:
+                    return CoreResources.HistoryIssueCreatedBy.FormatWith(user.IfPoss(u => u.FullName),
+                                                                          user.IfPoss(u => u.FirstName));
+                case HistoryItemType.BatchStatusUpdate:
+                    return "{0}{1}{2}".FormatWith(CoreResources.HistoryIssueStatusUpdated.FormatWith(h.PreviousStatus, h.NewStatus, user.IfPoss(u => u.FullName), user.IfPoss(u => u.Email),
+                            h.AssignedToUserId == null ? "" : "{0}Assigned to {1} ({2})".FormatWith(
+                                Environment.NewLine,
+                                userMemoizer.Get(h.AssignedToUserId).IfPoss(u => u.FullName),
+                                userMemoizer.Get(h.AssignedToUserId).IfPoss(u => u.Email)),
+                            h.Comment == null ? "" : Environment.NewLine + h.Comment));
+                case HistoryItemType.MergedTo:
+                    return CoreResources.HIstoryIssueMerged.FormatWith(IdHelper.GetFriendlyId(h.SpawningIssueId),
+                                                            issueMemoizer.Get(h.SpawningIssueId).IfPoss(
+                                                                i => i.Name, "DELETED"));
+                case HistoryItemType.ErrorsPurged:
+                    return CoreResources.HistoryIssuePurged.FormatWith(user.IfPoss(u => u.FullName),
+                                                                       user.IfPoss(u => u.Email));
+                case HistoryItemType.ErrorsReprocessed:
+                    return CoreResources.HistoryIssueErrorsReceivedAgain.FormatWith(
+                        user.IfPoss(u => u.FullName),
+                        user.IfPoss(u => u.Email),
+                        new ReprocessIssueErrorsResponse() { AttachedIssueIds = h.ReprocessingResult, Status = ReprocessIssueErrorsStatus.Ok }.GetMessage
+                            (issue.Id));
+                case HistoryItemType.DetailsUpdated:
+                    return h.Comment; //TODO - record more - like, what got updated
+                case HistoryItemType.RulesAdjustedCreatedNewIssue:
+                    return CoreResources.HistoryRulesAdjusted.FormatWith(user.IfPoss(u => u.FullName),
+                                                                         user.IfPoss(u => u.Email), h.SpawnedIssueId);
+                default:
+                    return h.Type + " " + h.Comment;
+
+            }
         }
 
         private const string RejectPrefix = "Adjustment Rejects";
@@ -370,7 +454,7 @@ namespace Errordite.Web.Controllers
                 return RedirectToAction("notfound", new { FriendlyId = postModel.IssueId.GetFriendlyId() });
             }
 
-            ConfirmationNotification(Issue.DetailsUpdated);
+            ConfirmationNotification(IssueResources.DetailsUpdated);
             return RedirectToAction("index", new { id = postModel.IssueId, tab = IssueTab.Details.ToString() });
         }
 
@@ -383,7 +467,7 @@ namespace Errordite.Web.Controllers
                 CurrentUser = Core.AppContext.CurrentUser
             });
 
-            ConfirmationNotification(Issue.IssuePurged);
+            ConfirmationNotification(IssueResources.IssuePurged);
 
             if(Request.IsAjaxRequest())
                 return new JsonSuccessResult();
@@ -434,7 +518,7 @@ namespace Errordite.Web.Controllers
                 CurrentUser = Core.AppContext.CurrentUser
             });
 
-            ConfirmationNotification(Issue.DeleteIssueStatus_Ok.FormatWith(issueId));
+            ConfirmationNotification(IssueResources.DeleteIssueStatus_Ok.FormatWith(issueId));
 
             return RedirectToAction("index", "issues");
         }

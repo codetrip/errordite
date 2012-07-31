@@ -216,7 +216,12 @@ namespace Errordite.Core.Reception.Commands
                     new IssueHistory
                     {
                         DateAddedUtc = DateTime.UtcNow,
-                        Message = Resources.CoreResources.HistoryIssueCreated.FormatWith(error.ExceptionInfo.Type, error.ExceptionInfo.MethodName, error.ExceptionInfo.Module, error.MachineName),
+                        //Message = Resources.CoreResources.HistoryIssueCreated.FormatWith(error.ExceptionInfo.Type, error.ExceptionInfo.MethodName, error.ExceptionInfo.Module, error.MachineName),
+                        Type = HistoryItemType.AutoCreated,
+                        ExceptionType = error.ExceptionInfo.Type,
+                        ExceptionMethod = error.ExceptionInfo.MethodName,
+                        ExceptionModule = error.ExceptionInfo.Module,
+                        ExceptionMachine = error.MachineName,
                         SystemMessage = true,
                     }
                 },

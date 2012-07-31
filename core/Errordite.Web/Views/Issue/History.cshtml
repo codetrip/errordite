@@ -11,7 +11,7 @@
             }
             @foreach (var item in Model.History)
             {
-                <div class="alert">
+                <div class="history-item well well-small">
                     <h4 class="alert-heading">@(item.SystemMessage ? "System Message" : item.Username) - @item.DateAddedUtc.ToLocalTimeFormatted()</h4>
                     @Html.Raw(item.Message)
                     @if (item.Reference.IsNotNullOrEmpty())
