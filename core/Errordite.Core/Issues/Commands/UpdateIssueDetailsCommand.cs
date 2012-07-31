@@ -103,8 +103,9 @@ namespace Errordite.Core.Issues.Commands
             {
                 Reference = request.Reference,
                 DateAddedUtc = DateTime.UtcNow,
-                Message = message,
+                Comment = message,
                 UserId = request.CurrentUser.Id,
+                Type = HistoryItemType.DetailsUpdated
             });
 
             Session.AddCommitAction(new RaiseIssueModifiedEvent(issue));

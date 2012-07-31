@@ -16,7 +16,7 @@ namespace Errordite.Web.Models.Issues
 
     public class AddIssuePostModel
     {
-        [Required(ErrorMessageResourceType = typeof(Resources.Issue), ErrorMessageResourceName = "Name_Required")]
+        [Required(ErrorMessageResourceType = typeof(Resources.IssueResources), ErrorMessageResourceName = "Name_Required")]
         public string Name { get; set; }
         public string UserId { get; set; }
         public string ApplicationId { get; set; }

@@ -41,8 +41,9 @@ namespace Errordite.Core.Issues.Commands
                 issue.History.Add(new IssueHistory
                 {
                     DateAddedUtc = DateTime.UtcNow,
-                    Message = CoreResources.HistoryIssuePurged.FormatWith(request.CurrentUser.FullName, request.CurrentUser.Email),
-                    UserId = request.CurrentUser.Id,
+                    //Message = CoreResources.HistoryIssuePurged.FormatWith(request.CurrentUser.FullName, request.CurrentUser.Email),
+                    UserId = request.CurrentUser.Id,    
+                    Type = HistoryItemType.ErrorsPurged,
                 });
 
                 issue.ErrorCount = 0;

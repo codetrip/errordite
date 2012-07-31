@@ -80,9 +80,14 @@ namespace Errordite.Core.Issues.Commands
                     {
                         DateAddedUtc = DateTime.UtcNow,
                         UserId = request.CurrentUser.Id,
-                        Message = "{0}{1}{2}".FormatWith(Resources.CoreResources.HistoryIssueStatusUpdated.FormatWith(issue.Status, request.Status, request.CurrentUser.FullName, request.CurrentUser.Email),
-                            assignToUser == null ? "" : "{0}Assigned to {1} ({2})".FormatWith(Environment.NewLine, assignToUser.FullName, assignToUser.Email),
-                            request.Comment == null ? "" : Environment.NewLine + request.Comment),
+                        AssignedToUserId = request.AssignToUserId,
+                        Comment = request.Comment,
+                        PreviousStatus = issue.Status,
+                        NewStatus = request.Status,
+                        //Message = "{0}{1}{2}".FormatWith(Resources.CoreResources.HistoryIssueStatusUpdated.FormatWith(issue.Status, request.Status, request.CurrentUser.FullName, request.CurrentUser.Email),
+                        //    assignToUser == null ? "" : "{0}Assigned to {1} ({2})".FormatWith(Environment.NewLine, assignToUser.FullName, assignToUser.Email),
+                        //    request.Comment == null ? "" : Environment.NewLine + request.Comment),
+                            Type = HistoryItemType.BatchStatusUpdate,
                     });
 
                     issue.Status = request.Status;

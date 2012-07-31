@@ -182,7 +182,6 @@
     <Compile Include="Errors\Queries\GetErrorditeErrorsQuery.cs" />
     <Compile Include="Identity\NoAuthenticationManager.cs" />
     <Compile Include="IoC\ErrorditeNServiceBusClientInstaller.cs" />
-    <Compile Include="Issues\Commands\AddHistoryItemCommand.cs" />
     <Compile Include="Errors\Queries\GetUnclassifiedErrorsThatMatchRulesQuery.cs" />
     <Compile Include="Issues\Commands\CheckIssueCommand.cs" />
     <Compile Include="Issues\Commands\UpdateIssueDetailsCommand.cs" />

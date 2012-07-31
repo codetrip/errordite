@@ -42,7 +42,7 @@ namespace Errordite.Web.Models.Issues
                 UserName = users.First(u => u.Id == issue.UserId).FullName,
                 ApplicationName = applications.First(a => a.Id == issue.ApplicationId).Name,
                 Selected = true,
-                Priority = Resources.Issue.ResourceManager.GetString("IssuePriority_{0}".FormatWith(issue.MatchPriority.ToString())),
+                Priority = Resources.IssueResources.ResourceManager.GetString("IssuePriority_{0}".FormatWith(issue.MatchPriority.ToString())),
                 FormKey = "issue_{0}".FormatWith(issue.FriendlyId),
                 ApplicationId = issue.ApplicationId
             }).ToList();

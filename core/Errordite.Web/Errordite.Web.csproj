@@ -192,10 +192,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Home.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\Issue.designer.cs">
+    <Compile Include="App_GlobalResources\IssueResources.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Issue.resx</DependentUpon>
+      <DependentUpon>IssueResources.resx</DependentUpon>
     </Compile>
     <Compile Include="App_GlobalResources\Errors.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -651,9 +651,9 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_GlobalResources\Issue.resx">
+    <Content Include="App_GlobalResources\IssueResources.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>Issue.designer.cs</LastGenOutput>
+      <LastGenOutput>IssueResources1.designer.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <ItemGroup>

@@ -165,7 +165,9 @@ namespace Errordite.Core.Issues.Commands
             currentIssue.History.Add(new IssueHistory
             {
                 DateAddedUtc = DateTime.UtcNow,
-                Message = Resources.CoreResources.HistoryRulesAdjusted.FormatWith(request.CurrentUser.FullName, request.CurrentUser.Email, tempIssue.FriendlyId),
+                //Message = Resources.CoreResources.HistoryRulesAdjusted.FormatWith(request.CurrentUser.FullName, request.CurrentUser.Email, tempIssue.FriendlyId),
+                Type = HistoryItemType.RulesAdjustedCreatedNewIssue,
+                SpawnedIssueId = tempIssue.Id,
                 SystemMessage = true,
             });
         }
@@ -190,8 +192,11 @@ namespace Errordite.Core.Issues.Commands
                     new IssueHistory
                     {
                         DateAddedUtc = DateTime.UtcNow,
-                        Message = Resources.CoreResources.HistoryCreatedByRulesAdjustment.FormatWith(currentIssue.FriendlyId, request.CurrentUser.FullName, request.CurrentUser.Email),
+                        //Message = Resources.CoreResources.HistoryCreatedByRulesAdjustment.FormatWith(currentIssue.FriendlyId, request.CurrentUser.FullName, request.CurrentUser.Email),
                         SystemMessage = true,
+                        Type = HistoryItemType.CreatedByRuleAdjustment,
+                        SpawningIssueId = currentIssue.Id,
+                        UserId = request.CurrentUser.Id,
                     }
                 }
             };

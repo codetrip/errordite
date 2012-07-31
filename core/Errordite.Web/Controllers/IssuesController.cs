@@ -142,9 +142,9 @@ namespace Errordite.Web.Controllers
                 viewModel.Rules = ruleViewModels;
             }
 
-            viewModel.Priorities = MatchPriority.Medium.ToSelectedList(Resources.Issue.ResourceManager, false, MatchPriority.Medium.ToString());
+            viewModel.Priorities = MatchPriority.Medium.ToSelectedList(Resources.IssueResources.ResourceManager, false, MatchPriority.Medium.ToString());
             viewModel.Users = users.Items.ToSelectList(u => u.FriendlyId, u => "{0} {1}".FormatWith(u.FirstName, u.LastName), sortListBy: SortSelectListBy.Text);
-            viewModel.Statuses = IssueStatus.Acknowledged.ToSelectedList(Resources.Issue.ResourceManager, false, IssueStatus.Acknowledged.ToString());
+            viewModel.Statuses = IssueStatus.Acknowledged.ToSelectedList(Resources.IssueResources.ResourceManager, false, IssueStatus.Acknowledged.ToString());
             viewModel.Applications = applications.Items.ToSelectList(a => a.FriendlyId, a => a.Name, sortListBy: SortSelectListBy.Text);
             
             return View(viewModel);
@@ -170,9 +170,9 @@ namespace Errordite.Web.Controllers
             });
 
             if (result.Status == AddIssueStatus.SameRulesExist)
-                ErrorNotification(Resources.Issue.SameRulesExist.FormatWith(Url.Issue(result.IssueId)));
+                ErrorNotification(Resources.IssueResources.SameRulesExist.FormatWith(Url.Issue(result.IssueId)));
             else
-                ConfirmationNotification(Resources.Issue.AddedSuccessfully);
+                ConfirmationNotification(Resources.IssueResources.AddedSuccessfully);
 
             return Redirect(Url.Issue(result.IssueId));
         }
@@ -193,12 +193,12 @@ namespace Errordite.Web.Controllers
             }).Issue;
 
             viewModel.RightIssueName = rightIssue.Name;
-            viewModel.RightIssueStatus = Resources.Issue.ResourceManager.GetString("IssueStatus_{0}".FormatWith(rightIssue.Status));
-            viewModel.RightIssuePriority = Resources.Issue.ResourceManager.GetString("IssuePriority_{0}".FormatWith(rightIssue.MatchPriority));
+            viewModel.RightIssueStatus = Resources.IssueResources.ResourceManager.GetString("IssueStatus_{0}".FormatWith(rightIssue.Status));
+            viewModel.RightIssuePriority = Resources.IssueResources.ResourceManager.GetString("IssuePriority_{0}".FormatWith(rightIssue.MatchPriority));
 
             viewModel.LeftIssueName = leftIssue.Name;
-            viewModel.LeftIssueStatus = Resources.Issue.ResourceManager.GetString("IssueStatus_{0}".FormatWith(leftIssue.Status));
-            viewModel.LeftIssuePriority = Resources.Issue.ResourceManager.GetString("IssuePriority_{0}".FormatWith(leftIssue.MatchPriority));
+            viewModel.LeftIssueStatus = Resources.IssueResources.ResourceManager.GetString("IssueStatus_{0}".FormatWith(leftIssue.Status));
+            viewModel.LeftIssuePriority = Resources.IssueResources.ResourceManager.GetString("IssuePriority_{0}".FormatWith(leftIssue.MatchPriority));
 
             return View(viewModel);
         }
@@ -213,7 +213,7 @@ namespace Errordite.Web.Controllers
                 CurrentUser = Core.AppContext.CurrentUser
             });
 
-            SetNotification(response.Status, Resources.Issue.ResourceManager);
+            SetNotification(response.Status, Resources.IssueResources.ResourceManager);
 
             return Redirect(Url.Issue(viewModel.MergeToId));
         }
