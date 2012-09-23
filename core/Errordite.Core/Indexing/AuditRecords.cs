@@ -21,30 +21,8 @@ namespace Errordite.Core.Indexing
                 doc.AuditRecordType
             };
 
-            Indexes = new Dictionary<Expression<Func<AuditRecord, object>>, FieldIndexing>
-            {
-                {e => e.OrganisationId, FieldIndexing.Analyzed},
-                {e => e.CompletedOnUtc, FieldIndexing.Analyzed},
-                {e => e.Status, FieldIndexing.Analyzed},
-                {e => e.AuditRecordType, FieldIndexing.Analyzed}
-            };
-
-            Stores = new Dictionary<Expression<Func<AuditRecord, object>>, FieldStorage>
-            {
-                {e => e.OrganisationId, FieldStorage.No},
-                {e => e.CompletedOnUtc, FieldStorage.No},
-                {e => e.Status, FieldStorage.No},
-                {e => e.AuditRecordType, FieldStorage.No}
-            };
-
             Sort(e => e.CompletedOnUtc, SortOptions.String);
 
-            Analyzers = new Dictionary<Expression<Func<AuditRecord, object>>, string>
-            {
-                { e => e.OrganisationId, typeof(KeywordAnalyzer).AssemblyQualifiedName },
-                { e => e.Status, typeof(KeywordAnalyzer).AssemblyQualifiedName },
-                { e => e.AuditRecordType, typeof(KeywordAnalyzer).AssemblyQualifiedName }
-            };
         }
     }
 }

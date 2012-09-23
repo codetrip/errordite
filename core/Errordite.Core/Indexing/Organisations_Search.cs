@@ -1,10 +1,5 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using Errordite.Core.Domain.Organisation;
-using Lucene.Net.Analysis;
-using Raven.Abstractions.Indexing;
 using Raven.Client.Indexes;
 
 namespace Errordite.Core.Indexing
@@ -19,18 +14,6 @@ namespace Errordite.Core.Indexing
                                 o.Id,
                                 o.Name
                             };
-
-            Analyzers = new Dictionary<Expression<Func<Organisation, object>>, string>
-            {
-                { e => e.Id, typeof(KeywordAnalyzer).AssemblyQualifiedName },
-                { e => e.Name, typeof(KeywordAnalyzer).AssemblyQualifiedName }
-            };
-
-            Stores = new Dictionary<Expression<Func<Organisation, object>>, FieldStorage>
-            {
-                {e => e.Id, FieldStorage.No},
-                {e => e.Name, FieldStorage.No}
-            };
         }
     }
 }

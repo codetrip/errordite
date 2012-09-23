@@ -20,20 +20,6 @@ namespace Errordite.Core.Indexing
                                 g.OrganisationId,
                                 g.Name
                             };
-
-            Analyzers = new Dictionary<Expression<Func<Group, object>>, string>
-            {
-                { e => e.Id, typeof(KeywordAnalyzer).AssemblyQualifiedName },
-                { e => e.OrganisationId, typeof(KeywordAnalyzer).AssemblyQualifiedName },
-                { e => e.Name, typeof(KeywordAnalyzer).AssemblyQualifiedName }
-            };
-
-            Stores = new Dictionary<Expression<Func<Group, object>>, FieldStorage>
-            {
-                {e => e.Id, FieldStorage.No},
-                {e => e.OrganisationId, FieldStorage.No},
-                {e => e.Name, FieldStorage.No}
-            };
         }
     }
 }
