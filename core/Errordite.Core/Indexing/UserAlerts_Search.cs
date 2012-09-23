@@ -19,20 +19,6 @@ namespace Errordite.Core.Indexing
                                 alert.UserId,
                                 alert.SentUtc
                             };
-
-            Analyzers = new Dictionary<Expression<Func<UserAlert, object>>, string>
-            {
-                { e => e.UserId, typeof(KeywordAnalyzer).AssemblyQualifiedName },
-                { e => e.SentUtc, typeof(KeywordAnalyzer).AssemblyQualifiedName }
-            };
-
-            Stores = new Dictionary<Expression<Func<UserAlert, object>>, FieldStorage>
-            {
-                {e => e.UserId, FieldStorage.No},
-                {e => e.SentUtc, FieldStorage.No}
-            };
-
-            Sort(e => e.SentUtc, SortOptions.String);
         }
     }
 }

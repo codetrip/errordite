@@ -45,47 +45,17 @@ namespace Errordite.Core.Indexing
 
             Indexes = new Dictionary<Expression<Func<IssueDocument, object>>, FieldIndexing>
             {
-                {e => e.ApplicationId, FieldIndexing.Analyzed},
-                {e => e.LastErrorUtc, FieldIndexing.Analyzed},
-                {e => e.Status, FieldIndexing.Analyzed},
-                {e => e.UserId, FieldIndexing.Analyzed},
-                {e => e.Id, FieldIndexing.Analyzed},
                 {e => e.Name, FieldIndexing.Analyzed},
-                {e => e.OrganisationId, FieldIndexing.Analyzed},
-                {e => e.ErrorCount, FieldIndexing.Analyzed},
-                {e => e.RulesHash, FieldIndexing.Analyzed},
-                {e => e.FriendlyId, FieldIndexing.Analyzed}
             };
 
-            Stores = new Dictionary<Expression<Func<IssueDocument, object>>, FieldStorage>
-            {
-                {e => e.ApplicationId, FieldStorage.No},
-                {e => e.LastErrorUtc, FieldStorage.No},
-                {e => e.Status, FieldStorage.No},
-                {e => e.UserId, FieldStorage.No},
-                {e => e.Id, FieldStorage.No},
-                {e => e.Name, FieldStorage.No},
-                {e => e.OrganisationId, FieldStorage.No},
-                {e => e.ErrorCount, FieldStorage.No},
-                {e => e.RulesHash, FieldStorage.No},
-                {e => e.FriendlyId, FieldStorage.No}
-            };
-
+            Analyzers = new Dictionary<Expression<Func<IssueDocument, object>>, string>
+                {
+                    {e => e.Name, typeof(SimpleAnalyzer).FullName}, //SimpleAnalyzer tokenizes on all non-alphanumeric characters
+                };
+            
             Sort(e => e.LastErrorUtc, SortOptions.String);
             Sort(e => e.ErrorCount, SortOptions.Int);
             Sort(e => e.FriendlyId, SortOptions.Int);
-
-            Analyzers = new Dictionary<Expression<Func<IssueDocument, object>>, string>
-            {
-                { e => e.ApplicationId, typeof(KeywordAnalyzer).AssemblyQualifiedName },
-                { e => e.Status, typeof(KeywordAnalyzer).AssemblyQualifiedName },
-                { e => e.UserId, typeof(KeywordAnalyzer).AssemblyQualifiedName },
-                { e => e.Id, typeof(KeywordAnalyzer).AssemblyQualifiedName },
-                { e => e.OrganisationId, typeof(KeywordAnalyzer).AssemblyQualifiedName },
-                { e => e.ErrorCount, typeof(KeywordAnalyzer).AssemblyQualifiedName },
-                { e => e.RulesHash, typeof(KeywordAnalyzer).AssemblyQualifiedName },
-                { e => e.FriendlyId, typeof(KeywordAnalyzer).AssemblyQualifiedName }
-            };
         }
     }
 }

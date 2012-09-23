@@ -54,27 +54,15 @@ namespace Errordite.Core.Indexing
                                 error.Id
                             };
 
-            Analyzers = new Dictionary<Expression<Func<ErrorDocument, object>>, string>
-            {
-                { e => e.Query, typeof(StandardAnalyzer).AssemblyQualifiedName},
-                { e => e.IssueId, typeof(KeywordAnalyzer).AssemblyQualifiedName },
-                { e => e.Classified, typeof(KeywordAnalyzer).AssemblyQualifiedName },
-                { e => e.OrganisationId, typeof(KeywordAnalyzer).AssemblyQualifiedName },
-                { e => e.ApplicationId, typeof(KeywordAnalyzer).AssemblyQualifiedName },
-                { e => e.IssueId, typeof(KeywordAnalyzer).AssemblyQualifiedName },
-                { e => e.Id, typeof(KeywordAnalyzer).AssemblyQualifiedName }
-            };
+            Indexes = new Dictionary<Expression<Func<ErrorDocument, object>>, FieldIndexing>
+                {
+                    {e => e.Query, FieldIndexing.Analyzed},
+                };
 
-            Stores = new Dictionary<Expression<Func<ErrorDocument, object>>, FieldStorage>
-            {
-                {e => e.Query, FieldStorage.No},
-                {e => e.TimestampUtc, FieldStorage.No},
-                {e => e.Classified, FieldStorage.No},
-                {e => e.OrganisationId, FieldStorage.No},
-                {e => e.ApplicationId, FieldStorage.No},
-                {e => e.IssueId, FieldStorage.No},
-                {e => e.Id, FieldStorage.No}
-            };
+            Analyzers = new Dictionary<Expression<Func<ErrorDocument, object>>, string>
+                {
+                    {e => e.Query, typeof(SimpleAnalyzer).FullName}, //SimpleAnalyzer tokenizes on all non-alphanumeric characters
+                };
 
             Sort(e => e.TimestampUtc, SortOptions.String);
         }
