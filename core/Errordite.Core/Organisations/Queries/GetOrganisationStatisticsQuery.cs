@@ -33,7 +33,7 @@ namespace Errordite.Core.Organisations.Queries
 
             foreach(string status in Enum.GetNames(typeof(IssueStatus)))
             {
-                var facetValue = statusFacetValues.FirstOrDefault(f => f.Range == status);
+                var facetValue = statusFacetValues.FirstOrDefault(f => f.Range.Equals(status, StringComparison.OrdinalIgnoreCase));
 
                 if(facetValue != null)
                 {
