@@ -1,7 +1,7 @@
 (function() {
 
   jQuery(function() {
-    var $issue, loadTabData, renderDistribution, renderErrors, setReferenceLink;
+    var $issue, loadTabData, renderErrors, renderReports, setReferenceLink;
     $issue = $('div#issue');
     if ($issue.length > 0) {
       setReferenceLink = function() {
@@ -16,28 +16,50 @@
       loadTabData = function($tab) {
         if (!$tab.data('loaded')) {
           if ($tab.data("val") === "reports") {
-            renderDistribution();
+            renderReports();
           } else if ($tab.data("val") === "errors") {
             renderErrors('/issue/errors?' + $('form#errorsForm').serialize());
           }
           return $tab.data('loaded', true);
         }
       };
-      renderDistribution = function() {
-        return $.get("/issue/getreportdata?issueId=" + $issue.find('input[type="hidden"]#IssueId').val(), function(data) {
-          var d;
-          d = $.parseJSON(data.data);
-          return $.jqplot('distribution', d.series, {
+      renderReports = function() {
+        return $.get("/issue/getreportdata?issueId=" + $issue.find('#IssueId').val(), function(d) {
+          $.jqplot('hour-graph', [d.ByHour.y], {
             seriesDefaults: {
               renderer: $.jqplot.BarRenderer
             },
             axes: {
               xaxis: {
                 renderer: $.jqplot.CategoryAxisRenderer,
-                ticks: d.ticks
+                ticks: d.ByHour.x
               }
             }
           });
+          if (d.ByDate != null) {
+            return $.jqplot('date-graph', [_.zip(d.ByDate.x, d.ByDate.y)], {
+              seriesDefaults: {
+                renderer: $.jqplot.LineRenderer
+              },
+              axes: {
+                xaxis: {
+                  renderer: $.jqplot.DateAxisRenderer,
+                  tickOptions: {
+                    formatString: '%a %#d %b %y'
+                  }
+                },
+                yaxis: {
+                  min: 0
+                }
+              },
+              highlighter: {
+                show: true,
+                sizeAdjust: 7.5
+              }
+            });
+          } else {
+            return $('#date-graph-box').hide();
+          }
         });
       };
       renderErrors = function(url) {

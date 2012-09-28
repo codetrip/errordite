@@ -148,9 +148,11 @@
     <Compile Include="ActionFilters\ImportViewData.cs" />
     <Compile Include="ActionFilters\ExportViewData.cs" />
     <Compile Include="ActionResults\JsonErrorResult.cs" />
+    <Compile Include="ActionResults\JsonNetResult.cs" />
     <Compile Include="ActionResults\JsonResultObject.cs" />
     <Compile Include="ActionResults\JsonSuccessHtmlResult.cs" />
     <Compile Include="ActionResults\JsonSuccessResult.cs" />
+    <Compile Include="ActionResults\PlainJsonNetResult.cs" />
     <Compile Include="ActionSelectors\IfButtonClickedAttribute.cs" />
     <Compile Include="App_GlobalResources\Admin.Designer.cs">
       <AutoGen>True</AutoGen>
