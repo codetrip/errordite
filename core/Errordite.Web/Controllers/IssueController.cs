@@ -114,7 +114,9 @@ namespace Errordite.Web.Controllers
         [ImportViewData]
         public ActionResult GetReportData(string issueId)
         {
-            var results = Core.Session.Raven.Query<ByHourReduceResult, Errors_ByIssueByHour>()
+            var data = new Dictionary<string, object>();
+
+            var hourResults = Core.Session.Raven.Query<ByHourReduceResult, Errors_ByIssueByHour>()
                 .Where(i => i.IssueId == Errordite.Core.Domain.Error.Issue.GetId(issueId))
                 .AsEnumerable()
                 .Select(h => new
@@ -125,15 +127,40 @@ namespace Errordite.Web.Controllers
 
             var allHourResults =
                 (from hour in Enumerable.Range(0, 24)
-                 join result in results on hour equals result.hour into countsTemp
+                 join result in hourResults on hour equals result.hour into countsTemp
                  from hours in countsTemp.DefaultIfEmpty()
                  select new {hour, count = hours.IfPoss(h => h.count)}).ToArray();
 
-            return new JsonSuccessResult(JsonConvert.SerializeObject(new
+            data.Add("ByHour", new
+                {
+                    x = allHourResults.Select(h => h.hour.ToString("0")),
+                    y = allHourResults.Select(h => h.count)
+                });
+
+
+            var dateResults = Core.Session.Raven.Query<ByDateReduceResult, Errors_ByIssueByDate>()
+                .Where(i => i.IssueId == Issue.GetId(issueId))
+                .OrderBy(i => i.Date)
+                .ToList();
+
+            if (dateResults.Any())
             {
-                ticks = allHourResults.Select(h => h.hour.ToString("0")),
-                series = new[] { allHourResults.Select(h => h.count).ToArray() },
-            }), true);
+                var allDateResults =
+                (
+                from date in Enumerable.Range(0, (dateResults.Last().Date - dateResults.First().Date).Days).Select(d => dateResults.First().Date.AddDays(d))
+                join result in dateResults on date equals result.Date into countsTemp
+                from dates in countsTemp.DefaultIfEmpty()
+                select new { date, count = dates.IfPoss(d => d.Count) }
+                ).ToArray();
+
+                data.Add("ByDate", new
+                    {
+                        x = allDateResults.Select(d => d.date.ToString("yyyy-MM-dd")),
+                        y = allDateResults.Select(d => d.count)
+                    });
+            }
+
+            return new PlainJsonNetResult(data, true);
         }
 
         [ImportViewData]

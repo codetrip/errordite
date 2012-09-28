@@ -15,27 +15,41 @@ jQuery ->
 		loadTabData = ($tab) ->
 			if not $tab.data 'loaded'
 				if $tab.data("val") == "reports"				
-					renderDistribution()
+					renderReports()
 				else if $tab.data("val") == "errors"
 					renderErrors '/issue/errors?' + $('form#errorsForm').serialize()
 				$tab.data 'loaded', true	
 
-		renderDistribution = () -> 
-			$.get "/issue/getreportdata?issueId=" + $issue.find('input[type="hidden"]#IssueId').val(),
-				(data) -> 
-					d = $.parseJSON(data.data)
-
-					$.jqplot('distribution', d.series, {
-						seriesDefaults: {
-							renderer:$.jqplot.BarRenderer
-						},
-						axes: {
-							xaxis: {
-							renderer: $.jqplot.CategoryAxisRenderer,
-							ticks: d.ticks
-							}
-						}
-					});
+		renderReports = () -> 
+			$.get "/issue/getreportdata?issueId=" + $issue.find('#IssueId').val(),
+				(d) -> 										
+					$.jqplot 'hour-graph', [d.ByHour.y], 
+						seriesDefaults: 
+							renderer:$.jqplot.BarRenderer						
+						axes: 
+							xaxis: 
+								renderer: $.jqplot.CategoryAxisRenderer
+								ticks: d.ByHour.x							
+				
+					if d.ByDate?						
+						$.jqplot 'date-graph', 
+							[_.zip d.ByDate.x, d.ByDate.y],
+							seriesDefaults:
+								renderer:$.jqplot.LineRenderer
+							axes:
+								xaxis:
+									renderer: $.jqplot.DateAxisRenderer
+									tickOptions:
+										formatString:'%a %#d %b %y'
+									#min: _.min d.ByDate.x
+									#ticks: d[1].ticks
+								yaxis:
+									min: 0
+							highlighter:
+								show: true
+								sizeAdjust: 7.5
+					else
+						$('#date-graph-box').hide()
 
 		renderErrors = (url) -> 
 			$node = $issue.find('div#error-criteria')

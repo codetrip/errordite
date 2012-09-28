@@ -429,7 +429,7 @@ pre.lang-cs .typ { color: #2b91af; }
 #rules-new-issue select, #rules-orig-issue select { width: 150px;}
 #rules-new-issue input[type='text'], #rules-orig-issue input[type='text']  { width: 375px;}
 
-#distribution { margin:10px 0 0 25px;}
+.graph { margin:10px 0 20px 25px;}
 
 #rules { }
 #rules .col450 { margin: 0; padding: 0;}
