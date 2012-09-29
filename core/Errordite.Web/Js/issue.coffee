@@ -17,7 +17,7 @@ jQuery ->
 				if $tab.data("val") == "reports"				
 					renderReports()
 				else if $tab.data("val") == "errors"
-					renderErrors '/issue/errors?' + $('form#errorsForm').serialize()
+					renderErrors()
 				$tab.data 'loaded', true	
 
 		renderReports = () -> 
@@ -31,7 +31,7 @@ jQuery ->
 								renderer: $.jqplot.CategoryAxisRenderer
 								ticks: d.ByHour.x							
 				
-					if d.ByDate?						
+					if d.ByDate? && d.ByDate.x.length && d.ByDate.y.length						
 						$.jqplot 'date-graph', 
 							[_.zip d.ByDate.x, d.ByDate.y],
 							seriesDefaults:
@@ -51,48 +51,57 @@ jQuery ->
 					else
 						$('#date-graph-box').hide()
 
-		renderErrors = (url) -> 
-			$node = $issue.find('div#error-criteria')
+		renderErrors = () -> 
+			url = '/issue/errors?' + $('#errorsForm').serialize()
+			$node = $issue.find('#error-criteria')
 			$.get url,
 				(data) -> 
 					$node.html(data)
 					init = new Initalisation()
-					#init.init(true,	(uri) -> renderErrors uri);
 					init.datepicker($issue);
-					$('div.content').animate({scrollTop : 0},'slow')
+					$('div.content').animate 
+						scrollTop : 0,
+						'slow'		
 		
-		$(document).ready () -> 
-			loadTabData($ 'ul#issue-tabs li.active a.tablink')
+		loadTabData($ 'ul#issue-tabs li.active a.tablink')
 			
-			setReferenceLink()
+		setReferenceLink()
 
-			$issue.delegate ':input[name=Reference]', 'change', setReferenceLink
+		$issue.delegate ':input[name=Reference]', 'change', setReferenceLink
 
-			$issue.delegate 'input[type="button"].confirm', 'click', () ->
-				$this = $ this
-				if confirm "Are you sure you want to delete all errors associated with this issue?" 
-					$.post '/issue/purge', 'issueId=' + $this.attr('data-val'), (data) -> 
-						renderErrors '/issue/errors?issueId=' + $this.attr('data-val')
-						$('span#instance-count').text "0"
+		$issue.delegate 'input[type="button"].confirm', 'click', () ->
+			$this = $ this
+			if confirm "Are you sure you want to delete all errors associated with this issue?" 
+				$.post '/issue/purge', 'issueId=' + $this.attr('data-val'), (data) -> 
+					renderErrors()
+					$('span#instance-count').text "0"
 
-			$issue.delegate 'form#errorsForm', 'submit', (e) ->
-				e.preventDefault()
-				$this = $ this
-				renderErrors '/issue/errors?' + $this.serialize()
+		$issue.delegate 'form#errorsForm', 'submit', (e) ->
+			e.preventDefault()
+			$this = $ this
+			renderErrors()
 
-			$issue.delegate 'select#Status', 'change', () -> 
-				$this = $ this
+		$issue.delegate 'select#Status', 'change', () -> 
+			$this = $ this
 
-				if $this.val() == 'Ignorable'
-					$issue.find('li.checkbox').removeClass('hidden');
-				else
-					$issue.find('li.checkbox').addClass('hidden');
+			if $this.val() == 'Ignorable'
+				$issue.find('li.checkbox').removeClass('hidden');
+			else
+				$issue.find('li.checkbox').addClass('hidden');		
 
-		
+		if $issue.find('select#Status').val() == 'Ignorable'
+			$issue.find('li.checkbox').removeClass('hidden')
 
-			if $issue.find('select#Status').val() == 'Ignorable'
-				$issue.find('li.checkbox').removeClass('hidden')
+		$('#issue-tabs .tablink').bind 'shown', (e) -> 
+			loadTabData $ e.currentTarget		
 
-			$('#issue-tabs .tablink').bind 'shown', (e) -> 
-				loadTabData $ e.currentTarget		
+		$issue.delegate '.sort a[data-pgst]', 'click', (e) -> 
+			e.preventDefault()
+			$this = $ this
+			$('#pgst').val $this.data('pgst')
+			$('#pgsd').val $this.data('pgsd')
+			renderErrors()
+			false
+				
+			
 

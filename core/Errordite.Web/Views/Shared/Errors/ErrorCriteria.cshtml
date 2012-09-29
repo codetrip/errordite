@@ -5,8 +5,10 @@
 @using (Html.BeginForm(Model.Action, Model.Controller, FormMethod.Get, new { id = "errorsForm"}))
 {
     @Html.HiddenFor(m => m.IssueId)
+    <input type="hidden" name="pgst" value="@Model.Sort" id="pgst"/>
+    <input type="hidden" name="pgsd" value="@Model.SortDescending" id="pgsd"/>
 
-    if(Model.Controller == "issue")
+    if (Model.Controller == "issue")
     {
         @Html.HiddenFor(m => m.ApplicationId)
         @Html.Hidden("tab", "errors")

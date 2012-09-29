@@ -199,8 +199,9 @@ namespace Errordite.Web.Controllers
                 ApplicationId = postModel.ApplicationId,
                 HideIssues = true,
                 IssueId = postModel.IssueId,
-                Applications = Core.GetApplications().Items.ToSelectList(a => a.FriendlyId, a => a.Name, u => u.FriendlyId == postModel.ApplicationId, Resources.Shared.Application, string.Empty, SortSelectListBy.Text)
-               
+                Applications = Core.GetApplications().Items.ToSelectList(a => a.FriendlyId, a => a.Name, u => u.FriendlyId == postModel.ApplicationId, Resources.Shared.Application, string.Empty, SortSelectListBy.Text),
+                Sort = paging.Sort,
+                SortDescending = paging.SortDescending,
             };
 
             model.Paging.Tab = IssueTab.Errors.ToString();
