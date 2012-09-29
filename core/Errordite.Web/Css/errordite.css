@@ -295,6 +295,7 @@ div.table div.trow {float: left; width:200px;padding: 0 0 7px 0; }
 
 th a { color: #fff;text-decoration: none;}
 th a:hover { color: #fff;text-decoration: underline;}
+.sort-selected { text-decoration: underline;}
 
 /*-----------------------------------------------------------------------------------*/
 /*	8.	Pagination

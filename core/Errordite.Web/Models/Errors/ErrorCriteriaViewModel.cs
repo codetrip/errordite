@@ -18,6 +18,8 @@ namespace Errordite.Web.Models.Errors
         public bool HideIssues { get; set; }
         public IList<ErrorInstanceViewModel> Errors { get; set; }
         public IEnumerable<SelectListItem> Applications { get; set; }
+        public string Sort { get; set; }
+        public bool SortDescending { get; set; }
     }
 
     public class ErrorInstanceViewModel

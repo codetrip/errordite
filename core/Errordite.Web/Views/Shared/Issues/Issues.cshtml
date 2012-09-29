@@ -13,14 +13,15 @@
             <thead>
                 <tr>
                     <th><input type="checkbox"/></th>
-                    <th class="sort">@Html.SortLink(Model.Paging.PagingId, "&#8659", "FriendlyId", false) <span>Id</span> @Html.SortLink(Model.Paging.PagingId, "&#8657", "FriendlyId", true)</th>
+                    <th class="sort"><span>Id</span> 
+                        @Html.SortLinks(Model.Paging.PagingId, "FriendlyId")
+                    </th>
                     <th>Name</th>
                     <th>Status</th>
                     <th>Assigned To</th>
                     <th>Application</th>
-                    <th class="sort">@Html.SortLink(Model.Paging.PagingId, "&#8659", "ErrorCount", false) <span>Error Count</span> @Html.SortLink(Model.Paging.PagingId, "&#8657", "ErrorCount", true)</th>
-                    <th class="sort">@Html.SortLink(Model.Paging.PagingId, "&#8659", "LastErrorUtc", false) <span>Last Error</span> @Html.SortLink(Model.Paging.PagingId, "&#8657", "LastErrorUtc", true)</th>
-                    <th>Match Priority</th>
+                    <th class="sort"><span>Error Count</span> @Html.SortLinks(Model.Paging.PagingId, "ErrorCount")</th>
+                    <th class="sort"><span>Last Error</span> @Html.SortLinks(Model.Paging.PagingId, "LastErrorUtc") </th>
                 </tr>
             </thead>
             <tbody>
@@ -35,7 +36,6 @@
                         <td>@issue.ApplicationName</td>
                         <td><span class="badge badge-info">@issue.ErrorCount</span></td>
                         <td>@issue.LastErrorUtc.ToLocalTimeFormatted()</td>
-                        <td>@issue.Priority</td>
                     </tr>
                 }
             </tbody>

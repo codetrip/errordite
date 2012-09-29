@@ -10,7 +10,7 @@
                     <th></th>
                     <th>Exception</th>            
                     <th>Message</th>     
-                    <th class="sort">@Html.SortLink(Model.Paging.PagingId, "&#8659", "Timestamp", true) <span>Received On</span> @Html.SortLink(Model.Paging.PagingId, "&#8657", "Timestamp", false)</th>
+                    <th class="sort"><span>Received On</span> @Html.SortLinks(Model.Paging.PagingId, "Timestamp")</th>
                     <th>Machine</th>
                     @if (!Model.HideIssues)
                     {
