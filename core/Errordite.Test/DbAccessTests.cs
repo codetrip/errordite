@@ -59,11 +59,11 @@ namespace Errordite.Test
                 Error = new Error
                 {
                     TimestampUtc = DateTime.UtcNow,
-                    ExceptionInfo = new ExceptionInfo
+                    ExceptionInfos = new[] {new ExceptionInfo
                     {
                         Message = "test message",
                         StackTrace = "test text 2", 
-                    }
+                    }}.ToList()
                 }
             });
 
@@ -72,11 +72,11 @@ namespace Errordite.Test
                 Error = new Error
                 {
                     TimestampUtc = DateTime.UtcNow,
-                    ExceptionInfo = new ExceptionInfo
+                    ExceptionInfos = new[] {new ExceptionInfo
                     {
                         Message = "test message",
                         StackTrace = "test text 2",
-                    }
+                    }}.ToList()
                 }
             });
 
@@ -106,7 +106,7 @@ namespace Errordite.Test
 
             var tcFromDb = session.Load<TestClass>(tc1.Id);
 
-            var err = new Error { ExceptionInfo = new ExceptionInfo { Type = "test" } };
+            var err = new Error { ExceptionInfos = new[]{new ExceptionInfo { Type = "test" } }.ToList()};
 
             Assert.That(tcFromDb.SGetter.Compile()(err), Is.EqualTo("test"));
         }

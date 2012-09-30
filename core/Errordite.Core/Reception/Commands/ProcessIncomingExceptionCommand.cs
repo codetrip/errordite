@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using CodeTrip.Core;
 using CodeTrip.Core.Extensions;
@@ -111,7 +112,7 @@ namespace Errordite.Core.Reception.Commands
                 Url = GetUrl(clientError),
                 UserAgent = GetUserAgent(clientError),
                 OrganisationId = application == null ? null : application.OrganisationId,
-                ExceptionInfo = GetErrorInfo(clientError.ExceptionInfo),
+                ExceptionInfos = GetErrorInfo(clientError.ExceptionInfo).ToList(),
                 Messages = clientError.Messages == null ? null : clientError.Messages.Select(m => new TraceMessage
                 {
                     Level = m.Level,
@@ -124,26 +125,27 @@ namespace Errordite.Core.Reception.Commands
             return instance;
         }
 
-        private Domain.Error.ExceptionInfo GetErrorInfo(Client.Abstractions.ExceptionInfo exceptionInfo)
+        private IEnumerable<Domain.Error.ExceptionInfo> GetErrorInfo(Client.Abstractions.ExceptionInfo clientExceptionInfo)
         {
-            var errorInfo = new Domain.Error.ExceptionInfo
+            var exceptionInfo = new Domain.Error.ExceptionInfo
             {
-                StackTrace = exceptionInfo.StackTrace,
-                Message = exceptionInfo.Message,
-                Type = exceptionInfo.ExceptionType,
+                StackTrace = clientExceptionInfo.StackTrace,
+                Message = clientExceptionInfo.Message,
+                Type = clientExceptionInfo.ExceptionType,
                 //we do this because .'s in dictionary keys mean Raven querying is impossible as it is expecting a nested
                 //json object rather than a property with a . in its name..  
                 //the other problem is "some" (could be most, or all) non alphanumeric characters get replaced
                 //with an underscore in the dynamic index name, so we may need some way of encoding keys
-                ExtraData = exceptionInfo.Data == null ? null : exceptionInfo.Data.ToDictionary(kvp => kvp.Key.Replace('.', '_'), kvp => kvp.Value),
-                Module = exceptionInfo.Source,
-                MethodName = exceptionInfo.MethodName
+                ExtraData = clientExceptionInfo.Data == null ? null : clientExceptionInfo.Data.ToDictionary(kvp => kvp.Key.Replace('.', '_'), kvp => kvp.Value),
+                Module = clientExceptionInfo.Source,
+                MethodName = clientExceptionInfo.MethodName
             };
 
-            if (exceptionInfo.InnerExceptionInfo != null)
-                errorInfo.InnerExceptionInfo = GetErrorInfo(exceptionInfo.InnerExceptionInfo);
+            yield return exceptionInfo;
 
-            return errorInfo;
+            if (clientExceptionInfo.InnerExceptionInfo != null)
+                foreach (var innerExceptionInfo in GetErrorInfo(clientExceptionInfo.InnerExceptionInfo))
+                    yield return innerExceptionInfo;
         }
 
         /// <summary>

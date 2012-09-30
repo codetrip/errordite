@@ -60,14 +60,14 @@ namespace Errordite.Test.IntegrationTests
                     TimestampUtc = DateTime.UtcNow,
                     ApplicationId = app.Id,
                     OrganisationId = app.OrganisationId,
-                    ExceptionInfo = new Core.Domain.Error.ExceptionInfo
+                    ExceptionInfos = new[] {new Core.Domain.Error.ExceptionInfo
                     {
 
                         StackTrace = "Description1",
                         Type = "ExceptionType1",
                         Message = "Message1",
                         Module = "Source1"
-                    }
+                    }}.ToList()
                 }
             });
 
@@ -78,14 +78,14 @@ namespace Errordite.Test.IntegrationTests
                     MachineName = "MachineName1",
                     TimestampUtc = DateTime.UtcNow,
                     ApplicationId = app.Id,
-                    ExceptionInfo = new Core.Domain.Error.ExceptionInfo
+                    ExceptionInfos = new [] {new Core.Domain.Error.ExceptionInfo
                     {
 
                         StackTrace = "Description1",
                         Type = "ExceptionType1",
                         Message = "Message1",
                         Module = "Source1"
-                    }
+                    }}.ToList()
                 }
             });
 

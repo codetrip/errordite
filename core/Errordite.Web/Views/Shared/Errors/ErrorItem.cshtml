@@ -21,26 +21,25 @@
             <ul class="nav">
                 <li class="ui-tabs-selected">
                     <a href="#" data-val="exception" title="@Model.Error.ExceptionInfo.Type">
-                        <i class="icon-zoom-out"></i>@(Model.Error.ExceptionInfo.InnerExceptionInfo == null ? "" :  "Outer: ")@Model.Error.ExceptionInfo.Type.LastElement('.')
+                        <i class="icon-zoom-out"></i>@(Model.Error.ExceptionInfos.Count == 1 ? "" :  "Outer: ")@Model.Error.ExceptionInfo.Type.LastElement('.')
                     </a>
                 </li>
                 @{
-                    var inner = Model.Error.ExceptionInfo.InnerExceptionInfo;
-                    var count = 1;
-                }
-                @while(inner != null)
-                {
-                    <li>
-                        <a href="#" data-val="inner-@count" title="@inner.Type"><i class="icon-zoom-in"></i>Inner @count: @inner.Type.LastElement('.')</a>
-                    </li>
-                    inner = inner.InnerExceptionInfo;
-                    count++;
-                }
-                @if(Model.Error.Messages != null)
-                {
-                    <li>
-                        <a href="#" data-val="messages" title="Messages"><i class="icon-zoom-in"></i>Log Messages</a>
-                    </li>
+                    int count = 1;
+                    foreach (var inner in Model.Error.ExceptionInfos.Take(1))
+                    {
+
+                        <li>
+                            <a href="#" data-val="inner-@count" title="@inner.Type"><i class="icon-zoom-in"></i>Inner @(++count): @inner.Type.LastElement('.')</a>
+                        </li>
+                    }
+                    if (Model.Error.Messages != null)
+                     {
+                         <li>
+                             <a href="#" data-val="messages" title="Messages"><i class="icon-zoom-in"></i>Log Messages</a>
+                         </li>
+                     }
+
                 }
             </ul>
         </div>
@@ -48,17 +47,12 @@
             <div id="exception" class="inner-tab">
                 @Html.Partial("Errors/ErrorInfo", new ExceptionViewModel(Model.Error.ExceptionInfo, Model.Error.Url, Model.Error.UserAgent))
             </div>
-            @{
-                inner = Model.Error.ExceptionInfo.InnerExceptionInfo;
-                count = 1;
-            }
-            @while (inner != null)
+            @foreach(var inner in Model.Error.ExceptionInfos.Take(1))
+            
             {
                 <div id="inner-@count" class="inner-tab hidden">
                     @Html.Partial("Errors/ErrorInfo", new ExceptionViewModel(inner, null, Model.Error.UserAgent, true))
                 </div>
-                inner = inner.InnerExceptionInfo;
-                count++;
             }
             @if (Model.Error.Messages != null)
             {

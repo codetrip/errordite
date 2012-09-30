@@ -43,26 +43,19 @@ namespace Errordite.Core.Domain.Error
         public bool Classified { get; set; }
         [ProtoMember(8)]
         public string Url { get; set; }
-        [ProtoMember(9)]
-        public ExceptionInfo ExceptionInfo { get; set; }
+        /// <summary>
+        /// Here mainly for legacy reasons - for items serialized with nested ExceptionInfos rather than flattened into a single list,
+        /// we need a setter here to pull them all out on deserialisation.
+        /// </summary>
+        public ExceptionInfo ExceptionInfo { get { return ExceptionInfos.First(); } set { ExceptionInfos = value.RecursiveGetInfos().ToList(); }}
         [ProtoMember(10)]
         public string UserAgent { get; set; }
         [ProtoMember(11)]
         public bool TestError { get; set; }
         [ProtoMember(12)]
         public List<TraceMessage> Messages { get; set; }
-
-        /// <summary>
-        /// The inner exception infos flattened into an IEnumerable, used for querying in the Errors_Search index.
-        /// </summary>
-        [Raven.Imports.Newtonsoft.Json.JsonIgnore]
-        public IEnumerable<ExceptionInfo> ExceptionInfos
-        {
-            get
-            {
-                return ExceptionInfo == null ? new ExceptionInfo[0] : ExceptionInfo.RecursiveGetInfos();
-            }
-        }
+        [ProtoMember(13)]
+        public List<ExceptionInfo> ExceptionInfos { get; set; }
 
         [Raven.Imports.Newtonsoft.Json.JsonIgnore]
         public string FriendlyId { get { return Id == null ? string.Empty : Id.Split('/')[1]; } }
@@ -101,12 +94,14 @@ namespace Errordite.Core.Domain.Error
         public string MethodName { get; set; }
         [ProtoMember(6)]
         public string Module { get; set; }
-        [ProtoMember(7)]
+        /// <summary>
+        /// Legacy property.  Can delete once we no longer care about errors in db with this property set.
+        /// </summary>
         public ExceptionInfo InnerExceptionInfo { get; set; }
 
         internal IEnumerable<ExceptionInfo> RecursiveGetInfos()
         {
-            IEnumerable<ExceptionInfo> ret = new[] {this};
+            IEnumerable<ExceptionInfo> ret = new[] { this };
 
             if (InnerExceptionInfo != null)
                 ret = ret.Union(InnerExceptionInfo.RecursiveGetInfos());
