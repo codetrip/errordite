@@ -21,12 +21,12 @@
             <ul class="nav">
                 <li class="ui-tabs-selected">
                     <a href="#" data-val="exception" title="@Model.Error.ExceptionInfo.Type">
-                        <i class="icon-zoom-out"></i>@(Model.Error.ExceptionInfos.Count == 1 ? "" :  "Outer: ")@Model.Error.ExceptionInfo.Type.LastElement('.')
+                        <i class="icon-zoom-out"></i>@(Model.Error.ExceptionInfos.Length == 1 ? "" :  "Outer: ")@Model.Error.ExceptionInfo.Type.LastElement('.')
                     </a>
                 </li>
                 @{
                     int count = 1;
-                    foreach (var inner in Model.Error.ExceptionInfos.Take(1))
+                    foreach (var inner in Model.Error.ExceptionInfos.Skip(1))
                     {
 
                         <li>
@@ -47,7 +47,7 @@
             <div id="exception" class="inner-tab">
                 @Html.Partial("Errors/ErrorInfo", new ExceptionViewModel(Model.Error.ExceptionInfo, Model.Error.Url, Model.Error.UserAgent))
             </div>
-            @foreach(var inner in Model.Error.ExceptionInfos.Take(1))
+            @foreach(var inner in Model.Error.ExceptionInfos)
             
             {
                 <div id="inner-@count" class="inner-tab hidden">
