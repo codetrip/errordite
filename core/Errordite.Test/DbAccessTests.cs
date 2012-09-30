@@ -63,7 +63,7 @@ namespace Errordite.Test
                     {
                         Message = "test message",
                         StackTrace = "test text 2", 
-                    }}.ToList()
+                    }}.ToArray()
                 }
             });
 
@@ -76,7 +76,7 @@ namespace Errordite.Test
                     {
                         Message = "test message",
                         StackTrace = "test text 2",
-                    }}.ToList()
+                    }}.ToArray()
                 }
             });
 
@@ -106,7 +106,7 @@ namespace Errordite.Test
 
             var tcFromDb = session.Load<TestClass>(tc1.Id);
 
-            var err = new Error { ExceptionInfos = new[]{new ExceptionInfo { Type = "test" } }.ToList()};
+            var err = new Error { ExceptionInfos = new[] { new ExceptionInfo { Type = "test" } }.ToArray() };
 
             Assert.That(tcFromDb.SGetter.Compile()(err), Is.EqualTo("test"));
         }

@@ -112,7 +112,7 @@ namespace Errordite.Core.Reception.Commands
                 Url = GetUrl(clientError),
                 UserAgent = GetUserAgent(clientError),
                 OrganisationId = application == null ? null : application.OrganisationId,
-                ExceptionInfos = GetErrorInfo(clientError.ExceptionInfo).ToList(),
+                ExceptionInfos = GetErrorInfo(clientError.ExceptionInfo).ToArray(),
                 Messages = clientError.Messages == null ? null : clientError.Messages.Select(m => new TraceMessage
                 {
                     Level = m.Level,

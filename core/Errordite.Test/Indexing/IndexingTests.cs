@@ -1,7 +1,10 @@
 ﻿
 using Errordite.Core;
+using Errordite.Core.Domain.Error;
 using NUnit.Framework;
 using Raven.Abstractions.Data;
+using Raven.Client.Document;
+using System.Linq;
 
 namespace Errordite.Test.Indexing
 {
@@ -55,6 +58,12 @@ namespace Errordite.Test.Indexing
                 });
 
             Session.Commit();
+        }
+
+        [Test]
+        public void Test()
+        {
+            var error = Session.Raven.Query<Error>().First();
         }
     }
 }
