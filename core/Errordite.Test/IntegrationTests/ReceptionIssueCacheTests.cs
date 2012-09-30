@@ -142,14 +142,14 @@ namespace Errordite.Test.IntegrationTests
                     TimestampUtc = DateTime.UtcNow,
                     ApplicationId = "application/97",
                     OrganisationId = "organisations/1",
-                    ExceptionInfo = new ExceptionInfo
+                    ExceptionInfos = new[] { new ExceptionInfo
                     {
 
                         StackTrace = "Description1",
                         Type = "ExceptionType1",
                         Message = "Message1",
                         Module = "Source1"
-                    }
+                    }}.ToList()
                 },
                 new Error
                 {
@@ -157,14 +157,14 @@ namespace Errordite.Test.IntegrationTests
                     TimestampUtc = DateTime.UtcNow,
                     ApplicationId = "application/97",
                     OrganisationId = "organisations/1",
-                    ExceptionInfo = new ExceptionInfo
+                    ExceptionInfos = new[] {new ExceptionInfo
                     {
 
                         StackTrace = "Description1",
                         Type = "ExceptionType1",
                         Message = "Message1",
                         Module = "Source1"
-                    }
+                    }}.ToList()
                 }
             };
         }

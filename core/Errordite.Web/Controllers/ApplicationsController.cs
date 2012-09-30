@@ -244,7 +244,7 @@ namespace Errordite.Web.Controllers
             {
                 Error = new Error
                 {
-                    ExceptionInfo = new ExceptionInfo
+                    ExceptionInfos = new[]{ new ExceptionInfo
                     {
                         Type = "Errordite.TestException",
                         Message = "Test exception",
@@ -255,7 +255,7 @@ namespace Errordite.Web.Controllers
                         {
                             {"Url", "http://myapp.com/test?foo=1234"}
                         },
-                    },
+                    }}.ToList(),
                     MachineName = "Test Machine Name",
                     TimestampUtc = DateTime.UtcNow,
                     ApplicationId = application.Id,
