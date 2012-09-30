@@ -47,7 +47,7 @@ namespace Errordite.Core.Domain.Error
         /// Here mainly for legacy reasons - for items serialized with nested ExceptionInfos rather than flattened into a single list,
         /// we need a setter here to pull them all out on deserialisation.
         /// </summary>
-        public ExceptionInfo ExceptionInfo { get { return ExceptionInfos.First(); } set { ExceptionInfos = value.RecursiveGetInfos().ToList(); }}
+        public ExceptionInfo ExceptionInfo { get { return ExceptionInfos.First(); } set { ExceptionInfos = value.RecursiveGetInfos().ToArray(); }}
         [ProtoMember(10)]
         public string UserAgent { get; set; }
         [ProtoMember(11)]
@@ -55,7 +55,7 @@ namespace Errordite.Core.Domain.Error
         [ProtoMember(12)]
         public List<TraceMessage> Messages { get; set; }
         [ProtoMember(13)]
-        public List<ExceptionInfo> ExceptionInfos { get; set; }
+        public ExceptionInfo[] ExceptionInfos { get; set; }
 
         [Raven.Imports.Newtonsoft.Json.JsonIgnore]
         public string FriendlyId { get { return Id == null ? string.Empty : Id.Split('/')[1]; } }

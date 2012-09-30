@@ -255,7 +255,7 @@ namespace Errordite.Web.Controllers
                         {
                             {"Url", "http://myapp.com/test?foo=1234"}
                         },
-                    }}.ToList(),
+                    }}.ToArray(),
                     MachineName = "Test Machine Name",
                     TimestampUtc = DateTime.UtcNow,
                     ApplicationId = application.Id,

@@ -149,7 +149,7 @@ namespace Errordite.Test.IntegrationTests
                         Type = "ExceptionType1",
                         Message = "Message1",
                         Module = "Source1"
-                    }}.ToList()
+                    }}.ToArray()
                 },
                 new Error
                 {
@@ -164,7 +164,7 @@ namespace Errordite.Test.IntegrationTests
                         Type = "ExceptionType1",
                         Message = "Message1",
                         Module = "Source1"
-                    }}.ToList()
+                    }}.ToArray()
                 }
             };
         }
