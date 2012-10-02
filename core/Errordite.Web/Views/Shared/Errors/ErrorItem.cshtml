@@ -25,12 +25,12 @@
                     </a>
                 </li>
                 @{
-                    int count = 1;
+                    int count = 0;
                     foreach (var inner in Model.Error.ExceptionInfos.Skip(1))
                     {
-
+                        count++;
                         <li>
-                            <a href="#" data-val="inner-@count" title="@inner.Type"><i class="icon-zoom-in"></i>Inner @(++count): @inner.Type.LastElement('.')</a>
+                            <a href="#" data-val="inner-@count" title="@inner.Type"><i class="icon-zoom-in"></i>Inner @count: @inner.Type.LastElement('.')</a>
                         </li>
                     }
                     if (Model.Error.Messages != null)
@@ -47,12 +47,15 @@
             <div id="exception" class="inner-tab">
                 @Html.Partial("Errors/ErrorInfo", new ExceptionViewModel(Model.Error.ExceptionInfo, Model.Error.Url, Model.Error.UserAgent))
             </div>
-            @foreach(var inner in Model.Error.ExceptionInfos)
-            
-            {
-                <div id="inner-@count" class="inner-tab hidden">
-                    @Html.Partial("Errors/ErrorInfo", new ExceptionViewModel(inner, null, Model.Error.UserAgent, true))
-                </div>
+            @{
+                count = 0;
+                foreach (var inner in Model.Error.ExceptionInfos.Skip(1))
+                {
+                    count++;
+                    <div id="inner-@count" class="inner-tab hidden">
+                        @Html.Partial("Errors/ErrorInfo", new ExceptionViewModel(inner, null, Model.Error.UserAgent, true))
+                    </div>
+                }
             }
             @if (Model.Error.Messages != null)
             {
