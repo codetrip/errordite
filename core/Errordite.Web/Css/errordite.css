@@ -47,9 +47,9 @@ body, html { margin: 0; padding: 0; font-family: 'Open Sans', sans-serif; color:
 #head #auth span { color: #fff;font-weight: bold;}
 
 #head .issue-link { text-transform: uppercase;margin: 11px 15px 0 0;font-weight: bold; color:#fff;}
-#head .issue-link input[type=text] { width: 60px;height: 12px;}
+#head .issue-link input[type=text] { width: 46px;height: 12px;}
 #head .issue-link input { margin-top: 3px;} 
-#head .issue-link.search input[type=text] { width: 160px;}
+#head .issue-link.search input[type=text] { width: 115px;}
 
 #head .issue-link .input-group input[type=submit]{ -webkit-border-radius: 0 3px 3px 0;-moz-border-radius: 0 3px 3px 0;border-radius: 0 3px 3px 0;}
 #head .issue-link .input-group input[type=text]{-webkit-border-radius: 3px 0 0 3px;-moz-border-radius: 3px 0 0 3px;border-radius: 3px 0 0 3px;margin-right: -3px;}

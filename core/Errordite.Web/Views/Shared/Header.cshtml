@@ -102,12 +102,23 @@
     </div>
     <div class="floatright">
         <div class="issue-link search">
-            @using (Html.BeginForm("index", "errors", new {Area = string.Empty}, FormMethod.Get))
+            @using (Html.BeginForm("index", "errors", new { Area = string.Empty }, FormMethod.Get))
             {
                 <div class="input-group">
-                    <input autocomplete="off" id="Query" name="Query" placeholder="Search your errors" type="text" value="" />
+                    <input id="Query" name="Query" placeholder="Search your errors" type="text" value="" />
                     <input type="submit" class="btn-mini btn-success" value="Go" />
                 </div>
+            }
+        </div>
+    </div>
+    <div class="floatright">
+        <div class="issue-link search">
+            @using (Html.BeginForm("index", "issues", FormMethod.Get))
+            {
+               <div class="input-group">
+                     <input name="Name" placeholder="Search your issues" type="text" value="" />
+                     <input type="submit" class="btn-mini btn-success" value="Go" />
+                </div> 
             }
         </div>
     </div>
