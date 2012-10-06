@@ -147,7 +147,8 @@ namespace Errordite.Web.Controllers
             {
                 var allDateResults =
                 (
-                from date in Enumerable.Range(0, (dateResults.Last().Date - dateResults.First().Date).Days).Select(d => dateResults.First().Date.AddDays(d))
+                from date in Enumerable.Range(0, (dateResults.Last().Date - dateResults.First().Date).Days + 1)
+                    .Select(d => dateResults.First().Date.AddDays(d))
                 join result in dateResults on date equals result.Date into countsTemp
                 from dates in countsTemp.DefaultIfEmpty()
                 select new { date, count = dates.IfPoss(d => d.Count) }
