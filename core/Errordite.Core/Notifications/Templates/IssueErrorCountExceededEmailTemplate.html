@@ -1,0 +1,17 @@
+﻿$(Master:EmailTemplateMasterPage)
+$(Placeholder:Subject)Issue has reached its error limit - $(IssueName)
+$(Placeholder:Body)
+
+<tr>
+    <td>
+        <p>Hi,</p>
+        <p>The issue $(IssueName) has reached the error threshold ($(ErrorCount) errors).</p>
+        <p>Errordite will now only record the $(ErrorCount) most recent occurences of this issue.</p>
+        <p><a href="$(ErrorditeUrl)issue/$(IssueId)" target="_blank">Click here to view the issue</a></p>
+    </td>
+</tr>
+<tr>
+    <td>
+        <p>Best,</p>
+    </td>
+</tr>
