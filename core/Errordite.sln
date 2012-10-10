@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Errordite.Web", "Errordite.Web\Errordite.Web.csproj", "{CEF8FB25-38DC-403F-A783-2AF2B8717193}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Errordite.Core", "Errordite.Core\Errordite.Core.csproj", "{418F4BC8-7042-49B1-9F69-95189A2A5837}"
