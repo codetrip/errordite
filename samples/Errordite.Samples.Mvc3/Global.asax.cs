@@ -19,6 +19,11 @@ namespace Errordite.Samples.Mvc3
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            routes.MapRoute("Product",
+                            "product/{id}",
+                            new {controller = "Product", action = "index"}
+                );
+
             routes.MapRoute(
                 "Default", // Route name
                 "{controller}/{action}/{id}", // URL with parameters
