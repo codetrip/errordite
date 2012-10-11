@@ -21,7 +21,7 @@
     @if (!Model.HasApplications)
     {
         <h4>
-            You do not have no applications configured in Errordite. to start getting your errors sent to Errordite check out our <a href="@Url.GettingStarted()">getting started</a> guide, alternatively <a href="@Url.AddApplication()">click here</a> to create your first application.<br /><br />
+            You have no applications configured in Errordite. to start getting your errors sent to Errordite check out our <a href="@Url.GettingStarted()">getting started</a> guide, alternatively <a href="@Url.AddApplication()">click here</a> to create an application.<br /><br />
         </h4>
     }
     else if (Model.SingleApplicationId != null && Model.Stats.Issues < 3)
@@ -41,9 +41,15 @@
             </p>
             <p>
                 <span class="hero-small">
-                    To get started for real download the client and configure it into your application - details @Html.ActionLink("here", "client", "help").
+                    To get started for real download the client and configure it into your application - details @Html.ActionLink("here", "client", "help").  
                 </span>
             </p>
+            
+                @if (Model.SingleApplicationId != null)
+                    {
+                        <p><span class="hero-small">Your token is @Model.SingleApplicationToken</span></p>
+                    }
+
             @if (Model.TestIssueId != null)
             {
                 <p>

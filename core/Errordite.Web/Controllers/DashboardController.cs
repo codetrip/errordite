@@ -42,6 +42,7 @@ namespace Errordite.Web.Controllers
                 if (applications.Items.Count == 1)
                 {
                     viewModel.SingleApplicationId = applications.Items[0].Id;
+                    viewModel.SingleApplicationToken = applications.Items[0].Token;
                 }
                 
                 var issues = _getApplicationIssuesQuery.Invoke(new GetApplicationIssuesRequest
