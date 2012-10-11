@@ -1,17 +1,22 @@
-﻿using System.Web.Mvc;
+using System.Web.Mvc;
 
 namespace Errordite.Samples.Mvc3.Controllers
 {
-    public class ProductController : Controller
+    [HandleError(View = "AcmeError")]
+    public class BasketController : ControllerBase
     {
-        public ActionResult Index()
+        public ActionResult Add(string productId)
         {
-            return View();
-        }
+            var loginCookie = Request.Cookies["login"];
+            if (loginCookie == null || string.IsNullOrEmpty(loginCookie.Value))
+                throw new UserNotLoggedInOnAddingToBasketException();
 
-        public ActionResult AddToBasket(int productId)
-        {
-            return Content("added");
-        }
+            var product = DataHelper.Get(productId);
+
+            if (!BasketHelper.Add(product))
+                TempData.Add("error-message", "Sorry we could not add this item to your basket.");
+
+            return RedirectToAction("index", "product", new { id = productId });
+        }        
     }
 }

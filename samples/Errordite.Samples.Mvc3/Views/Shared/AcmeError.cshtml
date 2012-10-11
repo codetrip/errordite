@@ -1,0 +1,75 @@
+﻿@model dynamic
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html><head>
+          <title>Real-life Products</title>
+      </head>
+    <body>
+        <div class="container">
+            <div class="header">Real-life Products Inc.
+                @*<span class="basket">You have <strong>@Model.Basket.Count</strong> item@(Model.Basket.Count == 1 ? "" : "s") in your basket</span>*@
+            
+            </div>
+            <div class="content">
+                <h2>Oh no something's gone wrong!  Don't worry we've logged this error and will be fixing it ASAP.</h2>
+                </div>
+        </div>
+    </body>
+
+<style>
+	.container {
+        margin: 3em 0 0 15%;
+        width: 43em;
+	    
+}
+
+
+.basket {
+    float: right;
+}
+
+.title {
+padding: 0 0 0.7em .5em;
+border-bottom: dashed 1px;
+}
+
+.image {
+width: 18em;
+float: left;
+}
+
+.details {
+float: left;
+}
+
+.price {
+display: block;
+}
+
+.add-to-basket {
+border-radius: 4px;
+background-color: #DDD;
+}
+
+.content {
+	overflow: hidden;
+border: 1px solid;
+    padding: 1em;
+}
+
+.header {
+	background-color: black;
+	color: white;
+	padding: .5em;
+}
+
+.description {
+	min-height: 7em;
+	}
+</style>
+</html>
