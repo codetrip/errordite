@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -8,19 +9,21 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using Castle.Core.Internal;
+using CodeTrip.Core;
 using CodeTrip.Core.Auditing.Entities;
 using CodeTrip.Core.Interfaces;
 using CodeTrip.Core.IoC;
-using CodeTrip.Core.Web;
 using Errordite.Client.Log4net;
 using Errordite.Client.Mvc3;
 using Errordite.Core.Domain.Exceptions;
+using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Indexing;
 using Errordite.Core.IoC;
 using Errordite.Core.Session;
 using Errordite.Web.ActionFilters;
 using Errordite.Web.Controllers;
 using Errordite.Web.IoC;
+using Raven.Abstractions.Data;
 using Raven.Client;
 using Raven.Client.Indexes;
 
@@ -118,6 +121,7 @@ namespace Errordite.Web
             };
 
             ErrorditeLogger.Initialise(true, "Errordite.Web");
+            EnsureSeeedDataExists();
         }
 
         protected void Application_Error(object sender, EventArgs e)
@@ -139,7 +143,7 @@ namespace Errordite.Web
             Response.Clear();
             Response.StatusCode = httpException.GetHttpCode();
 
-            RouteData routeData = new RouteData();
+            var routeData = new RouteData();
             routeData.Values.Add("controller", "Error");
             routeData.Values.Add("fromAppErrorEvent", true);
 
@@ -174,5 +178,83 @@ namespace Errordite.Web
             IController controller = new ErrorController();
             controller.Execute(new RequestContext(new HttpContextWrapper(Context), routeData));
         }
+
+        #region Seed Data
+
+        private void EnsureSeeedDataExists()
+        {
+            var documentStore = ObjectFactory.GetObject<IDocumentStore>();
+            var session = documentStore.OpenSession();
+
+            if (!session.Query<PaymentPlan>().Any())
+            {
+                session.Store(new PaymentPlan
+                {
+                    Id = "PaymentPlans/1",
+                    MaximumApplications = 5,
+                    MaximumUsers = 5,
+                    MaximumIssues = 100,
+                    Name = PaymentPlanNames.Trial,
+                    Rank = 0,
+                    Price = 0m,
+                    IsAvailable = true,
+                    IsTrial = true,
+                });
+                session.Store(new PaymentPlan
+                {
+                    Id = "PaymentPlans/2",
+                    MaximumApplications = 1,
+                    MaximumUsers = 1,
+                    MaximumIssues = 25,
+                    Name = PaymentPlanNames.Micro,
+                    Rank = 100,
+                    Price = 10.00m,
+                    IsAvailable = true,
+                });
+                session.Store(new PaymentPlan
+                {
+                    Id = "PaymentPlans/3",
+                    MaximumApplications = 5,
+                    MaximumUsers = 5,
+                    MaximumIssues = 100,
+                    Name = PaymentPlanNames.Small,
+                    Rank = 200,
+                    Price = 35.00m,
+                    IsAvailable = true,
+                });
+                session.Store(new PaymentPlan
+                {
+                    Id = "PaymentPlans/4",
+                    MaximumApplications = 30,
+                    MaximumUsers = 30,
+                    MaximumIssues = 250,
+                    Name = PaymentPlanNames.Big,
+                    Rank = 300,
+                    Price = 70.00m,
+                    IsAvailable = true,
+                });
+                session.Store(new PaymentPlan
+                {
+                    Id = "PaymentPlans/5",
+                    MaximumApplications = 100,
+                    MaximumUsers = 100,
+                    MaximumIssues = 1000,
+                    Name = PaymentPlanNames.Huge,
+                    Rank = 400,
+                    Price = 100.00m,
+                    IsAvailable = true,
+                });
+
+                var facets = new List<Facet>
+                {
+                    new Facet {Name = "Status"},
+                };
+
+                session.Store(new FacetSetup { Id = Core.CoreConstants.FacetDocuments.IssueStatus, Facets = facets });
+                session.SaveChanges();
+            }
+        }
+
+        #endregion
     }
 }

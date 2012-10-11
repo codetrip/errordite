@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using CodeTrip.Core.Encryption;
@@ -105,73 +104,6 @@ namespace Errordite.Web.Areas.System.Controllers
             return RedirectToAction("index");
         }
 
-        [ExportViewData]
-        public ActionResult CreatePaymentPlans()
-        {
-            if (!_session.Raven.Query<PaymentPlan>().Any())
-            {
-                _session.Raven.Store(new PaymentPlan
-                {
-                    Id = "PaymentPlans/1",
-                    MaximumApplications = 5,
-                    MaximumUsers = 5,
-                    MaximumIssues = 100,
-                    Name = PaymentPlanNames.Trial,
-                    Rank = 0,
-                    Price = 0m,
-                    IsAvailable = true,
-                    IsTrial = true,
-                });
-                _session.Raven.Store(new PaymentPlan
-                {
-                    Id = "PaymentPlans/2",
-                    MaximumApplications = 1,
-                    MaximumUsers = 1,
-                    MaximumIssues = 25,
-                    Name = PaymentPlanNames.Micro,
-                    Rank = 100,
-                    Price = 10.00m,
-                    IsAvailable = true,
-                });
-                _session.Raven.Store(new PaymentPlan
-                {
-                    Id = "PaymentPlans/3",
-                    MaximumApplications = 5,
-                    MaximumUsers = 5,
-                    MaximumIssues = 100,
-                    Name = PaymentPlanNames.Small,
-                    Rank = 200,
-                    Price = 35.00m,
-                    IsAvailable = true,
-                });
-                _session.Raven.Store(new PaymentPlan
-                {
-                    Id = "PaymentPlans/4",
-                    MaximumApplications = 30,
-                    MaximumUsers = 30,
-                    MaximumIssues = 250,
-                    Name = PaymentPlanNames.Big,
-                    Rank = 300,
-                    Price = 70.00m,
-                    IsAvailable = true,
-                });
-                _session.Raven.Store(new PaymentPlan
-                {
-                    Id = "PaymentPlans/5",
-                    MaximumApplications = 100,
-                    MaximumUsers = 100,
-                    MaximumIssues = 1000,
-                    Name = PaymentPlanNames.Huge,
-                    Rank = 400,
-                    Price = 100.00m,
-                    IsAvailable = true,
-                });
-            }
-
-            ConfirmationNotification("Successfully created payment plans");
-            return RedirectToAction("index");
-        }
-
         [HttpPost, ExportViewData]
         public ActionResult RebuildIndex(string indexName)
         {
@@ -215,16 +147,6 @@ namespace Errordite.Web.Areas.System.Controllers
             {
                 Content = "Done"
             };
-        }
-
-        public void SeedFacets()
-        {
-            var _facets = new List<Facet>
-            {
-                new Facet {Name = "Status"},
-            };
-
-            _session.Raven.Store(new FacetSetup { Id = CoreConstants.FacetDocuments.IssueStatus, Facets = _facets });
         }
     }
 }
