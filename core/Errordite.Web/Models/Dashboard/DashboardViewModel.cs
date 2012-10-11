@@ -13,6 +13,7 @@ namespace Errordite.Web.Models.Dashboard
         public IEnumerable<ErrorInstanceViewModel> RecentErrors { get; set; }
         public IEnumerable<IssueItemViewModel> RecentIssues { get; set; }
         public string SingleApplicationId { get; set; }
+        public string SingleApplicationToken { get; set; }
         public string TestIssueId { get; set; }
     }
 
