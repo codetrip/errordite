@@ -35,7 +35,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Errordite.Client.Mvc3, Version=1.2.0.0, Culture=neutral, PublicKeyToken=0c2d28c225f773ee, processorArchitecture=MSIL">
+    <Reference Include="Errordite.Client.Mvc3">
       <HintPath>..\packages\Errordite.Client.Mvc3.1.2.8.0\lib\net40\Errordite.Client.Mvc3.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />

@@ -17,6 +17,7 @@ namespace Errordite.Samples.Mvc3.Controllers
                     Product = product,
                     LoginName = loginCookie != null && loginCookie.Value != "" ? loginCookie.Value: null,
                     ErrorMessage = TempData["error-message"] as string,
+                    MoreLikeThis = DataHelper.MoreLike(id),
                 });
         }
 
@@ -43,6 +44,8 @@ namespace Errordite.Samples.Mvc3.Controllers
 
         public string LoginName { get; set; }
         public string ErrorMessage { get; set; }
+
+        public IEnumerable<Product> MoreLikeThis { get; set; }
     }
 
     public class Product

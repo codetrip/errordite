@@ -52,6 +52,12 @@
                         }
                     </div>
                 </div>
+                <div class="content-footer"><span>You might also like:</span> 
+                @foreach (var productYouMightLike in Model.MoreLikeThis)
+                {
+                    @Html.ActionLink(productYouMightLike.Name, "Index", new {id = productYouMightLike.Id})
+                }
+                </div>
             </div>
         </div>
     </body>
@@ -135,11 +141,18 @@ border: 1px solid;
 
 .error-message {
     font-size: 1em;
-text-align: center;
 padding: .5em;
 background: red;
 font-family: arial;
 margin: 2px 0px;
 }
+
+.content-footer {
+    clear: both;
+border-top: solid 1px;
+width: 100%;
+padding: 1em;
+}
+
 </style>
 </html>
