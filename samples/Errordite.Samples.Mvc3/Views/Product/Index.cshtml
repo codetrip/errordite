@@ -1,0 +1,158 @@
+﻿@model Errordite.Samples.Mvc3.Controllers.ProductPageViewModel
+
+@{
+    Layout = null;
+    var product = Model.Product;
+}
+
+<!DOCTYPE html>
+
+<html><head>
+          <title>@product.Name | Real-life Products</title>
+          <link rel="shortcut icon" href="/favicon.ico?v=2" />
+      </head>
+    <body>
+        <div class="container">
+            <div class="header"><span class="logo">Real-life Products Inc.</span> 
+                <div class="controls">
+                <span class="basket">You have <strong>@Model.Basket.Count</strong> item@(Model.Basket.Count == 1 ? "" : "s") in your basket</span>
+                <span class="login">
+                    @if (Model.LoginName != null)
+                    {
+                        @: Hi, @Model.LoginName @Html.ActionLink("Log Out", "logout", "account")
+                    }
+                    else
+                    {
+                         using (Html.BeginForm("login", "account"))
+                         {
+                             <input type="text" name="username" placeholder="Username" autocomplete="off"/>
+                             <input type="password" name="password" placeholder="Password" autocomplete="off"/>
+                            <input type="submit" value="Log In"/>
+                         }
+                                                           
+                    }
+                </span>
+                </div>
+            
+            </div>
+            <div class="content">
+                @if (Model.ErrorMessage != null)
+                {
+                    <div class="error-message">@Model.ErrorMessage</div>
+                }
+                <h2 class="title" >@product.Name</h2>
+                <div class="image"><img src="@product.ImageUrl" height="270px" width="270px"></div>
+
+                <div class="details">
+                    <div class="description" >@(product.Description ?? "-")</div>
+                    <div class="basketcontrols"><span class="price">$@product.Price.ToString("0.00")</span>
+                        @using (Html.BeginForm("add", "basket", FormMethod.Post)) { 
+                            <input type="submit" value="Add To Basket" class="add-to-basket"/>
+                            <input type="hidden" value="@product.Id" name="productId"/>
+                        }
+                    </div>
+                </div>
+                <div class="content-footer"><span>You might also like:</span> 
+                @foreach (var productYouMightLike in Model.MoreLikeThis)
+                {
+                    @Html.ActionLink(productYouMightLike.Name, "Index", new {id = productYouMightLike.Id})
+                }
+                </div>
+            </div>
+        </div>
+    </body>
+
+<style>
+	.container {
+margin: 3em 0 0 15%;
+width: 41em;
+}
+
+.controls {
+    float: right;
+    display: inline-block;
+}
+
+@*.basket {
+    float: right;
+}*@
+
+.title {
+padding: 0 0 0.7em .5em;
+border-bottom: dashed 1px;
+}
+
+.image {
+width: 18em;
+float: left;
+}
+
+.details {
+float: left;
+}
+
+.price {
+display: block;
+}
+
+.add-to-basket {
+border-radius: 4px;
+background-color: #DDD;
+}
+
+.content {
+	overflow: hidden;
+border: 1px solid;
+    width: 100%;
+}
+
+.logo {
+    float: left;
+}
+
+.header {
+	background-color: black;
+	color: white;
+	padding: .5em;
+    height: 47px;
+    border: 1px 1px 1px 1px black;
+    margin: 0 -2px 0 0;
+}
+
+.controls input[type=text] {
+    width: 100px;
+}
+
+.controls input[type=password] {
+    width: 100px;
+}
+
+.controls input[type=submit] {
+    background-color: white;
+}
+
+.controls a {
+    color: white;
+}
+
+.description {
+	min-height: 7em;
+	}
+
+.error-message {
+    font-size: 1em;
+padding: .5em;
+background: red;
+font-family: arial;
+margin: 2px 0px;
+}
+
+.content-footer {
+    clear: both;
+border-top: solid 1px;
+width: 100%;
+padding: 1em;
+}
+
+</style>
+</html>

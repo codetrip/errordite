@@ -1,0 +1,18 @@
+﻿@model System.Collections.Generic.IEnumerable<string>
+
+@{
+    ViewBag.Title = "Email Test";
+}
+
+@section contentHeader
+{
+    <h2>Email Test</h2>
+    
+    <ul>
+    @foreach (var email in Model)
+    {
+        <li>@Html.ActionLink(@email, "index", "emailtest", new {id = email}, new{})</li>
+    }   
+    </ul> 
+}
+

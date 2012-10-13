@@ -1,0 +1,46 @@
+﻿@using Errordite.Web.Extensions
+@using Errordite.Web.Models.Groups
+@using Errordite.Web.Models.Organisation
+@model EditGroupViewModel
+
+@{
+    ViewBag.Title = "Edit Group";
+}
+
+@section contentHeader
+{
+    <div id="pagetitle">
+        <h1><i class="icon-arrow-right"></i>Groups</h1>
+    </div>
+    @Html.Partial("Admin/Tabs")
+}
+
+@using (Html.BeginForm("edit", "groups", FormMethod.Post, new {id = "editGroupForm"}))
+{
+    @Html.HiddenFor(m => m.Id)
+    <div class="base left-narrow">
+        <h1>Edit Group</h1>
+        <div class="base-content">
+            <ul class="errorditeform double-row">
+                <li>
+                    @Html.LabelFor(m => m.Name, "Name")
+                    @Html.TextBoxFor(m => m.Name)
+                    @Html.ValidationMessageFor(m => m.Name)
+                </li>
+                <li>
+                    <label>Group Members</label>
+                    <div class="custom-select border">
+                        <ul>
+                            @Html.EditorFor(m => m.Users)
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="colfull buttons">
+        <input class="btn btn-success" type="submit" value="Add Group" />
+        <a class="btn" href="@Url.Groups()">Cancel</a>
+    </div>
+}
