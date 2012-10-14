@@ -375,10 +375,10 @@
     <Content Include="Images\UI\email.png" />
     <Content Include="Images\UI\error-notification.png" />
     <Content Include="Images\UI\godaddy-ssl.png" />
+    <Content Include="Images\UI\header-logo.png" />
     <Content Include="Images\UI\hipchat.png" />
     <Content Include="Images\UI\history.png" />
     <Content Include="Images\UI\json.gif" />
-    <Content Include="Images\UI\logo.png" />
     <Content Include="Images\UI\lucene.png" />
     <Content Include="Images\UI\microsoft.net.png" />
     <Content Include="Images\UI\mvc-global-filters.png" />
