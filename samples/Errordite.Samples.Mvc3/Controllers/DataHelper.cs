@@ -42,8 +42,6 @@ namespace Errordite.Samples.Mvc3.Controllers
                     });
                 }
             }
-
             return products;
-        }
     }
 }
