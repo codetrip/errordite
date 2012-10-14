@@ -33,15 +33,16 @@ namespace Errordite.Samples.Mvc3.Controllers
                 {
                     var productParts = sr.ReadLine().Split('|');
                     products.Add(productParts[0], new Product()
-                    {
-                        Id = Clean(productParts[0]),
-                        Name = Clean(productParts[1]),
-                        Description = Clean(productParts[2]),
-                        Price = int.Parse(productParts[3]),
-                        ImageUrl = Clean(productParts[4]),
-                    });
+                        {
+                            Id = Clean(productParts[0]),
+                            Name = Clean(productParts[1]),
+                            Description = Clean(productParts[2]),
+                            Price = int.Parse(productParts[3]),
+                            ImageUrl = Clean(productParts[4]),
+                        });
                 }
             }
             return products;
+        }
     }
 }
