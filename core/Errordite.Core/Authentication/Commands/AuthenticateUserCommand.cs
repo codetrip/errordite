@@ -17,7 +17,7 @@ namespace Errordite.Core.Authentication.Commands
             ArgumentValidation.NotEmpty(request.Email, "request.Email");
             ArgumentValidation.NotEmpty(request.Password, "request.Password");
 
-            var user = Session.Raven.Query<User, Users_Search>()
+            var user = Session.CentralRaven.Query<User, Users_Search>()
                 .FirstOrDefault(u => u.Email == request.Email.ToLowerInvariant() && u.Password == request.Password.Hash());
 
             if (user != null)
@@ -30,7 +30,7 @@ namespace Errordite.Core.Authentication.Commands
                     };
                 }
 
-                var organisation = Session.Raven.Query<Organisation, Organisations_Search>().FirstOrDefault(o => o.Id == Organisation.GetId(user.OrganisationId));
+                var organisation = Session.CentralRaven.Query<Organisation, Organisations_Search>().FirstOrDefault(o => o.Id == Organisation.GetId(user.OrganisationId));
 
                 if (organisation == null || organisation.Status == OrganisationStatus.Suspended)
                 {

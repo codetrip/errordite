@@ -59,7 +59,7 @@ namespace Errordite.Core.Reception.Commands
             Trace("ApplicationId:={0}, OrganisationId:={1}", application.Id, application.OrganisationId);
 
             var error = request.Error;
-            var issues = _receptionServiceIssueCache.GetIssues(application.Id);
+            var issues = _receptionServiceIssueCache.GetIssues(application.Id, application.OrganisationId);
             var existingIssue = request.ExistingIssueId.IfPoss(i => Load<Issue>(request.ExistingIssueId));
             var matchingIssue = existingIssue == null 
                 ? issues.FirstOrDefault(i => i.RulesMatch(error)) 

@@ -49,3 +49,4 @@ lib\Redis\logs\**
 core\Errordite.Web\Css\1.0.1.0.min.css
 core\Errordite.Web\Js\1.0.1.0.min.js
 lib/RavenDb/Web/Tenants*
+samples/packages

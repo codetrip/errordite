@@ -10,10 +10,11 @@ namespace Errordite.Reception.Service.Controllers
     {
         private readonly IReceiveErrorCommand _receiveErrorCommand = ObjectFactory.GetObject<IReceiveErrorCommand>();
         
-        public HttpResponseMessage Post(ReceiveErrorRequest request)
+        public HttpResponseMessage Post(string orgId, ReceiveErrorRequest request)
         {
             try
             {
+                SetOrg(orgId);
                 _auditor.Trace(GetType(), "Started...");
                 var response =
                     _receiveErrorCommand.Invoke(request);

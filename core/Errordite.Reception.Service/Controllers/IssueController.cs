@@ -11,21 +11,20 @@ using System.Linq;
 
 namespace Errordite.Reception.Service.Controllers
 {
-    public class IssueController : ApiController
+    public class IssueController : ErrorditeApiController
     {
-        private readonly IComponentAuditor _auditor;
         private readonly IReceptionServiceIssueCache _issueCache;
 
         public IssueController()
         {
-            _auditor = ObjectFactory.GetObject<IComponentAuditor>();
             _issueCache = ObjectFactory.GetObject<IReceptionServiceIssueCache>();
         }
 
-        public IssueBase Get(string id, string applicationId)
+        public IssueBase Get(string orgId, string id, string applicationId)
         {
+            SetOrg(orgId);
             _auditor.Trace(GetType(), "Request for issue with Id:={0}, ApplicationId:={1}", id, applicationId);
-            var issue = _issueCache.GetIssues(applicationId).FirstOrDefault(i => i.Id == Issue.GetId(id));
+            var issue = _issueCache.GetIssues(applicationId, orgId).FirstOrDefault(i => i.Id == Issue.GetId(id));
             _auditor.Trace(GetType(), "Issue {0}", issue == null ? "not found" : "found");
             return issue;
         }
@@ -34,8 +33,10 @@ namespace Errordite.Reception.Service.Controllers
         /// Update an issue
         /// </summary>
         /// <param name="issues"></param>
-        public void PutIssue(IEnumerable<IssueBase> issues)
+        public void PutIssue(string orgId, IEnumerable<IssueBase> issues)
         {
+            SetOrg(orgId);
+            
             foreach(var issue in issues)
             {
                 _auditor.Trace(GetType(), "Request to put issue with Id:={0}, ApplicationId:={1}, RuleCount:={2}", issue.Id, issue.ApplicationId, issue.Rules.Count);
@@ -47,25 +48,26 @@ namespace Errordite.Reception.Service.Controllers
         /// Add an issue
         /// </summary>
         /// <param name="issue"></param>
-        public HttpResponseMessage PostIssue(IssueBase issue)
+        public HttpResponseMessage PostIssue(string orgId, IssueBase issue)
         {
+            SetOrg(orgId);
             _auditor.Trace(GetType(), "Request to create issue with Id:={0}, ApplicationId:={1}", issue.Id, issue.ApplicationId);
             _issueCache.Add(issue);
 
             return Request.CreateResponse(HttpStatusCode.Created, issue);
         }
 
-        public HttpResponseMessage DeleteIssue(string id)
+        public HttpResponseMessage DeleteIssue(string orgId, string id)
         {
            _auditor.Trace(GetType(), "Incoming Ids:={0}", id);
-
+            SetOrg(orgId);
             string[] issueIds = id.Split(new[] { '^' }, StringSplitOptions.RemoveEmptyEntries);
 
             foreach (string issueId in issueIds)
             {
                 string[] idParts = issueId.Split('|');
                 _auditor.Trace(GetType(), "Request to delete issue with Id:={0}, ApplicationId:={1}", idParts[0], idParts[1]);
-                _issueCache.Delete(idParts[0], idParts[1]);
+                _issueCache.Delete(idParts[0], idParts[1], orgId);
             }
             
             return new HttpResponseMessage(HttpStatusCode.NoContent);

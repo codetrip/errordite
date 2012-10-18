@@ -38,7 +38,7 @@ namespace Errordite.Core.Users.Queries
             ArgumentValidation.NotEmpty(request.OrganisationId, "request.OrganisationId");
 
             var userId = User.GetId(request.UserId);
-            var user = Load<User>(userId);
+            var user = CentralLoad<User>(userId);
 
             if (user != null)
             {
@@ -82,7 +82,7 @@ namespace Errordite.Core.Users.Queries
     {
         public string UserId { get; set; }
         public string OrganisationId { get; set; }
-
+        
         protected override string GetCacheKey()
         {
             return CacheKeys.Users.Key(OrganisationId, UserId);
