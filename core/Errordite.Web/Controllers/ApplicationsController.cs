@@ -240,7 +240,7 @@ namespace Errordite.Web.Controllers
                 return HttpNotFound();
             }
 
-            var task = Core.Session.ReceptionServiceHttpClient.PostJsonAsync("api/error", new ReceiveErrorRequest
+            var task = Core.Session.ReceptionServiceHttpClient.PostJsonAsync("error", new ReceiveErrorRequest
             {
                 Error = new Error
                 {

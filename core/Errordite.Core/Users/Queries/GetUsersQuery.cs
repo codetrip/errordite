@@ -34,7 +34,7 @@ namespace Errordite.Core.Users.Queries
 
             RavenQueryStatistics stats;
 
-            var query = Session.Raven.Query<User, Users_Search>()
+            var query = Session.CentralRaven.Query<User, Users_Search>()
                 .Statistics(out stats)
                 .Where(e => e.OrganisationId == Organisation.GetId(request.OrganisationId))
                 .OrderBy(u => u.LastName);

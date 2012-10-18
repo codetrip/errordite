@@ -176,5 +176,6 @@ namespace Errordite.Core.Issues.Commands
     public class ReprocessIssueErrorsRequest : OrganisationRequestBase
     {
         public string IssueId { get; set; }
+        public string OrganisationId { get; set; }
     }
 }

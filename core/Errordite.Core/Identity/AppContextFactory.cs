@@ -3,6 +3,8 @@ using System.Web;
 using CodeTrip.Core;
 using CodeTrip.Core.Interfaces;
 using Errordite.Core.Domain.Organisation;
+using Errordite.Core.Organisations.Queries;
+using Errordite.Core.Session;
 using Errordite.Core.Users.Queries;
 
 namespace Errordite.Core.Identity
@@ -17,11 +19,15 @@ namespace Errordite.Core.Identity
         private readonly IAuthenticationManager _authenticationManager;
         private readonly IGetUserQuery _getUserQuery;
         private readonly IImpersonationManager _impersonationManager;
+        private readonly IAppSession _appSession;
+        private readonly IGetOrganisationQuery _getOrganisationQuery;
 
-        public AppContextFactory(IAuthenticationManager authenticationManager, IGetUserQuery getUserQuery)
+        public AppContextFactory(IAuthenticationManager authenticationManager, IGetUserQuery getUserQuery, IAppSession appSession, IGetOrganisationQuery getOrganisationQuery)
         {
             _authenticationManager = authenticationManager;
             _getUserQuery = getUserQuery;
+            _appSession = appSession;
+            _getOrganisationQuery = getOrganisationQuery;
             _impersonationManager = this;
         }
 
@@ -73,11 +79,18 @@ namespace Errordite.Core.Identity
         {
             var appContext = new AppContext();
 
-            var user = _getUserQuery.Invoke(new GetUserRequest
+            //TODO do this with caching at some point
+            var user = _appSession.CentralRaven
+                .Include<User>(u => u.OrganisationId)
+                .Load<User>(User.GetId(authenticationIdentity.UserId));
+
+            if (user != null)
             {
-                UserId = authenticationIdentity.UserId,
-                OrganisationId = authenticationIdentity.OrganisationId
-            }).User;
+                user.Organisation = _getOrganisationQuery.Invoke(new GetOrganisationRequest()
+                    {
+                        OrganisationId = user.OrganisationId,
+                    }).Organisation;
+            }
 
             if (user == null || user.Organisation == null || user.Organisation.Status == OrganisationStatus.Suspended)
             {
@@ -85,6 +98,7 @@ namespace Errordite.Core.Identity
                 return CreateAnonymousUser(_authenticationManager.GetCurrentUser());
             }
 
+            _appSession.SetOrg(user.Organisation);
             appContext.Authentication = _authenticationManager;
             appContext.CurrentUser = user;
             appContext.AuthenticationStatus = HttpContext.Current.Request.IsAuthenticated

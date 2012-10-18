@@ -11,9 +11,19 @@ namespace Errordite.Core.Session
     {
         public IAppSession Session { protected get; set; }
 
+        protected void CentralStore(object o)
+        {
+            Session.CentralRaven.Store(o);
+        }
+
         protected void Store(object o)
         {
             Session.Raven.Store(o);
+        }
+
+        protected T CentralLoad<T>(string id)
+        {
+            return Session.CentralRaven.Load<T>(id);
         }
 
         protected T Load<T>(string id)
