@@ -6,6 +6,7 @@ using CodeTrip.Core.Caching.Interceptors;
 using CodeTrip.Core.Interfaces;
 using Errordite.Core.Applications.Commands;
 using Errordite.Core.Caching;
+using Errordite.Core.Domain.Central;
 using Errordite.Core.Domain.Organisation;
 using CodeTrip.Core.Extensions;
 using System.Linq;
@@ -17,7 +18,7 @@ using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
 namespace Errordite.Core.Organisations.Commands
 {
     [Interceptor(CacheInvalidationInterceptor.IoCName)]
-    public class CreateOrganisationCommand : SessionAccessBase, ICreateOrganisationCommand
+    public class    CreateOrganisationCommand : SessionAccessBase, ICreateOrganisationCommand
     {
         private readonly IGetAvailablePaymentPlansQuery _getAvailablePaymentPlansQuery;
         private readonly IAddApplicationCommand _addApplicationCommand;
@@ -32,7 +33,7 @@ namespace Errordite.Core.Organisations.Commands
         {
             Trace("Starting...");
 
-            var existingOrganisation = Session.Raven.Query<Organisation, Organisations_Search>().FirstOrDefault(o => o.Name == request.OrganisationName);
+            var existingOrganisation = Session.CentralRaven.Query<Organisation, Organisations_Search>().FirstOrDefault(o => o.Name == request.OrganisationName);
 
             if(existingOrganisation != null)
             {
@@ -40,11 +41,14 @@ namespace Errordite.Core.Organisations.Commands
                 {
                     Status = CreateOrganisationStatus.OrganisationExists
                 };
-            } 
-            
-            var existingUser = Session.Raven.Query<User, Users_Search>().FirstOrDefault(u => u.Email == request.Email);
+            }
 
-            if (existingUser != null)
+            var existingUserMap =
+                Session.CentralRaven.Query<UserOrgMapping>().FirstOrDefault(m => m.EmailAddress == request.Email);
+
+            //var existingUser = Session.Raven.Query<User, Users_Search>().FirstOrDefault(u => u.Email == request.Email);
+
+            if (existingUserMap != null)
             {
                 return new CreateOrganisationResponse
                 {
@@ -64,7 +68,9 @@ namespace Errordite.Core.Organisations.Commands
                 PaymentPlan = freeTrialPlan
             };
 
-            Store(organisation);
+            CentralStore(organisation);
+            CentralStore(new UserOrgMapping(){EmailAddress = request.Email, OrganisationId = organisation.Id});
+            Session.SetOrg(organisation);
 
             var group = new Group
             {

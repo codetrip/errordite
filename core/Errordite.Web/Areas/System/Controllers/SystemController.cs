@@ -11,6 +11,7 @@ using Errordite.Core.Errors.Queries;
 using Errordite.Core.Indexing;
 using Errordite.Core.Session;
 using Errordite.Web.ActionFilters;
+using Errordite.Web.ActionResults;
 using Errordite.Web.Controllers;
 using Errordite.Web.Models.Administration;
 using Errordite.Web.Models.Navigation;
@@ -135,18 +136,14 @@ namespace Errordite.Web.Areas.System.Controllers
 
         public ActionResult UpdateOrganisations()
         {
-            var organisations = _session.Raven.Query<Organisation, Organisations_Search>().ToList();
-
-            foreach (var organisation in organisations)
+            foreach (var org in Core.Session.CentralRaven.Query<Organisation>())
             {
-                organisation.TimezoneId = "UTC";
-                organisation.CreatedOnUtc = DateTime.UtcNow.AddMonths(-6);
+                
             }
 
-            return new ContentResult
-            {
-                Content = "Done"
-            };
+            return new EmptyResult();
         }
+
+
     }
 }

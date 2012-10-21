@@ -38,7 +38,7 @@ namespace Errordite.Core.Users.Queries
             ArgumentValidation.NotEmpty(request.OrganisationId, "request.OrganisationId");
 
             var userId = User.GetId(request.UserId);
-            var user = CentralLoad<User>(userId);
+            var user = Load<User>(userId);
 
             if (user != null)
             {

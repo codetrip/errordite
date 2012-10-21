@@ -3,6 +3,7 @@ using System.Web;
 using CodeTrip.Core;
 using CodeTrip.Core.Interfaces;
 using Errordite.Core.Domain.Organisation;
+using Errordite.Core.Organisations.Commands;
 using Errordite.Core.Organisations.Queries;
 using Errordite.Core.Session;
 using Errordite.Core.Users.Queries;
@@ -21,13 +22,15 @@ namespace Errordite.Core.Identity
         private readonly IImpersonationManager _impersonationManager;
         private readonly IAppSession _appSession;
         private readonly IGetOrganisationQuery _getOrganisationQuery;
+        private readonly ISetOrganisationByEmailAddressCommand _setOrganisationByEmailAddressCommand;
 
-        public AppContextFactory(IAuthenticationManager authenticationManager, IGetUserQuery getUserQuery, IAppSession appSession, IGetOrganisationQuery getOrganisationQuery)
+        public AppContextFactory(IAuthenticationManager authenticationManager, IGetUserQuery getUserQuery, IAppSession appSession, IGetOrganisationQuery getOrganisationQuery, ISetOrganisationByEmailAddressCommand setOrganisationByEmailAddressCommand)
         {
             _authenticationManager = authenticationManager;
             _getUserQuery = getUserQuery;
             _appSession = appSession;
             _getOrganisationQuery = getOrganisationQuery;
+            _setOrganisationByEmailAddressCommand = setOrganisationByEmailAddressCommand;
             _impersonationManager = this;
         }
 
@@ -77,12 +80,21 @@ namespace Errordite.Core.Identity
 
         private AppContext CreateKnownUser(AuthenticationIdentity authenticationIdentity)
         {
-            var appContext = new AppContext();
+            var organisation = _setOrganisationByEmailAddressCommand.Invoke(new SetOrganisationByEmailAddressRequest()
+                {
+                    EmailAddress = authenticationIdentity.Email,
+                }).Organisation;
 
-            //TODO do this with caching at some point
-            var user = _appSession.CentralRaven
-                .Include<User>(u => u.OrganisationId)
-                .Load<User>(User.GetId(authenticationIdentity.UserId));
+            User user = null;
+            if (organisation != null)
+            {
+                user =
+                    _getUserQuery.Invoke(new GetUserRequest()
+                        {OrganisationId = organisation.Id, UserId = User.GetId(authenticationIdentity.UserId)}).User;
+            }
+
+
+            var appContext = new AppContext();
 
             if (user != null)
             {
