@@ -127,6 +127,7 @@
     </Compile>
     <Compile Include="Caching\CacheKeys.cs" />
     <Compile Include="Configuration\HttpServerConfiguration.cs" />
+    <Compile Include="Domain\Central\UserOrgMapping.cs" />
     <Compile Include="Domain\IdHelper.cs" />
     <Compile Include="Domain\Organisation\PaymentPlan.cs" />
     <Compile Include="Domain\Organisation\UserAlert.cs" />
@@ -268,6 +269,7 @@
     <Compile Include="Organisations\Commands\SuspendOrganisationCommand.cs" />
     <Compile Include="Organisations\Commands\SetOrganisationTimezoneCommand.cs" />
     <Compile Include="Organisations\OrganisationRequestBase.cs" />
+    <Compile Include="Organisations\Commands\SetOrganisationByEmailAddressCommand.cs" />
     <Compile Include="Organisations\Queries\GetOrganisationsQuery.cs" />
     <Compile Include="Organisations\Queries\GetAvailablePaymentPlansQuery.cs" />
     <Compile Include="Organisations\Queries\GetOrganisationStatisticsQuery.cs" />

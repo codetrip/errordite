@@ -105,6 +105,7 @@ namespace Errordite.Core.Reception.Commands
                     OrganisationId = request.Error.OrganisationId,
                     CurrentUser = User.System()
                 }).Application;
+                
             }
 
             //dont process if we cant find the application or if the application is inactive
