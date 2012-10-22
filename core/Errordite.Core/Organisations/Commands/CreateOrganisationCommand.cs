@@ -105,6 +105,8 @@ namespace Errordite.Core.Organisations.Commands
                 UserId = user.Id,
             });
 
+            //TODO: sync indexes
+
             return new CreateOrganisationResponse
             {
                 OrganisationId = organisation.Id,

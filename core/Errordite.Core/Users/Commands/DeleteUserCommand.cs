@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Castle.Core;
 using CodeTrip.Core.Caching.Entities;
 using CodeTrip.Core.Caching.Interceptors;
@@ -7,6 +8,7 @@ using CodeTrip.Core.Extensions;
 using CodeTrip.Core.Interfaces;
 using Errordite.Core.Authorisation;
 using Errordite.Core.Caching;
+using Errordite.Core.Domain.Central;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Indexing;
 using Errordite.Core.Organisations;
@@ -39,6 +41,12 @@ namespace Errordite.Core.Users.Commands
                     Status = DeleteUserStatus.UserNotFound
                 };
             }
+
+            var userOrgMapping =
+                Session.CentralRaven.Query<UserOrgMapping>().FirstOrDefault(u => u.EmailAddress == existingUser.Email);
+
+            if (userOrgMapping != null)
+                Session.CentralRaven.Delete(userOrgMapping);
 
             _authorisationManager.Authorise(existingUser, request.CurrentUser);
 
