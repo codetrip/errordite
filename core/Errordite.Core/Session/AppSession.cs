@@ -69,7 +69,7 @@ namespace Errordite.Core.Session
         /// <summary>
         /// Synchronise the index specified in the type parameter
         /// </summary>
-        void SynchroniseIndexes<T>() 
+        void SynchroniseIndexes<T>(bool centralRaven = false) 
             where T : AbstractIndexCreationTask, new();
 
         /// <summary>
@@ -231,10 +231,10 @@ namespace Errordite.Core.Session
 
         public string OrgId { get { return _dbId; } }
 
-        public void SynchroniseIndexes<T>()
+        public void SynchroniseIndexes<T>(bool centralRaven = false)
             where T : AbstractIndexCreationTask, new()
         {
-            AddCommitAction(new SynchroniseIndex<T>());
+            AddCommitAction(new SynchroniseIndex<T>(centralRaven));
         }
 
         public void SynchroniseIndexes<T1, T2>() 

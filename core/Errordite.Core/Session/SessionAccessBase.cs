@@ -35,12 +35,7 @@ namespace Errordite.Core.Session
         {
             Session.Raven.Delete(obj);
         }
-
-        protected IRavenQueryable<TEntity> Query<TEntity>()
-        {
-            return Session.Raven.Query<TEntity>();
-        }
-
+        
         protected IRavenQueryable<TEntity> Query<TEntity, TIndex>()
             where TIndex : AbstractIndexCreationTask, new()
         {

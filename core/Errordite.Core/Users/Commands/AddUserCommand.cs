@@ -5,6 +5,7 @@ using CodeTrip.Core.Caching.Entities;
 using CodeTrip.Core.Caching.Interceptors;
 using CodeTrip.Core.Encryption;
 using CodeTrip.Core.Interfaces;
+using Errordite.Core.Domain.Central;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Indexing;
 using Errordite.Core.Notifications.Commands;
@@ -32,7 +33,29 @@ namespace Errordite.Core.Users.Commands
         public AddUserResponse Invoke(AddUserRequest request)
         {
             Trace("Starting...");
-            
+
+            var existingUserOrgMap = Session.CentralRaven
+                .Query<UserOrgMapping, UserOrgMappings>()
+                .FirstOrDefault(u => u.EmailAddress == request.Email);
+
+            //TODO: consider staleness?
+
+            if (existingUserOrgMap != null)
+            {
+                if (existingUserOrgMap.OrganisationId == request.Organisation.Id)
+                    return new AddUserResponse(true)
+                        {
+                            Status = AddUserStatus.EmailExists,
+                        };
+                else
+                {
+                    return new AddUserResponse(true)
+                        {
+                            Status = AddUserStatus.EmailExistsInAnotherOrganisation,
+                        };
+                }
+            }
+
             var existingUser = Session.Raven.Query<User, Users_Search>().FirstOrDefault(u => u.Email == request.Email);
 
             if (existingUser != null)
@@ -58,9 +81,17 @@ namespace Errordite.Core.Users.Commands
                 };
             }
 
+            var userOrgMapping = new UserOrgMapping()
+                {
+                    EmailAddress = request.Email,
+                    OrganisationId = request.Organisation.Id,
+                };
+            //TODO: sync index
+            CentralStore(userOrgMapping);
+
             var user = new User
             {
-                Email = request.Email.ToLowerInvariant(), //need to do this so email is not case sensitive when signing in
+                Email = request.Email,
                 FirstName = request.FirstName,
                 LastName = request.LastName,
                 Status = UserStatus.Inactive,
@@ -82,8 +113,9 @@ namespace Errordite.Core.Users.Commands
                 },
                 OrganisationId = request.Organisation.Id
             });
-
+            
             Session.SynchroniseIndexes<Users_Search, Groups_Search>();
+            Session.SynchroniseIndexes<UserOrgMappings>(true);
 
             return new AddUserResponse(false, request.Organisation.Id)
             {
@@ -126,6 +158,7 @@ namespace Errordite.Core.Users.Commands
     {
         Ok,
         EmailExists,
-        PlanThresholdReached
+        PlanThresholdReached,
+        EmailExistsInAnotherOrganisation
     }
 }

@@ -4,6 +4,7 @@ using CodeTrip.Core.Caching.Entities;
 using CodeTrip.Core.Caching.Interceptors;
 using CodeTrip.Core.Interfaces;
 using Errordite.Core.Authorisation;
+using Errordite.Core.Domain.Central;
 using Errordite.Core.Domain.Organisation;
 using System.Linq;
 using Errordite.Core.Indexing;
@@ -49,9 +50,14 @@ namespace Errordite.Core.Users.Commands
                 };
             }
 
+            if (existingUser.Email != request.Email)
+                Session.CentralRaven.Query<UserOrgMapping>().First(u => u.EmailAddress == existingUser.Email).EmailAddress =
+                    request.Email;
+            //TODO: sync email
+
             existingUser.FirstName = request.FirstName;
             existingUser.LastName = request.LastName;
-            existingUser.Email = request.Email.ToLowerInvariant(); //need to do this so email is not case sensitive when signing in
+            existingUser.Email = request.Email; 
             existingUser.TimezoneId = request.TimezoneId;
 
             if (request.Administrator.HasValue && existingUser.Role != UserRole.SuperUser)
@@ -61,6 +67,7 @@ namespace Errordite.Core.Users.Commands
                 existingUser.GroupIds = request.GroupIds.Select(Group.GetId).ToList();
 
             Session.SynchroniseIndexes<Users_Search, Groups_Search>();
+            Session.SynchroniseIndexes<UserOrgMappings>(true);
 
             return new EditUserResponse(false, request.UserId, request.CurrentUser.OrganisationId)
             {

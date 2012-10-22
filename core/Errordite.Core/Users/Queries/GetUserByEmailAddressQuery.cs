@@ -2,6 +2,7 @@
 using CodeTrip.Core;
 using CodeTrip.Core.Interfaces;
 using Errordite.Core.Domain.Organisation;
+using Errordite.Core.Indexing;
 using Errordite.Core.Session;
 using System.Linq;
 
@@ -16,7 +17,7 @@ namespace Errordite.Core.Users.Queries
     {
         public GetUserByEmailAddressResponse Invoke(GetUserByEmailAddressRequest request)
         {
-            var user = Query<User>().FirstOrDefault(u => u.Email == request.EmailAddress);
+            var user = Query<User, Users_Search>().FirstOrDefault(u => u.Email == request.EmailAddress);
 
             return new GetUserByEmailAddressResponse()
                 {
