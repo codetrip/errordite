@@ -289,6 +289,7 @@
     <Compile Include="ServiceBus\ErrorditeNServiceBusMessageBase.cs" />
     <Compile Include="ServiceBus\MessageHandlerSessionBase.cs" />
     <Compile Include="Session\AppSession.cs" />
+    <Compile Include="Users\Queries\GetUserByEmailAddressQuery.cs" />
     <Compile Include="WebApi\LoggingHttpMessageHandler.cs" />
     <Compile Include="Session\RaiseIssueEvent.cs" />
     <Compile Include="Session\SendNServiceBusMessage.cs" />
