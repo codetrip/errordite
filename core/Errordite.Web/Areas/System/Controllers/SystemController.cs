@@ -6,6 +6,8 @@ using CodeTrip.Core.Extensions;
 using CodeTrip.Core.Paging;
 using Errordite.Core;
 using Errordite.Core.Applications.Commands;
+using Errordite.Core.Domain.Central;
+using Errordite.Core.Domain.Error;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Errors.Queries;
 using Errordite.Core.Indexing;
@@ -138,7 +140,33 @@ namespace Errordite.Web.Areas.System.Controllers
         {
             foreach (var org in Core.Session.CentralRaven.Query<Organisation>())
             {
-                
+                Core.Session.SetOrg(org);
+
+                foreach (var user in Core.Session.CentralRaven.Query<User>()
+                    .Where(u => u.OrganisationId == org.Id))
+                {
+                    Core.Session.Raven.Store(user);
+                    Core.Session.CentralRaven.Store(new UserOrgMapping
+                        {
+                            EmailAddress = user.Email,
+                            OrganisationId = org.Id,
+                        });
+                    Core.Session.CentralRaven.Delete(user);
+                }
+
+                foreach (var group in Core.Session.CentralRaven.Query<Group>()
+                    .Where(g => g.OrganisationId == org.Id))
+                {
+                    Core.Session.Raven.Store(group);
+                    Core.Session.CentralRaven.Delete(group);
+                }
+
+                foreach (var application in Core.Session.CentralRaven.Query<Application>()
+                    .Where(g => g.OrganisationId == org.Id))
+                {
+                    Core.Session.Raven.Store(application);
+                    Core.Session.CentralRaven.Delete(application);
+                }
             }
 
             return new EmptyResult();
