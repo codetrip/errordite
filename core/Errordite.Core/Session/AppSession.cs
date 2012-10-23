@@ -218,6 +218,11 @@ namespace Errordite.Core.Session
 
         public void SetOrg(Organisation org)
         {
+            if (_dbId != null && _dbId != IdHelper.GetFriendlyId(org.OrganisationId))
+            {
+                throw new InvalidOperationException("Cannot set Org twice in one session.");
+            }
+
             _dbId = IdHelper.GetFriendlyId(org.OrganisationId);
 
             var uriBuilder = new UriBuilder(_config.ReceptionHttpEndpoint);

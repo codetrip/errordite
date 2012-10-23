@@ -3,11 +3,13 @@ using CodeTrip.Core;
 using CodeTrip.Core.Encryption;
 using CodeTrip.Core.Extensions;
 using CodeTrip.Core.Interfaces;
+using Errordite.Core.Domain.Central;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Indexing;
 using Errordite.Core.Notifications.Commands;
 using Errordite.Core.Notifications.EmailInfo;
 using System.Linq;
+using Errordite.Core.Organisations.Commands;
 using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
 
 namespace Errordite.Core.Authentication.Commands
@@ -16,12 +18,14 @@ namespace Errordite.Core.Authentication.Commands
     {
         private readonly IEncryptor _encryptor;
         private readonly ISendNotificationCommand _sendNotificationCommand;
+        private readonly ISetOrganisationByEmailAddressCommand _setOrganisationByEmailAddressCommand;
 
         public ResetPasswordCommand(IEncryptor encryptor,
-            ISendNotificationCommand sendNotificationCommand)
+            ISendNotificationCommand sendNotificationCommand, ISetOrganisationByEmailAddressCommand setOrganisationByEmailAddressCommand)
         {
             _encryptor = encryptor;
             _sendNotificationCommand = sendNotificationCommand;
+            _setOrganisationByEmailAddressCommand = setOrganisationByEmailAddressCommand;
         }
 
         public ResetPasswordResponse Invoke(ResetPasswordRequest request)
@@ -29,6 +33,19 @@ namespace Errordite.Core.Authentication.Commands
             Trace("Starting...");
 
             ArgumentValidation.NotEmpty(request.Email, "request.Email");
+
+            var organisation = _setOrganisationByEmailAddressCommand.Invoke(new SetOrganisationByEmailAddressRequest()
+                {
+                    EmailAddress = request.Email,
+                }).Organisation;
+
+            if (organisation == null)
+            {
+                return new ResetPasswordResponse()
+                    {
+                        Status = ResetPasswordStatus.InvalidEmail,
+                    };
+            }
 
             var user = Session.Raven.Query<User, Users_Search>().FirstOrDefault(u => u.Email == request.Email);
 
