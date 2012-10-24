@@ -82,7 +82,7 @@ namespace Errordite.Core.Users.Queries
     {
         public string UserId { get; set; }
         public string OrganisationId { get; set; }
-
+        
         protected override string GetCacheKey()
         {
             return CacheKeys.Users.Key(OrganisationId, UserId);

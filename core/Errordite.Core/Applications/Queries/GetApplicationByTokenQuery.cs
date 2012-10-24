@@ -4,6 +4,8 @@ using CodeTrip.Core.Interfaces;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Organisations;
 using CodeTrip.Core.Extensions;
+using Errordite.Core.Organisations.Queries;
+using Errordite.Core.Session;
 
 namespace Errordite.Core.Applications.Queries
 {
@@ -11,11 +13,14 @@ namespace Errordite.Core.Applications.Queries
     {
         private readonly IGetApplicationQuery _getApplicationQuery;
         private readonly IEncryptor _encryptor;
-
-        public GetApplicationByTokenQuery(IGetApplicationQuery getApplicationQuery, IEncryptor encryptor)
+        private readonly IGetOrganisationQuery _getOrganisationQuery;
+        private readonly IAppSession _appSession;
+        public GetApplicationByTokenQuery(IGetApplicationQuery getApplicationQuery, IEncryptor encryptor, IGetOrganisationQuery getOrganisationQuery, IAppSession appSession)
         {
             _getApplicationQuery = getApplicationQuery;
             _encryptor = encryptor;
+            _getOrganisationQuery = getOrganisationQuery;
+            _appSession = appSession;
         }
 
         public GetApplicationByTokenResponse Invoke(GetApplicationByTokenRequest request)
@@ -33,6 +38,17 @@ namespace Errordite.Core.Applications.Queries
 
             string applicationId = Application.GetId(tokenParts[0]);
             string organisationId = tokenParts.Length == 1 ? "organisations/1" : Organisation.GetId(tokenParts[1]);
+
+            var organisation =
+                _getOrganisationQuery.Invoke(new GetOrganisationRequest() {OrganisationId = organisationId}).
+                    Organisation;
+
+            if (organisation == null)
+            {
+                Trace("Organisation with id {0} not found", organisationId);
+            }
+
+            _appSession.SetOrg(organisation);
 
             var application = _getApplicationQuery.Invoke(new GetApplicationRequest
             {

@@ -11,7 +11,7 @@ using Errordite.Core.Extensions;
 
 namespace Errordite.Core.Domain.Error
 {
-    public class IssueBase
+    public class IssueBase : IOrganisationEntity
     {
         [ProtoMember(1)]
         public string Id { get; set; }
@@ -23,6 +23,8 @@ namespace Errordite.Core.Domain.Error
         public MatchPriority MatchPriority { get; set; }
         [ProtoMember(5)]
         public string ApplicationId { get; set; }
+        [ProtoMember(6)]
+        public string OrganisationId { get; set; }
 
         public bool RulesEqual(IList<IMatchRule> rules)
         {
@@ -50,26 +52,24 @@ namespace Errordite.Core.Domain.Error
     }
 
     [ProtoContract]
-    public class Issue : IssueBase, IOrganisationEntity, IWantToKnowAboutProdProf
+    public class Issue : IssueBase, IWantToKnowAboutProdProf
     {
-        [ProtoMember(6)]
-        public ErrorLimitStatus LimitStatus { get; set; }
         [ProtoMember(7)]
-        public string Name { get; set; }
+        public ErrorLimitStatus LimitStatus { get; set; }
         [ProtoMember(8)]
-        public string UserId { get; set; }
+        public string Name { get; set; }
         [ProtoMember(9)]
-        public IssueStatus Status { get; set; }
+        public string UserId { get; set; }
         [ProtoMember(10)]
-        public IList<IssueHistory> History { get; set; }
+        public IssueStatus Status { get; set; }
         [ProtoMember(11)]
-        public int ErrorCount { get; set; }
+        public IList<IssueHistory> History { get; set; }
         [ProtoMember(12)]
-        public DateTime CreatedOnUtc { get; set; }
+        public int ErrorCount { get; set; }
         [ProtoMember(13)]
-        public DateTime LastModifiedUtc { get; set; }
+        public DateTime CreatedOnUtc { get; set; }
         [ProtoMember(14)]
-        public string OrganisationId { get; set; }
+        public DateTime LastModifiedUtc { get; set; }
         [ProtoMember(15)]
         public IList<ProdProfRecord> ProdProfRecords { get; set; }
         [ProtoMember(16)]

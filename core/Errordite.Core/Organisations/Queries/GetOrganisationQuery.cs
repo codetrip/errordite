@@ -20,13 +20,13 @@ namespace Errordite.Core.Organisations.Queries
 
             var organisationId = Organisation.GetId(request.OrganisationId);
             var organisation = 
-                Session.Raven
+                Session.CentralRaven
                     .Include<Organisation>(o => o.PaymentPlanId)
                     .Load<Organisation>(organisationId);
 
             if(organisation != null)
             {
-                organisation.PaymentPlan = Load<PaymentPlan>(organisation.PaymentPlanId);
+                organisation.PaymentPlan = CentralLoad<PaymentPlan>(organisation.PaymentPlanId);
             }
 
             return new GetOrganisationResponse

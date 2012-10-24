@@ -513,7 +513,7 @@ namespace Errordite.Web.Controllers
                 CurrentUser = Core.AppContext.CurrentUser
             };
 
-            var httpTask = Core.Session.ReceptionServiceHttpClient.PostJsonAsync("api/ReprocessIssueErrors", request);
+            var httpTask = Core.Session.ReceptionServiceHttpClient.PostJsonAsync("ReprocessIssueErrors", request);
             httpTask.Wait();
 
             if (!httpTask.Result.IsSuccessStatusCode)

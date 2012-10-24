@@ -9,9 +9,13 @@ namespace Errordite.Core.Session
     /// </summary>
     public class SynchroniseIndex<T> : SessionCommitAction where T : AbstractIndexCreationTask, new()
     {
-        public SynchroniseIndex() :
+        private readonly bool _centralRaven;
+
+        public SynchroniseIndex(bool centralRaven = false) :
             base("Synchronise indexes")
-        {}
+        {
+            _centralRaven = centralRaven;
+        }
 
         public override void Execute(IAppSession session)
         {

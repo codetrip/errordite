@@ -37,7 +37,7 @@ namespace Errordite.Reception.Service
             config.Formatters.JsonFormatter.SerializerSettings = WebApiSettings.JsonSerializerSettings;
             config.Routes.MapHttpRoute(
                 name: "issueapi",
-                routeTemplate: "api/{controller}/{id}",
+                routeTemplate: "api/{orgid}/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
             

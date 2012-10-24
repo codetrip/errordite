@@ -88,6 +88,7 @@
       <HintPath>..\..\lib\RavenDb\Client\Raven.Client.Lightweight.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http">
@@ -126,6 +127,7 @@
     </Compile>
     <Compile Include="Caching\CacheKeys.cs" />
     <Compile Include="Configuration\HttpServerConfiguration.cs" />
+    <Compile Include="Domain\Central\UserOrgMapping.cs" />
     <Compile Include="Domain\IdHelper.cs" />
     <Compile Include="Domain\Organisation\PaymentPlan.cs" />
     <Compile Include="Domain\Organisation\UserAlert.cs" />
@@ -163,6 +165,7 @@
     <Compile Include="Indexing\UserAlerts_Search.cs" />
     <Compile Include="Indexing\Organisations_Search.cs" />
     <Compile Include="Indexing\Groups_Search.cs" />
+    <Compile Include="Indexing\UserOrgMapping.cs" />
     <Compile Include="Indexing\Users_Search.cs" />
     <Compile Include="Indexing\Issues_Search.cs" />
     <Compile Include="Indexing\Errors_CountByIssue.cs" />
@@ -267,6 +270,7 @@
     <Compile Include="Organisations\Commands\SuspendOrganisationCommand.cs" />
     <Compile Include="Organisations\Commands\SetOrganisationTimezoneCommand.cs" />
     <Compile Include="Organisations\OrganisationRequestBase.cs" />
+    <Compile Include="Organisations\Commands\SetOrganisationByEmailAddressCommand.cs" />
     <Compile Include="Organisations\Queries\GetOrganisationsQuery.cs" />
     <Compile Include="Organisations\Queries\GetAvailablePaymentPlansQuery.cs" />
     <Compile Include="Organisations\Queries\GetOrganisationStatisticsQuery.cs" />
@@ -287,6 +291,7 @@
     <Compile Include="ServiceBus\ErrorditeNServiceBusMessageBase.cs" />
     <Compile Include="ServiceBus\MessageHandlerSessionBase.cs" />
     <Compile Include="Session\AppSession.cs" />
+    <Compile Include="Users\Queries\GetUserByEmailAddressQuery.cs" />
     <Compile Include="WebApi\LoggingHttpMessageHandler.cs" />
     <Compile Include="Session\RaiseIssueEvent.cs" />
     <Compile Include="Session\SendNServiceBusMessage.cs" />
