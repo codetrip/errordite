@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+
+<html dir="ltr" lang="en-GB">
+    
+    <head>
+        @Html.Partial("head")
+        @Html.Partial("css")
+        @RenderSection("css", required: false) 
+    </head>
+
+    <body>
+        <div id="head">
+            @Html.Partial("header")
+        </div>
+
+        <div id="body">
+            
+            <div class="head">
+                @Html.Partial("notifications")
+                @Html.Partial("breadcrumb")
+                @RenderSection("contentHeader", required: false) 
+            </div>
+
+            <div class="content">
+                <div class="row-margin">
+                    <div class="row-fluid">
+                        @RenderBody()
+                    </div>
+                </div>
+                <div class="spinner"></div>
+            </div>
+        
+            <div class="push"></div>
+        </div>
+
+        <div id="footer">
+            @Html.Partial("footer")
+        </div>
+
+        @Html.Partial("js")
+        @RenderSection("scripts", required: false) 
+    </body>
+
+</html>

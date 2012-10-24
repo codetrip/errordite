@@ -1,0 +1,18 @@
+﻿@using CodeTrip.Core.Extensions
+@using Errordite.Core.Configuration
+
+@if (ErrorditeConfiguration.Current.RenderMinifiedContent)
+{
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/css/{0}.min.css".FormatWith(ErrorditeConfiguration.CurrentBuildNumber))" />
+}
+else
+{
+    <link rel="stylesheet" type="text/css" href='@Url.Content("~/css/jquery-ui-1.8.21.custom.css")' media="screen" />
+    <link rel="stylesheet" type="text/css" href='@Url.Content("~/css/ui.daterangepicker.css")' media="screen" />
+    <link rel="stylesheet" type="text/css" href='@Url.Content("~/css/bootstrap.min.css")' media="screen" />
+    <link rel="stylesheet" type="text/css" href='@Url.Content("~/css/errordite.css")' media="screen" />
+
+    <!--[if IE]>
+        <link rel="stylesheet" type="text/css" href="@Url.Content("~/css/ie.css")" />
+    <![endif]-->
+}

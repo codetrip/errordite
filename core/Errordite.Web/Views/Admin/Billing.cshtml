@@ -1,0 +1,23 @@
+﻿
+@using Errordite.Web.Models.Organisation
+@model OrganisationViewModel
+           
+@{
+    ViewBag.Title = "Billing";
+}
+
+@section contentHeader
+{
+    <div id="pagetitle">
+        <h1><i class="icon-arrow-right"></i>Billing</h1>
+    </div>
+    
+    @Html.Partial("Admin/Tabs")
+}
+
+<div id="billing">
+    <h2 class="subtitle">Billing History</h2>
+    <p>You have no billing history</p>
+</div>
+
+

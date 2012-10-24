@@ -1,0 +1,45 @@
+﻿
+@using CodeTrip.Core.Web
+@model Errordite.Web.Models.Home.ContactUsViewModel
+           
+@{
+    ViewBag.Title = "Contact Us";
+}
+           
+
+<div class="span12">
+    <div class="base">
+        <h2>Contact Us</h2>
+        <div class="base-content">
+            <p>Complete the form below to contact us or email us directly at <a href="mailto:errordite@codetrip.co.uk">errordite@codetrip.co.uk</a>. We are looking forward to hearing from you and will get back to you as soon as we can!</p>
+            @using (Html.BeginForm("contact", "home", FormMethod.Post, new { id = "contactUsForm" }))
+            {
+                <ul class="errorditeform">
+                    @*<li>
+                        @Html.LabelFor(m => m.Reason, "Reason")
+                        @Html.DropDownListForEnum(m => m.Reason, Resources.Home.ResourceManager)
+                        @Html.ValidationMessageFor(m => m.Reason)
+                    </li>*@
+                    <li>
+                        @Html.LabelFor(m => m.Name, "Name")
+                        @Html.TextBoxFor(m => m.Name, new { autocomplete = "off" })
+                        @Html.ValidationMessageFor(m => m.Name)
+                    </li>
+                    <li>
+                        @Html.LabelFor(m => m.Email, "Email")
+                        @Html.TextBoxFor(m => m.Email, new { autocomplete = "off", id = "contact-us-email" })
+                        @Html.ValidationMessageFor(m => m.Email)
+                    </li>
+                    <li>
+                        @Html.LabelFor(m => m.Message, "Message")
+                        @Html.TextAreaFor(m => m.Message, new { rows = "5" })
+                        @Html.ValidationMessageFor(m => m.Message)
+                    </li>
+                    <li>
+                        <input class="btn btn-success" type="submit" value="Send" />
+                    </li>
+                </ul>
+            }
+        </div>
+    </div>
+</div>
