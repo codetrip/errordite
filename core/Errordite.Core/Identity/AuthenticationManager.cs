@@ -1,17 +1,24 @@
 ﻿using System;
+using System.Web;
 using System.Web.Security;
 using CodeTrip.Core.Web;
 using CodeTrip.Core.Extensions;
+using Errordite.Core.Organisations.Commands;
+using Errordite.Core.Users.Queries;
 
 namespace Errordite.Core.Identity
 {
     public class AuthenticationManager : IAuthenticationManager
     {
         private readonly ICookieManager _cookieManager;
+        private readonly ISetOrganisationByEmailAddressCommand _setOrganisationByEmailAddressCommand;
+        private readonly IGetUserByEmailAddressQuery _getUserByEmailAddressQuery;
 
-        public AuthenticationManager(ICookieManager cookieManager)
+        public AuthenticationManager(ICookieManager cookieManager, ISetOrganisationByEmailAddressCommand setOrganisationByEmailAddressCommand, IGetUserByEmailAddressQuery getUserQuery)
         {
             _cookieManager = cookieManager;
+            _setOrganisationByEmailAddressCommand = setOrganisationByEmailAddressCommand;
+            _getUserByEmailAddressQuery = getUserQuery;
         }
 
         /// <summary>
@@ -93,15 +100,34 @@ namespace Errordite.Core.Identity
 
         public AuthenticationIdentity GetCurrentUser()
         {
-            string currentUser = _cookieManager.Get(CoreConstants.Authentication.IdentityCookieName);
+            var name = HttpContext.Current.User.Identity.Name;
 
-            if(!currentUser.IsNullOrEmpty())
-            {
-                var authIdentity = AuthenticationIdentity.CookieDecode(currentUser);
-                return authIdentity ?? SignInGuest();
-            }
-            
-            return SignInGuest();
+            var organisation = _setOrganisationByEmailAddressCommand.Invoke(new SetOrganisationByEmailAddressRequest()
+                {
+                    EmailAddress = name,
+                }).Organisation;
+
+            if (organisation == null)
+                return SignInGuest();
+
+            var user = _getUserByEmailAddressQuery.Invoke(new GetUserByEmailAddressRequest()
+                {
+                    EmailAddress = name,
+                }).User;
+
+            if (user == null)
+                return SignInGuest();
+
+            var currentUser = new AuthenticationIdentity
+                {
+                    Email = user.Email,
+                    HasUserProfile = true,
+                    OrganisationId = user.OrganisationId,
+                    RememberMe = true,
+                    UserId = user.Id, //TODO get rid of all the pointless stuff here
+                };
+
+            return currentUser;
         }
     }
 }

@@ -1,21 +1,38 @@
 ﻿using CodeTrip.Core;
 using CodeTrip.Core.Interfaces;
+using Errordite.Core.Domain.Central;
 using Errordite.Core.Domain.Organisation;
 using CodeTrip.Core.Extensions;
 using Errordite.Core.Indexing;
 using System.Linq;
+using Errordite.Core.Organisations.Commands;
 using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
 
 namespace Errordite.Core.Authentication.Commands
 {
     public class AuthenticateUserCommand : SessionAccessBase, IAuthenticateUserCommand
     {
+        private ISetOrganisationByEmailAddressCommand _setOrganisationByEmailAddressCommand;
+
+        public AuthenticateUserCommand(ISetOrganisationByEmailAddressCommand setOrganisationByEmailAddressCommand)
+        {
+            _setOrganisationByEmailAddressCommand = setOrganisationByEmailAddressCommand;
+        }
+
         public AuthenticateUserResponse Invoke(AuthenticateUserRequest request)
         {
             Trace("Starting...");
 
             ArgumentValidation.NotEmpty(request.Email, "request.Email");
             ArgumentValidation.NotEmpty(request.Password, "request.Password");
+
+            var org = _setOrganisationByEmailAddressCommand.Invoke(new SetOrganisationByEmailAddressRequest()
+                {
+                    EmailAddress = request.Email,
+                }).Organisation;
+
+            if (org == null)
+                return new AuthenticateUserResponse(){Status = AuthenticateUserStatus.LoginFailed};
 
             var user = Session.Raven.Query<User, Users_Search>()
                 .FirstOrDefault(u => u.Email == request.Email.ToLowerInvariant() && u.Password == request.Password.Hash());
@@ -30,7 +47,7 @@ namespace Errordite.Core.Authentication.Commands
                     };
                 }
 
-                var organisation = Session.Raven.Query<Organisation, Organisations_Search>().FirstOrDefault(o => o.Id == Organisation.GetId(user.OrganisationId));
+                var organisation = Session.CentralRaven.Query<Organisation, Organisations_Search>().FirstOrDefault(o => o.Id == Organisation.GetId(user.OrganisationId));
 
                 if (organisation == null || organisation.Status == OrganisationStatus.Suspended)
                 {

@@ -16,10 +16,12 @@ namespace Errordite.Reception.Service.Controllers
             _reprocessIssueErrorsCommand = ObjectFactory.GetObject<IReprocessIssueErrorsCommand>();
         }
 
-        public HttpResponseMessage Post(ReprocessIssueErrorsRequest request)
+        public HttpResponseMessage Post(string orgId, ReprocessIssueErrorsRequest request)
         {
             try
             {
+                SetOrg(orgId);
+
                 _auditor.Trace(GetType(), "Received reprocess issue errors request, IssueId:={0}, ", request.IssueId);
                 var response = _reprocessIssueErrorsCommand.Invoke(request);
                 _session.Commit();

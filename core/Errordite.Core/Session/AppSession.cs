@@ -1,13 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition.Hosting;
+using System.ComponentModel.Composition.Primitives;
 using System.Net.Http;
 using CodeTrip.Core.Auditing.Entities;
+using CodeTrip.Core.IoC;
 using CodeTrip.Core.Redis;
 using Errordite.Core.Configuration;
+using Errordite.Core.Domain;
+using Errordite.Core.Domain.Organisation;
+using Errordite.Core.Indexing;
 using Errordite.Core.WebApi;
 using NServiceBus;
+using Raven.Abstractions.Data;
 using Raven.Client;
+using Raven.Client.Document;
 using Raven.Client.Indexes;
+using Raven.Client.Extensions;
+using CodeTrip.Core.Extensions;
 
 namespace Errordite.Core.Session
 {
@@ -20,6 +30,8 @@ namespace Errordite.Core.Session
         /// <summary>
         /// Access the Raven Session
         /// </summary>
+        IDocumentSession CentralRaven { get; }
+
         IDocumentSession Raven { get; }
         /// <summary>
         /// Access the Redis Databases
@@ -50,10 +62,14 @@ namespace Errordite.Core.Session
 
         HttpClient ReceptionServiceHttpClient { get; }
 
+        void SetOrg(Organisation org);
+
+        string OrgId { get; }
+
         /// <summary>
         /// Synchronise the index specified in the type parameter
         /// </summary>
-        void SynchroniseIndexes<T>() 
+        void SynchroniseIndexes<T>(bool centralRaven = false) 
             where T : AbstractIndexCreationTask, new();
 
         /// <summary>
@@ -79,8 +95,12 @@ namespace Errordite.Core.Session
         private readonly IDocumentStore _documentStore;
         private readonly IBus _bus;
         private readonly IRedisSession _redisSession;
+        private readonly ErrorditeConfiguration _config;
+        private readonly IComponentAuditor _auditor;
         private readonly List<SessionCommitAction> _sessionCommitActions;
-        private readonly HttpClient _receptionServiceHttpClient;
+        private HttpClient _receptionServiceHttpClient;
+        private string _dbId;
+        private IDocumentSession _orgSession;
 
         public AppSession(IDocumentStore documentStore, IBus bus, IRedisSession redisSession, ErrorditeConfiguration config, IComponentAuditor auditor)
         {
@@ -88,8 +108,8 @@ namespace Errordite.Core.Session
             _documentStore = documentStore;
             _bus = bus;
             _redisSession = redisSession;
-            _receptionServiceHttpClient = new HttpClient(new LoggingHttpMessageHandler(auditor))
-                                              {BaseAddress = new Uri(config.ReceptionHttpEndpoint)};
+            _config = config;
+            _auditor = auditor;
         }
 
         public HttpClient ReceptionServiceHttpClient
@@ -103,7 +123,7 @@ namespace Errordite.Core.Session
             get { return _bus; }
         }
 
-        public IDocumentSession Raven
+        public IDocumentSession CentralRaven
         {
             get
             {
@@ -115,6 +135,38 @@ namespace Errordite.Core.Session
                 return _session;
             }
         }
+
+        public IDocumentSession Raven
+        {
+            get
+            {
+                if (_orgSession != null)
+                    return _orgSession;
+
+                if (_dbId == null)
+                    throw new InvalidOperationException("Can't get session till Org set.");
+
+                _documentStore.DatabaseCommands.EnsureDatabaseExists(_dbId);
+                IndexCreation.CreateIndexes(
+                    new CompositionContainer(new AssemblyCatalog(typeof(Issues_Search).Assembly), new ExportProvider[0]),
+                     _documentStore.DatabaseCommands.ForDatabase(_dbId), _documentStore.Conventions);
+
+                _orgSession = _documentStore.OpenSession(_dbId);
+                _orgSession.Advanced.MaxNumberOfRequestsPerSession = RequestLimit == 0 ? 250 : RequestLimit;
+
+                 var facets = new List<Facet>
+                {
+                    new Facet {Name = "Status"},
+                };
+
+                _orgSession.Store(new FacetSetup {Id = Core.CoreConstants.FacetDocuments.IssueStatus, Facets = facets});
+                _orgSession.SaveChanges();
+
+                return _orgSession;
+            }
+        }
+
+
 
         public IRedisSession Redis
         {
@@ -142,6 +194,8 @@ namespace Errordite.Core.Session
             {
                 if (_session != null)
                     _session.SaveChanges();
+                if (_orgSession != null)
+                    _orgSession.SaveChanges();
 
                 foreach (var sessionCommitAction in _sessionCommitActions)
                     sessionCommitAction.Execute(this);
@@ -162,10 +216,30 @@ namespace Errordite.Core.Session
 
         public int RequestLimit { get; set; }
 
-        public void SynchroniseIndexes<T>()
+        public void SetOrg(Organisation org)
+        {
+            if (_dbId != null && _dbId != IdHelper.GetFriendlyId(org.OrganisationId))
+            {
+                throw new InvalidOperationException("Cannot set Org twice in one session.");
+            }
+
+            _dbId = IdHelper.GetFriendlyId(org.OrganisationId);
+
+            var uriBuilder = new UriBuilder(_config.ReceptionHttpEndpoint);
+            if (!uriBuilder.Path.EndsWith("/"))
+                uriBuilder.Path += "/";
+
+            uriBuilder.Path += "{0}/".FormatWith(IdHelper.GetFriendlyId(_dbId));
+
+            _receptionServiceHttpClient = new HttpClient(new LoggingHttpMessageHandler(_auditor)) { BaseAddress = uriBuilder.Uri };
+        }
+
+        public string OrgId { get { return _dbId; } }
+
+        public void SynchroniseIndexes<T>(bool centralRaven = false)
             where T : AbstractIndexCreationTask, new()
         {
-            AddCommitAction(new SynchroniseIndex<T>());
+            AddCommitAction(new SynchroniseIndex<T>(centralRaven));
         }
 
         public void SynchroniseIndexes<T1, T2>() 

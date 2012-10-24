@@ -6,11 +6,14 @@ using CodeTrip.Core.Extensions;
 using CodeTrip.Core.Paging;
 using Errordite.Core;
 using Errordite.Core.Applications.Commands;
+using Errordite.Core.Domain.Central;
+using Errordite.Core.Domain.Error;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Errors.Queries;
 using Errordite.Core.Indexing;
 using Errordite.Core.Session;
 using Errordite.Web.ActionFilters;
+using Errordite.Web.ActionResults;
 using Errordite.Web.Controllers;
 using Errordite.Web.Models.Administration;
 using Errordite.Web.Models.Navigation;
@@ -133,20 +136,5 @@ namespace Errordite.Web.Areas.System.Controllers
             throw new InvalidOperationException("Something went wrong");
         }
 
-        public ActionResult UpdateOrganisations()
-        {
-            var organisations = _session.Raven.Query<Organisation, Organisations_Search>().ToList();
-
-            foreach (var organisation in organisations)
-            {
-                organisation.TimezoneId = "UTC";
-                organisation.CreatedOnUtc = DateTime.UtcNow.AddMonths(-6);
-            }
-
-            return new ContentResult
-            {
-                Content = "Done"
-            };
-        }
     }
 }

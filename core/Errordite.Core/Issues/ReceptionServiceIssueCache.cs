@@ -12,16 +12,15 @@ namespace Errordite.Core.Issues
 {
     public interface IReceptionServiceIssueCache
     {
-        IEnumerable<IssueBase> GetIssues(string applicationId);
+        IEnumerable<IssueBase> GetIssues(string applicationId, string organisationId);
         void Add(IssueBase issue);
         void Update(IssueBase issue);
-        void Delete(string issueId, string applicationId);
+        void Delete(string issueId, string applicationId, string organisationId);
     }
 
     public class ReceptionServiceIssueCache : ComponentBase, IReceptionServiceIssueCache
     {
-        private static readonly ObjectCache<List<IssueBase>> _cache = new ObjectCache<List<IssueBase>>();
-        private readonly static object _syncLock = new object();
+        private static readonly Dictionary<string, ObjectCache<List<IssueBase>>> _cache = new Dictionary<string, ObjectCache<List<IssueBase>>>();
         private readonly ErrorditeConfiguration _configuration;
         private readonly IGetAllApplicationIssuesQuery _getIssues;
 
@@ -32,21 +31,19 @@ namespace Errordite.Core.Issues
             _configuration = configuration;
         }
 
-        public IEnumerable<IssueBase> GetIssues(string applicationId)
+        public IEnumerable<IssueBase> GetIssues(string applicationId, string organisationId)
         {
-            lock(_syncLock)
-            {
-                var issues = GetCachedIssues(applicationId);
-                return issues.OrderByDescending(i => i.MatchPriority).ThenByDescending(i => i.LastErrorUtc);
-            }
+            var issues = GetCachedIssues(applicationId, organisationId);
+            return issues.OrderByDescending(i => i.MatchPriority).ThenByDescending(i => i.LastErrorUtc);
+            //TODO: surely better to sort on adding / updating.
         }
 
         public void Add(IssueBase issue)
         {
-            lock (_syncLock)
-            {
-                var issues = GetCachedIssues(issue.ApplicationId);
+            var issues = GetCachedIssues(issue.ApplicationId, issue.OrganisationId);
 
+            lock (issues)
+            {
                 var index = issues.FindIndex(m => m.Id == issue.Id);
 
                 if (index == -1)
@@ -58,16 +55,17 @@ namespace Errordite.Core.Issues
                 {
                     Error("Updating issue in cache (from add method!) at index {0} with Id:={1}", index, issue.Id);
                     issues[index] = issue;
-                } 
+                }
             }
         }
 
         public void Update(IssueBase issue)
         {
-            lock (_syncLock)
-            {
-                var issues = GetCachedIssues(issue.ApplicationId);
+            var issues = GetCachedIssues(issue.ApplicationId, issue.OrganisationId);
 
+            lock (issues)
+            {
+                //TODO: would be better to have a List<Ref<IssueBase>> and update it directly perhaps
                 var index = issues.FindIndex(m => m.Id == issue.Id);
 
                 if (index >= 0)
@@ -83,12 +81,12 @@ namespace Errordite.Core.Issues
             }
         }
 
-        public void Delete(string issueId, string applicationId)
+        public void Delete(string issueId, string applicationId, string organisationId)
         {
-            lock (_syncLock)
-            {
-                var issues = GetCachedIssues(applicationId);
+            var issues = GetCachedIssues(applicationId, organisationId);
 
+            lock (issues)
+            {
                 var index = issues.FindIndex(m => m.Id == Issue.GetId(issueId));
 
                 if (index >= 0)
@@ -97,31 +95,50 @@ namespace Errordite.Core.Issues
                 }
                 else
                 {
-                    Error("Failed to locate issue with Id {0} in the issue cache for applicationId:={1}", issueId, applicationId);
+                    Error("Failed to locate issue with Id {0} in the issue cache for applicationId:={1}", issueId,
+                          applicationId);
                 }
             }
         }
 
-        private List<IssueBase> GetCachedIssues(string applicationId)
+        private List<IssueBase> GetCachedIssues(string applicationId, string organisationId)
         {
             applicationId = Application.GetId(applicationId);
+            organisationId = Organisation.GetId(organisationId);
 
-            var issues = _cache.Get(applicationId);
+            ObjectCache<List<IssueBase>> orgCache;
+            if (!_cache.TryGetValue(organisationId, out orgCache))
+            {
+                lock (_cache)
+                {
+                    if (!_cache.TryGetValue(organisationId, out orgCache))
+                    {
+                        orgCache = new ObjectCache<List<IssueBase>>();
+                        _cache.Add(organisationId, orgCache);
+                    }
+                }
+            }
+
+            var issues = orgCache.Get(applicationId);
 
             if (issues == null)
             {
                 Trace("Attempting to load issues for application:={0}", applicationId);
 
-                var request = new GetAllApplicationIssuesRequest
+                lock (orgCache)
                 {
-                    ApplicationId = applicationId
-                };
+                    var request = new GetAllApplicationIssuesRequest
+                        {
+                            ApplicationId = applicationId
+                        };
 
-                issues = _getIssues.Invoke(request).Issues ?? new List<IssueBase>();
+                    issues = _getIssues.Invoke(request).Issues ?? new List<IssueBase>();
 
-                _cache.Add(applicationId, issues, DateTimeOffset.UtcNow.AddMinutes(_configuration.IssueCacheTimeoutMinutes));
+                    orgCache.Add(applicationId, issues,
+                                 DateTimeOffset.UtcNow.AddMinutes(_configuration.IssueCacheTimeoutMinutes));
 
-                Trace("Successfully loaded {0} issues", issues.Count);
+                    Trace("Successfully loaded {0} issues", issues.Count);
+                }
             }
             
             return issues;
