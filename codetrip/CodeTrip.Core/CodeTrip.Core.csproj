@@ -192,6 +192,7 @@
     <Compile Include="Interfaces\IWorkflow.cs" />
     <Compile Include="IoC\ArrayResolver.cs" />
     <Compile Include="IoC\ConfigurationOverrideContainerInitialiser.cs" />
+    <Compile Include="IoC\CoreInstallerBase.cs" />
     <Compile Include="IoC\ComponentRegistrationExtensions.cs" />
     <Compile Include="IoC\CoreInstaller.cs" />
     <Compile Include="IoC\IContainerInitialiser.cs" />
