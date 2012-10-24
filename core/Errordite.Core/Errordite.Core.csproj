@@ -277,7 +277,6 @@
     <Compile Include="Organisations\Queries\GetOrganisationQuery.cs" />
     <Compile Include="Issues\ReceptionServiceIssueCache.cs" />
     <Compile Include="Reception\Commands\ProcessIncomingExceptionCommand.cs" />
-    <Compile Include="Reception\ExceptionRateLimiter.cs" />
     <Compile Include="Resources\CoreResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

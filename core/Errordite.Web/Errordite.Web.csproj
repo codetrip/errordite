@@ -794,6 +794,9 @@
     <Content Include="Views\Issues\Merge.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Views\Shared\Css.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="Views\Issue\Reports.cshtml" />
     <Content Include="Areas\System\Views\Web.config" />
     <Content Include="Areas\System\Views\_ViewStart.cshtml" />
@@ -833,9 +836,6 @@
     <Content Include="Views\Shared\Errors\TraceMessages.cshtml" />
     <Content Include="Views\Help\SendErrorWithJson.cshtml" />
     <Content Include="Views\Shared\HowItWorksPartial.cshtml" />
-    <Content Include="Views\Shared\Master2.0.cshtml" />
-    <Content Include="Views\Shared\Head.cshtml" />
-    <Content Include="Views\Shared\Css.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_GlobalResources\Alerts.resx">
