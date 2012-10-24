@@ -22,16 +22,19 @@ namespace Errordite.Core.Reception.Commands
         private readonly IGetApplicationByTokenQuery _getApplicationByToken;
         private readonly ErrorditeConfiguration _configuration;
         private readonly IBus _bus;
+        private readonly IExceptionRateLimiter _exceptionRateLimiter;
 
         public ProcessIncomingExceptionCommand(IGetApplicationByTokenQuery getApplicationByToken, 
             ErrorditeConfiguration configuration, 
             IBus bus, 
-            IReceiveErrorCommand receiveErrorCommand)
+            IReceiveErrorCommand receiveErrorCommand, 
+            IExceptionRateLimiter exceptionRateLimiter)
         {
             _getApplicationByToken = getApplicationByToken;
             _configuration = configuration;
             _bus = bus;
             _receiveErrorCommand = receiveErrorCommand;
+            _exceptionRateLimiter = exceptionRateLimiter;
         }
 
         public ProcessIncomingExceptionResponse Invoke(ProcessIncomingExceptionRequest request)
@@ -53,6 +56,13 @@ namespace Errordite.Core.Reception.Commands
                         organisationId = application == null ? null : application.OrganisationId;
                     }
                     break;
+            }
+
+            RateLimiterRule failedRule;
+            if((failedRule = _exceptionRateLimiter.Accept(applicationId)) != null)
+            {
+                Trace("Failed rate limiter rule named {0}", failedRule.Name);
+                return new ProcessIncomingExceptionResponse();
             }
 
             var error = GetError(request.Error, application);

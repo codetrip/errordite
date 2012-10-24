@@ -110,6 +110,7 @@
     <Compile Include="IntegrationTests\ReceptionTests.cs" />
     <Compile Include="Json\SerialisationTests.cs" />
     <Compile Include="Misc\EncryptorTests.cs" />
+    <Compile Include="Misc\RateLimiterTests.cs" />
     <Compile Include="Mocks\MockServiceBus.cs" />
     <Compile Include="Redis\RedisTests.cs" />
     <Compile Include="Redis\SerializationTests.cs" />
