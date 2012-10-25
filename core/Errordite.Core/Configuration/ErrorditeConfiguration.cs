@@ -25,6 +25,6 @@ namespace Errordite.Core.Configuration
         public double IssueCacheTimeoutMinutes { get; set; }
         public string ReceptionHttpEndpoint { get; set; }
         public List<string> ErrorPropertiesForFiltering { get; set; }
-        public List<RateLimiterRule> RateLimiterRules { get; set; }
+        //public List<RateLimiterRule> RateLimiterRules { get; set; }
     }
 }

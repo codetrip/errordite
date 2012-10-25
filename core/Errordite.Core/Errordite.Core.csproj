@@ -59,7 +59,7 @@
       <HintPath>..\..\lib\log4net\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Lucene.Net">
-      <HintPath>..\..\lib\RavenDb\Web\bin\Lucene.Net.dll</HintPath>
+      <HintPath>..\..\..\Main\lib\Lucene.net\Lucene.Net.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.0.8.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -82,10 +82,11 @@
       <HintPath>..\..\lib\protobuf\protobuf-net.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Abstractions">
-      <HintPath>..\..\lib\RavenDb\Client\Raven.Abstractions.dll</HintPath>
+      <HintPath>..\..\lib\RavenDB.Client.1.2.2127-Unstable\lib\net40\Raven.Abstractions.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Raven.Client.Lightweight">
-      <HintPath>..\..\lib\RavenDb\Client\Raven.Client.Lightweight.dll</HintPath>
+      <HintPath>..\..\lib\RavenDB.Client.1.2.2127-Unstable\lib\net40\Raven.Client.Lightweight.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -277,7 +278,6 @@
     <Compile Include="Organisations\Queries\GetOrganisationQuery.cs" />
     <Compile Include="Issues\ReceptionServiceIssueCache.cs" />
     <Compile Include="Reception\Commands\ProcessIncomingExceptionCommand.cs" />
-    <Compile Include="Reception\ExceptionRateLimiter.cs" />
     <Compile Include="Resources\CoreResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

@@ -47,13 +47,11 @@ namespace Errordite.Core.Users.Commands
                         {
                             Status = AddUserStatus.EmailExists,
                         };
-                else
+                
+                return new AddUserResponse(true)
                 {
-                    return new AddUserResponse(true)
-                        {
-                            Status = AddUserStatus.EmailExistsInAnotherOrganisation,
-                        };
-                }
+                    Status = AddUserStatus.EmailExistsInAnotherOrganisation,
+                };
             }
 
             var existingUser = Session.Raven.Query<User, Users_Search>().FirstOrDefault(u => u.Email == request.Email);
@@ -66,7 +64,7 @@ namespace Errordite.Core.Users.Commands
                 };
             }
 
-            RavenQueryStatistics stats;
+            Raven.Client.RavenQueryStatistics stats;
             var users = Session.Raven.Query<User, Users_Search>()
                 .Statistics(out stats)
                 .Where(u => u.OrganisationId == request.Organisation.Id)

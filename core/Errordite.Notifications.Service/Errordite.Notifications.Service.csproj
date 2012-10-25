@@ -43,12 +43,8 @@
     <Reference Include="Castle.Windsor">
       <HintPath>..\..\lib\Castle\Castle.Windsor.dll</HintPath>
     </Reference>
-    <Reference Include="Errordite.Client.Mvc3, Version=0.9.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\Errordite.Client\Errordite.Client.Mvc3.dll</HintPath>
-    </Reference>
-    <Reference Include="Errordite.Client.v3.5">
-      <HintPath>..\..\lib\Errordite\$(Configuration)\Errordite.Client.v3.5.dll</HintPath>
+    <Reference Include="Errordite.Client.Mvc3">
+      <HintPath>..\..\lib\Errordite.Client.Mvc3.1.2.9.0\lib\net40\Errordite.Client.Mvc3.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
       <HintPath>..\..\lib\log4net\log4net.dll</HintPath>
@@ -70,10 +66,14 @@
       <ExecutableExtension>.exe</ExecutableExtension>
       <HintPath>..\..\lib\NServiceBus\NServiceBus.Host.exe</HintPath>
     </Reference>
+    <Reference Include="Raven.Abstractions">
+      <HintPath>..\..\lib\RavenDB.Client.1.2.2127-Unstable\lib\net40\Raven.Abstractions.dll</HintPath>
+    </Reference>
     <Reference Include="Raven.Client.Lightweight">
-      <HintPath>..\..\lib\RavenDb\Client\Raven.Client.Lightweight.dll</HintPath>
+      <HintPath>..\..\lib\RavenDB.Client.1.2.2127-Unstable\lib\net40\Raven.Client.Lightweight.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -118,6 +118,7 @@
     <None Include="nservicebus.host.exe.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
