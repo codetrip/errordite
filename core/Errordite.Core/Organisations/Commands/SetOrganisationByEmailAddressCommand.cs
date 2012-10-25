@@ -27,14 +27,12 @@ namespace Errordite.Core.Organisations.Commands
 
         public SetOrganisationByEmailAddressResponse Invoke(SetOrganisationByEmailAddressRequest request)
         {
-            var mapping = 
-            _session.CentralRaven.Query<UserOrgMapping>().FirstOrDefault(
-                m => m.EmailAddress == request.EmailAddress);
+            var mapping = _session.CentralRaven.Query<UserOrgMapping>().FirstOrDefault(m => m.EmailAddress == request.EmailAddress);
 
-            var org =
-                mapping.IfPoss(m =>
-                               _getOrganisationQuery.Invoke(new GetOrganisationRequest()
-                                   {OrganisationId = m.OrganisationId}).Organisation);
+            var org = mapping.IfPoss(m => _getOrganisationQuery.Invoke(new GetOrganisationRequest
+            {
+                OrganisationId = m.OrganisationId
+            }).Organisation);
 
             if (org != null)
                 _session.SetOrg(org);

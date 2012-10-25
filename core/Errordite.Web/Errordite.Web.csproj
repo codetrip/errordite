@@ -832,7 +832,6 @@
     <Content Include="Views\Help\SendErrorWithJson.cshtml" />
     <Content Include="Views\Shared\HowItWorksPartial.cshtml" />
     <Content Include="Views\Shared\Master2.0.cshtml" />
-    <Content Include="Views\Shared\Head.cshtml" />
     <Content Include="Views\Shared\Css.cshtml" />
     <Content Include="packages.config" />
   </ItemGroup>
