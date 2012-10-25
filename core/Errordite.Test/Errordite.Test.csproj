@@ -47,9 +47,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\Errordite.Client\Errordite.Client.Mvc3.dll</HintPath>
     </Reference>
-    <Reference Include="Lucene.Net">
-      <HintPath>..\..\lib\RavenDb\Web\bin\Lucene.Net.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Newtonsoft.Json, Version=4.0.8.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -62,18 +59,11 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\NUnit\nunit.framework.dll</HintPath>
     </Reference>
-    <Reference Include="Raven.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\RavenDb\Client\Raven.Abstractions.dll</HintPath>
+    <Reference Include="Raven.Abstractions">
+      <HintPath>..\..\lib\RavenDB.Client.1.2.2127-Unstable\lib\net40\Raven.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Client.Lightweight">
-      <HintPath>..\..\lib\RavenDb\Client\Raven.Client.Lightweight.dll</HintPath>
-    </Reference>
-    <Reference Include="Raven.Client.MoreLikeThis">
-      <HintPath>..\..\lib\RavenDb\Client\Raven.Client.MoreLikeThis.dll</HintPath>
-    </Reference>
-    <Reference Include="Raven.Database">
-      <HintPath>..\..\lib\RavenDb\Web\bin\Raven.Database.dll</HintPath>
+      <HintPath>..\..\lib\RavenDB.Client.1.2.2127-Unstable\lib\net40\Raven.Client.Lightweight.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -101,7 +91,6 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="DbAccessTests.cs" />
-    <Compile Include="Indexing\LuceneAnalyzerUtils.cs" />
     <Compile Include="Indexing\IndexingTests.cs" />
     <Compile Include="IntegrationTests\ErrorLimitTests.cs" />
     <Compile Include="IntegrationTests\IssueTests.cs" />
@@ -110,7 +99,6 @@
     <Compile Include="IntegrationTests\ReceptionTests.cs" />
     <Compile Include="Json\SerialisationTests.cs" />
     <Compile Include="Misc\EncryptorTests.cs" />
-    <Compile Include="Misc\RateLimiterTests.cs" />
     <Compile Include="Mocks\MockServiceBus.cs" />
     <Compile Include="Redis\RedisTests.cs" />
     <Compile Include="Redis\SerializationTests.cs" />

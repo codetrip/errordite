@@ -70,15 +70,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\protobuf\protobuf-net.dll</HintPath>
     </Reference>
-    <Reference Include="Raven.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\RavenDb\Client\Raven.Abstractions.dll</HintPath>
+    <Reference Include="Raven.Abstractions">
+      <HintPath>..\..\lib\RavenDB.Client.1.2.2127-Unstable\lib\net40\Raven.Abstractions.dll</HintPath>
     </Reference>
-    <Reference Include="Raven.Client.Lightweight, Version=1.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\RavenDb\Client\Raven.Client.Lightweight.dll</HintPath>
+    <Reference Include="Raven.Client.Lightweight">
+      <HintPath>..\..\lib\RavenDB.Client.1.2.2127-Unstable\lib\net40\Raven.Client.Lightweight.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net.Http">
@@ -192,8 +191,8 @@
     <Compile Include="Interfaces\IWorkflow.cs" />
     <Compile Include="IoC\ArrayResolver.cs" />
     <Compile Include="IoC\ConfigurationOverrideContainerInitialiser.cs" />
-    <Compile Include="IoC\CoreInstaller.cs" />
     <Compile Include="IoC\ComponentRegistrationExtensions.cs" />
+    <Compile Include="IoC\CoreInstallerBase.cs" />
     <Compile Include="IoC\IContainerInitialiser.cs" />
     <Compile Include="IoC\MasterInstallerBase.cs" />
     <Compile Include="IoC\ObjectFactory.cs" />
@@ -227,7 +226,7 @@
     <Compile Include="Web\JsonNetJsonValueProvider.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Session\" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

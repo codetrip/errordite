@@ -11,6 +11,7 @@ using Errordite.Core.Issues.Queries;
 using Errordite.Core.Session;
 using NUnit.Framework;
 using Raven.Abstractions.Data;
+using Raven.Client;
 using Raven.Client.Indexes;
 using Raven.Client.Linq;
 

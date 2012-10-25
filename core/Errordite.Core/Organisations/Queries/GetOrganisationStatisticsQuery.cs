@@ -3,6 +3,7 @@ using CodeTrip.Core.Interfaces;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Indexing;
+using Raven.Client;
 using Raven.Client.Linq;
 using System.Linq;
 using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
@@ -22,24 +23,24 @@ namespace Errordite.Core.Organisations.Queries
         {
             Trace("Starting...");
 
-            Statistics stats = new Statistics();
+            var stats = new Statistics();
 
             var results = Session.Raven.Query<IssueDocument, Issues_Search>()
                 .Where(r => r.OrganisationId == Organisation.GetId(request.OrganisationId))
                 .ToFacets(CoreConstants.FacetDocuments.IssueStatus);
-
-            var statusFacetValues = results["Status"];
+            
+            var statusFacetValues = results.Results["Status"];
             var statsType = stats.GetType();
 
             foreach(string status in Enum.GetNames(typeof(IssueStatus)))
             {
-                var facetValue = statusFacetValues.FirstOrDefault(f => f.Range.Equals(status, StringComparison.OrdinalIgnoreCase));
+                var facetValue = statusFacetValues.Values.FirstOrDefault(f => f.Range.Equals(status, StringComparison.OrdinalIgnoreCase));
 
                 if(facetValue != null)
                 {
                     var propertyInfo = statsType.GetProperty(status);
                     if(propertyInfo != null)
-                        propertyInfo.SetValue(stats, facetValue.Count, null);
+                        propertyInfo.SetValue(stats, facetValue.Hits, null);
                 }
             }
 

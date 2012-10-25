@@ -5,6 +5,7 @@ using Errordite.Core.Configuration;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Indexing;
+using Raven.Client;
 using Raven.Client.Linq;
 using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
 
