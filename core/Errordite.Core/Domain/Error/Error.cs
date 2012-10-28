@@ -47,14 +47,18 @@ namespace Errordite.Core.Domain.Error
         /// Here mainly for legacy reasons - for items serialized with nested ExceptionInfos rather than flattened into a single list,
         /// we need a setter here to pull them all out on deserialisation.
         /// </summary>
-        public ExceptionInfo ExceptionInfo { get { return ExceptionInfos.First(); } set { ExceptionInfos = value.RecursiveGetInfos().ToArray(); }}
-        [ProtoMember(10)]
+        public ExceptionInfo ExceptionInfo
+        {
+            get { return ExceptionInfos.First(); } 
+            set { ExceptionInfos = value.RecursiveGetInfos().ToArray(); }
+        }
+        [ProtoMember(9)]
         public string UserAgent { get; set; }
-        [ProtoMember(11)]
+        [ProtoMember(10)]
         public bool TestError { get; set; }
-        [ProtoMember(12)]
+        [ProtoMember(11)]
         public List<TraceMessage> Messages { get; set; }
-        [ProtoMember(13)]
+        [ProtoMember(12)]
         public ExceptionInfo[] ExceptionInfos { get; set; }
 
         [Raven.Imports.Newtonsoft.Json.JsonIgnore]
