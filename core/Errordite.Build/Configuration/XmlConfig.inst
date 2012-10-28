@@ -12,22 +12,21 @@ If you wish to be more choosy about which file to modify than just specifying th
 the config file.  If you wish to allow a choice of folders, they can be separated with a pipe.
 -->
 <Files>
-  <File match="raven.config">
-    <param xpath="//components/component[@id='RavenConfiguration']/parameters/Endpoint" theRest="$(RavenEndpoint)" />
-  </File>
-  
   <File match="web.config">
     <param xpath="//system.web/customErrors/@mode" theRest="On" />
     <param xpath="//system.web/authentication/forms/@timeout" theRest="1440" />
     <param xpath="//errordite/@endpoint" theRest="$(InternalReceptionEndpoint)" />
+    <param xpath="//connectionStrings/add[@name='RavenDB']/@connectionString" theRest="$(RavenConnectionString)" />
   </File>
 
   <File match="Errordite.Notifications.Service.dll.config">
     <param xpath="//errordite/@endpoint" theRest="$(InternalReceptionEndpoint)" />
+    <param xpath="//connectionStrings/add[@name='RavenDB']/@connectionString" theRest="$(RavenConnectionString)" />
   </File>
 
   <File match="Errordite.Events.Service.dll.config">
     <param xpath="//errordite/@endpoint" theRest="$(InternalReceptionEndpoint)" />
+    <param xpath="//connectionStrings/add[@name='RavenDB']/@connectionString" theRest="$(RavenConnectionString)" />
   </File>
   
   <File match="errordite.config">

@@ -18,7 +18,7 @@ using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
 namespace Errordite.Core.Organisations.Commands
 {
     [Interceptor(CacheInvalidationInterceptor.IoCName)]
-    public class    CreateOrganisationCommand : SessionAccessBase, ICreateOrganisationCommand
+    public class  CreateOrganisationCommand : SessionAccessBase, ICreateOrganisationCommand
     {
         private readonly IGetAvailablePaymentPlansQuery _getAvailablePaymentPlansQuery;
         private readonly IAddApplicationCommand _addApplicationCommand;
@@ -33,7 +33,7 @@ namespace Errordite.Core.Organisations.Commands
         {
             Trace("Starting...");
 
-            var existingOrganisation = Session.CentralRaven.Query<Organisation, Organisations_Search>().FirstOrDefault(o => o.Name == request.OrganisationName);
+            var existingOrganisation = Session.MasterRaven.Query<Organisation, Organisations_Search>().FirstOrDefault(o => o.Name == request.OrganisationName);
 
             if(existingOrganisation != null)
             {
@@ -44,7 +44,7 @@ namespace Errordite.Core.Organisations.Commands
             }
 
             var existingUserMap =
-                Session.CentralRaven.Query<UserOrgMapping>().FirstOrDefault(m => m.EmailAddress == request.Email);
+                Session.MasterRaven.Query<UserOrganisationMapping>().FirstOrDefault(m => m.EmailAddress == request.Email);
 
             //var existingUser = Session.Raven.Query<User, Users_Search>().FirstOrDefault(u => u.Email == request.Email);
 
@@ -69,8 +69,9 @@ namespace Errordite.Core.Organisations.Commands
             };
 
             CentralStore(organisation);
-            CentralStore(new UserOrgMapping(){EmailAddress = request.Email, OrganisationId = organisation.Id});
-            Session.SetOrg(organisation);
+            CentralStore(new UserOrganisationMapping{EmailAddress = request.Email, OrganisationId = organisation.Id});
+
+            Session.BootstrapOrganisation(organisation);
 
             var group = new Group
             {

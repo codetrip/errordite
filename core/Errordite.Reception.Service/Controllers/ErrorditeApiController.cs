@@ -8,22 +8,26 @@ namespace Errordite.Reception.Service.Controllers
 {
     public abstract class ErrorditeApiController : ApiController
     {
-        protected readonly IAppSession _session;
-        protected readonly IComponentAuditor _auditor;
-        protected readonly IGetOrganisationQuery _getOrganisationQuery;
+        protected readonly IAppSession Session;
+        protected readonly IComponentAuditor Auditor;
+        protected readonly IGetOrganisationQuery GetOrganisation;
 
         protected ErrorditeApiController()
         {
-            _auditor = ObjectFactory.GetObject<IComponentAuditor>();
-            _session = ObjectFactory.GetObject<IAppSession>();
-            _getOrganisationQuery = ObjectFactory.GetObject<IGetOrganisationQuery>();
+            Auditor = ObjectFactory.GetObject<IComponentAuditor>();
+            Session = ObjectFactory.GetObject<IAppSession>();
+            GetOrganisation = ObjectFactory.GetObject<IGetOrganisationQuery>();
         }
 
         //TODO: do this with an action filter maybe
-        protected void SetOrg(string orgId)
+        protected void SetOrganisation(string orgId)
         {
-            var org = _getOrganisationQuery.Invoke(new GetOrganisationRequest() {OrganisationId = orgId}).Organisation;
-            _session.SetOrg(org);
+            var organisation = GetOrganisation.Invoke(new GetOrganisationRequest
+            {
+                OrganisationId = orgId
+            }).Organisation;
+
+            Session.SetOrganisation(organisation);
         }
     }
 }

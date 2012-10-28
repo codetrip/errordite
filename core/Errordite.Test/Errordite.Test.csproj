@@ -123,10 +123,6 @@
     <None Include="..\Errordite.Build\Configuration\log4net.config">
       <Link>Config\log4net.config</Link>
     </None>
-    <None Include="..\Errordite.Build\Configuration\raven.config">
-      <Link>Config\raven.config</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
