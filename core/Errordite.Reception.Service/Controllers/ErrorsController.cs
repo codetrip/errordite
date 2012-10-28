@@ -20,17 +20,17 @@ namespace Errordite.Reception.Service.Controllers
         {
             try
             {
-                SetOrg(orgId);
+                SetOrganisation(orgId);
 
-                _auditor.Trace(GetType(), "Received reprocess issue errors request, IssueId:={0}, ", request.IssueId);
+                Auditor.Trace(GetType(), "Received reprocess issue errors request, IssueId:={0}, ", request.IssueId);
                 var response = _reprocessIssueErrorsCommand.Invoke(request);
-                _session.Commit();
+                Session.Commit();
 
                 return Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception e)
             {
-                _auditor.Error(GetType(), e);
+                Auditor.Error(GetType(), e);
                 throw;
             }
         }
