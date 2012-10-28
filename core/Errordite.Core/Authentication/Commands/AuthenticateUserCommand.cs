@@ -26,13 +26,15 @@ namespace Errordite.Core.Authentication.Commands
             ArgumentValidation.NotEmpty(request.Email, "request.Email");
             ArgumentValidation.NotEmpty(request.Password, "request.Password");
 
-            var org = _getOrganisationByEmailAddressCommand.Invoke(new GetOrganisationByEmailAddressRequest
+            var organisation = _getOrganisationByEmailAddressCommand.Invoke(new GetOrganisationByEmailAddressRequest
                 {
                     EmailAddress = request.Email,
                 }).Organisation;
 
-            if (org == null)
+            if (organisation == null)
                 return new AuthenticateUserResponse{Status = AuthenticateUserStatus.LoginFailed};
+
+            Session.SetOrganisation(organisation);
 
             var user = Session.Raven.Query<User, Users_Search>()
                 .FirstOrDefault(u => u.Email == request.Email.ToLowerInvariant() && u.Password == request.Password.Hash());
@@ -47,9 +49,7 @@ namespace Errordite.Core.Authentication.Commands
                     };
                 }
 
-                var organisation = Session.MasterRaven.Query<Organisation, Organisations_Search>().FirstOrDefault(o => o.Id == Organisation.GetId(user.OrganisationId));
-
-                if (organisation == null || organisation.Status == OrganisationStatus.Suspended)
+                if (organisation.Status == OrganisationStatus.Suspended)
                 {
                     return new AuthenticateUserResponse
                     {
