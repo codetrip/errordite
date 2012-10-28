@@ -12,24 +12,26 @@ namespace CodeTrip.Core.RavenDb
 
     public class RavenDocumentStoreFactory : IRavenDocumentStoreFactory
     {
-        private static readonly Guid _resourceManagerId = Guid.NewGuid();
-        private readonly RavenConfiguration _ravenConfiguration;
+        //private static readonly Guid _resourceManagerId = Guid.NewGuid();
+        //private readonly RavenConfiguration _ravenConfiguration;
 
-        public RavenDocumentStoreFactory(RavenConfiguration ravenConfiguration)
-        {
-            _ravenConfiguration = ravenConfiguration;
-        }
+        //public RavenDocumentStoreFactory(RavenConfiguration ravenConfiguration)
+        //{
+        //    _ravenConfiguration = ravenConfiguration;
+        //}
+
 
         public IDocumentStore Create()
         {
             var store = new DocumentStore
             {
-                Url = _ravenConfiguration.Endpoint,
-                ResourceManagerId = _resourceManagerId,
+                //Url = _ravenConfiguration.Endpoint,
+                //ResourceManagerId = _resourceManagerId,
                 Conventions =
                 {
                     CustomizeJsonSerializer = ser => ser.TypeNameHandling = TypeNameHandling.All
                 },
+                ConnectionStringName = "RavenDB"
             }
             //.RegisterListener(new AddProdProfInfoListener())
             .Initialize();

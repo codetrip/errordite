@@ -14,7 +14,6 @@ using Errordite.Core.WebApi;
 using NServiceBus;
 using Raven.Abstractions.Data;
 using Raven.Client;
-using Raven.Client.Document;
 using Raven.Client.Indexes;
 using Raven.Client.Extensions;
 using CodeTrip.Core.Extensions;
@@ -146,27 +145,9 @@ namespace Errordite.Core.Session
                 if (_dbId == null)
                     throw new InvalidOperationException("Can't get session till Org set.");
 
-                _documentStore.DatabaseCommands.EnsureDatabaseExists(_dbId);
-                IndexCreation.CreateIndexes(
-                    new CompositionContainer(new AssemblyCatalog(typeof(Issues_Search).Assembly), new ExportProvider[0]),
-                     _documentStore.DatabaseCommands.ForDatabase(_dbId), _documentStore.Conventions);
-
-                _orgSession = _documentStore.OpenSession(_dbId);
-                _orgSession.Advanced.MaxNumberOfRequestsPerSession = RequestLimit == 0 ? 250 : RequestLimit;
-
-                 var facets = new List<Facet>
-                {
-                    new Facet {Name = "Status"},
-                };
-
-                _orgSession.Store(new FacetSetup {Id = Core.CoreConstants.FacetDocuments.IssueStatus, Facets = facets});
-                _orgSession.SaveChanges();
-
-                return _orgSession;
+                return BootstrapDatabase();
             }
         }
-
-
 
         public IRedisSession Redis
         {
@@ -226,6 +207,7 @@ namespace Errordite.Core.Session
             _dbId = IdHelper.GetFriendlyId(org.OrganisationId);
 
             var uriBuilder = new UriBuilder(_config.ReceptionHttpEndpoint);
+
             if (!uriBuilder.Path.EndsWith("/"))
                 uriBuilder.Path += "/";
 
@@ -258,6 +240,28 @@ namespace Errordite.Core.Session
             SynchroniseIndexes<T1>();
             SynchroniseIndexes<T2>();
             SynchroniseIndexes<T3>();
+        }
+
+        private IDocumentSession BootstrapDatabase()
+        {
+            _documentStore.DatabaseCommands.EnsureDatabaseExists(_dbId);
+
+            IndexCreation.CreateIndexes(
+                new CompositionContainer(new AssemblyCatalog(typeof(Issues_Search).Assembly), new ExportProvider[0]),
+                 _documentStore.DatabaseCommands.ForDatabase(_dbId), _documentStore.Conventions);
+
+            _orgSession = _documentStore.OpenSession(_dbId);
+            _orgSession.Advanced.MaxNumberOfRequestsPerSession = RequestLimit == 0 ? 250 : RequestLimit;
+
+            var facets = new List<Facet>
+            {
+                new Facet {Name = "Status"},
+            };
+
+            _orgSession.Store(new FacetSetup { Id = Core.CoreConstants.FacetDocuments.IssueStatus, Facets = facets });
+            _orgSession.SaveChanges();
+
+            return _orgSession;
         }
     }
 }
