@@ -48,7 +48,7 @@ namespace Errordite.Core.Applications.Queries
                 Trace("Organisation with id {0} not found", organisationId);
             }
 
-            _appSession.SetOrg(organisation);
+            _appSession.SetOrganisation(organisation);
 
             var application = _getApplicationQuery.Invoke(new GetApplicationRequest
             {

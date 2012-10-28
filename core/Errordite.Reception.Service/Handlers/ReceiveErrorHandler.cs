@@ -32,7 +32,7 @@ namespace Errordite.Reception.Service.Handlers
                         .Organisation;
                 if (org != null)
                 {
-                    Session.SetOrg(org);
+                    Session.SetOrganisation(org);
                 }
                 else
                 {

@@ -10,46 +10,42 @@ using Errordite.Core.Session;
 
 namespace Errordite.Core.Organisations.Commands
 {
-    public interface ISetOrganisationByEmailAddressCommand : ICommand<SetOrganisationByEmailAddressRequest, SetOrganisationByEmailAddressResponse>
+    public class GetOrganisationByEmailAddressCommand : ComponentBase, IGetOrganisationByEmailAddressCommand
     {
-    }
+        private readonly IGetOrganisationQuery _getOrganisationQuery;
+        private readonly IAppSession _session;
 
-    public class SetOrganisationByEmailAddressCommand : ComponentBase, ISetOrganisationByEmailAddressCommand
-    {
-        private IGetOrganisationQuery _getOrganisationQuery;
-        private IAppSession _session;
-
-        public SetOrganisationByEmailAddressCommand(IGetOrganisationQuery getOrganisationQuery, IAppSession session)
+        public GetOrganisationByEmailAddressCommand(IGetOrganisationQuery getOrganisationQuery, IAppSession session)
         {
             _getOrganisationQuery = getOrganisationQuery;
             _session = session;
         }
 
-        public SetOrganisationByEmailAddressResponse Invoke(SetOrganisationByEmailAddressRequest request)
+        public GetOrganisationByEmailAddressResponse Invoke(GetOrganisationByEmailAddressRequest request)
         {
-            var mapping = _session.CentralRaven.Query<UserOrgMapping>().FirstOrDefault(m => m.EmailAddress == request.EmailAddress);
+            var mapping = _session.MasterRaven.Query<UserOrganisationMapping>().FirstOrDefault(m => m.EmailAddress == request.EmailAddress);
 
             var org = mapping.IfPoss(m => _getOrganisationQuery.Invoke(new GetOrganisationRequest
             {
                 OrganisationId = m.OrganisationId
             }).Organisation);
 
-            if (org != null)
-                _session.SetOrg(org);
-
-            return new SetOrganisationByEmailAddressResponse()
-                {
-                    Organisation = org,
-                };
+            return new GetOrganisationByEmailAddressResponse
+            {
+                Organisation = org,
+            };
         }
     }
 
-    public class SetOrganisationByEmailAddressRequest
+    public interface IGetOrganisationByEmailAddressCommand : ICommand<GetOrganisationByEmailAddressRequest, GetOrganisationByEmailAddressResponse>
+    { }
+
+    public class GetOrganisationByEmailAddressRequest
     {
         public string EmailAddress { get; set; }
     }
 
-    public class SetOrganisationByEmailAddressResponse
+    public class GetOrganisationByEmailAddressResponse
     {
         public Organisation Organisation { get; set; }
     }

@@ -34,8 +34,8 @@ namespace Errordite.Core.Users.Commands
         {
             Trace("Starting...");
 
-            var existingUserOrgMap = Session.CentralRaven
-                .Query<UserOrgMapping, UserOrgMappings>()
+            var existingUserOrgMap = Session.MasterRaven
+                .Query<UserOrganisationMapping, UserOrgMappings>()
                 .FirstOrDefault(u => u.EmailAddress == request.Email);
 
             //TODO: consider staleness?
@@ -79,7 +79,7 @@ namespace Errordite.Core.Users.Commands
                 };
             }
 
-            var userOrgMapping = new UserOrgMapping()
+            var userOrgMapping = new UserOrganisationMapping()
                 {
                     EmailAddress = request.Email,
                     OrganisationId = request.Organisation.Id,

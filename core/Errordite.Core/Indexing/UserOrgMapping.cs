@@ -4,7 +4,7 @@ using Raven.Client.Indexes;
 
 namespace Errordite.Core.Indexing
 {
-    public class UserOrgMappings : AbstractIndexCreationTask<UserOrgMapping>
+    public class UserOrgMappings : AbstractIndexCreationTask<UserOrganisationMapping>
     {
          public UserOrgMappings()
          {

@@ -129,7 +129,7 @@
     </Compile>
     <Compile Include="Caching\CacheKeys.cs" />
     <Compile Include="Configuration\HttpServerConfiguration.cs" />
-    <Compile Include="Domain\Central\UserOrgMapping.cs" />
+    <Compile Include="Domain\Central\UserOrganisationMapping.cs" />
     <Compile Include="Domain\IdHelper.cs" />
     <Compile Include="Domain\Organisation\PaymentPlan.cs" />
     <Compile Include="Domain\Organisation\UserAlert.cs" />

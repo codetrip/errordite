@@ -17,7 +17,7 @@ namespace Errordite.Core.Organisations.Queries
         {
             Trace("Starting...");
 
-            var plans = Session.CentralRaven.Query<PaymentPlan>()
+            var plans = Session.MasterRaven.Query<PaymentPlan>()
                 .Where(p => p.IsAvailable)
                 .ToList();
 

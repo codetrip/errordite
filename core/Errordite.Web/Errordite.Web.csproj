@@ -581,12 +581,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\Errordite.Build\Configuration\raven.config">
-      <Link>Config\raven.config</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="App_GlobalResources\Rules.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>Rules.Designer.cs</LastGenOutput>

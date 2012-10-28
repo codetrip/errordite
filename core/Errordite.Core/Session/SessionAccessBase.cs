@@ -13,7 +13,7 @@ namespace Errordite.Core.Session
 
         protected void CentralStore(object o)
         {
-            Session.CentralRaven.Store(o);
+            Session.MasterRaven.Store(o);
         }
 
         protected void Store(object o)
@@ -23,7 +23,7 @@ namespace Errordite.Core.Session
 
         protected T CentralLoad<T>(string id)
         {
-            return Session.CentralRaven.Load<T>(id);
+            return Session.MasterRaven.Load<T>(id);
         }
 
         protected T Load<T>(string id)

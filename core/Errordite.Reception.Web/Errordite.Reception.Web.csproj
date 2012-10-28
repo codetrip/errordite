@@ -110,12 +110,6 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\Errordite.Build\Configuration\raven.config">
-      <Link>Config\raven.config</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\codetrip\CodeTrip.Core\CodeTrip.Core.csproj">
       <Project>{7AD42F34-0629-45B8-BF45-87F8B791376E}</Project>
       <Name>CodeTrip.Core</Name>

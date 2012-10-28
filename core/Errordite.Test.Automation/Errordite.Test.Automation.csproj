@@ -119,10 +119,6 @@
       <Link>Config\log4net.config</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="..\Errordite.Build\Configuration\raven.config">
-      <Link>Config\raven.config</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="App.config" />
     <None Include="Config\automation.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

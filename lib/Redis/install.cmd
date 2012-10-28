@@ -6,7 +6,7 @@ sc create Redis displayname= Redis binpath= "\"%CD%\redis-service.exe\" \"%CD%\r
 sc description Redis "Provides advanced key-value data storage (64-bit). It is often referred to as a data structure server since keys can contain strings, hashes, lists, sets and sorted sets."
 sc config "Redis" obj= "%COMPUTERNAME%\errordite_redis" password= "Err0rD1t3_RED$"
 
-IF EXIST "%CD%\data" GOTO DIREXISTS
+IF EXIST "%CD%\data" GOTO DATAEXISTS
 MD "%CD%\data"
 
 :DATAEXISTS
