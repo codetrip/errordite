@@ -64,7 +64,6 @@ namespace Errordite.Core.Reception.Commands
             //    Trace("Failed rate limiter rule named {0}", failedRule.Name);
             //    return new ProcessIncomingExceptionResponse();
             //}
-
             var error = GetError(request.Error, application);
 
             if (_configuration.ServiceBusEnabled)

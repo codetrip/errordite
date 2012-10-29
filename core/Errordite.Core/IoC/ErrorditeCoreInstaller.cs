@@ -11,7 +11,6 @@ using Errordite.Core.Notifications.Parsing;
 using Errordite.Core.Notifications.Rendering;
 using Errordite.Core.Notifications.Sending;
 using CodeTrip.Core.Extensions;
-using Errordite.Core.Reception;
 
 namespace Errordite.Core.IoC
 {
@@ -33,11 +32,9 @@ namespace Errordite.Core.IoC
             //container.Register(Component.For<IExceptionRateLimiter>()
             //    .ImplementedBy<ExceptionRateLimiter>()
             //    .LifeStyle.Singleton);
-
             //container.Register(Component.For<IDateTime>()
             //   .ImplementedBy<UtcDateTime>()
             //   .LifeStyle.Singleton);
-
             container.Register(
                 Component.For<AppContext>().ImplementedBy<AppContext>().UsingFactoryMethod(
                     kernel => kernel.Resolve<IAppContextFactory>().Create()).LifeStyle.Transient);

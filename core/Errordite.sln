@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Errordite.Web", "Errordite.Web\Errordite.Web.csproj", "{CEF8FB25-38DC-403F-A783-2AF2B8717193}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Errordite.Core", "Errordite.Core\Errordite.Core.csproj", "{418F4BC8-7042-49B1-9F69-95189A2A5837}"
@@ -18,6 +18,13 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Errordite.Notifications.Service", "Errordite.Notifications.Service\Errordite.Notifications.Service.csproj", "{7ECE0A75-1167-4B9A-9835-BF3B3BB289F8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Errordite.Reception.Service", "Errordite.Reception.Service\Errordite.Reception.Service.csproj", "{7FB81ADE-C385-4B4B-AA09-2CD2A79CAECC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{A6456373-BE7C-44C4-82FC-2AA3BE59C936}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Errordite.Raven", "Errordite.Raven\Errordite.Raven.csproj", "{E4804C8C-8237-4243-A86A-6BCD06273870}"
 EndProject

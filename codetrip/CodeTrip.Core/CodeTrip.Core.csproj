@@ -12,6 +12,8 @@
     <AssemblyName>CodeTrip.Core</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\core\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -194,7 +196,7 @@
     <Compile Include="IoC\ArrayResolver.cs" />
     <Compile Include="IoC\ConfigurationOverrideContainerInitialiser.cs" />
     <Compile Include="IoC\ComponentRegistrationExtensions.cs" />
-    <Compile Include="IoC\CoreInstallerBase.cs" />
+    <Compile Include="IoC\CoreInstaller.cs" />
     <Compile Include="IoC\IContainerInitialiser.cs" />
     <Compile Include="IoC\MasterInstallerBase.cs" />
     <Compile Include="IoC\ObjectFactory.cs" />
@@ -234,6 +236,7 @@
   <PropertyGroup>
     <PostBuildEvent>"$(ProjectDir)..\..\core\Errordite.Build\Cmd\CopyBuildOutputToReferences.bat" "$(ProjectDir)..\" "$(ProjectDir)" $(ConfigurationName) $(TargetName)</PostBuildEvent>
   </PropertyGroup>
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

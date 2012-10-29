@@ -25,6 +25,8 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -69,10 +71,6 @@
     <Reference Include="log4net">
       <HintPath>..\..\lib\log4net\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="Lucene.Net, Version=2.9.4.1, Culture=neutral, PublicKeyToken=85089178b9ac3181, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\RavenDb\Web\bin\Lucene.Net.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.0.8.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\Json.NET\Newtonsoft.Json.dll</HintPath>
@@ -96,8 +94,7 @@
       <HintPath>..\..\lib\Profiler\ProductionProfiler.Persistence.Raven.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Abstractions, Version=1.2.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\RavenDB.Client.1.2.2130-Unstable\lib\net40\Raven.Abstractions.dll</HintPath>
+      <HintPath>..\packages\RavenDB.Database.1.2.2133-Unstable\lib\net40\Raven.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Client.Lightweight, Version=1.2.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -786,6 +783,9 @@
     <Content Include="Views\Issues\Merge.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Views\Shared\Css.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="Views\Issue\Reports.cshtml" />
     <Content Include="Areas\System\Views\Web.config" />
     <Content Include="Areas\System\Views\_ViewStart.cshtml" />
@@ -825,8 +825,6 @@
     <Content Include="Views\Shared\Errors\TraceMessages.cshtml" />
     <Content Include="Views\Help\SendErrorWithJson.cshtml" />
     <Content Include="Views\Shared\HowItWorksPartial.cshtml" />
-    <Content Include="Views\Shared\Master2.0.cshtml" />
-    <Content Include="Views\Shared\Css.cshtml" />
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -875,4 +873,5 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
 </Project>
