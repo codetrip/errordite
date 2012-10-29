@@ -50,3 +50,4 @@ core\Errordite.Raven\Data\**
 core\Errordite.Raven\Tenants\**
 core\Errordite.Raven\Logs\**
 samples/packages
+core\packages\**
