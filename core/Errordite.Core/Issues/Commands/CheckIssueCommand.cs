@@ -30,7 +30,7 @@ namespace Errordite.Core.Issues.Commands
                 return new CheckIssueResponse();
             }
 
-            RavenQueryStatistics errorQueryStats;
+            Raven.Client.RavenQueryStatistics errorQueryStats;
             Query<Error, Errors_Search>()
                 .Customize(c => c.WaitForNonStaleResultsAsOfNow())
                 .Statistics(out errorQueryStats)

@@ -29,6 +29,12 @@ namespace Errordite.Core.IoC
                 .ImplementedBy<ReceptionServiceIssueCache>()
                 .LifeStyle.Singleton);
 
+            //container.Register(Component.For<IExceptionRateLimiter>()
+            //    .ImplementedBy<ExceptionRateLimiter>()
+            //    .LifeStyle.Singleton);
+            //container.Register(Component.For<IDateTime>()
+            //   .ImplementedBy<UtcDateTime>()
+            //   .LifeStyle.Singleton);
             container.Register(
                 Component.For<AppContext>().ImplementedBy<AppContext>().UsingFactoryMethod(
                     kernel => kernel.Resolve<IAppContextFactory>().Create()).LifeStyle.Transient);

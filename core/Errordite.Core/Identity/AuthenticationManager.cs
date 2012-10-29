@@ -4,6 +4,7 @@ using System.Web.Security;
 using CodeTrip.Core.Web;
 using CodeTrip.Core.Extensions;
 using Errordite.Core.Organisations.Commands;
+using Errordite.Core.Session;
 using Errordite.Core.Users.Queries;
 
 namespace Errordite.Core.Identity
@@ -11,14 +12,19 @@ namespace Errordite.Core.Identity
     public class AuthenticationManager : IAuthenticationManager
     {
         private readonly ICookieManager _cookieManager;
-        private readonly ISetOrganisationByEmailAddressCommand _setOrganisationByEmailAddressCommand;
+        private readonly IGetOrganisationByEmailAddressCommand _getOrganisationByEmailAddressCommand;
         private readonly IGetUserByEmailAddressQuery _getUserByEmailAddressQuery;
+        private readonly IAppSession _session;
 
-        public AuthenticationManager(ICookieManager cookieManager, ISetOrganisationByEmailAddressCommand setOrganisationByEmailAddressCommand, IGetUserByEmailAddressQuery getUserQuery)
+        public AuthenticationManager(ICookieManager cookieManager, 
+            IGetOrganisationByEmailAddressCommand getOrganisationByEmailAddressCommand, 
+            IGetUserByEmailAddressQuery getUserQuery, 
+            IAppSession session)
         {
             _cookieManager = cookieManager;
-            _setOrganisationByEmailAddressCommand = setOrganisationByEmailAddressCommand;
+            _getOrganisationByEmailAddressCommand = getOrganisationByEmailAddressCommand;
             _getUserByEmailAddressQuery = getUserQuery;
+            _session = session;
         }
 
         /// <summary>
@@ -50,7 +56,7 @@ namespace Errordite.Core.Identity
         {
             FormsAuthentication.SetAuthCookie(email, true);
 
-            AuthenticationIdentity authenticationIdentity = new AuthenticationIdentity
+            var authenticationIdentity = new AuthenticationIdentity
             {
                 UserId = id.GetFriendlyId(),
                 RememberMe = true,
@@ -72,7 +78,7 @@ namespace Errordite.Core.Identity
         public AuthenticationIdentity SignInGuest()
         {
             //create the new anonymous identity
-            AuthenticationIdentity authenticationIdentity = new AuthenticationIdentity
+            var authenticationIdentity = new AuthenticationIdentity
             {
                 UserId = Guid.NewGuid().ToString(),
                 RememberMe = false,
@@ -102,7 +108,7 @@ namespace Errordite.Core.Identity
         {
             var name = HttpContext.Current.User.Identity.Name;
 
-            var organisation = _setOrganisationByEmailAddressCommand.Invoke(new SetOrganisationByEmailAddressRequest()
+            var organisation = _getOrganisationByEmailAddressCommand.Invoke(new GetOrganisationByEmailAddressRequest
                 {
                     EmailAddress = name,
                 }).Organisation;
@@ -110,7 +116,9 @@ namespace Errordite.Core.Identity
             if (organisation == null)
                 return SignInGuest();
 
-            var user = _getUserByEmailAddressQuery.Invoke(new GetUserByEmailAddressRequest()
+            _session.SetOrganisation(organisation);
+
+            var user = _getUserByEmailAddressQuery.Invoke(new GetUserByEmailAddressRequest
                 {
                     EmailAddress = name,
                 }).User;

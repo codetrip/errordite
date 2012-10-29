@@ -11,24 +11,18 @@ namespace Errordite.Core.WebApi
     {
         public static Task<HttpResponseMessage> PutJsonAsync<T>(this HttpClient httpClient, string requestUri, T obj)
         {
-            return httpClient.PutAsync(requestUri,
-                                       new ObjectContent<T>(obj,
-                                                            new JsonMediaTypeFormatter()
-                                                                {
-                                                                    SerializerSettings =
-                                                                        WebApiSettings.JsonSerializerSettings
-                                                                }));
+            return httpClient.PutAsync(requestUri, new ObjectContent<T>(obj, new JsonMediaTypeFormatter
+            {
+                SerializerSettings = WebApiSettings.JsonSerializerSettings
+            }));
         }
 
         public static Task<HttpResponseMessage> PostJsonAsync<T>(this HttpClient httpClient, string requestUri, T obj)
         {
-            return httpClient.PostAsync(requestUri,
-                                        new ObjectContent<T>(obj,
-                                                             new JsonMediaTypeFormatter()
-                                                                 {
-                                                                     SerializerSettings =
-                                                                         WebApiSettings.JsonSerializerSettings
-                                                                 }));
+            return httpClient.PostAsync(requestUri, new ObjectContent<T>(obj, new JsonMediaTypeFormatter
+            {
+                SerializerSettings = WebApiSettings.JsonSerializerSettings
+            }));
         }
     }
 }

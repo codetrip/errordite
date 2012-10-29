@@ -12,6 +12,8 @@
     <AssemblyName>Errordite.Test.Automation</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -51,24 +53,22 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\Json.NET\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="NLog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\RavenDb\Client\NLog.dll</HintPath>
-    </Reference>
     <Reference Include="NServiceBus, Version=3.0.0.0, Culture=neutral, PublicKeyToken=9fc386479f8a226c, processorArchitecture=MSIL">
       <HintPath>..\..\lib\NServiceBus\NServiceBus.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\..\lib\NUnit\nunit.framework.dll</HintPath>
     </Reference>
-    <Reference Include="Raven.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+    <Reference Include="Raven.Abstractions, Version=1.2.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\RavenDb\Client\Raven.Abstractions.dll</HintPath>
+      <HintPath>..\..\lib\RavenDB.Client.1.2.2130-Unstable\lib\net40\Raven.Abstractions.dll</HintPath>
     </Reference>
-    <Reference Include="Raven.Client.Lightweight">
-      <HintPath>..\..\lib\RavenDb\Client\Raven.Client.Lightweight.dll</HintPath>
+    <Reference Include="Raven.Client.Lightweight, Version=1.2.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\RavenDB.Client.1.2.2130-Unstable\lib\net40\Raven.Client.Lightweight.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -121,15 +121,12 @@
       <Link>Config\log4net.config</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="..\Errordite.Build\Configuration\raven.config">
-      <Link>Config\raven.config</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="App.config" />
     <None Include="Config\automation.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\codetrip\CodeTrip.Core\CodeTrip.Core.csproj">
@@ -142,6 +139,7 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

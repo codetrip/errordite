@@ -34,8 +34,8 @@ namespace Errordite.Core.Users.Commands
         {
             Trace("Starting...");
 
-            var existingUserOrgMap = Session.CentralRaven
-                .Query<UserOrgMapping, UserOrgMappings>()
+            var existingUserOrgMap = Session.MasterRaven
+                .Query<UserOrganisationMapping, UserOrgMappings>()
                 .FirstOrDefault(u => u.EmailAddress == request.Email);
 
             //TODO: consider staleness?
@@ -47,13 +47,11 @@ namespace Errordite.Core.Users.Commands
                         {
                             Status = AddUserStatus.EmailExists,
                         };
-                else
+                
+                return new AddUserResponse(true)
                 {
-                    return new AddUserResponse(true)
-                        {
-                            Status = AddUserStatus.EmailExistsInAnotherOrganisation,
-                        };
-                }
+                    Status = AddUserStatus.EmailExistsInAnotherOrganisation,
+                };
             }
 
             var existingUser = Session.Raven.Query<User, Users_Search>().FirstOrDefault(u => u.Email == request.Email);
@@ -66,7 +64,7 @@ namespace Errordite.Core.Users.Commands
                 };
             }
 
-            RavenQueryStatistics stats;
+            Raven.Client.RavenQueryStatistics stats;
             var users = Session.Raven.Query<User, Users_Search>()
                 .Statistics(out stats)
                 .Where(u => u.OrganisationId == request.Organisation.Id)
@@ -81,7 +79,7 @@ namespace Errordite.Core.Users.Commands
                 };
             }
 
-            var userOrgMapping = new UserOrgMapping()
+            var userOrgMapping = new UserOrganisationMapping()
                 {
                     EmailAddress = request.Email,
                     OrganisationId = request.Organisation.Id,

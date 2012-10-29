@@ -21,6 +21,12 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <OldToolsVersion>4.0</OldToolsVersion>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -49,9 +55,9 @@
     <Reference Include="Castle.Windsor">
       <HintPath>..\..\lib\Castle\Castle.Windsor.dll</HintPath>
     </Reference>
-    <Reference Include="Errordite.Client.Mvc3, Version=0.9.19.3, Culture=neutral, PublicKeyToken=0c2d28c225f773ee, processorArchitecture=MSIL">
+    <Reference Include="Errordite.Client.Mvc3, Version=1.2.0.0, Culture=neutral, PublicKeyToken=0c2d28c225f773ee, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\Errordite.Client\Errordite.Client.Mvc3.dll</HintPath>
+      <HintPath>..\..\lib\Errordite.Client.Mvc3.1.2.9.0\lib\net40\Errordite.Client.Mvc3.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
       <HintPath>..\..\lib\log4net\log4net.dll</HintPath>
@@ -68,9 +74,15 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\NServiceBus\NServiceBus.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Raven.Client.Lightweight, Version=1.2.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <HintPath>..\..\lib\RavenDb\Client\Raven.Client.Lightweight.dll</HintPath>
+    <Reference Include="Raven.Abstractions, Version=1.2.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\RavenDB.Client.1.2.2130-Unstable\lib\net40\Raven.Abstractions.dll</HintPath>
     </Reference>
+    <Reference Include="Raven.Client.Lightweight, Version=1.2.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\RavenDB.Client.1.2.2130-Unstable\lib\net40\Raven.Client.Lightweight.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Web.Helpers, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.CSharp" />
@@ -98,12 +110,6 @@
   <ItemGroup>
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="..\Errordite.Build\Configuration\raven.config">
-      <Link>Config\raven.config</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\codetrip\CodeTrip.Core\CodeTrip.Core.csproj">
@@ -138,6 +144,9 @@
       <Link>Config\email.config</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -174,4 +183,5 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
 </Project>

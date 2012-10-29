@@ -5,6 +5,7 @@ using CodeTrip.Core.Interfaces;
 using Errordite.Core.Configuration;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Indexing;
+using Raven.Client;
 using Raven.Client.Linq;
 using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
 

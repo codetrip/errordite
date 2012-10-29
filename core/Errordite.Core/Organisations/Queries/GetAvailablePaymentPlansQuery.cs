@@ -11,13 +11,13 @@ using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
 namespace Errordite.Core.Organisations.Queries
 {
     [Interceptor(CacheInterceptor.IoCName)]
-    public class GetAvailableAvailablePaymentPlansQuery : SessionAccessBase, IGetAvailablePaymentPlansQuery
+    public class GetAvailablePaymentPlansQuery : SessionAccessBase, IGetAvailablePaymentPlansQuery
     {
         public GetAvailablePaymentPlansResponse Invoke(GetAvailablePaymentPlansRequest request)
         {
             Trace("Starting...");
 
-            var plans = Session.Raven.Query<PaymentPlan>()
+            var plans = Session.MasterRaven.Query<PaymentPlan>()
                 .Where(p => p.IsAvailable)
                 .ToList();
 

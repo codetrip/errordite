@@ -39,7 +39,7 @@ namespace Errordite.Core.Applications.Commands
                 };
             }
 
-            RavenQueryStatistics stats;
+            Raven.Client.RavenQueryStatistics stats;
             var applications = Session.Raven.Query<Group, Groups_Search>()
                 .Statistics(out stats)
                 .Where(u => u.OrganisationId == request.CurrentUser.Organisation.Id)

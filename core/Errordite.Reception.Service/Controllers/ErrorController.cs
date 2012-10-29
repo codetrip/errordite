@@ -14,17 +14,17 @@ namespace Errordite.Reception.Service.Controllers
         {
             try
             {
-                SetOrg(orgId);
-                _auditor.Trace(GetType(), "Started...");
+                SetOrganisation(orgId);
+                Auditor.Trace(GetType(), "Started...");
                 var response =
                     _receiveErrorCommand.Invoke(request);
-                _session.Commit();
+                Session.Commit();
 
                 return Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (Exception e)
             {
-                _auditor.Error(GetType(), e);
+                Auditor.Error(GetType(), e);
                 throw;
             }
         }

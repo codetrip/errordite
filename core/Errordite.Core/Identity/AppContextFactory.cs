@@ -22,15 +22,15 @@ namespace Errordite.Core.Identity
         private readonly IImpersonationManager _impersonationManager;
         private readonly IAppSession _appSession;
         private readonly IGetOrganisationQuery _getOrganisationQuery;
-        private readonly ISetOrganisationByEmailAddressCommand _setOrganisationByEmailAddressCommand;
+        private readonly IGetOrganisationByEmailAddressCommand _getOrganisationByEmailAddressCommand;
 
-        public AppContextFactory(IAuthenticationManager authenticationManager, IGetUserQuery getUserQuery, IAppSession appSession, IGetOrganisationQuery getOrganisationQuery, ISetOrganisationByEmailAddressCommand setOrganisationByEmailAddressCommand)
+        public AppContextFactory(IAuthenticationManager authenticationManager, IGetUserQuery getUserQuery, IAppSession appSession, IGetOrganisationQuery getOrganisationQuery, IGetOrganisationByEmailAddressCommand getOrganisationByEmailAddressCommand)
         {
             _authenticationManager = authenticationManager;
             _getUserQuery = getUserQuery;
             _appSession = appSession;
             _getOrganisationQuery = getOrganisationQuery;
-            _setOrganisationByEmailAddressCommand = setOrganisationByEmailAddressCommand;
+            _getOrganisationByEmailAddressCommand = getOrganisationByEmailAddressCommand;
             _impersonationManager = this;
         }
 
@@ -80,7 +80,7 @@ namespace Errordite.Core.Identity
 
         private AppContext CreateKnownUser(AuthenticationIdentity authenticationIdentity)
         {
-            var organisation = _setOrganisationByEmailAddressCommand.Invoke(new SetOrganisationByEmailAddressRequest()
+            var organisation = _getOrganisationByEmailAddressCommand.Invoke(new GetOrganisationByEmailAddressRequest
                 {
                     EmailAddress = authenticationIdentity.Email,
                 }).Organisation;
@@ -88,21 +88,15 @@ namespace Errordite.Core.Identity
             User user = null;
             if (organisation != null)
             {
-                user =
-                    _getUserQuery.Invoke(new GetUserRequest()
-                        {OrganisationId = organisation.Id, UserId = User.GetId(authenticationIdentity.UserId)}).User;
+                user = _getUserQuery.Invoke(new GetUserRequest
+                {
+                    OrganisationId = organisation.Id, 
+                    UserId = User.GetId(authenticationIdentity.UserId)
+                }).User;
+                user.Organisation = organisation;
             }
-
 
             var appContext = new AppContext();
-
-            if (user != null)
-            {
-                user.Organisation = _getOrganisationQuery.Invoke(new GetOrganisationRequest()
-                    {
-                        OrganisationId = user.OrganisationId,
-                    }).Organisation;
-            }
 
             if (user == null || user.Organisation == null || user.Organisation.Status == OrganisationStatus.Suspended)
             {
@@ -110,7 +104,6 @@ namespace Errordite.Core.Identity
                 return CreateAnonymousUser(_authenticationManager.GetCurrentUser());
             }
 
-            _appSession.SetOrg(user.Organisation);
             appContext.Authentication = _authenticationManager;
             appContext.CurrentUser = user;
             appContext.AuthenticationStatus = HttpContext.Current.Request.IsAuthenticated
@@ -130,7 +123,7 @@ namespace Errordite.Core.Identity
                     Role = UserRole.Guest
                 },
                 AuthenticationStatus = AuthenticationStatus.Anonymous,
-                Authentication = _authenticationManager
+                Authentication = _authenticationManager,
             };
 
             return appContext;

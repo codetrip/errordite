@@ -14,7 +14,6 @@ using Errordite.Core.WebApi;
 using NServiceBus;
 using Raven.Abstractions.Data;
 using Raven.Client;
-using Raven.Client.Document;
 using Raven.Client.Indexes;
 using Raven.Client.Extensions;
 using CodeTrip.Core.Extensions;
@@ -30,8 +29,10 @@ namespace Errordite.Core.Session
         /// <summary>
         /// Access the Raven Session
         /// </summary>
-        IDocumentSession CentralRaven { get; }
-
+        IDocumentSession MasterRaven { get; }
+        /// <summary>
+        /// Access to organisation dspecific databases
+        /// </summary>
         IDocumentSession Raven { get; }
         /// <summary>
         /// Access the Redis Databases
@@ -59,17 +60,30 @@ namespace Errordite.Core.Session
         /// The maximum number of requests per session
         /// </summary>
         int RequestLimit { get; set; }
-
+        /// <summary>
+        /// Http interface for the reception services
+        /// </summary>
         HttpClient ReceptionServiceHttpClient { get; }
+        /// <summary>
+        /// Sets the organisationId for this session
+        /// </summary>
+        /// <param name="organisation"></param>
+        void SetOrganisation(Organisation organisation);
+        /// <summary>
+        /// Gets the organisationId for this session
+        /// </summary>
+        string OrganisationDatabaseName { get; }
 
-        void SetOrg(Organisation org);
-
-        string OrgId { get; }
+        /// <summary>
+        /// Sets up a new organisation in Raven
+        /// </summary>
+        /// <param name="organisation"></param>
+        void BootstrapOrganisation(Organisation organisation);
 
         /// <summary>
         /// Synchronise the index specified in the type parameter
         /// </summary>
-        void SynchroniseIndexes<T>(bool centralRaven = false) 
+        void SynchroniseIndexes<T>(bool masterRaven = false) 
             where T : AbstractIndexCreationTask, new();
 
         /// <summary>
@@ -99,8 +113,8 @@ namespace Errordite.Core.Session
         private readonly IComponentAuditor _auditor;
         private readonly List<SessionCommitAction> _sessionCommitActions;
         private HttpClient _receptionServiceHttpClient;
-        private string _dbId;
-        private IDocumentSession _orgSession;
+        private string _organisationDatabaseId;
+        private IDocumentSession _organisationSession;
 
         public AppSession(IDocumentStore documentStore, IBus bus, IRedisSession redisSession, ErrorditeConfiguration config, IComponentAuditor auditor)
         {
@@ -123,7 +137,7 @@ namespace Errordite.Core.Session
             get { return _bus; }
         }
 
-        public IDocumentSession CentralRaven
+        public IDocumentSession MasterRaven
         {
             get
             {
@@ -140,33 +154,16 @@ namespace Errordite.Core.Session
         {
             get
             {
-                if (_orgSession != null)
-                    return _orgSession;
+                if (_organisationSession != null)
+                    return _organisationSession;
 
-                if (_dbId == null)
-                    throw new InvalidOperationException("Can't get session till Org set.");
+                if (_organisationDatabaseId == null)
+                    throw new InvalidOperationException("Can't get session till Organisation has beens set.");
 
-                _documentStore.DatabaseCommands.EnsureDatabaseExists(_dbId);
-                IndexCreation.CreateIndexes(
-                    new CompositionContainer(new AssemblyCatalog(typeof(Issues_Search).Assembly), new ExportProvider[0]),
-                     _documentStore.DatabaseCommands.ForDatabase(_dbId), _documentStore.Conventions);
-
-                _orgSession = _documentStore.OpenSession(_dbId);
-                _orgSession.Advanced.MaxNumberOfRequestsPerSession = RequestLimit == 0 ? 250 : RequestLimit;
-
-                 var facets = new List<Facet>
-                {
-                    new Facet {Name = "Status"},
-                };
-
-                _orgSession.Store(new FacetSetup {Id = Core.CoreConstants.FacetDocuments.IssueStatus, Facets = facets});
-                _orgSession.SaveChanges();
-
-                return _orgSession;
+                _organisationSession = _documentStore.OpenSession(_organisationDatabaseId);
+                return _organisationSession;
             }
         }
-
-
 
         public IRedisSession Redis
         {
@@ -194,8 +191,8 @@ namespace Errordite.Core.Session
             {
                 if (_session != null)
                     _session.SaveChanges();
-                if (_orgSession != null)
-                    _orgSession.SaveChanges();
+                if (_organisationSession != null)
+                    _organisationSession.SaveChanges();
 
                 foreach (var sessionCommitAction in _sessionCommitActions)
                     sessionCommitAction.Execute(this);
@@ -216,30 +213,32 @@ namespace Errordite.Core.Session
 
         public int RequestLimit { get; set; }
 
-        public void SetOrg(Organisation org)
+        public void SetOrganisation(Organisation organisation)
         {
-            if (_dbId != null && _dbId != IdHelper.GetFriendlyId(org.OrganisationId))
+            if (_organisationDatabaseId != null && _organisationDatabaseId != IdHelper.GetFriendlyId(organisation.OrganisationId))
             {
-                throw new InvalidOperationException("Cannot set Org twice in one session.");
+                throw new InvalidOperationException("Cannot set Organisation twice in one session.");
+                //return;
             }
 
-            _dbId = IdHelper.GetFriendlyId(org.OrganisationId);
+            _organisationDatabaseId = "{0}-{1}".FormatWith(IdHelper.GetFriendlyId(organisation.OrganisationId), organisation.Name.RavenDatabaseNameEncode());
 
             var uriBuilder = new UriBuilder(_config.ReceptionHttpEndpoint);
+
             if (!uriBuilder.Path.EndsWith("/"))
                 uriBuilder.Path += "/";
 
-            uriBuilder.Path += "{0}/".FormatWith(IdHelper.GetFriendlyId(_dbId));
+            uriBuilder.Path += "{0}/".FormatWith(IdHelper.GetFriendlyId(_organisationDatabaseId));
 
             _receptionServiceHttpClient = new HttpClient(new LoggingHttpMessageHandler(_auditor)) { BaseAddress = uriBuilder.Uri };
         }
 
-        public string OrgId { get { return _dbId; } }
+        public string OrganisationDatabaseName { get { return _organisationDatabaseId; } }
 
-        public void SynchroniseIndexes<T>(bool centralRaven = false)
+        public void SynchroniseIndexes<T>(bool masterRaven = false)
             where T : AbstractIndexCreationTask, new()
         {
-            AddCommitAction(new SynchroniseIndex<T>(centralRaven));
+            AddCommitAction(new SynchroniseIndex<T>(masterRaven));
         }
 
         public void SynchroniseIndexes<T1, T2>() 
@@ -258,6 +257,27 @@ namespace Errordite.Core.Session
             SynchroniseIndexes<T1>();
             SynchroniseIndexes<T2>();
             SynchroniseIndexes<T3>();
+        }
+
+        public void BootstrapOrganisation(Organisation organisation)
+        {
+            _organisationDatabaseId = "{0}-{1}".FormatWith(IdHelper.GetFriendlyId(organisation.OrganisationId), organisation.Name.RavenDatabaseNameEncode());
+            _documentStore.DatabaseCommands.EnsureDatabaseExists(_organisationDatabaseId);
+
+            IndexCreation.CreateIndexes(
+                new CompositionContainer(new AssemblyCatalog(typeof(Issues_Search).Assembly), new ExportProvider[0]),
+                 _documentStore.DatabaseCommands.ForDatabase(_organisationDatabaseId), _documentStore.Conventions);
+
+            _organisationSession = _documentStore.OpenSession(_organisationDatabaseId);
+            _organisationSession.Advanced.MaxNumberOfRequestsPerSession = RequestLimit == 0 ? 250 : RequestLimit;
+
+            var facets = new List<Facet>
+            {
+                new Facet {Name = "Status"},
+            };
+
+            _organisationSession.Store(new FacetSetup { Id = Core.CoreConstants.FacetDocuments.IssueStatus, Facets = facets });
+            _organisationSession.SaveChanges();
         }
     }
 }

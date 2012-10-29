@@ -104,8 +104,6 @@ namespace Errordite.Web
             Thread.CurrentThread.CurrentCulture = cultureInfo;
             Thread.CurrentThread.CurrentUICulture = cultureInfo;
 
-            IndexCreation.CreateIndexes(typeof(Issues_Search).Assembly, ObjectFactory.GetObject<IDocumentStore>());
-
             TaskScheduler.UnobservedTaskException += (sender, args) =>
             {
                 try
@@ -121,7 +119,7 @@ namespace Errordite.Web
             };
 
             ErrorditeLogger.Initialise(true, "Errordite.Web");
-            EnsureSeeedDataExists();
+            BootstrapRaven();
         }
 
         protected void Application_Error(object sender, EventArgs e)
@@ -181,9 +179,12 @@ namespace Errordite.Web
 
         #region Seed Data
 
-        private void EnsureSeeedDataExists()
+        private void BootstrapRaven()
         {
             var documentStore = ObjectFactory.GetObject<IDocumentStore>();
+
+            IndexCreation.CreateIndexes(typeof(Issues_Search).Assembly, documentStore);
+            
             var session = documentStore.OpenSession();
 
             if (!session.Query<PaymentPlan>().Any())

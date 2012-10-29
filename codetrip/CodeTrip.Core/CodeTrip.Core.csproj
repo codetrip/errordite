@@ -12,6 +12,8 @@
     <AssemblyName>CodeTrip.Core</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\core\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -70,15 +72,16 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\protobuf\protobuf-net.dll</HintPath>
     </Reference>
-    <Reference Include="Raven.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+    <Reference Include="Raven.Abstractions, Version=1.2.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\RavenDb\Client\Raven.Abstractions.dll</HintPath>
+      <HintPath>..\..\lib\RavenDB.Client.1.2.2130-Unstable\lib\net40\Raven.Abstractions.dll</HintPath>
     </Reference>
-    <Reference Include="Raven.Client.Lightweight, Version=1.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+    <Reference Include="Raven.Client.Lightweight, Version=1.2.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\RavenDb\Client\Raven.Client.Lightweight.dll</HintPath>
+      <HintPath>..\..\lib\RavenDB.Client.1.2.2130-Unstable\lib\net40\Raven.Client.Lightweight.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net.Http">
@@ -227,12 +230,13 @@
     <Compile Include="Web\JsonNetJsonValueProvider.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Session\" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>"$(ProjectDir)..\..\core\Errordite.Build\Cmd\CopyBuildOutputToReferences.bat" "$(ProjectDir)..\" "$(ProjectDir)" $(ConfigurationName) $(TargetName)</PostBuildEvent>
   </PropertyGroup>
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

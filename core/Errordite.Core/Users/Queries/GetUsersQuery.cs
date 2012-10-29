@@ -32,7 +32,7 @@ namespace Errordite.Core.Users.Queries
         {
             Trace("Starting...");
 
-            RavenQueryStatistics stats;
+            Raven.Client.RavenQueryStatistics stats;
 
             var query = Session.Raven.Query<User, Users_Search>()
                 .Statistics(out stats)

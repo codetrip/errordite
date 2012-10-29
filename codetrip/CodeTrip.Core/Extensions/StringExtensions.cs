@@ -53,6 +53,14 @@ namespace CodeTrip.Core.Extensions
             return string.Format(s, args);
         }
 
+        public static string RavenDatabaseNameEncode(this string input)
+        {
+            if (input == null)
+                return null;
+
+            return input.Replace(" ", string.Empty);
+        }
+
         public static MvcHtmlString DoNotEncode(this object o)
         {
             if (o == null)
@@ -108,7 +116,7 @@ namespace CodeTrip.Core.Extensions
             byte[] hash = md5.ComputeHash(inputBytes);
 
             // step 2, convert byte array to hex string
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             for (int i = 0; i < hash.Length; i++)
             {
                 sb.Append(hash[i].ToString("X2"));

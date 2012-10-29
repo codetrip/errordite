@@ -43,10 +43,10 @@ namespace Errordite.Core.Users.Commands
             }
 
             var userOrgMapping =
-                Session.CentralRaven.Query<UserOrgMapping>().FirstOrDefault(u => u.EmailAddress == existingUser.Email);
+                Session.MasterRaven.Query<UserOrganisationMapping>().FirstOrDefault(u => u.EmailAddress == existingUser.Email);
 
             if (userOrgMapping != null)
-                Session.CentralRaven.Delete(userOrgMapping);
+                Session.MasterRaven.Delete(userOrgMapping);
 
             _authorisationManager.Authorise(existingUser, request.CurrentUser);
 

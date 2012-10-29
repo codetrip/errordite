@@ -18,14 +18,14 @@ namespace Errordite.Core.Authentication.Commands
     {
         private readonly IEncryptor _encryptor;
         private readonly ISendNotificationCommand _sendNotificationCommand;
-        private readonly ISetOrganisationByEmailAddressCommand _setOrganisationByEmailAddressCommand;
+        private readonly IGetOrganisationByEmailAddressCommand _getOrganisationByEmailAddressCommand;
 
         public ResetPasswordCommand(IEncryptor encryptor,
-            ISendNotificationCommand sendNotificationCommand, ISetOrganisationByEmailAddressCommand setOrganisationByEmailAddressCommand)
+            ISendNotificationCommand sendNotificationCommand, IGetOrganisationByEmailAddressCommand getOrganisationByEmailAddressCommand)
         {
             _encryptor = encryptor;
             _sendNotificationCommand = sendNotificationCommand;
-            _setOrganisationByEmailAddressCommand = setOrganisationByEmailAddressCommand;
+            _getOrganisationByEmailAddressCommand = getOrganisationByEmailAddressCommand;
         }
 
         public ResetPasswordResponse Invoke(ResetPasswordRequest request)
@@ -34,7 +34,7 @@ namespace Errordite.Core.Authentication.Commands
 
             ArgumentValidation.NotEmpty(request.Email, "request.Email");
 
-            var organisation = _setOrganisationByEmailAddressCommand.Invoke(new SetOrganisationByEmailAddressRequest()
+            var organisation = _getOrganisationByEmailAddressCommand.Invoke(new GetOrganisationByEmailAddressRequest()
                 {
                     EmailAddress = request.Email,
                 }).Organisation;
