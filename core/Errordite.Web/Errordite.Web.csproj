@@ -64,9 +64,8 @@
     <Reference Include="Errordite.Client.Log4net">
       <HintPath>..\..\lib\Errordite.Client\Errordite.Client.Log4net.dll</HintPath>
     </Reference>
-    <Reference Include="Errordite.Client.Mvc3, Version=0.9.19.3, Culture=neutral, PublicKeyToken=0c2d28c225f773ee, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\Errordite.Client\Errordite.Client.Mvc3.dll</HintPath>
+    <Reference Include="Errordite.Client.Mvc3">
+      <HintPath>..\packages\Errordite.Client.Mvc3.1.2.9.0\lib\net40\Errordite.Client.Mvc3.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
       <HintPath>..\..\lib\log4net\log4net.dll</HintPath>
