@@ -221,7 +221,7 @@ namespace Errordite.Core.Session
                 //return;
             }
 
-            _organisationDatabaseId = "{0}-{1}".FormatWith(IdHelper.GetFriendlyId(organisation.OrganisationId), organisation.Name.RavenDatabaseNameEncode());
+            SetDbId(organisation);
 
             var uriBuilder = new UriBuilder(_config.ReceptionHttpEndpoint);
 
@@ -259,9 +259,14 @@ namespace Errordite.Core.Session
             SynchroniseIndexes<T3>();
         }
 
+        private void SetDbId(Organisation organisation)
+        {
+            _organisationDatabaseId = IdHelper.GetFriendlyId(organisation.OrganisationId);
+        }
+
         public void BootstrapOrganisation(Organisation organisation)
         {
-            _organisationDatabaseId = "{0}-{1}".FormatWith(IdHelper.GetFriendlyId(organisation.OrganisationId), organisation.Name.RavenDatabaseNameEncode());
+            SetDbId(organisation);
             _documentStore.DatabaseCommands.EnsureDatabaseExists(_organisationDatabaseId);
 
             IndexCreation.CreateIndexes(

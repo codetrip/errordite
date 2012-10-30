@@ -53,14 +53,6 @@ namespace CodeTrip.Core.Extensions
             return string.Format(s, args);
         }
 
-        public static string RavenDatabaseNameEncode(this string input)
-        {
-            if (input == null)
-                return null;
-
-            return input.Replace(" ", string.Empty);
-        }
-
         public static MvcHtmlString DoNotEncode(this object o)
         {
             if (o == null)
