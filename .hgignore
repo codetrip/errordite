@@ -39,8 +39,8 @@ Redis\conf\**
 Redis\data\**
 Redis\logs\**
 build\**
-lib\Errordite\**
-lib\RavenDB*\**
+core\packages\**
+samples\packages\**
 core\Errordite.Web\Css\1.0.1.0.min.css
 core\Errordite.Web\Js\1.0.1.0.min.js
 core\Errordite.Raven\Data*
@@ -49,4 +49,3 @@ core\Errordite.Raven\Logs*
 core\Errordite.Raven\Data\**
 core\Errordite.Raven\Tenants\**
 core\Errordite.Raven\Logs\**
-samples/packages

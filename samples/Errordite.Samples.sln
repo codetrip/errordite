@@ -1,18 +1,18 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Errordite.Samples.Mvc3", "Errordite.Samples.Mvc3\Errordite.Samples.Mvc3.csproj", "{1C92C6C1-F9D0-481C-8EF2-6B1E6B790E39}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Errordite.Samples.WebForms", "Errordite.Samples.WebForms\Errordite.Samples.WebForms.csproj", "{D05DD1B6-4934-4264-B048-B9319CF9A40F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Errordite.Samples.Mvc2", "Errordite.Samples.Mvc2\Errordite.Samples.Mvc2.csproj", "{DDB86E7C-D152-417D-9155-F230B564DFA5}"
-EndProject
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{A47197B1-8CDE-49B9-A9E9-7B2C0BF6F236}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\NuGet.Config = .nuget\NuGet.Config
 		.nuget\NuGet.exe = .nuget\NuGet.exe
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Errordite.Samples.Mvc3", "Errordite.Samples.Mvc3\Errordite.Samples.Mvc3.csproj", "{1C92C6C1-F9D0-481C-8EF2-6B1E6B790E39}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Errordite.Samples.WebForms", "Errordite.Samples.WebForms\Errordite.Samples.WebForms.csproj", "{D05DD1B6-4934-4264-B048-B9319CF9A40F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Errordite.Samples.Mvc2", "Errordite.Samples.Mvc2\Errordite.Samples.Mvc2.csproj", "{DDB86E7C-D152-417D-9155-F230B564DFA5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
