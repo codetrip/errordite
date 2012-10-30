@@ -3,7 +3,6 @@ using Castle.MicroKernel.Registration;
 using Castle.Windsor;
 using CodeTrip.Core.Auditing;
 using CodeTrip.Core.Auditing.Entities;
-using CodeTrip.Core.Caching.Entities;
 using CodeTrip.Core.Caching.Interceptors;
 using CodeTrip.Core.Caching.Interfaces;
 using CodeTrip.Core.Caching.Invalidation;
