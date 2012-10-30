@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Errordite.Core.Auditing;
-using Lucene.Net.Analysis;
 using Raven.Abstractions.Indexing;
 using Raven.Client.Indexes;
 

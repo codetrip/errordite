@@ -61,7 +61,7 @@
       <HintPath>..\..\lib\log4net\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Lucene.Net">
-      <HintPath>..\..\..\Main\lib\Lucene.net\Lucene.Net.dll</HintPath>
+      <HintPath>..\..\lib\Lucene.net\Lucene.Net.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.0.8.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
