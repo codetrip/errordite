@@ -4,7 +4,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using Errordite.Core.Domain.Error;
 using Lucene.Net.Analysis;
-using Lucene.Net.Analysis.Standard;
 using Raven.Abstractions.Indexing;
 using Raven.Client.Indexes;
 
