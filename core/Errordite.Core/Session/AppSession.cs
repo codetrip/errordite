@@ -228,7 +228,7 @@ namespace Errordite.Core.Session
             if (!uriBuilder.Path.EndsWith("/"))
                 uriBuilder.Path += "/";
 
-            uriBuilder.Path += "{0}/".FormatWith(IdHelper.GetFriendlyId(_organisationDatabaseId));
+            uriBuilder.Path += "{0}/".FormatWith(organisation.FriendlyId);
 
             _receptionServiceHttpClient = new HttpClient(new LoggingHttpMessageHandler(_auditor)) { BaseAddress = uriBuilder.Uri };
         }

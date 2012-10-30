@@ -41,31 +41,31 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Antlr3.Runtime">
+    <Reference Include="Antlr3.Runtime, Version=3.3.1.7705, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
       <HintPath>..\packages\RavenDB.Database.1.2.2133-Unstable\lib\net40\Antlr3.Runtime.dll</HintPath>
     </Reference>
-    <Reference Include="BouncyCastle.Crypto">
+    <Reference Include="BouncyCastle.Crypto, Version=1.7.4137.9688, Culture=neutral, PublicKeyToken=a4292a325f69b123, processorArchitecture=MSIL">
       <HintPath>..\packages\RavenDB.Database.1.2.2133-Unstable\lib\net40\BouncyCastle.Crypto.dll</HintPath>
     </Reference>
-    <Reference Include="Esent.Interop">
+    <Reference Include="Esent.Interop, Version=1.7.0.0, Culture=neutral, PublicKeyToken=8dd49bbdae3f61af, processorArchitecture=MSIL">
       <HintPath>..\packages\RavenDB.Database.1.2.2133-Unstable\lib\net40\Esent.Interop.dll</HintPath>
     </Reference>
-    <Reference Include="GeoAPI">
+    <Reference Include="GeoAPI, Version=1.7.4673.24930, Culture=neutral, PublicKeyToken=a1a0da7def465678, processorArchitecture=MSIL">
       <HintPath>..\packages\RavenDB.Database.1.2.2133-Unstable\lib\net40\GeoAPI.dll</HintPath>
     </Reference>
-    <Reference Include="ICSharpCode.NRefactory">
+    <Reference Include="ICSharpCode.NRefactory, Version=5.0.0.0, Culture=neutral, PublicKeyToken=d4bfe873e7598c49, processorArchitecture=MSIL">
       <HintPath>..\packages\RavenDB.Database.1.2.2133-Unstable\lib\net40\ICSharpCode.NRefactory.dll</HintPath>
     </Reference>
-    <Reference Include="ICSharpCode.NRefactory.CSharp">
+    <Reference Include="ICSharpCode.NRefactory.CSharp, Version=5.0.0.0, Culture=neutral, PublicKeyToken=d4bfe873e7598c49, processorArchitecture=MSIL">
       <HintPath>..\packages\RavenDB.Database.1.2.2133-Unstable\lib\net40\ICSharpCode.NRefactory.CSharp.dll</HintPath>
     </Reference>
-    <Reference Include="Jint">
+    <Reference Include="Jint, Version=0.9.2.0, Culture=neutral, PublicKeyToken=5fa384605d304122, processorArchitecture=MSIL">
       <HintPath>..\packages\RavenDB.Database.1.2.2133-Unstable\lib\net40\Jint.dll</HintPath>
     </Reference>
-    <Reference Include="Lucene.Net">
+    <Reference Include="Lucene.Net, Version=3.0.3.0, Culture=neutral, PublicKeyToken=85089178b9ac3181, processorArchitecture=MSIL">
       <HintPath>..\packages\RavenDB.Database.1.2.2133-Unstable\lib\net40\Lucene.Net.dll</HintPath>
     </Reference>
-    <Reference Include="Lucene.Net.Contrib.Spatial.NTS">
+    <Reference Include="Lucene.Net.Contrib.Spatial.NTS, Version=3.0.3.0, Culture=neutral, PublicKeyToken=85089178b9ac3181, processorArchitecture=MSIL">
       <HintPath>..\packages\RavenDB.Database.1.2.2133-Unstable\lib\net40\Lucene.Net.Contrib.Spatial.NTS.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
@@ -73,28 +73,28 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
-    <Reference Include="Mono.Cecil">
+    <Reference Include="Mono.Cecil, Version=0.9.5.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
       <HintPath>..\packages\RavenDB.Database.1.2.2133-Unstable\lib\net40\Mono.Cecil.dll</HintPath>
     </Reference>
-    <Reference Include="NetTopologySuite">
+    <Reference Include="NetTopologySuite, Version=1.13.4673.24930, Culture=neutral, PublicKeyToken=f580a05016ebada1, processorArchitecture=MSIL">
       <HintPath>..\packages\RavenDB.Database.1.2.2133-Unstable\lib\net40\NetTopologySuite.dll</HintPath>
     </Reference>
     <Reference Include="NLog">
       <HintPath>..\..\lib\NLog.2.0.0.2000\lib\net40\NLog.dll</HintPath>
     </Reference>
-    <Reference Include="PowerCollections">
+    <Reference Include="PowerCollections, Version=1.0.4673.24930, Culture=neutral, PublicKeyToken=2573bf8a1bdddcd5, processorArchitecture=MSIL">
       <HintPath>..\packages\RavenDB.Database.1.2.2133-Unstable\lib\net40\PowerCollections.dll</HintPath>
     </Reference>
-    <Reference Include="Raven.Abstractions">
+    <Reference Include="Raven.Abstractions, Version=1.2.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
       <HintPath>..\packages\RavenDB.Database.1.2.2133-Unstable\lib\net40\Raven.Abstractions.dll</HintPath>
     </Reference>
-    <Reference Include="Raven.Database">
+    <Reference Include="Raven.Database, Version=1.2.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
       <HintPath>..\packages\RavenDB.Database.1.2.2133-Unstable\lib\net40\Raven.Database.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Web">
       <HintPath>..\packages\RavenDB.AspNetHost.1.2.2133-Unstable\lib\net40\Raven.Web.dll</HintPath>
     </Reference>
-    <Reference Include="Spatial4n.Core.NTS">
+    <Reference Include="Spatial4n.Core.NTS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9f9456e1ca16d45e, processorArchitecture=MSIL">
       <HintPath>..\packages\RavenDB.Database.1.2.2133-Unstable\lib\net40\Spatial4n.Core.NTS.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.Composition" />
@@ -114,7 +114,6 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Raven.Studio.xap" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -123,10 +122,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="packages.config" />
+    <Content Include="NLog.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="NLog.config" />
+    <Content Include="packages.config" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

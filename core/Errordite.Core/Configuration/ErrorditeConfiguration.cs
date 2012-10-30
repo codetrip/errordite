@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using CodeTrip.Core.Extensions;
 using CodeTrip.Core.IoC;
+using Errordite.Core.Reception;
 
 namespace Errordite.Core.Configuration
 {
@@ -25,6 +26,6 @@ namespace Errordite.Core.Configuration
         public double IssueCacheTimeoutMinutes { get; set; }
         public string ReceptionHttpEndpoint { get; set; }
         public List<string> ErrorPropertiesForFiltering { get; set; }
-        //public List<RateLimiterRule> RateLimiterRules { get; set; }
+        public List<RateLimiterRule> RateLimiterRules { get; set; }
     }
 }
