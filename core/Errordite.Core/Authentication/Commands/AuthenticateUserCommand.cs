@@ -36,6 +36,7 @@ namespace Errordite.Core.Authentication.Commands
 
             Session.SetOrganisation(organisation);
 
+            Trace("Getting user {0} from org {1} with pwdhash {2}", request.Email, organisation.Id, request.Password.Hash());
             var user = Session.Raven.Query<User, Users_Search>()
                 .FirstOrDefault(u => u.Email == request.Email.ToLowerInvariant() && u.Password == request.Password.Hash());
 
@@ -43,6 +44,7 @@ namespace Errordite.Core.Authentication.Commands
             {
                 if(!user.Status.Equals(UserStatus.Active))
                 {
+                    Trace("account inactive");
                     return new AuthenticateUserResponse
                     {
                         Status = AuthenticateUserStatus.AccountInactive
@@ -51,6 +53,7 @@ namespace Errordite.Core.Authentication.Commands
 
                 if (organisation.Status == OrganisationStatus.Suspended)
                 {
+                    Trace("org inactive");
                     return new AuthenticateUserResponse
                     {
                         Status = AuthenticateUserStatus.OrganisationInactive
