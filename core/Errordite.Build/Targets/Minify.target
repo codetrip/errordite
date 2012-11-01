@@ -1,0 +1,80 @@
+<Project
+	xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
+	ToolsVersion="4.0"
+	DefaultTargets="MinifyResources">
+
+  <Import Project="$(MSBuildProjectDirectory)\..\Imports\Global.imports" />
+  <UsingTask TaskName="CompressorTask" AssemblyFile="$(SourcePath)\lib\Yahoo\Yahoo.Yui.Compressor.dll"></UsingTask>
+  
+  <Target Name="MinifyResources">
+
+    <PropertyGroup>
+      <MinifiedCssOutputPath Condition="'$(BuildNumber)'=='$(BaseBuildNumber)'">$(SourcePath)\core\Errordite.Web\css\$(BaseBuildNumber).min.css</MinifiedCssOutputPath>
+      <MinifiedJsOutputPath Condition="'$(BuildNumber)'=='$(BaseBuildNumber)'">$(SourcePath)\core\Errordite.Web\js\$(BaseBuildNumber).min.js</MinifiedJsOutputPath>
+      <MinifiedCssOutputPath Condition="'$(BuildNumber)'!='$(BaseBuildNumber)'">$(OutputPath)\Errordite.Web\css\$(BuildNumber).min.css</MinifiedCssOutputPath>
+      <MinifiedJsOutputPath Condition="'$(BuildNumber)'!='$(BaseBuildNumber)'">$(OutputPath)\Errordite.Web\js\$(BuildNumber).min.js</MinifiedJsOutputPath>
+    </PropertyGroup>
+    
+    <!--Create the item group that will pull in all the relevant css and javascript-->
+    <ItemGroup>
+      <CssFiles Include="$(SourcePath)\core\Errordite.Web\css\*.css"
+                Exclude="$(SourcePath)\core\Errordite.Web\css\$(BaseBuildNumber).min.css"></CssFiles>
+      <JavaScriptFiles Include="$(SourcePath)\core\Errordite.Web\js\*.js"
+                Exclude="
+                  $(SourcePath)\core\Errordite.Web\js\$(BaseBuildNumber).min.js;
+                  $(SourcePath)\core\Errordite.Web\js\001.jquery-1.7.2.js;
+                  $(SourcePath)\core\Errordite.Web\js\006.jquery-ui-1.8.18.custom.min.js"></JavaScriptFiles>
+    </ItemGroup>
+
+    <Delete Files="$(SourcePath)\core\Errordite.Web\js\$(BaseBuildNumber).min.js;
+                   $(SourcePath)\core\Errordite.Web\css\$(BaseBuildNumber).min.css" 
+            Condition="'$(BuildNumber)'=='$(BaseBuildNumber)'" />
+
+    <!--Compress the files-->
+    <CompressorTask
+        CssFiles="@(CssFiles)"
+        DeleteCssFiles="false"
+        CssOutputFile="$(MinifiedCssOutputPath)"
+        CssCompressionType="YuiStockCompression"
+        JavaScriptFiles="@(JavaScriptFiles)"
+        ObfuscateJavaScript="True"
+        PreserveAllSemicolons="True"
+        DisableOptimizations="Nope"
+        EncodingType="Default"
+        DeleteJavaScriptFiles="false"
+        LineBreakPosition="-1"
+        JavaScriptOutputFile="$(MinifiedJsOutputPath)"
+        LoggingType="ALittleBit"
+        IsEvalIgnored="false">
+    </CompressorTask>
+  </Target>
+
+  <!--<Target Name="MinifyJqPlot">
+
+    <PropertyGroup>
+      <MinifiedJsOutputPath>$(SourcePath)\core\Errordite.Web\js\jqplot\jqplot.min.js</MinifiedJsOutputPath>
+    </PropertyGroup>
+
+    --><!--Create the item group that will pull in all the relevant css and javascript--><!--
+    <ItemGroup>
+      <JavaScriptFiles Include="$(SourcePath)\core\Errordite.Web\js\JqPlot\*.js" Exclude="$(SourcePath)\core\Errordite.Web\js\jqplot\jqplot.min.js"></JavaScriptFiles>
+    </ItemGroup>
+
+    <Delete Files="$(SourcePath)\core\Errordite.Web\js\JqPlot\JqPlot.min.js;" />
+
+    --><!--Compress the files--><!--
+    <CompressorTask
+        JavaScriptFiles="@(JavaScriptFiles)"
+        ObfuscateJavaScript="True"
+        PreserveAllSemicolons="True"
+        DisableOptimizations="Nope"
+        EncodingType="Default"
+        DeleteJavaScriptFiles="false"
+        LineBreakPosition="-1"
+        JavaScriptOutputFile="$(MinifiedJsOutputPath)"
+        LoggingType="ALittleBit"
+        IsEvalIgnored="false">
+    </CompressorTask>
+  </Target>-->
+</Project>
+

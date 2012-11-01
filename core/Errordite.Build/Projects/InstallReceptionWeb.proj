@@ -1,0 +1,63 @@
+<Project
+	xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
+	ToolsVersion="4.0"
+	DefaultTargets="InstallReceptionWeb">
+
+  <Import Project="$(MSBuildProjectDirectory)\Global.imports" />
+  <Import Project="$(MSBuildProjectDirectory)\Configuration.target" />
+  <Import Project="$(MSBuildProjectDirectory)\IIS.target" />
+  <Import Project="$(MSBuildProjectDirectory)\Queues.target" />
+  
+  <ItemGroup>
+    <CreateQueue Include=".\Private$\Errordite.Client">
+      <Label>Errordite Client</Label>
+    </CreateQueue>
+  </ItemGroup>
+
+  <Target Name="InstallReceptionWeb" DependsOnTargets="GetBuildNumberAndInstallPaths;
+          CopyReceptionFiles;
+          RunConfigFileChanger;
+          CreateNServiceBusSubscriptionsQueue;
+          CreateQueues;
+          UpdateWebIISDirectoryPathAndPermissions;
+          SetCacheEngineToRedis;
+          RunConfigFileChanger;
+          RecycleWebReceptionAppPool">
+  </Target>
+
+  <Target Name="CopyReceptionFiles" DependsOnTargets="GetBuildNumberAndInstallPaths">
+
+    <CreateItem Include="$(MSBuildProjectDirectory)\..\Errordite.Reception.Web\**\*.*;">
+      <Output TaskParameter="Include" ItemName="ErrorditeReceptionWebFiles" />
+    </CreateItem>
+
+    <Copy SourceFiles="@(ErrorditeReceptionWebFiles)" DestinationFolder="$(InstallRoot)\Errordite.Reception.Web\$(BuildNumber)\%(RecursiveDir)" />
+  </Target>
+
+  <Target Name="UpdateWebIISDirectoryPathAndPermissions">
+
+    <ItemGroup>
+      <Allow Include="$(Domain)\$(ErrorditeReceptionWebUser)">
+        <Permission>FullControl</Permission>
+      </Allow>
+    </ItemGroup>
+
+    <MSBuild.ExtensionPack.FileSystem.Folder TaskAction="AddSecurity" AccessType="Allow" Path="$(ReceptionInstallPath)" Users="@(Allow)" Recursive="true" />
+    <MSBuild.ExtensionPack.Web.Iis7Website TaskAction="ModifyPath" Name="$(ErrorditeReceptionWebsiteHostName)" Path="$(ReceptionInstallPath)" AppPool="$(ErrorditeReceptionWebsiteHostName)"/>
+
+  </Target>
+
+  <Target Name="GetBuildNumberAndInstallPaths">
+    <ReadLinesFromFile File="$(MSBuildProjectDirectory)\version.txt">
+      <Output TaskParameter="Lines" PropertyName="BuildNumber" />
+    </ReadLinesFromFile>
+
+    <CreateProperty Value="$(InstallRoot)\Errordite.Reception.Web\$(BuildNumber)">
+      <Output TaskParameter="Value" PropertyName="ReceptionInstallPath" />
+    </CreateProperty>
+
+    <CreateProperty Value="$(ReceptionServiceInstallPath)">
+      <Output TaskParameter="Value" PropertyName="ConfigChangerRunLocation" />
+    </CreateProperty>
+  </Target>
+</Project>

@@ -1,0 +1,44 @@
+﻿<Page x:Class="Errordite.Utils.DevUtility.Pages.IisManager"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Harmony Utils: IIS Manager" Width="1000" Height="700" Background="#D6D3CE" FontSize="12">
+    <Grid Height="697" Width="987">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="169*" />
+            <ColumnDefinition Width="818*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="37" />
+            <RowDefinition Height="213*" />
+            <RowDefinition Height="207*" />
+            <RowDefinition Height="119*" />
+        </Grid.RowDefinitions>
+
+        <GroupBox Header="Errordite Dev Utils: IIS Management" Margin="6,0,12,14" Name="JobDetails" Grid.RowSpan="4" Grid.ColumnSpan="2">
+            <TextBox Height="23" Name="textBox1" Width="120" />
+        </GroupBox>
+
+        <DataGrid Name="_uiSites" Margin="19,132,25,0" Grid.ColumnSpan="2" VerticalAlignment="Top" RowHeight="22" SelectionMode="Single" IsReadOnly="True" Grid.Row="1" Height="250" Grid.RowSpan="2"></DataGrid>
+
+        <DataGrid Name="_uiRepos" Margin="18,149,27,0" Height="220" RowHeight="22" VerticalAlignment="Top" Grid.Row="2" Grid.ColumnSpan="2" SelectionMode="Single" IsReadOnly="True" Grid.RowSpan="2"></DataGrid>
+
+        
+        <Button Content="Refresh UI" Height="23" HorizontalAlignment="Right" Margin="0,43,27,0" Name="uiRefreshButton" VerticalAlignment="Top" Width="137" Grid.Column="1" Click="UiRefreshButtonClick" Grid.Row="1" />
+        <ComboBox Grid.Column="1" Height="23" HorizontalAlignment="Left" ItemsSource="{Binding}" Margin="202,18,0,0" Name="_uiSiteAppPool" SelectedIndex="0" VerticalAlignment="Top" Width="235" Grid.Row="1" />
+        <ComboBox Grid.Column="1" Height="23" HorizontalAlignment="Right" ItemsSource="{Binding}" Margin="0,17,179,0" Name="_uiCerts" SelectedIndex="0" VerticalAlignment="Top" Width="192" Grid.Row="1" />
+        <Label Content="Web" Height="24" IsEnabled="True" Margin="16,18,62,0" VerticalAlignment="Top" Grid.Row="1" />
+        <TextBox Height="23" HorizontalAlignment="Left" Margin="92,18,0,0" Name="_uiSitePort" Text="443" VerticalAlignment="Top" Width="45" Grid.Row="1" />
+        <Button Content="Reconfigure IIS" Grid.Column="1" Height="23" HorizontalAlignment="Right" Margin="0,17,27,0" Name="_configureIIS" VerticalAlignment="Top" Width="137" Grid.Row="1" Click="ConfigureIisClick" />
+        <Label Content="Reception" Grid.Row="1" Height="24" IsEnabled="True" Margin="16,41,62,0" Target="{Binding}" VerticalAlignment="Top" />
+        <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="92,42,0,0" Name="_uiAdminSitePort" Text="9001" VerticalAlignment="Top" Width="45" />
+        <Label Content="App Pool" Grid.Column="1" Height="23" HorizontalAlignment="Left" IsEnabled="True" Margin="198,30,0,0" VerticalAlignment="Top" Width="112" Grid.RowSpan="2" />
+        <Label Content="SSL Certificate (both sites)" Grid.Column="1" Height="24" HorizontalAlignment="Right" IsEnabled="True" Margin="0,30,179,0" Target="{Binding}" VerticalAlignment="Top" Width="194" Grid.RowSpan="2" />
+        <TextBox Grid.ColumnSpan="2" Height="23" HorizontalAlignment="Left" Margin="152,18,0,0" Name="_uiSiteHostName" Text="dev-site.errordite.com" VerticalAlignment="Top" Width="204" Grid.Row="1" />
+        <TextBox Grid.ColumnSpan="2" Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="152,43,0,0" Name="_uiAdminHostName" Text="dev-reception.errordite.com" VerticalAlignment="Top" Width="204" />
+        <Label Content="https Port" Height="24" IsEnabled="True" Margin="87,30,9,0" VerticalAlignment="Top" Grid.RowSpan="2" />
+        <Label Content="http Host Name" Grid.ColumnSpan="2" Height="24" HorizontalAlignment="Left" IsEnabled="True" Margin="149,30,0,0" VerticalAlignment="Top" Width="164" Grid.RowSpan="2" />
+        <ComboBox Grid.Column="1" Grid.Row="1" Height="23" HorizontalAlignment="Left" ItemsSource="{Binding}" Margin="202,43,0,0" Name="_uiAdminSiteAppPool" SelectedIndex="0" VerticalAlignment="Top" Width="235" />
+        <Label Content="IIS Websites" Grid.Row="1" Height="28" HorizontalAlignment="Left" Margin="16,98,0,0" Name="label1" VerticalAlignment="Top" IsEnabled="True" />
+        <Label Content="Repositories" Height="28" HorizontalAlignment="Left" IsEnabled="True" Margin="13,128,0,0" Name="label2" VerticalAlignment="Top" Grid.Row="2" />
+    </Grid>
+</Page>

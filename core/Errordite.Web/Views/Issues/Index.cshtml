@@ -1,0 +1,41 @@
+﻿@using Errordite.Web.Extensions
+@using Errordite.Web.Models.Dashboard
+@using Errordite.Web.Models.Issues
+@model IssueCriteriaViewModel
+
+@{
+    ViewBag.Title = "Issues";
+}
+
+@section contentHeader
+{
+    <div id="pagetitle">
+        <h1><i class="icon-arrow-right"></i>Issues</h1>
+    </div>
+    @Html.Partial("Dashboard/Tabs", DashboardTab.Issues)
+}
+           
+<div id="issues">
+    @if (!Model.Applications.Any())
+    {
+        <p>You do not have any applications set up, <a href="@Url.AddApplication()">click here to create an application.</a></p>    
+    }
+    else
+    {
+        @Html.Partial("Issues/IssuesCriteria", Model)
+
+        if (Model.Issues != null && Model.Issues.Any())
+        {
+            @Html.Partial("Issues/Issues", Model)
+        }
+        else
+        {
+            <div class="clear"></div> 
+            <div id="no-errors">
+                <p>No issues were returned from your query.</p>   
+            </div> 
+            <div class="clear"></div> 
+        }
+    }
+<a href="@Url.AddIssue()">Add an empty issue...</a>
+</div>

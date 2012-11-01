@@ -1,0 +1,28 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <ItemGroup>
+    <ProjectToBuild Include="$(MSBuildProjectDirectory)\..\..\Errordite.sln"/>
+  </ItemGroup>
+  
+  <Target Name="Clean">
+    <MSBuild Projects="@(ProjectToBuild)" Targets="Clean" Properties="Configuration=$(Configuration);Platform=Any Cpu"/>
+  </Target>
+  
+  <Target Name="Build" DependsOnTargets="Clean">
+    <MSBuild Projects="@(ProjectToBuild)" Targets="Build" Properties="Configuration=$(Configuration);Platform=Any Cpu;MvcBuildViews=true"/>
+  </Target>
+  
+  <Target Name="FixLogFile">
+    <ReadLinesFromFile File="log.xml" >
+      <Output
+          TaskParameter="Lines"
+          ItemName="ItemsFromFile"/>
+    </ReadLinesFromFile>
+
+    <WriteLinesToFile
+        File="log2.xml"
+        Lines="@(ItemsFromFile)"
+        Overwrite="true"
+        Encoding="Unicode"/>
+  </Target>
+</Project>
+
