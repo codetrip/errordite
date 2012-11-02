@@ -81,6 +81,7 @@ namespace Errordite.Core.Reception
 
     public class ExceptionRateLimiter : IExceptionRateLimiter
     {
+        private static readonly object _syncLock = new object();
         private readonly IDateTime _dateTime;
         private readonly ErrorditeConfiguration _configuration;
         private static readonly Dictionary<string, TimeBasedRateLimiter> _perApplicationRateLimiters = new Dictionary<string, TimeBasedRateLimiter>();
@@ -93,9 +94,15 @@ namespace Errordite.Core.Reception
 
         public RateLimiterRule Accept(string applicationId)
         {
-            if(!_perApplicationRateLimiters.ContainsKey(applicationId))
+            if (!_perApplicationRateLimiters.ContainsKey(applicationId))
             {
-                _perApplicationRateLimiters.Add(applicationId, new TimeBasedRateLimiter(_configuration.RateLimiterRules));
+                lock (_syncLock)
+                {
+                    if (!_perApplicationRateLimiters.ContainsKey(applicationId))
+                    {
+                        _perApplicationRateLimiters.Add(applicationId, new TimeBasedRateLimiter(_configuration.RateLimiterRules));
+                    }
+                }
             }
 
             return _perApplicationRateLimiters[applicationId].Occur(_dateTime);

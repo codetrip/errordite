@@ -1,19 +1,14 @@
 ﻿using System;
-using System.Linq;
 using System.Web.Mvc;
 using CodeTrip.Core.Encryption;
 using CodeTrip.Core.Extensions;
 using CodeTrip.Core.Paging;
 using Errordite.Core;
 using Errordite.Core.Applications.Commands;
-using Errordite.Core.Domain.Central;
-using Errordite.Core.Domain.Error;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Errors.Queries;
-using Errordite.Core.Indexing;
 using Errordite.Core.Session;
 using Errordite.Web.ActionFilters;
-using Errordite.Web.ActionResults;
 using Errordite.Web.Controllers;
 using Errordite.Web.Models.Administration;
 using Errordite.Web.Models.Navigation;
@@ -22,7 +17,6 @@ using Raven.Abstractions.Linq;
 
 namespace Errordite.Web.Areas.System.Controllers
 {
-    [Authorize, RoleAuthorize]
     public class SystemController : ErrorditeController
     {
         private readonly IAppSession _session;
@@ -123,6 +117,24 @@ namespace Errordite.Web.Areas.System.Controllers
             {
                 Content = _encryptor.Encrypt("{0}|{1}".FormatWith(application.FriendlyId, application.OrganisationId.GetFriendlyId()))
             };
+        }
+
+        public ActionResult Decrypt(string token, bool base64)
+        {
+            if (base64)
+                token = token.Base64Decode();
+
+            return Content(_encryptor.Decrypt(token));
+        }
+
+        public ActionResult Encrypt(string token, bool base64)
+        {
+            var encrypted = _encryptor.Encrypt(token);
+
+            if (base64)
+                encrypted = encrypted.Base64Encode();
+
+            return Content(encrypted);
         }
 
         public ActionResult SysInfo()

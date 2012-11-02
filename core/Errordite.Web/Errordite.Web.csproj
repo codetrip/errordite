@@ -309,6 +309,12 @@
     <Compile Include="WebConstants.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\Css\main.css" />
+    <Content Include="Assets\Css\normalize.css" />
+    <Content Include="Assets\Js\lib\jquery-1.8.2.min.js" />
+    <Content Include="Assets\Js\lib\modernizr-2.6.2.min.js" />
+    <Content Include="Assets\Js\main.js" />
+    <Content Include="Assets\Js\plugins.js" />
     <Content Include="Css\bootstrap-responsive.min.css" />
     <Content Include="Css\bootstrap.min.css" />
     <Content Include="Css\errordite.css" />
