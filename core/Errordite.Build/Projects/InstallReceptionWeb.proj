@@ -21,7 +21,6 @@
           CreateQueues;
           UpdateWebIISDirectoryPathAndPermissions;
           SetCacheEngineToRedis;
-          RunConfigFileChanger;
           RecycleWebReceptionAppPool">
   </Target>
 
@@ -55,8 +54,12 @@
     <CreateProperty Value="$(InstallRoot)\Errordite.Reception.Web\$(BuildNumber)">
       <Output TaskParameter="Value" PropertyName="ReceptionInstallPath" />
     </CreateProperty>
+      
+      <CreateProperty Value="$(InstallRoot)\Errordite.Reception.Web\$(BuildNumber)\bin">
+          <Output TaskParameter="Value" PropertyName="DeployedApplicationPath" />
+      </CreateProperty>
 
-    <CreateProperty Value="$(ReceptionServiceInstallPath)">
+      <CreateProperty Value="$(InstallRoot)\Errordite.Reception.Web\$(BuildNumber)">
       <Output TaskParameter="Value" PropertyName="ConfigChangerRunLocation" />
     </CreateProperty>
   </Target>

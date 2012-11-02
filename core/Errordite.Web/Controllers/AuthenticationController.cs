@@ -39,13 +39,13 @@ namespace Errordite.Web.Controllers
             return Redirect(Url.Home());
         }
 
-        [HttpGet]
+        [HttpGet, ImportViewData]
         public ActionResult Password(string token)
         {
             return View(ViewData.Model == null ? new PasswordViewModel { Token = token } : ViewData.Model as PasswordViewModel);
         }
 
-        [HttpPost]
+        [HttpPost, ExportViewData]
         public ActionResult Password(PasswordViewModel viewModel)
         {
             if (!ModelState.IsValid)
@@ -61,7 +61,7 @@ namespace Errordite.Web.Controllers
 
             if (result.Status != SetPasswordStatus.Ok)
             {
-                return RedirectWithViewModel(viewModel, "password", result.Status.MapToResource(Resources.Authentication.ResourceManager));
+                return RedirectWithViewModel(viewModel, "password", result.Status.MapToResource(Authentication.ResourceManager));
             }
 
             return Redirect(Url.SignIn());

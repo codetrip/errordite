@@ -37,7 +37,7 @@ In time we hope to use this for replacing values in sql files as well, but we ar
     
     <RedisEndpoint
       theRest="127.0.0.1"
-      production="46.137.71.32" />
+      production="redis.errordite.com" />
     
     <EmailTemplateLocation
       dev="$reproot\core\Errordite.Notifications\Templates"
