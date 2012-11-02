@@ -17,6 +17,7 @@ using Raven.Abstractions.Linq;
 
 namespace Errordite.Web.Areas.System.Controllers
 {
+    [Authorize, RoleAuthorize]
     public class SystemController : ErrorditeController
     {
         private readonly IAppSession _session;
