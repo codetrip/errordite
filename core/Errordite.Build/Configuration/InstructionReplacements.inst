@@ -54,8 +54,8 @@ In time we hope to use this for replacing values in sql files as well, but we ar
     <ErrorditeRavenPassword theRest="Err0rD1t3_RVN$" />
     <ErrorditeNotificationsServiceUser theRest="errordite_svc_not" />
     <ErrorditeNotificationsServicePassword theRest="Err0rD1t3_N0T$" />
-    <ErrorditeEventsServiceUser theRest="errordite_svc_evt" />
-    <ErrorditeEventsServicePassword theRest="Err0rD1t3_3vT$" />
+    <ErrorditeScheduledTasksUser theRest="errordite_svc_evt" />
+    <ErrorditeScheduledTasksPassword theRest="Err0rD1t3_3vT$" />
     
   </Replacements>
 </Root>

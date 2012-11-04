@@ -61,9 +61,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\Castle\Castle.Windsor.dll</HintPath>
     </Reference>
-    <Reference Include="Errordite.Client.Log4net">
-      <HintPath>..\..\lib\Errordite.Client\Errordite.Client.Log4net.dll</HintPath>
-    </Reference>
     <Reference Include="Errordite.Client.Mvc3">
       <HintPath>..\packages\Errordite.Client.Mvc3.1.2.9.0\lib\net40\Errordite.Client.Mvc3.dll</HintPath>
     </Reference>
@@ -357,6 +354,8 @@
     <Content Include="Css\img\toggle\toggle-open.png" />
     <Content Include="Css\jquery-ui-1.8.21.custom.css" />
     <Content Include="Css\jquery.jqplot.css" />
+    <Content Include="Css\main.css" />
+    <Content Include="Css\normalize.css" />
     <Content Include="Css\prettify.css" />
     <Content Include="Css\ui.daterangepicker.css" />
     <Content Include="favicon.ico" />
@@ -394,10 +393,6 @@
     <Content Include="Js\010.jquery.cookie.js" />
     <Content Include="Js\011.jquery.dropdownchecklist.js" />
     <Content Include="Js\020.bootstrap.min.js" />
-    <Content Include="Js\021.bootstrap.tooltip.js" />
-    <Content Include="Js\022.bootstrap.modal.js" />
-    <Content Include="Js\023.bootstrap.alerts.js" />
-    <Content Include="Js\024.bootstrap.dropdown.js" />
     <Content Include="Js\024.jquery.loader.js" />
     <Content Include="Js\030.knockout-2.0.0.js" />
     <Content Include="Js\050.underscore.js" />

@@ -13,7 +13,7 @@ using CodeTrip.Core;
 using CodeTrip.Core.Auditing.Entities;
 using CodeTrip.Core.Interfaces;
 using CodeTrip.Core.IoC;
-using Errordite.Client.Log4net;
+//using Errordite.Client.Log4net;
 using Errordite.Client.Mvc3;
 using Errordite.Core.Domain.Exceptions;
 using Errordite.Core.Domain.Organisation;
@@ -118,7 +118,7 @@ namespace Errordite.Web
                 args.SetObserved();
             };
 
-            ErrorditeLogger.Initialise(true, "Errordite.Web");
+           // ErrorditeLogger.Initialise(true, "Errordite.Web");
             BootstrapRaven();
         }
 
