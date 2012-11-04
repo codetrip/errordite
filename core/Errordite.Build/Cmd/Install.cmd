@@ -40,7 +40,7 @@ echo	A. WEB: Errordite Web
 echo	B. WEB: Errordite Reception Web
 echo	C. SVC: Errordite Reception Svc
 echo	D. SVC: Errordite Notifications Svc
-echo	E. SVC: Errordite Events Svc
+echo	E. SVC: Errordite Scheduled Tasks
 echo	F. Full Install
 echo	0. ABORT DEPLOYMENT
 echo.
@@ -64,12 +64,16 @@ if "%ERRORLEVEL%" == "4" (
 	set DEPLOYDISPLAYNAME=SVC: Errordite Notifications Svc
 )
 if "%ERRORLEVEL%" == "5" (
-	set MSBUILDTARGET=InstallEventsService
-	set DEPLOYDISPLAYNAME=SVC: Errordite Events Svc
+	set MSBUILDTARGET=InstallScheduledTasks
+	set DEPLOYDISPLAYNAME=SVC: Errordite Scheduled Tasks
 )
 if "%ERRORLEVEL%" == "6" (
-	set MSBUILDTARGET=ALL
-	set DEPLOYDISPLAYNAME=Full Install
+	set MSBUILDTARGET=ALLWEB
+	set DEPLOYDISPLAYNAME=Install All Web
+)
+if "%ERRORLEVEL%" == "7" (
+	set MSBUILDTARGET=ALLSERVICES
+	set DEPLOYDISPLAYNAME=Install All Services
 )
 
 pushd %MSBUILDPROJDIR%
@@ -78,22 +82,25 @@ echo Deploying '%DEPLOYDISPLAYNAME%'...
 choice /C YN /M "Are you sure?"
 if "%ERRORLEVEL%" neq "1" goto DEPLOYMENTMENU
 
-if "%MSBUILDTARGET%" == "ALL" (
+if "%MSBUILDTARGET%" == "ALLWEB" (
 	%windir%\Microsoft.NET\Framework64\v4.0.30319\msbuild "%CD%\Errordite.Install\InstallMaster.proj" /logger:FileLogger,Microsoft.Build.Engine;Deploy_InstallWeb.log /v:diag /t:InstallWeb /p:TargetEnvironment=%TARGETENVIRONMENT% /p:Install=true
 	%windir%\Microsoft.NET\Framework64\v4.0.30319\msbuild "%CD%\Errordite.Install\InstallMaster.proj" /logger:FileLogger,Microsoft.Build.Engine;Deploy_InstallReceptionWeb.log /v:diag /t:InstallReceptionWeb /p:TargetEnvironment=%TARGETENVIRONMENT% /p:Install=true
-	%windir%\Microsoft.NET\Framework64\v4.0.30319\msbuild "%CD%\Errordite.Install\InstallMaster.proj" /logger:FileLogger,Microsoft.Build.Engine;Deploy_InstallReceptionService.log /v:diag /t:InstallReceptionService /p:TargetEnvironment=%TARGETENVIRONMENT% /p:Install=true
-	%windir%\Microsoft.NET\Framework64\v4.0.30319\msbuild "%CD%\Errordite.Install\InstallMaster.proj" /logger:FileLogger,Microsoft.Build.Engine;Deploy_InstallNotificationsService.log /v:diag /t:InstallNotificationsService /p:TargetEnvironment=%TARGETENVIRONMENT% /p:Install=true
-	REM %windir%\Microsoft.NET\Framework64\v4.0.30319\msbuild "%CD%\Errordite.Install\InstallMaster.proj" /logger:FileLogger,Microsoft.Build.Engine;Deploy_InstallEventsService.log /v:diag /t:InstallEventsService /p:TargetEnvironment=%TARGETENVIRONMENT% /p:Install=true
-
+	
 	%windir%\Microsoft.NET\Framework64\v4.0.30319\msbuild "%CD%\Errordite.Install\InstallWeb_Gen.proj" /logger:FileLogger,Microsoft.Build.Engine;Deploy_InstallWeb_Gen.log /v:diag /t:InstallWeb /p:TargetEnvironment=%TARGETENVIRONMENT% /p:Install=true
 	%windir%\Microsoft.NET\Framework64\v4.0.30319\msbuild "%CD%\Errordite.Install\InstallReceptionWeb_Gen.proj" /logger:FileLogger,Microsoft.Build.Engine;Deploy_InstallReceptionWeb_Gen.log /v:diag /t:InstallReceptionWeb /p:TargetEnvironment=%TARGETENVIRONMENT% /p:Install=true
+	
+) else if "%MSBUILDTARGET%" == "ALLSERVICES" (
+	%windir%\Microsoft.NET\Framework64\v4.0.30319\msbuild "%CD%\Errordite.Install\InstallMaster.proj" /logger:FileLogger,Microsoft.Build.Engine;Deploy_InstallReceptionService.log /v:diag /t:InstallReceptionService /p:TargetEnvironment=%TARGETENVIRONMENT% /p:Install=true
+	%windir%\Microsoft.NET\Framework64\v4.0.30319\msbuild "%CD%\Errordite.Install\InstallMaster.proj" /logger:FileLogger,Microsoft.Build.Engine;Deploy_InstallNotificationsService.log /v:diag /t:InstallNotificationsService /p:TargetEnvironment=%TARGETENVIRONMENT% /p:Install=true
+	%windir%\Microsoft.NET\Framework64\v4.0.30319\msbuild "%CD%\Errordite.Install\InstallMaster.proj" /logger:FileLogger,Microsoft.Build.Engine;Deploy_InstallScheduledTasks.log /v:diag /t:InstallScheduledTasks /p:TargetEnvironment=%TARGETENVIRONMENT% /p:Install=true
+
 	%windir%\Microsoft.NET\Framework64\v4.0.30319\msbuild "%CD%\Errordite.Install\InstallReceptionService_Gen.proj" /logger:FileLogger,Microsoft.Build.Engine;Deploy_InstallReceptionService_Gen.log /v:diag /t:InstallReceptionService /p:TargetEnvironment=%TARGETENVIRONMENT% /p:Install=true
 	%windir%\Microsoft.NET\Framework64\v4.0.30319\msbuild "%CD%\Errordite.Install\InstallNotificationsService_Gen.proj" /logger:FileLogger,Microsoft.Build.Engine;Deploy_InstallNotificationsService_Gen.log /v:diag /t:InstallNotificationsService /p:TargetEnvironment=%TARGETENVIRONMENT% /p:Install=true
-	REM %windir%\Microsoft.NET\Framework64\v4.0.30319\msbuild "%CD%\Errordite.Install\InstallEventsService_Gen.proj" /logger:FileLogger,Microsoft.Build.Engine;Deploy_InstallEventsService_Gen.log /v:diag /t:InstallEventsService /p:TargetEnvironment=%TARGETENVIRONMENT% /p:Install=true
+	%windir%\Microsoft.NET\Framework64\v4.0.30319\msbuild "%CD%\Errordite.Install\InstallScheduledTasks_Gen.proj" /logger:FileLogger,Microsoft.Build.Engine;Deploy_InstallEventsService_Gen.log /v:diag /t:InstallScheduledTasks /p:TargetEnvironment=%TARGETENVIRONMENT% /p:Install=true
 ) else (
 	echo.
 	%windir%\Microsoft.NET\Framework64\v4.0.30319\msbuild "%CD%\Errordite.Install\InstallMaster.proj" /logger:FileLogger,Microsoft.Build.Engine;Deploy_%MSBUILDTARGET%.log /v:diag /t:%MSBUILDTARGET% /p:TargetEnvironment=%TARGETENVIRONMENT% /p:Install=true
-	%windir%\Microsoft.NET\Framework64\v4.0.30319\msbuild "%CD%\Errordite.Install\%MSBUILDTARGET%_Gen.proj" /logger:FileLogger,Microsoft.Build.Engine;Deploy_%MSBUILDTARGET%.log /v:diag /t:%MSBUILDTARGET% /p:TargetEnvironment=%TARGETENVIRONMENT% /p:Install=true
+	REM %windir%\Microsoft.NET\Framework64\v4.0.30319\msbuild "%CD%\Errordite.Install\%MSBUILDTARGET%_Gen.proj" /logger:FileLogger,Microsoft.Build.Engine;Deploy_%MSBUILDTARGET%.log /v:diag /t:%MSBUILDTARGET% /p:TargetEnvironment=%TARGETENVIRONMENT% /p:Install=true
 
 	if "%ERRORLEVEL%" == "0" (
 		echo.

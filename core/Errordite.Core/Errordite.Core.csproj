@@ -155,6 +155,7 @@
     <Compile Include="Domain\Organisation\Notification.cs" />
     <Compile Include="Domain\Organisation\Statistics.cs" />
     <Compile Include="ErrorditeCore.cs" />
+    <Compile Include="Errors\Commands\PurgeUnloggedErrorsCommand.cs" />
     <Compile Include="Errors\Commands\MakeExceededErrorsUnloggedCommand.cs" />
     <Compile Include="Errors\Commands\MoveErrorsToNewIssueCommand.cs" />
     <Compile Include="Errors\Commands\DeleteErrorsCommand.cs" />

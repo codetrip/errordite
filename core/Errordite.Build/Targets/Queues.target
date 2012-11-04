@@ -1,7 +1,7 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <ItemGroup>
-    <Allow Include="$(Domain)\$(ErrorditeWebUser); $(Domain)\$(ErrorditeReceptionWebUser); $(Domain)\$(ErrorditeReceptionServiceUser); $(Domain)\$(ErrorditeNotificationsServiceUser); $(Domain)\$(ErrorditeEventsServiceUser);">
+    <Allow Include="$(Domain)\$(ErrorditeWebUser); $(Domain)\$(ErrorditeReceptionWebUser); $(Domain)\$(ErrorditeReceptionServiceUser); $(Domain)\$(ErrorditeNotificationsServiceUser); $(Domain)\Everyone">
       <Permissions>FullControl</Permissions>
     </Allow>
   </ItemGroup>
