@@ -19,7 +19,7 @@ namespace Errordite.Core.Errors.Queries
             Trace("Starting...");
 
             RavenQueryStatistics stats;
-            IDocumentQuery<ErrorditeError> entities = Session.Raven.Advanced.LuceneQuery<ErrorditeError>(CoreConstants.IndexNames.ErrorditeErrors).Statistics(out stats);
+            IDocumentQuery<ErrorditeError> entities = Session.MasterRaven.Advanced.LuceneQuery<ErrorditeError>(CoreConstants.IndexNames.ErrorditeErrors).Statistics(out stats);
 
             var luceneQuery = new StringBuilder(string.Empty);
 

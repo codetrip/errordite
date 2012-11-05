@@ -3,9 +3,9 @@ using CodeTrip.Core.Extensions;
 using CodeTrip.Core.Interfaces;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Organisations;
+using Errordite.Core.Session;
 using Raven.Abstractions.Data;
 using System.Linq;
-using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
 
 namespace Errordite.Core.Errors.Commands
 {

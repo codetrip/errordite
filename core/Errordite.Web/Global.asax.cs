@@ -9,12 +9,11 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using Castle.Core.Internal;
-using CodeTrip.Core;
 using CodeTrip.Core.Auditing.Entities;
 using CodeTrip.Core.Interfaces;
 using CodeTrip.Core.IoC;
-//using Errordite.Client.Log4net;
 using Errordite.Client.Mvc3;
+using Errordite.Core;
 using Errordite.Core.Domain.Exceptions;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Indexing;
@@ -183,9 +182,7 @@ namespace Errordite.Web
         {
             var documentStore = ObjectFactory.GetObject<IDocumentStore>();
 
-            IndexCreation.CreateIndexes(typeof(Issues_Search).Assembly, documentStore);
-            
-            var session = documentStore.OpenSession();
+            var session = documentStore.OpenSession(CoreConstants.ErrorditeMasterDatabaseName);
 
             if (!session.Query<PaymentPlan>().Any())
             {
@@ -246,12 +243,6 @@ namespace Errordite.Web
                     IsAvailable = true,
                 });
 
-                var facets = new List<Facet>
-                {
-                    new Facet {Name = "Status"},
-                };
-
-                session.Store(new FacetSetup { Id = Core.CoreConstants.FacetDocuments.IssueStatus, Facets = facets });
                 session.SaveChanges();
             }
         }
