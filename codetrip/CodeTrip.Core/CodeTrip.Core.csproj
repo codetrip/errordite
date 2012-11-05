@@ -1,0 +1,270 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{7AD42F34-0629-45B8-BF45-87F8B791376E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CodeTrip.Core</RootNamespace>
+    <AssemblyName>CodeTrip.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\core\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="BookSleeve, Version=1.1.0.5, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Booksleeve\BookSleeve.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Core">
+      <HintPath>..\..\lib\Castle\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Facilities.FactorySupport">
+      <HintPath>..\..\lib\Castle\Castle.Facilities.FactorySupport.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Windsor">
+      <HintPath>..\..\lib\Castle\Castle.Windsor.dll</HintPath>
+    </Reference>
+    <Reference Include="Errordite.Utils.NServiceBusCastleBridge">
+      <HintPath>..\..\lib\Errordite\$(Configuration)\Errordite.Utils.NServiceBusCastleBridge.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\..\lib\log4net\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\core\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.0.8.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Json.NET\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NServiceBus, Version=3.0.0.0, Culture=neutral, PublicKeyToken=9fc386479f8a226c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\NServiceBus\NServiceBus.dll</HintPath>
+    </Reference>
+    <Reference Include="NServiceBus.Core, Version=3.0.0.0, Culture=neutral, PublicKeyToken=9fc386479f8a226c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\NServiceBus\NServiceBus.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="ProductionProfiler.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=06afa51a2c047269, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Profiler\ProductionProfiler.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="protobuf-net, Version=2.0.0.480, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\protobuf\protobuf-net.dll</HintPath>
+    </Reference>
+    <Reference Include="Raven.Abstractions, Version=1.2.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\core\packages\RavenDB.Client.1.2.2133-Unstable\lib\net40\Raven.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Raven.Client.Lightweight, Version=1.2.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\core\packages\RavenDB.Client.1.2.2133-Unstable\lib\net40\Raven.Client.Lightweight.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http">
+      <HintPath>..\..\lib\WebApi\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\core\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\core\packages\Microsoft.AspNet.Mvc.4.0.20710.0\lib\net40\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\core\packages\Microsoft.AspNet.Razor.2.0.20715.0\lib\net40\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\core\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\core\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\core\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\core\Errordite.Build\Assembly\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="ArgumentValidation.cs" />
+    <Compile Include="Auditing\AuditingController.cs" />
+    <Compile Include="Auditing\Auditors\ComponentAuditorBase.cs" />
+    <Compile Include="Auditing\Auditors\DelegateComponentAuditor.cs" />
+    <Compile Include="Auditing\Auditors\Log4NetComponentAuditor.cs" />
+    <Compile Include="Auditing\ComponentAuditorFactory.cs" />
+    <Compile Include="Auditing\Entities\AuditEvent.cs" />
+    <Compile Include="Auditing\Entities\Error.cs" />
+    <Compile Include="Auditing\Entities\IComponentAuditor.cs" />
+    <Compile Include="Auditing\Entities\ISupportsAuditing.cs" />
+    <Compile Include="Auditing\Entities\NoException.cs" />
+    <Compile Include="Auditing\ExceptionUtility.cs" />
+    <Compile Include="Auditing\IErrorAugmenter.cs" />
+    <Compile Include="Caching\Engines\MemoryCacheEngine.cs" />
+    <Compile Include="Caching\Engines\NullCacheEngine.cs" />
+    <Compile Include="Caching\Engines\RedisCacheEngine.cs" />
+    <Compile Include="Caching\Engines\RedisMemoryHybridCacheEngine.cs" />
+    <Compile Include="Caching\Entities\CacheableRequestBase.cs" />
+    <Compile Include="Caching\Entities\CacheConfiguration.cs" />
+    <Compile Include="Caching\Entities\CacheInvalidationItem.cs" />
+    <Compile Include="Caching\Entities\CacheInvalidationResponseBase.cs" />
+    <Compile Include="Caching\Entities\CacheItemInfo.cs" />
+    <Compile Include="Caching\Entities\CacheKey.cs" />
+    <Compile Include="Caching\Entities\CacheProfile.cs" />
+    <Compile Include="Caching\Entities\CacheProfiles.cs" />
+    <Compile Include="Caching\Interceptors\CacheInterceptor.cs" />
+    <Compile Include="Caching\Interceptors\CacheInvalidationInterceptor.cs" />
+    <Compile Include="Caching\Interfaces\ICacheable.cs" />
+    <Compile Include="Caching\Interfaces\ICacheEngine.cs" />
+    <Compile Include="Caching\Interfaces\ICacheInvalidation.cs" />
+    <Compile Include="Caching\Interfaces\ICacheInvalidator.cs" />
+    <Compile Include="Caching\Invalidation\CacheInvalidator.cs" />
+    <Compile Include="Caching\Messages\ICacheInvalidationMessage.cs" />
+    <Compile Include="Caching\Messages\ICacheProfileInvalidationMessage.cs" />
+    <Compile Include="Caching\ObjectCache.cs" />
+    <Compile Include="Caching\Resources\CacheConstants.cs" />
+    <Compile Include="Caching\Resources\CacheEngines.cs" />
+    <Compile Include="ComponentBase.cs" />
+    <Compile Include="CoreConstants.cs" />
+    <Compile Include="Dynamic\AssembliesInBinDirectoryLocator.cs" />
+    <Compile Include="Dynamic\DynamicCodeGeneratorHelper.cs" />
+    <Compile Include="Dynamic\DynamicJsonConverter.cs" />
+    <Compile Include="Dynamic\PropertyMapper.cs" />
+    <Compile Include="Dynamic\RuntimeSerialisationIgnoreAttribute.cs" />
+    <Compile Include="Dynamic\RuntimeXmlSerialiser.cs" />
+    <Compile Include="Dynamic\SummaryWriter.cs" />
+    <Compile Include="Encryption\IEncryptor.cs" />
+    <Compile Include="Encryption\PresetPasswordLocator.cs" />
+    <Compile Include="Encryption\RijndaelSymmetricEncryptor.cs" />
+    <Compile Include="Encryption\SimplePasswordLocator.cs" />
+    <Compile Include="Encryption\TripleDesEncryptor.cs" />
+    <Compile Include="Exceptions\CodeTripAuditException.cs" />
+    <Compile Include="Exceptions\CodeTripCacheException.cs" />
+    <Compile Include="Exceptions\CodeTripCacheInvalidationException.cs" />
+    <Compile Include="Exceptions\CodeTripCacheProfileNotFoundException.cs" />
+    <Compile Include="Exceptions\CodeTripConfigurationException.cs" />
+    <Compile Include="Exceptions\CodeTripDependentComponentException.cs" />
+    <Compile Include="Exceptions\CodeTripException.cs" />
+    <Compile Include="Exceptions\CodeTripIoCComponentException.cs" />
+    <Compile Include="Exceptions\CodeTripMoreUsefulReflectionTypeLoadException.cs" />
+    <Compile Include="Exceptions\CodeTripUnexpectedValueException.cs" />
+    <Compile Include="Exceptions\CodeTripValidationException.cs" />
+    <Compile Include="Exceptions\CodeTripRedisConnectivityException.cs" />
+    <Compile Include="Extensions\AssemblyExtensions.cs" />
+    <Compile Include="Extensions\ObjectExtensions.cs" />
+    <Compile Include="Extensions\PageExtensions.cs" />
+    <Compile Include="Extensions\DateTimeExtensions.cs" />
+    <Compile Include="Extensions\DictionaryExtensions.cs" />
+    <Compile Include="Extensions\DocumentQueryExtensions.cs" />
+    <Compile Include="Extensions\EnumerableExtensions.cs" />
+    <Compile Include="Extensions\EnumExtensions.cs" />
+    <Compile Include="Extensions\ObjectReflectionExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Extensions\TypeReflectionExtensions.cs" />
+    <Compile Include="Extensions\XElementExtensions.cs" />
+    <Compile Include="FileSystem\RepositoryPathHelper.cs" />
+    <Compile Include="Exceptions\CodeTripRepositoryRootNotFoundException.cs" />
+    <Compile Include="Interfaces\ICaptureMethodInfo.cs" />
+    <Compile Include="Interfaces\ICommand.cs" />
+    <Compile Include="Interfaces\ILocator.cs" />
+    <Compile Include="Interfaces\IMappingDefinition.cs" />
+    <Compile Include="Interfaces\IQuery.cs" />
+    <Compile Include="Interfaces\IWantToBeProfiled.cs" />
+    <Compile Include="Interfaces\IWorkflow.cs" />
+    <Compile Include="IoC\ArrayResolver.cs" />
+    <Compile Include="IoC\ConfigurationOverrideContainerInitialiser.cs" />
+    <Compile Include="IoC\ComponentRegistrationExtensions.cs" />
+    <Compile Include="IoC\CoreInstaller.cs" />
+    <Compile Include="IoC\IContainerInitialiser.cs" />
+    <Compile Include="IoC\MasterInstallerBase.cs" />
+    <Compile Include="IoC\ObjectFactory.cs" />
+    <Compile Include="IoC\WindsorInstallerBase.cs" />
+    <Compile Include="Memo.cs" />
+    <Compile Include="Paging\Page.cs" />
+    <Compile Include="Paging\PageRequest.cs" />
+    <Compile Include="Paging\PagingConfiguration.cs" />
+    <Compile Include="Paging\PagingConstants.cs" />
+    <Compile Include="Paging\PagingStatus.cs" />
+    <Compile Include="Paging\PagingViewAttribute.cs" />
+    <Compile Include="Paging\PagingViewModel.cs" />
+    <Compile Include="Paging\PagingViewModelGenerator.cs" />
+    <Compile Include="Paging\UrlHelperExtensions.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Queueing\OwnThreadQueueHelper.cs" />
+    <Compile Include="RavenDb\RavenConfiguration.cs" />
+    <Compile Include="RavenDb\RavenDocumentStoreFactory.cs" />
+    <Compile Include="Redis\RedisConfiguration.cs" />
+    <Compile Include="Redis\RedisSession.cs" />
+    <Compile Include="Serialisation\SimpleXmlSerialiser.cs" />
+    <Compile Include="SerializationHelper.cs" />
+    <Compile Include="ServiceBus\NServiceBusConfigurationExtensions.cs" />
+    <Compile Include="ServiceBus\NServiceBusInstallerBase.cs" />
+    <Compile Include="ServiceBus\NServiceBusMessageBase.cs" />
+    <Compile Include="Test\NullCacheInstaller.cs" />
+    <Compile Include="Web\BaseController.cs" />
+    <Compile Include="Web\CookieManager.cs" />
+    <Compile Include="Web\HtmlExtensions.cs" />
+    <Compile Include="Web\ICookieManager.cs" />
+    <Compile Include="Web\JsonNetJsonValueProvider.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>"$(ProjectDir)..\..\core\Errordite.Build\Cmd\CopyBuildOutputToReferences.bat" "$(ProjectDir)..\" "$(ProjectDir)" $(ConfigurationName) $(TargetName)</PostBuildEvent>
+  </PropertyGroup>
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

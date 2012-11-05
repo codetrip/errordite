@@ -1,0 +1,40 @@
+﻿
+@using Errordite.Web.Models.Organisation
+@using Errordite.Web.Extensions
+@model OrganisationSettingsViewModel
+           
+@{
+    ViewBag.Title = "Settings";
+}
+
+@section contentHeader
+{
+    <div id="pagetitle">
+        <h1><i class="icon-arrow-right"></i>Settings</h1>
+    </div>
+    
+    @Html.Partial("Admin/Tabs")
+}
+
+<div id="organisation">
+    @using (Html.BeginForm("settimezone", "admin"))
+    {
+        <div class="base left-wide">
+            <h1>Organisation-wide settings</h1>
+            <div class="base-content">
+                <ul class="errorditeform">
+                    <li>
+                        @Html.LabelFor(m => m.TimezoneId, "Timezone")
+                        @Html.DropDownListFor(m => m.TimezoneId, TimeZoneInfo.GetSystemTimeZones().Select(t => new SelectListItem {Selected = Model.TimezoneId == t.Id || (Model.TimezoneId == null && t.Id == "UTC"), Value = t.Id, Text = t.DisplayName}))
+                        <i rel="tooltip" title="The default timezone for your application. Users can set their own timezone in their personal settings." class="icon-info-sign"></i>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="buttons colfull">
+            <input type="submit" value="Update" class="btn btn-success"/>
+        </div>
+    }
+</div>
+
+

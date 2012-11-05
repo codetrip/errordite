@@ -1,0 +1,39 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <ItemGroup>
+    <Allow Include="$(Domain)\$(ErrorditeWebUser); $(Domain)\$(ErrorditeReceptionWebUser); $(Domain)\$(ErrorditeReceptionServiceUser); $(Domain)\$(ErrorditeNotificationsServiceUser); $(Domain)\Everyone">
+      <Permissions>FullControl</Permissions>
+    </Allow>
+  </ItemGroup>
+  
+  <Target Name="CreateQueues">
+    
+    <MSBuild.ExtensionPack.Communication.MSMQ TaskAction="CheckExists" Path="%(CreateQueue.Identity)">
+      <Output TaskParameter="Exists" PropertyName="DoesQueueExist"/>
+    </MSBuild.ExtensionPack.Communication.MSMQ>
+
+    <Message Text="Queue Exists: $(DoesQueueExist)" />
+
+    <MSBuild.ExtensionPack.Communication.MSMQ TaskAction="CheckExists" Path="%(CreateQueue.Identity).Error">
+      <Output TaskParameter="Exists" PropertyName="DoesErrorQueueExist"/>
+    </MSBuild.ExtensionPack.Communication.MSMQ>
+    
+    <Message Text="Queue Error Exists: $(DoesErrorQueueExist)" />
+    <MSBuild.ExtensionPack.Communication.MSMQ Condition="'$(DoesQueueExist)'!='true'" TaskAction="Create" Path="%(CreateQueue.Identity)" Label="%(CreateQueue.Label)" Transactional="true"/>
+    <MSBuild.ExtensionPack.Communication.MSMQ Condition="'$(DoesErrorQueueExist)'!='true'" TaskAction="Create" Path="%(CreateQueue.Identity).Error" Label="%(CreateQueue.Label) (Error Queue)" Transactional="true"/>
+
+    <MSBuild.ExtensionPack.Communication.MSMQ TaskAction="SetPermissions" Path="%(CreateQueue.Identity)" Allow="@(Allow)" />
+    <MSBuild.ExtensionPack.Communication.MSMQ TaskAction="SetPermissions" Path="%(CreateQueue.Identity).Error" Allow="@(Allow)" />
+    
+  </Target>
+
+  <Target Name="CreateNServiceBusSubscriptionsQueue">
+
+    <MSBuild.ExtensionPack.Communication.MSMQ TaskAction="CheckExists" Path=".\Private$\Errordite.Subscriptions">
+      <Output TaskParameter="Exists" PropertyName="DoesNsbQueueExist"/>
+    </MSBuild.ExtensionPack.Communication.MSMQ>
+
+    <MSBuild.ExtensionPack.Communication.MSMQ Condition="'$(DoesNsbQueueExist)'!='true'" TaskAction="Create" Path=".\Private$\Errordite.Subscriptions" Label="Errordite NServiceBus Subscriptions" Transactional="true"/>
+    <MSBuild.ExtensionPack.Communication.MSMQ TaskAction="SetPermissions" Path=".\Private$\Errordite.Subscriptions" Allow="@(Allow)" />
+  </Target>
+</Project>
