@@ -1,5 +1,6 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
   <ItemGroup>
+    <ProjectToBuild Include="$(MSBuildProjectDirectory)\..\..\..\Utils\Errordite.Utils.sln"/>
     <ProjectToBuild Include="$(MSBuildProjectDirectory)\..\..\Errordite.sln"/>
   </ItemGroup>
   

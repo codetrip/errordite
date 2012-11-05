@@ -43,11 +43,11 @@
     </GenerateBuildProject>
   </Target>
 
-  <Target Name="InstallEventsService">
+  <Target Name="InstallScheduledTasks">
     <GenerateBuildProject
           ConfigFile="$(MSBuildProjectDirectory)\ConfigFileChangerInstructions\InstructionReplacements.inst"
-          SourceProjectPath="$(MSBuildProjectDirectory)\InstallEventsService.proj"
-          OutputProjectPath="$(MSBuildProjectDirectory)\InstallEventsService_Gen.proj"
+          SourceProjectPath="$(MSBuildProjectDirectory)\InstallScheduledTasks.proj"
+          OutputProjectPath="$(MSBuildProjectDirectory)\InstallScheduledTasks_Gen.proj"
           Properties="Configuration=Release;Environment=$(TargetEnvironment)"
           Environment="$(TargetEnvironment)">
     </GenerateBuildProject>

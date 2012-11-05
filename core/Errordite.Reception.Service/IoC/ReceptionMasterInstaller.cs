@@ -16,7 +16,8 @@ namespace Errordite.Reception.Service.IoC
                     new CoreInstaller("Errordite.Reception"),
                     new ErrorditeCoreInstaller(),
                     new ReceptionNServiceBusInstaller(), 
-                    new PerThreadAppSessionInstaller()
+                    new PerThreadAppSessionInstaller(),
+                    new ReceptionServiceInstaller(), 
                 };
             }
         }

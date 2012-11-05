@@ -34,18 +34,20 @@ namespace Errordite.Core.Authentication.Commands
 
             ArgumentValidation.NotEmpty(request.Email, "request.Email");
 
-            var organisation = _getOrganisationByEmailAddressCommand.Invoke(new GetOrganisationByEmailAddressRequest()
-                {
-                    EmailAddress = request.Email,
-                }).Organisation;
+            var organisation = _getOrganisationByEmailAddressCommand.Invoke(new GetOrganisationByEmailAddressRequest
+            {
+                EmailAddress = request.Email,
+            }).Organisation;
 
             if (organisation == null)
             {
                 return new ResetPasswordResponse()
-                    {
-                        Status = ResetPasswordStatus.InvalidEmail,
-                    };
+                {
+                    Status = ResetPasswordStatus.InvalidEmail,
+                };
             }
+
+            Session.SetOrganisation(organisation);
 
             var user = Session.Raven.Query<User, Users_Search>().FirstOrDefault(u => u.Email == request.Email);
 
