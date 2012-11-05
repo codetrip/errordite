@@ -6,17 +6,20 @@ using Errordite.Core.Domain.Organisation;
 using CodeTrip.Core.Extensions;
 using Errordite.Core.Indexing;
 using System.Linq;
+using Errordite.Core.Organisations.Queries;
 using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
 
 namespace Errordite.Core.Authentication.Commands
 {
     public class SetPasswordCommand : SessionAccessBase, ISetPasswordCommand
     {
+        private readonly IGetOrganisationQuery _getOrganisationQuery;
         private readonly IEncryptor _encryptor;
 
-        public SetPasswordCommand(IEncryptor encryptor)
+        public SetPasswordCommand(IEncryptor encryptor, IGetOrganisationQuery getOrganisationQuery)
         {
             _encryptor = encryptor;
+            _getOrganisationQuery = getOrganisationQuery;
         }
 
         public SetPasswordResponse Invoke(SetPasswordRequest request)
@@ -38,30 +41,42 @@ namespace Errordite.Core.Authentication.Commands
                     Status = SetPasswordStatus.InvalidToken
                 };
             }
-            
-            Guid token;
-            if (Guid.TryParse(tokenstring, out token))
-            {
-                var user = Session.Raven.Query<User, Users_Search>().FirstOrDefault(u => u.PasswordToken == token);
 
-                if (user == null || user.PasswordToken == default(Guid))
+            var token = tokenstring.Split(new char[] {'|'}, StringSplitOptions.RemoveEmptyEntries);
+            
+            Guid userToken;
+            if (Guid.TryParse(token[0], out userToken))
+            {
+                var organisation = _getOrganisationQuery.Invoke(new GetOrganisationRequest
                 {
+                    OrganisationId = token[1]
+                }).Organisation;
+
+                if(organisation != null)
+                {
+                    Session.SetOrganisation(organisation);
+
+                    var user = Session.Raven.Query<User, Users_Search>().FirstOrDefault(u => u.PasswordToken == userToken);
+
+                    if (user == null || user.PasswordToken == default(Guid))
+                    {
+                        return new SetPasswordResponse
+                        {
+                            Status = SetPasswordStatus.InvalidToken  
+                        };
+                    }
+
+                    user.Password = request.Password.Hash();
+                    user.PasswordToken = Guid.Empty;
+                    user.Status = UserStatus.Active;
+
+                    Store(user);
+
                     return new SetPasswordResponse
                     {
-                        Status = SetPasswordStatus.InvalidToken  
+                        Status = SetPasswordStatus.Ok
                     };
                 }
-
-                user.Password = request.Password.Hash();
-                user.PasswordToken = Guid.Empty;
-                user.Status = UserStatus.Active;
-
-                Store(user);
-
-                return new SetPasswordResponse
-                {
-                    Status = SetPasswordStatus.Ok
-                };
             }
 
             return new SetPasswordResponse

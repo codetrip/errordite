@@ -92,7 +92,7 @@ namespace Errordite.Core.Issues.Commands
         public string ApplicationId { get; set; }
         public MatchPriority Priority { get; set; }
         public IssueStatus Status { get; set; }
-        public IList<IMatchRule> Rules { get; set; }
+        public List<IMatchRule> Rules { get; set; }
     }
 
     public enum AddIssueStatus

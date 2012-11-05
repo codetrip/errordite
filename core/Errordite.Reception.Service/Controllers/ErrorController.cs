@@ -1,15 +1,19 @@
 using System;
 using System.Net;
 using System.Net.Http;
-using CodeTrip.Core.IoC;
 using Errordite.Core.Reception.Commands;
 
 namespace Errordite.Reception.Service.Controllers
 {
     public class ErrorController : ErrorditeApiController
     {
-        private readonly IReceiveErrorCommand _receiveErrorCommand = ObjectFactory.GetObject<IReceiveErrorCommand>();
-        
+        private readonly IReceiveErrorCommand _receiveErrorCommand;
+
+        public ErrorController(IReceiveErrorCommand receiveErrorCommand)
+        {
+            _receiveErrorCommand = receiveErrorCommand;
+        }
+
         public HttpResponseMessage Post(string orgId, ReceiveErrorRequest request)
         {
             try

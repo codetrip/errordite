@@ -63,9 +63,9 @@
     <Reference Include="Lucene.Net">
       <HintPath>..\..\lib\Lucene.net\Lucene.Net.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=4.0.8.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\Json.NET\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.4.5.10\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NServiceBus, Version=3.0.0.0, Culture=neutral, PublicKeyToken=9fc386479f8a226c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -95,14 +95,14 @@
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Net.Http">
-      <HintPath>..\..\lib\WebApi\System.Net.Http.dll</HintPath>
+    <Reference Include="System.Net.Http, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Net.Http.2.0.20710.0\lib\net40\System.Net.Http.dll</HintPath>
     </Reference>
-    <Reference Include="System.Net.Http.Formatting">
-      <HintPath>..\..\lib\WebApi\System.Net.Http.Formatting.dll</HintPath>
+    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.4.0.20710.0\lib\net40\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
-    <Reference Include="System.Net.Http.WebRequest">
-      <HintPath>..\..\lib\WebApi\System.Net.Http.WebRequest.dll</HintPath>
+    <Reference Include="System.Net.Http.WebRequest, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Net.Http.2.0.20710.0\lib\net40\System.Net.Http.WebRequest.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.ServiceModel" />
@@ -155,6 +155,7 @@
     <Compile Include="Domain\Organisation\Notification.cs" />
     <Compile Include="Domain\Organisation\Statistics.cs" />
     <Compile Include="ErrorditeCore.cs" />
+    <Compile Include="Errors\Commands\PurgeUnloggedErrorsCommand.cs" />
     <Compile Include="Errors\Commands\MakeExceededErrorsUnloggedCommand.cs" />
     <Compile Include="Errors\Commands\MoveErrorsToNewIssueCommand.cs" />
     <Compile Include="Errors\Commands\DeleteErrorsCommand.cs" />
@@ -178,6 +179,7 @@
     <Compile Include="Indexing\Errors_ByIssueByHour.cs" />
     <Compile Include="Indexing\Errors_Search.cs" />
     <Compile Include="IoC\AppSessionInstaller.cs" />
+    <Compile Include="IoC\WindsorHttpControllerActivator.cs" />
     <Compile Include="Issues\Commands\AdjustRulesCommand.cs" />
     <Compile Include="Issues\Commands\AddIssueCommand.cs" />
     <Compile Include="Issues\Commands\BatchStatusUpdateCommand.cs" />

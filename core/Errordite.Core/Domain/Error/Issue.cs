@@ -16,7 +16,7 @@ namespace Errordite.Core.Domain.Error
         [ProtoMember(1)]
         public string Id { get; set; }
         [ProtoMember(2)]
-        public IList<IMatchRule> Rules { get; set; }
+        public List<IMatchRule> Rules { get; set; }
         [ProtoMember(3)]
         public DateTime LastErrorUtc { get; set; }
         [ProtoMember(4)]
@@ -26,7 +26,7 @@ namespace Errordite.Core.Domain.Error
         [ProtoMember(6)]
         public string OrganisationId { get; set; }
 
-        public bool RulesEqual(IList<IMatchRule> rules)
+        public bool RulesEqual(List<IMatchRule> rules)
         {
             if (rules.Count != Rules.Count)
                 return false;

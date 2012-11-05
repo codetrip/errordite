@@ -39,6 +39,8 @@ namespace Errordite.Core.Reception.Commands
 
         public ProcessIncomingExceptionResponse Invoke(ProcessIncomingExceptionRequest request)
         {
+            TraceObject(request.Error);
+
             Application application;
             var status = TryGetApplication(request.Error.Token, out application);
             string applicationId = null;
@@ -48,12 +50,13 @@ namespace Errordite.Core.Reception.Commands
             {
                 case ApplicationStatus.Inactive:
                 case ApplicationStatus.NotFound:
+                case ApplicationStatus.Error:
                     Trace("Application not found.");
                     return new ProcessIncomingExceptionResponse();
                 case ApplicationStatus.Ok:
                     {
-                        applicationId = application == null ? null : application.Id;
-                        organisationId = application == null ? null : application.OrganisationId;
+                        applicationId = application.Id;
+                        organisationId = application.OrganisationId;
                     }
                     break;
             }
@@ -104,8 +107,9 @@ namespace Errordite.Core.Reception.Commands
 
                 return application == null ? ApplicationStatus.NotFound : application.IsActive ? ApplicationStatus.Ok : ApplicationStatus.Inactive;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Error(e);
                 application = null;
                 return ApplicationStatus.Error;
             }

@@ -24,10 +24,15 @@ the config file.  If you wish to allow a choice of folders, they can be separate
     <param xpath="//connectionStrings/add[@name='RavenDB']/@connectionString" theRest="$(RavenConnectionString)" />
   </File>
 
-  <File match="Errordite.Events.Service.dll.config">
+  <File match="app.config">
     <param xpath="//errordite/@endpoint" theRest="$(InternalReceptionEndpoint)" />
     <param xpath="//connectionStrings/add[@name='RavenDB']/@connectionString" theRest="$(RavenConnectionString)" />
   </File>
+
+    <File match="Errordite.Reception.Service.dll.config">
+        <param xpath="//errordite/@endpoint" theRest="$(InternalReceptionEndpoint)" />
+        <param xpath="//connectionStrings/add[@name='RavenDB']/@connectionString" theRest="$(RavenConnectionString)" />
+    </File>
   
   <File match="errordite.config">
     <SiteBaseUrl theRest="$(SiteBaseUrl)" />

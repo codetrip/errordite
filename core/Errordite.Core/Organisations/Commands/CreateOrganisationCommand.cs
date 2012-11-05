@@ -68,8 +68,8 @@ namespace Errordite.Core.Organisations.Commands
                 PaymentPlan = freeTrialPlan
             };
 
-            CentralStore(organisation);
-            CentralStore(new UserOrganisationMapping{EmailAddress = request.Email, OrganisationId = organisation.Id});
+            MasterStore(organisation);
+            MasterStore(new UserOrganisationMapping{EmailAddress = request.Email, OrganisationId = organisation.Id});
 
             Session.BootstrapOrganisation(organisation);
 

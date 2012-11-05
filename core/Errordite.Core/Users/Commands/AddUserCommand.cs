@@ -85,7 +85,7 @@ namespace Errordite.Core.Users.Commands
                     OrganisationId = request.Organisation.Id,
                 };
             //TODO: sync index
-            CentralStore(userOrgMapping);
+            MasterStore(userOrgMapping);
 
             var user = new User
             {
@@ -106,7 +106,7 @@ namespace Errordite.Core.Users.Commands
                 EmailInfo = new NewUserEmailInfo
                 {
                     To = user.Email,
-                    Token = _encryptor.Encrypt(user.PasswordToken.ToString()).Base64Encode(),
+                    Token = _encryptor.Encrypt("{0}|{1}".FormatWith(user.PasswordToken.ToString(), request.Organisation.FriendlyId)).Base64Encode(),
                     UserName = user.FirstName
                 },
                 OrganisationId = request.Organisation.Id
