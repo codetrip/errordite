@@ -80,7 +80,7 @@
       <HintPath>..\packages\RavenDB.Database.1.2.2133-Unstable\lib\net40\NetTopologySuite.dll</HintPath>
     </Reference>
     <Reference Include="NLog">
-      <HintPath>..\..\lib\NLog.2.0.0.2000\lib\net40\NLog.dll</HintPath>
+      <HintPath>..\packages\NLog.2.0.0.2000\lib\net40\NLog.dll</HintPath>
     </Reference>
     <Reference Include="PowerCollections, Version=1.0.4673.24930, Culture=neutral, PublicKeyToken=2573bf8a1bdddcd5, processorArchitecture=MSIL">
       <HintPath>..\packages\RavenDB.Database.1.2.2133-Unstable\lib\net40\PowerCollections.dll</HintPath>
@@ -122,10 +122,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="NLog.config" />
+    <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="packages.config" />
+    <Content Include="NLog.config" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

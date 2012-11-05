@@ -31,7 +31,7 @@ namespace Errordite.Core.Auditing
                 using(var transaction = new TransactionScope(TransactionScopeOption.Suppress))
                 {
                     //need to create a new session for errors so we dont commit changes from the request session
-                    using(var session = ObjectFactory.GetObject<IDocumentStore>().OpenSession())
+                    using(var session = ObjectFactory.GetObject<IDocumentStore>().OpenSession(CoreConstants.ErrorditeMasterDatabaseName))
                     {
                         session.Store(errorditeError);
                         session.SaveChanges();

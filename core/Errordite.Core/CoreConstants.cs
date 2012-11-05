@@ -5,6 +5,7 @@ namespace Errordite.Core
 {
     public static class CoreConstants
     {
+        public const string ErrorditeMasterDatabaseName = "Errordite";
         public const string MatchRuleFactoryIdFormat = "mf-{0}";
 
         public static class FacetDocuments
