@@ -1,16 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Web.Http;
-using System.Web.Http.Dependencies;
+using System.Web.Http.Dispatcher;
 using System.Web.Http.SelfHost;
 using CodeTrip.Core.Auditing.Entities;
 using CodeTrip.Core.IoC;
 using Errordite.Core.Configuration;
+using Errordite.Core.IoC;
 using Errordite.Core.WebApi;
 using Errordite.Reception.Service.IoC;
-using Newtonsoft.Json;
 using log4net.Config;
 using NServiceBus;
 using CodeTrip.Core.Extensions;
@@ -29,6 +28,7 @@ namespace Errordite.Reception.Service
             var httpConfig = ObjectFactory.GetObject<HttpServerConfiguration>();
             var config = new HttpSelfHostConfiguration(httpConfig.Endpoint);
 
+            config.Services.Replace(typeof(IHttpControllerActivator), new WindsorHttpControllerActivator(ObjectFactory.Container));
             config.MaxReceivedMessageSize = 655360;
             config.MaxBufferSize = 655360;
             //this has the effect of always defaulting to Json serialization as there are no Xml formatters registered

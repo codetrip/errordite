@@ -26,7 +26,7 @@ namespace Errordite.Core.Organisations.Queries
 
             if(organisation != null)
             {
-                organisation.PaymentPlan = CentralLoad<PaymentPlan>(organisation.PaymentPlanId);
+                organisation.PaymentPlan = MasterLoad<PaymentPlan>(organisation.PaymentPlanId);
             }
 
             return new GetOrganisationResponse
