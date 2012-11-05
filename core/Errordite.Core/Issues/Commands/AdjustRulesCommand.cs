@@ -218,7 +218,7 @@ namespace Errordite.Core.Issues.Commands
             return null;
         }
 
-        private bool ValidateCommand(Issue currentIssue, IList<IMatchRule> rules, out AdjustRulesResponse response)
+        private bool ValidateCommand(Issue currentIssue, List<IMatchRule> rules, out AdjustRulesResponse response)
         {
             if (currentIssue == null)
             {
@@ -269,7 +269,7 @@ namespace Errordite.Core.Issues.Commands
         public string OriginalIssueName { get; set; }
         public MatchPriority NewPriority { get; set; }
         public MatchPriority OriginalPriority { get; set; }
-        public IList<IMatchRule> Rules { get; set; }
+        public List<IMatchRule> Rules { get; set; }
     }
 
     public enum AdjustRulesStatus

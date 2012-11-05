@@ -85,7 +85,7 @@ namespace Errordite.Core.Users.Commands
                     OrganisationId = request.Organisation.Id,
                 };
             //TODO: sync index
-            CentralStore(userOrgMapping);
+            MasterStore(userOrgMapping);
 
             var user = new User
             {

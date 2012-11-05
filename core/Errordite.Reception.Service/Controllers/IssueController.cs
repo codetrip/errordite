@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
-using CodeTrip.Core.IoC;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Issues;
 using System.Linq;
@@ -13,9 +12,9 @@ namespace Errordite.Reception.Service.Controllers
     {
         private readonly IReceptionServiceIssueCache _issueCache;
 
-        public IssueController()
+        public IssueController(IReceptionServiceIssueCache issueCache)
         {
-            _issueCache = ObjectFactory.GetObject<IReceptionServiceIssueCache>();
+            _issueCache = issueCache;
         }
 
         public IssueBase Get(string orgId, string id, string applicationId)
@@ -30,6 +29,7 @@ namespace Errordite.Reception.Service.Controllers
         /// <summary>
         /// Update an issue
         /// </summary>
+        /// <param name="orgId"> </param>
         /// <param name="issues"></param>
         public void PutIssue(string orgId, IEnumerable<IssueBase> issues)
         {
@@ -45,6 +45,7 @@ namespace Errordite.Reception.Service.Controllers
         /// <summary>
         /// Add an issue
         /// </summary>
+        /// <param name="orgId"> </param>
         /// <param name="issue"></param>
         public HttpResponseMessage PostIssue(string orgId, IssueBase issue)
         {
@@ -57,7 +58,7 @@ namespace Errordite.Reception.Service.Controllers
 
         public HttpResponseMessage DeleteIssue(string orgId, string id)
         {
-           Auditor.Trace(GetType(), "Incoming Ids:={0}", id);
+            Auditor.Trace(GetType(), "Incoming Ids:={0}", id);
             SetOrganisation(orgId);
             string[] issueIds = id.Split(new[] { '^' }, StringSplitOptions.RemoveEmptyEntries);
 

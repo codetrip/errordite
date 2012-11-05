@@ -28,8 +28,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{A64563
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Errordite.Raven", "Errordite.Raven\Errordite.Raven.csproj", "{E4804C8C-8237-4243-A86A-6BCD06273870}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Errordite.ScheduledTasks", "Errordite.ScheduledTasks\Errordite.ScheduledTasks.csproj", "{2541FB8E-F455-4960-9A17-0A4E6D0D573D}"
-EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Errordite.Web.vsmdi
@@ -79,10 +77,6 @@ Global
 		{E4804C8C-8237-4243-A86A-6BCD06273870}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E4804C8C-8237-4243-A86A-6BCD06273870}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E4804C8C-8237-4243-A86A-6BCD06273870}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2541FB8E-F455-4960-9A17-0A4E6D0D573D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2541FB8E-F455-4960-9A17-0A4E6D0D573D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2541FB8E-F455-4960-9A17-0A4E6D0D573D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2541FB8E-F455-4960-9A17-0A4E6D0D573D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

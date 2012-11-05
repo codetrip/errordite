@@ -28,7 +28,7 @@ namespace Errordite.Core.IoC
 
             container.Register(Component.For<IReceptionServiceIssueCache>()
                 .ImplementedBy<ReceptionServiceIssueCache>()
-                .LifeStyle.Singleton);
+                .LifeStyle.Transient);
 
             container.Register(Component.For<IExceptionRateLimiter>()
                 .ImplementedBy<ExceptionRateLimiter>()
