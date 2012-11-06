@@ -143,6 +143,13 @@ namespace Errordite.Web.Areas.System.Controllers
             return Content(Environment.ProcessorCount.ToString());
         }
 
+        public ActionResult CreateIndexes(int organisationId)
+        {
+            Core.Session.BootstrapOrganisation(Core.Session.MasterRaven.Load<Organisation>(Organisation.GetId(organisationId.ToString())));
+
+            return new EmptyResult();
+        }
+
         public ActionResult DoError()
         {
             Trace("This is a test logging message");
