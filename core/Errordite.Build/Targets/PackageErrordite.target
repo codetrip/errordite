@@ -1,22 +1,23 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
 
-  <Import Project="$(MSBuildProjectDirectory)\..\Targets\Minify.target" />
-  
-  <Target Name="PackageErrordite" DependsOnTargets="PackageWebFiles;MinifyResources;"></Target>
+    <Import Project="$(MSBuildProjectDirectory)\..\Targets\Minify.target" />
 
-  <Target Name="PackageWebFiles">
+    <Target Name="PackageErrordite" DependsOnTargets="PackageWebFiles;MinifyResources;"></Target>
 
-    <MakeDir Directories="$(OutputPath)\Errordite.Web" Condition="!Exists('$(OutputPath)\Errordite.Web')" />
-    <MakeDir Directories="$(OutputPath)\Errordite.Reception.Web" Condition="!Exists('$(OutputPath)\Errordite.Reception.Web')" />
-    <MakeDir Directories="$(OutputPath)\Errordite.Reception.Service" Condition="!Exists('$(OutputPath)\Errordite.Reception.Service')" />
-    <MakeDir Directories="$(OutputPath)\Errordite.Redis" Condition="!Exists('$(OutputPath)\Errordite.Redis')" />
-    <MakeDir Directories="$(OutputPath)\Errordite.Notifications.Service" Condition="!Exists('$(OutputPath)\Errordite.Notifications.Service')" />
-    <MakeDir Directories="$(OutputPath)\Errordite.ScheduledTasks" Condition="!Exists('$(OutputPath)\Errordite.ScheduledTasks')" />
-    
-    <ItemGroup>
-      <WebDeploymentFiles
-        Include="$(SourcePath)\core\Errordite.Web\**\*.*;"
-        Exclude="$(SourcePath)\core\Errordite.Web\**\*.cs;
+    <Target Name="PackageWebFiles">
+
+        <MakeDir Directories="$(OutputPath)\Errordite.Web" Condition="!Exists('$(OutputPath)\Errordite.Web')" />
+        <MakeDir Directories="$(OutputPath)\Errordite.Reception.Web" Condition="!Exists('$(OutputPath)\Errordite.Reception.Web')" />
+        <MakeDir Directories="$(OutputPath)\Errordite.Reception.Service" Condition="!Exists('$(OutputPath)\Errordite.Reception.Service')" />
+        <MakeDir Directories="$(OutputPath)\Errordite.Redis" Condition="!Exists('$(OutputPath)\Errordite.Redis')" />
+        <MakeDir Directories="$(OutputPath)\Errordite.Notifications.Service" Condition="!Exists('$(OutputPath)\Errordite.Notifications.Service')" />
+        <MakeDir Directories="$(OutputPath)\Errordite.ScheduledTasks" Condition="!Exists('$(OutputPath)\Errordite.ScheduledTasks')" />
+        <MakeDir Directories="$(OutputPath)\Errordite.Raven" Condition="!Exists('$(OutputPath)\Errordite.Raven')" />
+
+        <ItemGroup>
+            <WebDeploymentFiles
+              Include="$(SourcePath)\core\Errordite.Web\**\*.*;"
+              Exclude="$(SourcePath)\core\Errordite.Web\**\*.cs;
                  $(SourcePath)\core\Errordite.Web\**\*.csproj*;
                  $(SourcePath)\core\Errordite.Web\packages.config;
                  $(SourcePath)\core\Errordite.Web\Js\*.coffee;
@@ -26,79 +27,92 @@
                  $(SourcePath)\core\Errordite.Web\bin\Js\**;
                  $(SourcePath)\core\Errordite.Web\Config\**;
                  $(SourcePath)\core\Errordite.Web\obj\**;">
-      </WebDeploymentFiles>
-    </ItemGroup>
+            </WebDeploymentFiles>
+        </ItemGroup>
 
-    <Copy SourceFiles="@(WebDeploymentFiles)" DestinationFolder="$(OutputPath)\Errordite.Web\%(RecursiveDir)" />
+        <Copy SourceFiles="@(WebDeploymentFiles)" DestinationFolder="$(OutputPath)\Errordite.Web\%(RecursiveDir)" />
 
-    <ItemGroup>
-      <WebBinDeploymentFiles
-        Include="$(SourcePath)\core\Errordite.Web\bin\**\*.*"
-        Exclude="$(SourcePath)\core\Errordite.Web\bin\Js\**;">
-      </WebBinDeploymentFiles>
-    </ItemGroup>
+        <ItemGroup>
+            <WebBinDeploymentFiles
+              Include="$(SourcePath)\core\Errordite.Web\bin\**\*.*"
+              Exclude="$(SourcePath)\core\Errordite.Web\bin\Js\**;">
+            </WebBinDeploymentFiles>
+        </ItemGroup>
 
-    <Copy SourceFiles="@(WebBinDeploymentFiles)" DestinationFolder="$(OutputPath)\Errordite.Web\bin\%(RecursiveDir)" />
+        <Copy SourceFiles="@(WebBinDeploymentFiles)" DestinationFolder="$(OutputPath)\Errordite.Web\bin\%(RecursiveDir)" />
 
-    <ItemGroup>
-      <WebReceptionDeploymentFiles
-        Include="$(SourcePath)\core\Errordite.Reception.Web\**\*.*"
-        Exclude="$(SourcePath)\core\Errordite.Reception.Web\**\*.cs;
+        <ItemGroup>
+            <WebReceptionDeploymentFiles
+              Include="$(SourcePath)\core\Errordite.Reception.Web\**\*.*"
+              Exclude="$(SourcePath)\core\Errordite.Reception.Web\**\*.cs;
                  $(SourcePath)\core\Errordite.Reception.Web\**\*.csproj*;                 
                  $(SourcePath)\core\Errordite.Reception.Web\Config\**;
                  $(SourcePath)\core\Errordite.Reception.Web\obj\**;">
-      </WebReceptionDeploymentFiles>
-    </ItemGroup>
+            </WebReceptionDeploymentFiles>
+        </ItemGroup>
 
-    <Copy SourceFiles="@(WebReceptionDeploymentFiles)" DestinationFolder="$(OutputPath)\Errordite.Reception.Web\%(RecursiveDir)" />
+        <Copy SourceFiles="@(WebReceptionDeploymentFiles)" DestinationFolder="$(OutputPath)\Errordite.Reception.Web\%(RecursiveDir)" />
 
-    <ItemGroup>
-      <ScheduledTasksDeploymentFiles
-        Include="$(SourcePath)\core\Errordite.ScheduledTasks\**\*.*"
-        Exclude="$(SourcePath)\core\Errordite.ScheduledTasks\**\*.cs;
+        <ItemGroup>
+            <ScheduledTasksDeploymentFiles
+              Include="$(SourcePath)\core\Errordite.ScheduledTasks\**\*.*"
+              Exclude="$(SourcePath)\core\Errordite.ScheduledTasks\**\*.cs;
                  $(SourcePath)\core\Errordite.ScheduledTasks\**\*.csproj*;                 
                  $(SourcePath)\core\Errordite.ScheduledTasks\Config\**;
                  $(SourcePath)\core\Errordite.ScheduledTasks\obj\**;">
-      </ScheduledTasksDeploymentFiles>
-    </ItemGroup>
+            </ScheduledTasksDeploymentFiles>
+        </ItemGroup>
 
-    <Copy SourceFiles="@(ScheduledTasksDeploymentFiles)" DestinationFolder="$(OutputPath)\Errordite.ScxheduledTasks\%(RecursiveDir)" />
+        <Copy SourceFiles="@(ScheduledTasksDeploymentFiles)" DestinationFolder="$(OutputPath)\Errordite.ScxheduledTasks\%(RecursiveDir)" />
 
-    <ItemGroup>
-      <ReceptionServiceDeploymentFiles
-        Include="$(SourcePath)\core\Errordite.Reception.Service\bin\$(Configuration)\**\*.*">
-      </ReceptionServiceDeploymentFiles>
-    </ItemGroup>
+        <ItemGroup>
+            <ReceptionServiceDeploymentFiles
+              Include="$(SourcePath)\core\Errordite.Reception.Service\bin\$(Configuration)\**\*.*">
+            </ReceptionServiceDeploymentFiles>
+        </ItemGroup>
 
-    <Copy SourceFiles="@(ReceptionServiceDeploymentFiles)" DestinationFolder="$(OutputPath)\Errordite.Reception.Service\%(RecursiveDir)" />
+        <Copy SourceFiles="@(ReceptionServiceDeploymentFiles)" DestinationFolder="$(OutputPath)\Errordite.Reception.Service\%(RecursiveDir)" />
 
-    <ItemGroup>
-      <RedisDeploymentFiles
-        Include="$(SourcePath)\lib\Redis\**\*.*"
-        Exclude="$(SourcePath)\lib\Redis\data\*.*;
+        <ItemGroup>
+            <RedisDeploymentFiles
+              Include="$(SourcePath)\lib\Redis\**\*.*"
+              Exclude="$(SourcePath)\lib\Redis\data\*.*;
                  $(SourcePath)\lib\Redis\logs\*.*;                 
                  $(SourcePath)\lib\Redis\conf\*.*;" />
-    </ItemGroup>
+        </ItemGroup>
 
-    <Copy SourceFiles="@(RedisDeploymentFiles)" DestinationFolder="$(OutputPath)\Errordite.Redis\%(RecursiveDir)" />
+        <Copy SourceFiles="@(RedisDeploymentFiles)" DestinationFolder="$(OutputPath)\Errordite.Redis\%(RecursiveDir)" />
 
-    <ItemGroup>
-      <NotificationsServiceDeploymentFiles
-        Include="$(SourcePath)\core\Errordite.Notifications.Service\bin\$(Configuration)\**\*.*">
-      </NotificationsServiceDeploymentFiles>
-    </ItemGroup>
+        <ItemGroup>
+            <RavenDeploymentFiles Include="$(SourcePath)\core\Errordite.Raven\**\*.*"
+                                  Exclude="$(SourcePath)\core\Errordite.Raven\Data\**;
+                                         $(SourcePath)\core\Errordite.Raven\*.csproj;  
+                                         $(SourcePath)\core\Errordite.Raven\*.user;  
+                                         $(SourcePath)\core\Errordite.Raven\Databases\**;  
+                                         $(SourcePath)\core\Errordite.Raven\obj\**; 
+                                         $(SourcePath)\core\Errordite.Raven\Properties\**;                
+                                         $(SourcePath)\core\Errordite.Raven\Logs\**;" />
+        </ItemGroup>
 
-    <Copy SourceFiles="@(NotificationsServiceDeploymentFiles)" DestinationFolder="$(OutputPath)\Errordite.Notifications.Service\%(RecursiveDir)" />
+        <Copy SourceFiles="@(RavenDeploymentFiles)" DestinationFolder="$(OutputPath)\Errordite.Raven\%(RecursiveDir)" />
 
-    <ItemGroup>
-      <NotificationsServiceTemplateFiles
-        Include="$(SourcePath)\core\Errordite.Core\Notifications\Templates\**\*.*">
-      </NotificationsServiceTemplateFiles>
-    </ItemGroup>
+        <ItemGroup>
+            <NotificationsServiceDeploymentFiles
+              Include="$(SourcePath)\core\Errordite.Notifications.Service\bin\$(Configuration)\**\*.*">
+            </NotificationsServiceDeploymentFiles>
+        </ItemGroup>
 
-    <Copy SourceFiles="@(NotificationsServiceTemplateFiles)" DestinationFolder="$(OutputPath)\Errordite.Notifications.Service\Templates\%(RecursiveDir)" />
-    
-  </Target>
+        <Copy SourceFiles="@(NotificationsServiceDeploymentFiles)" DestinationFolder="$(OutputPath)\Errordite.Notifications.Service\%(RecursiveDir)" />
+
+        <ItemGroup>
+            <NotificationsServiceTemplateFiles
+              Include="$(SourcePath)\core\Errordite.Core\Notifications\Templates\**\*.*">
+            </NotificationsServiceTemplateFiles>
+        </ItemGroup>
+
+        <Copy SourceFiles="@(NotificationsServiceTemplateFiles)" DestinationFolder="$(OutputPath)\Errordite.Notifications.Service\Templates\%(RecursiveDir)" />
+
+    </Target>
 
 </Project>
 

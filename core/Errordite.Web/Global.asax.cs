@@ -25,6 +25,7 @@ using Errordite.Web.Controllers;
 using Errordite.Web.IoC;
 using Raven.Abstractions.Data;
 using Raven.Client;
+using Raven.Client.Extensions;
 using Raven.Client.Indexes;
 
 namespace Errordite.Web
@@ -119,7 +120,7 @@ namespace Errordite.Web
             };
 
            // ErrorditeLogger.Initialise(true, "Errordite.Web");
-            BootstrapRaven();
+            BootstrapErrorditeDatabase();
         }
 
         protected void Application_Error(object sender, EventArgs e)
@@ -177,11 +178,12 @@ namespace Errordite.Web
             controller.Execute(new RequestContext(new HttpContextWrapper(Context), routeData));
         }
 
-        #region Seed Data
+        #region Bootstrap Raven
 
-        private void BootstrapRaven()
+        private void BootstrapErrorditeDatabase()
         {
             var documentStore = ObjectFactory.GetObject<IDocumentStore>();
+            documentStore.DatabaseCommands.EnsureDatabaseExists(CoreConstants.ErrorditeMasterDatabaseName);
 
             var session = documentStore.OpenSession(CoreConstants.ErrorditeMasterDatabaseName);
 

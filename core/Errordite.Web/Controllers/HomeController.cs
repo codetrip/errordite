@@ -1,6 +1,4 @@
-﻿
-using System;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using Errordite.Core.Configuration;
 using Errordite.Core.Identity;
 using Errordite.Core.Notifications.Commands;
@@ -26,10 +24,17 @@ namespace Errordite.Web.Controllers
         }
 
         [ImportViewData]
+        public ActionResult New()
+        {
+            return View();
+        }
+
+        [ImportViewData]
         public ActionResult Index()
         {
             if (AppContext.AuthenticationStatus != AuthenticationStatus.Anonymous)
                 return Redirect(Url.Dashboard());
+
             return View();
         }
 
