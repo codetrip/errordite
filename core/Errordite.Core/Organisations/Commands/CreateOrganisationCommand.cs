@@ -46,8 +46,6 @@ namespace Errordite.Core.Organisations.Commands
             var existingUserMap =
                 Session.MasterRaven.Query<UserOrganisationMapping>().FirstOrDefault(m => m.EmailAddress == request.Email);
 
-            //var existingUser = Session.Raven.Query<User, Users_Search>().FirstOrDefault(u => u.Email == request.Email);
-
             if (existingUserMap != null)
             {
                 return new CreateOrganisationResponse
@@ -107,6 +105,7 @@ namespace Errordite.Core.Organisations.Commands
             });
 
             //TODO: sync indexes
+            Session.SynchroniseIndexes<Organisations_Search, Users_Search>();
 
             return new CreateOrganisationResponse
             {

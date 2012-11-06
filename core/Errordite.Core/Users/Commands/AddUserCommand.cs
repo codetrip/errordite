@@ -35,7 +35,7 @@ namespace Errordite.Core.Users.Commands
             Trace("Starting...");
 
             var existingUserOrgMap = Session.MasterRaven
-                .Query<UserOrganisationMapping, UserOrgMappings>()
+                .Query<UserOrganisationMapping, UserOrganisationMappings>()
                 .FirstOrDefault(u => u.EmailAddress == request.Email);
 
             //TODO: consider staleness?
@@ -113,7 +113,7 @@ namespace Errordite.Core.Users.Commands
             });
             
             Session.SynchroniseIndexes<Users_Search, Groups_Search>();
-            Session.SynchroniseIndexes<UserOrgMappings>(true);
+            Session.SynchroniseIndexes<UserOrganisationMappings>(true);
 
             return new AddUserResponse(false, request.Organisation.Id)
             {

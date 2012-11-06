@@ -262,7 +262,7 @@ namespace Errordite.Core.Session
         private void SetDbId(Organisation organisation)
         {
             _organisationDatabaseId = IdHelper.GetFriendlyId(organisation.OrganisationId);
-            _auditor.Trace(GetType(), "Set orgid to {0}", _organisationDatabaseId);
+            _auditor.Trace(GetType(), "Set orgalisation id to {0}", _organisationDatabaseId);
         }
 
         public void BootstrapOrganisation(Organisation organisation)

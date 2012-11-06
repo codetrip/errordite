@@ -8,7 +8,6 @@ using CodeTrip.Core.Caching.Interfaces;
 using CodeTrip.Core.IoC;
 using CodeTrip.Core.Paging;
 using CodeTrip.Core.Redis;
-using Errordite.Core.Alerts;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Groups.Queries;

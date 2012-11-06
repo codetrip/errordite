@@ -67,7 +67,7 @@ namespace Errordite.Core.Users.Commands
                 existingUser.GroupIds = request.GroupIds.Select(Group.GetId).ToList();
 
             Session.SynchroniseIndexes<Users_Search, Groups_Search>();
-            Session.SynchroniseIndexes<UserOrgMappings>(true);
+            Session.SynchroniseIndexes<UserOrganisationMappings>(true);
 
             return new EditUserResponse(false, request.UserId, request.CurrentUser.OrganisationId)
             {
