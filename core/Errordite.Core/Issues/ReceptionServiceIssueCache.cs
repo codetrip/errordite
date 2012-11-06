@@ -20,8 +20,8 @@ namespace Errordite.Core.Issues
 
     public class ReceptionServiceIssueCache : ComponentBase, IReceptionServiceIssueCache
     {
-        private static readonly Dictionary<string, ObjectCache<List<IssueBase>>> _cache = new Dictionary<string, ObjectCache<List<IssueBase>>>();
-        private readonly object _syncLock = new object();
+        private static readonly Dictionary<string, ObjectCache<ListHolder<IssueBase>>> _cache = new Dictionary<string, ObjectCache<ListHolder<IssueBase>>>();
+        private readonly object _cacheSyncLock = new object();
         private readonly ErrorditeConfiguration _configuration;
         private readonly IGetAllApplicationIssuesQuery _getIssues;
 
@@ -34,66 +34,68 @@ namespace Errordite.Core.Issues
 
         public IEnumerable<IssueBase> GetIssues(string applicationId, string organisationId)
         {
-            return GetCachedIssues(applicationId, organisationId);
+            return GetCachedIssues(applicationId, organisationId).List;
         }
 
         public void Add(IssueBase issue)
         {
-            var issues = GetCachedIssues(issue.ApplicationId, issue.OrganisationId);
+            var appIssues = GetCachedIssues(issue.ApplicationId, issue.OrganisationId);
 
-            lock (issues)
+            lock (appIssues.SyncLock)
             {
-                var index = issues.FindIndex(m => m.Id == issue.Id);
+                var index = appIssues.List.FindIndex(m => m.Id == issue.Id);
 
                 if (index == -1)
                 {
                     Trace("Adding new issue to cache with Id:-{0}", issue.Id);
-                    issues.Add(issue);
-                    issues = issues.OrderByDescending(i => i.MatchPriority).ThenByDescending(i => i.LastErrorUtc).ToList();
+                    appIssues.List.Add(issue);
+                    //TODO: would be more efficient to go through the list looking for the right spot to add the new issue
+                    appIssues.List = appIssues.List.OrderByDescending(i => i.MatchPriority).ThenByDescending(i => i.LastErrorUtc).ToList();
                 }
                 else
                 {
+                    //TODO: are we sure that the match priority / last error cannot change?  The last error surely changes all the time...
                     Error("Updating issue in cache (from add method!) at index {0} with Id:={1}", index, issue.Id);
-                    issues[index] = issue;
+                    appIssues.List[index] = issue;
                 }
             }
         }
 
         public void Update(IssueBase issue)
         {
-            var issues = GetCachedIssues(issue.ApplicationId, issue.OrganisationId);
+            var appIssues = GetCachedIssues(issue.ApplicationId, issue.OrganisationId);
 
-            lock (issues)
+            lock (appIssues.SyncLock)
             {
                 //TODO: would be better to have a List<Ref<IssueBase>> and update it directly perhaps
-                var index = issues.FindIndex(m => m.Id == issue.Id);
+                var index = appIssues.List.FindIndex(m => m.Id == issue.Id);
 
                 if (index >= 0)
                 {
                     Trace("Updating issue in cache at index {0} with Id:={1}", index, issue.Id);
-                    issues[index] = issue;
+                    appIssues.List[index] = issue;
                 }
                 else
                 {
                     Error("Adding new issue to cache (from update method!) with Id:-{0}", issue.Id);
-                    issues.Add(issue);
-                    issues = issues.OrderByDescending(i => i.MatchPriority).ThenByDescending(i => i.LastErrorUtc).ToList();
+                    appIssues.List.Add(issue);
+                    appIssues.List = appIssues.List.OrderByDescending(i => i.MatchPriority).ThenByDescending(i => i.LastErrorUtc).ToList();
                 }
             }
         }
 
         public void Delete(string issueId, string applicationId, string organisationId)
         {
-            var issues = GetCachedIssues(applicationId, organisationId);
+            var appIssues = GetCachedIssues(applicationId, organisationId);
 
-            lock (issues)
+            lock (appIssues.SyncLock)
             {
-                var index = issues.FindIndex(m => m.Id == Issue.GetId(issueId));
+                var index = appIssues.List.FindIndex(m => m.Id == Issue.GetId(issueId));
 
                 if (index >= 0)
                 {
-                    issues.RemoveAt(index);
-                    issues = issues.OrderByDescending(i => i.MatchPriority).ThenByDescending(i => i.LastErrorUtc).ToList();
+                    appIssues.List.RemoveAt(index);
+                    //no need to sort at this point as we won't have changed the order
                 }
                 else
                 {
@@ -102,19 +104,26 @@ namespace Errordite.Core.Issues
             }
         }
 
-        private List<IssueBase> GetCachedIssues(string applicationId, string organisationId)
+        private class ListHolder<T>
+        {
+            public List<T> List { get; set; }
+            public object SyncLock { get { return _syncLock; } }
+            private readonly object _syncLock = new object();
+        }
+
+        private ListHolder<IssueBase> GetCachedIssues(string applicationId, string organisationId)
         {
             applicationId = Application.GetId(applicationId);
             organisationId = Organisation.GetId(organisationId);
 
-            ObjectCache<List<IssueBase>> orgCache;
+            ObjectCache<ListHolder<IssueBase>> orgCache;
             if (!_cache.TryGetValue(organisationId, out orgCache))
             {
-                lock (_syncLock)
+                lock (_cacheSyncLock)
                 {
                     if (!_cache.TryGetValue(organisationId, out orgCache))
                     {
-                        orgCache = new ObjectCache<List<IssueBase>>();
+                        orgCache = new ObjectCache<ListHolder<IssueBase>>();
                         _cache.Add(organisationId, orgCache);
                     }
                 }
@@ -126,16 +135,20 @@ namespace Errordite.Core.Issues
             {
                 Trace("Attempting to load issues for application:={0}", applicationId);
 
-                lock (orgCache)
+                lock (_cacheSyncLock)
                 {
-                    issues = _getIssues.Invoke(new GetAllApplicationIssuesRequest
-                    {
-                        ApplicationId = applicationId
-                    }).Issues ?? new List<IssueBase>();
+                    issues =
+                        new ListHolder<IssueBase>()
+                            {
+                                List = _getIssues.Invoke(new GetAllApplicationIssuesRequest
+                                    {
+                                        ApplicationId = applicationId
+                                    }).Issues ?? new List<IssueBase>()
+                            };
 
                     orgCache.Add(applicationId, issues, DateTimeOffset.UtcNow.AddMinutes(_configuration.IssueCacheTimeoutMinutes));
 
-                    Trace("Successfully loaded {0} issues", issues.Count);
+                    Trace("Successfully loaded {0} issues", issues.List.Count);
                 }
             }
             
