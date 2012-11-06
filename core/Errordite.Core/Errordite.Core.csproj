@@ -170,7 +170,7 @@
     <Compile Include="Indexing\UserAlerts_Search.cs" />
     <Compile Include="Indexing\Organisations_Search.cs" />
     <Compile Include="Indexing\Groups_Search.cs" />
-    <Compile Include="Indexing\UserOrgMapping.cs" />
+    <Compile Include="Indexing\UserOrganisationMappings.cs" />
     <Compile Include="Indexing\Users_Search.cs" />
     <Compile Include="Indexing\Issues_Search.cs" />
     <Compile Include="Indexing\Errors_CountByIssue.cs" />

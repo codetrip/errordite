@@ -64,10 +64,10 @@ namespace Errordite.Core.Organisations.Commands
             {
                 Delete(user);
 
-                Session.Raven.Advanced.DocumentStore.DatabaseCommands.DeleteByIndex(CoreConstants.IndexNames.UserAlerts, new IndexQuery
-                {
-                    Query = "UserId:{0}".FormatWith(user.Id)
-                }, true);
+                //Session.Raven.Advanced.DocumentStore.DatabaseCommands.DeleteByIndex(CoreConstants.IndexNames.UserAlerts, new IndexQuery
+                //{
+                //    Query = "UserId:{0}".FormatWith(user.Id)
+                //}, true);
             }
 
             var groups = Session.Raven.Query<Group, Groups_Search>().Where(u => u.OrganisationId == organisation.Id).ToList();

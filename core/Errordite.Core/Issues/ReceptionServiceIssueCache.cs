@@ -63,7 +63,7 @@ namespace Errordite.Core.Issues
         {
             var issues = GetCachedIssues(issue.ApplicationId, issue.OrganisationId);
 
-            lock (_syncLock)
+            lock (issues)
             {
                 //TODO: would be better to have a List<Ref<IssueBase>> and update it directly perhaps
                 var index = issues.FindIndex(m => m.Id == issue.Id);
@@ -86,7 +86,7 @@ namespace Errordite.Core.Issues
         {
             var issues = GetCachedIssues(applicationId, organisationId);
 
-            lock (_syncLock)
+            lock (issues)
             {
                 var index = issues.FindIndex(m => m.Id == Issue.GetId(issueId));
 
@@ -126,7 +126,7 @@ namespace Errordite.Core.Issues
             {
                 Trace("Attempting to load issues for application:={0}", applicationId);
 
-                lock (_syncLock)
+                lock (orgCache)
                 {
                     issues = _getIssues.Invoke(new GetAllApplicationIssuesRequest
                     {

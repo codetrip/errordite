@@ -83,20 +83,20 @@ namespace Errordite.Core.Notifications.Commands
 
             request.EmailInfo.To = usersToSendTo.Aggregate(string.Empty, (current, u) => current + (u.Email + ';')).TrimEnd(';');
 
-            var alertInfo = request.EmailInfo as IAlertInfo;
-            if (alertInfo != null)
-            {
-                foreach (var user in usersToSendTo) //hopefully this isn't too large!
-                {
-                    Store(new UserAlert
-                    {
-                        UserId = user.Id,
-                        Message = alertInfo.MessageTemplate,
-                        Replacements = alertInfo.Replacements,
-                        Type = request.EmailInfo.GetType().Name,
-                    });
-                }
-            }
+            //var alertInfo = request.EmailInfo as IAlertInfo;
+            //if (alertInfo != null)
+            //{
+            //    foreach (var user in usersToSendTo) //hopefully this isn't too large!
+            //    {
+            //        Store(new UserAlert
+            //        {
+            //            UserId = user.Id,
+            //            Message = alertInfo.MessageTemplate,
+            //            Replacements = alertInfo.Replacements,
+            //            Type = request.EmailInfo.GetType().Name,
+            //        });
+            //    }
+            //}
 
             if (!_configuration.ServiceBusEnabled)
             {

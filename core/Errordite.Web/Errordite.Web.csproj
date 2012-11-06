@@ -424,9 +424,6 @@
     <Content Include="Js\applications.js">
       <DependentUpon>applications.coffee</DependentUpon>
     </Content>
-    <Content Include="Js\audit.js">
-      <DependentUpon>audit.coffee</DependentUpon>
-    </Content>
     <Content Include="Js\errors.js">
       <DependentUpon>errors.coffee</DependentUpon>
     </Content>
@@ -436,12 +433,6 @@
     <Content Include="Js\issues.js">
       <DependentUpon>issues.coffee</DependentUpon>
     </Content>
-    <Content Include="Js\jqplot\102.jqplot.axisLabelRenderer.js" />
-    <Content Include="Js\jqplot\103.jqplot.axisTickRenderer.js" />
-    <Content Include="Js\jqplot\114.jqplot.barRenderer.js" />
-    <Content Include="Js\jqplot\104.jqplot.canvasGridRenderer.js" />
-    <Content Include="Js\jqplot\115.jqplot.categoryAxisRenderer.js" />
-    <Content Include="Js\jqplot\100.jqplot.core.js" />
     <Content Include="Js\005.jquery.placeholder.js" />
     <Content Include="Js\007.jquery.datepicker.js" />
     <Content Include="Js\008.jquery.form.js" />
@@ -450,16 +441,6 @@
     <Content Include="Js\003.jquery.unobtrusive-ajax.js" />
     <Content Include="Js\002.jquery.validate.js" />
     <Content Include="Js\004.jquery.validate.unobtrusive.js" />
-    <Content Include="Js\jqplot\105.jqplot.divTitleRenderer.js" />
-    <Content Include="Js\jqplot\106.jqplot.linearAxisRenderer.js" />
-    <Content Include="Js\jqplot\107.jqplot.linearTickGenerator.js" />
-    <Content Include="Js\jqplot\108.jqplot.lineRenderer.js" />
-    <Content Include="Js\jqplot\109.jqplot.markerRenderer.js" />
-    <Content Include="Js\jqplot\110.jqplot.shadowRenderer.js" />
-    <Content Include="Js\jqplot\111.jqplot.shapeRenderer.js" />
-    <Content Include="Js\jqplot\113.jqplot.sprintf.js" />
-    <Content Include="Js\jqplot\112.jqplot.tableLegendRenderer.js" />
-    <Content Include="Js\jqplot\101.jqplot.themeEngine.js" />
     <Content Include="Js\jqplot\jqplot.min.js" />
     <Content Include="Js\dashboard.js">
       <DependentUpon>dashboard.coffee</DependentUpon>
@@ -780,11 +761,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\Audit\AuditRecords.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Js\audit.coffee">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\Errors\ErrorInfo.cshtml" />

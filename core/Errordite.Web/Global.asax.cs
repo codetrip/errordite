@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition.Hosting;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -183,6 +184,11 @@ namespace Errordite.Web
             var documentStore = ObjectFactory.GetObject<IDocumentStore>();
 
             var session = documentStore.OpenSession(CoreConstants.ErrorditeMasterDatabaseName);
+
+            IndexCreation.CreateIndexes(new CompositionContainer(
+                new AssemblyCatalog(typeof(Issues_Search).Assembly), new ExportProvider[0]),
+                documentStore.DatabaseCommands.ForDatabase(CoreConstants.ErrorditeMasterDatabaseName),
+                documentStore.Conventions);
 
             if (!session.Query<PaymentPlan>().Any())
             {
