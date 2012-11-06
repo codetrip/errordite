@@ -325,6 +325,9 @@
     <Compile Include="WebConstants.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\Css\errordite.css">
+      <DependentUpon>errordite.scss</DependentUpon>
+    </Content>
     <Content Include="Assets\Css\main.css" />
     <Content Include="Assets\Css\normalize.css" />
     <Content Include="Assets\Js\lib\jquery-1.8.2.min.js" />
@@ -373,8 +376,6 @@
     <Content Include="Css\img\toggle\toggle-open.png" />
     <Content Include="Css\jquery-ui-1.8.21.custom.css" />
     <Content Include="Css\jquery.jqplot.css" />
-    <Content Include="Css\main.css" />
-    <Content Include="Css\normalize.css" />
     <Content Include="Css\prettify.css" />
     <Content Include="Css\ui.daterangepicker.css" />
     <Content Include="favicon.ico" />
@@ -786,6 +787,7 @@
     <Content Include="Areas\System\Views\_ViewStart.cshtml" />
     <Content Include="Areas\System\Views\Shared\Organisations\SuspendModal.cshtml" />
     <Content Include="Areas\System\Views\Organisations\Applications.cshtml" />
+    <Content Include="Assets\Css\errordite.scss" />
     <None Include="Js\060.global.coffee" />
     <None Include="Js\alerts.coffee" />
     <None Include="Js\errors.coffee" />
@@ -821,6 +823,10 @@
     <Content Include="Views\Help\SendErrorWithJson.cshtml" />
     <Content Include="Views\Shared\HowItWorksPartial.cshtml" />
     <Content Include="packages.config" />
+    <Content Include="Views\Shared\Master2.0.cshtml" />
+    <Content Include="Views\Shared\HeaderAssets.cshtml" />
+    <Content Include="Views\Shared\FooterAssets.cshtml" />
+    <Content Include="Views\Home\New.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_GlobalResources\Alerts.resx">

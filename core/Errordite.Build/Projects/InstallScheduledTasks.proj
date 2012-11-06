@@ -7,7 +7,7 @@
   <Import Project="$(MSBuildProjectDirectory)\Configuration.target" />
 
   <Target Name="InstallScheduledTasks" DependsOnTargets="GetBuildNumberAndInstallPaths;
-          CopyScheudledTasksFiles;
+          CopyScheduledTasksFiles;
           RunConfigFileChanger;">
   </Target>
 
