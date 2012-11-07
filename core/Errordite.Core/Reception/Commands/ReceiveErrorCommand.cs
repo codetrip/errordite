@@ -123,6 +123,8 @@ namespace Errordite.Core.Reception.Commands
 
         private Issue UpdateMatchingIssue(string issueId, Application application, Error error)
         {
+            Trace("Attempting to load issue with Id {0} from database {1}", issueId, Session.OrganisationDatabaseName);
+
             var issue = Load<Issue>(issueId);
 
             //if the matching issue is solved, send an email and set it back to Acknowledged
