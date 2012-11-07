@@ -124,7 +124,7 @@ namespace Errordite.Web.Controllers
             });
 
             if (viewModel.CurrentUser)
-                return RedirectWithViewModel(viewModel, "edit", result.Status.MapToResource(Resources.Account.ResourceManager), result.Status != EditUserStatus.Ok);
+                return RedirectWithViewModel(viewModel, "yourdetails", result.Status.MapToResource(Resources.Account.ResourceManager), result.Status != EditUserStatus.Ok);
             
             return RedirectWithViewModel(viewModel, "index", result.Status.MapToResource(Resources.Account.ResourceManager), result.Status != EditUserStatus.Ok, new {userId = viewModel.UserId});
         }

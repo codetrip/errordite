@@ -182,7 +182,19 @@ namespace Errordite.Core.Session
                        _session = null;
                    }
                }
-           } 
+           }
+
+           if (_organisationSession != null)
+           {
+               lock (_syncLock)
+               {
+                   if (_organisationSession != null)
+                   {
+                       _organisationSession.Dispose();
+                       _organisationSession = null;
+                   }
+               }
+           }
         }
 
         public void Commit()

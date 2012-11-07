@@ -33,14 +33,14 @@ namespace Errordite.Core.Applications.Queries
 
             string[] tokenParts = token.Split('|');
 
-            if (!tokenParts.Length.IsIn(2, 3))
+            if (tokenParts.Length != 3)
             {
-                Trace("Token {0} decrypts to {1} which does not have 2 or 3 separated parts.", request.Token, token);
+                Trace("Token {0} decrypts to {1} which does not have 3 separated parts.", request.Token, token);
                 return new GetApplicationByTokenResponse();
             }
 
             string applicationId = Application.GetId(tokenParts[0]);
-            string organisationId = tokenParts.Length == 1 ? "organisations/1" : Organisation.GetId(tokenParts[1]);
+            string organisationId = Organisation.GetId(tokenParts[1]);
 
             var organisation = _getOrganisationQuery.Invoke(new GetOrganisationRequest
             {

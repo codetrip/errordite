@@ -69,9 +69,9 @@
       <HintPath>..\packages\RavenDB.Database.1.2.2133-Unstable\lib\net40\Lucene.Net.Contrib.Spatial.NTS.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
+    <Reference Include="Microsoft.Web.Infrastructure">
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Mono.Cecil, Version=0.9.5.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
       <HintPath>..\packages\RavenDB.Database.1.2.2133-Unstable\lib\net40\Mono.Cecil.dll</HintPath>
@@ -86,13 +86,16 @@
       <HintPath>..\packages\RavenDB.Database.1.2.2133-Unstable\lib\net40\PowerCollections.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Abstractions, Version=1.2.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <HintPath>..\packages\RavenDB.Database.1.2.2133-Unstable\lib\net40\Raven.Abstractions.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\RavenDB.Database.1.2.2137-Unstable\lib\net40\Raven.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Database, Version=1.2.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <HintPath>..\packages\RavenDB.Database.1.2.2133-Unstable\lib\net40\Raven.Database.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\RavenDB.Database.1.2.2137-Unstable\lib\net40\Raven.Database.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Web">
-      <HintPath>..\packages\RavenDB.AspNetHost.1.2.2133-Unstable\lib\net40\Raven.Web.dll</HintPath>
+      <HintPath>..\packages\RavenDB.AspNetHost.1.2.2137-Unstable\lib\net40\Raven.Web.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Spatial4n.Core.NTS, Version=1.0.0.0, Culture=neutral, PublicKeyToken=9f9456e1ca16d45e, processorArchitecture=MSIL">
       <HintPath>..\packages\RavenDB.Database.1.2.2133-Unstable\lib\net40\Spatial4n.Core.NTS.dll</HintPath>

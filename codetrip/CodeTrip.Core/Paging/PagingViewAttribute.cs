@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using CodeTrip.Core.Web;
+using ProductionProfiler.Core.Extensions;
 
 namespace CodeTrip.Core.Paging
 {
@@ -58,11 +59,11 @@ namespace CodeTrip.Core.Paging
                 {
                     pagingInfo.PageSize = Math.Min(int.Parse(queryString[queryStringParam]), config.LargePageSize);
                 }
-                else if (queryStringParam.StartsWith(PagingConstants.QueryStringParameters.PageSortDescending))
+                else if (queryStringParam.StartsWith(PagingConstants.QueryStringParameters.PageSortDescending) && queryString[queryStringParam].IsNotNullOrEmpty())
                 {
                     pagingInfo.SortDescending = bool.Parse(queryString[queryStringParam]);
                 }
-                else if (queryStringParam.StartsWith(PagingConstants.QueryStringParameters.PageSort))
+                else if (queryStringParam.StartsWith(PagingConstants.QueryStringParameters.PageSort) && queryString[queryStringParam].IsNotNullOrEmpty())
                 {
                     pagingInfo.Sort = queryString[queryStringParam];
                 }

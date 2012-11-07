@@ -12,7 +12,6 @@ using Errordite.Core.Errors.Queries;
 using Errordite.Core.Indexing;
 using Errordite.Core.Organisations;
 using Errordite.Core.Reception.Commands;
-using Errordite.Core.Resources;
 using CodeTrip.Core.Extensions;
 using System.Linq;
 using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
@@ -84,10 +83,6 @@ namespace Errordite.Core.Issues.Commands
                 issue.History.Add(new IssueHistory
                 {
                     DateAddedUtc = DateTime.UtcNow,
-                    //Message = CoreResources.HistoryIssueErrorsReceivedAgain.FormatWith(
-                    //    request.CurrentUser.FullName,
-                    //    request.CurrentUser.Email,
-                    //    response.GetMessage(issue.Id)),
                     UserId = request.CurrentUser.Id,
                     Type = HistoryItemType.ErrorsReprocessed,
                     ReprocessingResult = response.AttachedIssueIds,

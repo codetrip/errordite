@@ -94,11 +94,12 @@
       <HintPath>..\..\lib\Profiler\ProductionProfiler.Persistence.Raven.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Abstractions, Version=1.2.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <HintPath>..\packages\RavenDB.Database.1.2.2133-Unstable\lib\net40\Raven.Abstractions.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\RavenDB.Client.1.2.2137-Unstable\lib\net40\Raven.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Client.Lightweight, Version=1.2.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\RavenDB.Client.1.2.2133-Unstable\lib\net40\Raven.Client.Lightweight.dll</HintPath>
+      <HintPath>..\packages\RavenDB.Client.1.2.2137-Unstable\lib\net40\Raven.Client.Lightweight.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Net.Http, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -442,6 +443,10 @@
     <Content Include="Js\003.jquery.unobtrusive-ajax.js" />
     <Content Include="Js\002.jquery.validate.js" />
     <Content Include="Js\004.jquery.validate.unobtrusive.js" />
+    <Content Include="Js\jqplot\jqplot.barRenderer.min.js" />
+    <Content Include="Js\jqplot\jqplot.categoryAxisRenderer.min.js" />
+    <Content Include="Js\jqplot\jqplot.dateAxisRenderer.min.js" />
+    <Content Include="Js\jqplot\jqplot.highlighter.min.js" />
     <Content Include="Js\jqplot\jqplot.min.js" />
     <Content Include="Js\dashboard.js">
       <DependentUpon>dashboard.coffee</DependentUpon>
@@ -662,7 +667,7 @@
     <Content Include="Areas\System\Views\System\ErrorditeErrors.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\Administration\Errors.cshtml" />
+    <Content Include="Areas\System\Views\Shared\System\Errors.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_GlobalResources\Shared.resx">

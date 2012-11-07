@@ -27,9 +27,11 @@ namespace Errordite.Reception.Service.Handlers
 
             if (message.OrganisationId != null)
             {
-                var org =
-                    _getOrganisationQuery.Invoke(new GetOrganisationRequest() {OrganisationId = message.OrganisationId})
-                        .Organisation;
+                var org = _getOrganisationQuery.Invoke(new GetOrganisationRequest
+                {
+                    OrganisationId = message.OrganisationId
+                }).Organisation;
+
                 if (org != null)
                 {
                     Session.SetOrganisation(org);
