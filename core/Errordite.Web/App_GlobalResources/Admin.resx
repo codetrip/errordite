@@ -138,4 +138,7 @@
   <data name="ActivateOrganisationStatus_Ok" xml:space="preserve">
     <value>Organisation has been activated successfully.</value>
   </data>
+  <data name="OrganbisationSettingsUpdated" xml:space="preserve">
+    <value>Organisation settings were updated successfully.</value>
+  </data>
 </root>

@@ -1,22 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Castle.Core;
-using CodeTrip.Core;
 using CodeTrip.Core.Caching.Entities;
 using CodeTrip.Core.Caching.Interceptors;
 using CodeTrip.Core.Interfaces;
 using Errordite.Core.Authorisation;
 using Errordite.Core.Caching;
 using Errordite.Core.Domain.Organisation;
-using Errordite.Core.Identity;
-using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
+using Errordite.Core.Session;
 
 namespace Errordite.Core.Organisations.Commands
 {
-    public interface ISetOrganisationTimezoneCommand : ICommand<SetOrganisationTimezoneRequest, SetOrganisationTimezoneResponse>
-    {
-    }
-
     [Interceptor(CacheInvalidationInterceptor.IoCName)]
     public class SetOrganisationTimezoneCommand : SessionAccessBase, ISetOrganisationTimezoneCommand
     {
@@ -29,7 +22,7 @@ namespace Errordite.Core.Organisations.Commands
 
         public SetOrganisationTimezoneResponse Invoke(SetOrganisationTimezoneRequest request)
         {
-            var organisation = Load<Organisation>(request.OrganisationId);
+            var organisation = MasterLoad<Organisation>(request.OrganisationId);
 
             //TODO - admin auth
             _authorisationManager.Authorise(organisation, request.CurrentUser);
@@ -40,12 +33,13 @@ namespace Errordite.Core.Organisations.Commands
         }
     }
 
+    public interface ISetOrganisationTimezoneCommand : ICommand<SetOrganisationTimezoneRequest, SetOrganisationTimezoneResponse>
+    { }
+
     public class SetOrganisationTimezoneRequest
     {
         public string OrganisationId { get; set; }
-
         public User CurrentUser { get; set; }
-
         public string TimezoneId { get; set; }
     }
 

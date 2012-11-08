@@ -61,7 +61,6 @@ namespace Errordite.Core.Groups.Commands
                     if (request.Users.Any(u => u == user.Id))
                     {
                         user.GroupIds.Add(group.Id);
-                        Store(user); //does not seem to update here without calling store
                     }
                 }
             }

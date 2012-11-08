@@ -57,7 +57,7 @@ namespace Errordite.Web.Controllers
             });
         }
 
-        [HttpPost]
+        [HttpPost, ExportViewData]
         public ActionResult SetTimezone(string timezoneId)
         {
             _setOrganisationTimezoneCommand.Invoke(new SetOrganisationTimezoneRequest
@@ -66,6 +66,8 @@ namespace Errordite.Web.Controllers
                 OrganisationId = AppContext.CurrentUser.OrganisationId,
                 TimezoneId = timezoneId
             });
+
+            ConfirmationNotification(Resources.Admin.OrganbisationSettingsUpdated);
 
             return RedirectToAction("settings");
         }

@@ -59,15 +59,14 @@ namespace Errordite.Core.Groups.Commands
 
             foreach (var user in currentUsers.Items)
             {
-                if (request.Users.Any(u => u == user.Id) && !user.GroupIds.Any(gId => gId == existingGroup.Id))
+                if (request.Users.Any(u => u == user.Id) && user.GroupIds.All(gId => gId != existingGroup.Id))
                 {
                     user.GroupIds.Add(existingGroup.Id);
                     Store(user); //does not seem to update here without calling store
                 }
-                else if (!request.Users.Any(u => u == user.Id) && user.GroupIds.Any(gId => gId == existingGroup.Id))
+                else if (request.Users.All(u => u != user.Id) && user.GroupIds.Any(gId => gId == existingGroup.Id))
                 {
                     user.GroupIds.Remove(existingGroup.Id);
-                    Store(user); //does not seem to update here without calling store
                 }
             }
 
