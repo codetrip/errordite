@@ -1,7 +1,6 @@
 ﻿
 using System.Web.Mvc;
 using System.Web.Routing;
-using Errordite.Client.Mvc3;
 
 namespace Errordite.Samples.Mvc3
 {
