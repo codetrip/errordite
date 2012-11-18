@@ -19,8 +19,9 @@ namespace Errordite.Reception.Service.IoC
                 .BasedOn<IHttpController>()
                 .LifestyleTransient());
 
+            //TODO: do we need this?
             container.Register(Component.For<IHttpControllerActivator>()
-                .Instance(new WindsorHttpControllerActivator(container))
+                .Instance(new WindsorHttpControllerActivator())
                 .LifestyleSingleton());
         }
     }

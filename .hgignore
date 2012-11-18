@@ -51,3 +51,4 @@ core\Errordite.Raven\Tenants\**
 core\Errordite.Raven\Logs\**
 core\packages\**
 lib\nuget\**
+utils/packages

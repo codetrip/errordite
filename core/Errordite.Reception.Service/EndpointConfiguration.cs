@@ -28,7 +28,8 @@ namespace Errordite.Reception.Service
             var httpConfig = ObjectFactory.GetObject<HttpServerConfiguration>();
             var config = new HttpSelfHostConfiguration(httpConfig.Endpoint);
 
-            config.Services.Replace(typeof(IHttpControllerActivator), new WindsorHttpControllerActivator(ObjectFactory.Container));
+            config.Services.Replace(typeof(IHttpControllerActivator), new WindsorHttpControllerActivator());
+            config.DependencyResolver = new WindsorDependencyResolver(ObjectFactory.Container);
             config.MaxReceivedMessageSize = 655360;
             config.MaxBufferSize = 655360;
             //this has the effect of always defaulting to Json serialization as there are no Xml formatters registered
