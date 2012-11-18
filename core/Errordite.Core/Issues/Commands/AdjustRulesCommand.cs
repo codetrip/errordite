@@ -75,7 +75,7 @@ namespace Errordite.Core.Issues.Commands
                 Session.AddCommitAction(new RaiseIssueCreatedEvent(tempIssue));
 
                 //also we need to clear the core errors for the original issue as we no longer know if these should match the new rules
-                Session.Raven.Advanced.DocumentStore.DatabaseCommands.DeleteByIndex(CoreConstants.IndexNames.UnloggedErrors, new IndexQuery
+                Session.RavenDatabaseCommands.DeleteByIndex(CoreConstants.IndexNames.UnloggedErrors, new IndexQuery
                 {
                     Query = "IssueId:{0}".FormatWith(currentIssue.Id)
                 }, true);
@@ -144,7 +144,7 @@ namespace Errordite.Core.Issues.Commands
             {
                 currentIssue.Status = IssueStatus.Acknowledged;
 
-                Session.Raven.Advanced.DocumentStore.DatabaseCommands.UpdateByIndex(CoreConstants.IndexNames.Errors,
+                Session.RavenDatabaseCommands.UpdateByIndex(CoreConstants.IndexNames.Errors,
                     new IndexQuery
                     {
                         Query = "IssueId:{0} AND Classified:false".FormatWith(currentIssue.Id)

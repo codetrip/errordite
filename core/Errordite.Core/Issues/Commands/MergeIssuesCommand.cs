@@ -37,7 +37,7 @@ namespace Errordite.Core.Issues.Commands
             _authorisationManager.Authorise(mergeToIssue, request.CurrentUser);
 
             //move all errors fron the MergeFromIssue to the MergeToIssue
-            Session.Raven.Advanced.DocumentStore.DatabaseCommands.UpdateByIndex(CoreConstants.IndexNames.Errors,
+            Session.RavenDatabaseCommands.UpdateByIndex(CoreConstants.IndexNames.Errors,
                 new IndexQuery
                 {
                     Query = "IssueId:{0}".FormatWith(mergeFromIssue.Id)
@@ -59,7 +59,7 @@ namespace Errordite.Core.Issues.Commands
             }, true);
 
             //also move all core errors fron the MergeFromIssue to the MergeToIssue
-            Session.Raven.Advanced.DocumentStore.DatabaseCommands.UpdateByIndex(CoreConstants.IndexNames.UnloggedErrors,
+            Session.RavenDatabaseCommands.UpdateByIndex(CoreConstants.IndexNames.UnloggedErrors,
                 new IndexQuery
                 {
                     Query = "IssueId:{0}".FormatWith(mergeFromIssue.Id)

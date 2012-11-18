@@ -103,9 +103,9 @@ namespace Errordite.Test.IntegrationTests
         [Test]
         public void UpdateClassifiedByIndex()
         {
-            var ravenSession = Get<IAppSession>().Raven;
+            var session = Get<IAppSession>();
 
-            ravenSession.Advanced.DocumentStore.DatabaseCommands.UpdateByIndex(CoreConstants.IndexNames.Errors,
+            session.RavenDatabaseCommands.UpdateByIndex(CoreConstants.IndexNames.Errors,
                 new IndexQuery
                 {
                     Query = "ApplicationId:{0} AND IssueIds:{1} AND Classified:false".FormatWith("applications/1", "5123")

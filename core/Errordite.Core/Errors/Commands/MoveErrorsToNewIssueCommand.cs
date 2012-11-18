@@ -16,7 +16,7 @@ namespace Errordite.Core.Errors.Commands
             TraceObject(request);
 
             //now move errors from the other issues
-            Session.Raven.Advanced.DocumentStore.DatabaseCommands.UpdateByIndex(CoreConstants.IndexNames.Errors,
+            Session.RavenDatabaseCommands.UpdateByIndex(CoreConstants.IndexNames.Errors,
                 new IndexQuery
                 {
                     Query = request.Errors.Select(e => e.Id).ToRavenQuery("Id")
