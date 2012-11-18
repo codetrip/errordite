@@ -114,6 +114,7 @@
     <Compile Include="Json\SerialisationTests.cs" />
     <Compile Include="Misc\EncryptorTests.cs" />
     <Compile Include="Mocks\MockServiceBus.cs" />
+    <Compile Include="Raven\HttpRavenTestHarness.cs" />
     <Compile Include="Raven\RavenTestHarness.cs" />
     <Compile Include="Raven\RavenTestBase.cs" />
     <Compile Include="Redis\RedisTests.cs" />

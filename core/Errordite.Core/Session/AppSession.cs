@@ -14,6 +14,7 @@ using Errordite.Core.WebApi;
 using NServiceBus;
 using Raven.Abstractions.Data;
 using Raven.Client;
+using Raven.Client.Connection;
 using Raven.Client.Indexes;
 using Raven.Client.Extensions;
 using CodeTrip.Core.Extensions;
@@ -38,6 +39,11 @@ namespace Errordite.Core.Session
         /// Access the Redis Databases
         /// </summary>
         IRedisSession Redis { get; }
+
+        //TODO: make these part of the UoW by adding an action on IDatabaseCommands
+        IDatabaseCommands RavenDatabaseCommands { get; }
+        IDatabaseCommands MasterRavenDatabaseCommands { get; }
+
         /// <summary>
         /// Disposes and nulls the Raven session, does not perform any other operations, you 
         /// should call Commit() prior to calling Clear() to persist your session.
@@ -120,7 +126,7 @@ namespace Errordite.Core.Session
         {
             _sessionCommitActions = new List<SessionCommitAction>();
             _documentStore = documentStore;
-            _bus = bus;
+            _bus = bus;     
             _redisSession = redisSession;
             _config = config;
             _auditor = auditor;
@@ -169,6 +175,13 @@ namespace Errordite.Core.Session
         {
             get { return _redisSession; }
         }
+
+        public IDatabaseCommands RavenDatabaseCommands { get { return _session.Advanced.DocumentStore.DatabaseCommands.ForDatabase(_organisationDatabaseId); } }
+        public IDatabaseCommands MasterRavenDatabaseCommands { get
+        {
+            return
+                _session.Advanced.DocumentStore.DatabaseCommands.ForDatabase(CoreConstants.ErrorditeMasterDatabaseName);
+        } }
 
         public void Close()
         {
@@ -280,11 +293,11 @@ namespace Errordite.Core.Session
         public void BootstrapOrganisation(Organisation organisation)
         {
             SetDbId(organisation);
-            _documentStore.DatabaseCommands.EnsureDatabaseExists(_organisationDatabaseId);
+            MasterRavenDatabaseCommands.EnsureDatabaseExists(_organisationDatabaseId);
 
             IndexCreation.CreateIndexes(
                 new CompositionContainer(new AssemblyCatalog(typeof(Issues_Search).Assembly), new ExportProvider[0]),
-                 _documentStore.DatabaseCommands.ForDatabase(_organisationDatabaseId), _documentStore.Conventions);
+                 RavenDatabaseCommands, _documentStore.Conventions);
 
             _organisationSession = _documentStore.OpenSession(_organisationDatabaseId);
             _organisationSession.Advanced.MaxNumberOfRequestsPerSession = RequestLimit == 0 ? 250 : RequestLimit;

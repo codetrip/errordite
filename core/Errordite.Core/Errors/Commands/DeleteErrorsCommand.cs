@@ -22,12 +22,12 @@ namespace Errordite.Core.Errors.Commands
 
                 Trace("Issuing delete query for issue ids: {0}", issueIdQuery);
 
-                Session.Raven.Advanced.DocumentStore.DatabaseCommands.DeleteByIndex(CoreConstants.IndexNames.Errors, new IndexQuery
+                Session.RavenDatabaseCommands.DeleteByIndex(CoreConstants.IndexNames.Errors, new IndexQuery
                 {
                     Query = issueIdQuery
                 });
 
-                Session.Raven.Advanced.DocumentStore.DatabaseCommands.DeleteByIndex(CoreConstants.IndexNames.UnloggedErrors, new IndexQuery
+                Session.RavenDatabaseCommands.DeleteByIndex(CoreConstants.IndexNames.UnloggedErrors, new IndexQuery
                 {
                     Query = issueIdQuery
                 });

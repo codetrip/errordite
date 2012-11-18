@@ -92,7 +92,7 @@ namespace Errordite.Web.Areas.System.Controllers
         [HttpPost, ExportViewData]
         public ActionResult PurgeErrorditeErrors(DateTime fromDate)
         {
-            _session.Raven.Advanced.DocumentStore.DatabaseCommands.DeleteByIndex(CoreConstants.IndexNames.ErrorditeErrors, new IndexQuery
+            _session.RavenDatabaseCommands.DeleteByIndex(CoreConstants.IndexNames.ErrorditeErrors, new IndexQuery
             {
                 Query = "TimestampUtc:[* TO {0}]".FormatWith(DateTools.DateToString(fromDate, DateTools.Resolution.MILLISECOND))
             });
@@ -105,7 +105,7 @@ namespace Errordite.Web.Areas.System.Controllers
         [HttpPost, ExportViewData]
         public ActionResult RebuildIndex(string indexName)
         {
-            _session.Raven.Advanced.DocumentStore.DatabaseCommands.ResetIndex(indexName);
+            _session.RavenDatabaseCommands.ResetIndex(indexName);
             ConfirmationNotification("Index '{0}' was successfully rebuilt.");
             return RedirectToAction("index");
         }

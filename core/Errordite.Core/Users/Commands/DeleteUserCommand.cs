@@ -50,7 +50,7 @@ namespace Errordite.Core.Users.Commands
 
             _authorisationManager.Authorise(existingUser, request.CurrentUser);
 
-            Session.Raven.Advanced.DocumentStore.DatabaseCommands.UpdateByIndex(CoreConstants.IndexNames.Issues,
+            Session.RavenDatabaseCommands.UpdateByIndex(CoreConstants.IndexNames.Issues,
                 new IndexQuery
                 {
                     Query = "OrganisationId:{0} AND UserId:{1}".FormatWith(request.CurrentUser.OrganisationId, userId)
