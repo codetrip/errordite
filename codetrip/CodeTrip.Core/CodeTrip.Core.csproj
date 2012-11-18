@@ -38,16 +38,13 @@
       <HintPath>..\..\lib\Booksleeve\BookSleeve.dll</HintPath>
     </Reference>
     <Reference Include="Castle.Core">
-      <HintPath>..\..\lib\Castle\Castle.Core.dll</HintPath>
+      <HintPath>..\..\core\packages\Castle.Core.3.1.0\lib\net40-client\Castle.Core.dll</HintPath>
     </Reference>
     <Reference Include="Castle.Facilities.FactorySupport">
-      <HintPath>..\..\lib\Castle\Castle.Facilities.FactorySupport.dll</HintPath>
+      <HintPath>..\..\core\packages\Castle.FactorySupportFacility.3.1.0\lib\net40\Castle.Facilities.FactorySupport.dll</HintPath>
     </Reference>
     <Reference Include="Castle.Windsor">
-      <HintPath>..\..\lib\Castle\Castle.Windsor.dll</HintPath>
-    </Reference>
-    <Reference Include="Errordite.Utils.NServiceBusCastleBridge">
-      <HintPath>..\..\lib\Errordite\$(Configuration)\Errordite.Utils.NServiceBusCastleBridge.dll</HintPath>
+      <HintPath>..\..\core\packages\Castle.Windsor.3.1.0\lib\net40\Castle.Windsor.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
       <HintPath>..\..\lib\log4net\log4net.dll</HintPath>
@@ -254,6 +251,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\core\Errordite.Utils.NServiceBusCastleBridge\Errordite.Utils.NServiceBusCastleBridge.csproj">
+      <Project>{24344728-3CE7-4ACE-B1F1-83A1DFA3F3C0}</Project>
+      <Name>Errordite.Utils.NServiceBusCastleBridge</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
