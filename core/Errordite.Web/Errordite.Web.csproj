@@ -324,9 +324,6 @@
     <Compile Include="WebConstants.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\Css\errordite.css">
-      <DependentUpon>errordite.scss</DependentUpon>
-    </Content>
     <Content Include="Assets\Css\main.css" />
     <Content Include="Assets\Css\normalize.css" />
     <Content Include="Assets\Js\lib\jquery-1.8.2.min.js" />
@@ -336,6 +333,7 @@
     <Content Include="Css\bootstrap-responsive.min.css" />
     <Content Include="Css\bootstrap.min.css" />
     <Content Include="Css\errordite.css" />
+    <Content Include="Assets\Css\errordite.css" />
     <Content Include="Css\ie.css" />
     <Content Include="Css\img\1px-D8D8D8.gif" />
     <Content Include="Css\img\ajax-loader.gif" />
@@ -790,7 +788,6 @@
     <Content Include="Areas\System\Views\_ViewStart.cshtml" />
     <Content Include="Areas\System\Views\Shared\Organisations\SuspendModal.cshtml" />
     <Content Include="Areas\System\Views\Organisations\Applications.cshtml" />
-    <Content Include="Assets\Css\errordite.scss" />
     <None Include="Js\060.global.coffee" />
     <None Include="Js\alerts.coffee" />
     <None Include="Js\errors.coffee" />
