@@ -1,3 +1,55 @@
-body {
-  font-weight: bold; }
+﻿body, html { margin: 0; padding: 0; font-family: 'Open Sans', sans-serif; width: 100%; height: 100%; min-width:950px;background-color:#fff;}
 
+#body { width:100%;height:100%;min-width:950px;min-height: 100%;height: auto !important; margin: 0 auto -40px;}
+
+#welcome-bar {background: #242424; height: 30px;text-align: right;width: 100%;color: #fff;font-size: 0.9em;padding: 10px 10px 0 0}
+#welcome-bar a {}
+#welcome-bar a:hover {}
+#navigation { background: #555555; height: 60px;width: 974px;text-align:right }
+#navigation ul {margin: 0 auto; position: relative; width: 974px; z-index: 999;text-align:right}
+#navigation ul li a {
+    color: white;
+    display: block;
+    padding: 7px 15px;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+nav#group-navigation ul li div.nav-dropdown {
+    background: #F2F2F2;
+    -webkit-box-shadow: 3px 4px 0 0 rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 3px 4px 0 0 rgba(0,0,0,0.2);
+    -ms-box-shadow: 3px 4px 0 0 rgba(0,0,0,0.2);
+    -o-box-shadow: 3px 4px 0 0 rgba(0,0,0,0.2);
+    box-shadow: 3px 4px 0 0 rgba(0, 0, 0, 0.2);
+    color: #242424;
+    display: block;
+    font-family: Tahoma,serifSansSerifMonospace;
+    font-size: .95em;
+    opacity: 0;
+    padding: 10px;
+    pointer-events: none;
+    position: absolute;
+    top: 90px;
+    -webkit-transform: translateY(-10px);
+    -moz-transform: translateY(-10px);
+    -ms-transform: translateY(-10px);
+    -o-transform: translateY(-10px);
+    transform: translateY(-10px);
+    -webkit-transition: all .25s ease-out 0s;
+    -moz-transition: all .25s ease-out 0s;
+    -ms-transition: all .25s ease-out 0s;
+    -o-transition: all .25s ease-out 0s;
+    transition: all .25s ease-out 0s;
+    z-index: 999;
+}
+#navigation ul li div.nav-dropdown::before {
+    border-color: rgba(255, 255, 255, 0) rgba(255, 255, 255, 0) #F2F2F2;
+    border-style: solid;
+    border-width: 5px;
+    content: " ";
+    height: 0;
+    left: 20px;
+    position: absolute;
+    top: -10px;
+    width: 0;
+}

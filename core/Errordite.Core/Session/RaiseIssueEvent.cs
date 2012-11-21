@@ -24,7 +24,7 @@ namespace Errordite.Core.Session
 
         public override void Execute(IAppSession session)
         {
-            session.ReceptionServiceHttpClient.PostJsonAsync("issue".FormatWith(session.OrganisationDatabaseName), _issue.ToIssueBase());
+            session.ReceptionServiceHttpClient.PostJsonAsync("issue", _issue.ToIssueBase());
         }
     }
 
@@ -45,7 +45,7 @@ namespace Errordite.Core.Session
         public override void Execute(IAppSession session)
         {
             var issues = _issues.Select(i => i.ToIssueBase());
-            session.ReceptionServiceHttpClient.PutJsonAsync("issue".FormatWith(session.OrganisationDatabaseName), issues);
+            session.ReceptionServiceHttpClient.PutJsonAsync("issue", issues);
         }
     }
 
@@ -65,7 +65,7 @@ namespace Errordite.Core.Session
 
         public override void Execute(IAppSession session)
         {
-            StringBuilder ids = new StringBuilder();
+            var ids = new StringBuilder();
 
             //ensure the ids are in the correct format
             foreach(string id in _issueIds.Split(new []{'^'}, StringSplitOptions.RemoveEmptyEntries))
@@ -74,7 +74,7 @@ namespace Errordite.Core.Session
                 ids.Append("{0}|{1}^".FormatWith(IdHelper.GetFriendlyId(idparts[0]), IdHelper.GetFriendlyId(idparts[1])));
             }
 
-            session.ReceptionServiceHttpClient.DeleteAsync("issue/{1}".FormatWith(session.OrganisationDatabaseName, ids.ToString().TrimEnd(new []{'^'})));
+            session.ReceptionServiceHttpClient.DeleteAsync("issue/{0}".FormatWith(ids.ToString().TrimEnd(new []{'^'})));
         }
     }
 }
