@@ -1,0 +1,65 @@
+<Project
+	xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
+	ToolsVersion="4.0"
+	DefaultTargets="Main">
+
+  <Target Name="UpdateVersionInfo" DependsOnTargets="InitializeVersioning;
+          IncrementRevisionNumber;
+          IncrementBuildNumber;">
+  </Target>
+
+  <Target Name="IncrementRevisionNumber" Condition="$(Branch)=='release'">
+
+    <Version VersionFile="$(VersionPath)\version.txt" RevisionType="Increment">
+      <Output TaskParameter="Major" PropertyName="Major" />
+      <Output TaskParameter="Minor" PropertyName="Minor" />
+      <Output TaskParameter="Build" PropertyName="Build" />
+      <Output TaskParameter="Revision" PropertyName="Revision" />
+    </Version>
+    <Message Text="Version: $(Major).$(Minor).$(Build).$(Revision)"/>
+
+    <CreateProperty Value="$(Major).$(Minor).$(Build).$(Revision)">
+      <Output TaskParameter="Value" PropertyName="BuildNumber" />
+    </CreateProperty>
+
+    <WriteLinesToFile File="$(VersionPath)\version.txt" Lines="$(BuildNumber)" Overwrite="true"/>
+  </Target>
+
+  <Target Name="IncrementBuildNumber" Condition="$(Branch)=='trunk'">
+
+    <Version VersionFile="$(VersionPath)\version.txt" BuildType="Increment">
+      <Output TaskParameter="Major" PropertyName="Major" />
+      <Output TaskParameter="Minor" PropertyName="Minor" />
+      <Output TaskParameter="Build" PropertyName="Build" />
+    </Version>
+    <Message Text="Version: $(Major).$(Minor).$(Build).0"/>
+
+    <CreateProperty Value="$(Major).$(Minor).$(Build).0">
+      <Output TaskParameter="Value" PropertyName="BuildNumber" />
+    </CreateProperty>
+
+    <WriteLinesToFile File="$(VersionPath)\version.txt" Lines="$(BuildNumber)" Overwrite="true"/>
+  </Target>
+
+  <Target Name="InitializeVersioning">
+    <MakeDir Directories="$(VersionPath)" Condition="!Exists('$(VersionPath)')" />
+    
+    <!--Create a new version file if it does not exist-->
+    <WriteLinesToFile File="$(VersionPath)\version.txt" Lines="$(BaseBuildNumber)" Overwrite="true" Condition="!Exists('$(VersionPath)\version.txt')" />
+  </Target>
+
+  <Target Name="SetAssemblyVersion">
+    <ItemGroup>
+      <AllAssemblyInfos Include="$(SourcePath)\core\Errordite.Build\Assembly\SharedAssemblyInfo.cs"/>
+    </ItemGroup>
+    <FileUpdate Files="@(AllAssemblyInfos)" Regex="$(BaseBuildNumber)" ReplacementText="$(BuildNumber)" />
+  </Target>
+
+  <Target Name="ResetAssemblyVersion">
+    <ItemGroup>
+      <AllAssemblyInfos Include="$(SourcePath)\core\Errordite.Build\Assembly\SharedAssemblyInfo.cs"/>
+    </ItemGroup>
+    <FileUpdate Files="@(AllAssemblyInfos)" Regex="$(BuildNumber)" ReplacementText="$(BaseBuildNumber)" />
+  </Target>
+</Project>
+

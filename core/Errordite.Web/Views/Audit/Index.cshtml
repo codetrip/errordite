@@ -1,0 +1,32 @@
+﻿
+@using Errordite.Web.Models.Dashboard
+@model Errordite.Web.Models.Audit.AuditViewModel
+
+@{
+    ViewBag.Title = "Audit";
+}
+
+@section contentHeader
+{
+    <div id="pagetitle">
+        <h1><i class="icon-arrow-right"></i>Audit</h1>
+    </div>
+    @Html.Partial("Dashboard/Tabs", DashboardTab.Audit)
+}
+           
+<div id="audit" class="colfull">
+    @Html.Partial("Audit/AuditCriteria", Model)
+
+    @if (Model.AuditRecords != null && Model.AuditRecords.Items.Any())
+    {
+        @Html.Partial("Audit/AuditRecords", Model)
+    }
+    else
+    {
+        <div class="clear"></div> 
+        <div id="no-errors">
+            <p>No audit records were returned from your query.</p>   
+        </div> 
+        <div class="clear"></div> 
+    }
+</div>
