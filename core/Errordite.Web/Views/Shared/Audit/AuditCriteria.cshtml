@@ -1,0 +1,24 @@
+﻿@using Errordite.Web.Extensions
+@model Errordite.Web.Models.Audit.AuditViewModel
+           
+@using (Html.BeginForm("index", "audit", FormMethod.Get, new { id = "auditForm" }))
+{
+    <div class="filters errorditeform">
+        <div class="dropdown">
+            @Html.DropDownListFor(m => m.Status, Model.AuditRecordStatuses)
+        </div>
+        <div class="dropdown">
+            @Html.DropDownListFor(m => m.AuditRecordType, Model.AuditRecordTypes)
+        </div>
+        <div class="date">
+            @Html.TextBoxFor(m => m.StartDate, new { autocomplete = "off", placeholder = "Completed Start", @class = "daterangepicker" })
+        </div>
+        <div class="date">
+            @Html.TextBoxFor(m => m.EndDate, new { autocomplete = "off", placeholder = "Completed End", @class = "daterangepicker" })
+        </div>
+        <div class="buttons">
+            <input type="submit" class="btn btn-success" value="Apply" />
+            <a class="btn" href="@Url.Audit()">Clear</a>
+        </div>
+    </div>
+}

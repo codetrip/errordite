@@ -1,0 +1,63 @@
+<Project
+	xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
+	ToolsVersion="4.0"
+	DefaultTargets="InstallNotificationsService">
+
+  <UsingTask TaskName="Sleep" AssemblyFile="$(MSBuildProjectDirectory)\Errordite.Build.dll" />
+  
+  <Import Project="$(MSBuildProjectDirectory)\Global.imports" />
+  <Import Project="$(MSBuildProjectDirectory)\Configuration.target" />
+  <Import Project="$(MSBuildProjectDirectory)\ServiceControl.target" />
+  <Import Project="$(MSBuildProjectDirectory)\Queues.target" />
+
+  <PropertyGroup>
+    <CacheEngine>${redis}</CacheEngine>
+    <ServiceName>ErrorditeNotificationsService</ServiceName>
+    <ServiceDisplayName>Errordite Notifications Service</ServiceDisplayName>
+    <ServiceDomain>$(Domain)</ServiceDomain>
+    <ServiceUser>$(ErrorditeNotificationsServiceUser)</ServiceUser>
+    <ServicePassword>$(ErrorditeNotificationsServicePassword)</ServicePassword>
+    <DeployedApplicationPath>$(InstallRoot)\Errordite.Notifications.Service</DeployedApplicationPath>
+    <ServicePath>$(DeployedApplicationPath)\NServiceBus.Host.exe</ServicePath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <CreateQueue Include=".\Private$\Errordite.Notifications.Service">
+      <Label>Errordite Notifications</Label>
+    </CreateQueue>
+  </ItemGroup>
+
+  <Target Name="InstallNotificationsService" DependsOnTargets="GetBuildNumberAndInstallPaths;
+          StopService;
+          CopyServiceFiles; 
+          RunConfigFileChanger;
+          CreateNServiceBusSubscriptionsQueue;
+          CreateQueues;
+          InstallNServiceBusHostService;
+          SetCacheEngineToRedis;
+          SetServiceAutomatic;
+          StartService;">
+  </Target>
+
+  <Target Name="CopyServiceFiles" DependsOnTargets="GetBuildNumberAndInstallPaths" >
+    <CreateItem Include="$(MSBuildProjectDirectory)\..\Errordite.Notifications.Service\**\*.*;">
+      <Output TaskParameter="Include" ItemName="ErrorditeNotificationsServiceFiles" />
+    </CreateItem>
+
+    <Copy SourceFiles="@(ErrorditeNotificationsServiceFiles)" DestinationFolder="$(NotificationsServiceInstallPath)\%(RecursiveDir)" />
+  </Target>
+
+  <Target Name="GetBuildNumberAndInstallPaths">
+    <ReadLinesFromFile File="$(MSBuildProjectDirectory)\version.txt">
+      <Output TaskParameter="Lines" PropertyName="BuildNumber" />
+    </ReadLinesFromFile>
+
+    <CreateProperty Value="$(InstallRoot)\Errordite.Notifications.Service">
+      <Output TaskParameter="Value" PropertyName="NotificationsServiceInstallPath" />
+    </CreateProperty>
+
+    <CreateProperty Value="$(NotificationsServiceInstallPath)">
+      <Output TaskParameter="Value" PropertyName="ConfigChangerRunLocation" />
+    </CreateProperty>
+  </Target>
+</Project>

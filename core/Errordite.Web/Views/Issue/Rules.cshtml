@@ -1,0 +1,30 @@
+﻿@using System.Web.Mvc.Html
+@using Errordite.Web.Models.Issues
+@model IssueRulesViewModel
+   
+@Html.HiddenFor(m => m.Id)
+@Html.HiddenFor(m => m.ApplicationId)
+
+<div class="colfull">
+    <p>
+        <strong>Note</strong> adjusting an issue's rules will reset the its <strong>instance count</strong> and will affect the reports.
+    </p>
+    <table class="table-bordered errorditeform" id="rules-table">
+        <thead>
+            <tr>
+                <th class="property">Property</th>
+                <th class="operator">Operator</th>
+                <th class="value">Match</th>
+                <th class="tablebtn"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int rr = 0; rr < Model.Rules.Count; rr++)
+            {
+                @Html.EditorFor(m => m.Rules[rr])
+            } 
+            <tr><td colspan="4"><a class="add" href="#">Add Rule</a></td></tr>
+        </tbody>
+    </table>
+</div>
+    

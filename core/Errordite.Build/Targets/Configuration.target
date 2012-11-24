@@ -1,0 +1,46 @@
+<Project
+	xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
+	ToolsVersion="4.0"
+	DefaultTargets="RunConfigFileChanger">
+
+  <PropertyGroup>
+    <ConfigurationPath>$(MSBuildProjectDirectory)\ConfigFileChangerInstructions</ConfigurationPath>
+    <ConfigFileChangerPath>$(MSBuildProjectDirectory)\ConfigFileChanger</ConfigFileChangerPath>
+    <ConfigFileChangerTempPath>$(MSBuildProjectDirectory)\ConfigFileChangerTemp</ConfigFileChangerTempPath>
+  </PropertyGroup>
+
+  <Target Name="RunConfigFileChanger">
+    
+    <Message Text="Running Config File Changer In Path: $(ConfigChangerRunLocation)" />
+    <Message Text="Execute: $(MSBuildProjectDirectory)\RunConfigFileChanger.cmd $(Environment) $(ConfigFileChangerTempPath) $(ConfigurationPath) $(ConfigFileChangerPath) $(ConfigChangerRunLocation)" />
+    
+    <Exec Command="$(MSBuildProjectDirectory)\RunConfigFileChanger.cmd $(Environment) $(ConfigFileChangerTempPath) $(ConfigurationPath) $(ConfigFileChangerPath) $(ConfigChangerRunLocation)"/>
+
+    <RemoveDir Directories="$(ConfigFileChangerTempPath)" ContinueOnError="true" />
+  </Target>
+
+  <Target Name="SetCacheEngineToRedis">
+    <Microsoft.Sdc.Tasks.XmlFile.SetValue
+      Path="$(DeployedApplicationPath)\config\cache.config" 
+      XPath="//properties/defaultCacheEngine"
+      Value="${redis}"
+      />
+  </Target>
+  
+  <Target Name="SetCacheEngineToMemory">
+    <Microsoft.Sdc.Tasks.XmlFile.SetValue
+      Path="$(DeployedApplicationPath)\config\cache.config"
+      XPath="//properties/defaultCacheEngine"
+      Value="${memory}"
+      />
+  </Target>
+
+  <Target Name="SetCacheEngineToHybrid">
+    <Microsoft.Sdc.Tasks.XmlFile.SetValue
+      Path="$(DeployedApplicationPath)\config\cache.config"
+      XPath="//properties/defaultCacheEngine"
+      Value="${redis-memory-hybrid}"
+      />
+  </Target>
+</Project>
+
