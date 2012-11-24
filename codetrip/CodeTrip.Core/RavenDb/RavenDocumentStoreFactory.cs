@@ -20,10 +20,12 @@ namespace CodeTrip.Core.RavenDb
             {
                 Conventions =
                 {
-                    CustomizeJsonSerializer = ser => ser.TypeNameHandling = TypeNameHandling.All
+                    CustomizeJsonSerializer = ser => ser.TypeNameHandling = TypeNameHandling.All,
+                    EnlistInDistributedTransactions = false,
                 },
                 ConnectionStringName = "RavenDB",
                 ResourceManagerId = _resourceManagerId,
+
             }
             .Initialize();
             return store;
