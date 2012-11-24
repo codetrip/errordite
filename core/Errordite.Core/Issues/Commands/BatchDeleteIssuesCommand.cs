@@ -37,7 +37,7 @@ namespace Errordite.Core.Issues.Commands
 
             foreach (var partition in issueIds.Partition(25))
             {
-                Session.Raven.Advanced.DocumentStore.DatabaseCommands.DeleteByIndex(CoreConstants.IndexNames.Issues, new IndexQuery
+                Session.RavenDatabaseCommands.DeleteByIndex(CoreConstants.IndexNames.Issues, new IndexQuery
                 {
                     Query = "({0})".FormatWith(partition.ToRavenQuery("Id"))
                 });

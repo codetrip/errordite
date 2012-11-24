@@ -2,6 +2,8 @@
 using System.Data.SqlClient;
 using System.Transactions;
 using NUnit.Framework;
+using Raven.Abstractions.Data;
+using Raven.Client.Extensions;
 
 namespace Errordite.Test.Raven
 {

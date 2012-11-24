@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Errordite.Utils.DevUtility", "Errordite.Utils.DevUtility\Errordite.Utils.DevUtility.csproj", "{2C72E8C1-1303-4665-B15E-8A9F0A3A27F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Errordite.Utils.NServiceBusCastleBridge", "Errordite.Utils.NServiceBusCastleBridge\Errordite.Utils.NServiceBusCastleBridge.csproj", "{24344728-3CE7-4ACE-B1F1-83A1DFA3F3C0}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,12 +19,6 @@ Global
 		{2C72E8C1-1303-4665-B15E-8A9F0A3A27F9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2C72E8C1-1303-4665-B15E-8A9F0A3A27F9}.Release|x86.ActiveCfg = Release|x86
 		{2C72E8C1-1303-4665-B15E-8A9F0A3A27F9}.Release|x86.Build.0 = Release|x86
-		{24344728-3CE7-4ACE-B1F1-83A1DFA3F3C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{24344728-3CE7-4ACE-B1F1-83A1DFA3F3C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{24344728-3CE7-4ACE-B1F1-83A1DFA3F3C0}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{24344728-3CE7-4ACE-B1F1-83A1DFA3F3C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{24344728-3CE7-4ACE-B1F1-83A1DFA3F3C0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{24344728-3CE7-4ACE-B1F1-83A1DFA3F3C0}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

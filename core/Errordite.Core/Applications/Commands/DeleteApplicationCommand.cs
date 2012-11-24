@@ -41,17 +41,17 @@ namespace Errordite.Core.Applications.Commands
 
             _authorisationManager.Authorise(application, request.CurrentUser);
 
-            Session.Raven.Advanced.DocumentStore.DatabaseCommands.DeleteByIndex(CoreConstants.IndexNames.UnloggedErrors, new IndexQuery
+            Session.RavenDatabaseCommands.DeleteByIndex(CoreConstants.IndexNames.UnloggedErrors, new IndexQuery
             {
                 Query = "ApplicationId:{0}".FormatWith(applicationId)
             }, true);
 
-            Session.Raven.Advanced.DocumentStore.DatabaseCommands.DeleteByIndex(CoreConstants.IndexNames.Errors, new IndexQuery
+            Session.RavenDatabaseCommands.DeleteByIndex(CoreConstants.IndexNames.Errors, new IndexQuery
             {
                 Query = "ApplicationId:{0}".FormatWith(applicationId)
             }, true);
 
-            Session.Raven.Advanced.DocumentStore.DatabaseCommands.DeleteByIndex(CoreConstants.IndexNames.Issues, new IndexQuery
+            Session.RavenDatabaseCommands.DeleteByIndex(CoreConstants.IndexNames.Issues, new IndexQuery
             {
                 Query = "ApplicationId:{0}".FormatWith(applicationId)
             }, true);

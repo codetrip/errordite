@@ -110,6 +110,6 @@ namespace CodeTrip.Core.ServiceBus
         protected override bool SendOnly
         {
             get { return false; }
-        }
+        }        
     }
 }

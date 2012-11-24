@@ -12,30 +12,40 @@ using Raven.Json.Linq;
 
 namespace Errordite.Core.IoC
 {
+    public class ScopedAppSessionInstaller : AppSessionInstallerBase
+    {
+        protected override ComponentRegistration<T> PerUnitOfWorkLifeStyleRegistration<T>(ComponentRegistration<T> registration)
+        {
+            //LifestyleScoped means you get the same object within the scope of the container (which you create by calling container.BeginScope())
+            return registration.LifestyleScoped();
+        }
+    }
+
     public class PerWebRequestAppSessionInstaller : AppSessionInstallerBase
     {
-        protected override bool InstallWithPerWebRequestLifestyle
+        protected override ComponentRegistration<T> PerUnitOfWorkLifeStyleRegistration<T>(ComponentRegistration<T> registration)
         {
-            get { return true; }
+            return registration.LifeStyle.PerWebRequest;
         }
     }
 
     public class PerThreadAppSessionInstaller : AppSessionInstallerBase
     {
-        protected override bool InstallWithPerWebRequestLifestyle
+        protected override ComponentRegistration<T> PerUnitOfWorkLifeStyleRegistration<T>(ComponentRegistration<T> registration)
         {
-            get { return false; }
+            return registration.LifeStyle.PerThread;
         }
     }
 
     public abstract class AppSessionInstallerBase : IWindsorInstaller
     {
-        protected abstract bool InstallWithPerWebRequestLifestyle { get; }
-        
+        protected abstract ComponentRegistration<T> PerUnitOfWorkLifeStyleRegistration<T>(
+            ComponentRegistration<T> registration) where T : class;
+
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
             container.Register(
-                Component.For<IAppSession>().ImplementedBy<AppSession>().AssignPerWebRequestOrPerThread(InstallWithPerWebRequestLifestyle),
+                PerUnitOfWorkLifeStyleRegistration(Component.For<IAppSession>().ImplementedBy<AppSession>()),
                 Component.For<IRavenDocumentStoreFactory>().ImplementedBy<RavenDocumentStoreFactory>().LifeStyle.Singleton,
                 Component.For<IDocumentStore>().UsingFactoryMethod(k => k.Resolve<IRavenDocumentStoreFactory>().Create()).LifeStyle.Singleton);
 
@@ -46,7 +56,7 @@ namespace Errordite.Core.IoC
     {
         void TellMe(ProfiledRequestData data);
     }
-    
+
     public class AddProdProfInfoListener : IDocumentStoreListener
     {
         public bool BeforeStore(string key, object entityInstance, RavenJObject metadata, RavenJObject original)
