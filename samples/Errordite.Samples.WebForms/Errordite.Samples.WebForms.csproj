@@ -45,7 +45,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Errordite.Client">
-      <HintPath>..\packages\Errordite.Client.1.1.2.2\lib\net20\Errordite.Client.dll</HintPath>
+      <HintPath>..\packages\Errordite.Client.1.2.9.3\lib\net20\Errordite.Client.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

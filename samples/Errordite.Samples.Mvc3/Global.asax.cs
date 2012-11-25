@@ -1,6 +1,9 @@
 ﻿
+using System;
 using System.Web.Mvc;
 using System.Web.Routing;
+using Errordite.Client;
+using Errordite.Client.Interfaces;
 
 namespace Errordite.Samples.Mvc3
 {
@@ -31,9 +34,24 @@ namespace Errordite.Samples.Mvc3
 
         }
 
+        private class Logger : IErrorditeLogger
+        {
+            public void Debug(string message, params object[] args)
+            {
+                System.Diagnostics.Debug.WriteLine(message, args);
+            }
+
+            public void Error(Exception e)
+            {
+                System.Diagnostics.Debug.WriteLine(e.ToString());
+            }
+        }
+
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
+
+            ErrorditeClient.SetLogger(new Logger());
 
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
