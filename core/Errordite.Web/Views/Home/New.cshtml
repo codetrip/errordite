@@ -5,30 +5,4 @@
     Layout = "~/Views/Shared/Master2.0.cshtml";
 }
 
-    <div id="welcome-container">
-        <div class="hero-unit">
-            <h1 class="heading">Welcome to Errordite</h1>
-            <p style="text-align: center;">Helping you make sense of your exception logs</p>
-            <p>
-                <span class="hero-small">
-                    Errordite receives all your application exceptions and <span class="strong-darkx">groups together</span> those
-                    that are the same - automatically or with rules <span class="string-dark">you define</span>.
-                    You then decide how to <span class="strong-darkx">progress the errors</span>. 
-                    You can fix them, ignore them, or wait and see how often the error occurs.
-                </span>
-            </p>
-            <p>
-                <span class="hero-small">
-                    Errordite is currently running an <span class="strong-dark">open beta</span>. Please jump in and start making sense of your .net errors.
-                </span>
-            </p>
-            <p class="buttons">
-                <a class="btn-large btn-primary btn-signup" href="@Url.SignUp()">Sign up</a>
-            </p>
-            <div class="other-welcome-actions">
-                <a href="@Url.SignIn()">Sign in with existing account</a> 
-            </div>
-        </div>
-    </div>  
-
-    @Html.Partial("HowItWorksPartial", true);
+   
