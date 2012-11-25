@@ -27,6 +27,11 @@ namespace Errordite.Core.Applications.Queries
             Trace("Starting...");
 
             string applicationId = Application.GetId(request.Id);
+            string organisationId = Organisation.GetId(request.OrganisationId);
+
+            var organisation = MasterLoad<Organisation>(organisationId);
+
+            Session.SetOrganisation(organisation);
 
             var application = Load<Application>(applicationId);
 
@@ -37,7 +42,8 @@ namespace Errordite.Core.Applications.Queries
 
             return new GetApplicationResponse
             {
-                Application = application
+                Application = application,
+                Organisation = organisation,
             };
         }
     }
@@ -50,6 +56,8 @@ namespace Errordite.Core.Applications.Queries
     {
         [ProtoMember(1)]
         public Application Application { get; set; }
+        [ProtoMember(2)]
+        public Organisation Organisation { get; set; }
     }
 
     public class GetApplicationRequest : CacheableOrganisationRequestBase<GetApplicationResponse>

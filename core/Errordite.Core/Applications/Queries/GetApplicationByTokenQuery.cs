@@ -69,7 +69,8 @@ namespace Errordite.Core.Applications.Queries
 
             return new GetApplicationByTokenResponse
             {
-                Application = application
+                Application = application,
+                Organisation = organisation,
             };
         }
     }
@@ -77,9 +78,9 @@ namespace Errordite.Core.Applications.Queries
     public interface IGetApplicationByTokenQuery : IQuery<GetApplicationByTokenRequest, GetApplicationByTokenResponse>
     { }
 
-    public class GetApplicationByTokenResponse
+    public class GetApplicationByTokenResponse : GetApplicationResponse
     {
-        public Application Application { get; set; }
+        
     }
 
     public class GetApplicationByTokenRequest : OrganisationRequestBase
