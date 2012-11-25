@@ -48,7 +48,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Errordite.Client.Mvc">
-      <HintPath>..\packages\Errordite.Client.Mvc.1.2.9.1\lib\net40\Errordite.Client.Mvc.dll</HintPath>
+      <HintPath>..\packages\Errordite.Client.Mvc.1.2.9.3\lib\net40\Errordite.Client.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
