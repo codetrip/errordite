@@ -440,7 +440,6 @@
     <Content Include="Js\jqplot\jqplot.categoryAxisRenderer.min.js" />
     <Content Include="Js\jqplot\jqplot.dateAxisRenderer.min.js" />
     <Content Include="Js\jqplot\jqplot.highlighter.min.js" />
-    <Content Include="Js\jqplot\jqplot.min.js" />
     <Content Include="Js\dashboard.js">
       <DependentUpon>dashboard.coffee</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -454,6 +453,7 @@
     <Content Include="Js\admin\organisations.js">
       <DependentUpon>organisations.coffee</DependentUpon>
     </Content>
+    <Content Include="Js\jqplot\jquery.jqplot.min.js" />
     <Content Include="Js\prettify.js" />
     <Content Include="Js\rules.js">
       <DependentUpon>rules.coffee</DependentUpon>

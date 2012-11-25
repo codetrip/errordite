@@ -3,7 +3,7 @@
  * jQuery Mobile virtual event support.
  *
  * Version: 1.0.4
- * Revision: 1120
+ * Revision: 1121
  *
  * Copyright (c) 2011 Takashi Okamoto
  * jqPlot is currently available for use in all personal or commercial projects 

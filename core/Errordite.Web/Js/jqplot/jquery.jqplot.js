@@ -6,7 +6,7 @@
  * About: Version
  * 
  * version: 1.0.4 
- * revision: 1120
+ * revision: 1121
  * 
  * About: Copyright & License
  * 
@@ -245,7 +245,7 @@
     };
 
     $.jqplot.version = "1.0.4";
-    $.jqplot.revision = "1120";
+    $.jqplot.revision = "1121";
 
     $.jqplot.targetCounter = 1;
 

@@ -3,7 +3,7 @@
  * Pure JavaScript plotting plugin using jQuery
  *
  * Version: 1.0.4
- * Revision: 1120
+ * Revision: 1121
  *
  * Copyright (c) 2009-2012 Chris Leonello
  * jqPlot is currently available for use in all personal or commercial projects 
@@ -198,14 +198,20 @@
             var count = 0;
             for (var i=skip; i<l; i+=skip) {
                 this.data.splice(i+count, 0, [null, null]);
+                this._plotData.splice(i+count, 0, [null, null]);
+                this._stackData.splice(i+count, 0, [null, null]);
                 count++;
             }
             for (i=0; i<this.data.length; i++) {
                 if (this._primaryAxis == '_xaxis') {
                     this.data[i][0] = i+1;
+                    this._plotData[i][0] = i+1;
+                    this._stackData[i][0] = i+1;
                 }
                 else {
                     this.data[i][1] = i+1;
+                    this._plotData[i][1] = i+1;
+                    this._stackData[i][1] = i+1;
                 }
             }
         }
