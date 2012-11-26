@@ -162,6 +162,7 @@ namespace Errordite.Core.Issues.Commands
 
             currentIssue.Name = request.OriginalIssueName;
             currentIssue.Rules = request.Rules;
+            currentIssue.LastRuleAdjustmentUtc = DateTime.UtcNow;
             currentIssue.History.Add(new IssueHistory
             {
                 DateAddedUtc = DateTime.UtcNow,
