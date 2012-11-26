@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using CodeTrip.Core.Extensions;
 using CodeTrip.Core.Interfaces;
 using Errordite.Core.Authorisation;
@@ -61,14 +62,14 @@ namespace Errordite.Core.Issues.Commands
             UpdateCurrentIssue(currentIssue, tempIssue, request);
 
             Trace("Starting to determining non matching errors , Current Error Count:={0}, Temp Issue Error Count:={1}...", currentIssue.ErrorCount, tempIssue.ErrorCount);
-            var nonMatchingErrorsResponse = _getErrorsThatDoNotMatchNewRulesQuery.Invoke(new GetErrorsThatDoNotMatchNewRulesRequest
+            var nonMatchingErrorsResponse = _getErrorsThatDoNotMatchNewRulesQuery.Invoke(new FindErrorsMatchingRulesRequest
             {
                 IssueWithModifiedRules = currentIssue,
                 IssueWithOldRules = tempIssue
             });
-            Trace("Completed determining non matching errors, temp issue error count:={0}, remaining errors:={1}...", tempIssue.ErrorCount, nonMatchingErrorsResponse.MatchCount);
+            Trace("Completed determining non matching errors, temp issue error count:={0}, remaining errors:={1}...", tempIssue.ErrorCount, nonMatchingErrorsResponse.Matches);
 
-            if (nonMatchingErrorsResponse.Errors.Count > 0)
+            if (nonMatchingErrorsResponse.NonMatches.Count > 0)
             {
                 //if errors on the original issue did not match the new rules, store the temp issue and move the non matching errors to it
                 Store(tempIssue);
@@ -83,7 +84,7 @@ namespace Errordite.Core.Issues.Commands
                 //move all these errors to the new issue in a batch
                 _moveErrorsToNewIssueCommand.Invoke(new MoveErrorsToNewIssueRequest
                 {
-                    Errors = nonMatchingErrorsResponse.Errors,
+                    Errors = nonMatchingErrorsResponse.NonMatches,
                     IssueId = tempIssue.Id
                 });
             }
@@ -126,14 +127,25 @@ namespace Errordite.Core.Issues.Commands
                 }
             }
 
+            currentIssue.ErrorCount = nonMatchingErrorsResponse.Matches.Count;
+            tempIssue.ErrorCount = nonMatchingErrorsResponse.NonMatches.Count;
+            currentIssue.LastErrorUtc = nonMatchingErrorsResponse.Matches.Any()
+                                            ? nonMatchingErrorsResponse.Matches.Max(m => m.TimestampUtc)
+                                            : DateTime.MinValue;
+            tempIssue.LastErrorUtc = nonMatchingErrorsResponse.NonMatches.Any()
+                                            ? nonMatchingErrorsResponse.NonMatches.Max(m => m.TimestampUtc)
+                                            : DateTime.MinValue;
+
             Session.AddCommitAction(new RaiseIssueModifiedEvent(currentIssue));
+
+
 
             return new AdjustRulesResponse
             {
                 Status = retainedIssueId == null ? AdjustRulesStatus.Ok : AdjustRulesStatus.AutoMergedWithOtherIssue,
                 IssueId = retainedIssueId ?? currentIssue.FriendlyId,
-                ErrorsMatched = nonMatchingErrorsResponse.MatchCount,
-                ErrorsNotMatched = nonMatchingErrorsResponse.Errors.Count,
+                ErrorsMatched = nonMatchingErrorsResponse.Matches.Count,
+                ErrorsNotMatched = nonMatchingErrorsResponse.NonMatches.Count,
                 UnmatchedIssueId = tempIssue.FriendlyId,
             };
         }

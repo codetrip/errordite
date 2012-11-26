@@ -8,35 +8,37 @@ using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
 
 namespace Errordite.Core.Errors.Queries
 {
-    public class GetErrorsThatDoNotMatchNewRulesQuery : SessionAccessBase, IGetErrorsThatDoNotMatchNewRulesQuery
+    public class FindErrorsMatchingRulesQuery : SessionAccessBase, IGetErrorsThatDoNotMatchNewRulesQuery
     {
         private readonly IGetApplicationErrorsQuery _getApplicationErrorsQuery;
 
-        public GetErrorsThatDoNotMatchNewRulesQuery(IGetApplicationErrorsQuery getApplicationErrorsQuery)
+        public FindErrorsMatchingRulesQuery(IGetApplicationErrorsQuery getApplicationErrorsQuery)
         {
             _getApplicationErrorsQuery = getApplicationErrorsQuery;
         }
 
-        public GetErrorsThatDoNotMatchNewRulesResponse Invoke(GetErrorsThatDoNotMatchNewRulesRequest request)
+        public FindErrorsMatchingRulesResponse Invoke(FindErrorsMatchingRulesRequest request)
         {
             Trace("Starting...");
 
-            int matchCount;
-            var nonMatches = GetNonMatches(request.IssueWithModifiedRules, request.IssueWithOldRules, out matchCount);
+            List<Error> matches;
+            List<Error> nonMatches;
+            GetMatches(request.IssueWithModifiedRules, request.IssueWithOldRules, out matches, out nonMatches);
 
             Trace("...Complete");
 
-            return new GetErrorsThatDoNotMatchNewRulesResponse
+            return new FindErrorsMatchingRulesResponse
             {
                 Status = AdjustRulesStatus.Ok,
-                Errors = nonMatches,
-                MatchCount = matchCount,
+                NonMatches = nonMatches,
+                Matches = matches,
             };
         }
 
-        private List<Error> GetNonMatches(Issue issueWithModifiedRules, Issue issueWithOldRules, out int matchCount)
+        private List<Error> GetMatches(Issue issueWithModifiedRules, Issue issueWithOldRules, out List<Error> matches, out List<Error> nonMatches)
         {
-            var nonMatches = new List<Error>();
+            nonMatches = new List<Error>();
+            matches = new List<Error>();
             var errors = _getApplicationErrorsQuery.Invoke(new GetApplicationErrorsRequest
             {
                 ApplicationId = issueWithModifiedRules.ApplicationId,
@@ -46,13 +48,15 @@ namespace Errordite.Core.Errors.Queries
             }).Errors;
             
             //find any errors which do not match the new rules and move them to our new temporary issue
-            foreach (var error in errors.Items.Where(errorInstance => !issueWithModifiedRules.Rules.All(rule => rule.IsMatch(errorInstance))))
+            foreach (var error in errors.Items)
             {
-                nonMatches.Add(error);
+                if (issueWithModifiedRules.Rules.All(rule => rule.IsMatch(error)))
+                    matches.Add(error);
+                else
+                    nonMatches.Add(error);
+
                 UpdateIssue(issueWithOldRules, error);
             } 
-        
-            matchCount = errors.Items.Count - nonMatches.Count;
 
             return nonMatches;
         }
@@ -71,17 +75,17 @@ namespace Errordite.Core.Errors.Queries
         }
     }
 
-    public interface IGetErrorsThatDoNotMatchNewRulesQuery : ICommand<GetErrorsThatDoNotMatchNewRulesRequest, GetErrorsThatDoNotMatchNewRulesResponse>
+    public interface IGetErrorsThatDoNotMatchNewRulesQuery : ICommand<FindErrorsMatchingRulesRequest, FindErrorsMatchingRulesResponse>
     { }
 
-    public class GetErrorsThatDoNotMatchNewRulesResponse
+    public class FindErrorsMatchingRulesResponse
     {
         public AdjustRulesStatus Status { get; set; }
-        public List<Error> Errors { get; set; }
-        public int MatchCount { get; set; }
+        public List<Error> NonMatches { get; set; }
+        public List<Error> Matches { get; set; }
     }
 
-    public class GetErrorsThatDoNotMatchNewRulesRequest
+    public class FindErrorsMatchingRulesRequest
     {
         public Issue IssueWithOldRules { get; set; }
         public Issue IssueWithModifiedRules { get; set; }

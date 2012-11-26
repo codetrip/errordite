@@ -141,7 +141,8 @@ namespace Errordite.Core.Reception.Commands
             }
 
             issue.ErrorCount++;
-            issue.LastErrorUtc = DateTime.UtcNow;
+            if (error.TimestampUtc > issue.LastErrorUtc)
+                issue.LastErrorUtc = error.TimestampUtc;
 
             SetLimitStatus(application, issue);
 
@@ -155,13 +156,13 @@ namespace Errordite.Core.Reception.Commands
             //only store the error is it is a new error, not the result of reprocessing
             if (error.Id.IsNullOrEmpty())
             {
-                Trace("Its a new error, so Store it");
+                Trace("It's a new error, so Store it");
                 Store(error);
             }
 
             if (issue.RulesMatch(error))
             {
-                Trace("Error definately matches issue we are about to assign it to");
+                Trace("Error definitely matches issue we are about to assign it to");
             }
             else
             {
