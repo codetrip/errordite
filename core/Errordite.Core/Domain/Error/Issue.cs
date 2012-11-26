@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using CodeTrip.Core.Dynamic;
 using CodeTrip.Core.Extensions;
 using Errordite.Core.Authorisation;
 using Errordite.Core.IoC;
@@ -18,7 +19,7 @@ namespace Errordite.Core.Domain.Error
         [ProtoMember(2)]
         public List<IMatchRule> Rules { get; set; }
         [ProtoMember(3)]
-        public DateTime LastErrorUtc { get; set; }
+        public DateTime? LastRuleAdjustmentUtc { get; set; }
         [ProtoMember(4)]
         public MatchPriority MatchPriority { get; set; }
         [ProtoMember(5)]
@@ -78,6 +79,8 @@ namespace Errordite.Core.Domain.Error
         public bool AlwaysNotify { get; set; }
         [ProtoMember(18)]
         public string Reference { get; set; }
+        [ProtoMember(19)]
+        public DateTime LastErrorUtc { get; set; }
 
         [Raven.Imports.Newtonsoft.Json.JsonIgnore]
         public string FriendlyId { get { return Id == null ? string.Empty : Id.Split('/')[1]; } }
@@ -104,14 +107,9 @@ namespace Errordite.Core.Domain.Error
 
         public IssueBase ToIssueBase()
         {
-            return new IssueBase
-            {
-                ApplicationId = ApplicationId,
-                Id = Id,
-                LastErrorUtc = LastErrorUtc,
-                Rules = Rules,
-                MatchPriority = MatchPriority
-            };
+            var issueBase = new IssueBase();
+            PropertyMapper.Map(this, issueBase);
+            return issueBase;
         }
     }
 

@@ -50,14 +50,15 @@ namespace Errordite.Core.Issues
                     Trace("Adding new issue to cache with Id:-{0}", issue.Id);
                     appIssues.List.Add(issue);
                     //TODO: would be more efficient to go through the list looking for the right spot to add the new issue
-                    appIssues.List = appIssues.List.OrderByDescending(i => i.MatchPriority).ThenByDescending(i => i.LastErrorUtc).ToList();
+                    
                 }
                 else
                 {
-                    //TODO: are we sure that the match priority / last error cannot change?  The last error surely changes all the time...
                     Error("Updating issue in cache (from add method!) at index {0} with Id:={1}", index, issue.Id);
                     appIssues.List[index] = issue;
                 }
+
+                OrderIssues(appIssues);
             }
         }
 
@@ -79,9 +80,17 @@ namespace Errordite.Core.Issues
                 {
                     Error("Adding new issue to cache (from update method!) with Id:-{0}", issue.Id);
                     appIssues.List.Add(issue);
-                    appIssues.List = appIssues.List.OrderByDescending(i => i.MatchPriority).ThenByDescending(i => i.LastErrorUtc).ToList();
                 }
+                
+                OrderIssues(appIssues);
             }
+        }
+
+        private static void OrderIssues(ListHolder<IssueBase> appIssues)
+        {
+            appIssues.List = appIssues.List.OrderByDescending(i => i.MatchPriority)
+                            .ThenByDescending(i => i.LastRuleAdjustmentUtc ?? DateTime.MinValue)
+                            .ToList();
         }
 
         public void Delete(string issueId, string applicationId, string organisationId)

@@ -12,6 +12,9 @@ using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
 
 namespace Errordite.Core.Issues.Commands
 {
+    /// <summary>
+    /// Creates an empty issue - i.e. a manual process.
+    /// </summary>
     public class AddIssueCommand : SessionAccessBase, IAddIssueCommand
     {
         private readonly IGetIssueWithMatchingRulesQuery _getIssueWithMatchingRulesQuery;
@@ -34,6 +37,7 @@ namespace Errordite.Core.Issues.Commands
                 ApplicationId = applicationId,
                 CreatedOnUtc = DateTime.UtcNow,
                 LastModifiedUtc = DateTime.UtcNow,
+                LastRuleAdjustmentUtc = DateTime.UtcNow,
                 UserId = User.GetId(request.UserId),
                 ErrorCount = 0,
                 LastErrorUtc = DateTime.UtcNow,

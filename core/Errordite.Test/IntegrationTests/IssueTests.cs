@@ -32,7 +32,7 @@ namespace Errordite.Test.IntegrationTests
                 {
                     Id = issue.Id,
                     Rules = issue.Rules,
-                    LastErrorUtc = issue.LastErrorUtc,
+                    LastRuleAdjustmentUtc = issue.LastErrorUtc,
                     MatchPriority = issue.MatchPriority
                 })
                 .ToList();
