@@ -10,6 +10,8 @@
 
   Initialisation = (function() {
 
+    Initialisation.name = 'Initialisation';
+
     function Initialisation() {}
 
     Initialisation.prototype.init = function(ajax, pagingFunc) {
@@ -58,6 +60,8 @@
 
   Spinner = (function() {
 
+    Spinner.name = 'Spinner';
+
     function Spinner() {}
 
     Spinner.prototype.disable = function() {
@@ -94,6 +98,8 @@
 
 
   Tabs = (function() {
+
+    Tabs.name = 'Tabs';
 
     Tabs.get = function(anyNodeInside) {
       var $tabHolder, tabManager;
@@ -179,6 +185,8 @@
 
 
   Paging = (function() {
+
+    Paging.name = 'Paging';
 
     function Paging(changeFunc) {
       var paging;

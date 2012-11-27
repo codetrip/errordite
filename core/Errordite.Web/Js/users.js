@@ -1,4 +1,5 @@
 (function() {
+
   jQuery(function() {
     var $body, User, user;
     $body = $('div#users');
@@ -12,9 +13,13 @@
         return false;
       });
       return User = (function() {
+
+        User.name = 'User';
+
         function User($appEl) {
           this.$appEl = $appEl;
         }
+
         User.prototype["delete"] = function() {
           var $appEl;
           $appEl = this.$appEl;
@@ -22,8 +27,11 @@
             return $appEl.prev('form').submit();
           }
         };
+
         return User;
+
       })();
     }
   });
+
 }).call(this);

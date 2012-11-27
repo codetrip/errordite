@@ -25,7 +25,6 @@ namespace CodeTrip.Core.RavenDb
                 ConnectionStringName = "RavenDB",
                 ResourceManagerId = _resourceManagerId,
                 EnlistInDistributedTransactions = false,
-
             }
             .Initialize();
             return store;

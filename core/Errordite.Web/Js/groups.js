@@ -1,4 +1,5 @@
 (function() {
+
   jQuery(function() {
     var $body, Group, group;
     $body = $('div#groups');
@@ -12,9 +13,13 @@
         return false;
       });
       return Group = (function() {
+
+        Group.name = 'Group';
+
         function Group($appEl) {
           this.$appEl = $appEl;
         }
+
         Group.prototype["delete"] = function() {
           var $appEl;
           $appEl = this.$appEl;
@@ -22,8 +27,11 @@
             return $appEl.prev('form').submit();
           }
         };
+
         return Group;
+
       })();
     }
   });
+
 }).call(this);
