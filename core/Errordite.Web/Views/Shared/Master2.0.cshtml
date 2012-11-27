@@ -1,10 +1,5 @@
-﻿@using CodeTrip.Core.Caching.Entities
-@using Errordite.Core.Domain.Organisation
-@using Errordite.Core.Identity
-@using Errordite.Web.Extensions
-@using Errordite.Web.Models.Navigation
+﻿
 <!DOCTYPE html>
-<html dir="ltr" lang="en-GB">
     <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
     <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
     <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
@@ -23,98 +18,11 @@
         <!--[if lt IE 7]>
             <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
         <![endif]-->
-
-        @{
-            var appContext = ViewData.GetAppContext();
-        }
         
         <header>
-            <div id="welcome-bar-container">
-                <div id="welcome-bar">
-                    <div class="links">
-                        @if (appContext.AuthenticationStatus == AuthenticationStatus.Anonymous)
-                        {
-                            @: Welcome to Errordite you can <a href="@Url.SignIn()">Sign In</a> or <a href="@Url.SignUp()">Sign Up</a>.
-                        }
-                        else if (appContext.AuthenticationStatus == AuthenticationStatus.NotAuthenticated)
-                        {
-                            @: Welcome back to Errordite <strong>@appContext.CurrentUser.FirstName</strong> | <a href="@Url.SignIn()">Sign In</a> | <a href="@Url.SignOut()">Not @appContext.CurrentUser.FirstName?</a>
-                        }
-                        else
-                        {
-                            @: Welcome to Errordite <strong>@appContext.CurrentUser.FirstName </strong><span>&nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.YourDetails()">Your Details</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.SignOut()">Sign Out</a></span>
-                        }
-                    </div>
-                </div>
-            </div>
-            <div id="header-container">
-                <div id="header">
-                    <div id="logo">
-                        <a href="@Url.Home(ViewData.GetAppContext())"><img alt="Errordite" src="/images/ui/header-logo.png"/></a>
-                    </div>
-                    <div id="search">
-                        <div class="search-box">
-                            <input autocomplete="off" class="search-input" id="Id" name="Id" placeholder="Search..." type="text" value="" />
-                            <input type="submit" class="search-btn" value="Go" />
-                        </div>
-                        
-                    </div>
-                    <div id="nav">
-                        <ul class="nav">
-                            @if (appContext.AuthenticationStatus == AuthenticationStatus.Authenticated && (appContext.CurrentUser.Role == UserRole.SuperUser || appContext.ImpersonatorAppContext != null))
-                            {
-                                <li class="nav-item sysadmin">
-                                    <a href="#">System Admin</a>
-                                    <div class="pointer">
-                                        <ul>
-                                            <li><a href="@Url.Organisations()">Organisations ></a></li> 
-                                            <li><a href="@Url.Impersonate()">Impersonate ></a></li> 
-                                            <li><a href="@Url.ErrorditeErrors()">Errors ></a></li> 
-                                            <li><a href="@Url.FlushAllCaches()">Flush Caches ></a></li> 
-                                            @foreach (var cache in Enum.GetNames(typeof (CacheProfiles)))
-                                            {
-                                                <li><a href="@Url.Cache(cache)">@cache ></a></li>
-                                            }
-                                        </ul>
-                                    </div>
-                                </li>
-                            }
-                            <li class="nav-item dashboard">
-                                <a href="#">Dashboard</a>
-                                <div class="pointer">
-                                    <ul>
-                                        <li><a href="@ViewData.GetIssuesUrl(Url.Issues())">Issues ></a></li>
-                                        <li><a href="@ViewData.GetErrorsUrl(Url.Errors())">Errors ></a></li>
-                                        <li><a href="@Url.AddIssue()">Create Issue ></a></li>
-                                    </ul>
-                                </div>
-                            </li>
-                            <li class="nav-item admin">
-                                <a href="#">Admin</a>
-                                <div class="pointer">
-                                    <ul>
-                                        @foreach (var adminPage in Breadcrumbs.GetById(BreadcrumbId.Admin, Url).Children)
-                                        {
-                                            <li><a href="@adminPage.Link">@adminPage.Title ></a></li>
-                                        }
-                                    </ul>
-                                </div>
-                            </li>
-                            <li class="nav-item docs">
-                                <a href="#">Docs</a>
-                                <div class="pointer">
-                                    <ul>
-                                        <li><a href="@Url.GettingStarted()">Getting Started ></a></li>
-                                        <li><a href="@Url.Pricing()">Pricing ></a></li>
-                                        <li><a href="@Url.Client()">Client Help ></a></li>
-                                        <li><a href="@Url.Features()">Features ></a></li>
-                                    </ul>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+            @Html.Partial("header2.0")
+            @Html.Partial("breadcrumb2.0")
+            @RenderSection("header", required: false) 
         </header>
         
         <section>

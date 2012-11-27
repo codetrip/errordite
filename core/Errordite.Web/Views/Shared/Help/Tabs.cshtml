@@ -1,30 +1,29 @@
 ﻿@using Errordite.Web.Extensions
 @using Errordite.Web.Models.Help
 @model HelpTab
-        
-<div class="clear"></div>   
-<div class="nav-centered">
-    <ul class="nav nav-tabs">
+         
+<div class="tabs-container">
+    <ul class="tabs">
         @*<li @(Model == HelpTab.HowItWorks ? " class=active" : " class=inactive") >
             <a href="@Url.WhatIsErrordite()"><span>How it works</span></a>
         </li>*@
         <li @(Model == HelpTab.GettingStarted ? " class=active" : " class=inactive") >
-            <a href="@Url.GettingStarted()"><span>Getting Started</span></a>
+            <a href="@Url.GettingStarted()">Getting Started</a>
         </li>
         <li @(Model == HelpTab.Pricing ? " class=active" : " class=inactive") >
-            <a href="@Url.Pricing()"><span>Pricing</span></a>
+            <a href="@Url.Pricing()">Pricing</a>
         </li>
         @*<li @(Model == HelpTab.Faq ? " class=active" : " class=inactive") >
             <a href="@Url.Faq()"><span>FAQ</span></a>
         </li>*@
         <li @(Model == HelpTab.Features ? " class=active" : " class=inactive") >
-            <a href="@Url.Features()"><span>Features</span></a>
+            <a href="@Url.Features()">Features</a>
         </li>
         <li @(Model == HelpTab.Client ? " class=active" : " class=inactive") >
-            <a href="@Url.Client()"><span>.net Client</span></a>
+            <a href="@Url.Client()">net Client</a>
         </li>
         <li @(Model == HelpTab.SendErrorWithJson ? " class=active" : " class=inactive") >
-            <a href="@Url.JsonFormat()"><span>Send error with JSON</span></a>
+            <a href="@Url.JsonFormat()">Send error with JSON</a>
         </li>
     </ul>
 </div>

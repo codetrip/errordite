@@ -3,6 +3,9 @@
     ViewBag.Title = "FAQ";
 }
 
+@{
+    Layout = "~/Views/Shared/Master2.0.cshtml";
+}
 <div class="span12">
     <div class="base">
         @Html.Partial("Help/Tabs", HelpTab.Faq) 
