@@ -1,7 +1,40 @@
-﻿@*<script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js'></script>*@
-<script type='text/javascript' src='@Url.Content("~/assets/js/lib/jquery-1.8.2.min.js")'></script>
-<script type='text/javascript' src='@Url.Content("~/assets/js/plugins.js")'></script>
-<script type='text/javascript' src='@Url.Content("~/assets/js/main.js")'></script>
+﻿@using Errordite.Core.Configuration
+
+@if (ErrorditeConfiguration.Current.RenderMinifiedContent)
+{
+    @*<script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js'></script>*@
+    <script type='text/javascript' src='@Url.Content("~/assets/js/lib/jquery-1.8.2.min.js")'></script>
+    <script type='text/javascript' src='@Url.Content("~/assets/js/lib/lib.min.js")'></script>
+    <script type='text/javascript' src='@Url.Content("~/assets/js/combined.min.js")'></script>
+}
+else
+{
+    <script type='text/javascript' src='@Url.Content("~/assets/js/lib/jquery-1.8.2.min.js")'></script>
+    <script type="text/javascript" src="@Url.Content("~/assets/js/lib/prettify.js")"></script>
+    <script type='text/javascript' src='@Url.Content("~/assets/js/lib/jquery.validate.js")'></script>
+    <script type='text/javascript' src='@Url.Content("~/assets/js/lib/jquery.unobtrusive-ajax.js")'></script>
+    <script type='text/javascript' src='@Url.Content("~/assets/js/lib/jquery.validate.unobtrusive.js")'></script>
+    <script type='text/javascript' src='@Url.Content("~/assets/js/lib/jquery.placeholder.js")'></script>
+    <script type='text/javascript' src='@Url.Content("~/assets/js/lib/jquery.datepicker.js")'></script>
+    <script type='text/javascript' src='@Url.Content("~/assets/js/lib/jquery.form.js")'></script>
+    <script type='text/javascript' src='@Url.Content("~/assets/js/lib/jquery.history.js")'></script>
+    <script type='text/javascript' src='@Url.Content("~/assets/js/lib/jquery.cookie.js")'></script>
+    <script type='text/javascript' src='@Url.Content("~/assets/js/lib/bootstrap.js")'></script>
+    <script type='text/javascript' src='@Url.Content("~/assets/js/lib/knockout-2.0.0.js")'></script>
+    <script type='text/javascript' src='@Url.Content("~/assets/js/lib/underscore.js")'></script>
+    <script type='text/javascript' src="@Url.Content("~/assets/js/lib/common.js")"></script>
+    
+    <script type='text/javascript' src="@Url.Content("~/assets/js/global.js")"></script>
+    <script type='text/javascript' src="@Url.Content("~/assets/js/applications.js")"></script>
+    <script type='text/javascript' src="@Url.Content("~/assets/js/users.js")"></script>
+    <script type='text/javascript' src="@Url.Content("~/assets/js/groups.js")"></script>
+    <script type='text/javascript' src="@Url.Content("~/assets/js/errors.js")"></script>
+    <script type='text/javascript' src="@Url.Content("~/assets/js/issues.js")"></script>
+    <script type='text/javascript' src="@Url.Content("~/assets/js/issue.js")"></script>
+    <script type='text/javascript' src="@Url.Content("~/assets/js/rules.js")"></script>
+    <script type='text/javascript' src="@Url.Content("~/assets/js/dashboard.js")"></script>
+}
+
 
 @if (Request.Url != null && !Request.Url.Host.Contains("dev-site"))
 {

@@ -1,4 +1,5 @@
 (function() {
+
   jQuery(function() {
     var $body;
     $body = $('div#dashboard-errors');
@@ -13,4 +14,5 @@
       });
     }
   });
+
 }).call(this);

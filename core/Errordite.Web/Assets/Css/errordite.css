@@ -1,3 +1,27 @@
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 700;
+  src: local("Open Sans Bold"), local("OpenSans-Bold"), url("../fonts/normal-700.woff") format("woff"); }
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 300;
+  src: local("Open Sans Light"), local("OpenSans-Light"), url("../fonts/normal-300.woff") format("woff"); }
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 600;
+  src: local("Open Sans Semibold"), local("OpenSans-Semibold"), url("../fonts/normal-600.woff") format("woff"); }
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local("Open Sans"), local("OpenSans"), url("../fonts/normal-400.woff") format("woff"); }
+
 body, html {
   margin: 0;
   padding: 0;
@@ -16,7 +40,6 @@ input, textarea, select, .uneditable-input {
   width: 210px;
   height: 18px;
   padding: 4px;
-  margin-bottom: 9px;
   font-size: 13px;
   line-height: 18px;
   color: #525252;
@@ -24,6 +47,14 @@ input, textarea, select, .uneditable-input {
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px; }
+  input:focus, textarea:focus, select:focus, .uneditable-input:focus {
+    border-color: rgba(82, 168, 236, 0.8);
+    outline: 0;
+    outline: thin dotted \9;
+    /* IE6-9 */
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+    -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6); }
 
 a {
   text-decoration: none;
@@ -32,7 +63,6 @@ a {
     text-decoration: underline; }
 
 .rotate {
-  -webkit-transform: rotate(-90deg) translate3d(0, 0, 0);
   /* Safari */
   -webkit-transform: rotate(-90deg);
   /* Firefox */
@@ -96,12 +126,13 @@ a {
   .search .search-btn {
     color: #92c7e7;
     text-transform: uppercase;
-    padding: 4px 7px 4px 7px;
+    padding: 4px 7px 4px 6px;
     font-size: 12px;
-    font-weight: bold;
+    font-weight: 600;
     border: 0;
     background: #3d3d3d;
-    width: 32px; }
+    width: 30px;
+    height: 25px; }
   .search .search-box {
     background: #525252;
     width: 322px;
