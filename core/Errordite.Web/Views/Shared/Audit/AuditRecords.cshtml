@@ -1,0 +1,39 @@
+﻿@using CodeTrip.Core.Extensions
+@using Errordite.Core.Extensions
+@model Errordite.Web.Models.Audit.AuditViewModel
+           
+<div class="clear"></div>
+<div id="results">
+    <table class="table-bordered">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Message</th>
+                <th>Status</th>
+                <th>Triggered By</th>
+                <th>Queued On</th>
+                <th>Completed On</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var auditRecord in Model.AuditRecords.Items)
+            {
+                <tr>
+                    <td>@auditRecord.Name</td>
+                    <td>@auditRecord.Message</td>
+                    <td>@auditRecord.Status</td>
+                    <td>@auditRecord.TriggeredBy</td>
+                    <td>@auditRecord.QueuedOnUtc.ToLocalTimeFormatted()</td>
+                    <td>@auditRecord.CompletedOnUtc.ToLocalTimeFormatted()</td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="6">
+                    @Html.Partial("Pagination", Model.Paging)
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</div>

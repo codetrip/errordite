@@ -1,0 +1,42 @@
+﻿@model Errordite.Core.Identity.ImpersonationStatus    
+@{
+    ViewBag.Title = "Impersonation";
+}
+
+@section contentHeader
+{
+    <div id="pagetitle">
+        <h1>Impersonation</h1>
+    </div>
+    
+    <div class="border"></div>
+}
+
+<div class="span12">
+    <div class="base centered-narrow">
+        <h2>Impersonate User</h2>
+        <div class="base-content">
+            <p>Enter the users id below</p>
+            @using (Html.BeginForm("set", "impersonation", FormMethod.Post))
+            {
+                <ul class="errorditeform">
+                    <li>
+                        @Html.LabelFor(m => m.UserId, "UserId")
+                        @Html.TextBoxFor(m => m.UserId)
+                    </li> 
+                    <li>
+                        @Html.LabelFor(m => m.OrganisationId, "OrganisationId")
+                        @Html.TextBoxFor(m => m.OrganisationId)
+                    </li>
+                    <li class="cbox">
+                        @Html.LabelFor(m => m.Impersonating, "Impersonating?")
+                        @Html.CheckBoxFor(m => m.Impersonating)
+                    </li>
+                    <li class="cbox-fix">
+                        <input class="btn btn-success" type="submit" value="Impersonate" />
+                    </li>
+                </ul>
+            }
+        </div>
+    </div>
+</div> 

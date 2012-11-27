@@ -1,0 +1,19 @@
+﻿@using Errordite.Core.Identity
+@using Errordite.Web.Extensions   
+    
+@if (ViewData.HasNotification())
+{
+    var notification = ViewData.GetNotification();
+    <div id="notifications" class="@notification.Type.ToString().ToLowerInvariant()">
+        <span class="arrow">»</span><span>@Html.Raw(notification.Message.ToString())</span>
+    </div>
+}
+
+@*@if(ViewData.GetAppContext().AuthenticationStatus == AuthenticationStatus.Authenticated)
+{
+    <div id="alerts" class="alert-container">
+        <div class="well">
+            <h5>Your Alerts<a id="hidealerts" class="close">Hide</a></h5> 
+        </div>
+    </div>
+}*@

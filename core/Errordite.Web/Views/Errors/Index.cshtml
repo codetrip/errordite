@@ -1,0 +1,26 @@
+﻿@using Errordite.Web.Extensions
+@using Errordite.Web.Models.Errors
+@model ErrorPageViewModel
+
+@{
+    ViewBag.Title = "Errors";
+}
+
+@section contentHeader
+{
+    <div id="pagetitle">
+        <h1><i class="icon-arrow-right"></i>Errors</h1>
+    </div>
+    <div class="border"></div>
+}
+
+<div id="errors" class="colfull">
+    @if (!Model.ErrorsViewModel.Applications.Any())
+    {
+        <p>You do not have any applications set up, <a href="@Url.AddApplication()">click here to create an application.</a></p>    
+    }
+    else
+    {
+        @Html.Partial("Errors/ErrorCriteria", Model.ErrorsViewModel)
+    }
+</div>
