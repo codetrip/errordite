@@ -3,11 +3,19 @@ $lightblue: #F3F8FC;
 $mediumBrown:#3D3D3D;
 $lightbrown: #292C31;
 $darkbrown: #525252;
+$tabBackground:#E7F0F5;
+$lightBlueFont: #71ABD1;
 $headerFont: 'Open Sans', sans-serif;
 $minWidth: 974px;
+$extraLargeFont: 16px;
+$largeFont: 15px;
 $standardFont: 14px;
 $mediumFont:13px;
 $smallFont: 12px;
+$extraSmallFont: 11px;
+$normalFontWeight: 300;
+$mediumFontWeight: 400;
+$boldFontWeight: 600;
 
 @font-face {
   font-family: 'Open Sans';
@@ -65,17 +73,32 @@ input, textarea, select, .uneditable-input {
 	  border-color: rgba(82, 168, 236, 0.8);
 	  outline: 0;
 	  outline: thin dotted \9;
-	  /* IE6-9 */
 	  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
 	  -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
 	  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
 	}
 }
 
+h1 {
+	font-size:$extraLargeFont;
+}
+h2 {
+	font-size:$largeFont;
+}
+h3 {
+	font-size:$mediumFont;
+}
+h4 {
+	font-size:$smallFont;
+}
+h5 {
+	font-size:$extraSmallFont;
+}
 
 a {
 	text-decoration:none;
 	font-size:$standardFont;
+	color:$lightBlueFont;
 	&:hover{
 		text-decoration:underline;
 	}
@@ -94,6 +117,16 @@ a {
 	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
 }
 
+section {
+	width: 100%;
+	background:#fff;
+}
+
+.centered {
+  margin: 0 auto;
+  width: $minWidth;
+}
+
 .welcome-bar-container {
   width: 100%;
   background: $mediumBrown;
@@ -105,7 +138,7 @@ a {
   text-align: right;
   color: #fff;
   font-family: $headerFont;
-  font-weight:300;
+  font-weight:$normalFontWeight;
   font-size:$smallFont;
   .links {
     float: right;
@@ -156,8 +189,8 @@ a {
     color: $mediumBlue;
     text-transform: uppercase;
     padding: 4px 7px 4px 6px;
-    font-size: $smallFont;
-    font-weight: 600;
+    font-size: $extraSmallFont;
+    font-weight: $mediumFontWeight;
     border: 0;
     background: $mediumBrown;
 	width:30px;
@@ -195,11 +228,9 @@ nav {
       padding: 5px;
       color: #fff;
 	  font-size: $standardFont;
-	  font-weight: 300;
+	  font-weight: $normalFontWeight;
+	  text-decoration:none;
       &:hover {
-        background: $lightbrown;
-        display: block;
-        padding: 5px;
         color: $mediumBlue;
       }
 	  small {
@@ -221,13 +252,13 @@ nav {
       padding-top: 0px;
       float: none;
       padding: 4px;
-	  line-height:22px;
+	  line-height:20px;
     }
     a {
       white-space: nowrap;
       color: #fff;
 	  font-size: $standardFont;
-	  font-weight: 400;
+	  font-weight: $normalFontWeight;
 	  text-decoration:none;
 	  &:hover {
 		color:$darkbrown;
@@ -285,7 +316,7 @@ nav {
 .trail {
   margin: 0 auto;
   width: $minWidth;
-  color:#71ABD1;
+  color:$lightBlueFont;
   font-weight:400;
   font-size: $mediumFont;
   .divider {
@@ -298,7 +329,7 @@ nav {
 	line-height: 35px;
   }
   a {
-	color:#71ABD1;
+	color:$lightBlueFont;
 	font-size: $mediumFont;
   }
   li.active {
@@ -327,18 +358,21 @@ nav {
 		-webkit-border-radius: 4px 4px 0 0;
 		-moz-border-radius: 4px 4px 0 0;
 		border-radius: 4px 4px 0 0;
-		background-color: #E7F0F5;
+		background-color: $tabBackground;
+		color:#B5BEC3;
+		text-decoration:none;
+		font-size: $mediumFont;
+		font-weight: $mediumFontWeight;
 		&:hover {
-			color: #555555;
+			color: $mediumBrown;
 			background-color: #ffffff;
 		}
 	  }
     }
 	.active > a {
 		border-bottom-color: transparent;
-		color: #555555;
+		color: #6B8F9D;
 		background-color: #ffffff;
 		cursor:default;
-		text-decoration:none;
 	}
 }

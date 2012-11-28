@@ -10,8 +10,6 @@
 
   Initialisation = (function() {
 
-    Initialisation.name = 'Initialisation';
-
     function Initialisation() {}
 
     Initialisation.prototype.init = function(ajax, pagingFunc) {
@@ -60,8 +58,6 @@
 
   Spinner = (function() {
 
-    Spinner.name = 'Spinner';
-
     function Spinner() {}
 
     Spinner.prototype.disable = function() {
@@ -98,8 +94,6 @@
 
 
   Tabs = (function() {
-
-    Tabs.name = 'Tabs';
 
     Tabs.get = function(anyNodeInside) {
       var $tabHolder, tabManager;
@@ -185,8 +179,6 @@
 
 
   Paging = (function() {
-
-    Paging.name = 'Paging';
 
     function Paging(changeFunc) {
       var paging;
@@ -324,8 +316,6 @@
       });
       return Alerts = (function() {
 
-        Alerts.name = 'Alerts';
-
         function Alerts() {}
 
         Alerts.prototype.bind = function(alerts) {
@@ -439,8 +429,6 @@
       });
       return Application = (function() {
 
-        Application.name = 'Application';
-
         function Application($appEl) {
           this.$appEl = $appEl;
         }
@@ -553,8 +541,6 @@
 
       ErrorProp = (function() {
 
-        ErrorProp.name = 'ErrorProp';
-
         function ErrorProp($propEl) {
           this.$propEl = $propEl;
           this.propName = $propEl.data('error-attr');
@@ -640,8 +626,6 @@
       */
 
       return Error = (function() {
-
-        Error.name = 'Error';
 
         function Error($errorEl) {
           this.$errorEl = $errorEl;
@@ -806,8 +790,6 @@
         return false;
       });
       return Group = (function() {
-
-        Group.name = 'Group';
 
         function Group($appEl) {
           this.$appEl = $appEl;
@@ -1022,8 +1004,6 @@
       $body = $('body');
       Errordite.Rule = (function() {
 
-        Rule.name = 'Rule';
-
         function Rule($rule) {
           this.$rule = $rule;
           if (this.$rule != null) {
@@ -1054,8 +1034,6 @@
 
       })();
       Errordite.RuleManager = (function() {
-
-        RuleManager.name = 'RuleManager';
 
         function RuleManager() {
           var ruleEl;
@@ -1229,8 +1207,6 @@
         return false;
       });
       return User = (function() {
-
-        User.name = 'User';
 
         function User($appEl) {
           this.$appEl = $appEl;
