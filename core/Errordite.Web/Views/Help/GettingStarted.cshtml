@@ -2,9 +2,6 @@
 @using Errordite.Web.Extensions
 @{
     ViewBag.Title = "Getting Started";
-}
-
-@{
     Layout = "~/Views/Shared/Master2.0.cshtml";
 }
 
@@ -13,7 +10,7 @@
     @Html.Partial("Help/Tabs", HelpTab.GettingStarted) 
 }
 
-<div class="container">
+<section class="centered">
     <div class="title">
         <h1>Quick start guide</h1>
     </div>
@@ -47,4 +44,4 @@ endpoint="https://www.errordite.com/receiveerror" />
     <p>
         Once your application starts generating errors you will receive notifications of issues being created via email and in the alerts panel in Errordite.
     </p>
-</div>
+</section>

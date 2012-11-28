@@ -1066,6 +1066,7 @@
       <Bare>False</Bare>
       <Iced>False</Iced>
     </Content>
+    <Content Include="Assets\Css\components.scss" />
     <None Include="Js\060.global.coffee">
       <Compile>True</Compile>
       <Minify>False</Minify>
