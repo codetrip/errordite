@@ -27,6 +27,10 @@
     <IISExpressUseClassicPipelineMode />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <SccProjectName>&lt;Project Location In Database&gt;</SccProjectName>
+    <SccLocalPath>&lt;Local Binding Root of Project&gt;</SccLocalPath>
+    <SccAuxPath>&lt;Source Control Database&gt;</SccAuxPath>
+    <SccProvider>Mercurial Source Control Package</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -419,16 +423,10 @@
       <Compile>True</Compile>
       <Minify>False</Minify>
     </Content>
-    <Content Include="Css\errordite.css">
-      <Compile>True</Compile>
-      <Minify>False</Minify>
-    </Content>
     <Content Include="Assets\Css\errordite.css">
       <DependentUpon>errordite.scss</DependentUpon>
     </Content>
-    <Content Include="Css\errordite.min.css">
-      <DependentUpon>errordite.css</DependentUpon>
-    </Content>
+    <Content Include="Css\errordite.css" />
     <Content Include="Css\ie.css">
       <Compile>True</Compile>
       <Minify>False</Minify>
@@ -1066,6 +1064,10 @@
       <Bare>False</Bare>
       <Iced>False</Iced>
     </Content>
+    <Content Include="Assets\Css\test.css">
+      <DependentUpon>test.scss</DependentUpon>
+    </Content>
+    <Content Include="Assets\Css\test.scss" />
     <None Include="Js\060.global.coffee">
       <Compile>True</Compile>
       <Minify>False</Minify>
@@ -1119,8 +1121,6 @@
     <Content Include="Views\Shared\NotFound.cshtml" />
     <Content Include="Views\Admin\Upgrade.cshtml" />
     <Content Include="Views\Shared\Help\PaymentPlan.cshtml" />
-    <Content Include="Views\Help\Privacy.cshtml" />
-    <Content Include="Views\Help\TermsAndConditions.cshtml" />
     <Content Include="Views\Admin\Billing.cshtml" />
     <Content Include="Views\Admin\Downgrade.cshtml" />
     <Content Include="Views\EmailTest\List.cshtml" />

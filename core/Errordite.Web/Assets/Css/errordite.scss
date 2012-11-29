@@ -1,21 +1,21 @@
-$mediumBlue: #92C7E7;
 $lightblue: #F3F8FC;
-$mediumBrown:#3D3D3D;
+$mediumblue: #92C7E7;
+$darkblue:#95C0DF;
+$verydarkblue: #729DB7;
+$verylightbrown:#8E9090;
 $lightbrown: #292C31;
+$mediumBrown:#3D3D3D;
 $darkbrown: #525252;
-$tabBackground:#E7F0F5;
-$lightBlueFont: #71ABD1;
+$greyblue:#E7F0F5;
+$tableBorder:#CDD4DA;
+$tableAlternateColor:#ECF4F7;
 $headerFont: 'Open Sans', sans-serif;
 $minWidth: 974px;
-$extraLargeFont: 18px;
-$largeFont: 16px;
-$standardFont: 14px;
-$mediumFont:13px;
-$smallFont: 12px;
-$extraSmallFont: 11px;
 $normalFontWeight: 300;
-$mediumFontWeight: 400;
+$extraSmallFontWeight: 400;
 $boldFontWeight: 600;
+$extraBoldFontWeight: 700;
+$borderRadius: 3px;
 
 @font-face {
   font-family: 'Open Sans';
@@ -50,20 +50,21 @@ body, html {
   height: 100%;
   min-width: $minWidth;
   background-color: #fff;
-  font-size:$standardFont;
+  font-size:14px;
+  color:$darkbrown;
 }
 
 ul {
   list-style: none;
 }
 
-input, textarea, select, .uneditable-input {
+input, textarea, select {
 	display: inline-block;
 	width: 210px;
-	height: 18px;
+	height: 24px;
 	padding: 4px;
 	font-size: 13px;
-	line-height: 18px;
+	line-height: 24px;
 	color: $darkbrown;
 	border: 1px solid #cccccc;
 	-webkit-border-radius: 3px;
@@ -79,42 +80,297 @@ input, textarea, select, .uneditable-input {
 	}
 }
 
+h1, h2, h3, h4, h5, h6 {
+	font-weight: 13pxWeight;
+	color:$mediumblue;
+}
+
+.indented {
+	margin: 0 0 0 25px;
+}
+
 h1 {
-	font-size:$extraLargeFont;
+	font-size:24px;
+	margin:20px 0 15px 0;
 }
 h2 {
-	font-size:$largeFont;
+	font-size:16px;
+	margin:10px 0 5px 0;
 }
 h3 {
-	font-size:$mediumFont;
+	font-size:13px;
 }
 h4 {
-	font-size:$smallFont;
+	font-size:12px;
 }
 h5 {
-	font-size:$extraSmallFont;
+	font-size:11px;
 }
 
 a {
 	text-decoration:none;
-	font-size:$standardFont;
-	color:$lightBlueFont;
+	font-size:14px;
+	color:$verydarkblue;
 	&:hover{
 		text-decoration:underline;
 	}
 }
 
-.rotate {
-	/* Safari */
-	-webkit-transform: rotate(-90deg);
-	/* Firefox */
-	-moz-transform: rotate(-90deg);
-	/* IE */
-	-ms-transform: rotate(-90deg);
-	/* Opera */
-	-o-transform: rotate(-90deg);
-	/* Internet Explorer */
-	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+pre {
+  &.prettyprint {
+    font-size: 12px;
+    font-family: Consolas, Menlo, Monaco, Lucida Console;
+    padding: 12px 0 0 15px!important;
+    line-height: 14px;
+    border: 1px solid #D8DEE2!important;
+    border-radius: 0;
+  }
+  &.lang-xml {
+    .tag {
+      color: maroon;
+    }
+    .att, .atn {
+      color: red;
+    }
+    .atv {
+      color: blue;
+    }
+    .com {
+      color: darkgreen;
+    }
+  }
+  &.lang-cs .typ {
+    color: #2b91af;
+  }
+}
+
+table {
+  max-width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  background-color: transparent; 
+}
+.table {
+  width: 100%;
+  margin-bottom: 18px;
+  th, td {
+    padding: 10px 8px 8px 8px;
+    line-height: 18px;
+    text-align: left;
+    vertical-align: middle;
+    border-top: 1px solid $tableBorder;
+  }
+  th {
+    font-weight: $boldFontWeight;
+	background-color:#D7E5EE;
+	color:#7B8992;
+	text-transform:uppercase;
+	font-size:11px;
+	white-space: nowrap;
+  }
+  .table-info-header {
+	color:#000;
+	font-weight: $boldFontWeight;
+	font-size: 12px;
+  }
+  .table-info {
+	color: $mediumblue;
+	font-size: 12px;
+  }
+}
+.table-bordered {
+  border: 1px solid $tableBorder;
+  border-left: 0;
+  border-collapse: separate;
+  *border-collapse: collapsed;
+  -webkit-border-radius: $borderRadius;
+  -moz-border-radius: $borderRadius;
+  border-radius: $borderRadius;
+  th, td {
+    border-left: 1px solid $tableBorder;
+  }
+  thead:first-child tr:first-child th {
+    border-top: 0;
+  }
+  tbody:first-child tr:first-child {
+    th, td {
+      border-top: 0;
+    }
+  }
+  thead:first-child tr:first-child th:first-child, tbody:first-child tr:first-child td:first-child {
+    -webkit-border-radius: $borderRadius 0 0 0;
+    -moz-border-radius: $borderRadius 0 0 0;
+    border-radius: $borderRadius 0 0 0;
+  }
+  thead:first-child tr:first-child th:last-child, tbody:first-child tr:first-child td:last-child {
+    -webkit-border-radius: 0 $borderRadius 0 0;
+    -moz-border-radius: 0 $borderRadius 0 0;
+    border-radius: 0 $borderRadius 0 0;
+  }
+  thead:last-child tr:last-child th:first-child, tbody:last-child tr:last-child td:first-child {
+    -webkit-border-radius: 0 0 0 $borderRadius;
+    -moz-border-radius: 0 0 0 $borderRadius;
+    border-radius: 0 0 0 $borderRadius;
+  }
+  thead:last-child tr:last-child th:last-child, tbody:last-child tr:last-child td:last-child {
+    -webkit-border-radius: 0 0 $borderRadius 0;
+    -moz-border-radius: 0 0 $borderRadius 0;
+    border-radius: 0 0 $borderRadius 0;
+  }
+  tbody tr:nth-child(even) {
+	td, th {
+		background-color: $tableAlternateColor;
+    }
+  }
+  tfoot td {
+    padding:8px 8px 4px 8px;
+  }
+}
+
+.paging {
+  padding: 0;
+  font-size: 11px;
+  div {
+    &.pages {
+      float: left;
+      width: 20%;
+      text-align: left;
+	  margin-top: 9px;
+    }
+    &.items {
+      float: right;
+      width: 25%;
+      text-align: right;
+	  margin-top: 9px;
+    }
+    &.pagination {
+      width: 55%;
+      float: left;
+      text-align: center;
+	  margin-top: -10px;
+    }
+  }
+  input[type='text'] {
+    width: 35px;
+    height: 14px;
+    margin: -4px 0 0 3px;
+  }
+  select {
+    width: 50px;
+    padding: 0;
+    margin: -4px 0 0 3px;
+  }
+}
+.pagination {
+  ul {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    margin-left: 0;
+    margin-bottom: 0;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  }
+  li {
+    display: inline;
+  }
+  a {
+    float: left;
+    padding: 0 12px;
+    line-height: 30px;
+    text-decoration: none;
+    border: 1px solid #ddd;
+    border-left-width: 0;
+	font-size:11px;
+	text-transform:uppercase;
+    &:hover {
+      background-color: $greyblue;
+    }
+  }
+  .active a {
+    background-color: $greyblue;
+    color: $mediumBrown;
+    cursor: default;
+  }
+  .disabled {
+    span {
+      color: $mediumBrown;
+      background-color: transparent;
+      cursor: default;
+    }
+    a {
+      color:#B5BEC3;
+      background-color: transparent;
+      cursor: default;
+    }
+  }
+  li {
+    &:first-child a {
+      border-left-width: 1px;
+      -webkit-border-radius: 3px 0 0 3px;
+      -moz-border-radius: 3px 0 0 3px;
+      border-radius: 3px 0 0 3px;
+    }
+    &:last-child a {
+      -webkit-border-radius: 0 3px 3px 0;
+      -moz-border-radius: 0 3px 3px 0;
+      border-radius: 0 3px 3px 0;
+    }
+  }
+}
+.pager {
+  margin-left: 0;
+  list-style: none;
+  text-align: center;
+  *zoom: 1;
+  &:before {
+    display: table;
+    content: "";
+  }
+  &:after {
+    display: table;
+    content: "";
+    clear: both;
+  }
+  li {
+    display: inline;
+  }
+  a {
+    display: inline-block;
+    padding: 4px 12px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+    &:hover {
+      text-decoration: none;
+      background-color: #f5f5f5;
+    }
+  }
+  .next a {
+    float: right;
+  }
+  .previous a {
+    float: left;
+  }
+  .disabled a {
+    color: $mediumBrown;
+    background-color: #fff;
+    cursor: default;
+    &:hover {
+      color: $mediumBrown;
+      background-color: #fff;
+      cursor: default;
+    }
+  }
+}
+.paging div.pages i {
+  margin-left: 8px;
 }
 
 section {
@@ -125,6 +381,26 @@ section {
 .centered {
   margin: 0 auto;
   width: $minWidth;
+}
+
+.four-col {
+	width:23%;
+	margin:5px;
+	float:left;
+}
+.two-col {
+	width:46%;
+	margin:5px;
+	float:left;
+}
+
+.rotate {
+	margin-left:3px;
+    display:inline-block;
+	-webkit-transform: rotate(-270deg);
+	-moz-transform: rotate(-270deg);
+	-ms-transform: rotate(-270deg);
+	-o-transform: rotate(-270deg);
 }
 
 .welcome-bar-container {
@@ -139,14 +415,14 @@ section {
   color: #fff;
   font-family: $headerFont;
   font-weight:$normalFontWeight;
-  font-size:$smallFont;
+  font-size:12px;
   .links {
     float: right;
     margin-top: 4px;
   }
   a {
     color: #fff;
-    font-size:$smallFont;
+    font-size:12px;
     &:hover {
       text-decoration: underline;
     }
@@ -158,10 +434,39 @@ section {
   background: $lightbrown;
   height: 60px;
 }
-
 .header {
   margin: 0 auto;
   width: $minWidth;
+}
+
+footer {
+  margin-top:25px;
+  width: 100%;
+  background: $mediumBrown;
+  height: 100px;
+}
+.footer {
+  margin: 0 auto;
+  width: $minWidth;
+  text-align:center;
+  color:$darkblue;
+  font-weight: $normalFontWeight;
+  font-size:15px;
+  padding-top:20px;
+  line-height:30px;
+  span {
+	padding-top:20px;
+  }
+  nav {
+	width:100%;
+	float:left;
+	color:#fff;
+	font-size:12px;
+	a {
+		font-size:12px;
+		color:#fff;
+	}
+  }
 }
 
 .logo {
@@ -186,15 +491,16 @@ section {
     }
   }
   .search-btn {
-    color: $mediumBlue;
+    color: $mediumblue;
     text-transform: uppercase;
     padding: 4px 7px 4px 6px;
-    font-size: $extraSmallFont;
-    font-weight: $mediumFontWeight;
+    font-size: 11px;
+    font-weight: 13pxWeight;
     border: 0;
     background: $mediumBrown;
 	width:30px;
 	height:25px;
+	line-height:18px;
   }
   .search-box {
     background: $darkbrown;
@@ -227,11 +533,11 @@ nav {
       display: block;
       padding: 5px;
       color: #fff;
-	  font-size: $standardFont;
+	  font-size: 14px;
 	  font-weight: $normalFontWeight;
 	  text-decoration:none;
       &:hover {
-        color: $mediumBlue;
+        color: $mediumblue;
       }
 	  small {
 		margin-left:4px;
@@ -240,7 +546,7 @@ nav {
   }
   ul {
     background: rgba(255, 255, 255, 0); 
-    background: $mediumBlue;
+    background: $mediumblue;
 	margin: 0 0 9px 25px;
     list-style: none;
     position: absolute;
@@ -257,7 +563,7 @@ nav {
     a {
       white-space: nowrap;
       color: #fff;
-	  font-size: $standardFont;
+	  font-size: 14px;
 	  font-weight: $normalFontWeight;
 	  text-decoration:none;
 	  &:hover {
@@ -296,7 +602,7 @@ nav {
   }
 
   div.pointer::before {
-    border-color: rgba(255, 255, 255, 0) rgba(255, 255, 255, 0) $mediumBlue;
+    border-color: rgba(255, 255, 255, 0) rgba(255, 255, 255, 0) $mediumblue;
     border-style: solid;
     border-width: 5px;
     content: " ";
@@ -316,21 +622,23 @@ nav {
 .trail {
   margin: 0 auto;
   width: $minWidth;
-  color:$lightBlueFont;
+  color:$verydarkblue;
   font-weight:400;
-  font-size: $mediumFont;
+  font-size: 13px;
   .divider {
-	font-size: $standardFont;
+	font-size: 14px;
 	padding:0 2px;
   }
   li {
 	float: left;
-	vertical-align: middle;
-	line-height: 35px;
+	line-height: 36px;
+	a {
+		color:$verydarkblue;
+		font-size: 13px;
+	  }
   }
-  a {
-	color:$lightBlueFont;
-	font-size: $mediumFont;
+  li:first-child {
+	margin-left:-18px;
   }
   li.active {
 	color: $darkbrown;
@@ -347,7 +655,7 @@ nav {
   margin: 0 auto;
   width: $minWidth;
   padding:8px 0 0 0;
-  font-size:$mediumFont;
+  font-size:13px;
   li {
 	float:left;
 	> a {
@@ -355,14 +663,14 @@ nav {
 		text-transform: uppercase;
 		padding: 10px 15px 10px 15px;
 		border: 1px solid #DEE7EE;
-		-webkit-border-radius: 4px 4px 0 0;
-		-moz-border-radius: 4px 4px 0 0;
-		border-radius: 4px 4px 0 0;
-		background-color: $tabBackground;
+		-webkit-border-radius: $borderRadius $borderRadius 0 0;
+		-moz-border-radius: $borderRadius $borderRadius 0 0;
+		border-radius: $borderRadius $borderRadius 0 0;
+		background-color: $greyblue;
 		color:#B5BEC3;
 		text-decoration:none;
-		font-size: $mediumFont;
-		font-weight: $mediumFontWeight;
+		font-size: 13px;
+		font-weight: 13pxWeight;
 		&:hover {
 			color: $mediumBrown;
 			background-color: #ffffff;
@@ -371,8 +679,43 @@ nav {
     }
 	.active > a {
 		border-bottom-color: transparent;
-		color: #6B8F9D;
+		color: $mediumBrown;
 		background-color: #ffffff;
 		cursor:default;
+	}
+}
+
+.payment-plan {
+	background-color:$greyblue;
+	h2 {
+		border-bottom:1px solid #fff;
+		padding:6px 8px;
+		color:$darkbrown;
+		font-size:17px;
+		margin:0;
+		font-weight: $extraBoldFontWeight;
+		span {
+			float:right;
+			font-size:13px;
+			color:$verylightbrown;
+			margin-top:3px;
+			font-weight: $boldFontWeight;
+		}
+	}
+	ul {
+		padding:0 0 0 10px;
+	}
+	div {
+		background-color:$darkblue;
+		padding:7px 8px 8px 8px;
+		a {
+			color:#fff;
+			font-weight: $boldFontWeight;
+			font-size:13px;
+			&:hover {
+				text-decoration:none;
+				color:$mediumBrown;
+			}
+		}
 	}
 }

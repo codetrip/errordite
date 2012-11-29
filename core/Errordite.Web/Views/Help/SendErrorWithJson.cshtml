@@ -2,26 +2,23 @@
 @using Errordite.Web.Extensions
 @{
     ViewBag.Title = "Send error with JSON";
-    Layout = "~/Views/Shared/Master.cshtml";
-}
-
-@{
     Layout = "~/Views/Shared/Master2.0.cshtml";
 }
-<div class="span12">
-    <div class="base">
-        @Html.Partial("Help/Tabs", HelpTab.SendErrorWithJson) 
 
-        <div class="base-noheader help">
-        <div class="title">
-            <h1>Send error with JSON</h1>
-        </div>
+@section header
+{
+    @Html.Partial("Help/Tabs", HelpTab.SendErrorWithJson) 
+}
+
+<section class="centered">
+    <h1>Send error with JSON</h1>
         
-            <p>Errordite can work with any language or technology.  Simply post the JSON below to https://www.errordite.com/receiveerror.  
-            If you would like to create a client plug-in for your favoured technology, we'd love to <a href="@Url.Contact()">hear from you</a>.
-            </p>
+    <p>
+        Errordite can work with any language or technology.  Simply post the JSON below to https://www.errordite.com/receiveerror.  
+        If you would like to create a client plug-in for your favoured technology, we'd love to <a href="@Url.Contact()">hear from you</a>.
+    </p>
 
-            <pre class="prettyprint lang-js json-api">
+    <pre class="prettyprint json-api">
 {
     "Token" : &lt;string>,              //your application token, taken from Errordite
     "MachineName" : &lt;string>,        //the machine that generated the error
@@ -31,22 +28,20 @@
     "ExceptionInfo" : {
         "Message" : &lt;string>,        //the message of the exception
         "Source" : &lt;string>,         //the programmatic module that threw the exception 
-                                     //(exact definition depends on technology stack)
+                                        //(exact definition depends on technology stack)
         "ExceptionType" : &lt;string>,  //the type of the exception
         "StackTrace" : &lt;string>,     //the stack trace - formatting already done (i.e. indents & newlines)
         "MethodName" : &lt;string>,     //the name of the method / function that threw the error
-        "Data" : {                   //bag of extra information
+        "Data" : {                      //bag of extra information
             "PropertyName1" : &lt;string>,
             ...
             "PropertyName2" : &lt;string>
         },
-        "InnerExceptionInfo" : {     //recursive definition - same as ExceptionInfo above
+        "InnerExceptionInfo" : {        //recursive definition - same as ExceptionInfo above
             "Message" : &lt;string>
             ...
         }
     }
 }
-               </pre>
-        </div>
-    </div>
-</div>
+    </pre>
+</section>

@@ -52,6 +52,6 @@
            
         </div>
 
-        <div class="items"><b>@Model.FirstItem - @Model.LastItem</b> of <b>@Model.TotalItems</b> Showing @Html.DropDownList("pgsz", Model.PageSizes, new {data_current = Model.PageSize}) per page</div>
+        <div class="items"><b>@Model.FirstItem - @Model.LastItem</b> of <b>@Model.TotalItems</b> @Html.DropDownList("pgsz", Model.PageSizes, new {data_current = Model.PageSize}) Per page</div>
     </div>
 }
