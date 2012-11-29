@@ -3,19 +3,19 @@ $mediumblue: #92C7E7;
 $darkblue:#95C0DF;
 $verydarkblue: #729DB7;
 $verylightbrown:#8E9090;
-$lightbrown: #292C31;
-$mediumBrown:#3D3D3D;
-$darkbrown: #525252;
+$darkbrown: #292C31;
+$lightbrown:#3D3D3D;
+$mediumbrown: #525252;
 $greyblue:#E7F0F5;
-$tableBorder:#CDD4DA;
-$tableAlternateColor:#ECF4F7;
-$headerFont: 'Open Sans', sans-serif;
-$minWidth: 974px;
-$normalFontWeight: 300;
-$extraSmallFontWeight: 400;
-$boldFontWeight: 600;
-$extraBoldFontWeight: 700;
-$borderRadius: 3px;
+$tableborder:#CDD4DA;
+$tablealternatecolor:#ECF4F7;
+$headerfont: 'Open Sans', sans-serif;
+$minwidth: 974px;
+$normalfontweight: 300;
+$lightfontweight: 400;
+$boldfontweight: 600;
+$extraboldfontweight: 700;
+$borderradius: 3px;
 
 @font-face {
   font-family: 'Open Sans';
@@ -45,13 +45,13 @@ $borderRadius: 3px;
 body, html {
   margin: 0;
   padding: 0;
-  font-family: $headerFont;
+  font-family: $headerfont;
   width: 100%;
   height: 100%;
-  min-width: $minWidth;
+  min-width: $minwidth;
   background-color: #fff;
   font-size:14px;
-  color:$darkbrown;
+  color:$mediumbrown;
 }
 
 .container {
@@ -70,7 +70,7 @@ input, textarea, select {
 	padding: 4px;
 	font-size: 13px;
 	line-height: 24px;
-	color: $darkbrown;
+	color: $mediumbrown;
 	border: 1px solid #cccccc;
 	-webkit-border-radius: 3px;
 	-moz-border-radius: 3px;
@@ -93,6 +93,12 @@ h1, h2, h3, h4, h5, h6 {
 h1 {
 	font-size:24px;
 	margin:20px 0 15px 0;
+	&.superlarge {
+		margin:0;
+		padding:20px 0;
+		font-size:36px;
+		font-weight: $lightfontweight;
+	}
 }
 h2 {
 	font-size:16px;
@@ -159,10 +165,10 @@ table {
     line-height: 18px;
     text-align: left;
     vertical-align: middle;
-    border-top: 1px solid $tableBorder;
+    border-top: 1px solid $tableborder;
   }
   th {
-    font-weight: $boldFontWeight;
+    font-weight: $boldfontweight;
 	background-color:#D7E5EE;
 	color:#7B8992;
 	text-transform:uppercase;
@@ -171,7 +177,7 @@ table {
   }
   .table-info-header {
 	color:#000;
-	font-weight: $boldFontWeight;
+	font-weight: $boldfontweight;
 	font-size: 12px;
   }
   .table-info {
@@ -180,15 +186,15 @@ table {
   }
 }
 .table-bordered {
-  border: 1px solid $tableBorder;
+  border: 1px solid $tableborder;
   border-left: 0;
   border-collapse: separate;
   *border-collapse: collapsed;
-  -webkit-border-radius: $borderRadius;
-  -moz-border-radius: $borderRadius;
-  border-radius: $borderRadius;
+  -webkit-border-radius: $borderradius;
+  -moz-border-radius: $borderradius;
+  border-radius: $borderradius;
   th, td {
-    border-left: 1px solid $tableBorder;
+    border-left: 1px solid $tableborder;
   }
   thead:first-child tr:first-child th {
     border-top: 0;
@@ -199,28 +205,28 @@ table {
     }
   }
   thead:first-child tr:first-child th:first-child, tbody:first-child tr:first-child td:first-child {
-    -webkit-border-radius: $borderRadius 0 0 0;
-    -moz-border-radius: $borderRadius 0 0 0;
-    border-radius: $borderRadius 0 0 0;
+    -webkit-border-radius: $borderradius 0 0 0;
+    -moz-border-radius: $borderradius 0 0 0;
+    border-radius: $borderradius 0 0 0;
   }
   thead:first-child tr:first-child th:last-child, tbody:first-child tr:first-child td:last-child {
-    -webkit-border-radius: 0 $borderRadius 0 0;
-    -moz-border-radius: 0 $borderRadius 0 0;
-    border-radius: 0 $borderRadius 0 0;
+    -webkit-border-radius: 0 $borderradius 0 0;
+    -moz-border-radius: 0 $borderradius 0 0;
+    border-radius: 0 $borderradius 0 0;
   }
   thead:last-child tr:last-child th:first-child, tbody:last-child tr:last-child td:first-child {
-    -webkit-border-radius: 0 0 0 $borderRadius;
-    -moz-border-radius: 0 0 0 $borderRadius;
-    border-radius: 0 0 0 $borderRadius;
+    -webkit-border-radius: 0 0 0 $borderradius;
+    -moz-border-radius: 0 0 0 $borderradius;
+    border-radius: 0 0 0 $borderradius;
   }
   thead:last-child tr:last-child th:last-child, tbody:last-child tr:last-child td:last-child {
-    -webkit-border-radius: 0 0 $borderRadius 0;
-    -moz-border-radius: 0 0 $borderRadius 0;
-    border-radius: 0 0 $borderRadius 0;
+    -webkit-border-radius: 0 0 $borderradius 0;
+    -moz-border-radius: 0 0 $borderradius 0;
+    border-radius: 0 0 $borderradius 0;
   }
   tbody tr:nth-child(even) {
 	td, th {
-		background-color: $tableAlternateColor;
+		background-color: $tablealternatecolor;
     }
   }
   tfoot td {
@@ -296,12 +302,12 @@ table {
     }
     .active a {
       background-color: $greyblue;
-      color: $mediumBrown;
+      color: $lightbrown;
      cursor: default;
     }
    .disabled {
      span {
-       color: $mediumBrown;
+       color: $lightbrown;
        background-color: transparent;
        cursor: default;
      }
@@ -362,11 +368,11 @@ table {
       float: left;
     }
     .disabled a {
-      color: $mediumBrown;
+      color: $lightbrown;
       background-color: #fff;
       cursor: default;
       &:hover {
-        color: $mediumBrown;
+        color: $lightbrown;
         background-color: #fff;
         cursor: default;
       }
@@ -381,7 +387,7 @@ section {
 
 .centered {
   margin: 0 auto;
-  width: $minWidth;
+  width: $minwidth;
 }
 
 .four-col {
@@ -409,17 +415,36 @@ section {
 	margin: 0 0 0 25px;
 }
 
+.pull-left{float:left;}
+.pull-right{float:right;}
+
+.dark-container {
+	width: 100%;
+	background-color: $darkbrown;
+	.centered{
+		background-color: $darkbrown;
+	}
+}
+
+.blue-container {
+	width: 100%;
+	background-color: $lightblue;
+	.centered{
+		background-color: $lightblue;
+	}
+}
+
 .welcome-bar-container {
   width: 100%;
-  background: $mediumBrown;
+  background: $lightbrown;
   height: 25px;
   .welcome-bar {
     margin: 0 auto;
-    width: $minWidth;
+    width: $minwidth;
     text-align: right;
     color: #fff;
-    font-family: $headerFont;
-    font-weight:$normalFontWeight;
+    font-family: $headerfont;
+    font-weight:$normalfontweight;
     font-size:12px;
     .links {
       float: right;
@@ -437,11 +462,11 @@ section {
 
 .header-container {
   width: 100%;
-  background: $lightbrown;
+  background: $darkbrown;
   height: 60px;
   .header {
     margin: 0 auto;
-    width: $minWidth;
+    width: $minwidth;
   }
 }
 
@@ -449,15 +474,15 @@ footer {
   margin-top:25px;
   width: 100%;
   height:80px;
-  background: $mediumBrown;
+  background: $darkbrown;
   position:absolute;
   bottom:0;
   .footer {
 	margin: 0 auto;
-	width: $minWidth;
+	width: $minwidth;
 	text-align:center;
 	color:$darkblue;
-	font-weight: $normalFontWeight;
+	font-weight: $normalfontweight;
 	font-size:14px;
 	line-height:20px;
 	padding-top:20px;
@@ -485,7 +510,7 @@ footer {
   width: 325px;
   margin: 13px 0 0 40px;
   .search-input {
-    background: $darkbrown;
+    background: $mediumbrown;
     border: 0;
     height: 26px;
     width: 275px;
@@ -502,13 +527,13 @@ footer {
     font-size: 11px;
     font-weight: 13pxWeight;
     border: 0;
-    background: $mediumBrown;
+    background: $lightbrown;
 	width:30px;
 	height:25px;
 	line-height:18px;
   }
   .search-box {
-    background: $darkbrown;
+    background: $mediumbrown;
     width: 322px;
     height: 34px;
     -moz-box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.6);
@@ -533,12 +558,12 @@ nav {
     position: relative;
     line-height: 50px;
     > a {
-      background: $lightbrown;
+      background: $darkbrown;
       display: block;
       padding: 5px;
       color: #fff;
 	  font-size: 14px;
-	  font-weight: $normalFontWeight;
+	  font-weight: $normalfontweight;
 	  text-decoration:none;
       &:hover {
         color: $mediumblue;
@@ -568,10 +593,10 @@ nav {
       white-space: nowrap;
       color: #fff;
 	  font-size: 14px;
-	  font-weight: $normalFontWeight;
+	  font-weight: $normalfontweight;
 	  text-decoration:none;
 	  &:hover {
-		color:$darkbrown;
+		color:$mediumbrown;
 	  }
     }
   }
@@ -625,7 +650,7 @@ nav {
   height: 40px;
   .trail {
     margin: 0 auto;
-    width: $minWidth;
+    width: $minwidth;
     color:$verydarkblue;
     font-weight:400;
     font-size: 13px;
@@ -645,7 +670,7 @@ nav {
 	  margin-left:-18px;
     }
     li.active {
-	  color: $darkbrown;
+	  color: $mediumbrown;
     }
   }
 }
@@ -657,7 +682,7 @@ nav {
   border-bottom: 1px solid #DEE7EE;
   .tabs {
     margin: 0 auto;
-    width: $minWidth;
+    width: $minwidth;
     padding:8px 0 0 0;
     font-size:13px;
     li {
@@ -667,23 +692,23 @@ nav {
 		  text-transform: uppercase;
 		  padding: 10px 15px 10px 15px;
 		  border: 1px solid #DEE7EE;
-		  -webkit-border-radius: $borderRadius $borderRadius 0 0;
-		  -moz-border-radius: $borderRadius $borderRadius 0 0;
-		  border-radius: $borderRadius $borderRadius 0 0;
+		  -webkit-border-radius: $borderradius $borderradius 0 0;
+		  -moz-border-radius: $borderradius $borderradius 0 0;
+		  border-radius: $borderradius $borderradius 0 0;
 		  background-color: $greyblue;
 		  color:#B5BEC3;
 		  text-decoration:none;
 		  font-size: 13px;
 		  font-weight: 13pxWeight;
 		  &:hover {
-			color: $mediumBrown;
+			color: $lightbrown;
 			background-color: #ffffff;
 		  }
 	    }
       }
 	  .active > a {
 		border-bottom-color: transparent;
-		color: $mediumBrown;
+		color: $lightbrown;
 		background-color: #ffffff;
 		cursor:default;
 	  }
@@ -695,16 +720,16 @@ nav {
 	h2 {
 		border-bottom:1px solid #fff;
 		padding:6px 8px;
-		color:$darkbrown;
+		color:$mediumbrown;
 		font-size:17px;
 		margin:0;
-		font-weight: $extraBoldFontWeight;
+		font-weight: $extraboldfontweight;
 		span {
 			float:right;
 			font-size:13px;
 			color:$verylightbrown;
 			margin-top:3px;
-			font-weight: $boldFontWeight;
+			font-weight: $boldfontweight;
 		}
 	}
 	ul {
@@ -715,12 +740,25 @@ nav {
 		padding:7px 8px 8px 8px;
 		a {
 			color:#fff;
-			font-weight: $boldFontWeight;
+			font-weight: $boldfontweight;
 			font-size:13px;
 			&:hover {
 				text-decoration:none;
-				color:$mediumBrown;
+				color:$lightbrown;
 			}
 		}
+	}
+}
+
+.howitworks {
+	background-color:$lightblue;
+	font-size:18px;
+	p {
+		margin:0;
+		padding:25px 80px;
+	}
+	span {
+		font-weight:$boldfontweight;
+		color:$darkblue;
 	}
 }
