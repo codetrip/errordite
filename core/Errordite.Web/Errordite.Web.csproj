@@ -94,11 +94,13 @@
     <Reference Include="ProductionProfiler.Persistence.Raven">
       <HintPath>..\..\lib\Profiler\ProductionProfiler.Persistence.Raven.dll</HintPath>
     </Reference>
-    <Reference Include="Raven.Abstractions">
-      <HintPath>..\packages\RavenDB.Client.2.0.2159-Unstable\lib\net40\Raven.Abstractions.dll</HintPath>
+    <Reference Include="Raven.Abstractions, Version=1.2.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\RavenDB.Client.2.0.2161-Unstable\lib\net40\Raven.Abstractions.dll</HintPath>
     </Reference>
-    <Reference Include="Raven.Client.Lightweight">
-      <HintPath>..\packages\RavenDB.Client.2.0.2159-Unstable\lib\net40\Raven.Client.Lightweight.dll</HintPath>
+    <Reference Include="Raven.Client.Lightweight, Version=1.2.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\RavenDB.Client.2.0.2161-Unstable\lib\net40\Raven.Client.Lightweight.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Net.Http, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -333,6 +335,12 @@
     <Content Include="Assets\Css\combined.min.css">
       <DependentUpon>combined.css</DependentUpon>
     </Content>
+    <Content Include="Assets\Css\img\check.png" />
+    <Content Include="Assets\Css\img\counter.png" />
+    <Content Include="Assets\Css\img\errordite.png" />
+    <Content Include="Assets\Css\img\people.png" />
+    <Content Include="Assets\Css\img\settings.png" />
+    <Content Include="Assets\Css\img\waiterrors.png" />
     <Content Include="Assets\Css\lib\html5-boilerplate.css">
       <Compile>True</Compile>
       <Minify>False</Minify>
@@ -343,6 +351,7 @@
       <Compile>True</Compile>
       <Minify>False</Minify>
     </Content>
+    <Content Include="Assets\Icons\eye.svg" />
     <Content Include="Assets\Js\alerts.js">
       <DependentUpon>alerts.coffee</DependentUpon>
     </Content>
@@ -1141,9 +1150,9 @@
     <Content Include="Views\Shared\Master2.0.cshtml" />
     <Content Include="Views\Shared\HeaderAssets.cshtml" />
     <Content Include="Views\Shared\FooterAssets.cshtml" />
-    <Content Include="Views\Home\New.cshtml" />
     <Content Include="Views\Shared\Breadcrumb2.0.cshtml" />
     <Content Include="Views\Shared\Header2.0.cshtml" />
+    <Content Include="Views\Help\Privacy.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_GlobalResources\Alerts.resx">

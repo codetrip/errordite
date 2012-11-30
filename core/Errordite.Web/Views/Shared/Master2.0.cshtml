@@ -19,26 +19,28 @@
         <!--[if lt IE 7]>
             <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
         <![endif]-->
-
-        <div class="container">
+        
+        <div class="wrapper">
             <header>
-            @Html.Partial("header2.0")
-            @Html.Partial("breadcrumb2.0")
-            @RenderSection("header", required: false) 
+                @Html.Partial("header2.0")
+                @Html.Partial("breadcrumb2.0")
+                @RenderSection("header", required: false) 
             </header>
         
             @RenderBody()
-        
-            <footer>
-                <div class="footer">
-                    <span>&copy;@DateTime.UtcNow.Year Code Trip Ltd All rights reserved.</span>
-                    <nav>
-                        <a href="@Url.Privacy()">Privacy</a>&nbsp;|&nbsp;
-                        <a href="@Url.Contact()">Contact</a>                    
-                    </nav>
-                </div>
-            </footer>
+
+            <div class="push"></div>
         </div>
+        
+        <footer>
+            <div class="footer">
+                <span>&copy;@DateTime.UtcNow.Year Code Trip Ltd All rights reserved.</span>
+                <nav>
+                    <a href="@Url.Privacy()">Privacy</a>&nbsp;|&nbsp;
+                    <a href="@Url.Contact()">Contact</a>                    
+                </nav>
+            </div>
+        </footer>
         
         @Html.Partial("footerassets")
         @RenderSection("footerassets", required: false) 
