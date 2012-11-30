@@ -12,7 +12,7 @@
 
 @font-face {
   font-family: 'Open Sans';
-  font-style: normal;
+  font-style: ormal;
   font-weight: 600;
   src: local("Open Sans Semibold"), local("OpenSans-Semibold"), url("../fonts/normal-600.woff") format("woff"); }
 
@@ -33,12 +33,12 @@ body, html {
   font-size: 14px;
   color: #525252; }
 
-.container {
-  min-height: 100%;
-  position: relative; }
-
 ul {
   list-style: none; }
+  ul.info {
+    list-style: square; }
+    ul.info span {
+      color: #95c0df; }
 
 input, textarea, select {
   display: inline-block;
@@ -61,20 +61,36 @@ input, textarea, select {
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6); }
 
 h1, h2, h3, h4, h5, h6 {
-  font-weight: 13pxWeight;
+  font-weight: 400;
   color: #92c7e7; }
 
 h1 {
-  font-size: 24px;
+  font-size: 28px;
   margin: 20px 0 15px 0; }
   h1.superlarge {
     margin: 0;
     padding: 20px 0;
     font-size: 36px;
-    font-weight: 400; }
+    font-weight: 300; }
+    h1.superlarge a {
+      background-color: #000;
+      float: right;
+      padding: 15px 20px;
+      font-size: 14px;
+      color: #fff;
+      font-weight: 400;
+      -webkit-border-radius: 3px;
+      -moz-border-radius: 3px;
+      border-radius: 3px; }
+      h1.superlarge a:hover {
+        text-decoration: none;
+        color: #95c0df; }
+      h1.superlarge a span {
+        text-transform: uppercase;
+        color: #95c0df; }
 
 h2 {
-  font-size: 16px;
+  font-size: 18px;
   margin: 10px 0 5px 0; }
 
 h3 {
@@ -325,12 +341,16 @@ section {
 
 .dark-container {
   width: 100%;
-  background-color: #292c31; }
+  background-color: #292c31;
+  float: left;
+  min-height: 100px;
+  margin-top: -10px; }
   .dark-container .centered {
     background-color: #292c31; }
 
 .blue-container {
   width: 100%;
+  float: left;
   background-color: #f3f8fc; }
   .blue-container .centered {
     background-color: #f3f8fc; }
@@ -597,7 +617,10 @@ nav {
   .howitworks p {
     margin: 0;
     padding: 25px 80px; }
-  .howitworks span {
-    font-weight: 600;
-    color: #95c0df; }
+    .howitworks p span {
+      font-weight: 600;
+      color: #95c0df; }
+  .howitworks .two-col {
+    padding: 10px;
+    text-align: center; }
 
