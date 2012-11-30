@@ -31,7 +31,7 @@ $borderradius: 3px;
 }
 @font-face {
   font-family: 'Open Sans';
-  font-style: normal;
+  font-style:ormal;
   font-weight: 600;
   src: local('Open Sans Semibold'), local('OpenSans-Semibold'), url('../fonts/normal-600.woff') format('woff');
 }
@@ -54,13 +54,14 @@ body, html {
   color:$mediumbrown;
 }
 
-.container {
-	min-height:100%;
-	position:relative;
-}
-
 ul {
   list-style: none;
+  &.info {
+	list-style:square;
+	span {
+		color:$darkblue;
+	}
+  }
 }
 
 input, textarea, select {
@@ -86,22 +87,41 @@ input, textarea, select {
 }
 
 h1, h2, h3, h4, h5, h6 {
-	font-weight: 13pxWeight;
+	font-weight: $lightfontweight;
 	color:$mediumblue;
 }
 
 h1 {
-	font-size:24px;
+	font-size:28px;
 	margin:20px 0 15px 0;
 	&.superlarge {
 		margin:0;
 		padding:20px 0;
 		font-size:36px;
-		font-weight: $lightfontweight;
+		font-weight: $normalfontweight;
+		a {
+			background-color:#000;
+			float:right;
+			padding:15px 20px;
+			font-size:14px;
+			color:#fff;
+			font-weight: $lightfontweight;
+			-webkit-border-radius: $borderradius;
+			-moz-border-radius: $borderradius;
+			border-radius: $borderradius;
+			&:hover{
+				text-decoration:none;
+				color:$darkblue;
+			}
+			span{
+				text-transform:uppercase;
+				color:$darkblue;
+			}
+		}
 	}
 }
 h2 {
-	font-size:16px;
+	font-size:18px;
 	margin:10px 0 5px 0;
 }
 h3 {
@@ -114,6 +134,9 @@ h5 {
 	font-size:11px;
 }
 
+span {
+	
+}
 a {
 	text-decoration:none;
 	font-size:14px;
@@ -421,13 +444,16 @@ section {
 .dark-container {
 	width: 100%;
 	background-color: $darkbrown;
+	float:left;
+	min-height:100px;
+	margin-top:-10px;
 	.centered{
 		background-color: $darkbrown;
 	}
 }
-
 .blue-container {
 	width: 100%;
+	float:left;
 	background-color: $lightblue;
 	.centered{
 		background-color: $lightblue;
@@ -756,9 +782,13 @@ nav {
 	p {
 		margin:0;
 		padding:25px 80px;
+		span {
+			font-weight:$boldfontweight;
+			color:$darkblue;
+		}
 	}
-	span {
-		font-weight:$boldfontweight;
-		color:$darkblue;
+	.two-col {
+		padding:10px;
+		text-align:center;
 	}
 }

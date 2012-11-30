@@ -1,4 +1,5 @@
-﻿
+﻿@using Errordite.Web.Extensions
+
 @{
     ViewBag.Title = "Home"; 
     Layout = "~/Views/Shared/Master2.0.cshtml";
@@ -8,11 +9,8 @@
     <section class="centered">
         <div>
             <h1 class="superlarge">
-                Making sense of your exception logs
+                Making sense of your exception logs <a href="@Url.SignUp()">Try Errordite for <span>free</span></a>
             </h1>
-        </div>
-        <div>
-            Try Errordite for free
         </div>
     </section> 
 </div>
@@ -20,7 +18,26 @@
     <section class="centered">
         <div class="howitworks">
             <p><span>Errordite</span> receives all your application exceptions and groups together those that are the same - automatically or with rules you define. You then decide how to progress the errors. You can fix them, ignore them, or wait and see how often the error occurs.</p>
+            <div class="two-col">
+                1
+            </div>
+            <div class="two-col">
+                2
+            </div>
+            <div class="two-col">
+                3
+            </div>
+            <div class="two-col">
+                4
+            </div>
+            <div class="two-col">
+                5
+            </div>
+            <div class="two-col">
+                6
+            </div>
         </div>
+        
     </section> 
 </div>
  
