@@ -74,10 +74,12 @@
       <HintPath>..\..\lib\protobuf\protobuf-net.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Abstractions, Version=1.2.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <HintPath>..\..\core\packages\RavenDB.Client.2.0.2158-Unstable\lib\net40\Raven.Abstractions.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\core\packages\RavenDB.Client.2.0.2161-Unstable\lib\net40\Raven.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Client.Lightweight, Version=1.2.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <HintPath>..\..\core\packages\RavenDB.Client.2.0.2158-Unstable\lib\net40\Raven.Client.Lightweight.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\core\packages\RavenDB.Client.2.0.2161-Unstable\lib\net40\Raven.Client.Lightweight.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
