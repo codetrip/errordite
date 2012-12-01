@@ -330,16 +330,22 @@
     <Content Include="Assets\Css\combined.css">
       <Compile>True</Compile>
       <Minify>True</Minify>
-      <IncludedFiles>Assets\Css\lib\normalize.css|Assets\Css\lib\html5-boilerplate.css|Assets\Css\lib\prettify.css|Assets\Css\lib\jquery.jqplot.css|Assets\Css\errordite.css</IncludedFiles>
+      <IncludedFiles>Assets\Css\lib\normalize.css|Assets\Css\lib\html5-boilerplate.css|Assets\Css\lib\prettify.css|Assets\Css\lib\jquery.jqplot.css|Assets\Css\fonts.css|Assets\Css\errordite.css</IncludedFiles>
     </Content>
     <Content Include="Assets\Css\combined.min.css">
       <DependentUpon>combined.css</DependentUpon>
     </Content>
+    <Content Include="Assets\Css\fonts.css" />
     <Content Include="Assets\Css\img\check.png" />
     <Content Include="Assets\Css\img\counter.png" />
     <Content Include="Assets\Css\img\errordite.png" />
+    <Content Include="Assets\Css\img\glyphicons-halflings.png" />
+    <Content Include="Assets\Css\img\icons.png" />
+    <Content Include="Assets\Css\img\link.png" />
+    <Content Include="Assets\Css\img\key.png" />
     <Content Include="Assets\Css\img\people.png" />
     <Content Include="Assets\Css\img\settings.png" />
+    <Content Include="Assets\Css\img\signin.png" />
     <Content Include="Assets\Css\img\waiterrors.png" />
     <Content Include="Assets\Css\lib\html5-boilerplate.css">
       <Compile>True</Compile>
@@ -351,7 +357,6 @@
       <Compile>True</Compile>
       <Minify>False</Minify>
     </Content>
-    <Content Include="Assets\Icons\eye.svg" />
     <Content Include="Assets\Js\alerts.js">
       <DependentUpon>alerts.coffee</DependentUpon>
     </Content>
@@ -1077,6 +1082,7 @@
       <DependentUpon>test.scss</DependentUpon>
     </Content>
     <Content Include="Assets\Css\test.scss" />
+    <Content Include="Assets\Fonts\normal-800.woff" />
     <None Include="Js\060.global.coffee">
       <Compile>True</Compile>
       <Minify>False</Minify>

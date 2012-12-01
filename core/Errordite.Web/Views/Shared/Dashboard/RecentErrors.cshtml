@@ -1,10 +1,11 @@
 ﻿@using Errordite.Web.Extensions
 @model IEnumerable<Errordite.Web.Models.Errors.ErrorInstanceViewModel>
            
-<div class="clear-space"></div>
+<div class="clear"></div>
+
 @if (Model.Any())
 {
-    <h2 class="subtitle">Most Recent Errors <a href="@Url.Errors()">See all...</a></h2>
+    <h2>Most Recent Errors <a href="@Url.Errors()">See all...</a></h2>
 
     <div id="results">
         <table class="table-bordered">

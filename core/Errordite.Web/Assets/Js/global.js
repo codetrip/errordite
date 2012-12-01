@@ -10,13 +10,11 @@
 
   Initialisation = (function() {
 
-    Initialisation.name = 'Initialisation';
-
     function Initialisation() {}
 
     Initialisation.prototype.init = function(ajax, pagingFunc) {
       var $paging, $tabHolders, controller, paging, tabHolder, _i, _len;
-      $('.icon-info-sign').tooltip();
+      $('.icon-info').tooltip();
       $('.dropdown-toggle').dropdown();
       $paging = $('div.paging');
       paging = new Paging(pagingFunc);
@@ -60,8 +58,6 @@
 
   Spinner = (function() {
 
-    Spinner.name = 'Spinner';
-
     function Spinner() {}
 
     Spinner.prototype.disable = function() {
@@ -98,8 +94,6 @@
 
 
   Tabs = (function() {
-
-    Tabs.name = 'Tabs';
 
     Tabs.get = function(anyNodeInside) {
       var $tabHolder, tabManager;
@@ -185,8 +179,6 @@
 
 
   Paging = (function() {
-
-    Paging.name = 'Paging';
 
     function Paging(changeFunc) {
       var paging;

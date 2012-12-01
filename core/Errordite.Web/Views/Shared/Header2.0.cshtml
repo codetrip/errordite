@@ -42,7 +42,7 @@
                 @if (appContext.AuthenticationStatus == AuthenticationStatus.Authenticated && (appContext.CurrentUser.Role == UserRole.SuperUser || appContext.ImpersonatorAppContext != null))
                 {
                     <li class="nav-item sysadmin">
-                        <a href="#">System Admin <span class="rotate">›</span></a>
+                        <a href="@Url.SysAdmin()">System Admin <span class="rotate">›</span></a>
                         <div class="pointer">
                             <ul>
                                 <li><a href="@Url.Organisations()">Organisations ›</a></li> 
@@ -58,7 +58,7 @@
                     </li>
                 }
                 <li class="nav-item dashboard">
-                    <a href="#">Dashboard <span class="rotate">›</span></a>
+                    <a href="@Url.Dashboard()">Dashboard <span class="rotate">›</span></a>
                     <div class="pointer">
                         <ul>
                             <li><a href="@ViewData.GetIssuesUrl(Url.Issues())">Issues ›</a></li>
@@ -68,7 +68,7 @@
                     </div>
                 </li>
                 <li class="nav-item admin">
-                    <a href="#">Admin <span class="rotate">›</span></a>
+                    <a href="@Url.Applications()">Admin <span class="rotate">›</span></a>
                     <div class="pointer">
                         <ul>
                             @foreach (var adminPage in Breadcrumbs.GetById(BreadcrumbId.Admin, Url).Children)
@@ -79,7 +79,7 @@
                     </div>
                 </li>
                 <li class="nav-item docs">
-                    <a href="#">Docs <span class="rotate">›</span></a>
+                    <a href="@Url.GettingStarted()">Docs <span class="rotate">›</span></a>
                     <div class="pointer">
                         <ul>
                             <li><a href="@Url.GettingStarted()">Getting Started ›</a></li>

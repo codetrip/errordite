@@ -1,36 +1,16 @@
 ﻿@using Errordite.Web.Extensions
 @using Errordite.Web.Models.Navigation
-@using CodeTrip.Core.Extensions
 @using Raven.Client.Linq
 
-
-<div class="clear"></div>          
-<ul class="nav nav-tabs">
-    @{ var breadcrumbs = ViewData.GetBreadcrumbs(); }
+<div class="tabs-container">
+    <ul class="tabs">
+        @{ var breadcrumbs = ViewData.GetBreadcrumbs(); }
     
-    @foreach (var adminPage in Breadcrumbs.GetById(BreadcrumbId.Admin, Url).Children)
-    {
-        <li class="@(adminPage.Id.In(breadcrumbs.Select(b => b.Id)) ? "active" : "inactive")">
-            <a href="@adminPage.Link">@adminPage.Title</a>
-        </li>
-    }
-@*
-    <li @(Model == AdminTab.Applications ? " class=active" : "class=inactive") >
-        <a href="@Url.Applications()"><span>Applications</span></a> 
-    </li>
-    <li @(Model == AdminTab.Users ? " class=active" : "class=inactive") >
-        <a href="@Url.Users()"><span>Users</span></a>
-    </li>
-    <li @(Model == AdminTab.Groups ? " class=active" : "class=inactive") >
-        <a href="@Url.Groups()"><span>Groups</span></a>
-    </li>
-    <li @(Model == AdminTab.Home ? " class=active" : "class=inactive") >
-        <a href="@Url.PaymentPlan()"><span>Payment Plan</span></a> 
-    </li>
-    <li @(Model == AdminTab.Billing ? " class=active" : "class=inactive") >
-        <a href="@Url.Billing()"><span>Billing</span></a>
-    </li>
-    <li @(Model == AdminTab.Settings ? " class=active" : "class=inactive") >
-        <a href="@Url.Settings()"><span>Settings</span></a>
-    </li>*@
-</ul>
+        @foreach (var adminPage in Breadcrumbs.GetById(BreadcrumbId.Admin, Url).Children)
+        {
+            <li class="@(adminPage.Id.In(breadcrumbs.Select(b => b.Id)) ? "active" : "inactive")">
+                <a href="@adminPage.Link">@adminPage.Title</a>
+            </li>
+        }
+    </ul>
+</div>

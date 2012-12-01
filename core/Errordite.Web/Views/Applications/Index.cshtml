@@ -1,21 +1,19 @@
 ﻿@using Errordite.Web.Extensions
 @using Errordite.Web.Models.Applications
-@using Errordite.Web.Models.Organisation
 @model ApplicationsViewModel
            
 @{
     ViewBag.Title = "Applications";
+    Layout = "~/Views/Shared/Master2.0.cshtml";
 }
 
-@section contentHeader
+@section header
 {
-    <div id="pagetitle">
-        <h1><i class="icon-arrow-right"></i>Applications</h1>
-    </div>
-    @Html.Partial("Admin/Tabs")
+    @Html.Partial("Admin/Tabs") 
 }
 
-<div id="applications" class="colfull">
+<section id="applications" class="centered">
+    <h1>Applications</h1>
     <p>Your applications are displayed below. <a href="@Url.AddApplication()">Click here to add a new application</a></p>
     @if (Model.Applications.Count > 0)
     {
@@ -25,4 +23,4 @@
     {
         <p>You have no applications.</p>
     }
-</div>
+</section>
