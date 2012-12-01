@@ -14,7 +14,7 @@
 
     Initialisation.prototype.init = function(ajax, pagingFunc) {
       var $paging, $tabHolders, controller, paging, tabHolder, _i, _len;
-      $('.icon-info-sign').tooltip();
+      $('.icon-info').tooltip();
       $('.dropdown-toggle').dropdown();
       $paging = $('div.paging');
       paging = new Paging(pagingFunc);
@@ -411,7 +411,7 @@
 
   jQuery(function() {
     var $body, Application, application;
-    $body = $('div#applications');
+    $body = $('section#applications');
     if ($body.length > 0) {
       application = null;
       $body.delegate('a.delete-application', 'click', function(e) {
@@ -779,27 +779,30 @@
 
   jQuery(function() {
     var $body, Group, group;
-    $body = $('div#groups');
+    $body = $('section#groups');
     if ($body.length > 0) {
       group = null;
       $body.delegate('a.delete', 'click', function() {
         var $this;
         $this = $(this);
-        this.group = new Group($this.closest('tr'));
+        this.group = new Group($('form#deleteGroup'), $this.data('val'));
         this.group["delete"]();
         return false;
       });
       return Group = (function() {
 
-        function Group($appEl) {
-          this.$appEl = $appEl;
+        function Group($form, groupId) {
+          this.$form = $form;
+          this.groupId = groupId;
         }
 
         Group.prototype["delete"] = function() {
-          var $appEl;
-          $appEl = this.$appEl;
-          if (window.confirm("Are you sure you want to delete this group?")) {
-            return $appEl.prev('form').submit();
+          var $form, groupId;
+          $form = this.$form;
+          groupId = this.groupId;
+          if (window.confirm("Are you sure you want to delete this group? " + groupId)) {
+            $('input#GroupId').val(groupId);
+            return $form.submit();
           }
         };
 
@@ -1000,7 +1003,7 @@
 
   jQuery(function() {
     var $body;
-    if ($('div#issue, div#addissue').length > 0) {
+    if ($('div#issue, section#addissue').length > 0) {
       $body = $('body');
       Errordite.Rule = (function() {
 
@@ -1196,7 +1199,7 @@
 
   jQuery(function() {
     var $body, User, user;
-    $body = $('div#users');
+    $body = $('section#users');
     if ($body.length > 0) {
       user = null;
       $body.delegate('a.delete', 'click', function() {

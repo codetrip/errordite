@@ -2,7 +2,7 @@
 
   jQuery(function() {
     var $body, User, user;
-    $body = $('div#users');
+    $body = $('section#users');
     if ($body.length > 0) {
       user = null;
       $body.delegate('a.delete', 'click', function() {
@@ -13,8 +13,6 @@
         return false;
       });
       return User = (function() {
-
-        User.name = 'User';
 
         function User($appEl) {
           this.$appEl = $appEl;

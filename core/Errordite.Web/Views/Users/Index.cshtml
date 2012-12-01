@@ -1,22 +1,20 @@
 ﻿
 @using Errordite.Web.Extensions
-@using Errordite.Web.Models.Organisation
 @using Errordite.Web.Models.Users
 @model UsersViewModel
            
 @{
     ViewBag.Title = "Users";
+    Layout = "~/Views/Shared/Master2.0.cshtml";
 }
 
-@section contentHeader
+@section header
 {
-    <div id="pagetitle">
-        <h1><i class="icon-arrow-right"></i>Users</h1>
-    </div>
-    @Html.Partial("Admin/Tabs")
+    @Html.Partial("Admin/Tabs") 
 }
 
-<div id="users" class="colfull">
+<section id="users" class="centered">
+    <h1>Users</h1>
     <p>Your organisation's users are listed below. <a href="@Url.AddUser()">Click here to add a user</a></p>
     @if (Model.Users != null && Model.Users.Any())
     {
@@ -24,8 +22,6 @@
     }
     else
     {
-        <div>
-            <p>No users were found.</p>   
-        </div> 
+        <p>No users were found.</p>
     }
-</div>
+</section>

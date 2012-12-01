@@ -1,41 +1,34 @@
 ﻿
 @using Errordite.Web.Models.Organisation
-@using Errordite.Web.Extensions
 @model OrganisationSettingsViewModel
            
 @{
     ViewBag.Title = "Settings";
+    Layout = "~/Views/Shared/Master2.0.cshtml";
 }
 
-@section contentHeader
+@section header
 {
-    <div id="pagetitle">
-        <h1><i class="icon-arrow-right"></i>Settings</h1>
-    </div>
-    
-    @Html.Partial("Admin/Tabs")
+    @Html.Partial("Admin/Tabs") 
 }
 
-<div id="organisation">
-    @using (Html.BeginForm("settimezone", "admin"))
-    {
-        <div class="base left-wide">
-            <h1>Organisation-wide settings</h1>
-            <div class="base-content">
-                <ul class="errorditeform">
-                    <li>
-                        @Html.LabelFor(m => m.TimezoneId, "Timezone")
-                        @Html.DropDownListFor(m => m.TimezoneId, TimeZoneInfo.GetSystemTimeZones().Select(t => new SelectListItem {Selected = Model.TimezoneId == t.Id || (Model.TimezoneId == null && t.Id == "UTC"), Value = t.Id, Text = t.DisplayName}))
-                        <i rel="tooltip" title="The default timezone for your application. Users can set their own timezone in their personal settings." class="icon-info-sign"></i>
-                    </li>
-                </ul>
-                <div class="buttons colfull">
-                    <input type="submit" value="Save Changes" class="btn btn-success"/>
-                </div>
-            </div>
-        </div>
-        
-    }
-</div>
+<section class="centered">
+    <h1>Organisation settings</h1>
+    <div class="form">
+        @using (Html.BeginForm("settimezone", "admin"))
+        {
+            <ul>
+                <li>
+                    @Html.LabelFor(m => m.TimezoneId, "Timezone")
+                    @Html.DropDownListFor(m => m.TimezoneId, TimeZoneInfo.GetSystemTimeZones().Select(t => new SelectListItem {Selected = Model.TimezoneId == t.Id || (Model.TimezoneId == null && t.Id == "UTC"), Value = t.Id, Text = t.DisplayName}))
+                    <i rel="tooltip" title="The default timezone for your application. Users can set their own timezone in their personal settings." class="icon-info"></i>
+                </li>
+                <li>
+                    <input type="submit" value="Save Changes" class="btn btn-medium btn-blue"/>
+                </li>
+            </ul>
+        }
+    </div>
+</section>
 
 

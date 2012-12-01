@@ -5,70 +5,65 @@
            
 @{
     ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/Master2.0.cshtml";
 }
 
-@section contentHeader
-{
-    <div id="pagetitle">
-        <h1><i class="icon-arrow-right"></i>My Dashboard</h1>
-    </div>
-    
-    @Html.Partial("Dashboard/Tabs", DashboardTab.Home)
-}
+<section class="centered">
 
-<div id="dashboard">
-
-    @if (!Model.HasApplications)
+    @if (Model.SingleApplicationId != null && Model.Stats.Issues < 3)
     {
-        <h4>
-            You have no applications configured in Errordite. to start getting your errors sent to Errordite check out our <a href="@Url.GettingStarted()">getting started</a> guide, alternatively <a href="@Url.AddApplication()">click here</a> to create an application.<br /><br />
-        </h4>
-    }
-    else if (Model.SingleApplicationId != null && Model.Stats.Issues < 3)
-    {
-        <div class="hero-unit welcome-to-errodite">
-            <h2 class="heading-small">Welcome to Errordite</h2>
+        <h1>Welcome to Errordite</h1>
+        <div class="two-col rightpadding">
             <p>
-                <span class="hero-small">
-                    This is your <strong>dashboard</strong>, where you can see the most recent issues and errors affecting your system, the issues that need your attention, and overall statistics.
-                </span>
+                This is your dashboard, where you can see the most recent issues and errors affecting your system, the issues that need your attention, and overall statistics.
             </p>
             <p>
-                <span class="hero-small">
-                    You do not have much going on at the moment.  
-                    Click @Html.ActionLink("here", "generateerror", "applications", new {applicationId = Model.SingleApplicationId, returnUrl = Url.CurrentRequest()}, new{@class="post"}) to generate a test error and get things going.
-                </span>
+                You do not have much going on at the moment.  
+                Click @Html.ActionLink("here", "generateerror", "applications", new {applicationId = Model.SingleApplicationId, returnUrl = Url.CurrentRequest()}, new{@class="post"}) to generate a test error and get things going.
             </p>
+        </div>
+        <div class="two-col">
             <p>
-                <span class="hero-small">
-                    To get started for real download the client and configure it into your application - details @Html.ActionLink("here", "client", "help").  
-                </span>
+                To get started for real download the client and configure it into your application - details @Html.ActionLink("here", "client", "help").  
             </p>
             
-                @if (Model.SingleApplicationId != null)
-                    {
-                        <p><span class="hero-small">Your token is @Model.SingleApplicationToken</span></p>
-                    }
+            @if (Model.SingleApplicationId != null)
+            {
+                <div class="textbox">
+                    Your token is <b>@Model.SingleApplicationToken</b>
+                </div>
+            }
 
             @if (Model.TestIssueId != null)
             {
                 <p>
-                    <span class="hero-small">
-                        You've created a test issue - to see it, click <a href="@Url.Issue(Model.TestIssueId)">here</a>.
-                    </span>
+                    You've created a test issue - to see it, click <a href="@Url.Issue(Model.TestIssueId)">here</a>.
                 </p>
             }
         </div>
+        <div class="clear border"></div>
+    }
+    else
+    {
+        <h1>Dashboard</h1>
     }
     
     @Html.Partial("Dashboard/Statistics", Model.Stats)
 
+    <div class="clear border"></div>
+
     @if (Model.HasApplications)
     {
-        @Html.Partial("Dashboard/RecentIssues", Model.RecentIssues)
-        @Html.Partial("Dashboard/RecentErrors", Model.RecentErrors)
+        <div class="two-col" style="margin-top:-5px">
+            <h2 class="section-header"><i class="icon-eye"></i>Most Recent Issues</h2>
+            @Html.Partial("Dashboard/RecentIssues", Model.RecentIssues)
+        </div>
+        <div class="two-col" style="margin-top:-5px">
+            <h2 class="section-header"><i class="icon-cross"></i>Most Recent Errors</h2>
+        </div>
+        
     }
     
-</div>
+</section>
 
 

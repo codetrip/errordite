@@ -1,6 +1,6 @@
 
 jQuery -> 
-	$body = $('div#applications');
+	$body = $('section#applications');
 
 	if $body.length > 0
 		application = null;

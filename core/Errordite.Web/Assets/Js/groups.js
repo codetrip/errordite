@@ -2,29 +2,30 @@
 
   jQuery(function() {
     var $body, Group, group;
-    $body = $('div#groups');
+    $body = $('section#groups');
     if ($body.length > 0) {
       group = null;
       $body.delegate('a.delete', 'click', function() {
         var $this;
         $this = $(this);
-        this.group = new Group($this.closest('tr'));
+        this.group = new Group($('form#deleteGroup'), $this.data('val'));
         this.group["delete"]();
         return false;
       });
       return Group = (function() {
 
-        Group.name = 'Group';
-
-        function Group($appEl) {
-          this.$appEl = $appEl;
+        function Group($form, groupId) {
+          this.$form = $form;
+          this.groupId = groupId;
         }
 
         Group.prototype["delete"] = function() {
-          var $appEl;
-          $appEl = this.$appEl;
-          if (window.confirm("Are you sure you want to delete this group?")) {
-            return $appEl.prev('form').submit();
+          var $form, groupId;
+          $form = this.$form;
+          groupId = this.groupId;
+          if (window.confirm("Are you sure you want to delete this group? " + groupId)) {
+            $('input#GroupId').val(groupId);
+            return $form.submit();
           }
         };
 

@@ -5,25 +5,21 @@
            
 @{
     ViewBag.Title = "Upgrade Payment Plan";
+    Layout = "~/Views/Shared/Master2.0.cshtml";
 }
 
-@section contentHeader
+@section header
 {
-    <div id="pagetitle">
-        <h1><i class="icon-arrow-right"></i>Upgrade Payment Plan</h1>
-    </div>
-    
-    @Html.Partial("Admin/Tabs")
+    @Html.Partial("Admin/Tabs") 
 }
 
-<div class="help">
+<section class="centered">
     <p>
         During the <strong>Errordite beta</strong> you are limited to the free trial plan which is equivalent to the <strong>Small Plan</strong>, see below for details. Once the Beta is complete your 
         organisation will begin its 1 month free trial, at the end of the free trial, you will be able to upgrade to the payment plan of your choice. See <a href="@Url.Pricing()">pricing</a> for 
         more information on our plans.
     </p>
-    <div class="clear-space"></div>
-    @Html.Partial("Help/SmallPlan")
-</div>
+</section>
+    
 
 

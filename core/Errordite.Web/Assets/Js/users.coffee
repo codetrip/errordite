@@ -1,6 +1,6 @@
 
 jQuery -> 
-	$body = $('div#users');
+	$body = $('section#users');
 
 	if $body.length > 0
 		user = null;
