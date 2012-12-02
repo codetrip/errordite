@@ -10,18 +10,13 @@
     ViewBag.FinalBreadcrumb = "Issue {0}".FormatWith(Model.Details.IssueId);
 }
 
-@section headerassets
-{
-    <link rel="stylesheet" type="text/css" href='@Url.Content("~/css/jquery.jqplot.css")' media="screen" />
-}
-
 @section footerassets
 {
-    <script type='text/javascript' src='@Url.Content("~/js/jqplot/jquery.jqplot.min.js")'></script>
-    <script type='text/javascript' src='@Url.Content("~/js/jqplot/jqplot.barRenderer.min.js")'></script>
-    <script type='text/javascript' src='@Url.Content("~/js/jqplot/jqplot.dateAxisRenderer.min.js")'></script>
-    <script type='text/javascript' src='@Url.Content("~/js/jqplot/jqplot.categoryAxisRenderer.min.js")'></script>
-    <script type='text/javascript' src='@Url.Content("~/js/jqplot/jqplot.highlighter.min.js")'></script>
+    <script type='text/javascript' src='@Url.Content("~/assets/js/lib/jqplot/jquery.jqplot.min.js")'></script>
+    <script type='text/javascript' src='@Url.Content("~/assets/js/lib/jqplot/jqplot.barRenderer.min.js")'></script>
+    <script type='text/javascript' src='@Url.Content("~/assets/js/lib/jqplot/jqplot.dateAxisRenderer.min.js")'></script>
+    <script type='text/javascript' src='@Url.Content("~/assets/js/lib/jqplot/jqplot.categoryAxisRenderer.min.js")'></script>
+    <script type='text/javascript' src='@Url.Content("~/assets/js/lib/jqplot/jqplot.highlighter.min.js")'></script>
 }
 
 @section header
