@@ -387,6 +387,68 @@
     <Content Include="Assets\Js\lib\common.js" />
     <Content Include="Assets\Js\lib\date.js" />
     <Content Include="Assets\Js\lib\daterangepicker.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.barRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.barRenderer.min.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.BezierCurveRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.BezierCurveRenderer.min.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.blockRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.blockRenderer.min.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.bubbleRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.bubbleRenderer.min.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.canvasAxisLabelRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.canvasAxisLabelRenderer.min.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.canvasAxisTickRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.canvasAxisTickRenderer.min.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.canvasOverlay.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.canvasOverlay.min.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.canvasTextRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.canvasTextRenderer.min.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.categoryAxisRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.categoryAxisRenderer.min.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.ciParser.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.ciParser.min.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.cursor.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.cursor.min.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.dateAxisRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.dateAxisRenderer.min.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.donutRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.donutRenderer.min.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.dragable.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.dragable.min.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.enhancedLegendRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.enhancedLegendRenderer.min.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.funnelRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.funnelRenderer.min.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.highlighter.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.highlighter.min.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.json2.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.json2.min.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.logAxisRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.logAxisRenderer.min.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.mekkoAxisRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.mekkoAxisRenderer.min.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.mekkoRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.mekkoRenderer.min.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.meterGaugeRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.meterGaugeRenderer.min.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.mobile.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.mobile.min.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.ohlcRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.ohlcRenderer.min.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.pieRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.pieRenderer.min.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.pointLabels.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.pointLabels.min.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.pyramidAxisRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.pyramidAxisRenderer.min.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.pyramidGridRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.pyramidGridRenderer.min.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.pyramidRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.pyramidRenderer.min.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.trendline.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.trendline.min.js" />
+    <Content Include="Assets\Js\lib\jqplot\jquery.jqplot.js" />
+    <Content Include="Assets\Js\lib\jqplot\jquery.jqplot.min.js" />
     <Content Include="Assets\Js\lib\jquery.validate.js" />
     <Content Include="Assets\Js\lib\jquery.unobtrusive-ajax.js" />
     <Content Include="Assets\Js\lib\jquery.validate.unobtrusive.js" />
@@ -426,88 +488,8 @@
     <Content Include="Assets\Js\users.js">
       <DependentUpon>users.coffee</DependentUpon>
     </Content>
-    <Content Include="Css\bootstrap-responsive.min.css">
-      <Compile>True</Compile>
-      <Minify>False</Minify>
-    </Content>
-    <Content Include="Css\bootstrap.min.css">
-      <Compile>True</Compile>
-      <Minify>False</Minify>
-    </Content>
     <Content Include="Assets\Css\errordite.css">
       <DependentUpon>errordite.scss</DependentUpon>
-    </Content>
-    <Content Include="Css\errordite.css" />
-    <Content Include="Css\ie.css">
-      <Compile>True</Compile>
-      <Minify>False</Minify>
-    </Content>
-    <Content Include="Css\ie.min.css">
-      <DependentUpon>ie.css</DependentUpon>
-    </Content>
-    <Content Include="Css\img\1px-D8D8D8.gif" />
-    <Content Include="Css\img\ajax-loader.gif" />
-    <Content Include="Css\img\buttons\button_blue.png" />
-    <Content Include="Css\img\buttons\button_green.png" />
-    <Content Include="Css\img\buttons\button_grey.png" />
-    <Content Include="Css\img\buttons\button_navy.png" />
-    <Content Include="Css\img\buttons\button_orange.png" />
-    <Content Include="Css\img\buttons\button_purple.png" />
-    <Content Include="Css\img\buttons\button_red.png" />
-    <Content Include="Css\img\buttons\button_teal.png" />
-    <Content Include="Css\img\buttons\button_white.png" />
-    <Content Include="Css\img\dotted_border.png" />
-    <Content Include="Css\img\filter.png" />
-    <Content Include="Css\img\glyphicons-halflings-white.png" />
-    <Content Include="Css\img\glyphicons-halflings.png" />
-    <Content Include="Css\img\jquery\ui-bg_flat_30_cccccc_40x100.png" />
-    <Content Include="Css\img\jquery\ui-bg_flat_50_5c5c5c_40x100.png" />
-    <Content Include="Css\img\jquery\ui-bg_glass_20_555555_1x400.png" />
-    <Content Include="Css\img\jquery\ui-bg_glass_40_0078a3_1x400.png" />
-    <Content Include="Css\img\jquery\ui-bg_glass_40_ffc73d_1x400.png" />
-    <Content Include="Css\img\jquery\ui-bg_gloss-wave_25_333333_500x100.png" />
-    <Content Include="Css\img\jquery\ui-bg_highlight-soft_80_eeeeee_1x100.png" />
-    <Content Include="Css\img\jquery\ui-bg_inset-soft_25_000000_1x100.png" />
-    <Content Include="Css\img\jquery\ui-bg_inset-soft_30_f58400_1x100.png" />
-    <Content Include="Css\img\jquery\ui-icons_222222_256x240.png" />
-    <Content Include="Css\img\jquery\ui-icons_4b8e0b_256x240.png" />
-    <Content Include="Css\img\jquery\ui-icons_a83300_256x240.png" />
-    <Content Include="Css\img\jquery\ui-icons_cccccc_256x240.png" />
-    <Content Include="Css\img\jquery\ui-icons_ffffff_256x240.png" />
-    <Content Include="Css\img\menu\menu-arrow.png" />
-    <Content Include="Css\img\minus-grey.png" />
-    <Content Include="Css\img\minus.png" />
-    <Content Include="Css\img\plus-grey.png" />
-    <Content Include="Css\img\plus.png" />
-    <Content Include="Css\img\toggle\toggle-closed.png" />
-    <Content Include="Css\img\toggle\toggle-open.png" />
-    <Content Include="Css\jquery-ui-1.8.21.custom.css">
-      <Compile>True</Compile>
-      <Minify>False</Minify>
-    </Content>
-    <Content Include="Css\jquery-ui-1.8.21.custom.min.css">
-      <DependentUpon>jquery-ui-1.8.21.custom.css</DependentUpon>
-    </Content>
-    <Content Include="Css\jquery.jqplot.css">
-      <Compile>True</Compile>
-      <Minify>False</Minify>
-    </Content>
-    <Content Include="Css\jquery.jqplot.min.css">
-      <DependentUpon>jquery.jqplot.css</DependentUpon>
-    </Content>
-    <Content Include="Css\prettify.css">
-      <Compile>True</Compile>
-      <Minify>False</Minify>
-    </Content>
-    <Content Include="Css\prettify.min.css">
-      <DependentUpon>prettify.css</DependentUpon>
-    </Content>
-    <Content Include="Css\ui.daterangepicker.css">
-      <Compile>True</Compile>
-      <Minify>False</Minify>
-    </Content>
-    <Content Include="Css\ui.daterangepicker.min.css">
-      <DependentUpon>ui.daterangepicker.css</DependentUpon>
     </Content>
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -540,130 +522,6 @@
     <Content Include="Images\UI\sanitise.png" />
     <Content Include="Images\UI\users.png" />
     <Content Include="Images\UI\webforms-errorhandler.png" />
-    <Content Include="Js\009.jquery.history.js">
-      <Compile>True</Compile>
-      <Minify>False</Minify>
-    </Content>
-    <Content Include="Js\010.jquery.cookie.js">
-      <Compile>True</Compile>
-      <Minify>False</Minify>
-    </Content>
-    <Content Include="Js\011.jquery.dropdownchecklist.js">
-      <Compile>True</Compile>
-      <Minify>False</Minify>
-    </Content>
-    <Content Include="Js\020.bootstrap.min.js">
-      <Compile>True</Compile>
-      <Minify>False</Minify>
-    </Content>
-    <Content Include="Js\024.jquery.loader.js">
-      <Compile>True</Compile>
-      <Minify>False</Minify>
-    </Content>
-    <Content Include="Js\030.knockout-2.0.0.js">
-      <Compile>True</Compile>
-      <Minify>False</Minify>
-    </Content>
-    <Content Include="Js\050.underscore.js">
-      <Compile>True</Compile>
-      <Minify>False</Minify>
-    </Content>
-    <Content Include="Js\060.global.js">
-      <DependentUpon>060.global.coffee</DependentUpon>
-    </Content>
-    <Content Include="Js\alerts.js">
-      <DependentUpon>alerts.coffee</DependentUpon>
-    </Content>
-    <Content Include="Js\applications.js">
-      <DependentUpon>applications.coffee</DependentUpon>
-    </Content>
-    <Content Include="Js\dashboard.js">
-      <DependentUpon>dashboard.coffee</DependentUpon>
-    </Content>
-    <Content Include="Js\errors.js">
-      <DependentUpon>errors.coffee</DependentUpon>
-    </Content>
-    <Content Include="Js\groups.js">
-      <DependentUpon>groups.coffee</DependentUpon>
-    </Content>
-    <Content Include="Js\issue.js">
-      <DependentUpon>issue.coffee</DependentUpon>
-    </Content>
-    <Content Include="Js\issues.js">
-      <DependentUpon>issues.coffee</DependentUpon>
-    </Content>
-    <Content Include="Js\005.jquery.placeholder.js">
-      <Compile>True</Compile>
-      <Minify>False</Minify>
-    </Content>
-    <Content Include="Js\007.jquery.datepicker.js">
-      <Compile>True</Compile>
-      <Minify>False</Minify>
-    </Content>
-    <Content Include="Js\008.jquery.form.js">
-      <Compile>True</Compile>
-      <Minify>False</Minify>
-    </Content>
-    <Content Include="Js\006.jquery-ui-1.8.18.custom.min.js">
-      <Compile>True</Compile>
-      <Minify>False</Minify>
-    </Content>
-    <Content Include="Js\001.jquery-1.8.2.js">
-      <Compile>True</Compile>
-      <Minify>False</Minify>
-    </Content>
-    <Content Include="Js\003.jquery.unobtrusive-ajax.js">
-      <Compile>True</Compile>
-      <Minify>False</Minify>
-    </Content>
-    <Content Include="Js\002.jquery.validate.js">
-      <Compile>True</Compile>
-      <Minify>False</Minify>
-    </Content>
-    <Content Include="Js\004.jquery.validate.unobtrusive.js">
-      <Compile>True</Compile>
-      <Minify>False</Minify>
-    </Content>
-    <Content Include="Js\jqplot\jqplot.barRenderer.min.js">
-      <Compile>True</Compile>
-      <Minify>False</Minify>
-    </Content>
-    <Content Include="Js\jqplot\jqplot.categoryAxisRenderer.min.js">
-      <Compile>True</Compile>
-      <Minify>False</Minify>
-    </Content>
-    <Content Include="Js\jqplot\jqplot.dateAxisRenderer.min.js">
-      <Compile>True</Compile>
-      <Minify>False</Minify>
-    </Content>
-    <Content Include="Js\jqplot\jqplot.highlighter.min.js">
-      <Compile>True</Compile>
-      <Minify>False</Minify>
-    </Content>
-    <Content Include="Js\admin\organisations.js">
-      <DependentUpon>organisations.coffee</DependentUpon>
-    </Content>
-    <Content Include="Js\jqplot\jquery.jqplot.min.js">
-      <Compile>True</Compile>
-      <Minify>False</Minify>
-    </Content>
-    <Content Include="Js\prettify.js">
-      <Compile>True</Compile>
-      <Minify>False</Minify>
-    </Content>
-    <Content Include="Js\prettify.min.js">
-      <DependentUpon>prettify.js</DependentUpon>
-    </Content>
-    <Content Include="Js\rules.js">
-      <DependentUpon>rules.coffee</DependentUpon>
-    </Content>
-    <Content Include="Js\common.js">
-      <Compile>True</Compile>
-      <Minify>False</Minify>
-    </Content>
-    <Content Include="Js\users.js">
-      <DependentUpon>users.coffee</DependentUpon>
-    </Content>
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -743,15 +601,6 @@
     <Content Include="Views\Applications\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Js\applications.coffee">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Compile>True</Compile>
-      <Minify>False</Minify>
-      <Bare>False</Bare>
-      <Iced>False</Iced>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Users\Add.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -765,15 +614,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Applications\Edit.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Js\users.coffee">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Compile>True</Compile>
-      <Minify>False</Minify>
-      <Bare>False</Bare>
-      <Iced>False</Iced>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\Errordite.Build\Configuration\log4net.config">
@@ -796,15 +636,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Js\issue.coffee">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Compile>True</Compile>
-      <Minify>False</Minify>
-      <Bare>False</Bare>
-      <Iced>False</Iced>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Shared\Errors\ErrorCriteria.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -815,15 +646,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Groups\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Js\groups.coffee">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Compile>True</Compile>
-      <Minify>False</Minify>
-      <Bare>False</Bare>
-      <Iced>False</Iced>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\Errordite.Build\Configuration\cache.config">
@@ -917,15 +739,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\Errors\ErrorItems.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Js\dashboard.coffee">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Compile>True</Compile>
-      <Minify>False</Minify>
-      <Bare>False</Bare>
-      <Iced>False</Iced>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\Dashboard\Statistics.cshtml" />
@@ -1060,18 +873,6 @@
     <Content Include="Assets\Css\test.scss" />
     <Content Include="Assets\Fonts\normal-800.woff" />
     <Content Include="Assets\icons.xcf" />
-    <None Include="Js\060.global.coffee">
-      <Compile>True</Compile>
-      <Minify>False</Minify>
-      <Bare>False</Bare>
-      <Iced>False</Iced>
-    </None>
-    <None Include="Js\alerts.coffee">
-      <Compile>True</Compile>
-      <Minify>False</Minify>
-      <Bare>False</Bare>
-      <Iced>False</Iced>
-    </None>
     <Content Include="Assets\Js\combined.coffee">
       <Compile>True</Compile>
       <Minify>True</Minify>
@@ -1079,31 +880,7 @@
       <Iced>False</Iced>
       <IncludedFiles>Assets\Js\global.coffee|Assets\Js\applications.coffee|Assets\Js\dashboard.coffee|Assets\Js\errors.coffee|Assets\Js\groups.coffee|Assets\Js\issue.coffee|Assets\Js\issues.coffee|Assets\Js\rules.coffee|Assets\Js\users.coffee|Assets\Js\organisations.coffee</IncludedFiles>
     </Content>
-    <None Include="Js\errors.coffee">
-      <Compile>True</Compile>
-      <Minify>False</Minify>
-      <Bare>False</Bare>
-      <Iced>False</Iced>
-    </None>
-    <None Include="Js\issues.coffee">
-      <Compile>True</Compile>
-      <Minify>False</Minify>
-      <Bare>False</Bare>
-      <Iced>False</Iced>
-    </None>
     <Content Include="Views\Issue\RuleUpdates.cshtml" />
-    <None Include="Js\admin\organisations.coffee">
-      <Compile>True</Compile>
-      <Minify>False</Minify>
-      <Bare>False</Bare>
-      <Iced>False</Iced>
-    </None>
-    <None Include="Js\rules.coffee">
-      <Compile>True</Compile>
-      <Minify>False</Minify>
-      <Bare>False</Bare>
-      <Iced>False</Iced>
-    </None>
     <Content Include="Views\Shared\Dashboard\RecentIssues.cshtml" />
     <Content Include="Views\Help\Features.cshtml" />
     <Content Include="Views\Shared\Dashboard\RecentErrors.cshtml" />
