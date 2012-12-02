@@ -14,28 +14,23 @@
         @Html.Hidden("tab", "errors")
     }  
 
-    <div class="filters errorditeform">
-        <div class="text">
-            @Html.TextBoxFor(m => m.Query, new { autocomplete = "off", placeholder = "Search your errors" })
-        </div>
+    <div class="form" style="margin-bottom: 5px;">
+        @Html.TextBoxFor(m => m.Query, new { autocomplete = "off", placeholder = "Search your errors", style="float:left"})
 
         @if (Model.Controller != "issue")
         {
-            <div class="dropdown-normal">
-                @Html.DropDownListFor(m => m.ApplicationId, Model.Applications)
-            </div>
+            @Html.DropDownListFor(m => m.ApplicationId, Model.Applications, null, new {style="float:left"})
         }
         
-        <div class="date">
-            @Html.TextBoxFor(m => m.StartDate, new { autocomplete = "off", placeholder = "Start Date", @class = "daterangepicker" })
+        <div id="daterange" class="daterange" style="margin:0 0 0 5px">
+            @Html.HiddenFor(m => m.StartDate)
+            <i class="icon-calendar"></i>
+            <span>Select Date Range</span>
+            <b class="caret"></b>
         </div>
-        <div class="date">
-            @Html.TextBoxFor(m => m.EndDate, new { autocomplete = "off", placeholder = "End Date", @class = "daterangepicker" })
-        </div>
-        <div class="buttons">
-            <input type="submit" class="btn btn-success" value="Apply" />
-            <a class="btn" href="@Url.ClearErrors(Model.ApplicationId, Model.IssueId)">Clear</a>
-        </div>
+        
+        <input type="submit" class="btn btn-small btn-blue" value="Apply" />
+        <a class="btn btn-small btn-lightblue" href="@Url.ClearErrors(Model.ApplicationId, Model.IssueId)">Clear</a>
        
     </div>
 }

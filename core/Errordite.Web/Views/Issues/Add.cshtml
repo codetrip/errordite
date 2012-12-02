@@ -5,7 +5,6 @@
            
 @{
     ViewBag.Title = "Create Issue";
-    Layout = "~/Views/Shared/Master2.0.cshtml";
 }
 
 <section class="centered" id="addissue">
@@ -13,7 +12,7 @@
     <p>Use this form to create an issue so you can preemptively monitor for a particular exception within your application.</p>
     @using (Html.BeginForm("add", "issues", FormMethod.Post, new { id = "addIssue" }))
     {
-        <div class="form double">
+        <div class="form double push-up">
             <ul>
                 <li>
                     @Html.LabelFor(m => m.Name, "Issue Name")
@@ -28,7 +27,7 @@
                 </li>
             </ul>
         </div>
-        <div class="form double">
+        <div class="form double push-up">
             <ul>
                <li>
                     @Html.LabelFor(m => m.ApplicationId, "Application")
@@ -61,7 +60,7 @@
                 </tbody>
             </table>
         </div>
-        <input type="submit" class="btn btn-medium btn-blue" value="Add Issue" />
+        <input type="submit" class="btn btn-medium btn-blue" value="Add" />
         <a class="btn-cancel" href="@Url.Issues()" >Cancel</a>
     }
 </section>

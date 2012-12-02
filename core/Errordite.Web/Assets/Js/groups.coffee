@@ -7,19 +7,17 @@ jQuery ->
 
 		$body.delegate('a.delete', 'click', () -> 
 			$this = $ this
-			this.group = new Group $('form#deleteGroup'), $this.data('val');
+			this.group = new Group $this.closest('form')
 			this.group.delete()
-			false	
+			false
 		)	
 
 		class Group
-			constructor: ($form, groupId) -> 
+			constructor: ($form) -> 
 				this.$form = $form
-				this.groupId = groupId
 
 			delete: () -> 
-				$form = this.$form
-				groupId = this.groupId
-				if window.confirm "Are you sure you want to delete this group? " + groupId
-					$('input#GroupId').val(groupId)
-					$form.submit();
+				if window.confirm "Are you sure you want to delete this group?"
+					this.$form.submit();
+
+	

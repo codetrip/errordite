@@ -250,9 +250,7 @@
     <Compile Include="Areas\System\Controllers\SystemController.cs" />
     <Compile Include="Areas\System\Models\Organisations\SuspendOrganisationViewModel.cs" />
     <Compile Include="ActionFilters\GenerateBreadcrumbs.cs" />
-    <Compile Include="Controllers\AlertsController.cs" />
     <Compile Include="Controllers\ApplicationsController.cs" />
-    <Compile Include="Controllers\AuditController.cs" />
     <Compile Include="Areas\System\Controllers\CacheController.cs" />
     <Compile Include="Areas\System\Controllers\OrganisationsController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
@@ -330,7 +328,7 @@
     <Content Include="Assets\Css\combined.css">
       <Compile>True</Compile>
       <Minify>True</Minify>
-      <IncludedFiles>Assets\Css\lib\normalize.css|Assets\Css\lib\html5-boilerplate.css|Assets\Css\lib\prettify.css|Assets\Css\lib\jquery.jqplot.css|Assets\Css\fonts.css|Assets\Css\errordite.css</IncludedFiles>
+      <IncludedFiles>Assets\Css\lib\normalize.css|Assets\Css\lib\html5-boilerplate.css|Assets\Css\lib\prettify.css|Assets\Css\lib\jquery.jqplot.css|Assets\Css\lib\daterangepicker.css|Assets\Css\fonts.css|Assets\Css\errordite.css</IncludedFiles>
     </Content>
     <Content Include="Assets\Css\combined.min.css">
       <DependentUpon>combined.css</DependentUpon>
@@ -347,6 +345,7 @@
     <Content Include="Assets\Css\img\settings.png" />
     <Content Include="Assets\Css\img\signin.png" />
     <Content Include="Assets\Css\img\waiterrors.png" />
+    <Content Include="Assets\Css\lib\daterangepicker.css" />
     <Content Include="Assets\Css\lib\html5-boilerplate.css">
       <Compile>True</Compile>
       <Minify>False</Minify>
@@ -356,9 +355,6 @@
     <Content Include="Assets\Css\lib\normalize.css">
       <Compile>True</Compile>
       <Minify>False</Minify>
-    </Content>
-    <Content Include="Assets\Js\alerts.js">
-      <DependentUpon>alerts.coffee</DependentUpon>
     </Content>
     <Content Include="Assets\Js\applications.js">
       <DependentUpon>applications.coffee</DependentUpon>
@@ -389,11 +385,12 @@
     </Content>
     <Content Include="Assets\Js\lib\bootstrap.js" />
     <Content Include="Assets\Js\lib\common.js" />
+    <Content Include="Assets\Js\lib\date.js" />
+    <Content Include="Assets\Js\lib\daterangepicker.js" />
     <Content Include="Assets\Js\lib\jquery.validate.js" />
     <Content Include="Assets\Js\lib\jquery.unobtrusive-ajax.js" />
     <Content Include="Assets\Js\lib\jquery.validate.unobtrusive.js" />
     <Content Include="Assets\Js\lib\jquery.placeholder.js" />
-    <Content Include="Assets\Js\lib\jquery.datepicker.js" />
     <Content Include="Assets\Js\lib\jquery.form.js" />
     <Content Include="Assets\Js\lib\jquery.history.js" />
     <Content Include="Assets\Js\lib\jquery.cookie.js" />
@@ -405,7 +402,7 @@
     <Content Include="Assets\Js\lib\lib.js">
       <Compile>True</Compile>
       <Minify>True</Minify>
-      <IncludedFiles>Assets\Js\lib\jquery.validate.js|Assets\Js\lib\jquery.unobtrusive-ajax.js|Assets\Js\lib\jquery.validate.unobtrusive.js|Assets\Js\lib\jquery.placeholder.js|Assets\Js\lib\jquery.datepicker.js|Assets\Js\lib\jquery.form.js|Assets\Js\lib\jquery.history.js|Assets\Js\lib\jquery.cookie.js|Assets\Js\lib\bootstrap.js|Assets\Js\lib\jquery.loader.js|Assets\Js\lib\knockout-2.0.0.js|Assets\Js\lib\underscore.js|Assets\Js\lib\prettify.js</IncludedFiles>
+      <IncludedFiles>Assets\Js\lib\jquery.validate.js|Assets\Js\lib\jquery.unobtrusive-ajax.js|Assets\Js\lib\jquery.validate.unobtrusive.js|Assets\Js\lib\jquery.placeholder.js|Assets\Js\lib\jquery.datepicker.js|Assets\Js\lib\jquery.form.js|Assets\Js\lib\jquery.history.js|Assets\Js\lib\jquery.cookie.js|Assets\Js\lib\bootstrap.js|Assets\Js\lib\jquery.loader.js|Assets\Js\lib\knockout-2.0.0.js|Assets\Js\lib\underscore.js|Assets\Js\lib\prettify.js|Assets\Js\lib\date.js|Assets\Js\lib\daterangepicker.js|Assets\Js\lib\common.js</IncludedFiles>
     </Content>
     <Content Include="Assets\Js\lib\lib.min.js">
       <DependentUpon>lib.js</DependentUpon>
@@ -913,15 +910,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\Master.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shared\Js.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shared\Header.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Issue\NotFound.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -964,9 +952,6 @@
     <Content Include="Views\Shared\Issues\Issues.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Audit\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="App_GlobalResources\Audit.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>Audit.Designer.cs</LastGenOutput>
@@ -994,9 +979,6 @@
     <Content Include="Views\Issues\Merge.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\Css.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Issue\Reports.cshtml" />
     <Content Include="Areas\System\Views\Web.config" />
     <Content Include="Areas\System\Views\_ViewStart.cshtml" />
@@ -1012,12 +994,6 @@
     <Content Include="Assets\Fonts\normal-400.woff" />
     <Content Include="Assets\Fonts\normal-600.woff" />
     <Content Include="Assets\Fonts\normal-700.woff" />
-    <Content Include="Assets\Js\alerts.coffee">
-      <Compile>True</Compile>
-      <Minify>False</Minify>
-      <Bare>False</Bare>
-      <Iced>False</Iced>
-    </Content>
     <Content Include="Assets\Js\applications.coffee">
       <Compile>True</Compile>
       <Minify>False</Minify>
@@ -1083,6 +1059,7 @@
     </Content>
     <Content Include="Assets\Css\test.scss" />
     <Content Include="Assets\Fonts\normal-800.woff" />
+    <Content Include="Assets\icons.xcf" />
     <None Include="Js\060.global.coffee">
       <Compile>True</Compile>
       <Minify>False</Minify>
@@ -1100,7 +1077,7 @@
       <Minify>True</Minify>
       <Bare>False</Bare>
       <Iced>False</Iced>
-      <IncludedFiles>Assets\Js\global.coffee|Assets\Js\alerts.coffee|Assets\Js\applications.coffee|Assets\Js\dashboard.coffee|Assets\Js\errors.coffee|Assets\Js\groups.coffee|Assets\Js\issue.coffee|Assets\Js\issues.coffee|Assets\Js\rules.coffee|Assets\Js\users.coffee|Assets\Js\organisations.coffee</IncludedFiles>
+      <IncludedFiles>Assets\Js\global.coffee|Assets\Js\applications.coffee|Assets\Js\dashboard.coffee|Assets\Js\errors.coffee|Assets\Js\groups.coffee|Assets\Js\issue.coffee|Assets\Js\issues.coffee|Assets\Js\rules.coffee|Assets\Js\users.coffee|Assets\Js\organisations.coffee</IncludedFiles>
     </Content>
     <None Include="Js\errors.coffee">
       <Compile>True</Compile>
@@ -1130,7 +1107,6 @@
     <Content Include="Views\Shared\Dashboard\RecentIssues.cshtml" />
     <Content Include="Views\Help\Features.cshtml" />
     <Content Include="Views\Shared\Dashboard\RecentErrors.cshtml" />
-    <Content Include="Views\Shared\Footer.cshtml" />
     <Content Include="Areas\System\Views\Cache\Item.cshtml" />
     <Content Include="Views\Shared\NotAuthorised.cshtml" />
     <Content Include="Views\Shared\NotFound.cshtml" />
@@ -1147,17 +1123,15 @@
     <Content Include="Areas\System\Views\Organisations\Index.cshtml" />
     <Content Include="Areas\System\Views\Impersonation\Index.cshtml" />
     <Content Include="Views\Shared\Applications\List.cshtml" />
-    <Content Include="Views\Shared\Breadcrumb.cshtml" />
     <Content Include="Views\Issue\History.cshtml" />
     <Content Include="Views\Shared\Errors\TraceMessages.cshtml" />
     <Content Include="Views\Help\SendErrorWithJson.cshtml" />
-    <Content Include="Views\Shared\HowItWorksPartial.cshtml" />
     <Content Include="packages.config" />
-    <Content Include="Views\Shared\Master2.0.cshtml" />
+    <Content Include="Views\Shared\Master.cshtml" />
     <Content Include="Views\Shared\HeaderAssets.cshtml" />
     <Content Include="Views\Shared\FooterAssets.cshtml" />
-    <Content Include="Views\Shared\Breadcrumb2.0.cshtml" />
-    <Content Include="Views\Shared\Header2.0.cshtml" />
+    <Content Include="Views\Shared\Breadcrumb.cshtml" />
+    <Content Include="Views\Shared\Header.cshtml" />
     <Content Include="Views\Help\Privacy.cshtml" />
   </ItemGroup>
   <ItemGroup>

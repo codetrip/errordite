@@ -10,9 +10,9 @@
         <li @(Model == HelpTab.Pricing ? " class=active" : " class=inactive") >
             <a href="@Url.Pricing()">Pricing</a>
         </li>
-        <li @(Model == HelpTab.Features ? " class=active" : " class=inactive") >
+        @*<li @(Model == HelpTab.Features ? " class=active" : " class=inactive") >
             <a href="@Url.Features()">Features</a>
-        </li>
+        </li>*@
         <li @(Model == HelpTab.Client ? " class=active" : " class=inactive") >
             <a href="@Url.Client()">.NET Client</a>
         </li>

@@ -1,13 +1,8 @@
-﻿@using CodeTrip.Core.Extensions
+﻿
 @using Errordite.Core.Notifications.Queries
 @model Errordite.Core.Notifications.Queries.GetEmailInfoQueryResponse
 
-@{
-    
-}
-
-@section contentHeader
-{
+<section class="centered">
     <h2>Send @Model.EmailName</h2>
        
 
@@ -38,4 +33,5 @@
         <input type="submit" value="Send Via Service" name="SendViaService"/>
         <input type="submit" value="View" name="View" />
     }
-}
+</section>
+
