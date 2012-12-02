@@ -45,8 +45,17 @@ class Initialisation
 			confirm $(this).data('confirm')
 
 	datepicker: ($root) ->
-		$root.find('input.daterangepicker').daterangepicker
-			dateFormat: 'D M d, yy'			
+		$root.find('div#daterange').daterangepicker
+			ranges:
+				Today: ["today", "today"]
+				Yesterday: ["yesterday", "yesterday"]
+				"Last 7 Days": [Date.today().add(days: -6), "today"]
+				"Last 30 Days": [Date.today().add(days: -29), "today"]
+				"This Month": [Date.today().moveToFirstDayOfMonth(), Date.today().moveToLastDayOfMonth()]
+			, (start, end) ->
+				$('#daterange span').html start.toString('MMMM d, yyyy') + ' - ' + end.toString('MMMM d, yyyy')
+				$('#daterange input').val start.toString('u') + '|' + end.toString('u')
+
 
 class Spinner
 

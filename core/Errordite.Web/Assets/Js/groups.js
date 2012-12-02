@@ -8,24 +8,19 @@
       $body.delegate('a.delete', 'click', function() {
         var $this;
         $this = $(this);
-        this.group = new Group($('form#deleteGroup'), $this.data('val'));
+        this.group = new Group($this.closest('form'));
         this.group["delete"]();
         return false;
       });
       return Group = (function() {
 
-        function Group($form, groupId) {
+        function Group($form) {
           this.$form = $form;
-          this.groupId = groupId;
         }
 
         Group.prototype["delete"] = function() {
-          var $form, groupId;
-          $form = this.$form;
-          groupId = this.groupId;
-          if (window.confirm("Are you sure you want to delete this group? " + groupId)) {
-            $('input#GroupId').val(groupId);
-            return $form.submit();
+          if (window.confirm("Are you sure you want to delete this group?")) {
+            return this.$form.submit();
           }
         };
 

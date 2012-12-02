@@ -4,7 +4,6 @@
            
 @{
     ViewBag.Title = "Add Application";
-    Layout = "~/Views/Shared/Master2.0.cshtml";
 }
 
 @section header
@@ -17,7 +16,7 @@
     @using (Html.BeginForm("add", "applications", FormMethod.Post, new { id = "addapplicationForm" }))
     {
         @Html.HiddenFor(m => m.MatchRuleFactoryId)
-        <h1>Create application</h1>
+        <h1>Add application</h1>
         <div class="form double push-up">
             <ul>
                 <li>
@@ -42,6 +41,10 @@
                     @Html.LabelFor(m => m.Active, "Activate application")
                     <i rel="tooltip" title="Only active applications will receive errors and have issues created." class="icon-info"></i>
                 </li>
+                <li>
+                    <input type="submit" class="btn btn-medium btn-blue" value="Add" />
+                    <a class="btn-cancel" href="@Url.Applications()" >Cancel</a>
+                </li>
             </ul>
         </div>
         <div class="form double push-up">
@@ -60,9 +63,6 @@
                 </li>
             </ul>
         </div>
-        <div class="clear"></div>
-        <input type="submit" class="btn btn-medium btn-blue" value="Add Application" />
-        <a class="btn-cancel" href="@Url.Applications()" >Cancel</a>
     }
     
 </section>

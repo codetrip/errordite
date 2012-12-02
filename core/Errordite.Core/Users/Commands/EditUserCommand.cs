@@ -51,8 +51,7 @@ namespace Errordite.Core.Users.Commands
             }
 
             if (existingUser.Email != request.Email)
-                Session.MasterRaven.Query<UserOrganisationMapping>().First(u => u.EmailAddress == existingUser.Email).EmailAddress =
-                    request.Email;
+                Session.MasterRaven.Query<UserOrganisationMapping>().First(u => u.EmailAddress == existingUser.Email).EmailAddress = request.Email;
             //TODO: sync email
 
             existingUser.FirstName = request.FirstName;

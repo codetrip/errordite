@@ -47,8 +47,25 @@
     };
 
     Initialisation.prototype.datepicker = function($root) {
-      return $root.find('input.daterangepicker').daterangepicker({
-        dateFormat: 'D M d, yy'
+      return $root.find('div#daterange').daterangepicker({
+        ranges: {
+          Today: ["today", "today"],
+          Yesterday: ["yesterday", "yesterday"],
+          "Last 7 Days": [
+            Date.today().add({
+              days: -6
+            }), "today"
+          ],
+          "Last 30 Days": [
+            Date.today().add({
+              days: -29
+            }), "today"
+          ],
+          "This Month": [Date.today().moveToFirstDayOfMonth(), Date.today().moveToLastDayOfMonth()]
+        }
+      }, function(start, end) {
+        $('#daterange span').html(start.toString('MMMM d, yyyy') + ' - ' + end.toString('MMMM d, yyyy'));
+        return $('#daterange input').val(start.toString('u') + '|' + end.toString('u'));
       });
     };
 
@@ -270,143 +287,6 @@
     var init;
     init = new Initialisation();
     return init.init(false);
-  });
-
-  jQuery(function() {
-    var $alerts, $body, Alerts, alertHeaderHeight, alertHeight;
-    $body = $('div#alerts');
-    $alerts = null;
-    alertHeight = 58;
-    alertHeaderHeight = 46;
-    if ($body.length > 0) {
-      $("div#head-links").delegate('a#show-alerts', 'click', function(e) {
-        e.preventDefault();
-        if ($body.find('div.alert').length === 0) {
-          $alerts = new Alerts();
-          return $alerts.show(function() {
-            if ($body.find('div.alert').length === 0) {
-              $alerts.setTimeout();
-              return alert("You have no alerts at present");
-            }
-          });
-        } else {
-          $body.show();
-          return $body.animate({
-            height: ($body.find('div.alert').length * alertHeight) + alertHeaderHeight
-          }, 1000);
-        }
-      });
-      $(document).ready(function() {
-        $alerts = new Alerts();
-        if (($.cookie("alerts") === null || $.cookie("alerts") === "show") && $alerts.hasTimedOut()) {
-          $alerts.show();
-          return $alerts.setTimeout();
-        }
-      });
-      $body.delegate('a#hidealerts', 'click', function(e) {
-        $alerts.hide();
-        return false;
-      });
-      $body.delegate('a#dismissalerts', 'click', function(e) {
-        Errordite.Spinner.disable();
-        $.post('/alerts/dismissall');
-        Errordite.Spinner.enable();
-        $alerts.setTimeout();
-        return false;
-      });
-      return Alerts = (function() {
-
-        function Alerts() {}
-
-        Alerts.prototype.bind = function(alerts) {
-          var a, _i, _len, _ref;
-          $('div').remove('.alert');
-          _ref = alerts.data;
-          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-            a = _ref[_i];
-            $body.append('<div class="alert alert-success" data-alert-id="' + a.Id + '" data-alert-utc="' + a.Date + '"><a class="close" data-dismiss="alert">X</a><h4 class="alert-heading">' + a.Header + ' on ' + a.Date + '</h4>' + a.Message + '</div>');
-          }
-          $body.css({
-            left: ($(window).width() / 2) - 300,
-            display: 'block'
-          });
-          $body.animate({
-            height: (alerts.data.length * alertHeight) + alertHeaderHeight
-          }, 500);
-          return $('.alert').bind('closed', function() {
-            var $this, alertCount;
-            $this = $(this);
-            alertCount = $body.find('div.alert').length;
-            if (alertCount <= 3) {
-              if (alertCount === 1) {
-                $body.animate({
-                  height: 0
-                }, 500, function() {
-                  return $body.hide();
-                });
-              } else {
-                $body.animate({
-                  height: ((alertCount - 1) * alertHeight) + alertHeaderHeight - 5
-                }, 500);
-              }
-            }
-            Errordite.Spinner.disable();
-            $.post('/alerts/dismiss', {
-              id: $this.closest('[data-alert-id]').data('alert-id')
-            });
-            return Errordite.Spinner.enable();
-          });
-        };
-
-        Alerts.prototype.show = function(complete) {
-          this.setCookie("show");
-          Errordite.Spinner.disable();
-          $.get('/alerts/get', function(alerts) {
-            if (alerts.data.length > 0) {
-              $alerts.bind(alerts);
-            }
-            if (complete != null) {
-              return complete();
-            }
-          });
-          return Errordite.Spinner.enable();
-        };
-
-        Alerts.prototype.hide = function() {
-          this.setCookie("hide");
-          return $body.animate({
-            height: 0
-          }, 500, function() {
-            return $body.hide();
-          });
-        };
-
-        Alerts.prototype.setCookie = function(val) {
-          var expiry;
-          expiry = new Date();
-          expiry.setMinutes(expiry.getMinutes() + 60);
-          return $.cookie("alerts", val, {
-            expires: expiry
-          });
-        };
-
-        Alerts.prototype.setTimeout = function() {
-          var expiry;
-          expiry = new Date();
-          expiry.setMinutes(expiry.getMinutes() + 5);
-          return $.cookie("alerts-timeout", "", {
-            expires: expiry
-          });
-        };
-
-        Alerts.prototype.hasTimedOut = function() {
-          return $.cookie("alerts-timeout") === null;
-        };
-
-        return Alerts;
-
-      })();
-    }
   });
 
   jQuery(function() {
@@ -785,24 +665,19 @@
       $body.delegate('a.delete', 'click', function() {
         var $this;
         $this = $(this);
-        this.group = new Group($('form#deleteGroup'), $this.data('val'));
+        this.group = new Group($this.closest('form'));
         this.group["delete"]();
         return false;
       });
       return Group = (function() {
 
-        function Group($form, groupId) {
+        function Group($form) {
           this.$form = $form;
-          this.groupId = groupId;
         }
 
         Group.prototype["delete"] = function() {
-          var $form, groupId;
-          $form = this.$form;
-          groupId = this.groupId;
-          if (window.confirm("Are you sure you want to delete this group? " + groupId)) {
-            $('input#GroupId').val(groupId);
-            return $form.submit();
+          if (window.confirm("Are you sure you want to delete this group?")) {
+            return this.$form.submit();
           }
         };
 
@@ -814,7 +689,7 @@
 
   jQuery(function() {
     var $issue, loadTabData, renderErrors, renderReports, setReferenceLink;
-    $issue = $('div#issue');
+    $issue = $('section#issue');
     if ($issue.length > 0) {
       setReferenceLink = function() {
         var input, reference;
@@ -935,13 +810,13 @@
   });
 
   jQuery(function() {
-    var $activeModal, $body, init, maybeEnableBatchStatus;
-    $body = $('div#issues');
+    var $activeModal, $root, init, maybeEnableBatchStatus;
+    $root = $('section#issues');
     $activeModal = null;
-    if ($body.length > 0) {
+    if ($root.length > 0) {
       init = new Initalisation();
-      init.datepicker($body);
-      $body.delegate('form#actionForm', 'submit', function(e) {
+      init.datepicker($root);
+      $root.delegate('form#actionForm', 'submit', function(e) {
         var $this;
         e.preventDefault();
         $this = $(this);
@@ -954,33 +829,33 @@
           }
         });
       });
-      $body.delegate('div.dropdown-small ul.dropdown-menu li input', 'click', function(e) {
+      $root.delegate('ul.dropdown-menu li input', 'click', function(e) {
         return e.stopPropagation();
       });
-      $body.delegate('div.dropdown-small ul.dropdown-menu li a', 'click', function(e) {
+      $root.delegate('ul.dropdown-menu li a', 'click', function(e) {
         e.preventDefault();
         return $(this).closest('ul').find('li :checkbox').prop('checked', true);
       });
-      $body.delegate('div.dropdown-small ul.dropdown-menu li', 'click', function(e) {
+      $root.delegate('ul.dropdown-menu li', 'click', function(e) {
         var $chk, $this;
         $this = $(this);
         $chk = $this.closest('li').children('input');
         $chk.attr('checked', !$chk.attr('checked'));
         return false;
       });
-      $body.delegate('div.action ul.dropdown-menu li a', 'click', function() {
+      $root.delegate('ul#action-list ul.dropdown-menu li a', 'click', function() {
         var $modal, $this;
         $this = $(this);
-        $modal = $body.find('div#' + $this.attr('data-val-modal'));
+        $modal = $root.find('div#' + $this.attr('data-val-modal'));
         if ($modal === null) {
           return null;
         }
-        $body.find('input[type="hidden"]#Action').val($modal.attr("id"));
+        $root.find('input[type="hidden"]#Action').val($modal.attr("id"));
         $modal.find('.batch-issue-count').text($(':checkbox:checked[name=issueIds]').length);
         $modal.find('.batch-issue-plural').toggle($(':checkbox:checked[name=issueIds]').length > 1);
         if ($modal.find('.batch-issue-status').length > 0) {
           $modal.find('.batch-issue-status').text($this.attr('data-val-status'));
-          $body.find('input[type="hidden"]#Status').val($this.attr('data-val-status').replace(' ', ''));
+          $root.find('input[type="hidden"]#Status').val($this.attr('data-val-status').replace(' ', ''));
         }
         $activeModal = $modal;
         return $modal.modal();
@@ -990,9 +865,9 @@
         return maybeEnableBatchStatus();
       });
       maybeEnableBatchStatus = function() {
-        return $('div.action').toggle(!!$(':checkbox:checked[name=issueIds]').length);
+        return $('ul#action-list').toggle(!!$(':checkbox:checked[name=issueIds]').length);
       };
-      $body.delegate(':checkbox[name=issueIds]', 'click', function() {
+      $root.delegate(':checkbox[name=issueIds]', 'click', function() {
         return maybeEnableBatchStatus();
       });
       return maybeEnableBatchStatus();
@@ -1003,7 +878,7 @@
 
   jQuery(function() {
     var $body;
-    if ($('div#issue, section#addissue').length > 0) {
+    if ($('section#issue, section#addissue').length > 0) {
       $body = $('body');
       Errordite.Rule = (function() {
 
@@ -1205,21 +1080,19 @@
       $body.delegate('a.delete', 'click', function() {
         var $this;
         $this = $(this);
-        this.user = new User($this.closest('tr'));
+        this.user = new User($this.closest('form'));
         this.user["delete"]();
         return false;
       });
       return User = (function() {
 
-        function User($appEl) {
-          this.$appEl = $appEl;
+        function User($form) {
+          this.$form = $form;
         }
 
         User.prototype["delete"] = function() {
-          var $appEl;
-          $appEl = this.$appEl;
           if (window.confirm("Are you sure you want to delete this user, any issues assigned to this user will be assigned to you!")) {
-            return $appEl.prev('form').submit();
+            return this.$form.submit();
           }
         };
 

@@ -1,5 +1,4 @@
 ﻿@using Errordite.Web.Extensions
-@using Errordite.Web.Models.Organisation
 @using Errordite.Web.Models.Users
 @model AddUserViewModel
 
@@ -7,20 +6,17 @@
     ViewBag.Title = "Add User";
 }
 
-@section contentHeader
+@section header
 {
-    <div id="pagetitle">
-        <h1><i class="icon-arrow-right"></i>Users</h1>
-    </div>
     @Html.Partial("Admin/Tabs")
 }
 
 @using (Html.BeginForm("add", "users", FormMethod.Post, new { id = "addUserForm" }))
 {
-    <div class="base left-narrow">
+    <section class="centered">
         <h1>Add User</h1>
-        <div class="base-content">
-            <ul class="errorditeform double-row">
+        <div class="form double push-up">
+            <ul>
                 <li>
                     @Html.LabelFor(m => m.FirstName, "First name")
                     @Html.TextBoxFor(m => m.FirstName)
@@ -37,22 +33,40 @@
                     @Html.ValidationMessageFor(m => m.Email)
                 </li>
                 <li>
-                    <label>Group Membership</label>
-                    <div class="custom-select border">
-                        <ul>
-                            @Html.EditorFor(m => m.Groups)
-                        </ul>
-                    </div>
+                    @Html.LabelFor(m => m.TimezoneId, "Timezone")
+                    @Html.DropDownListFor(m => m.TimezoneId, new[]
+                        {
+                            new SelectListItem
+                                {
+                                    Selected = Model.TimezoneId == null,
+                                    Text = "Organisation Default",
+                                    Value = "",
+                                }, 
+                        }.Union(
+                            TimeZoneInfo.GetSystemTimeZones().Select(t => new SelectListItem
+                                {
+                                    Selected = Model.TimezoneId == t.Id, Value = t.Id, Text = t.DisplayName
+                                })))
                 </li>
-                <li class="cbox">
+                <li class="inline">
                     @Html.CheckBoxFor(m => m.IsAdministrator) @Html.LabelFor(m => m.IsAdministrator, "Make user an administrator?")
-                    <i rel="tooltip" title="Only administrators can manage your organisation (managing users, groups and applications)." class="icon-info-sign"></i>
+                    <i title="Only administrators can manage your organisation (managing users, groups and applications)." class="icon-info"></i>
+                </li>
+                <li>
+                    <input type="submit" class="btn btn-medium btn-blue" value="Add" />
+                    <a class="btn-cancel" href="@Url.Users()">Cancel</a>
                 </li>
             </ul>
         </div>
-    </div>
-    <div class="colfull buttons">
-        <input type="submit" class="btn btn-success" value="Add User" />&nbsp;
-        <a class="btn" href="@Url.Users()">Cancel</a>
-    </div>
+        <div class="form double push-up">
+            <ul>
+                <li class="sublist pushed-up">
+                    <label>Group Membership</label>
+                    <ul class="tall">
+                        @Html.EditorFor(m => m.Groups)
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </section>
 }

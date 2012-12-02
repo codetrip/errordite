@@ -9,7 +9,7 @@ namespace Errordite.Samples.WebForms
 
         void Application_Start(object sender, EventArgs e)
         {
-            ErrorditeClient.SetErrorNotificationAction(exception => Trace.Write(exception.ToString()));
+            //ErrorditeClient.SetLogger(exception => Trace.Write(exception.ToString()));
         }
 
 

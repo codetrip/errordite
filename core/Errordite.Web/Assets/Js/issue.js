@@ -2,7 +2,7 @@
 
   jQuery(function() {
     var $issue, loadTabData, renderErrors, renderReports, setReferenceLink;
-    $issue = $('div#issue');
+    $issue = $('section#issue');
     if ($issue.length > 0) {
       setReferenceLink = function() {
         var input, reference;

@@ -7,18 +7,17 @@ jQuery ->
 
 		$body.delegate('a.delete', 'click', () -> 
 			$this = $ this
-			this.user = new User $this.closest('tr')
+			this.user = new User $this.closest('form')
 			this.user.delete()
 			false	
 		)	
 
 		class User
-			constructor: ($appEl) -> 
-				this.$appEl = $appEl
+			constructor: ($form) -> 
+				this.$form = $form
 
 			delete: () -> 
-				$appEl = this.$appEl
 				if window.confirm "Are you sure you want to delete this user, any issues assigned to this user will be assigned to you!"
-					$appEl.prev('form').submit();
+					this.$form.submit();
 
 	

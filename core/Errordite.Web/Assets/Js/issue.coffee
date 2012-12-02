@@ -1,5 +1,5 @@
 jQuery -> 
-	$issue = $('div#issue');
+	$issue = $('section#issue');
 
 	if $issue.length > 0
 

@@ -3,7 +3,6 @@
 
 @{
     ViewBag.Title = ".net Client";
-    Layout = "~/Views/Shared/Master2.0.cshtml";
 }
 
 @section header
@@ -18,9 +17,9 @@
         The client is an open source project hosted on CodePlex <a href="@Url.ClientCodeplex()">here</a>.  The guide below provides information on how to use the client.           
     </p>
             
-    <div class="download">
-        <a href="@Url.ClientNuget()" class="btn btn-medium btn-blue">Get from NuGet</a>
-        <a href="@Url.ClientDownload()" class="btn btn-medium btn-blue">Download binaries</a>
+    <div style="padding-bottom:10px">
+        <a href="@Url.ClientNuget()" target="_blank" class="btn btn-medium btn-blue">Get from NuGet</a>
+        <a href="@Url.ClientDownload()" target="_blank" class="btn btn-medium btn-blue">Download binaries</a>
     </div>
 
     <h2>1. Install</h2>

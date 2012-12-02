@@ -5,7 +5,7 @@
 
   jQuery(function() {
     var $body;
-    if ($('div#issue, section#addissue').length > 0) {
+    if ($('section#issue, section#addissue').length > 0) {
       $body = $('body');
       Errordite.Rule = (function() {
 

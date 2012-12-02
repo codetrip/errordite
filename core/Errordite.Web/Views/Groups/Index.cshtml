@@ -5,7 +5,6 @@
            
 @{
     ViewBag.Title = "Groups";
-    Layout = "~/Views/Shared/Master2.0.cshtml";
 }
 
 @section header
@@ -16,11 +15,6 @@
 <section id="groups" class="centered">
     <h1>Groups</h1>
     <p>Groups are used to determine who receives email notifications for your applications. <a href="@Url.AddGroup()">Click here to add a new group</a></p>
-    
-    @using (Html.BeginForm("delete", "groups", FormMethod.Post, new {id = "deleteForm"}))
-    {
-        @Html.Hidden("GroupId");
-    }
 
     <table class="table table-bordered">
         <thead>
@@ -43,7 +37,10 @@
                         <a href="@Url.EditGroup(group.Id)">Edit</a>
                     </td>  
                     <td>
-                        <a class="delete" data-val="@group.Id" href="#">Delete</a>
+                        @using (Html.BeginForm("delete", "groups", new { groupId = group.Id }, FormMethod.Post))
+                        {
+                             <a class="delete" href="#">Delete</a>
+                        }
                     </td>             
                 </tr>
             }
