@@ -67,23 +67,23 @@
     }
 
 <div class="clear"></div>
-
-<div class="inline">
+<h2 class="section-header"><i class="icon-link"></i>Issue Actions</h2>
+<div class="inline" style="margin-top:20px">
     @using (Html.BeginForm("delete", "issue", FormMethod.Post))
     {
         @Html.HiddenFor(m => m.IssueId)
-        <input type="submit" class="btn btn-medium btn-blue" data-confirm="Are you sure you wish to delete this issue?" value="Delete Issue" /><i class="icon-info" title="Permenently delete this issue from the system."></i>                                                                                                               
+        <input type="submit" class="btn btn-medium btn-blue tool-tip" data-confirm="Are you sure you wish to delete this issue?" value="Delete Issue" title="Permenently delete this issue from the system, this action cannot be undone." />                                                                                                              
     }
     
     @using (Html.BeginForm("purge", "issue", FormMethod.Post))
     {
         @Html.HiddenFor(m => m.IssueId)
-        <input type="submit" class="btn btn-medium btn-blue" data-confirm="Are you sure you wish to delete all the errors associated with this issue?" value="Delete Errors" /><i class="icon-info" title="Delete all the errors associated with this issue."></i>
+        <input type="submit" class="btn btn-medium btn-blue tool-tip" data-confirm="Are you sure you wish to delete all the errors associated with this issue?" value="Delete Errors" title="Delete all the errors associated with this issue." />
     }
     
     @using (Html.BeginForm("import", "issue", FormMethod.Post))
     {
         @Html.HiddenFor(m => m.IssueId)
-        <input type="submit" class="btn btn-medium btn-blue" data-confirm="Are you sure you wish to re-process this issue's errors?" value="Re-process Errors" /><i class="icon-info" title="You can re-queue all the errors attached to this issue and they will be processed again as if they were new errors, however no new issues will be created, if the errors do not match any other issues they will be re-attached to this issue."></i>
+        <input type="submit" class="btn btn-medium btn-blue tool-tip" data-confirm="Are you sure you wish to re-process this issue's errors?" value="Re-process Errors"  title="You can re-quue all the errors attached to this issue and they will be processed again as if they were new errors, however no new issues will be created, if the errors do not match any other issues they will be re-attached to this issue." />
     }
 </div>

@@ -15,6 +15,7 @@
     Initialisation.prototype.init = function(ajax, pagingFunc) {
       var $paging, $tabHolders, controller, paging, tabHolder, _i, _len;
       $('.icon-info').tooltip();
+      $('.tool-tip').tooltip();
       $('.dropdown-toggle').dropdown();
       $paging = $('div.paging');
       paging = new Paging(pagingFunc);

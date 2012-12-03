@@ -5,56 +5,71 @@
            
 @using (Html.BeginForm("index", "issues", FormMethod.Get, new { id = "issuesForm" }))
 {
-    <div class="criteria">
-        @Html.TextBoxFor(m => m.Name, new { autocomplete = "off", placeholder = "Issue Name" })
-        @Html.DropDownListFor(m => m.ApplicationId, Model.Applications)
-        @Html.DropDownListFor(m => m.AssignedTo, new[] { new SelectListItem { Text = Resources.IssueResources.AssignedUser, Value = Resources.Shared.DefaultSelectValue } }.Union(Model.Users))
-        
-        <ul class="popup popup-pills">
-            <li class="dropdown" id="status">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#status">
-                    Issue Status
+    <div class="form form-inline criteria">
+        <ul>
+            <li>
+                @Html.TextBoxFor(m => m.Name, new { autocomplete = "off", placeholder = "Issue Name" })
+            </li>
+            <li>
+                @Html.DropDownListFor(m => m.ApplicationId, Model.Applications)
+            </li>
+            <li>
+                @Html.DropDownListFor(m => m.AssignedTo, new[] { new SelectListItem { Text = Resources.IssueResources.AssignedUser, Value = Resources.Shared.DefaultSelectValue } }.Union(Model.Users))
+            </li>
+            <li>
+                <div id="daterange" class="daterange">
+                    @Html.HiddenFor(m => m.StartDate)
+                    <i class="icon-calendar"></i>
+                    <span>Select Date Range</span>
                     <b class="caret"></b>
-                </a>
-                <ul class="dropdown-menu" style="width: 198px;">
-                    <li>
-                        <a href="#">Check all</a>
+                </div>
+            </li>
+            <li>
+                <ul class="popup popup-pills">
+                    <li class="dropdown" id="status">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#status">
+                            Issue Status
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu" style="width: 198px;">
+                            <li>
+                                <a href="#">Check all</a>
+                            </li>
+                            <li class="divider"></li>
+                            @foreach (var status in Model.Statuses)
+                            {
+                                <li class="inline">
+                                    <input type="checkbox" name="Status" id="@status.Text" value="@status.Value" @(status.Selected ? "checked=checked" : string.Empty) />
+                                    <label for="@status.Text">@status.Text</label>
+                                </li>
+                            }
+                        </ul>
                     </li>
-                    <li class="divider"></li>
-                    @foreach (var status in Model.Statuses)
-                    {
-                        <li>
-                            <input type="checkbox" name="Status" id="@status.Text" value="@status.Value" @(status.Selected ? "checked=checked" : string.Empty) />
-                            <label for="@status.Text">@status.Text</label>
-                        </li>
-                    }
                 </ul>
+            </li>
+            <li>
+                <input type="submit" class="btn btn-small btn-blue" value="Apply" />
+                <a class="btn btn-small btn-lightblue" href="@Url.Issues()">Clear</a>
+            </li>
+            <li>
+                <ul id="action-list" class="popup popup-pills pull-right" style="width:150px">
+                    <li class="dropdown blue" id="actions">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#actions">
+                            Issue Actions
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu pull-right">
+                            @foreach (var status in Enum.GetNames(typeof(IssueStatus)).Where(name => name != IssueStatus.Unacknowledged.ToString()))
+                            {
+                                <li><a href="#" data-val-modal="StatusUpdate" data-val-status="@Regex.Replace(status, "([a-z])([A-Z])", "$1 $2")">Change status: @status</a></li>
+                            }
+                
+                            <li class="divider"></li>
+                            <li><a href="#" data-val-modal="Delete">Batch Delete</a></li>
+                        </ul>
+                    </li>
+                </ul>  
             </li>
         </ul>
-        <div id="daterange" class="daterange">
-            @Html.HiddenFor(m => m.StartDate)
-            <i class="icon-calendar"></i>
-            <span>Select Date Range</span>
-            <b class="caret"></b>
-        </div>
-        <input type="submit" class="btn btn-small btn-blue" value="Apply" />
-        <a class="btn btn-small btn-lightblue" href="@Url.Issues()">Clear</a>
-        <ul id="action-list" class="popup popup-pills pull-right" style="width:150px">
-            <li class="dropdown blue" id="actions">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#actions">
-                    Issue Actions
-                    <b class="caret"></b>
-                </a>
-                <ul class="dropdown-menu pull-right">
-                    @foreach (var status in Enum.GetNames(typeof(IssueStatus)).Where(name => name != IssueStatus.Unacknowledged.ToString()))
-                    {
-                        <li><a href="#" data-val-modal="StatusUpdate" data-val-status="@Regex.Replace(status, "([a-z])([A-Z])", "$1 $2")">Change status: @status</a></li>
-                    }
-                
-                    <li class="divider"></li>
-                    <li><a href="#" data-val-modal="Delete">Batch Delete</a></li>
-                </ul>
-            </li>
-        </ul>  
     </div>
 }

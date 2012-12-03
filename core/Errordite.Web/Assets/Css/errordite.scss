@@ -328,6 +328,10 @@ table {
 			background-color: #ffffff;
 		  }
 	    }
+		&.button {
+			float:right;
+			margin:-21px 5px 0 0;
+		}
       }
 	  .active > a {
 		border-bottom-color: transparent;
@@ -552,8 +556,6 @@ section {
 	}
   }
 }
-
-
 
 .paging {
   padding: 0;
@@ -850,6 +852,15 @@ section {
 	&.push-up {
 		margin-top:-15px;
 	}
+	&.form-inline {
+		display:inline-block;
+		float:left;
+		> ul {
+			> li {
+				display:inline-block;
+			}
+		}
+	}
 }
 
 .tooltip {
@@ -862,8 +873,8 @@ section {
   opacity: 0;
   filter: alpha(opacity = 0);
   &.in {
-    opacity: 0.8;
-    filter: alpha(opacity = 80);
+    opacity: 1;
+    filter: alpha(opacity = 100);
   }
   &.top {
     margin-top: -2px;
@@ -1487,10 +1498,7 @@ nav {
 	}
 }
 
-.criteria {
-	display:block;
-	padding:5px 0;
-	float:left; 
+.criteria { 
 	input[type="text"] {
 		width:350px;
 	}
@@ -1499,8 +1507,6 @@ nav {
 	}
 	.popup {
 		width:210px;
-		margin-top:3px;
-		display: inline-block;
 	}
 	ul {
 		padding:0;
