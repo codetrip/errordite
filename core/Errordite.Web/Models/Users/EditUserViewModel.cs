@@ -10,7 +10,5 @@ namespace Errordite.Web.Models.Users
         public string UserId { get; set; }
         public bool CurrentUser { get; set; }
         public bool IsAdministrator { get; set; }
-
-        public string TimezoneId { get; set; }
     }
 }

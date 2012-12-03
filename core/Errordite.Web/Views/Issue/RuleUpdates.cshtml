@@ -1,37 +1,34 @@
 ﻿@model Errordite.Web.Models.Issues.IssueRulesViewModel
 
-<div id="apply-rules-confirmation" class="modal">
+<div id="apply-rules-confirmation" class="modal hide">
     <div class="modal-header">
         <button class="close" data-dismiss="modal">×</button>
         <h3>Apply Rule Updates</h3>
     </div>
     <div class="modal-body">
-        <div class="form-horizontal errorditeform control-group">
-            <h4>This issue:</h4>
-            <p>Please enter the name you would like this issue to have after adjusting its rules.</p>
-            <label for="IssueNameAfterUpdate" class="control-label">Name:</label>
-            <div class="controls">
-                @Html.TextBoxFor(m => m.IssueNameAfterUpdate, new { @class = "issue-name" })
-                @Html.ValidationMessageFor(m => m.IssueNameAfterUpdate)
-            </div>    
-            @*<label for="MatchPriorityAfterUpdate" class="control-label">Match Priority:</label>
-            <div class="controls">
-                @Html.DropDownListFor(m => m.MatchPriorityAfterUpdate, Model.Priorities)
-                @Html.ValidationMessageFor(m => m.MatchPriorityAfterUpdate)
-            </div> *@   
+        <div class="form">
+            <h2>This issue:</h2>
+            <span>Please enter the name you would like this issue to have after adjusting its rules.</span>
+            <ul>
+                <li>
+                    @Html.TextBoxFor(m => m.IssueNameAfterUpdate, new { @class = "issue-name" })
+                    @Html.ValidationMessageFor(m => m.IssueNameAfterUpdate)
+                </li>
+            </ul>    
             
-            <h4>Overflow issue: <i rel="tooltip" title="Any errors that do not match the new rules will be added to a new issue.  You can name this issue here." class="icon-info-sign"></i></h4>
-            <p>Please enter the name of the issue that any errors not matching the new rules will be attached to after the rules of this issue have been adjusted.</p>
-            <label for="UnmatchedIssueName" class="control-label">Name:</label>    
-            <div class="controls">
-                @Html.TextBoxFor(m => m.UnmatchedIssueName, new { @class = "issue-name" })
-                @Html.ValidationMessageFor(m => m.UnmatchedIssueName)
-            </div>    
+            <h2>Overflow issue: <i rel="tooltip" title="Any errors that do not match the new rules will be added to a new issue.  You can name this issue here." class="icon-info"></i></h2>
+            <span>Please enter the name of the issue that any errors not matching the new rules will be attached to after the rules of this issue have been adjusted.</span>
+            <ul>
+                <li>
+                    @Html.TextBoxFor(m => m.UnmatchedIssueName, new { @class = "issue-name" })
+                    @Html.ValidationMessageFor(m => m.UnmatchedIssueName)
+                </li>
+            </ul>    
         </div>
      </div>             
 
     <div class="modal-footer">
-        <input type="submit" class="btn btn-primary" value="Apply Updates" name="AdjustRules" />
+        <input type="submit" class="btn btn-medium btn-blue" value="Apply Updates" name="AdjustRules" />
     </div>
 
 </div>

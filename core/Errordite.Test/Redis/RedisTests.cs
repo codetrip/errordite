@@ -106,27 +106,6 @@ namespace Errordite.Test.Redis
         }
 
         [Test]
-        public void GetListItemsFromRedis()
-        {
-            const int db = 15;
-            var connectionManager = ObjectFactory.GetObject<IRedisSession>();
-
-            connectionManager.TryOpenConnection();
-
-            connectionManager.Connection.Lists.AddFirst(db, "test",
-                                                        SerializationHelper.ProtobufSerialize(new UserAlert()
-                                                                                                  {Message = "hello"})).Wait();
-
-            var task = connectionManager.Connection.Lists.Range(db, "test", 0, 5);
-            task.Wait();
-
-            var userAlertArray = SerializationHelper.ProtobufDeserializeArray<UserAlert>(task.Result);
-
-            Assert.That(userAlertArray.Length, Is.EqualTo(1));
-
-        }
-
-        [Test]
         public void GetMultipleItemsFromRedis()
         {
             const int db = 15;

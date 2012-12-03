@@ -1,6 +1,4 @@
-﻿
-@using Errordite.Core.Domain.Organisation
-@using Errordite.Web.Models.Organisation
+﻿@using Errordite.Web.Models.Organisation
 @using Errordite.Web.Extensions
 @model OrganisationViewModel
            
@@ -8,20 +6,19 @@
     ViewBag.Title = "Payment Plan";
 }
 
-@section contentHeader
+@section header
 {
-    <div id="pagetitle">
-        <h1><i class="icon-arrow-right"></i>Payment Plan</h1>
-    </div>
-    
-    @Html.Partial("Admin/Tabs")
+    @Html.Partial("Admin/Tabs") 
 }
 
-<div id="organisation" class="payment-plans">
-    <h2 class="subtitle">Available Payment Plans</h2>
-    <p>While Errordite is in its free beta, all users will be on the free Trial plan, equivalent in size to the Small plan. If you feel your needs would not be met by the plans or prices 
-        below, please <a href="@Url.Contact()">let us know</a>.</p>
-    <table class="table table-striped table-bordered payments" style="width:800px">
+<section class="centered">
+    <h1>Available Payment Plans</h1>
+    <p>
+        While Errordite is in its free beta, all users will be on the free Trial plan, equivalent in size to the Small plan. If you feel your needs would not be met by the plans or prices 
+        below, please <a href="@Url.Contact()">let us know</a>.
+    </p>
+
+    <table class="table table-bordered">
         <thead>
             <tr>
                 <th>Plan</th>
@@ -61,6 +58,6 @@
             }
         </tbody>
     </table>
-</div>
+</section>
 
 

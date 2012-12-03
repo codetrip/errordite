@@ -7,21 +7,16 @@
     ViewBag.Title = "Merge Issues";
 }
 
-@section contentHeader
+@section header
 {
-    <div id="pagetitle">
-        <h1><i class="icon-arrow-right"></i>Merge Issues</h1>
-    </div>
     @Html.Partial("Dashboard/Tabs", DashboardTab.Issues)
 }
 
-<div class="colfull">
+<section class="centered">
+    <h1>Merge Issues</h1>
     <p>The two issues below have the same rules, you can merge the two issues together, keeping one and discarding the other.</p>
-</div>
-<div class="clear-space"></div>
-<div class="base left-wide">
-    <h2>Merge Issue 1</h2>
-    <div class="base-content">
+    <div class="form double">
+        <h2>Merge Issue 1</h2>
         <strong>Name</strong>: <a href="@Url.Issue(Model.LeftIssueId)" target="_blank">@Model.LeftIssueName</a><br />
         <strong>MatchPriority</strong>: @Model.LeftIssuePriority<br />
         <strong>Status</strong>: @Model.LeftIssueStatus<br /><br />
@@ -30,16 +25,11 @@
         {
             @Html.Hidden("MergeFromId", Model.RightIssueId)
             @Html.Hidden("MergeToId", Model.LeftIssueId)
-            <input class="btn btn-success" type="submit" value="Merge Keeping This Issue" />
+            <input class="btn btn-medium btn-blue" type="submit" value="Merge Keeping This Issue" />
         }
     </div>
-</div>
-<div class="clear-space"></div>
-<div class="clear-space"></div>
-<div class="clear-space"></div>
-<div class="base left-wide">
-    <h2>Merge Issue 2</h2>
-    <div class="base-content">
+    <div class="form double">
+        <h2>Merge Issue 2</h2>
         <strong>Name</strong>: <a href="@Url.Issue(Model.RightIssueId)" target="_blank">@Model.RightIssueName</a><br />
         <strong>Match Priority</strong>: @Model.RightIssuePriority<br />
         <strong>Status</strong>: @Model.RightIssueStatus<br /><br />
@@ -48,7 +38,7 @@
         {
             @Html.Hidden("MergeFromId", Model.LeftIssueId)
             @Html.Hidden("MergeToId", Model.RightIssueId)
-            <input class="btn btn-success" type="submit" value="Merge Keeping This Issue" />
+            <input class="btn btn-medium btn-blue" type="submit" value="Merge Keeping This Issue" />
         }
     </div>
-</div>
+</section>

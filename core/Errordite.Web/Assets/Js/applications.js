@@ -2,7 +2,7 @@
 
   jQuery(function() {
     var $body, Application, application;
-    $body = $('div#applications');
+    $body = $('section#applications');
     if ($body.length > 0) {
       application = null;
       $body.delegate('a.delete-application', 'click', function(e) {
@@ -19,8 +19,6 @@
         return e.preventDefault();
       });
       return Application = (function() {
-
-        Application.name = 'Application';
 
         function Application($appEl) {
           this.$appEl = $appEl;

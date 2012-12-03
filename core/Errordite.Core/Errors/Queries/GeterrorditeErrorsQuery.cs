@@ -3,10 +3,9 @@ using System.Linq;
 using System.Text;
 using CodeTrip.Core.Interfaces;
 using CodeTrip.Core.Paging;
-using Errordite.Core.Auditing;
+using Errordite.Core.Domain.Error;
 using Raven.Abstractions.Linq;
 using Raven.Client;
-using Raven.Client.Linq;
 using CodeTrip.Core.Extensions;
 using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
 

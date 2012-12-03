@@ -2,7 +2,7 @@ ruleCounter = 0
 
 jQuery -> 
 
-	if $('div#issue, div#addissue').length > 0
+	if $('section#issue, section#addissue').length > 0
 		$body = $ 'body'		
 
 		class Errordite.Rule			

@@ -3,13 +3,12 @@
 
 @{
     ViewBag.Title = "Sign Up";
-    Layout = "~/Views/Shared/Master2.0.cshtml";
 }
 
 <section class="centered">
-    <h1>Sign Up</h1>
-    <div class="base-content">
-        <p>Please tell us a bit about your organisation and we'll create you an account so you can start using Errordite.</p>
+    <h1><i class="icon-people"></i>Sign Up</h1>
+    <div class="form">
+        <p class="boldblue">Please tell us a bit about your organisation and we'll create you an account so you can start using Errordite.</p>
         @using (Html.BeginForm("signup", "authentication", FormMethod.Post, new { id = "signupForm" }))
         {
             <ul class="errorditeform">
@@ -44,7 +43,7 @@
                     @Html.ValidationMessageFor(m => m.ConfirmPassword)
                 </li>
                 <li>
-                    <input class="btn btn-large btn-blue" type="submit" value="Sign Up" />
+                    <input class="btn btn-medium btn-blue" type="submit" value="Sign Up" />
                 </li>
             </ul>
         }
