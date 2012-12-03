@@ -33,7 +33,7 @@ _[Rr]e[Ss]harper*
 Data\Indexes
 Data\IndexDefinitions
 glob:.fsLockFile
-glob:FixUpReport.txts
+glob:FixUpReport.txt
 glob:ProtectedData.xml
 Redis\conf\**
 Redis\data\**
