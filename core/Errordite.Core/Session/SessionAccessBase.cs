@@ -47,5 +47,11 @@ namespace Errordite.Core.Session
         {
             return Session.Raven.GetPage<TEntity, TIndex, TOrdProp>(paging, whereClause, orderByClause, orderDescending);
         }
+
+        protected Page<TEntity> GetMasterPage<TEntity, TIndex, TOrdProp>(PageRequestWithSort paging, Expression<Func<TEntity, bool>> whereClause = null, Expression<Func<TEntity, TOrdProp>> orderByClause = null, bool orderDescending = false)
+            where TIndex : AbstractIndexCreationTask, new()
+        {
+            return Session.MasterRaven.GetPage<TEntity, TIndex, TOrdProp>(paging, whereClause, orderByClause, orderDescending);
+        }
     }
 }

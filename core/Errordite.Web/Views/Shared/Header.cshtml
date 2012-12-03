@@ -32,17 +32,21 @@
             <a href="@Url.Home(ViewData.GetAppContext())"><img alt="Errordite: Home" src="/images/ui/header-logo.png"/></a>
         </div>
         <div class="search">
-            <div class="search-box">
-                <input autocomplete="off" class="search-input" id="Id" name="Id" placeholder="Search your errors & issues..." type="text" value="" />
-                <input type="submit" class="search-btn" value="Go" />
-            </div>
+            @using (Html.BeginForm("index", "dashboard"))
+            {
+                <div class="search-box">
+                    <i class="icon-search"></i>
+                    <input autocomplete="off" class="search-input" id="Query" name="Query" placeholder="Search your errors & issues..." type="text"  @(appContext.AuthenticationStatus == AuthenticationStatus.Authenticated ? "disabled=disabled" : string.Empty) />
+                    <input type="submit" class="search-btn" value="Go" @(appContext.AuthenticationStatus == AuthenticationStatus.Authenticated ? "disabled=disabled" : string.Empty) />
+                </div>
+            }
         </div>
         <nav>
             <ul class="nav">
                 @if (appContext.AuthenticationStatus == AuthenticationStatus.Authenticated && (appContext.CurrentUser.Role == UserRole.SuperUser || appContext.ImpersonatorAppContext != null))
                 {
                     <li class="nav-item sysadmin">
-                        <a href="@Url.SysAdmin()">System Admin <span class="rotate">›</span></a>
+                        <a href="@Url.SysAdmin()">System <span class="rotate">›</span></a>
                         <div class="pointer">
                             <ul>
                                 <li><a href="@Url.Organisations()">Organisations ›</a></li> 
@@ -51,7 +55,7 @@
                                 <li><a href="@Url.FlushAllCaches()">Flush Caches ›</a></li> 
                                 @foreach (var cache in Enum.GetNames(typeof (CacheProfiles)))
                                 {
-                                    <li><a href="@Url.Cache(cache)">@cache ›</a></li>
+                                    <li><a href="@Url.Cache(cache)">@cache Cache ›</a></li>
                                 }
                             </ul>
                         </div>

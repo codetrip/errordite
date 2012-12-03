@@ -181,11 +181,23 @@ namespace Errordite.Web.Controllers
                 OrganisationId = Core.AppContext.CurrentUser.OrganisationId,
                 IssueId = postModel.IssueId,
                 Paging = paging,
-                StartDate = postModel.StartDate,
-                EndDate = postModel.EndDate,
                 Query = postModel.Query, 
                 UserTimezoneId = AppContext.CurrentUser.EffectiveTimezoneId(),
-            };
+            }; 
+            
+            if (postModel.DateRange.IsNotNullOrEmpty())
+            {
+                string[] dates = postModel.DateRange.Split('|');
+
+                DateTime startDate;
+                DateTime endDate;
+
+                if (DateTime.TryParse(dates[0], out startDate) && DateTime.TryParse(dates[1], out endDate))
+                {
+                    request.StartDate = startDate;
+                    request.EndDate = endDate.AddDays(1).AddMinutes(-1);
+                }
+            }
 
             var errors = _getApplicationErrorsQuery.Invoke(request).Errors;
 
@@ -193,8 +205,7 @@ namespace Errordite.Web.Controllers
             {
                 Action = "errors",
                 Controller = "issue",
-                StartDate = postModel.StartDate,
-                EndDate = postModel.EndDate,
+                DateRange = postModel.DateRange,
                 Paging = _pagingViewModelGenerator.Generate(PagingConstants.DefaultPagingId, errors.PagingStatus, paging),
                 Errors = errors.Items.Select(e => new ErrorInstanceViewModel { Error = e, HideIssues = true }).ToList(),
                 ApplicationId = postModel.ApplicationId,

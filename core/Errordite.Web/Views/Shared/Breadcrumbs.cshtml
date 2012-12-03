@@ -5,21 +5,23 @@
 
 @if(breadcrumbs != null)
 {
-    <ul class="breadcrumb">
-        
-        @foreach(var breadcrumb in breadcrumbs.Take(breadcrumbs.Count - 1))
-        {
-            <li>
-                @if (breadcrumb.Link != null)
-                {
-                    <a href="@breadcrumb.Link">@breadcrumb.Title</a>
-                } else
-                {
-                    <span>@breadcrumb.Title</span>
-                }
-                <span class="divider">&rarr;</span>
-            </li>
-        }
-        <li class="active">@(ViewBag.FinalBreadcrumb ?? ViewBag.Title)</li>
-    </ul>
+    <div class="trail-container">
+        <ul class="trail">
+            @foreach(var breadcrumb in breadcrumbs.Take(breadcrumbs.Count - 1))
+            {
+                <li>
+                    @if (breadcrumb.Link != null)
+                    {
+                        <a href="@breadcrumb.Link">@breadcrumb.Title</a>
+                    } else
+                    {
+                        <span>@breadcrumb.Title</span>
+                    }
+                    <span class="divider">&nbsp;›&nbsp;</span>
+                </li>
+            }
+            <li class="active">@(ViewBag.FinalBreadcrumb ?? ViewBag.Title)</li>
+        </ul>
+    </div>
+    
 }

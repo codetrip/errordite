@@ -485,6 +485,12 @@
     <Content Include="Assets\Js\rules.js">
       <DependentUpon>rules.coffee</DependentUpon>
     </Content>
+    <Content Include="Assets\Js\systemadmin.js">
+      <DependentUpon>systemadmin.coffee</DependentUpon>
+    </Content>
+    <Content Include="Assets\Js\systemadmin.min.js">
+      <DependentUpon>systemadmin.coffee</DependentUpon>
+    </Content>
     <Content Include="Assets\Js\users.js">
       <DependentUpon>users.coffee</DependentUpon>
     </Content>
@@ -907,7 +913,6 @@
     <Content Include="Views\Shared\Master.cshtml" />
     <Content Include="Views\Shared\HeaderAssets.cshtml" />
     <Content Include="Views\Shared\FooterAssets.cshtml" />
-    <Content Include="Views\Shared\Breadcrumb.cshtml" />
     <Content Include="Views\Shared\Header.cshtml" />
     <Content Include="Views\Help\Privacy.cshtml" />
   </ItemGroup>
@@ -917,12 +922,19 @@
       <LastGenOutput>Alerts.Designer.cs</LastGenOutput>
     </Content>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Views\Shared\Breadcrumbs.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+  </ItemGroup>
   <ItemGroup>
     <Content Include="App_GlobalResources\Admin.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>Admin.Designer.cs</LastGenOutput>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\Js\systemadmin.coffee" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

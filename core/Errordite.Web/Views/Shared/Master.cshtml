@@ -23,11 +23,12 @@
         <div class="wrapper">
             <header>
                 @Html.Partial("header")
-                @Html.Partial("breadcrumb")
+                @Html.Partial("breadcrumbs")
                 @RenderSection("header", required: false) 
             </header>
         
             @RenderBody()
+
             <div class="push"></div>
         </div>
         <footer>

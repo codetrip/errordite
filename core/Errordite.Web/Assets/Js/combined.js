@@ -347,7 +347,7 @@
 
   jQuery(function() {
     var $root, Error, ErrorProp, init, openedErrors;
-    $root = $('div#errors, div#issue, div#errordite-errors, div#dashboard').first();
+    $root = $('section#errors, section#issue, section#errordite-errors').first();
     if ($root.length > 0) {
       openedErrors = [];
       $root.delegate('div#results ul.nav li a', 'click', function(e) {
@@ -357,14 +357,14 @@
         $this.error.switchTab();
         return e.preventDefault();
       });
-      $root.delegate('td.error-rowstate', 'click', function(e) {
+      $root.delegate('td.toggle', 'click', function(e) {
         var $this, error;
         $this = $(this);
         error = new Error($this);
         error.toggle();
         return e.preventDefault();
       });
-      if ($('div#issue').length > 0) {
+      if ($('section#issue').length > 0) {
         $root.delegate('.new-rule-match, .rule-match', 'click', function() {
           var $ruleMatch;
           $('.last-selected').removeClass('last-selected');
@@ -395,7 +395,7 @@
           return _results;
         });
       }
-      if ($('div#dashboard').length === 0) {
+      if ($('section#dashboard').length === 0) {
         init = new Initalisation();
         init.datepicker($root);
       }

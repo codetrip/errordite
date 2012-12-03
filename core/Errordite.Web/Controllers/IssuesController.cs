@@ -84,8 +84,6 @@ namespace Errordite.Web.Controllers
                     ApplicationId = postModel.ApplicationId,
                     Paging = pagingRequest,
                     AssignedTo = postModel.AssignedTo,
-                    StartDate = postModel.StartDate,
-                    EndDate = postModel.EndDate,
                     Status = postModel.Status,
                     Name = postModel.Name,
                     OrganisationId = Core.AppContext.CurrentUser.OrganisationId,
@@ -96,8 +94,6 @@ namespace Errordite.Web.Controllers
                 var users = Core.GetUsers();
 
                 viewModel.AssignedTo = postModel.AssignedTo;
-                viewModel.StartDate = postModel.StartDate;
-                viewModel.EndDate = postModel.EndDate;
                 viewModel.Status = postModel.Status;
                 viewModel.Name = postModel.Name;
                 viewModel.Paging = _pagingViewModelGenerator.Generate(PagingConstants.DefaultPagingId, issues.PagingStatus, pagingRequest);

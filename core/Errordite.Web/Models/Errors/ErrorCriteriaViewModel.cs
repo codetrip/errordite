@@ -35,8 +35,7 @@ namespace Errordite.Web.Models.Errors
         public string Controller { get; set; }
         public string IssueId { get; set; }
         public string Query { get; set; }
-        public DateTime? StartDate { get; set; }
-        public DateTime? EndDate { get; set; }
+        public string DateRange { get; set; }
         public string ApplicationId { get; set; }
         public PagingViewModel Paging { get; set; }
     }

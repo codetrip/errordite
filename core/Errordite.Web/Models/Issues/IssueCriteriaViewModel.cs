@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
 using CodeTrip.Core.Paging;
@@ -33,8 +32,6 @@ namespace Errordite.Web.Models.Issues
 
     public class IssueCriteriaPostModel
     {
-        public DateTime? StartDate { get; set; }
-        public DateTime? EndDate { get; set; }
         public string[] Status { get; set; }
         public string ApplicationId { get; set; }
         public string AssignedTo { get; set; }
