@@ -1,0 +1,37 @@
+﻿
+@using Errordite.Core.Notifications.Queries
+@model Errordite.Core.Notifications.Queries.GetEmailInfoQueryResponse
+
+<section class="centered">
+    <h2>Send @Model.EmailName</h2>
+       
+
+    @using (Html.BeginForm("Generate", "EmailTest"))
+    {
+        @Html.HiddenFor(m => m.EmailName)
+        
+        foreach (var param in Model.Parameters)
+        {
+            <label class="lbl-email" for="@param.Key">@param.Key:</label>
+
+            switch (param.Value)
+            {
+                case EmailParameterType.Bool:
+                    @Html.CheckBox(param.Key)
+                    break;
+                default:
+                    @Html.TextBox(param.Key);
+                    if (param.Value == EmailParameterType.List)
+                    {
+                        @Html.Raw(" - separate with pipe (|)")
+                    }
+                    break;
+            }
+            <br />
+        }
+        <input type="submit" value="Send In Process" name="SendInProcess"/>
+        <input type="submit" value="Send Via Service" name="SendViaService"/>
+        <input type="submit" value="View" name="View" />
+    }
+</section>
+

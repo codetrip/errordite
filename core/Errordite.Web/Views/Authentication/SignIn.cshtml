@@ -1,0 +1,32 @@
+﻿@using Errordite.Web.Extensions
+@model Errordite.Web.Models.Authentication.LoginViewModel
+
+@{
+    ViewBag.Title = "Sign in";
+}
+
+<section class="centered">
+    <h1><i class="icon-people"></i>Sign in</h1>
+    <div class="form">
+        <p class="boldblue">Enter your email address and password below.</p>
+        @using (Html.BeginForm("signin", "authentication", FormMethod.Post, new {id = "loginForm"})) {
+            @Html.Hidden("ReturnUrl", Request.QueryString["ReturnUrl"])
+            <ul>
+                <li>
+                    @Html.LabelFor(m => m.Email, "Email")
+                    @Html.TextBoxFor(m => m.Email)
+                    @Html.ValidationMessageFor(m => m.Email)
+                </li>
+                <li>
+                    @Html.LabelFor(m => m.Password, "Password")
+                    @Html.PasswordFor(m => m.Password)
+                    @Html.ValidationMessageFor(m => m.Password)
+                </li>
+                <li>
+                    <input class="btn btn-medium btn-blue" type="submit" value="Sign in" />
+                </li>
+            </ul>
+        }
+        <p>Forgotten your password? <a href="@Url.ResetPassword()">click here to reset it.</a></p>
+    </div>
+</section>

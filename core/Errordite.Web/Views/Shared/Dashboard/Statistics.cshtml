@@ -1,0 +1,25 @@
+﻿@using Errordite.Core.Domain.Error
+@using Errordite.Web.Extensions
+@model Errordite.Core.Domain.Organisation.Statistics
+<h2 class="section-header"><i class="icon-link"></i>Quick Links</h2>
+
+<div class="four-col home-links">
+    <a href="@Url.AllIssues()">All Issues (@Model.Issues)</a>
+    <a href="@Url.Issues()">All Active Issues (@Model.ActiveIssues)</a>
+    <a href="@Url.Issues(IssueStatus.Unacknowledged)">Unacknowledged Issues (@Model.Unacknowledged)</a>
+</div>
+<div class="four-col home-links">
+    <a href="@Url.Issues(IssueStatus.Acknowledged)">Acknowledged Issues (@Model.Acknowledged)</a>
+    <a href="@Url.Issues(IssueStatus.AwaitingDeployment)">Awaiting Deployment Issues (@Model.AwaitingDeployment)</a>
+    <a href="@Url.Issues(IssueStatus.Investigating)">Investigating Issues (@Model.Investigating)</a>
+</div>
+<div class="four-col home-links">
+    <a href="@Url.Issues(IssueStatus.Ignorable)">Ignorable Issues (@Model.Ignorable)</a>
+    <a href="@Url.Issues(IssueStatus.Solved)">Solved Issues (@Model.Solved)</a>
+    <a href="@Url.MyIssues(ViewData.GetAppContext().CurrentUser.FriendlyId)">Issues Assigned to me (@Model.CurrentUserIssueCount)</a>
+</div>
+<div class="four-col home-links">
+    <a href="@Url.Applications()">Applications (@Model.Applications)</a>
+    <a href="@Url.Users()">Users (@Model.Users)</a>
+    <a href="@Url.Groups()">Groups (@Model.Groups)</a>
+</div>

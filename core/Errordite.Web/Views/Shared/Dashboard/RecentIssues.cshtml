@@ -1,0 +1,38 @@
+﻿@using Errordite.Core.Extensions
+@using Errordite.Web.Extensions
+@model IEnumerable<Errordite.Web.Models.Issues.IssueItemViewModel>
+           
+<div class="clear"></div>
+
+@if (Model.Any())
+{
+    <h2>Most Recent Issues</h2>
+
+    <table class="table-bordered">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Status</th>
+                <th>Assigned To</th>
+                <th>Application</th>
+                <th>Error Count</th>
+                <th>Last Error</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var issue in Model)
+            {
+                <tr>
+                    <td><a href="@Url.Issue(issue.IssueId)">@issue.IssueId</a></td>
+                    <td class="word-break" style="width:450px;">@issue.Name</td>
+                    <td>@issue.Status</td>
+                    <td>@issue.UserName</td>
+                    <td>@issue.ApplicationName</td>
+                    <td>@issue.ErrorCount</td>
+                    <td>@issue.LastErrorUtc.ToLocalTimeFormatted()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

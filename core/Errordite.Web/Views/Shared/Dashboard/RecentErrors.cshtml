@@ -1,0 +1,34 @@
+﻿@using Errordite.Web.Extensions
+@model IEnumerable<Errordite.Web.Models.Errors.ErrorInstanceViewModel>
+           
+<div class="clear"></div>
+
+@if (Model.Any())
+{
+    <h2>Most Recent Errors <a href="@Url.Errors()">See all...</a></h2>
+
+    <div id="results">
+        <table class="table-bordered">
+            <thead>
+                <tr>
+                    <th></th>  
+                    <th>Exception</th>            
+                    <th>Message</th>     
+                    <th>Timestamp</th> 
+                    <th>Machine</th>
+                    <th>Issue</th> 
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var error in Model)
+                {
+                    @Html.Partial("Errors/ErrorItem", error)
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <h3>You do not have any errors.</h3>
+}
