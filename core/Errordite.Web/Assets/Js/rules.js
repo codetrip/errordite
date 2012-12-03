@@ -5,11 +5,9 @@
 
   jQuery(function() {
     var $body;
-    if ($('div#issue, div#addissue').length > 0) {
+    if ($('section#issue, section#addissue').length > 0) {
       $body = $('body');
       Errordite.Rule = (function() {
-
-        Rule.name = 'Rule';
 
         function Rule($rule) {
           this.$rule = $rule;
@@ -41,8 +39,6 @@
 
       })();
       Errordite.RuleManager = (function() {
-
-        RuleManager.name = 'RuleManager';
 
         function RuleManager() {
           var ruleEl;

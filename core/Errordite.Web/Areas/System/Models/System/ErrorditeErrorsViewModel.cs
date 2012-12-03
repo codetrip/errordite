@@ -1,8 +1,8 @@
 ﻿using System;
 using CodeTrip.Core.Paging;
-using Errordite.Core.Auditing;
+using Errordite.Core.Domain.Error;
 
-namespace Errordite.Web.Models.Administration
+namespace Errordite.Web.Areas.System.Models.System
 {
     public class ErrorditeErrorsViewModel : ErrorditeErrorsPostModel
     {

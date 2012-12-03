@@ -79,11 +79,12 @@ namespace Errordite.Core.Users.Commands
                 };
             }
 
-            var userOrgMapping = new UserOrganisationMapping()
-                {
-                    EmailAddress = request.Email,
-                    OrganisationId = request.Organisation.Id,
-                };
+            var userOrgMapping = new UserOrganisationMapping
+            {
+                EmailAddress = request.Email,
+                OrganisationId = request.Organisation.Id,
+            };
+
             //TODO: sync index
             MasterStore(userOrgMapping);
 
@@ -96,7 +97,8 @@ namespace Errordite.Core.Users.Commands
                 Role = request.Administrator ? UserRole.Administrator : UserRole.User,
                 OrganisationId = request.Organisation.Id,
                 GroupIds = request.GroupIds.Select(Group.GetId).ToList(),
-                PasswordToken = Guid.NewGuid()
+                PasswordToken = Guid.NewGuid(),
+                TimezoneId = request.TimezoneId
             };
 
             Store(user);
@@ -150,6 +152,7 @@ namespace Errordite.Core.Users.Commands
         public Organisation Organisation { get; set; }
         public IList<string> GroupIds { get; set; }
         public bool Administrator { get; set; }
+        public string TimezoneId { get; set; }
     }
 
     public enum AddUserStatus

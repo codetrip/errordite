@@ -2,10 +2,11 @@
 @using Errordite.Web.Extensions
 @model IEnumerable<Errordite.Web.Models.Issues.IssueItemViewModel>
            
-<div class="clear-space"></div>
+<div class="clear"></div>
+
 @if (Model.Any())
 {
-    <h2 class="subtitle">Most Recent Issues</h2>
+    <h2>Most Recent Issues</h2>
 
     <table class="table-bordered">
         <thead>
@@ -34,8 +35,4 @@
             }
         </tbody>
     </table>
-}
-else
-{
-    <h3>You do not have any issues. </h3><a href="@Url.AddIssue()">Add an empty issue...</a>
 }

@@ -1,101 +1,89 @@
 ﻿@using Errordite.Web.Models.Issues
 @model IssueDetailsViewModel
 
-<div class="base left-extra-wide">
-    <h2>Issue Details</h2>
-    <div class="base-content">
-        <ul class="errorditeform">
-            @using (Html.BeginForm("adjustdetails", "issue", FormMethod.Post, new { id = "adjustDetails" }))
-            {
-                @Html.HiddenFor(m => m.IssueId)
-                @Html.HiddenFor(m => m.Priority)
-
-                <li class="left">
+    @using (Html.BeginForm("adjustdetails", "issue", FormMethod.Post, new { id = "adjustDetails" }))
+    {
+        @Html.HiddenFor(m => m.IssueId)
+        @Html.HiddenFor(m => m.Priority)
+        <div class="form double">
+            <ul>
+                <li>
                     @Html.LabelFor(m => m.Name, "Issue Name")
                     @Html.TextBoxFor(m => m.Name)
-                    <i rel="tooltip" title="Give this issue a more meaningful name to help identify and search for it." class="icon-info-sign"></i>
+                    <i title="Give this issue a more meaningful name to help identify and search for it." class="icon-info"></i>
                     @Html.ValidationMessageFor(m => m.Name)
                 </li>
-                <li class="right">
+                <li>
                     @Html.LabelFor(m => m.Name, "Application")
                     <input type="text" value="@Model.ApplicationName" disabled="disabled" />
-                    <i rel="tooltip" title="The application to which this issue is associated." class="icon-info-sign"></i>
+                    <i title="The application to which this issue is associated." class="icon-info"></i>
                 </li>
-                <li class="left">
-                    @Html.LabelFor(m => m.Status, "Status")
-                    @Html.DropDownListFor(m => m.Status, Model.Statuses)
-                    <i rel="tooltip" title="Optionally assign a new status to the issue." class="icon-info-sign"></i>
-                    @Html.ValidationMessageFor(m => m.Status)   
-                </li>
-                <li class="right">
-                    <div class="reference">
-                    @Html.LabelFor(m => m.Reference, "External Reference (bug tracker etc)")
-                    <span id="reference-link"></span>
-                    </div>
-                    @Html.TextBoxFor(m => m.Reference)
-                    <i rel="tooltip" title="Add a reference to your bug tracking software or source control system, if appropriate" class="icon-info-sign"></i>
-                    
-                </li>
-                <li class="left">
+                <li>
                     @Html.LabelFor(m => m.UserId, "Assigned To")
                     @Html.DropDownListFor(m => m.UserId, Model.Users)
-                    <i rel="tooltip" title="Optionally assign a user to this issue." class="icon-info-sign"></i>
+                    <i rel="tooltip" title="Optionally assign a user to this issue." class="icon-info"></i>
                     @Html.ValidationMessageFor(m => m.UserId)
                 </li>
-                <li class="right">
-                    <span>@Model.Comment</span>
-                    @Html.LabelFor(m => m.Comment, "Update Comment")
-                    <textarea name="Comment">@Model.Comment</textarea>
-                    <i rel="tooltip" title="Optionally add a comment, this will be added to the issues history." class="icon-info-sign"></i>
+                <li>
+                    @Html.LabelFor(m => m.Status, "Status")
+                    @Html.DropDownListFor(m => m.Status, Model.Statuses)
+                    <i title="Optionally assign a new status to the issue." class="icon-info"></i>
+                    @Html.ValidationMessageFor(m => m.Status)   
                 </li>
-                @*<li class="left">
-                    @Html.LabelFor(m => m.Priority, "Match Priority")
-                    @Html.DropDownListFor(m => m.Priority, Model.Priorities)
-                    <i rel="tooltip" title="Setting the match priority for an issue controls which issue an error is assigned to when there are multiple matches. An issue with a higher match priority will have the error assigned to it." class="icon-info-sign"></i>
-                    @Html.ValidationMessageFor(m => m.Priority)
-                </li>*@
-                <li class="left">
-                    @Html.LabelFor(m => m.Name, "Error Limit Status")
-                    <input type="text" value="@Model.ErrorLimitStatus" disabled="disabled" />
-                    <i rel="tooltip" title="If the error limit for an issue has been exceeded we will no longer store the full details of any new errors. You can purge an issue to reset this and start receiving errors again." class="icon-info-sign"></i>
-                </li>
-                <li class="cbox left">
-                    @Html.LabelFor(m => m.Priority, "Always notify when errors occur")
+                <li class="inline">
                     @Html.CheckBoxFor(m => m.AlwaysNotify)
-                    <i rel="tooltip" title="Check this box if you want to be notified whenever an instance of this issue is received (we will only notify you the first time this happens within any 12 hour period)." class="icon-info-sign"></i>
+                    @Html.LabelFor(m => m.AlwaysNotify, "Always notify when errors occur")
+                    <i title="Check this box if you want to be notified whenever an instance of this issue is received (we will only notify you the first time this happens within any 12 hour period)." class="icon-info"></i>
                     @Html.ValidationMessageFor(m => m.AlwaysNotify)
                 </li>
-                <li class="left-full">
-                    <input type="submit" class="btn btn-success" value="Update Details" />
+                <li>
+                    <input type="submit" class="btn btn-medium btn-blue" value="Update Details" />
                 </li>
-            }
-        </ul>
-        <div class="actions">
-            <h3>Issue Actions</h3>
-            <ul class="errorditeform">
-                <li class="left">
-                    @using (Html.BeginForm("delete", "issue", FormMethod.Post))
-                    {
-                        @Html.HiddenFor(m => m.IssueId)
-                        <input type="submit" class="btn btn-danger" data-confirm="Are you sure you wish to delete this issue?" value="Delete Issue" /><i class="icon-info-sign" rel="tooltip" title="Permenently delete this issue from the system."></i>
-                                                                                                                           
-                    }
+             </ul>
+        </div>
+        <div class="form double">
+            <ul>
+                <li>
+                    <span>@Model.Comment</span>
+                    @Html.LabelFor(m => m.Comment, "Update Comment")
+                    <textarea name="Comment" style="height:90px">@Model.Comment</textarea>
+                    <i title="Optionally add a comment, this will be added to the issues history." class="icon-info"></i>
                 </li>
-                <li class="left">
-                    @using (Html.BeginForm("purge", "issue", FormMethod.Post))
-                    {
-                        @Html.HiddenFor(m => m.IssueId)
-                        <input type="submit" class="btn btn-danger" data-confirm="Are you sure you wish to delete all the errors associated with this issue?" value="Delete Errors" /><i class="icon-info-sign" rel="tooltip" title="Delete all the errors associated with this issue."></i>
-                    }
+                <li>
+                    <div class="reference">
+                        @Html.LabelFor(m => m.Reference, "External Reference (bug tracker etc)")
+                        <span id="reference-link"></span>
+                    </div>
+                    @Html.TextBoxFor(m => m.Reference)
+                    <i title="Add a reference to your bug tracking software or source control system, if appropriate" class="icon-info"></i>
                 </li>
-                <li class="left">
-                    @using (Html.BeginForm("import", "issue", FormMethod.Post))
-                    {
-                        @Html.HiddenFor(m => m.IssueId)
-                        <input type="submit" class="btn btn-success" data-confirm="Are you sure you wish to re-process this issue's errors?" value="Re-process Errors" /><i class="icon-info-sign" rel="tooltip" title="You can re-queue all the errors attached to this issue and they will be processed again as if they were new errors, however no new issues will be created, if the errors do not match any other issues they will be re-attached to this issue."></i>
-                    }
+                <li>
+                    @Html.LabelFor(m => m.Name, "Error Limit Status")
+                    <input type="text" value="@Model.ErrorLimitStatus" disabled="disabled" />
+                    <i title="If the error limit for an issue has been exceeded we will no longer store the full details of any new errors. You can purge an issue to reset this and start receiving errors again." class="icon-info-sign"></i>
                 </li>
             </ul>
         </div>
-    </div>
+    }
+
+<div class="clear"></div>
+<h2 class="section-header"><i class="icon-link"></i>Issue Actions</h2>
+<div class="inline" style="margin-top:20px">
+    @using (Html.BeginForm("delete", "issue", FormMethod.Post))
+    {
+        @Html.HiddenFor(m => m.IssueId)
+        <input type="submit" class="btn btn-medium btn-blue tool-tip" data-confirm="Are you sure you wish to delete this issue?" value="Delete Issue" title="Permenently delete this issue from the system, this action cannot be undone." />                                                                                                              
+    }
+    
+    @using (Html.BeginForm("purge", "issue", FormMethod.Post))
+    {
+        @Html.HiddenFor(m => m.IssueId)
+        <input type="submit" class="btn btn-medium btn-blue tool-tip" data-confirm="Are you sure you wish to delete all the errors associated with this issue?" value="Delete Errors" title="Delete all the errors associated with this issue." />
+    }
+    
+    @using (Html.BeginForm("import", "issue", FormMethod.Post))
+    {
+        @Html.HiddenFor(m => m.IssueId)
+        <input type="submit" class="btn btn-medium btn-blue tool-tip" data-confirm="Are you sure you wish to re-process this issue's errors?" value="Re-process Errors"  title="You can re-quue all the errors attached to this issue and they will be processed again as if they were new errors, however no new issues will be created, if the errors do not match any other issues they will be re-attached to this issue." />
+    }
 </div>

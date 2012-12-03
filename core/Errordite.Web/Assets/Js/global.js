@@ -10,13 +10,12 @@
 
   Initialisation = (function() {
 
-    Initialisation.name = 'Initialisation';
-
     function Initialisation() {}
 
     Initialisation.prototype.init = function(ajax, pagingFunc) {
       var $paging, $tabHolders, controller, paging, tabHolder, _i, _len;
-      $('.icon-info-sign').tooltip();
+      $('.icon-info').tooltip();
+      $('.tool-tip').tooltip();
       $('.dropdown-toggle').dropdown();
       $paging = $('div.paging');
       paging = new Paging(pagingFunc);
@@ -49,8 +48,25 @@
     };
 
     Initialisation.prototype.datepicker = function($root) {
-      return $root.find('input.daterangepicker').daterangepicker({
-        dateFormat: 'D M d, yy'
+      return $root.find('div#daterange').daterangepicker({
+        ranges: {
+          Today: ["today", "today"],
+          Yesterday: ["yesterday", "yesterday"],
+          "Last 7 Days": [
+            Date.today().add({
+              days: -6
+            }), "today"
+          ],
+          "Last 30 Days": [
+            Date.today().add({
+              days: -29
+            }), "today"
+          ],
+          "This Month": [Date.today().moveToFirstDayOfMonth(), Date.today().moveToLastDayOfMonth()]
+        }
+      }, function(start, end) {
+        $('#daterange span').html(start.toString('MMMM d, yyyy') + ' - ' + end.toString('MMMM d, yyyy'));
+        return $('#daterange input').val(start.toString('u') + '|' + end.toString('u'));
       });
     };
 
@@ -59,8 +75,6 @@
   })();
 
   Spinner = (function() {
-
-    Spinner.name = 'Spinner';
 
     function Spinner() {}
 
@@ -98,8 +112,6 @@
 
 
   Tabs = (function() {
-
-    Tabs.name = 'Tabs';
 
     Tabs.get = function(anyNodeInside) {
       var $tabHolder, tabManager;
@@ -185,8 +197,6 @@
 
 
   Paging = (function() {
-
-    Paging.name = 'Paging';
 
     function Paging(changeFunc) {
       var paging;

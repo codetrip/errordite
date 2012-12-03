@@ -1,24 +1,23 @@
 
 jQuery -> 
-	$body = $('div#groups');
+	$body = $('section#groups');
 
 	if $body.length > 0
 		group = null;
 
 		$body.delegate('a.delete', 'click', () -> 
 			$this = $ this
-			this.group = new Group $this.closest('tr')
+			this.group = new Group $this.closest('form')
 			this.group.delete()
-			false	
+			false
 		)	
 
 		class Group
-			constructor: ($appEl) -> 
-				this.$appEl = $appEl
+			constructor: ($form) -> 
+				this.$form = $form
 
 			delete: () -> 
-				$appEl = this.$appEl
 				if window.confirm "Are you sure you want to delete this group?"
-					$appEl.prev('form').submit();
+					this.$form.submit();
 
 	
