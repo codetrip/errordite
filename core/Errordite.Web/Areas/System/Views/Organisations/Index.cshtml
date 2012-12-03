@@ -9,25 +9,16 @@
     ViewBag.Title = "Organisations";
 }
 
-@section contentHeader
+@section headerassets
 {
-    <div id="pagetitle">
-        <h1><i class="icon-arrow-right"></i>Organisations</h1>
-    </div>
-    
-    <div class="border"></div>
+    <script type='text/javascript' src="@Url.Content("~/assets/js/systemadmin.js")"></script>
 }
 
-@section scripts
-{
-    <script type='text/javascript' src='@Url.Content("~/js/admin/organisations.js")'></script>
-}
-
-<div id="organisations" class="colfull">
-
+<section id="organisations" class="centered">
+    <h1>Organisations</h1>
     @if (Model.Organisations != null && Model.Organisations.Items.Any())
     {
-        <table class="table-bordered">
+        <table class="table table-bordered">
             <thead>
                 <tr>
                     <th>Id</th>
@@ -56,7 +47,7 @@
                         <td><a href="@Url.OrganisationApplications(organisation.FriendlyId)">Applications</a></td>
                         @if(organisation.Status == OrganisationStatus.Active)
                         {
-                            <td><a href="#" class="btn btn-danger suspend" data-val="@organisation.Id">Suspend</a></td>
+                            <td><a href="#" class="btn btn-small btn-blue suspend" data-val="@organisation.Id">Suspend</a></td>
                         }
                         else
                         {
@@ -64,7 +55,7 @@
                                 @using (Html.BeginForm("activateorganisation", "organisations", FormMethod.Post, new { name = "activateForm" }))
                                 {
                                     @Html.Hidden("OrganisationId", organisation.Id)
-                                    <input type="submit" class="btn btn-success activate" value="Activate" />
+                                    <input type="submit" class="btn btn-small btn-blue activate" value="Activate" />
                                 }
                             </td>
                         }
@@ -72,7 +63,7 @@
                             @using (Html.BeginForm("deleteorganisation", "organisations", FormMethod.Post, new { name = "deleteForm" }))
                             {
                                 @Html.Hidden("OrganisationId", organisation.Id)
-                                <input type="submit" class="btn btn-danger delete" value="Delete" />
+                                <input type="submit" class="btn btn-small btn-blue delete" value="Delete" />
                             }
                         </td>
                     </tr>
@@ -94,4 +85,4 @@
             <p>No organisations were found.</p>   
         </div> 
     }
-</div>
+</section>

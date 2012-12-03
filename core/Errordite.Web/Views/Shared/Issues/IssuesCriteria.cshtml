@@ -10,19 +10,11 @@
             <li>
                 @Html.TextBoxFor(m => m.Name, new { autocomplete = "off", placeholder = "Issue Name" })
             </li>
-            <li>
+            <li class="break">
                 @Html.DropDownListFor(m => m.ApplicationId, Model.Applications)
             </li>
             <li>
                 @Html.DropDownListFor(m => m.AssignedTo, new[] { new SelectListItem { Text = Resources.IssueResources.AssignedUser, Value = Resources.Shared.DefaultSelectValue } }.Union(Model.Users))
-            </li>
-            <li>
-                <div id="daterange" class="daterange">
-                    @Html.HiddenFor(m => m.StartDate)
-                    <i class="icon-calendar"></i>
-                    <span>Select Date Range</span>
-                    <b class="caret"></b>
-                </div>
             </li>
             <li>
                 <ul class="popup popup-pills">
@@ -51,8 +43,8 @@
                 <input type="submit" class="btn btn-small btn-blue" value="Apply" />
                 <a class="btn btn-small btn-lightblue" href="@Url.Issues()">Clear</a>
             </li>
-            <li>
-                <ul id="action-list" class="popup popup-pills pull-right" style="width:150px">
+            <li class="pull-right">
+                <ul id="action-list" class="popup popup-pills">
                     <li class="dropdown blue" id="actions">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#actions">
                             Issue Actions

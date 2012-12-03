@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using CodeTrip.Core.Paging;
 using Errordite.Core;
 using Errordite.Core.Errors.Queries;
@@ -50,16 +51,27 @@ namespace Errordite.Web.Controllers
                     ApplicationId = postModel.ApplicationId,
                     Paging = pagingRequest,
                     Query = postModel.Query,
-                    StartDate = postModel.StartDate,
-                    EndDate = postModel.EndDate,
                     OrganisationId = Core.AppContext.CurrentUser.OrganisationId,
                     UserTimezoneId = AppContext.CurrentUser.EffectiveTimezoneId(),
                 };
 
+                if (postModel.DateRange.IsNotNullOrEmpty())
+                {
+                    string[] dates = postModel.DateRange.Split('|');
+
+                    DateTime startDate;
+                    DateTime endDate;
+
+                    if (DateTime.TryParse(dates[0], out startDate) && DateTime.TryParse(dates[1], out endDate))
+                    {
+                        request.StartDate = startDate;
+                        request.EndDate = endDate.AddDays(1).AddMinutes(-1);
+                    }
+                }
+
                 var errors = _getApplicationErrorsQuery.Invoke(request);
 
-                viewModel.ErrorsViewModel.StartDate = postModel.StartDate;
-                viewModel.ErrorsViewModel.EndDate = postModel.EndDate;
+                viewModel.ErrorsViewModel.DateRange = postModel.DateRange;
                 viewModel.ErrorsViewModel.Paging = _pagingViewModelGenerator.Generate(PagingConstants.DefaultPagingId, errors.Errors.PagingStatus, pagingRequest);
                 viewModel.ErrorsViewModel.Errors = errors.Errors.Items.Select(e => new ErrorInstanceViewModel { Error = e }).ToList();
                 viewModel.ErrorsViewModel.ApplicationId = postModel.ApplicationId;

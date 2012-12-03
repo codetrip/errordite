@@ -1,45 +1,40 @@
 ﻿@using Errordite.Web.Extensions
 @using Errordite.Web.Models.Groups
-@using Errordite.Web.Models.Organisation
 @model AddGroupViewModel
 
 @{
     ViewBag.Title = "Add Group";
 }
 
-@section contentHeader
+@section header
 {
-    <div id="pagetitle">
-        <h1><i class="icon-arrow-right"></i>Groups</h1>
-    </div>
     @Html.Partial("Admin/Tabs")
 }
 
-@using (Html.BeginForm("add", "groups", FormMethod.Post, new { id = "addGroupForm" }))
-{
-    <div class="base left-narrow">
+<section class="centered">
+
+    @using (Html.BeginForm("add", "groups", FormMethod.Post, new {id = "addGroupForm"}))
+    {
         <h1>Add Group</h1>
-        <div class="base-content">
-            <ul class="errorditeform double-row">
+        <div class="form push-up">
+            <ul>
                 <li>
                     @Html.LabelFor(m => m.Name, "Name")
                     @Html.TextBoxFor(m => m.Name)
                     @Html.ValidationMessageFor(m => m.Name)
                 </li>
-                <li>
+                <li class="sublist">
                     <label>Group Members</label>
-                    <div class="custom-select border">
-                        <ul>
-                            @Html.EditorFor(m => m.Users)
-                        </ul>
-                    </div>
+                    <ul>
+                        @Html.EditorFor(m => m.Users)
+                    </ul>
+                </li>
+                <li>
+                    <input class="btn btn-medium btn-blue" type="submit" value="Add" />
+                    <a class="btn btn-medium btn-cancel" href="@Url.Groups()">Cancel</a>
                 </li>
             </ul>
         </div>
-    </div>
-    
-    <div class="colfull buttons">
-        <input class="btn btn-success" type="submit" value="Add Group" />
-        <a class="btn" href="@Url.Groups()">Cancel</a>
-    </div>
-}
+    }
+
+</section>

@@ -411,7 +411,7 @@ section {
     font-size: 11px;
     font-weight: 700; }
     .btn.btn-small.btn-cancel {
-      padding: 6px 18px; }
+      font-size: 13px; }
   .btn.btn-blue {
     color: #496d82;
     background-color: #c2e0f2; }
@@ -421,6 +421,14 @@ section {
     color: #496d82;
     background-color: #f3f8fc; }
     .btn.btn-lightblue:hover {
+      color: #525252; }
+  .btn.btn-cancel {
+    color: #496d82;
+    background-color: #fff;
+    text-transform: none;
+    font-weight: 400; }
+    .btn.btn-cancel:hover {
+      text-decoration: underline;
       color: #525252; }
 
 .paging {
@@ -594,6 +602,9 @@ section {
 .icon-calendar {
   background-position: -72px 0; }
 
+.icon-search {
+  background-position: -90px 0; }
+
 .icon-people {
   width: 30px;
   height: 30px;
@@ -610,21 +621,16 @@ section {
   margin: 5px 10px 0 0;
   background-image: url("img/key.png"); }
 
-.inline form {
-  display: inline-block; }
-
 .form {
   width: 100%; }
   .form ul {
     padding: 0; }
   .form li {
-    padding: 5px 0; }
-    .form li.inline {
-      margin: 5px 0; }
-      .form li.inline input {
-        display: inline-block; }
-      .form li.inline label {
-        display: inline-block; }
+    margin: 2px 0; }
+    .form li.inline input {
+      display: inline-block; }
+    .form li.inline label {
+      display: inline-block; }
     .form li.sublist {
       width: 310px; }
       .form li.sublist input {
@@ -671,7 +677,10 @@ section {
     display: inline-block;
     float: left; }
     .form.form-inline > ul > li {
-      display: inline-block; }
+      display: inline-block;
+      padding: 0; }
+      .form.form-inline > ul > li.break {
+        padding-right: 150px; }
 
 .tooltip {
   position: absolute;
@@ -821,8 +830,11 @@ section {
     line-height: 16px;
     white-space: nowrap; }
   .dropdown-menu li {
-    padding: 5px;
+    padding: 3px 5px;
     font-size: 13px; }
+    .dropdown-menu li label {
+      padding: 0px;
+      font-size: 13px; }
   .dropdown-menu li:hover {
     background-color: #95c0df;
     color: #fff; }
@@ -987,8 +999,9 @@ section {
     background: #525252;
     border: 0;
     height: 26px;
-    width: 275px;
-    color: #fff; }
+    width: 247px;
+    color: #fff;
+    padding: 4px 4px 4px 0; }
     .search .search-input:focus {
       border: 0;
       box-shadow: none; }
@@ -1016,6 +1029,8 @@ section {
     border-radius: 3px;
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px; }
+    .search .search-box i {
+      margin-left: 4px; }
 
 nav {
   float: right; }
@@ -1067,7 +1082,7 @@ nav {
     nav .nav li.dashboard:hover ul {
       left: -25px; }
     nav .nav li.sysadmin:hover ul {
-      left: -20px; }
+      left: -45px; }
     nav .nav li.admin:hover ul {
       left: -80px; }
     nav .nav li.docs:hover ul {
@@ -1077,7 +1092,7 @@ nav {
     nav .nav li.admin:hover div.pointer::before {
       left: 22px; }
     nav .nav li.sysadmin:hover div.pointer::before {
-      left: 50px; }
+      left: 30px; }
     nav .nav li.docs:hover div.pointer::before {
       left: 16px; }
     nav .nav li:hover ul a:hover {
@@ -1178,22 +1193,23 @@ nav {
   height: 35px;
   width: 350px; }
 
-.criteria input[type="text"] {
-  width: 350px; }
-.criteria select {
-  width: 210px; }
-.criteria .popup {
-  width: 210px; }
-.criteria ul {
-  padding: 0;
-  margin: 0; }
-.criteria a {
-  color: #496d82;
-  font-size: 13px; }
+.criteria {
+  padding: 10px 0 5px 0; }
+  .criteria input[type="text"] {
+    width: 415px; }
+  .criteria select {
+    width: 210px; }
+  .criteria .popup {
+    width: 210px; }
+  .criteria ul {
+    padding: 0;
+    margin: 0; }
+  .criteria a {
+    color: #496d82;
+    font-size: 13px; }
 
 .daterange {
-  float: left;
-  margin: 5px 5px 5px 0;
+  margin: 5px 0 5px 0;
   border: 1px solid #CCC;
   padding: 6px 6px 6px 6px;
   width: 346px;

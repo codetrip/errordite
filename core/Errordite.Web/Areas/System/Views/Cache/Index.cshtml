@@ -5,29 +5,26 @@
     ViewBag.Title = "Cache";
 }
 
-@section contentHeader
-{
-    <div id="pagetitle">
-        <h1>Cache: @Model.Cache</h1>
-    </div>
-    
-    <div class="border"></div>
-}
-
-<div id="caching" class="colfull">
-    Select Cache Engine<br />
-    @Html.DropDownListFor(m => m.CacheEngine, Model.Engines)
+<section id="caching" class="centered">
 
     @if (Model.Keys.Any())
     {
-        <p>
-            @using (Html.BeginForm("flush", "cache", new { cache = Model.Cache }, FormMethod.Post))
-            {
-                @Html.Hidden("cache", Model.Cache)
-                @Html.Hidden("engine", Model.CacheEngine)
-                <input type="submit" class="btn btn-success" style="float:left;margin-bottom:15px;" value="Flush Cache" />
-            }
-        </p>
+        <div class="form form-inline">
+            <ul>
+                <li>
+                    @Html.DropDownListFor(m => m.CacheEngine, Model.Engines)
+                </li>
+                <li>
+                    @using (Html.BeginForm("flush", "cache", new { cache = Model.Cache }, FormMethod.Post))
+                    {
+                        @Html.Hidden("cache", Model.Cache)
+                        @Html.Hidden("engine", Model.CacheEngine)
+                        <input type="submit" class="btn btn-small btn-blue" value="Flush Cache" />
+                    }
+                </li>
+            </ul>
+        </div>
+        <div class="clear"></div>
         <table class="table table-bordered"> 
             <thead>
                 <tr>
@@ -39,13 +36,13 @@
                 @foreach (var cacheKey in Model.Keys)
                 {
                     <tr>  
-                        <td width="80%">@cacheKey</td>
+                        <td>@cacheKey</td>
                         <td>
                             @using (Html.BeginForm("delete", "cache", new { cache = Model.Cache }, FormMethod.Post))
                             {
                                 @Html.Hidden("CacheKey", cacheKey)
                                 @Html.Hidden("engine", Model.CacheEngine)
-                                <input type="submit" class="btn btn-success" style="float:left" value="Delete" />
+                                <input type="submit" class="btn btn-small btn-blue" value="Delete" />
                             }
                         </td>             
                     </tr>
@@ -59,4 +56,4 @@
     {
         <p>No items in the @Model.Cache cache at present.</p>
     }
-</div>
+</section>

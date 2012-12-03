@@ -11,11 +11,6 @@
                     <th>Exception</th>            
                     <th>Message</th>     
                     <th class="sort"><span>Received On</span> @Html.SortLinks(Model.Paging.PagingId, "Timestamp")</th>
-                    <th>Machine</th>
-                    @if (!Model.HideIssues)
-                    {
-                        <th>Issue</th>  
-                    }
                 </tr>
             </thead>
             <tbody>
@@ -26,7 +21,7 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="7">
+                    <td colspan="4">
                         @Html.Partial("Pagination", Model.Paging) 
                     </td>
                 </tr>
@@ -36,17 +31,13 @@
     else if (Model.Errors != null)
     {
         <div class="clear"></div>
-        <div id="no-results">
-            <p>No errors were returned from your query.</p>   
-        </div> 
+        <p>No errors were returned from your query.</p>  
         <div class="clear"></div>
     }
     else
     {
         <div class="clear"></div>
-        <div id="no-results">
-            <p>Loading errors...</p>   
-        </div> 
+        <p>Loading errors...</p>  
         <div class="clear"></div>
     }
 </div>

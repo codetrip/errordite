@@ -407,6 +407,7 @@ section {
 		margin-right:40px;
 	}
 }
+
 .medium-padding {
 	padding:10px 10px 10px 0;
 }
@@ -537,8 +538,8 @@ section {
     padding: 8px 18px;
 	font-size: 11px;
 	font-weight: $extraboldfontweight;
-	&.btn-cancel{
-		padding: 6px 18px;
+	&.btn-cancel {
+		font-size: 13px;
 	}
   }
   &.btn-blue {
@@ -548,10 +549,20 @@ section {
 		color:$mediumbrown;
 	}
   }
-  &.btn-lightblue {
+   &.btn-lightblue {
     color:$darkbrown;
 	background-color:$extralightblue;
 	&:hover {
+		color:$mediumbrown;
+	}
+  }
+  &.btn-cancel {
+    color:$darkbrown;
+	background-color:#fff;
+	text-transform:none;
+	font-weight: $normalfontweight;
+	&:hover {
+		text-decoration:underline;
 		color:$mediumbrown;
 	}
   }
@@ -768,6 +779,9 @@ section {
 .icon-calendar {
   background-position:-72px 0
 }
+.icon-search {
+  background-position:-90px 0
+}
 .icon-people {
   width: 30px;
   height: 30px;
@@ -785,18 +799,14 @@ section {
   background-image: url("img/key.png");
 }
 
-.inline {
-	form { display:inline-block; }
-}
 .form {
 	width:100%;
 	ul {
 		padding:0;
 	}
 	li {
-		padding: 5px 0;
+		margin: 2px 0;
 		&.inline {
-			margin:5px 0;
 			input { display:inline-block; }
 			label { display:inline-block; }
 		}
@@ -858,6 +868,10 @@ section {
 		> ul {
 			> li {
 				display:inline-block;
+				padding:0;
+				&.break {
+					padding-right: 150px;
+				}
 			}
 		}
 	}
@@ -1037,8 +1051,12 @@ section {
     white-space: nowrap;
   }
   li {
-	padding:5px;
+	padding:3px 5px;
 	font-size:13px;
+	label {
+		padding:0px;
+		font-size:13px;
+	}
   }
   li:hover {
 	background-color:$darkblue;
@@ -1251,8 +1269,9 @@ section {
     background: $mediumbrown;
     border: 0;
     height: 26px;
-    width: 275px;
+    width: 247px;
     color: #fff;
+	padding:4px 4px 4px 0;
     &:focus {
       border: 0;
       box-shadow: none;
@@ -1280,9 +1299,12 @@ section {
     -moz-box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.6);
     -webkit-box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.6);
     box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.6);
-    border-radius: 3px;
-    -moz-border-radius: 3px;
-    -webkit-border-radius: 3px;
+    border-radius: $borderradius;
+    -moz-border-radius: $borderradius;
+    -webkit-border-radius: $borderradius;
+	i {
+		margin-left:4px;
+	}
   }
 }
 
@@ -1346,7 +1368,7 @@ nav {
       left: -25px;
     }
     &.sysadmin:hover ul {
-      left: -20px;
+      left: -45px;
     }
     &.admin:hover ul {
       left: -80px;
@@ -1361,7 +1383,7 @@ nav {
       left: 22px;
     }
     &.sysadmin:hover div.pointer::before {
-      left: 50px;
+      left: 30px;
     }
     &.docs:hover div.pointer::before {
       left: 16px;
@@ -1499,8 +1521,9 @@ nav {
 }
 
 .criteria { 
+	padding:10px 0 5px 0;
 	input[type="text"] {
-		width:350px;
+		width:415px;
 	}
 	select {
 		width:210px;
@@ -1520,8 +1543,7 @@ nav {
 
 .daterange
 {
-	float:left;
-    margin: 5px 5px 5px 0;
+    margin: 5px 0 5px 0;
 	border: 1px solid #CCC;
 	padding: 6px 6px 6px 6px;
 	width: 346px;

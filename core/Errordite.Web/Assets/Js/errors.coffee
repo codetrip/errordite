@@ -1,5 +1,5 @@
 jQuery -> 
-	$root = $('div#errors, div#issue, div#errordite-errors, div#dashboard').first()	
+	$root = $('section#errors, section#issue, section#errordite-errors').first()	
 
 	if $root.length > 0		
 		
@@ -13,14 +13,14 @@ jQuery ->
 			e.preventDefault()
 		)
 
-		$root.delegate('td.error-rowstate', 'click', (e) -> 
+		$root.delegate('td.toggle', 'click', (e) -> 
 			$this = $ this
 			error = new Error $this
 			error.toggle()			
 			e.preventDefault()			
 		)
 
-		if $('div#issue').length > 0
+		if $('section#issue').length > 0
 			$root.delegate '.new-rule-match, .rule-match', 'click', () ->				
 				$('.last-selected').removeClass 'last-selected'
 				$('.remove-rule').hide()
@@ -40,7 +40,7 @@ jQuery ->
 				error.visualiseRules() for error in openedErrors
 
 
-		if $('div#dashboard').length == 0
+		if $('section#dashboard').length == 0
 			init = new Initalisation()
 			init.datepicker($root);			
 

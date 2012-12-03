@@ -19,7 +19,7 @@ namespace Errordite.Core.Organisations.Queries
         {
             Trace("Starting...");
 
-            var page = GetPage<Organisation, Organisations_Search, string>(request.Paging);
+            var page = GetMasterPage<Organisation, Organisations_Search, string>(request.Paging);
 
             return new GetOrganisationsResponse
             {

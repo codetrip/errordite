@@ -5,15 +5,19 @@
 @model ErrorInstanceViewModel
            
 <tr id="@Model.Error.FriendlyId"> 
-    <td class="error-rowstate collapsed">&nbsp;</td> 
-    <td class="word-break @(Model.Error.Classified ? "classified" : "")">@Model.Error.ExceptionInfo.Type</td>
+    <td class="toggle"><i class="icon-eye"></i></td> 
+    <td class="word-break @(Model.Error.Classified ? "classified" : "")">
+        <span class="table-info-header">
+            @if (!Model.HideIssues)
+            {
+                @Model.Error.ExceptionInfo.Type <a href="@Url.Issue(Model.Error.IssueId.GetFriendlyId())">(Issue @Model.Error.IssueId.GetFriendlyId())</a> 
+            }
+        </span><br />
+        <span class="table-info">@Model.Error.MachineName</span>
+    </td>
     <td class="word-break">@Model.Error.ExceptionInfo.Message</td>
     <td>@Model.Error.TimestampUtc.ToLocalTimeFormatted()</td>
-    <td>@Model.Error.MachineName</td>
-    @if (!Model.HideIssues)
-    {
-        <td><a href="@Url.Issue(Model.Error.IssueId.GetFriendlyId())">Issue (@Model.Error.IssueId.GetFriendlyId())</a></td>  
-    }
+    
 </tr>
 <tr style="display:none;">
     <td class="error-item" colspan="7">
