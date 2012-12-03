@@ -1,0 +1,60 @@
+<Project
+	xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
+	ToolsVersion="4.0"
+	DefaultTargets="Main">
+
+  <Target Name="SetOutputPath">
+    
+    <Message Text="OutputPath:=$(SourcePath)\build\$(BuildNumber)" />
+    
+    <CreateProperty Value="$(SourcePath)\build\$(BuildNumber)">
+      <Output TaskParameter="Value" PropertyName="OutputPath" />
+    </CreateProperty>
+
+    <CreateProperty Value="$(SourcePath)\build">
+      <Output TaskParameter="Value" PropertyName="OutputRoot" />
+    </CreateProperty>
+    
+    <RemoveDir Directories="$(OutputPath)" Condition="Exists('$(OutputPath')" />
+    <MakeDir Directories="$(OutputPath)" />
+  </Target>
+
+  <Target Name="BuildErrordite">
+    <MSBuild Projects="$(MSBuildProjectDirectory)\Build.proj"
+             Properties="Configuration=$(Configuration);MvcBuildViews=true;"
+             Targets="Build"/>
+   </Target>
+
+  <Target Name="TagTrunk" Condition="$(Branch)=='trunk'">
+    <Message Text="Tagging Trunk with build number $(BuildNumber)" />
+
+    <HgTag
+			Tag="$(BuildNumber)"
+      Message="Tagging trunk with build number $(BuildNumber)"
+			LocalPath="$(SourcePath)" />
+  </Target>
+
+  <Target Name="TagRelease" Condition="$(Branch)=='release'">
+    <Message Text="Tagging Release with build number $(BuildNumber)" />
+
+    <HgTag
+			Tag="$(BuildNumber)"
+      Message="Tagging Release with build number $(BuildNumber)"
+			LocalPath="$(SourcePath)" />
+  </Target>
+
+  <Target Name="ZipOutput">
+
+    <Exec Command="$(SourcePath)\core\Errordite.Build\Cmd\ZipOutput.cmd $(OutputRoot)\$(BuildNumber) $(BuildNumber) $(OutputRoot)\$(BuildNumber)"
+          WorkingDirectory="$(OutputRoot)\$(BuildNumber)" />
+
+  </Target>
+
+  <Target Name="CleanOutput">
+
+    <RemoveDir Directories="$(SourcePath)\core\Errordite.Web\obj\" ContinueOnError="true" />
+    <RemoveDir Directories="$(SourcePath)\core\Errordite.Web\bin\" ContinueOnError="true" />
+    
+  </Target>
+</Project>
+

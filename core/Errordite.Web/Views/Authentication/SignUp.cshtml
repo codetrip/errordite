@@ -1,0 +1,52 @@
+﻿@using Errordite.Web.Models.Authentication
+@model RegisterViewModel
+
+@{
+    ViewBag.Title = "Sign Up";
+    Layout = "~/Views/Shared/Master2.0.cshtml";
+}
+
+<section class="centered">
+    <h1>Sign Up</h1>
+    <div class="base-content">
+        <p>Please tell us a bit about your organisation and we'll create you an account so you can start using Errordite.</p>
+        @using (Html.BeginForm("signup", "authentication", FormMethod.Post, new { id = "signupForm" }))
+        {
+            <ul class="errorditeform">
+                <li>
+                    @Html.LabelFor(m => m.FirstName, "First Name")
+                    @Html.TextBoxFor(m => m.FirstName)
+                    @Html.ValidationMessageFor(m => m.FirstName)
+                </li>
+                <li>
+                    @Html.LabelFor(m => m.LastName, "Last Name")
+                    @Html.TextBoxFor(m => m.LastName)
+                    @Html.ValidationMessageFor(m => m.LastName)
+                </li>
+                <li>
+                    @Html.LabelFor(m => m.OrganisationName, "Organisation Name")
+                    @Html.TextBoxFor(m => m.OrganisationName)
+                    @Html.ValidationMessageFor(m => m.OrganisationName)
+                </li>
+                <li>
+                    @Html.LabelFor(m => m.Email, "Email")
+                    @Html.TextBoxFor(m => m.Email)
+                    @Html.ValidationMessageFor(m => m.Email)
+                </li>
+                <li>
+                    @Html.LabelFor(m => m.Password, "Password")
+                    @Html.PasswordFor(m => m.Password)
+                    @Html.ValidationMessageFor(m => m.Password)
+                </li>
+                <li>
+                    @Html.LabelFor(m => m.ConfirmPassword, "Confirm Password")
+                    @Html.PasswordFor(m => m.ConfirmPassword)
+                    @Html.ValidationMessageFor(m => m.ConfirmPassword)
+                </li>
+                <li>
+                    <input class="btn btn-large btn-blue" type="submit" value="Sign Up" />
+                </li>
+            </ul>
+        }
+    </div>
+</section>

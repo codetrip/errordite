@@ -1,0 +1,180 @@
+﻿
+@using CodeTrip.Core.Paging
+@using Errordite.Web.Models.Help
+@{
+    ViewBag.Title = "Features";
+    Layout = "~/Views/Shared/Master2.0.cshtml";
+}
+
+@section header
+{
+    @Html.Partial("Help/Tabs", HelpTab.Features) 
+}
+
+<section class="centered">
+    <h1>Errordite features</h1>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Issue Info</th>
+                <th>Assigned To</th>
+                <th>Error Count</th>
+                <th>Last Error</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <span class="table-info-header">1234 - System.Web.HttpException (2012.11.07T15.50.20)</span><br />
+                    <span class="table-info">Unacknowledged</span>
+                </td>
+                <td>
+                    <span class="table-info-header">ASOS Marketplace</span><br />
+                    <span class="table-info">Nick Champion</span>
+                </td>
+                <td><span class="table-info-header">1352</span></td>
+                <td><span class="table-info-header">28 Nov 2012 21:13:00</span></td>
+            </tr>
+            <tr>
+               <td>
+                    <span class="table-info-header">1234 - System.Web.HttpException (2012.11.07T15.50.20)</span><br />
+                    <span class="table-info">Unacknowledged</span>
+                </td>
+                <td>
+                    <span class="table-info-header">ASOS Marketplace</span><br />
+                    <span class="table-info">Nick Champion</span>
+                </td>
+                <td><span class="table-info-header">1352</span></td>
+                <td><span class="table-info-header">28 Nov 2012 21:13:00</span></td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="4">
+                    <div class="paging">
+                        <input type="hidden" id="page-link" value="/issues?pgsz=[PGSZ]&amp;pgno=[PGNO]"> 
+
+                        <div class="pages">
+                            Page <input id="pgno" name="pgno" type="text" value="1"> of 10<i rel="tooltip" class="icon-info-sign" data-original-title="Enter the page number you want to go to and click anywhere on the page to trigger the page transition"></i>
+                        </div>
+        
+                        <div class="pagination">
+                            <ul>
+                                <li class="disabled"><a href="#">Previous</a></li>
+                                <li class="active"><a href="#">1</a></li>
+                                <li><a href="/issues?pgno=2">2</a></li>                            
+                                <li><a href="/issues?pgno=3">3</a></li>                            
+                                <li><a href="/issues?pgno=4">4</a></li>                            
+                                <li class="disabled"><a href="#">...</a></li>
+                                <li><a href="/issues?pgno=10">10</a></li>   
+                                <li><a href="/issues?pgno=2">Next</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="items">1 - 15 of 145
+                            <select data-current="15" id="pgsz" name="pgsz">
+                                <option selected="selected" value="15">15</option>
+                                <option value="30">30</option>
+                                <option value="50">50</option>
+                            </select> Per page
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+    @*<table class="table table-condensed features">
+        <tbody>
+            <tr>
+                <td class="img">
+                    <div><img width="190" height="140" src="@Url.Content("~/images/ui/rules.png")" alt="Intelligent Grouping" /></div>
+                </td>
+                <td class="blurb">
+                    <h4>Intelligent grouping</h4>
+                    <p>Errordite will automatically group your exceptions into issues, and allows you to set up custom rules to match incoming exceptions</p>
+                </td>
+            </tr>
+            <tr>
+                <td class="img">
+                    <div><img width="190" height="140" src="@Url.Content("~/images/ui/applications.png")" alt="Multiple Applications" /></div>
+                </td>
+                <td class="blurb">
+                    <h4>Multiple applications</h4>
+                    <p>Use Errordite to manage exceptions from multiple applications within your organisation</p>
+                </td>
+            </tr>
+            <tr>
+                <td class="img">
+                    <div><img width="190" height="140" src="@Url.Content("~/images/ui/email.png")" alt="Intelligent Alerts" /></div>
+                </td>
+                <td class="blurb">
+                    <h4>Intelligent Alerts</h4>
+                    <p>Lets face it, you don't want an email every time an error occurs in your application, Errordite puts you in control of alerting</p>
+                </td>
+            </tr>
+            <tr>
+                <td class="img">
+                    <div><img width="190" height="140" src="@Url.Content("~/images/ui/history.png")" alt="Issue history" /></div>
+                </td>
+                <td class="blurb">
+                    <h4>Issue history</h4>
+                    <p>Errordite tracks the history of an issue, and allows you to post your own updates</p>
+                </td>
+            </tr>
+            <tr>
+                <td class="img">
+                    <div><img width="190" height="140" src="@Url.Content("~/images/ui/reports.png")" alt="Reporting" /> </div>
+                </td>
+                <td class="blurb">
+                    <h4>Reporting</h4>
+                    <p>Graphical illustration of how the occurences of an issue are distributed over 24 hours</p>
+                </td>
+            </tr>
+            <tr>
+                <td class="img">
+                    <div><img width="190" height="140" src="@Url.Content("~/images/ui/sanitise.png")" alt="Filter Sensitive Data" /></div>
+                </td>
+                <td class="blurb">
+                    <h4>Filter sensitive data</h4>
+                    <p>Configure the Errordite client to filter out sensitive data before sending to Errordite</p>
+                </td>
+            </tr>
+            <tr>
+                <td class="img">
+                    <div><img width="190" height="140" src="@Url.Content("~/images/ui/data-collectors.png")" alt="Custom Data Collectors" /></div>
+                </td>
+                <td class="blurb">
+                    <h4>Include custom data</h4>
+                    <p>Plug your own custom data collectors into the client to send extra data with your errors, for example the username of the logged in user</p>
+                </td>
+            </tr>
+            <tr>
+                <td class="img">
+                    <div><img width="190" height="140" src="@Url.Content("~/images/ui/hipchat.png")" alt="Hipchat notifications" /></div>
+                </td>
+                <td class="blurb">
+                    <h4>HipChat integration</h4>
+                    <p>If you're a <a href="http://www.hipchat.com" target="_blank">HipChat</a> user, get immediate notifications of new or recurring issues sent to a HipChat room</p>
+                </td>
+            </tr>
+            <tr>
+                <td class="img">
+                    <div><img width="190" height="140" src="@Url.Content("~/images/ui/microsoft.net.png")" alt="Microsoft .NET" /></div>
+                </td>
+                <td class="blurb">
+                    <h4>.net client</h4>
+                    <p>General purpose .net client plus specialist ASP.NET MVC 2/3 versions</p>
+                </td>
+            </tr>
+            <tr>
+                <td class="img">
+                    <div><img width="140" height="140" src="@Url.Content("~/images/ui/json.gif")" alt="JSON" /></div>
+                </td>
+                <td class="blurb">
+                    <h4>Send errors over JSON</h4>
+                    <p>Documented JSON interface for sending errors - use with any technology stack!</p>
+                </td>
+            </tr>
+        </tbody>
+    </table>*@
+</section>

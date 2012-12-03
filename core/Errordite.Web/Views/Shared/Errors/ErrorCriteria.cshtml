@@ -1,0 +1,45 @@
+﻿@using Errordite.Web.Extensions
+@using Errordite.Web.Models.Errors
+@model ErrorCriteriaViewModel
+
+@using (Html.BeginForm(Model.Action, Model.Controller, FormMethod.Get, new { id = "errorsForm"}))
+{
+    @Html.HiddenFor(m => m.IssueId)
+    <input type="hidden" name="pgst" value="@Model.Sort" id="pgst"/>
+    <input type="hidden" name="pgsd" value="@Model.SortDescending" id="pgsd"/>
+
+    if (Model.Controller == "issue")
+    {
+        @Html.HiddenFor(m => m.ApplicationId)
+        @Html.Hidden("tab", "errors")
+    }  
+
+    <div class="filters errorditeform">
+        <div class="text">
+            @Html.TextBoxFor(m => m.Query, new { autocomplete = "off", placeholder = "Search your errors" })
+        </div>
+
+        @if (Model.Controller != "issue")
+        {
+            <div class="dropdown-normal">
+                @Html.DropDownListFor(m => m.ApplicationId, Model.Applications)
+            </div>
+        }
+        
+        <div class="date">
+            @Html.TextBoxFor(m => m.StartDate, new { autocomplete = "off", placeholder = "Start Date", @class = "daterangepicker" })
+        </div>
+        <div class="date">
+            @Html.TextBoxFor(m => m.EndDate, new { autocomplete = "off", placeholder = "End Date", @class = "daterangepicker" })
+        </div>
+        <div class="buttons">
+            <input type="submit" class="btn btn-success" value="Apply" />
+            <a class="btn" href="@Url.ClearErrors(Model.ApplicationId, Model.IssueId)">Clear</a>
+        </div>
+       
+    </div>
+}
+
+<div class="clear"></div>
+
+@Html.Partial("Errors/ErrorItems", Model)
