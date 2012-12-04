@@ -317,7 +317,8 @@ section {
     cursor: default; }
 
 .tab-content {
-  margin-top: 20px; }
+  margin-top: 20px;
+  background-color: #fff; }
 
 .table {
   width: 100%;
@@ -994,6 +995,11 @@ section {
   opacity: .2;
   filter: alpha(opacity=20); }
 
+.word-break {
+  white-space: pre-wrap;
+  word-break: break-all;
+  word-wrap: break-word; }
+
 /*-----------------------------------------------------------------------------------*/
 /* SPECIFICS
 /*-----------------------------------------------------------------------------------*/
@@ -1237,4 +1243,50 @@ nav {
   .daterange .caret {
     float: right;
     margin: 8px 5px 0 0; }
+
+.errors .toggle {
+  padding: 12px;
+  cursor: pointer; }
+  .errors .toggle.collapsed {
+    background: url("img/plus.png") no-repeat center; }
+  .errors .toggle.expanded {
+    background: url("img/minus.png") no-repeat center; }
+.errors .error-info {
+  max-height: 300px;
+  overflow-x: auto;
+  margin: 0 0 5px 0;
+  word-break: break-all;
+  word-wrap: break-word; }
+.errors pre, .errors code {
+  font-family: "Courier New", Courier;
+  background-color: #ffffcc;
+  font-size: 11px; }
+.errors .rule-match, .errors .new-rule-match {
+  border: solid 1px;
+  padding: 2px 0 2px 0; }
+.errors .rule-match.last-selected, .errors .new-rule-match.last-selected {
+  border: solid 2px; }
+.errors .rule-match {
+  background-color: #97f997;
+  border-color: green; }
+.errors .new-rule-match {
+  background-color: yellow; }
+.errors .old-rule-match {
+  background-color: #ddd; }
+.errors .rule-controls {
+  position: absolute;
+  background-color: white;
+  padding: 3px;
+  display: inline;
+  padding-left: 6px; }
+  .errors .rule-controls .btn-mini {
+    padding: 1px;
+    margin-right: 2px;
+    margin-left: 2px; }
+.errors .error-stack .rule-controls {
+  background-color: #FFC; }
+.errors .st-type, .errors .st-message {
+  display: inline-block;
+  font-weight: bold;
+  vertical-align: top; }
 

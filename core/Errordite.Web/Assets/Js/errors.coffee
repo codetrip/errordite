@@ -153,7 +153,7 @@ jQuery ->
 					$error.addClass('collapsed')
 				else		
 					$error.removeClass('collapsed')
-					$error.addClass('expanded')			
+					$error.addClass('expanded')	
 					
 					if Errordite.ruleManager? and not $error.data 'rules-visualised'
 						openedErrors.push this
