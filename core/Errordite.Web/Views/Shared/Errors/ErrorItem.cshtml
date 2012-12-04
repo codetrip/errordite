@@ -5,7 +5,7 @@
 @model ErrorInstanceViewModel
            
 <tr id="@Model.Error.FriendlyId"> 
-    <td class="toggle"><i class="icon-eye"></i></td> 
+    <td class="toggle"></td> 
     <td class="word-break @(Model.Error.Classified ? "classified" : "")">
         <span class="table-info-header">
             @if (!Model.HideIssues)

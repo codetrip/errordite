@@ -6,7 +6,7 @@ jQuery ->
 		#TODO: we should reset this when we page
 		openedErrors = []		
 
-		$root.delegate('div#results ul.nav li a', 'click', (e) -> 
+		$root.delegate('div#error-items ul.nav li a', 'click', (e) -> 
 			$this = $ this
 			$this.error = new Error $this
 			$this.error.switchTab()
@@ -17,7 +17,7 @@ jQuery ->
 			$this = $ this
 			error = new Error $this
 			error.toggle()			
-			e.preventDefault()			
+			e.preventDefault()
 		)
 
 		if $('section#issue').length > 0
@@ -37,12 +37,7 @@ jQuery ->
 			$('body').on 'changedrule', (e, rule) -> 
 				error.visualiseRules() for error in openedErrors
 			$('body').on 'ruleadded', ->
-				error.visualiseRules() for error in openedErrors
-
-
-		if $('section#dashboard').length == 0
-			init = new Initalisation()
-			init.datepicker($root);			
+				error.visualiseRules() for error in openedErrors	
 
 		$('body').on 'remove', 'tr.rule', () ->
 			$tr = $ this

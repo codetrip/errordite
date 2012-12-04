@@ -1,11 +1,11 @@
 (function() {
 
   jQuery(function() {
-    var $root, Error, ErrorProp, init, openedErrors;
+    var $root, Error, ErrorProp, openedErrors;
     $root = $('section#errors, section#issue, section#errordite-errors').first();
     if ($root.length > 0) {
       openedErrors = [];
-      $root.delegate('div#results ul.nav li a', 'click', function(e) {
+      $root.delegate('div#error-items ul.nav li a', 'click', function(e) {
         var $this;
         $this = $(this);
         $this.error = new Error($this);
@@ -49,10 +49,6 @@
           }
           return _results;
         });
-      }
-      if ($('section#dashboard').length === 0) {
-        init = new Initalisation();
-        init.datepicker($root);
       }
       $('body').on('remove', 'tr.rule', function() {
         var $match, $tr, id, match, _i, _len, _ref, _results;

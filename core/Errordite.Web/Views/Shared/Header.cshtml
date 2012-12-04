@@ -32,12 +32,12 @@
             <a href="@Url.Home(ViewData.GetAppContext())"><img alt="Errordite: Home" src="/images/ui/header-logo.png"/></a>
         </div>
         <div class="search">
-            @using (Html.BeginForm("index", "dashboard"))
+            @using (Html.BeginForm("index", "dashboard", FormMethod.Get))
             {
                 <div class="search-box">
                     <i class="icon-search"></i>
-                    <input autocomplete="off" class="search-input" id="Query" name="Query" placeholder="Search your errors & issues..." type="text"  @(appContext.AuthenticationStatus == AuthenticationStatus.Authenticated ? "disabled=disabled" : string.Empty) />
-                    <input type="submit" class="search-btn" value="Go" @(appContext.AuthenticationStatus == AuthenticationStatus.Authenticated ? "disabled=disabled" : string.Empty) />
+                    <input autocomplete="off" class="search-input" id="q" name="q" placeholder="Search your errors & issues..." type="text"  @(appContext.AuthenticationStatus != AuthenticationStatus.Authenticated ? "disabled=disabled" : string.Empty) />
+                    <input type="submit" class="search-btn" value="Go" @(appContext.AuthenticationStatus != AuthenticationStatus.Authenticated ? "disabled=disabled" : string.Empty) />
                 </div>
             }
         </div>

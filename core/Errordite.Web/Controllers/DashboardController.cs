@@ -30,7 +30,7 @@ namespace Errordite.Web.Controllers
         }
 
         [ImportViewData]
-        public ActionResult Index(string query)
+        public ActionResult Index(string q)
         {
             var viewModel = new DashboardViewModel();
             var applications = Core.GetApplications();
@@ -55,7 +55,7 @@ namespace Errordite.Web.Controllers
                 {
                     Paging = new PageRequestWithSort(1, 5, "FriendlyId", true),
                     OrganisationId = Core.AppContext.CurrentUser.OrganisationId,
-                    Name = query
+                    Name = q
                 }).Issues;
 
                 viewModel.TestIssueId = recentIssues.Items.FirstOrDefault(i => i.TestIssue).IfPoss(i => i.Id);
@@ -64,7 +64,7 @@ namespace Errordite.Web.Controllers
                 {
                     Paging = new PageRequestWithSort(1, 10, sortDescending: true),
                     OrganisationId = Core.AppContext.CurrentUser.OrganisationId,
-                    Query = query
+                    Query = q
                 }).Errors;
 
                 viewModel.Stats = _getOrganisationStatisticsQuery.Invoke(new GetOrganisationStatisticsRequest { OrganisationId = Core.AppContext.CurrentUser.OrganisationId }).Statistics ?? new Statistics();
