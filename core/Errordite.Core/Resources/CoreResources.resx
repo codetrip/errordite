@@ -181,7 +181,7 @@
   <data name="BulkStatusUpdateMessage" xml:space="preserve">
     <value>Batch Status Update</value>
   </data>
-  <data name="HIstoryIssueMerged" xml:space="preserve">
+  <data name="HistoryIssueMerged" xml:space="preserve">
     <value>The errors from issue with Id {0} ({1}) were merged into this issue as a result of a rules adjustment.</value>
   </data>
   <data name="HistoryIssueErrorsReceivedAgain" xml:space="preserve">

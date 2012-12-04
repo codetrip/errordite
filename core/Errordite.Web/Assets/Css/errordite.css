@@ -84,6 +84,9 @@ h2 {
     text-transform: uppercase;
     font-weight: 700;
     font-size: 16px; }
+    h2.section-header.border {
+      padding-bottom: 10px;
+      border-bottom: 1px solid #95c0df; }
 
 h3 {
   font-size: 13px; }
@@ -221,35 +224,6 @@ table {
   background: #f3f8fc;
   height: 36px;
   border-bottom: 1px solid #DEE7EE; }
-  .tabs-container .tabs {
-    margin: 0 auto;
-    width: 974px;
-    padding: 8px 0 0 0;
-    font-size: 13px; }
-    .tabs-container .tabs li {
-      float: left; }
-      .tabs-container .tabs li > a {
-        margin-right: 7px;
-        text-transform: uppercase;
-        padding: 10px 15px 10px 15px;
-        border: 1px solid #DEE7EE;
-        -webkit-border-radius: 3px 3px 0 0;
-        -moz-border-radius: 3px 3px 0 0;
-        border-radius: 3px 3px 0 0;
-        background-color: #e7f0f5;
-        color: #3d3d3d;
-        text-decoration: none;
-        font-size: 13px;
-        font-weight: 13pxWeight; }
-        .tabs-container .tabs li > a:hover {
-          background-color: #ffffff; }
-      .tabs-container .tabs li.button {
-        float: right;
-        margin: -21px 5px 0 0; }
-    .tabs-container .tabs .active > a {
-      border-bottom-color: transparent;
-      background-color: #ffffff;
-      cursor: default; }
 
 .wrapper {
   min-height: 100%;
@@ -312,6 +286,39 @@ section {
 /*-----------------------------------------------------------------------------------*/
 /*	COMPONENTS
 /*-----------------------------------------------------------------------------------*/
+.tabs {
+  margin: 0 auto;
+  width: 974px;
+  padding: 8px 0 0 0;
+  font-size: 13px; }
+  .tabs li {
+    float: left; }
+    .tabs li > a {
+      margin-right: 7px;
+      text-transform: uppercase;
+      padding: 10px 15px 10px 15px;
+      border: 1px solid #DEE7EE;
+      -webkit-border-radius: 3px 3px 0 0;
+      -moz-border-radius: 3px 3px 0 0;
+      border-radius: 3px 3px 0 0;
+      background-color: #e7f0f5;
+      color: #3d3d3d;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 13pxWeight; }
+      .tabs li > a:hover {
+        background-color: #ffffff; }
+    .tabs li.button {
+      float: right;
+      margin: -21px 5px 0 0; }
+  .tabs .active > a {
+    border-bottom-color: transparent;
+    background-color: #ffffff;
+    cursor: default; }
+
+.tab-content {
+  margin-top: 20px; }
+
 .table {
   width: 100%;
   margin-bottom: 18px; }
@@ -627,10 +634,12 @@ section {
     padding: 0; }
   .form li {
     margin: 2px 0; }
-    .form li.inline input {
-      display: inline-block; }
-    .form li.inline label {
-      display: inline-block; }
+    .form li.inline {
+      margin: 10px 0; }
+      .form li.inline input {
+        display: inline-block; }
+      .form li.inline label {
+        display: inline-block; }
     .form li.sublist {
       width: 310px; }
       .form li.sublist input {
@@ -656,10 +665,12 @@ section {
           height: 220px; }
     .form li.pushed-up {
       margin-top: -3px; }
+    .form li.buttons {
+      margin-top: 15px; }
   .form label {
     display: block;
     font-size: 14px;
-    padding: 0 0 3px 1px; }
+    padding: 5px 0 5px 1px; }
   .form .field-validation-error {
     font-size: 13px;
     display: inline-block;
@@ -1190,8 +1201,12 @@ nav {
 .rules select {
   width: 180px; }
 .rules textarea {
-  height: 35px;
-  width: 350px; }
+  height: 45px;
+  width: 450px; }
+.rules td {
+  text-align: center; }
+.rules td:last-child {
+  text-align: left; }
 
 .criteria {
   padding: 10px 0 5px 0; }
