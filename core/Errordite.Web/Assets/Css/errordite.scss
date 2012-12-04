@@ -423,6 +423,7 @@ section {
 
 .tab-content {
 	margin-top:20px;
+	background-color:#fff;
 }
 
 .table {
@@ -1264,6 +1265,12 @@ section {
 	filter: alpha(opacity=20);
 }
 
+.word-break {
+  white-space: pre-wrap;
+  word-break: break-all;
+  word-wrap: break-word;
+}
+
 /*-----------------------------------------------------------------------------------*/
 /* SPECIFICS
 /*-----------------------------------------------------------------------------------*/
@@ -1577,4 +1584,76 @@ nav {
 		margin: 8px 5px 0 0;
 	}
 }
+
+.errors {
+	.toggle {
+		padding:12px;
+		cursor:pointer;
+		&.collapsed {
+			background: url('img/plus.png') no-repeat center;
+		}
+		&.expanded {
+			background: url('img/minus.png') no-repeat center;
+		}
+	}
+	.error-info { 
+		max-height: 300px; 
+		overflow-x: auto;
+		margin: 0 0 5px 0;
+		word-break: break-all;
+		word-wrap: break-word;
+	}
+	pre, code {
+	  font-family: "Courier New", Courier;
+	  background-color: #ffffcc;
+	  font-size:11px;
+	}
+
+	.rule-match, .new-rule-match {
+	  border: solid 1px;
+	  padding: 2px 0 2px 0;
+	}
+
+	.rule-match.last-selected, .new-rule-match.last-selected {
+	  border: solid 2px;
+	}
+
+	.rule-match {
+	  background-color: rgb(151, 249, 151);
+	  border-color: green;
+	}
+
+	.new-rule-match {
+	  background-color: yellow;
+	}
+
+	.old-rule-match {
+	  background-color: #ddd;
+	}
+
+	.rule-controls {
+	  .btn-mini {
+		padding: 1px;
+		margin-right: 2px;
+		margin-left: 2px;
+	  }
+	  position: absolute;
+	  background-color: white;
+	  padding: 3px;
+	  display: inline;
+	  padding-left: 6px;
+	}
+
+	.error-stack .rule-controls {
+	  background-color: #FFC;
+	}
+	.st-type, .st-message {
+		display: inline-block;
+		font-weight: bold;
+		vertical-align: top;
+  }
+}
+
+
+
 
