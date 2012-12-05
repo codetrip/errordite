@@ -131,9 +131,10 @@
     <Compile Include="..\Errordite.Build\Assembly\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Auditing\RavenExceptionAppender.cs" />
     <Compile Include="Caching\CacheKeys.cs" />
     <Compile Include="Configuration\HttpServerConfiguration.cs" />
-    <Compile Include="Domain\Central\UserOrganisationMapping.cs" />    
+    <Compile Include="Domain\Central\UserOrganisationMapping.cs" />
     <Compile Include="Domain\Error\ErrorditeError.cs" />
     <Compile Include="Domain\IdHelper.cs" />
     <Compile Include="Domain\Organisation\PaymentPlan.cs" />
