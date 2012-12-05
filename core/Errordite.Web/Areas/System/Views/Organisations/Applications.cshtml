@@ -5,17 +5,8 @@
     ViewBag.Title = "Applications";
 }
 
-@section contentHeader
-{
-    <div id="pagetitle">
-        <h1><i class="icon-arrow-right"></i>Applications</h1>
-    </div>
-    
-    <div class="border"></div>
-}
-
-<div id="applications" class="colfull">
-
+<section id="applications" class="centered">
+    <h1>Organisations</h1>
     @if (Model.Applications != null && Model.Applications.Any())
     {
         @Html.Partial("Applications/List", Model)
@@ -26,4 +17,4 @@
             <p>No applications were found.</p>   
         </div> 
     }
-</div>
+</section>

@@ -1,43 +1,30 @@
 ﻿@using Errordite.Web.Models.Help
 @using Errordite.Web.Extensions
 @model IEnumerable<Errordite.Core.Domain.Organisation.PaymentPlan>
+
 @{
     ViewBag.Title = "Pricing";
-}
-           
-<div class="span12">
-    <div class="base">
-        @Html.Partial("Help/Tabs", HelpTab.Pricing) 
+}   
 
-        <div class="base-noheader help">
-            <div class="title">
-                <h1>Pricing</h1>
-            </div>
+@section header
+{
+    @Html.Partial("Help/Tabs", HelpTab.Pricing) 
+}     
 
-            <p>
-                Errordite is a subscription-based service, with payments made monthly. The first 30 days is a free trial, after which you may select
-                from one of 4 different plans - details below.  (At present we are in beta - the 30 day trials will not start until the beta period is over.)
-            </p>
+<section class="centered">
+    <h1>Pricing</h1>
 
-            <div class="clear-space"></div>
-            
-            @foreach (var paymentPlan in Model)
-            {
-                @Html.Partial("Help/PaymentPlan", paymentPlan)
-            }
+    <p>
+        Errordite is a subscription-based service, with payments made monthly. The first 30 days is a free trial, after which you may select
+        from one of 4 different plans - details below.  (At present we are in beta - the 30 day trials will not start until the beta period is over.)
+    </p>
+    
+    @foreach (var paymentPlan in Model)
+    {
+        @Html.Partial("Help/PaymentPlan", paymentPlan)
+    }
 
-            <div class="clear-space"></div>
-
-            <p>
-                If you needs are not met by what is here, please <a href="@Url.Contact()">contact us</a>.
-            </p>
-
-            @*<h3 class="all-plans">
-                <span>All plans come with...</span>
-                <span><i class="icon-ok-sign"></i> Free setup</span>
-                <span><i class="icon-ok-sign"></i> SSL protection</span>
-                <span><i class="icon-ok-sign"></i> Free email support</span>
-            </h3>*@
-        </div>
-    </div>
-</div>
+    <p>
+        If you needs are not met by what is here, please <a href="@Url.Contact()">contact us</a>.
+    </p>
+</section>

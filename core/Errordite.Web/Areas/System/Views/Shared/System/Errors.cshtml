@@ -1,44 +1,44 @@
 ﻿
-@using Errordite.Web.Models.Administration
 @using Errordite.Web.Extensions
 @using CodeTrip.Core.Extensions
-@model ErrorditeErrorsViewModel
+@model Errordite.Web.Areas.System.Models.System.ErrorditeErrorsViewModel
 
 @using (Html.BeginForm("errorditeerrors", "system", FormMethod.Get, new { id = "errorsForm" }))
 {
-     <div class="filters errorditeform errorditeerrors">
-        <div class="text">
-            @Html.TextBoxFor(m => m.Query, new { autocomplete = "off", placeholder = "Search your errors" })
-        </div>
-        <div class="text">
-            @Html.TextBoxFor(m => m.ExceptionType, new { autocomplete = "off", placeholder = "Exception Type" })
-        </div>
-        <div class="text">
-            @Html.TextBoxFor(m => m.Application, new { autocomplete = "off", placeholder = "Application" })
-        </div>
-    </div>
-    <div class="clear"></div>
-    <div class="filters errorditeform errorditeerrors">
-         <div class="text">
-             @Html.TextBoxFor(m => m.MessageId, new { autocomplete = "off", placeholder = "Message Id" })
-         </div>
-        <div class="date">
-            @Html.TextBoxFor(m => m.StartDate, new { autocomplete = "off", placeholder = "Start Date", @class = "daterangepicker" })
-        </div>
-        <div class="date">
-            @Html.TextBoxFor(m => m.EndDate, new { autocomplete = "off", placeholder = "End Date", @class = "daterangepicker" })
-        </div>
-        <div class="buttons">
-            <input type="submit" class="btn btn-success" value="Apply" />
-            <a class="btn" href="@Url.ErrorditeErrors()">Clear</a>
-        </div>
+    <div class="form form-inline">
+        <ul>
+            <li>
+                @Html.TextBoxFor(m => m.Query, new { autocomplete = "off", placeholder = "Search your errors" })
+            </li>
+            <li>
+                @Html.TextBoxFor(m => m.ExceptionType, new { autocomplete = "off", placeholder = "Exception Type" })
+            </li>
+            <li>
+                @Html.TextBoxFor(m => m.Application, new { autocomplete = "off", placeholder = "Application" })
+            </li>
+            <li>
+                 @Html.TextBoxFor(m => m.MessageId, new { autocomplete = "off", placeholder = "Message Id" })
+            </li>
+            <li>
+                <div id="daterange" class="daterange">
+                    @Html.HiddenFor(m => m.StartDate)
+                    <i class="icon-calendar"></i>
+                    <span>Select Date Range</span>
+                    <b class="caret"></b>
+                </div>
+            </li>
+            <li>
+                <input type="submit" class="btn btn-medium btn-blue" value="Apply" />
+                <a class="btn btn-medium btn-cancel" href="@Url.ErrorditeErrors()">Clear</a>
+            </li>
+        </ul>
     </div>
     <div class="clear"></div>
 }
 @if (Model.Errors != null && Model.Errors.Items.Any())
 {
     <div id="results">
-        <table class="table-bordered gradient">
+        <table class="table table-bordered">
             <thead>
                 <tr>
                     <th></th>

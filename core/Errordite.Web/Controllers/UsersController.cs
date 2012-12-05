@@ -68,7 +68,7 @@ namespace Errordite.Web.Controllers
 
             var viewModel = new AddUserViewModel
             {
-                Groups = groups.Items.Select(g => Mapper.Map(g, new GroupViewModel())).ToList()
+                Groups = groups.Items.Select(g => Mapper.Map(g, new GroupViewModel())).ToList(),
             };
 
             return View(viewModel);
@@ -90,6 +90,7 @@ namespace Errordite.Web.Controllers
                 Organisation = Core.AppContext.CurrentUser.Organisation,
                 Email = viewModel.Email,
                 GroupIds = viewModel.Groups.Where(g => g.Selected).Select(g => g.Id.GetFriendlyId()).ToList(),
+                TimezoneId = viewModel.TimezoneId.IsNullOrEmpty() ? null : viewModel.TimezoneId,
             });
 
             if (result.Status != AddUserStatus.Ok)

@@ -2,14 +2,16 @@
 @using Errordite.Core.Domain.Organisation
 @model PaymentPlan
            
-<div class="base left-slim payment-plan">
-    <h2>@Model.Name<span>$@Model.Price.ToString("0") / Month</span></h2>
-    <div class="base-content">
+<div class="four-col">
+    <div class="payment-plan">
+        <h2>@Model.Name<span>$@Model.Price.ToString("0") / Month</span></h2>
         <ul>
-            <li>@Model.MaximumIssues Issues</li>
-            <li>@Model.MaximumUsers User@(Model.MaximumUsers == 1 ? "": "s")</li>
-            <li>@Model.MaximumApplications Application@(Model.MaximumApplications == 1 ? "": "s")</li>
+            <li><b>@Model.MaximumIssues</b> Issues</li>
+            <li><b>@Model.MaximumUsers</b> User@(Model.MaximumUsers == 1 ? "": "s")</li>
+            <li><b>@Model.MaximumApplications</b> Application@(Model.MaximumApplications == 1 ? "": "s")</li>
         </ul>
-        <a class="btn btn-success" href="@Url.SignUp()">Sign Up Now</a>
+        <div>
+            <a href="@Url.SignUp()">Sign Up Now ›</a>
+        </div>
     </div>
 </div>

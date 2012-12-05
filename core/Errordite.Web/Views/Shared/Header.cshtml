@@ -5,121 +5,95 @@
 @using Errordite.Web.Models.Navigation
 
 @{
-    var appContext = ViewData.GetAppContext();
+   var appContext = ViewData.GetAppContext();
 }
-<div id="head-left">
-    <span class="logo"><a href="@Url.Home(ViewData.GetAppContext())"><img alt="Errordite" src="/Images/UI/header-logo.png"/></a></span>
-</div>
-<div class="floatright">
-    <div id="head-links">
-        <ul>
-            @if (appContext.AuthenticationStatus == AuthenticationStatus.Authenticated)
+
+<div class="welcome-bar-container">
+    <div class="welcome-bar">
+        <nav class="links">
+            @if (appContext.AuthenticationStatus == AuthenticationStatus.Anonymous)
             {
-                <li class="menu-trigger">
-                    <ul class="menu">
-                        <li><a href="@ViewData.GetIssuesUrl(Url.Issues())">Issues</a></li>
-                        <li><a href="@ViewData.GetErrorsUrl(Url.Errors())">Errors</a></li>
-                        <li><a href="@Url.AddIssue()">Create Issue</a></li>
-                        <li><a id="show-alerts" href="#">Alerts</a></li>
-                    </ul>
-                    <a href="@Url.Dashboard()">Dashboard</a>
-                </li>
-                <li>|</li>
-                if (appContext.CurrentUser.IsAdministrator())
+                @: Welcome to Errordite &nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.SignIn()">Sign In</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.SignUp()">Sign Up</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.Contact()">Contact Us</a>
+            }
+            else if (appContext.AuthenticationStatus == AuthenticationStatus.NotAuthenticated)
+            {
+                @: Welcome to Errordite <strong>@appContext.CurrentUser.FirstName</strong> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.SignIn()">Sign In</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.SignOut()">Not @appContext.CurrentUser.FirstName?</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.Contact()">Contact Us</a>
+            }
+            else
+            {
+                @: Welcome to Errordite <strong>@appContext.CurrentUser.FirstName </strong> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.YourDetails()">Your Details</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.SignOut()">Sign Out</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.Contact()">Contact Us</a>
+            }
+        </nav>
+    </div>
+    </div>
+    <div class="header-container">
+    <div class="header">
+        <div class="logo">
+            <a href="@Url.Home(ViewData.GetAppContext())"><img alt="Errordite: Home" src="@Url.Content("~/Assets/Images/header-logo.png")"/></a>
+        </div>
+        <div class="search">
+            @using (Html.BeginForm("index", "dashboard", FormMethod.Get))
+            {
+                <div class="search-box">
+                    <i class="icon-search"></i>
+                    <input autocomplete="off" class="search-input" id="q" name="q" placeholder="Search your errors & issues..." type="text"  @(appContext.AuthenticationStatus != AuthenticationStatus.Authenticated ? "disabled=disabled" : string.Empty) />
+                    <input type="submit" class="search-btn" value="Go" @(appContext.AuthenticationStatus != AuthenticationStatus.Authenticated ? "disabled=disabled" : string.Empty) />
+                </div>
+            }
+        </div>
+        <nav>
+            <ul class="nav">
+                @if (appContext.AuthenticationStatus == AuthenticationStatus.Authenticated && (appContext.CurrentUser.Role == UserRole.SuperUser || appContext.ImpersonatorAppContext != null))
                 {
-                    <li class="menu-trigger">
-                        <ul class="menu">
+                    <li class="nav-item sysadmin">
+                        <a href="@Url.SysAdmin()">System <span class="rotate">›</span></a>
+                        <div class="pointer">
+                            <ul>
+                                <li><a href="@Url.Organisations()">Organisations ›</a></li> 
+                                <li><a href="@Url.Impersonate()">Impersonate ›</a></li> 
+                                <li><a href="@Url.ErrorditeErrors()">Errors ›</a></li> 
+                                <li><a href="@Url.FlushAllCaches()">Flush Caches ›</a></li> 
+                                @foreach (var cache in Enum.GetNames(typeof (CacheProfiles)))
+                                {
+                                    <li><a href="@Url.Cache(cache)">@cache Cache ›</a></li>
+                                }
+                            </ul>
+                        </div>
+                    </li>
+                }
+                <li class="nav-item dashboard">
+                    <a href="@Url.Dashboard()">Dashboard <span class="rotate">›</span></a>
+                    <div class="pointer">
+                        <ul>
+                            <li><a href="@ViewData.GetIssuesUrl(Url.Issues())">Issues ›</a></li>
+                            <li><a href="@ViewData.GetErrorsUrl(Url.Errors())">Errors ›</a></li>
+                            <li><a href="@Url.AddIssue()">Create Issue ›</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item admin">
+                    <a href="@Url.Applications()">Admin <span class="rotate">›</span></a>
+                    <div class="pointer">
+                        <ul>
                             @foreach (var adminPage in Breadcrumbs.GetById(BreadcrumbId.Admin, Url).Children)
                             {
-                                <li><a href="@adminPage.Link">@adminPage.Title</a></li>
+                                <li><a href="@adminPage.Link">@adminPage.Title ›</a></li>
                             }
                         </ul>
-                        <span>Admin</span>  
-                    </li>
-                    <li>|</li>
-                }
-            }
-            
-            <li class="menu-trigger">
-                <ul class="menu pull-right">
-                    <li><a href="@Url.GettingStarted()">Getting Started</a></li>
-                    @*<li><a href="@Url.Faq()">FAQ</a></li>*@
-                    <li><a href="@Url.Pricing()">Pricing</a></li>
-                    <li><a href="@Url.Client()">Client Help</a></li>
-                    <li><a href="@Url.Features()">Features</a></li>
-                </ul>
-                <a href="@Url.GettingStarted()">About</a>
-            </li>
-            @if (appContext.AuthenticationStatus == AuthenticationStatus.Authenticated && (appContext.CurrentUser.Role == UserRole.SuperUser || appContext.ImpersonatorAppContext != null))
-            {
-                <li>|</li>
-                <li class="menu-trigger">
-                    <ul class="menu">
-                        <li><a href="@Url.Organisations()">Organisations</a></li> 
-                        <li><a href="@Url.Impersonate()">Impersonate</a></li> 
-                        <li><a href="@Url.ErrorditeErrors()">Errors</a></li> 
-                        <li><a href="@Url.FlushAllCaches()">Flush Caches</a></li> 
-                        @foreach(var cache in Enum.GetNames(typeof(CacheProfiles)))
-                        {
-                            <li><a href="@Url.Cache(cache)">@cache</a></li> 
-                        }
-                    </ul>
-                    <a href="@Url.SysAdmin()">SysAdmin</a>
+                    </div>
                 </li>
-            }
-            <li>|</li>
-            <li><a href="@Url.Contact()">Contact Us</a></li>
-        </ul>
+                <li class="nav-item docs">
+                    <a href="@Url.GettingStarted()">Docs <span class="rotate">›</span></a>
+                    <div class="pointer">
+                        <ul>
+                            <li><a href="@Url.GettingStarted()">Getting Started ›</a></li>
+                            <li><a href="@Url.Pricing()">Pricing ›</a></li>
+                            <li><a href="@Url.Client()">Client Help ›</a></li>
+                            <li><a href="@Url.Features()">Features ›</a></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </nav>
     </div>
-    <div class="clear"></div>
-    <div id="auth">
-        @if (appContext.AuthenticationStatus == AuthenticationStatus.Anonymous)
-        {
-            @: Welcome to Errordite you can <a href="@Url.SignIn()">Sign In</a> or <a href="@Url.SignUp()">Sign Up</a>.
-        }
-        else if (appContext.AuthenticationStatus == AuthenticationStatus.NotAuthenticated)
-        {
-            @: Welcome back to Errordite <strong>@appContext.CurrentUser.FirstName</strong> | <a href="@Url.SignIn()">Sign In</a> | <a href="@Url.SignOut()">Not @appContext.CurrentUser.FirstName?</a>
-        }
-        else
-        {
-            @: Welcome to Errordite <strong>@appContext.CurrentUser.FirstName </strong><span>&nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.YourDetails()">Your Details</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.SignOut()">Sign Out</a></span>
-        }			
     </div>
-</div>
-
-@if (appContext.AuthenticationStatus == AuthenticationStatus.Authenticated)
-{
-    <div class="floatright">
-        <div class="issue-link">
-            <form method="get" action="/issue">
-               <div class="input-group">
-                     <input autocomplete="off" id="Id" name="Id" placeholder="Issue Id" type="text" value="" />
-                     <input type="submit" class="btn-mini btn-success" value="Go" />
-                </div>
-            </form>
-        </div>
-    </div>
-    <div class="floatright">
-        <div class="issue-link search">
-            @using (Html.BeginForm("index", "errors", new { Area = string.Empty }, FormMethod.Get))
-            {
-                <div class="input-group">
-                    <input id="Query" name="Query" placeholder="Search your errors" type="text" value="" />
-                    <input type="submit" class="btn-mini btn-success" value="Go" />
-                </div>
-            }
-        </div>
-    </div>
-    <div class="floatright">
-        <div class="issue-link search">
-            @using (Html.BeginForm("index", "issues", FormMethod.Get))
-            {
-               <div class="input-group">
-                     <input name="Name" placeholder="Search your issues" type="text" value="" />
-                     <input type="submit" class="btn-mini btn-success" value="Go" />
-                </div> 
-            }
-        </div>
-    </div>
-}

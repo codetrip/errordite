@@ -34,13 +34,15 @@ namespace Errordite.Core.Issues.Queries
 
             _authorisationManager.Authorise(issue, request.CurrentUser);
 
-            var count = Session.Raven.Query<ErrorCountByIssueResult, Errors_CountByIssue>().FirstOrDefault(r => r.IssueId == issueId);
+            //GT: pretty sure this shouldn't be necessary.  Better to do offline than synchronously like this at any rate.  Just leaving commented
+            //temporarily so we can see what we got rid off
+            //var count = Session.Raven.Query<ErrorCountByIssueResult, Errors_CountByIssue>().FirstOrDefault(r => r.IssueId == issueId);
 
-            if (count == null)
-                issue.ErrorCount = 0;
+            //if (count == null)
+            //    issue.ErrorCount = 0;
 
-            if (count != null && count.Count != issue.ErrorCount)
-                issue.ErrorCount = count.Count;
+            //if (count != null && count.Count != issue.ErrorCount)
+            //    issue.ErrorCount = count.Count;
             
             return new GetIssueResponse
             {

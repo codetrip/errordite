@@ -3,71 +3,50 @@
     ViewBag.Title = "Admin";
 }
 
-@section contentHeader
-{
-    <div id="pagetitle">
-        <h1><i class="icon-arrow-right"></i>Administration Tasks</h1>
+<section class="centered">
+    <h2>Delete Application Errors</h2>
+    <div class="form"> 
+        @using (Html.BeginForm("deleteapplicationerrors", "system", FormMethod.Post, new { id = "delAppErrorsForm" }))
+        {
+            <ul>
+                <li>
+                    @Html.Label("Application Id")
+                    @Html.TextBox("applicationId")
+                </li>
+                <li>
+                    <input type="submit" class="btn btn-medium btn-blue" value="Delete" />
+                </li>
+            </ul>
+        }
     </div>
-    
-    <div class="border"></div>
-}
-
-<div class="colfull">
-    <div class="toggle">
-        <h4>
-            Delete Application Errors
-        </h4>
-        <div class="toggle-inner"> 
-            @using (Html.BeginForm("deleteapplicationerrors", "system", FormMethod.Post, new { id = "delAppErrorsForm" }))
-            {
-                <ul class="errorditeform">
-                    <li>
-                        @Html.Label("Application Id")
-                        @Html.TextBox("applicationId")
-                    </li>
-                    <li>
-                        <input type="submit" class="btn btn-success" value="Delete" />
-                    </li>
-                </ul>
-            }
-        </div>
+    <h2>Rebuild Indexes</h2>
+    <div class="form"> 
+        @using (Html.BeginForm("rebuildindex", "system", FormMethod.Post, new { id = "rebuidIndexForm" }))
+        {
+            <ul>
+                <li>
+                    @Html.Label("Index Name")
+                    @Html.TextBox("indexName")
+                </li>
+                <li>
+                    <input type="submit" class="btn btn-medium btn-blue" value="Rebuild" />
+                </li>
+            </ul>
+        }
     </div>
-    <div class="toggle">
-        <h4>
-            Rebuild Indexes
-        </h4>
-        <div class="toggle-inner"> 
-            @using (Html.BeginForm("rebuildindex", "system", FormMethod.Post, new { id = "rebuidIndexForm" }))
-            {
-                <ul class="errorditeform">
-                    <li>
-                        @Html.Label("Index Name")
-                        @Html.TextBox("indexName")
-                    </li>
-                    <li>
-                        <input type="submit" class="btn btn-success" value="Rebuild" />
-                    </li>
-                </ul>
-            }
-        </div>
+    <h2>Purge Errordite Errors</h2>
+    <div class="form"> 
+        @using (Html.BeginForm("purgeerrorditeerrors", "system", FormMethod.Post, new { id = "purgeErrors" }))
+        {
+            <ul>
+                <li>
+                    @Html.Label("All Errors Before Date (yyyy-mm-dd hh:mm:ss)")
+                    @Html.TextBox("fromDate")
+                </li>
+                <li>
+                    <input type="submit" class="btn btn-medium btn-blue" value="Purge" />
+                </li>
+            </ul>
+        }
     </div>
-    <div class="toggle">
-        <h4>
-            Purge Errordite Errors
-        </h4>
-        <div class="toggle-inner" > 
-            @using (Html.BeginForm("purgeerrorditeerrors", "system", FormMethod.Post, new { id = "purgeErrors" }))
-            {
-                <ul class="errorditeform">
-                    <li>
-                        @Html.Label("All Errors Before Date (yyyy-mm-dd hh:mm:ss)")
-                        @Html.TextBox("fromDate")
-                    </li>
-                    <li>
-                        <input type="submit" class="btn btn-success" value="Purge" />
-                    </li>
-                </ul>
-            }
-        </div>
-    </div>
-</div>  
+</section>  

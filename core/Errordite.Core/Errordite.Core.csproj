@@ -85,11 +85,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\protobuf\protobuf-net.dll</HintPath>
     </Reference>
-    <Reference Include="Raven.Abstractions">
-      <HintPath>..\packages\RavenDB.Client.2.0.2159-Unstable\lib\net40\Raven.Abstractions.dll</HintPath>
+    <Reference Include="Raven.Abstractions, Version=1.2.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\RavenDB.Client.2.0.2161-Unstable\lib\net40\Raven.Abstractions.dll</HintPath>
     </Reference>
-    <Reference Include="Raven.Client.Lightweight">
-      <HintPath>..\packages\RavenDB.Client.2.0.2159-Unstable\lib\net40\Raven.Client.Lightweight.dll</HintPath>
+    <Reference Include="Raven.Client.Lightweight, Version=1.2.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\RavenDB.Client.2.0.2161-Unstable\lib\net40\Raven.Client.Lightweight.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -131,24 +133,19 @@
     </Compile>
     <Compile Include="Caching\CacheKeys.cs" />
     <Compile Include="Configuration\HttpServerConfiguration.cs" />
-    <Compile Include="Domain\Central\UserOrganisationMapping.cs" />
+    <Compile Include="Domain\Central\UserOrganisationMapping.cs" />    
+    <Compile Include="Domain\Error\ErrorditeError.cs" />
     <Compile Include="Domain\IdHelper.cs" />
     <Compile Include="Domain\Organisation\PaymentPlan.cs" />
-    <Compile Include="Domain\Organisation\UserAlert.cs" />
-    <Compile Include="Alerts\UserAlertsSeenCommand.cs" />
-    <Compile Include="Alerts\GetUserAlertsQuery.cs" />
     <Compile Include="Applications\Commands\DeleteApplicationCommand.cs" />
     <Compile Include="Applications\Commands\EditApplicationCommand.cs" />
     <Compile Include="Applications\Queries\GetApplicationByTokenQuery.cs" />
     <Compile Include="Applications\Queries\GetApplicationQuery.cs" />
     <Compile Include="Applications\Queries\GetApplicationsQuery.cs" />
-    <Compile Include="Auditing\Queries\GetAuditRecordsQuery.cs" />
-    <Compile Include="Auditing\RavenExceptionAppender.cs" />
     <Compile Include="Authorisation\IAuthorisationManager.cs" />
     <Compile Include="Caching\CacheInvalidation.cs" />
     <Compile Include="Caching\RedisDatabase.cs" />
     <Compile Include="Configuration\ErrorditeConfiguration.cs" />
-    <Compile Include="Auditing\ErrorditeError.cs" />
     <Compile Include="Domain\Error\IssueHistory.cs" />
     <Compile Include="Domain\Exceptions\ErrorditeAuthorisationException.cs" />
     <Compile Include="Domain\Organisation\AuditRecord.cs" />
@@ -187,7 +184,7 @@
     <Compile Include="Issues\Commands\AdjustRulesCommand.cs" />
     <Compile Include="Issues\Commands\AddIssueCommand.cs" />
     <Compile Include="Issues\Commands\BatchStatusUpdateCommand.cs" />
-    <Compile Include="Errors\Queries\GetErrorsThatDoNotMatchNewRulesQuery.cs" />
+    <Compile Include="Errors\Queries\FindErrorsMatchingRulesQuery.cs" />
     <Compile Include="Issues\Commands\ReprocessIssueErrorsCommand.cs" />
     <Compile Include="Issues\Commands\MergeIssuesCommand.cs" />
     <Compile Include="Issues\Commands\DeleteIssueCommand.cs" />

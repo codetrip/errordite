@@ -35,7 +35,7 @@ namespace Errordite.Core.Issues.Queries
                     {
                         Id = issue.Id,
                         Rules = issue.Rules,
-                        LastErrorUtc = issue.LastErrorUtc,
+                        LastRuleAdjustmentUtc = issue.LastRuleAdjustmentUtc,
                         MatchPriority = issue.MatchPriority,
                         ApplicationId = issue.ApplicationId
                     })
@@ -57,7 +57,7 @@ namespace Errordite.Core.Issues.Queries
                         {
                             Id = issue.Id,
                             Rules = issue.Rules,
-                            LastErrorUtc = issue.LastErrorUtc,
+                            LastRuleAdjustmentUtc = issue.LastRuleAdjustmentUtc,
                             MatchPriority = issue.MatchPriority,
                             ApplicationId = issue.ApplicationId
                         }));

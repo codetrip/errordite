@@ -6,15 +6,7 @@
     ViewBag.Title = "Errors";
 }
 
-@section contentHeader
-{
-    <div id="pagetitle">
-        <h1><i class="icon-arrow-right"></i>Errors</h1>
-    </div>
-    <div class="border"></div>
-}
-
-<div id="errors" class="colfull">
+<section id="errors" class="centered">
     @if (!Model.ErrorsViewModel.Applications.Any())
     {
         <p>You do not have any applications set up, <a href="@Url.AddApplication()">click here to create an application.</a></p>    
@@ -23,4 +15,4 @@
     {
         @Html.Partial("Errors/ErrorCriteria", Model.ErrorsViewModel)
     }
-</div>
+</section>

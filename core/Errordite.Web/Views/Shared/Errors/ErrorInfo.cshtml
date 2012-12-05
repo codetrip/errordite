@@ -2,45 +2,53 @@
 @using CodeTrip.Core.Extensions
 @model Errordite.Web.Models.Errors.ExceptionViewModel
            
-<div class="error-info">
-    <dl class="dl-horizontal">
-        
+<div class="info">
+    <table class="table table-bordered table-condensed">
         @if(Model.Info.MethodName.IsNotNullOrEmpty())
         {
-            <dt>Method</dt>
-            <dd data-error-attr="MethodName">@Model.Info.MethodName</dd>
+            <tr>
+                <td>Method</td>
+                <td data-error-attr="MethodName">@Model.Info.MethodName</td>
+            </tr>
         }
         @if (Model.Info.Module.IsNotNullOrEmpty())
         {
-            <dt>Module</dt>
-            <dd data-error-attr="Module">@Model.Info.Module</dd>
-            
+            <tr>
+                <td>Module</td>
+                <td data-error-attr="Module">@Model.Info.Module</td>
+            </tr>
         }
         
         @if (!Model.InnerException)
         {
             if (Model.Url.IsNotNullOrEmpty())
-             {
-                 <dt>Url</dt>
-                 <dd data-error-attr="Url">@Model.Url</dd>
-             }
+            {
+                <tr>
+                    <td>Url</td>
+                    <td data-error-attr="Url">@Model.Url</td>
+                </tr>
+            }
             if (Model.UserAgent.IsNotNullOrEmpty())
-             {
-                 <dt>User Agent</dt>
-                 <dd data-error-attr="UserAgent">@Model.UserAgent</dd>
-             }
+            {
+                <tr>
+                    <td>User Agent</td>
+                    <td data-error-attr="UserAgent">@Model.UserAgent</td>
+                </tr>
+            }
         }
         
         @if (Model.Info.ExtraData != null)
         {
             foreach (var kvp in Model.Info.ExtraData)
             {
-                <dt>@kvp.Key.Replace("_", ".")</dt>
-                <dd>@(kvp.Value ?? "-")</dd>
+                <tr>
+                    <td class="nobreak">@kvp.Key.Replace("_", ".")</td>
+                    <td>@kvp.Value</td>
+                </tr>
             }
         }
-    </dl>
+    </table>
 </div>
-<div class="error-stack">
-<pre><span class="st-type" data-error-attr="Type">@Model.Info.Type</span>: <span data-error-attr="Message" class="st-message">@Model.Info.Message</span><div data-error-attr="StackTrace">@Model.Info.StackTrace</div></pre>
+<div class="stacktrace">
+    <pre><span class="st-type" data-error-attr="Type">@Model.Info.Type</span>: <span data-error-attr="Message" class="st-message">@Model.Info.Message</span><div data-error-attr="StackTrace">@Model.Info.StackTrace</div></pre>
 </div> 

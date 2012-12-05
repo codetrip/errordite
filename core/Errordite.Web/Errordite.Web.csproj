@@ -27,6 +27,10 @@
     <IISExpressUseClassicPipelineMode />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <SccProjectName>&lt;Project Location In Database&gt;</SccProjectName>
+    <SccLocalPath>&lt;Local Binding Root of Project&gt;</SccLocalPath>
+    <SccAuxPath>&lt;Source Control Database&gt;</SccAuxPath>
+    <SccProvider>Mercurial Source Control Package</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -90,11 +94,13 @@
     <Reference Include="ProductionProfiler.Persistence.Raven">
       <HintPath>..\..\lib\Profiler\ProductionProfiler.Persistence.Raven.dll</HintPath>
     </Reference>
-    <Reference Include="Raven.Abstractions">
-      <HintPath>..\packages\RavenDB.Client.2.0.2159-Unstable\lib\net40\Raven.Abstractions.dll</HintPath>
+    <Reference Include="Raven.Abstractions, Version=1.2.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\RavenDB.Client.2.0.2161-Unstable\lib\net40\Raven.Abstractions.dll</HintPath>
     </Reference>
-    <Reference Include="Raven.Client.Lightweight">
-      <HintPath>..\packages\RavenDB.Client.2.0.2159-Unstable\lib\net40\Raven.Client.Lightweight.dll</HintPath>
+    <Reference Include="Raven.Client.Lightweight, Version=1.2.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\RavenDB.Client.2.0.2161-Unstable\lib\net40\Raven.Client.Lightweight.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Net.Http, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -175,11 +181,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Admin.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\Alerts.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Alerts.resx</DependentUpon>
-    </Compile>
     <Compile Include="App_GlobalResources\Application.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -244,9 +245,7 @@
     <Compile Include="Areas\System\Controllers\SystemController.cs" />
     <Compile Include="Areas\System\Models\Organisations\SuspendOrganisationViewModel.cs" />
     <Compile Include="ActionFilters\GenerateBreadcrumbs.cs" />
-    <Compile Include="Controllers\AlertsController.cs" />
     <Compile Include="Controllers\ApplicationsController.cs" />
-    <Compile Include="Controllers\AuditController.cs" />
     <Compile Include="Areas\System\Controllers\CacheController.cs" />
     <Compile Include="Areas\System\Controllers\OrganisationsController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
@@ -324,148 +323,129 @@
     <Content Include="Assets\Css\errordite.css">
       <DependentUpon>errordite.scss</DependentUpon>
     </Content>
-    <Content Include="Assets\Css\main.css" />
-    <Content Include="Assets\Css\normalize.css" />
-    <Content Include="Assets\Js\lib\jquery-1.8.2.min.js" />
-    <Content Include="Assets\Js\lib\modernizr-2.6.2.min.js" />
-    <Content Include="Assets\Js\main.js" />
-    <Content Include="Assets\Js\plugins.js" />
-    <Content Include="Css\bootstrap-responsive.min.css" />
-    <Content Include="Css\bootstrap.min.css" />
-    <Content Include="Css\errordite.css" />
-    <Content Include="Css\ie.css" />
-    <Content Include="Css\img\1px-D8D8D8.gif" />
-    <Content Include="Css\img\ajax-loader.gif" />
-    <Content Include="Css\img\buttons\button_blue.png" />
-    <Content Include="Css\img\buttons\button_green.png" />
-    <Content Include="Css\img\buttons\button_grey.png" />
-    <Content Include="Css\img\buttons\button_navy.png" />
-    <Content Include="Css\img\buttons\button_orange.png" />
-    <Content Include="Css\img\buttons\button_purple.png" />
-    <Content Include="Css\img\buttons\button_red.png" />
-    <Content Include="Css\img\buttons\button_teal.png" />
-    <Content Include="Css\img\buttons\button_white.png" />
-    <Content Include="Css\img\dotted_border.png" />
-    <Content Include="Css\img\filter.png" />
-    <Content Include="Css\img\glyphicons-halflings-white.png" />
-    <Content Include="Css\img\glyphicons-halflings.png" />
-    <Content Include="Css\img\jquery\ui-bg_flat_30_cccccc_40x100.png" />
-    <Content Include="Css\img\jquery\ui-bg_flat_50_5c5c5c_40x100.png" />
-    <Content Include="Css\img\jquery\ui-bg_glass_20_555555_1x400.png" />
-    <Content Include="Css\img\jquery\ui-bg_glass_40_0078a3_1x400.png" />
-    <Content Include="Css\img\jquery\ui-bg_glass_40_ffc73d_1x400.png" />
-    <Content Include="Css\img\jquery\ui-bg_gloss-wave_25_333333_500x100.png" />
-    <Content Include="Css\img\jquery\ui-bg_highlight-soft_80_eeeeee_1x100.png" />
-    <Content Include="Css\img\jquery\ui-bg_inset-soft_25_000000_1x100.png" />
-    <Content Include="Css\img\jquery\ui-bg_inset-soft_30_f58400_1x100.png" />
-    <Content Include="Css\img\jquery\ui-icons_222222_256x240.png" />
-    <Content Include="Css\img\jquery\ui-icons_4b8e0b_256x240.png" />
-    <Content Include="Css\img\jquery\ui-icons_a83300_256x240.png" />
-    <Content Include="Css\img\jquery\ui-icons_cccccc_256x240.png" />
-    <Content Include="Css\img\jquery\ui-icons_ffffff_256x240.png" />
-    <Content Include="Css\img\menu\menu-arrow.png" />
-    <Content Include="Css\img\minus-grey.png" />
-    <Content Include="Css\img\minus.png" />
-    <Content Include="Css\img\plus-grey.png" />
-    <Content Include="Css\img\plus.png" />
-    <Content Include="Css\img\toggle\toggle-closed.png" />
-    <Content Include="Css\img\toggle\toggle-open.png" />
-    <Content Include="Css\jquery-ui-1.8.21.custom.css" />
-    <Content Include="Css\jquery.jqplot.css" />
-    <Content Include="Css\prettify.css" />
-    <Content Include="Css\ui.daterangepicker.css" />
-    <Content Include="favicon.ico" />
-    <Content Include="Global.asax" />
-    <Content Include="Images\alerts.jpg" />
-    <Content Include="Images\assign.jpg" />
-    <Content Include="Images\config.jpg" />
-    <Content Include="Images\rules.jpg" />
-    <Content Include="Images\solve.jpg" />
-    <Content Include="Images\UI\ajax-loader.gif" />
-    <Content Include="Images\UI\applications.png" />
-    <Content Include="Images\UI\client-config-section.png" />
-    <Content Include="Images\UI\client-config.png" />
-    <Content Include="Images\UI\config.png" />
-    <Content Include="Images\UI\data-collectors.png" />
-    <Content Include="Images\UI\email.png" />
-    <Content Include="Images\UI\error-notification.png" />
-    <Content Include="Images\UI\godaddy-ssl.png" />
-    <Content Include="Images\UI\header-logo.png" />
-    <Content Include="Images\UI\hipchat.png" />
-    <Content Include="Images\UI\history.png" />
-    <Content Include="Images\UI\json.gif" />
-    <Content Include="Images\UI\lucene.png" />
-    <Content Include="Images\UI\microsoft.net.png" />
-    <Content Include="Images\UI\mvc-global-filters.png" />
-    <Content Include="Images\UI\mvc2-handleerror.png" />
-    <Content Include="Images\UI\nServiceBus.png" />
-    <Content Include="Images\UI\report-error.png" />
-    <Content Include="Images\UI\reports.png" />
-    <Content Include="Images\UI\rules.png" />
-    <Content Include="Images\UI\sanitise.png" />
-    <Content Include="Images\UI\users.png" />
-    <Content Include="Images\UI\webforms-errorhandler.png" />
-    <Content Include="Js\009.jquery.history.js" />
-    <Content Include="Js\010.jquery.cookie.js" />
-    <Content Include="Js\011.jquery.dropdownchecklist.js" />
-    <Content Include="Js\020.bootstrap.min.js" />
-    <Content Include="Js\024.jquery.loader.js" />
-    <Content Include="Js\030.knockout-2.0.0.js" />
-    <Content Include="Js\050.underscore.js" />
-    <Content Include="Js\060.global.js">
-      <DependentUpon>060.global.coffee</DependentUpon>
+    <Content Include="Assets\Css\errordite.scss">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <CompileStyle>Nested</CompileStyle>
+      <DebugInfo>False</DebugInfo>
     </Content>
-    <Content Include="Js\alerts.js">
-      <DependentUpon>alerts.coffee</DependentUpon>
+    <Content Include="Assets\Css\img\ajax-loader.gif" />
+    <Content Include="Assets\Css\lib\fonts.css" />
+    <Content Include="Assets\Css\img\glyphicons-halflings.png" />
+    <Content Include="Assets\Css\img\icons.png" />
+    <Content Include="Assets\Css\img\info.png" />
+    <Content Include="Assets\Css\img\link.png" />
+    <Content Include="Assets\Css\img\key.png" />
+    <Content Include="Assets\Css\img\minus.png" />
+    <Content Include="Assets\Css\img\plus.png" />
+    <Content Include="Assets\Css\img\signin.png" />
+    <Content Include="Assets\Css\lib\daterangepicker.css" />
+    <Content Include="Assets\Css\lib\html5-boilerplate.css">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
     </Content>
-    <Content Include="Js\applications.js">
+    <Content Include="Assets\Css\lib\jquery.jqplot.css" />
+    <Content Include="Assets\Css\lib\prettify.css">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Assets\Css\lib\normalize.css">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Assets\Images\check.png" />
+    <Content Include="Assets\Images\counter.png" />
+    <Content Include="Assets\Images\errordite.png" />
+    <Content Include="Assets\Images\header-logo.png" />
+    <Content Include="Assets\Images\people.png" />
+    <Content Include="Assets\Images\settings.png" />
+    <Content Include="Assets\Images\waiterrors.png" />
+    <Content Include="Assets\Js\applications.js">
       <DependentUpon>applications.coffee</DependentUpon>
     </Content>
-    <Content Include="Js\errors.js">
+    <Content Include="Assets\Js\dashboard.js">
+      <DependentUpon>dashboard.coffee</DependentUpon>
+    </Content>
+    <Content Include="Assets\Js\errors.js">
       <DependentUpon>errors.coffee</DependentUpon>
     </Content>
-    <Content Include="Js\issue.js">
+    <Content Include="Assets\Js\global.js">
+      <DependentUpon>global.coffee</DependentUpon>
+    </Content>
+    <Content Include="Assets\Js\groups.js">
+      <DependentUpon>groups.coffee</DependentUpon>
+    </Content>
+    <Content Include="Assets\Js\issue.js">
       <DependentUpon>issue.coffee</DependentUpon>
     </Content>
-    <Content Include="Js\issues.js">
+    <Content Include="Assets\Js\issues.js">
       <DependentUpon>issues.coffee</DependentUpon>
     </Content>
-    <Content Include="Js\005.jquery.placeholder.js" />
-    <Content Include="Js\007.jquery.datepicker.js" />
-    <Content Include="Js\008.jquery.form.js" />
-    <Content Include="Js\006.jquery-ui-1.8.18.custom.min.js" />
-    <Content Include="Js\001.jquery-1.7.2.js" />
-    <Content Include="Js\003.jquery.unobtrusive-ajax.js" />
-    <Content Include="Js\002.jquery.validate.js" />
-    <Content Include="Js\004.jquery.validate.unobtrusive.js" />
-    <Content Include="Js\jqplot\jqplot.barRenderer.min.js" />
-    <Content Include="Js\jqplot\jqplot.categoryAxisRenderer.min.js" />
-    <Content Include="Js\jqplot\jqplot.dateAxisRenderer.min.js" />
-    <Content Include="Js\jqplot\jqplot.highlighter.min.js" />
-    <Content Include="Js\jqplot\jqplot.min.js" />
-    <Content Include="Js\dashboard.js">
-      <DependentUpon>dashboard.coffee</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
+    <Content Include="Assets\Js\lib\bootstrap.js" />
+    <Content Include="Assets\Js\lib\date.js" />
+    <Content Include="Assets\Js\lib\daterangepicker.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.barRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.BezierCurveRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.blockRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.bubbleRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.canvasAxisLabelRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.canvasAxisTickRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.canvasOverlay.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.canvasTextRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.categoryAxisRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.ciParser.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.cursor.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.dateAxisRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.donutRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.dragable.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.enhancedLegendRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.funnelRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.highlighter.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.json2.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.logAxisRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.mekkoAxisRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.mekkoRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.meterGaugeRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.min.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.mobile.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.ohlcRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.pieRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.pointLabels.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.pyramidAxisRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.pyramidGridRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.pyramidRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.trendline.js" />
+    <Content Include="Assets\Js\lib\jqplot\jquery.jqplot.js" />
+    <Content Include="Assets\Js\lib\jquery-1.8.3.js" />
+    <Content Include="Assets\Js\lib\jquery.validate.js" />
+    <Content Include="Assets\Js\lib\jquery.unobtrusive-ajax.js" />
+    <Content Include="Assets\Js\lib\jquery.validate.unobtrusive.js" />
+    <Content Include="Assets\Js\lib\jquery.placeholder.js" />
+    <Content Include="Assets\Js\lib\jquery.form.js" />
+    <Content Include="Assets\Js\lib\jquery.history.js" />
+    <Content Include="Assets\Js\lib\jquery.cookie.js" />
+    <Content Include="Assets\Js\lib\jquery.loader.js" />
+    <Content Include="Assets\Js\lib\knockout-2.0.0.js" />
+    <Content Include="Assets\Js\lib\prettify.js" />
+    <Content Include="Assets\Js\lib\underscore.js" />
+    <Content Include="Assets\Js\lib\modernizr-2.6.2.min.js">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
     </Content>
-    <Content Include="Js\groups.js">
-      <DependentUpon>groups.coffee</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Content>
-    <Content Include="Js\admin\organisations.js">
+    <Content Include="Assets\Js\organisations.js">
       <DependentUpon>organisations.coffee</DependentUpon>
     </Content>
-    <Content Include="Js\prettify.js" />
-    <Content Include="Js\rules.js">
+    <Content Include="Assets\Js\rules.js">
       <DependentUpon>rules.coffee</DependentUpon>
     </Content>
-    <Content Include="Js\users.js">
-      <DependentUpon>users.coffee</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
+    <Content Include="Assets\Js\systemadmin.js">
+      <DependentUpon>systemadmin.coffee</DependentUpon>
     </Content>
-    <Content Include="Js\common.js" />
+    <Content Include="Assets\Js\users.js">
+      <DependentUpon>users.coffee</DependentUpon>
+    </Content>
+    <Content Include="favicon.ico" />
+    <Content Include="Global.asax" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -545,11 +525,6 @@
     <Content Include="Views\Applications\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Js\applications.coffee">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Users\Add.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -563,13 +538,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Applications\Edit.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Js\users.coffee">
-      <Generator>CoffeeScriptGenerator</Generator>
-      <LastGenOutput>users.js</LastGenOutput>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\Errordite.Build\Configuration\log4net.config">
@@ -592,11 +560,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Js\issue.coffee">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Shared\Errors\ErrorCriteria.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -607,13 +570,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Groups\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Js\groups.coffee">
-      <Generator>CoffeeScriptGenerator</Generator>
-      <LastGenOutput>groups.js</LastGenOutput>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\Errordite.Build\Configuration\cache.config">
@@ -700,15 +656,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\Master.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shared\Js.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shared\Header.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Issue\NotFound.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -716,13 +663,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\Errors\ErrorItems.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Js\dashboard.coffee">
-      <Generator>CoffeeScriptGenerator</Generator>
-      <LastGenOutput>dashboard.js</LastGenOutput>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\Dashboard\Statistics.cshtml" />
@@ -747,9 +687,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\Issues\Issues.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Audit\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_GlobalResources\Audit.resx">
@@ -779,33 +716,86 @@
     <Content Include="Views\Issues\Merge.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\Css.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Issue\Reports.cshtml" />
     <Content Include="Areas\System\Views\Web.config" />
     <Content Include="Areas\System\Views\_ViewStart.cshtml" />
     <Content Include="Areas\System\Views\Shared\Organisations\SuspendModal.cshtml" />
     <Content Include="Areas\System\Views\Organisations\Applications.cshtml" />
-    <Content Include="Assets\Css\errordite.scss" />
-    <None Include="Js\060.global.coffee" />
-    <None Include="Js\alerts.coffee" />
-    <None Include="Js\errors.coffee" />
-    <None Include="Js\issues.coffee" />
+    <Content Include="Assets\Fonts\normal-300.woff" />
+    <Content Include="Assets\Fonts\normal-400.woff" />
+    <Content Include="Assets\Fonts\normal-600.woff" />
+    <Content Include="Assets\Fonts\normal-700.woff" />
+    <Content Include="Assets\Js\applications.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>False</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Assets\Js\dashboard.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>False</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Assets\Js\errors.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>False</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Assets\Js\groups.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>False</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Assets\Js\issue.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>False</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Assets\Js\issues.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>False</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Assets\Js\rules.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>False</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Assets\Js\users.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>False</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Assets\Js\organisations.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>False</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Assets\Js\global.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>False</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Assets\Fonts\normal-800.woff" />
+    <Content Include="Assets\icons.xcf" />
     <Content Include="Views\Issue\RuleUpdates.cshtml" />
-    <None Include="Js\admin\organisations.coffee" />
-    <None Include="Js\rules.coffee" />
     <Content Include="Views\Shared\Dashboard\RecentIssues.cshtml" />
     <Content Include="Views\Help\Features.cshtml" />
     <Content Include="Views\Shared\Dashboard\RecentErrors.cshtml" />
-    <Content Include="Views\Shared\Footer.cshtml" />
     <Content Include="Areas\System\Views\Cache\Item.cshtml" />
     <Content Include="Views\Shared\NotAuthorised.cshtml" />
     <Content Include="Views\Shared\NotFound.cshtml" />
     <Content Include="Views\Admin\Upgrade.cshtml" />
     <Content Include="Views\Shared\Help\PaymentPlan.cshtml" />
-    <Content Include="Views\Help\Privacy.cshtml" />
-    <Content Include="Views\Help\TermsAndConditions.cshtml" />
     <Content Include="Views\Admin\Billing.cshtml" />
     <Content Include="Views\Admin\Downgrade.cshtml" />
     <Content Include="Views\EmailTest\List.cshtml" />
@@ -817,28 +807,33 @@
     <Content Include="Areas\System\Views\Organisations\Index.cshtml" />
     <Content Include="Areas\System\Views\Impersonation\Index.cshtml" />
     <Content Include="Views\Shared\Applications\List.cshtml" />
-    <Content Include="Views\Shared\Breadcrumb.cshtml" />
     <Content Include="Views\Issue\History.cshtml" />
     <Content Include="Views\Shared\Errors\TraceMessages.cshtml" />
     <Content Include="Views\Help\SendErrorWithJson.cshtml" />
-    <Content Include="Views\Shared\HowItWorksPartial.cshtml" />
     <Content Include="packages.config" />
-    <Content Include="Views\Shared\Master2.0.cshtml" />
+    <Content Include="Views\Shared\Master.cshtml" />
     <Content Include="Views\Shared\HeaderAssets.cshtml" />
     <Content Include="Views\Shared\FooterAssets.cshtml" />
-    <Content Include="Views\Home\New.cshtml" />
+    <Content Include="Views\Shared\Header.cshtml" />
+    <Content Include="Views\Help\Privacy.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_GlobalResources\Alerts.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>Alerts.Designer.cs</LastGenOutput>
+    <Content Include="Views\Shared\Breadcrumbs.cshtml">
+      <SubType>Code</SubType>
     </Content>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Content Include="App_GlobalResources\Admin.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>Admin.Designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\Js\systemadmin.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>False</Bare>
+      <Iced>False</Iced>
     </Content>
   </ItemGroup>
   <PropertyGroup>

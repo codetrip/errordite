@@ -1,19 +1,10 @@
-﻿@using Errordite.Web.Models.Administration
-@model ErrorditeErrorsViewModel
+﻿
+@model Errordite.Web.Areas.System.Models.System.ErrorditeErrorsViewModel
 
 @{
     ViewBag.Title = "Errors";
 }
 
-@section contentHeader
-{
-    <div id="pagetitle">
-        <h1><i class="icon-arrow-right"></i>Errordite Errors</h1>
-    </div>
-    
-    <div class="border"></div>
-}
-
-<div class="colfull" id="errordite-errors">
+<section class="centered" id="errordite-errors">
     @Html.Partial("System/Errors", Model)
-</div>  
+</section>  

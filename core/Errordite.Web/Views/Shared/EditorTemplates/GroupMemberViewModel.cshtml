@@ -2,7 +2,7 @@
 @using Errordite.Web.Models.Groups
 @model GroupMemberViewModel
 
-<li class="cbox">
+<li>
     @Html.HiddenFor(m => m.Id)
     @Html.CheckBoxFor(m => m.Selected) <span>@Html.LabelFor(m => m.Selected, Model.Name)</span>
 </li>

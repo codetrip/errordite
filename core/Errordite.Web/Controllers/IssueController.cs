@@ -181,11 +181,23 @@ namespace Errordite.Web.Controllers
                 OrganisationId = Core.AppContext.CurrentUser.OrganisationId,
                 IssueId = postModel.IssueId,
                 Paging = paging,
-                StartDate = postModel.StartDate,
-                EndDate = postModel.EndDate,
                 Query = postModel.Query, 
                 UserTimezoneId = AppContext.CurrentUser.EffectiveTimezoneId(),
-            };
+            }; 
+            
+            if (postModel.DateRange.IsNotNullOrEmpty())
+            {
+                string[] dates = postModel.DateRange.Split('|');
+
+                DateTime startDate;
+                DateTime endDate;
+
+                if (DateTime.TryParse(dates[0], out startDate) && DateTime.TryParse(dates[1], out endDate))
+                {
+                    request.StartDate = startDate;
+                    request.EndDate = endDate.AddDays(1).AddMinutes(-1);
+                }
+            }
 
             var errors = _getApplicationErrorsQuery.Invoke(request).Errors;
 
@@ -193,8 +205,7 @@ namespace Errordite.Web.Controllers
             {
                 Action = "errors",
                 Controller = "issue",
-                StartDate = postModel.StartDate,
-                EndDate = postModel.EndDate,
+                DateRange = postModel.DateRange,
                 Paging = _pagingViewModelGenerator.Generate(PagingConstants.DefaultPagingId, errors.PagingStatus, paging),
                 Errors = errors.Items.Select(e => new ErrorInstanceViewModel { Error = e, HideIssues = true }).ToList(),
                 ApplicationId = postModel.ApplicationId,
@@ -334,9 +345,6 @@ namespace Errordite.Web.Controllers
 
         private string GetMessage(IssueHistory h, LocalMemoizer<string, User> userMemoizer, LocalMemoizer<string, Issue> issueMemoizer, Issue issue)
         {
-            if (h.Message != null)
-                return "LEGACY MESSAGE: " + h.Message;
-
             var user = h.UserId.IfPoss(id => userMemoizer.Get(h.UserId));
 
             switch (h.Type)
@@ -346,22 +354,19 @@ namespace Errordite.Web.Controllers
                         user.IfPoss(u => u.FullName),
                         user.IfPoss(u => u.FirstName));
                 case HistoryItemType.ManuallyCreated:
-                    return CoreResources.HistoryIssueCreatedBy.FormatWith(user.IfPoss(u => u.FullName),
-                                                                          user.IfPoss(u => u.FirstName));
+                    return CoreResources.HistoryIssueCreatedBy.FormatWith(user.IfPoss(u => u.FullName), user.IfPoss(u => u.FirstName));
                 case HistoryItemType.BatchStatusUpdate:
-                    return "{0}{1}{2}".FormatWith(CoreResources.HistoryIssueStatusUpdated.FormatWith(h.PreviousStatus, h.NewStatus, user.IfPoss(u => u.FullName), user.IfPoss(u => u.Email),
-                            h.AssignedToUserId == null ? "" : "{0}Assigned to {1} ({2})".FormatWith(
+                    return "{0}{1}{2}".FormatWith(
+                        CoreResources.HistoryIssueStatusUpdated.FormatWith(h.PreviousStatus, h.NewStatus, user.IfPoss(u => u.FullName), user.IfPoss(u => u.Email)),
+                        h.AssignedToUserId == null ? "" : "{0}Assigned to {1} ({2})".FormatWith(
                                 Environment.NewLine,
                                 userMemoizer.Get(h.AssignedToUserId).IfPoss(u => u.FullName),
                                 userMemoizer.Get(h.AssignedToUserId).IfPoss(u => u.Email)),
-                            h.Comment == null ? "" : Environment.NewLine + h.Comment));
+                        h.Comment == null ? "" : Environment.NewLine + h.Comment);
                 case HistoryItemType.MergedTo:
-                    return CoreResources.HIstoryIssueMerged.FormatWith(IdHelper.GetFriendlyId(h.SpawningIssueId),
-                                                            issueMemoizer.Get(h.SpawningIssueId).IfPoss(
-                                                                i => i.Name, "DELETED"));
+                    return CoreResources.HistoryIssueMerged.FormatWith(IdHelper.GetFriendlyId(h.SpawningIssueId), issueMemoizer.Get(h.SpawningIssueId).IfPoss(i => i.Name, "DELETED"));
                 case HistoryItemType.ErrorsPurged:
-                    return CoreResources.HistoryIssuePurged.FormatWith(user.IfPoss(u => u.FullName),
-                                                                       user.IfPoss(u => u.Email));
+                    return CoreResources.HistoryIssuePurged.FormatWith(user.IfPoss(u => u.FullName), user.IfPoss(u => u.Email));
                 case HistoryItemType.ErrorsReprocessed:
                     return CoreResources.HistoryIssueErrorsReceivedAgain.FormatWith(
                         user.IfPoss(u => u.FullName),
@@ -371,11 +376,9 @@ namespace Errordite.Web.Controllers
                 case HistoryItemType.DetailsUpdated:
                     return h.Comment; //TODO - record more - like, what got updated
                 case HistoryItemType.RulesAdjustedCreatedNewIssue:
-                    return CoreResources.HistoryRulesAdjusted.FormatWith(user.IfPoss(u => u.FullName),
-                                                                         user.IfPoss(u => u.Email), h.SpawnedIssueId);
+                    return CoreResources.HistoryRulesAdjusted.FormatWith(user.IfPoss(u => u.FullName), user.IfPoss(u => u.Email), h.SpawnedIssueId);
                 default:
                     return h.Type + " " + h.Comment;
-
             }
         }
 

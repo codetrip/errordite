@@ -88,25 +88,27 @@ namespace Errordite.Core.Reception.Commands
 
         private Application GetApplication(ReceiveErrorRequest request)
         {
-            Application application;
+            GetApplicationResponse getApplicationResponse;
+
             if (request.ApplicationId.IsNullOrEmpty())
             {
-                application = _getApplicationByTokenQuery.Invoke(new GetApplicationByTokenRequest
+                getApplicationResponse = _getApplicationByTokenQuery.Invoke(new GetApplicationByTokenRequest
                 {
                     Token = request.Token,
                     CurrentUser = User.System()
-                }).Application;
+                });
             }
             else
             {
-                application = _getApplicationQuery.Invoke(new GetApplicationRequest
+                getApplicationResponse = _getApplicationQuery.Invoke(new GetApplicationRequest
                 {
                     Id = request.Error.ApplicationId,
                     OrganisationId = request.Error.OrganisationId,
                     CurrentUser = User.System()
-                }).Application;
-                
+                });
             }
+
+            var application = getApplicationResponse.Application;
 
             //dont process if we cant find the application or if the application is inactive
             if (application == null || !application.IsActive)
@@ -114,6 +116,8 @@ namespace Errordite.Core.Reception.Commands
                 Trace("Failed to locate application {0}.", application == null ? "application is null" : "application is inactive");
                 return null;
             }
+
+            Session.SetOrganisation(getApplicationResponse.Organisation);
 
             request.Error.ApplicationId = application.Id;
             request.Error.OrganisationId = application.OrganisationId;
@@ -137,7 +141,8 @@ namespace Errordite.Core.Reception.Commands
             }
 
             issue.ErrorCount++;
-            issue.LastErrorUtc = DateTime.UtcNow;
+            if (error.TimestampUtc > issue.LastErrorUtc)
+                issue.LastErrorUtc = error.TimestampUtc;
 
             SetLimitStatus(application, issue);
 
@@ -151,13 +156,13 @@ namespace Errordite.Core.Reception.Commands
             //only store the error is it is a new error, not the result of reprocessing
             if (error.Id.IsNullOrEmpty())
             {
-                Trace("Its a new error, so Store it");
+                Trace("It's a new error, so Store it");
                 Store(error);
             }
 
             if (issue.RulesMatch(error))
             {
-                Trace("Error definately matches issue we are about to assign it to");
+                Trace("Error definitely matches issue we are about to assign it to");
             }
             else
             {

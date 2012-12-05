@@ -1,4 +1,5 @@
 ﻿@using Errordite.Web.Extensions
+@using CodeTrip.Core.Extensions
 @using Errordite.Web.Models.Errors
 @model ErrorCriteriaViewModel
 
@@ -14,29 +15,30 @@
         @Html.Hidden("tab", "errors")
     }  
 
-    <div class="filters errorditeform">
-        <div class="text">
-            @Html.TextBoxFor(m => m.Query, new { autocomplete = "off", placeholder = "Search your errors" })
-        </div>
-
-        @if (Model.Controller != "issue")
-        {
-            <div class="dropdown-normal">
-                @Html.DropDownListFor(m => m.ApplicationId, Model.Applications)
-            </div>
-        }
-        
-        <div class="date">
-            @Html.TextBoxFor(m => m.StartDate, new { autocomplete = "off", placeholder = "Start Date", @class = "daterangepicker" })
-        </div>
-        <div class="date">
-            @Html.TextBoxFor(m => m.EndDate, new { autocomplete = "off", placeholder = "End Date", @class = "daterangepicker" })
-        </div>
-        <div class="buttons">
-            <input type="submit" class="btn btn-success" value="Apply" />
-            <a class="btn" href="@Url.ClearErrors(Model.ApplicationId, Model.IssueId)">Clear</a>
-        </div>
-       
+    <div class="form form-inline criteria">
+        <ul>
+            <li>
+                @Html.TextBoxFor(m => m.Query, new { autocomplete = "off", placeholder = "Search your errors"})
+            </li>
+            @if (Model.Controller != "issue")
+            {
+                <li>
+                    @Html.DropDownListFor(m => m.ApplicationId, Model.Applications)
+                </li>
+            } 
+            <li>
+                 <div id="daterange" class="daterange" style="width:410px">
+                    @Html.HiddenFor(m => m.DateRange)
+                    <i class="icon-calendar"></i>
+                    <span>@(Model.DateRange.IsNullOrEmpty() ? "Select date range" : Model.DateRange)</span>
+                    <b class="caret"></b>
+                </div>
+            </li>
+            <li>
+                <input type="submit" class="btn btn-small btn-blue" value="Apply" />
+                <a class="btn btn-small btn-lightblue" href="@Url.ClearErrors(Model.ApplicationId, Model.IssueId)">Clear</a>
+            </li>
+        </ul>
     </div>
 }
 

@@ -5,16 +5,7 @@
     ViewBag.Title = "Organisation Users";
 }
 
-@section contentHeader
-{
-    <div id="pagetitle">
-        <h1><i class="icon-arrow-right"></i>Organisation Users</h1>
-    </div>
-    
-    <div class="border"></div>
-}
-
-<div id="users" class="colfull">
+<section id="users" class="centered">
 
     @if (Model.Users != null && Model.Users.Any())
     {
@@ -26,4 +17,4 @@
             <p>No users were found.</p>   
         </div> 
     }
-</div>
+</section>

@@ -36,12 +36,14 @@ namespace Errordite.Core.Errors.Queries
 
             if (request.StartDate.HasValue)
             {
-                query = query.Where(e => e.TimestampUtc >= TimeZoneInfo.ConvertTimeBySystemTimeZoneId(request.StartDate.Value, request.UserTimezoneId, "UTC"));
+                var startDate = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(request.StartDate.Value.ToUniversalTime(), request.UserTimezoneId, "UTC");
+                query = query.Where(e => e.TimestampUtc >= startDate);
             }
 
             if (request.EndDate.HasValue)
             {
-                query = query.Where(e => e.TimestampUtc < TimeZoneInfo.ConvertTimeBySystemTimeZoneId(request.EndDate.Value.RangeEnd(), request.UserTimezoneId, "UTC"));
+                var endDate = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(request.EndDate.Value.ToUniversalTime().RangeEnd(), request.UserTimezoneId, "UTC");
+                query = query.Where(e => e.TimestampUtc < endDate);
             }
 
             if (request.Classified.HasValue)

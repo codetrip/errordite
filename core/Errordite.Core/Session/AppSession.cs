@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition.Hosting;
-using System.ComponentModel.Composition.Primitives;
 using System.Net.Http;
 using CodeTrip.Core.Auditing.Entities;
-using CodeTrip.Core.IoC;
 using CodeTrip.Core.Redis;
 using Errordite.Core.Configuration;
 using Errordite.Core.Domain;
@@ -287,7 +285,7 @@ namespace Errordite.Core.Session
         private void SetDbId(Organisation organisation)
         {
             _organisationDatabaseId = IdHelper.GetFriendlyId(organisation.OrganisationId);
-            _auditor.Trace(GetType(), "Set orgalisation id to {0}", _organisationDatabaseId);
+            _auditor.Trace(GetType(), "Set organisation id to {0}", _organisationDatabaseId);
         }
 
         public void BootstrapOrganisation(Organisation organisation)

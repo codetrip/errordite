@@ -33,7 +33,7 @@ _[Rr]e[Ss]harper*
 Data\Indexes
 Data\IndexDefinitions
 glob:.fsLockFile
-glob:FixUpReport.txts
+glob:FixUpReport.txt
 glob:ProtectedData.xml
 Redis\conf\**
 Redis\data\**
@@ -52,3 +52,5 @@ core\Errordite.Raven\Logs\**
 core\packages\**
 lib\nuget\**
 utils/packages
+core/Errordite.Web/Assets/Js/1.0.1.0.js
+core/Errordite.Web/Assets/Css/1.0.1.0.css
