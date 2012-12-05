@@ -20,11 +20,9 @@
               Exclude="$(SourcePath)\core\Errordite.Web\**\*.cs;
                  $(SourcePath)\core\Errordite.Web\**\*.csproj*;
                  $(SourcePath)\core\Errordite.Web\packages.config;
-                 $(SourcePath)\core\Errordite.Web\Js\*.coffee;
-                 $(SourcePath)\core\Errordite.Web\Js\$(BaseBuildNumber).min.js;
-                 $(SourcePath)\core\Errordite.Web\Js\*.coffee;
-                 $(SourcePath)\core\Errordite.Web\Css\$(BaseBuildNumber).min.css;
-                 $(SourcePath)\core\Errordite.Web\bin\Js\**;
+                 $(SourcePath)\core\Errordite.Web\Assets\Js\*.coffee;
+                 $(SourcePath)\core\Errordite.Web\Assets\Js\$(BaseBuildNumber).js;
+                 $(SourcePath)\core\Errordite.Web\Assets\Css\$(BaseBuildNumber).css;
                  $(SourcePath)\core\Errordite.Web\Config\**;
                  $(SourcePath)\core\Errordite.Web\obj\**;">
             </WebDeploymentFiles>
@@ -63,7 +61,7 @@
             </ScheduledTasksDeploymentFiles>
         </ItemGroup>
 
-        <Copy SourceFiles="@(ScheduledTasksDeploymentFiles)" DestinationFolder="$(OutputPath)\Errordite.ScxheduledTasks\%(RecursiveDir)" />
+        <Copy SourceFiles="@(ScheduledTasksDeploymentFiles)" DestinationFolder="$(OutputPath)\Errordite.ScheduledTasks\%(RecursiveDir)" />
 
         <ItemGroup>
             <ReceptionServiceDeploymentFiles

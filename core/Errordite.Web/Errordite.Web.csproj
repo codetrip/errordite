@@ -181,11 +181,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Admin.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\Alerts.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Alerts.resx</DependentUpon>
-    </Compile>
     <Compile Include="App_GlobalResources\Application.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -325,11 +320,6 @@
     <Compile Include="WebConstants.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\Css\combined.css">
-      <Compile>True</Compile>
-      <Minify>False</Minify>
-      <IncludedFiles>Assets\Css\lib\normalize.css|Assets\Css\lib\html5-boilerplate.css|Assets\Css\lib\prettify.css|Assets\Css\lib\jquery.jqplot.css|Assets\Css\lib\daterangepicker.css|Assets\Css\fonts.css|Assets\Css\errordite.css</IncludedFiles>
-    </Content>
     <Content Include="Assets\Css\errordite.css">
       <DependentUpon>errordite.scss</DependentUpon>
     </Content>
@@ -339,21 +329,16 @@
       <CompileStyle>Nested</CompileStyle>
       <DebugInfo>False</DebugInfo>
     </Content>
-    <Content Include="Assets\Css\fonts.css" />
-    <Content Include="Assets\Css\img\check.png" />
-    <Content Include="Assets\Css\img\counter.png" />
-    <Content Include="Assets\Css\img\errordite.png" />
+    <Content Include="Assets\Css\img\ajax-loader.gif" />
+    <Content Include="Assets\Css\lib\fonts.css" />
     <Content Include="Assets\Css\img\glyphicons-halflings.png" />
     <Content Include="Assets\Css\img\icons.png" />
     <Content Include="Assets\Css\img\info.png" />
     <Content Include="Assets\Css\img\link.png" />
     <Content Include="Assets\Css\img\key.png" />
     <Content Include="Assets\Css\img\minus.png" />
-    <Content Include="Assets\Css\img\people.png" />
     <Content Include="Assets\Css\img\plus.png" />
-    <Content Include="Assets\Css\img\settings.png" />
     <Content Include="Assets\Css\img\signin.png" />
-    <Content Include="Assets\Css\img\waiterrors.png" />
     <Content Include="Assets\Css\lib\daterangepicker.css" />
     <Content Include="Assets\Css\lib\html5-boilerplate.css">
       <Compile>True</Compile>
@@ -368,6 +353,13 @@
       <Compile>True</Compile>
       <Minify>False</Minify>
     </Content>
+    <Content Include="Assets\Images\check.png" />
+    <Content Include="Assets\Images\counter.png" />
+    <Content Include="Assets\Images\errordite.png" />
+    <Content Include="Assets\Images\header-logo.png" />
+    <Content Include="Assets\Images\people.png" />
+    <Content Include="Assets\Images\settings.png" />
+    <Content Include="Assets\Images\waiterrors.png" />
     <Content Include="Assets\Js\applications.js">
       <DependentUpon>applications.coffee</DependentUpon>
     </Content>
@@ -390,71 +382,41 @@
       <DependentUpon>issues.coffee</DependentUpon>
     </Content>
     <Content Include="Assets\Js\lib\bootstrap.js" />
-    <Content Include="Assets\Js\lib\common.js" />
     <Content Include="Assets\Js\lib\date.js" />
     <Content Include="Assets\Js\lib\daterangepicker.js" />
     <Content Include="Assets\Js\lib\jqplot\jqplot.barRenderer.js" />
-    <Content Include="Assets\Js\lib\jqplot\jqplot.barRenderer.min.js" />
     <Content Include="Assets\Js\lib\jqplot\jqplot.BezierCurveRenderer.js" />
-    <Content Include="Assets\Js\lib\jqplot\jqplot.BezierCurveRenderer.min.js" />
     <Content Include="Assets\Js\lib\jqplot\jqplot.blockRenderer.js" />
-    <Content Include="Assets\Js\lib\jqplot\jqplot.blockRenderer.min.js" />
     <Content Include="Assets\Js\lib\jqplot\jqplot.bubbleRenderer.js" />
-    <Content Include="Assets\Js\lib\jqplot\jqplot.bubbleRenderer.min.js" />
     <Content Include="Assets\Js\lib\jqplot\jqplot.canvasAxisLabelRenderer.js" />
-    <Content Include="Assets\Js\lib\jqplot\jqplot.canvasAxisLabelRenderer.min.js" />
     <Content Include="Assets\Js\lib\jqplot\jqplot.canvasAxisTickRenderer.js" />
-    <Content Include="Assets\Js\lib\jqplot\jqplot.canvasAxisTickRenderer.min.js" />
     <Content Include="Assets\Js\lib\jqplot\jqplot.canvasOverlay.js" />
-    <Content Include="Assets\Js\lib\jqplot\jqplot.canvasOverlay.min.js" />
     <Content Include="Assets\Js\lib\jqplot\jqplot.canvasTextRenderer.js" />
-    <Content Include="Assets\Js\lib\jqplot\jqplot.canvasTextRenderer.min.js" />
     <Content Include="Assets\Js\lib\jqplot\jqplot.categoryAxisRenderer.js" />
-    <Content Include="Assets\Js\lib\jqplot\jqplot.categoryAxisRenderer.min.js" />
     <Content Include="Assets\Js\lib\jqplot\jqplot.ciParser.js" />
-    <Content Include="Assets\Js\lib\jqplot\jqplot.ciParser.min.js" />
     <Content Include="Assets\Js\lib\jqplot\jqplot.cursor.js" />
-    <Content Include="Assets\Js\lib\jqplot\jqplot.cursor.min.js" />
     <Content Include="Assets\Js\lib\jqplot\jqplot.dateAxisRenderer.js" />
-    <Content Include="Assets\Js\lib\jqplot\jqplot.dateAxisRenderer.min.js" />
     <Content Include="Assets\Js\lib\jqplot\jqplot.donutRenderer.js" />
-    <Content Include="Assets\Js\lib\jqplot\jqplot.donutRenderer.min.js" />
     <Content Include="Assets\Js\lib\jqplot\jqplot.dragable.js" />
-    <Content Include="Assets\Js\lib\jqplot\jqplot.dragable.min.js" />
     <Content Include="Assets\Js\lib\jqplot\jqplot.enhancedLegendRenderer.js" />
-    <Content Include="Assets\Js\lib\jqplot\jqplot.enhancedLegendRenderer.min.js" />
     <Content Include="Assets\Js\lib\jqplot\jqplot.funnelRenderer.js" />
-    <Content Include="Assets\Js\lib\jqplot\jqplot.funnelRenderer.min.js" />
     <Content Include="Assets\Js\lib\jqplot\jqplot.highlighter.js" />
-    <Content Include="Assets\Js\lib\jqplot\jqplot.highlighter.min.js" />
     <Content Include="Assets\Js\lib\jqplot\jqplot.json2.js" />
-    <Content Include="Assets\Js\lib\jqplot\jqplot.json2.min.js" />
     <Content Include="Assets\Js\lib\jqplot\jqplot.logAxisRenderer.js" />
-    <Content Include="Assets\Js\lib\jqplot\jqplot.logAxisRenderer.min.js" />
     <Content Include="Assets\Js\lib\jqplot\jqplot.mekkoAxisRenderer.js" />
-    <Content Include="Assets\Js\lib\jqplot\jqplot.mekkoAxisRenderer.min.js" />
     <Content Include="Assets\Js\lib\jqplot\jqplot.mekkoRenderer.js" />
-    <Content Include="Assets\Js\lib\jqplot\jqplot.mekkoRenderer.min.js" />
     <Content Include="Assets\Js\lib\jqplot\jqplot.meterGaugeRenderer.js" />
-    <Content Include="Assets\Js\lib\jqplot\jqplot.meterGaugeRenderer.min.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.min.js" />
     <Content Include="Assets\Js\lib\jqplot\jqplot.mobile.js" />
-    <Content Include="Assets\Js\lib\jqplot\jqplot.mobile.min.js" />
     <Content Include="Assets\Js\lib\jqplot\jqplot.ohlcRenderer.js" />
-    <Content Include="Assets\Js\lib\jqplot\jqplot.ohlcRenderer.min.js" />
     <Content Include="Assets\Js\lib\jqplot\jqplot.pieRenderer.js" />
-    <Content Include="Assets\Js\lib\jqplot\jqplot.pieRenderer.min.js" />
     <Content Include="Assets\Js\lib\jqplot\jqplot.pointLabels.js" />
-    <Content Include="Assets\Js\lib\jqplot\jqplot.pointLabels.min.js" />
     <Content Include="Assets\Js\lib\jqplot\jqplot.pyramidAxisRenderer.js" />
-    <Content Include="Assets\Js\lib\jqplot\jqplot.pyramidAxisRenderer.min.js" />
     <Content Include="Assets\Js\lib\jqplot\jqplot.pyramidGridRenderer.js" />
-    <Content Include="Assets\Js\lib\jqplot\jqplot.pyramidGridRenderer.min.js" />
     <Content Include="Assets\Js\lib\jqplot\jqplot.pyramidRenderer.js" />
-    <Content Include="Assets\Js\lib\jqplot\jqplot.pyramidRenderer.min.js" />
     <Content Include="Assets\Js\lib\jqplot\jqplot.trendline.js" />
-    <Content Include="Assets\Js\lib\jqplot\jqplot.trendline.min.js" />
     <Content Include="Assets\Js\lib\jqplot\jquery.jqplot.js" />
-    <Content Include="Assets\Js\lib\jqplot\jquery.jqplot.min.js" />
+    <Content Include="Assets\Js\lib\jquery-1.8.3.js" />
     <Content Include="Assets\Js\lib\jquery.validate.js" />
     <Content Include="Assets\Js\lib\jquery.unobtrusive-ajax.js" />
     <Content Include="Assets\Js\lib\jquery.validate.unobtrusive.js" />
@@ -464,17 +426,8 @@
     <Content Include="Assets\Js\lib\jquery.cookie.js" />
     <Content Include="Assets\Js\lib\jquery.loader.js" />
     <Content Include="Assets\Js\lib\knockout-2.0.0.js" />
-    <Content Include="Assets\Js\combined.js">
-      <Compile>True</Compile>
-      <Minify>False</Minify>
-      <IncludedFiles>Assets\Js\lib\jquery.validate.js|Assets\Js\lib\jquery.unobtrusive-ajax.js|Assets\Js\lib\jquery.validate.unobtrusive.js|Assets\Js\lib\jquery.placeholder.js|Assets\Js\lib\jquery.datepicker.js|Assets\Js\lib\jquery.form.js|Assets\Js\lib\jquery.history.js|Assets\Js\lib\jquery.cookie.js|Assets\Js\lib\bootstrap.js|Assets\Js\lib\jquery.loader.js|Assets\Js\lib\knockout-2.0.0.js|Assets\Js\lib\underscore.js|Assets\Js\lib\prettify.js|Assets\Js\lib\date.js|Assets\Js\lib\daterangepicker.js|Assets\Js\lib\common.js</IncludedFiles>
-    </Content>
     <Content Include="Assets\Js\lib\prettify.js" />
     <Content Include="Assets\Js\lib\underscore.js" />
-    <Content Include="Assets\Js\lib\jquery-1.8.2.min.js">
-      <Compile>True</Compile>
-      <Minify>False</Minify>
-    </Content>
     <Content Include="Assets\Js\lib\modernizr-2.6.2.min.js">
       <Compile>True</Compile>
       <Minify>False</Minify>
@@ -493,35 +446,6 @@
     </Content>
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <Content Include="Images\alerts.jpg" />
-    <Content Include="Images\assign.jpg" />
-    <Content Include="Images\config.jpg" />
-    <Content Include="Images\rules.jpg" />
-    <Content Include="Images\solve.jpg" />
-    <Content Include="Images\UI\ajax-loader.gif" />
-    <Content Include="Images\UI\applications.png" />
-    <Content Include="Images\UI\client-config-section.png" />
-    <Content Include="Images\UI\client-config.png" />
-    <Content Include="Images\UI\config.png" />
-    <Content Include="Images\UI\data-collectors.png" />
-    <Content Include="Images\UI\email.png" />
-    <Content Include="Images\UI\error-notification.png" />
-    <Content Include="Images\UI\godaddy-ssl.png" />
-    <Content Include="Images\UI\header-logo.png" />
-    <Content Include="Images\UI\hipchat.png" />
-    <Content Include="Images\UI\history.png" />
-    <Content Include="Images\UI\json.gif" />
-    <Content Include="Images\UI\lucene.png" />
-    <Content Include="Images\UI\microsoft.net.png" />
-    <Content Include="Images\UI\mvc-global-filters.png" />
-    <Content Include="Images\UI\mvc2-handleerror.png" />
-    <Content Include="Images\UI\nServiceBus.png" />
-    <Content Include="Images\UI\report-error.png" />
-    <Content Include="Images\UI\reports.png" />
-    <Content Include="Images\UI\rules.png" />
-    <Content Include="Images\UI\sanitise.png" />
-    <Content Include="Images\UI\users.png" />
-    <Content Include="Images\UI\webforms-errorhandler.png" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -892,12 +816,6 @@
     <Content Include="Views\Shared\FooterAssets.cshtml" />
     <Content Include="Views\Shared\Header.cshtml" />
     <Content Include="Views\Help\Privacy.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="App_GlobalResources\Alerts.resx">
-      <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>Alerts.Designer.cs</LastGenOutput>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\Breadcrumbs.cshtml">

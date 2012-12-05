@@ -223,7 +223,7 @@ table {
   width: 100%;
   background: #f3f8fc;
   height: 36px;
-  border-bottom: 1px solid #DEE7EE; }
+  border-bottom: 1px solid #dee7ee; }
 
 .wrapper {
   min-height: 100%;
@@ -297,7 +297,7 @@ section {
       margin-right: 7px;
       text-transform: uppercase;
       padding: 10px 15px 10px 15px;
-      border: 1px solid #DEE7EE;
+      border: 1px solid #dee7ee;
       -webkit-border-radius: 3px 3px 0 0;
       -moz-border-radius: 3px 3px 0 0;
       border-radius: 3px 3px 0 0;
@@ -305,7 +305,7 @@ section {
       color: #3d3d3d;
       text-decoration: none;
       font-size: 13px;
-      font-weight: 13pxWeight; }
+      font-weight: 400; }
       .tabs li > a:hover {
         background-color: #ffffff; }
     .tabs li.button {
@@ -315,10 +315,17 @@ section {
     border-bottom-color: transparent;
     background-color: #ffffff;
     cursor: default; }
+  .tabs.inner {
+    width: 955px; }
 
 .tab-content {
-  margin-top: 20px;
-  background-color: #fff; }
+  margin-top: 28px;
+  padding: 8px 5px;
+  background-color: #fff;
+  border-bottom: 1px solid #dee7ee;
+  border-left: 1px solid #dee7ee;
+  border-right: 1px solid #dee7ee;
+  border-top: 1px solid #dee7ee; }
 
 .table {
   width: 100%;
@@ -1251,12 +1258,18 @@ nav {
     background: url("img/plus.png") no-repeat center; }
   .errors .toggle.expanded {
     background: url("img/minus.png") no-repeat center; }
-.errors .error-info {
+.errors .info {
   max-height: 300px;
   overflow-x: auto;
-  margin: 0 0 5px 0;
-  word-break: break-all;
-  word-wrap: break-word; }
+  margin: 0 5px 0 0;
+  padding-right: 5px; }
+  .errors .info td.nobreak {
+    width: 300px; }
+.errors .stacktrace {
+  background-color: #FFFFCC;
+  padding: 5px;
+  margin: 20px 1px -1px 1px;
+  border: 1px solid #dee7ee; }
 .errors pre, .errors code {
   font-family: "Courier New", Courier;
   background-color: #ffffcc;

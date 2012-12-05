@@ -1,24 +1,36 @@
 jQuery -> 
-	$body = $('section#organisations');
+	$orgroot = $('section#organisations');
+	$cacheroot = $('section#caching');
 
-	if $body.length > 0
+	if $cacheroot.length > 0
+		$cacheroot.delegate "select#CacheEngine", "change", ->
+			$this = $(this)
+			index = window.location.href.indexOf("?")
 
-		$body.delegate 'form#suspendForm', 'submit', (e) -> 
+			if index is -1
+				window.location = window.location.href + "?engine=" + $this.val()
+			else
+				window.location = window.location.href.substring(0, index) + "?engine=" + $this.val()
+
+
+	if $orgroot.length > 0
+
+		$orgroot.delegate 'form#suspendForm', 'submit', (e) -> 
 			e.preventDefault()
 			$this = $ this
 
 			$.post $this.attr('action'), $this.serialize(), (data) -> 
 				window.location.reload()
 
-		$body.delegate 'a.suspend', 'click', (e) -> 
+		$orgroot.delegate 'a.suspend', 'click', (e) -> 
 			e.preventDefault()
 			$this = $ this
-			$modal = $body.find('div#suspend-modal')
+			$modal = $orgroot.find('div#suspend-modal')
 			return null if $modal == null
 			$modal.find('input[type=hidden]').val $this.data 'val'
 			$modal.modal()
 
-		$body.delegate 'input[type=submit].activate', 'click', (e) -> 
+		$orgroot.delegate 'input[type=submit].activate', 'click', (e) -> 
 			$this = $ this
 
 			if confirm "are you sure you want to activate this organisation?"
@@ -27,7 +39,7 @@ jQuery ->
 			e.preventDefault()
 			false
 
-		$body.delegate 'input[type=submit].delete', 'click', (e) -> 
+		$orgroot.delegate 'input[type=submit].delete', 'click', (e) -> 
 			$this = $ this
 
 			if confirm "are you sure you want to delete this organisation, all data will be permenantly deleted?"

@@ -3,8 +3,6 @@
 	$activeModal = null
 
 	if $root.length > 0
-		init = new Initalisation()
-		init.datepicker($root);
 
 		$root.delegate 'form#actionForm', 'submit', (e) -> 
 			e.preventDefault();

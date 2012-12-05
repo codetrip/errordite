@@ -1,12 +1,10 @@
 (function() {
 
   jQuery(function() {
-    var $activeModal, $root, init, maybeEnableBatchStatus;
+    var $activeModal, $root, maybeEnableBatchStatus;
     $root = $('section#issues');
     $activeModal = null;
     if ($root.length > 0) {
-      init = new Initalisation();
-      init.datepicker($root);
       $root.delegate('form#actionForm', 'submit', function(e) {
         var $this;
         e.preventDefault();

@@ -22,6 +22,7 @@ $extraboldfontweight: 700;
 $superboldfontweight: 800;
 $borderradius: 3px;
 $bordercolor: #ccc;
+$tabbordercolor:#DEE7EE;
 
 /*-----------------------------------------------------------------------------------*/
 /*	ELEMENT DEFAULTS
@@ -307,7 +308,7 @@ table {
   width: 100%;
   background: $extralightblue;
   height: 36px;
-  border-bottom: 1px solid #DEE7EE;
+  border-bottom: 1px solid $tabbordercolor;
 }
 
 .wrapper {
@@ -396,15 +397,15 @@ section {
 		  margin-right: 7px;
 		  text-transform: uppercase;
 		  padding: 10px 15px 10px 15px;
-		  border: 1px solid #DEE7EE;
+		  border: 1px solid $tabbordercolor;
 		  -webkit-border-radius: $borderradius $borderradius 0 0;
 		  -moz-border-radius: $borderradius $borderradius 0 0;
 		  border-radius: $borderradius $borderradius 0 0;
 		  background-color: $greyblue;
-			color: $lightbrown;
+		  color: $lightbrown;
 		  text-decoration:none;
 		  font-size: 13px;
-		  font-weight: 13pxWeight;
+		  font-weight: $normalfontweight;
 		  &:hover {
 			background-color: #ffffff;
 		  }
@@ -419,11 +420,19 @@ section {
 		background-color: #ffffff;
 		cursor:default;
 	  }
+	&.inner {
+		width:955px;
+	}
 }
 
 .tab-content {
-	margin-top:20px;
+	margin-top:28px;
+	padding:8px 5px;
 	background-color:#fff;
+	border-bottom: 1px solid $tabbordercolor;
+	border-left: 1px solid $tabbordercolor;
+	border-right: 1px solid $tabbordercolor;
+	border-top: 1px solid $tabbordercolor;
 }
 
 .table {
@@ -1596,13 +1605,24 @@ nav {
 			background: url('img/minus.png') no-repeat center;
 		}
 	}
-	.error-info { 
+
+	.info { 
 		max-height: 300px; 
 		overflow-x: auto;
-		margin: 0 0 5px 0;
-		word-break: break-all;
-		word-wrap: break-word;
+		margin: 0 5px 0 0;
+		padding-right:5px;
+		td.nobreak {
+			width:300px;
+		}
 	}
+
+	.stacktrace {
+		background-color:#FFFFCC;
+		padding:5px;
+		margin:20px 1px -1px 1px;
+		border:1px solid $tabbordercolor;
+	}
+
 	pre, code {
 	  font-family: "Courier New", Courier;
 	  background-color: #ffffcc;
@@ -1647,6 +1667,7 @@ nav {
 	.error-stack .rule-controls {
 	  background-color: #FFC;
 	}
+
 	.st-type, .st-message {
 		display: inline-block;
 		font-weight: bold;

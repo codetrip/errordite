@@ -3,6 +3,9 @@ jQuery ->
 
 	if $root.length > 0		
 		
+		init = new Initalisation()
+		init.datepicker($root);
+
 		#TODO: we should reset this when we page
 		openedErrors = []		
 
