@@ -1,9 +1,11 @@
 (function() {
 
   jQuery(function() {
-    var $root, Error, ErrorProp, openedErrors;
+    var $root, Error, ErrorProp, init, openedErrors;
     $root = $('section#errors, section#issue, section#errordite-errors').first();
     if ($root.length > 0) {
+      init = new Initalisation();
+      init.datepicker($root);
       openedErrors = [];
       $root.delegate('div#error-items ul.nav li a', 'click', function(e) {
         var $this;

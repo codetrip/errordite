@@ -2,7 +2,7 @@
 @using CodeTrip.Core.Extensions
 @model Errordite.Web.Models.Errors.ExceptionViewModel
            
-<div class="error-info">
+<div class="info">
     <table class="table table-bordered table-condensed">
         @if(Model.Info.MethodName.IsNotNullOrEmpty())
         {
@@ -42,13 +42,13 @@
             foreach (var kvp in Model.Info.ExtraData)
             {
                 <tr>
-                    <td>@kvp.Key.Replace("_", ".")</td>
+                    <td class="nobreak">@kvp.Key.Replace("_", ".")</td>
                     <td>@kvp.Value</td>
                 </tr>
             }
         }
     </table>
 </div>
-<div>
+<div class="stacktrace">
     <pre><span class="st-type" data-error-attr="Type">@Model.Info.Type</span>: <span data-error-attr="Message" class="st-message">@Model.Info.Message</span><div data-error-attr="StackTrace">@Model.Info.StackTrace</div></pre>
 </div> 

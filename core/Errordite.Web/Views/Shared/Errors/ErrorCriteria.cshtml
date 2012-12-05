@@ -1,4 +1,5 @@
 ﻿@using Errordite.Web.Extensions
+@using CodeTrip.Core.Extensions
 @using Errordite.Web.Models.Errors
 @model ErrorCriteriaViewModel
 
@@ -29,7 +30,7 @@
                  <div id="daterange" class="daterange" style="width:410px">
                     @Html.HiddenFor(m => m.DateRange)
                     <i class="icon-calendar"></i>
-                    <span>Select Date Range</span>
+                    <span>@(Model.DateRange.IsNullOrEmpty() ? "Select date range" : Model.DateRange)</span>
                     <b class="caret"></b>
                 </div>
             </li>

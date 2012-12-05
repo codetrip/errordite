@@ -65,13 +65,13 @@ namespace Errordite.Web.Controllers
                     if (DateTime.TryParse(dates[0], out startDate) && DateTime.TryParse(dates[1], out endDate))
                     {
                         request.StartDate = startDate;
-                        request.EndDate = endDate.AddDays(1).AddMinutes(-1);
+                        request.EndDate = endDate;
+                        viewModel.ErrorsViewModel.DateRange = "{0} - {1}".FormatWith(startDate.ToString("MMMM d, yyyy"), endDate.ToString("MMMM d, yyyy"));
                     }
                 }
 
                 var errors = _getApplicationErrorsQuery.Invoke(request);
-
-                viewModel.ErrorsViewModel.DateRange = postModel.DateRange;
+                
                 viewModel.ErrorsViewModel.Paging = _pagingViewModelGenerator.Generate(PagingConstants.DefaultPagingId, errors.Errors.PagingStatus, pagingRequest);
                 viewModel.ErrorsViewModel.Errors = errors.Errors.Items.Select(e => new ErrorInstanceViewModel { Error = e }).ToList();
                 viewModel.ErrorsViewModel.ApplicationId = postModel.ApplicationId;

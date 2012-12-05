@@ -12,11 +12,18 @@
 
 @section footerassets
 {
-    <script type='text/javascript' src='@Url.Content("~/assets/js/lib/jqplot/jquery.jqplot.min.js")'></script>
-    <script type='text/javascript' src='@Url.Content("~/assets/js/lib/jqplot/jqplot.barRenderer.min.js")'></script>
-    <script type='text/javascript' src='@Url.Content("~/assets/js/lib/jqplot/jqplot.dateAxisRenderer.min.js")'></script>
-    <script type='text/javascript' src='@Url.Content("~/assets/js/lib/jqplot/jqplot.categoryAxisRenderer.min.js")'></script>
-    <script type='text/javascript' src='@Url.Content("~/assets/js/lib/jqplot/jqplot.highlighter.min.js")'></script>
+	@if(ErrorditeConfiguration.Current.RenderMinifiedContent)
+	{
+		<script type='text/javascript' src='@Url.Content("~/assets/js/lib/jqplot/jqplot.min.js")'></script>
+	}
+	else
+	{
+		<script type='text/javascript' src='@Url.Content("~/assets/js/lib/jqplot/jquery.jqplot.js")'></script>
+		<script type='text/javascript' src='@Url.Content("~/assets/js/lib/jqplot/jqplot.barRenderer.js")'></script>
+		<script type='text/javascript' src='@Url.Content("~/assets/js/lib/jqplot/jqplot.dateAxisRenderer.js")'></script>
+		<script type='text/javascript' src='@Url.Content("~/assets/js/lib/jqplot/jqplot.categoryAxisRenderer.js")'></script>
+		<script type='text/javascript' src='@Url.Content("~/assets/js/lib/jqplot/jqplot.highlighter.js")'></script>
+	}
 }
 
 @section header
