@@ -5,9 +5,9 @@
     $root = $('section#errors, section#issue, section#errordite-errors').first();
     if ($root.length > 0) {
       init = new Initalisation();
-      init.datepicker($root);
+      init.datepicker($('section#criteria'));
       openedErrors = [];
-      $root.delegate('div#error-items ul.nav li a', 'click', function(e) {
+      $root.delegate('ul.tabs li a', 'click', function(e) {
         var $this;
         $this = $(this);
         $this.error = new Error($this);
@@ -169,12 +169,12 @@
         Error.prototype.switchTab = function() {
           var $error, $item, $tab, tabId;
           $error = this.$errorEl;
-          $item = $error.closest('td.error-item');
+          $item = $error.closest('td');
           tabId = $error.data('val');
-          $tab = $item.find('div#' + tabId);
-          $item.find('ul.nav li.ui-tabs-selected').removeClass('ui-tabs-selected');
-          $error.closest('li').addClass('ui-tabs-selected');
-          $tab.siblings().addClass('hidden');
+          $tab = $item.find('div.' + tabId);
+          $item.find('ul.tabs li.active').removeClass('active');
+          $error.closest('li').addClass('active');
+          $tab.siblings('div').addClass('hidden');
           return $tab.removeClass('hidden');
         };
 

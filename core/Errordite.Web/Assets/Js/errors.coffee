@@ -4,12 +4,12 @@ jQuery ->
 	if $root.length > 0		
 		
 		init = new Initalisation()
-		init.datepicker($root);
+		init.datepicker($('section#criteria'));
 
 		#TODO: we should reset this when we page
 		openedErrors = []		
 
-		$root.delegate('div#error-items ul.nav li a', 'click', (e) -> 
+		$root.delegate('ul.tabs li a', 'click', (e) -> 
 			$this = $ this
 			$this.error = new Error $this
 			$this.error.switchTab()
@@ -134,12 +134,12 @@ jQuery ->
 
 			switchTab: () ->
 				$error = this.$errorEl
-				$item = $error.closest('td.error-item')
+				$item = $error.closest('td')
 				tabId = $error.data('val')
-				$tab = $item.find('div#' + tabId)
-				$item.find('ul.nav li.ui-tabs-selected').removeClass('ui-tabs-selected')
-				$error.closest('li').addClass('ui-tabs-selected')
-				$tab.siblings().addClass('hidden')
+				$tab = $item.find('div.' + tabId)
+				$item.find('ul.tabs li.active').removeClass('active')
+				$error.closest('li').addClass('active')
+				$tab.siblings('div').addClass('hidden')
 				$tab.removeClass('hidden')								
 
 			visualiseRules: ->
