@@ -1,0 +1,873 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{CEF8FB25-38DC-403F-A783-2AF2B8717193}</ProjectGuid>
+    <ProjectTypeGuids>{E3E379DF-F4C6-4180-9B81-6769533ABE47};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Errordite.Web</RootNamespace>
+    <AssemblyName>Errordite.Web</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>false</UseIISExpress>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <SccProjectName>&lt;Project Location In Database&gt;</SccProjectName>
+    <SccLocalPath>&lt;Local Binding Root of Project&gt;</SccLocalPath>
+    <SccAuxPath>&lt;Source Control Database&gt;</SccAuxPath>
+    <SccProvider>Mercurial Source Control Package</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper">
+      <HintPath>..\..\lib\AutoMapper\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Core">
+      <HintPath>..\packages\Castle.Core.3.1.0\lib\net40-client\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Facilities.FactorySupport">
+      <HintPath>..\packages\Castle.FactorySupportFacility.3.1.0\lib\net40\Castle.Facilities.FactorySupport.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Windsor">
+      <HintPath>..\packages\Castle.Windsor.3.1.0\lib\net40\Castle.Windsor.dll</HintPath>
+    </Reference>
+    <Reference Include="Errordite.Client.Mvc3">
+      <HintPath>..\packages\Errordite.Client.Mvc3.1.2.9.0\lib\net40\Errordite.Client.Mvc3.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\..\lib\log4net\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NServiceBus, Version=3.0.0.0, Culture=neutral, PublicKeyToken=9fc386479f8a226c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\NServiceBus\NServiceBus.dll</HintPath>
+    </Reference>
+    <Reference Include="NServiceBus.Core, Version=3.0.0.0, Culture=neutral, PublicKeyToken=9fc386479f8a226c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\NServiceBus\NServiceBus.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="ProductionProfiler.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=06afa51a2c047269, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Profiler\ProductionProfiler.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="ProductionProfiler.IoC.Windsor">
+      <HintPath>..\..\lib\Profiler\ProductionProfiler.IoC.Windsor.dll</HintPath>
+    </Reference>
+    <Reference Include="ProductionProfiler.Persistence.Raven">
+      <HintPath>..\..\lib\Profiler\ProductionProfiler.Persistence.Raven.dll</HintPath>
+    </Reference>
+    <Reference Include="Raven.Abstractions, Version=1.2.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\RavenDB.Client.2.0.2161-Unstable\lib\net40\Raven.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Raven.Client.Lightweight, Version=1.2.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\RavenDB.Client.2.0.2161-Unstable\lib\net40\Raven.Client.Lightweight.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Net.Http, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Net.Http.2.0.20710.0\lib\net40\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.4.0.20710.0\lib\net40\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Net.Http.2.0.20710.0\lib\net40\System.Net.Http.WebRequest.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\WebApi\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.4.0.20710.0\lib\net40\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.2.0.20715.0\lib\net40\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Errordite.Build\Assembly\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="ActionFilters\StoreQueryInCookie.cs" />
+    <Compile Include="ActionFilters\ViewDataActionFilter.cs" />
+    <Compile Include="ActionFilters\RoleAuthorisation.cs" />
+    <Compile Include="ActionFilters\ImportViewData.cs" />
+    <Compile Include="ActionFilters\ExportViewData.cs" />
+    <Compile Include="ActionResults\JsonErrorResult.cs" />
+    <Compile Include="ActionResults\JsonNetResult.cs" />
+    <Compile Include="ActionResults\JsonResultObject.cs" />
+    <Compile Include="ActionResults\JsonSuccessHtmlResult.cs" />
+    <Compile Include="ActionResults\JsonSuccessResult.cs" />
+    <Compile Include="ActionResults\PlainJsonNetResult.cs" />
+    <Compile Include="ActionSelectors\IfButtonClickedAttribute.cs" />
+    <Compile Include="App_GlobalResources\Admin.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Admin.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Application.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Application.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Audit.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Audit.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Authentication.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Authentication.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Account.designer.cs">
+      <DependentUpon>Account.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\StatusUpdate.designer.cs">
+      <DependentUpon>StatusUpdate.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="App_GlobalResources\Home.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Home.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\IssueResources.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>IssueResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Errors.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Errors.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\History.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>History.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Notifications.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Notifications.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Rules.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Rules.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Shared.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Shared.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\System\SysAdminAreaRegistration.cs" />
+    <Compile Include="Areas\System\Controllers\SystemController.cs" />
+    <Compile Include="Areas\System\Models\Organisations\SuspendOrganisationViewModel.cs" />
+    <Compile Include="ActionFilters\GenerateBreadcrumbs.cs" />
+    <Compile Include="Controllers\ApplicationsController.cs" />
+    <Compile Include="Areas\System\Controllers\CacheController.cs" />
+    <Compile Include="Areas\System\Controllers\OrganisationsController.cs" />
+    <Compile Include="Controllers\DashboardController.cs" />
+    <Compile Include="Controllers\EmailTestController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Areas\System\Controllers\ImpersonationController.cs" />
+    <Compile Include="Controllers\IssueController.cs" />
+    <Compile Include="Controllers\HelpController.cs" />
+    <Compile Include="Controllers\GroupsController.cs" />
+    <Compile Include="Controllers\UsersController.cs" />
+    <Compile Include="Controllers\AuthenticationController.cs" />
+    <Compile Include="Controllers\IssuesController.cs" />
+    <Compile Include="Extensions\EnumExtensions.cs" />
+    <Compile Include="Extensions\SelectListExtensions.cs" />
+    <Compile Include="Mappings\ApplicationToApplicationViewModel.cs" />
+    <Compile Include="Mappings\ApplicationToEditApplicationViewModel.cs" />
+    <Compile Include="Mappings\AddApplicationPostModelToViewModel.cs" />
+    <Compile Include="Mappings\AddIssuePostModelToViewModel.cs" />
+    <Compile Include="Mappings\EditApplicationPostModelToViewModel.cs" />
+    <Compile Include="Mappings\GroupToEditGroupViewModel.cs" />
+    <Compile Include="Mappings\GroupToGroupViewModel.cs" />
+    <Compile Include="Mappings\UserToEditUserViewModel.cs" />
+    <Compile Include="Mappings\UserToUserViewModel.cs" />
+    <Compile Include="Areas\System\Models\System\ErrorditeErrorsViewModel.cs" />
+    <Compile Include="Models\Applications\AddApplicationViewModel.cs" />
+    <Compile Include="Models\Applications\ApplicationViewModel.cs" />
+    <Compile Include="Models\Applications\EditApplicationViewModel.cs" />
+    <Compile Include="Models\Audit\AuditViewModel.cs" />
+    <Compile Include="Models\Authentication\ResetPasswordViewModel.cs" />
+    <Compile Include="Models\Authentication\PasswordViewModel.cs" />
+    <Compile Include="Models\Common\IWizardViewModel.cs" />
+    <Compile Include="Models\Issues\MergeIssuesViewModel.cs" />
+    <Compile Include="Areas\System\Models\Cache\CacheViewModel.cs" />
+    <Compile Include="Models\Errors\ExceptionViewModel.cs" />
+    <Compile Include="Models\Issues\AddIssueViewModel.cs" />
+    <Compile Include="Models\Issues\IssueItemViewModel.cs" />
+    <Compile Include="Models\Issues\RuleViewModel.cs" />
+    <Compile Include="Models\Dashboard\DashboardViewModel.cs" />
+    <Compile Include="Models\Groups\AddGroupViewModel.cs" />
+    <Compile Include="Models\Groups\EditGroupViewModel.cs" />
+    <Compile Include="Models\Groups\GroupViewModel.cs" />
+    <Compile Include="Models\Help\HelpTab.cs" />
+    <Compile Include="Models\Home\ContactUsViewModel.cs" />
+    <Compile Include="Models\Issues\IssueNotFoundViewModel.cs" />
+    <Compile Include="Models\Issues\IssueCriteriaViewModel.cs" />
+    <Compile Include="Models\Issues\IssueViewModel.cs" />
+    <Compile Include="Models\Navigation\Breadcrumbs.cs" />
+    <Compile Include="Models\Admin\OrganisationsViewModel.cs" />
+    <Compile Include="Models\Admin\OrganisationViewModel.cs" />
+    <Compile Include="Models\Users\AddUserViewModel.cs" />
+    <Compile Include="Models\Beta\SignUpViewModel.cs" />
+    <Compile Include="Models\Users\UserViewModel.cs" />
+    <Compile Include="Models\Users\EditUserViewModel.cs" />
+    <Compile Include="Models\Users\UserViewModelBase.cs" />
+    <Compile Include="Models\Errors\ErrorCriteriaViewModel.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\ErrorditeController.cs" />
+    <Compile Include="Controllers\ErrorsController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Extensions\UrlExtensions.cs" />
+    <Compile Include="Extensions\ViewDataExtensions.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="IoC\WebInstaller.cs" />
+    <Compile Include="Models\Authentication\RegisterViewModel.cs" />
+    <Compile Include="Models\Authentication\LoginViewModel.cs" />
+    <Compile Include="Models\Notifications\UiNotification.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Validation\MatchAttribute.cs" />
+    <Compile Include="Validation\Resources.cs" />
+    <Compile Include="WebConstants.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\Css\errordite.css">
+      <DependentUpon>errordite.scss</DependentUpon>
+    </Content>
+    <Content Include="Assets\Css\errordite.scss">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <CompileStyle>Nested</CompileStyle>
+      <DebugInfo>False</DebugInfo>
+    </Content>
+    <Content Include="Assets\Css\img\ajax-loader.gif" />
+    <Content Include="Assets\Css\lib\fonts.css" />
+    <Content Include="Assets\Css\img\glyphicons-halflings.png" />
+    <Content Include="Assets\Css\img\icons.png" />
+    <Content Include="Assets\Css\img\info.png" />
+    <Content Include="Assets\Css\img\link.png" />
+    <Content Include="Assets\Css\img\key.png" />
+    <Content Include="Assets\Css\img\minus.png" />
+    <Content Include="Assets\Css\img\plus.png" />
+    <Content Include="Assets\Css\img\signin.png" />
+    <Content Include="Assets\Css\lib\daterangepicker.css" />
+    <Content Include="Assets\Css\lib\html5-boilerplate.css">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Assets\Css\lib\jquery.jqplot.css" />
+    <Content Include="Assets\Css\lib\prettify.css">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Assets\Css\lib\normalize.css">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Assets\Images\check.png" />
+    <Content Include="Assets\Images\counter.png" />
+    <Content Include="Assets\Images\errordite.png" />
+    <Content Include="Assets\Images\header-logo.png" />
+    <Content Include="Assets\Images\people.png" />
+    <Content Include="Assets\Images\settings.png" />
+    <Content Include="Assets\Images\waiterrors.png" />
+    <Content Include="Assets\Js\applications.js">
+      <DependentUpon>applications.coffee</DependentUpon>
+    </Content>
+    <Content Include="Assets\Js\dashboard.js">
+      <DependentUpon>dashboard.coffee</DependentUpon>
+    </Content>
+    <Content Include="Assets\Js\errors.js">
+      <DependentUpon>errors.coffee</DependentUpon>
+    </Content>
+    <Content Include="Assets\Js\global.js">
+      <DependentUpon>global.coffee</DependentUpon>
+    </Content>
+    <Content Include="Assets\Js\groups.js">
+      <DependentUpon>groups.coffee</DependentUpon>
+    </Content>
+    <Content Include="Assets\Js\issue.js">
+      <DependentUpon>issue.coffee</DependentUpon>
+    </Content>
+    <Content Include="Assets\Js\issues.js">
+      <DependentUpon>issues.coffee</DependentUpon>
+    </Content>
+    <Content Include="Assets\Js\lib\bootstrap.js" />
+    <Content Include="Assets\Js\lib\date.js" />
+    <Content Include="Assets\Js\lib\daterangepicker.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.barRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.BezierCurveRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.blockRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.bubbleRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.canvasAxisLabelRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.canvasAxisTickRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.canvasOverlay.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.canvasTextRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.categoryAxisRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.ciParser.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.cursor.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.dateAxisRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.donutRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.dragable.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.enhancedLegendRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.funnelRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.highlighter.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.json2.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.logAxisRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.mekkoAxisRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.mekkoRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.meterGaugeRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.min.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.mobile.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.ohlcRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.pieRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.pointLabels.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.pyramidAxisRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.pyramidGridRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.pyramidRenderer.js" />
+    <Content Include="Assets\Js\lib\jqplot\jqplot.trendline.js" />
+    <Content Include="Assets\Js\lib\jqplot\jquery.jqplot.js" />
+    <Content Include="Assets\Js\lib\jquery-1.8.3.js" />
+    <Content Include="Assets\Js\lib\jquery.validate.js" />
+    <Content Include="Assets\Js\lib\jquery.unobtrusive-ajax.js" />
+    <Content Include="Assets\Js\lib\jquery.validate.unobtrusive.js" />
+    <Content Include="Assets\Js\lib\jquery.placeholder.js" />
+    <Content Include="Assets\Js\lib\jquery.form.js" />
+    <Content Include="Assets\Js\lib\jquery.history.js" />
+    <Content Include="Assets\Js\lib\jquery.cookie.js" />
+    <Content Include="Assets\Js\lib\jquery.loader.js" />
+    <Content Include="Assets\Js\lib\knockout-2.0.0.js" />
+    <Content Include="Assets\Js\lib\prettify.js" />
+    <Content Include="Assets\Js\lib\underscore.js" />
+    <Content Include="Assets\Js\lib\modernizr-2.6.2.min.js">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+    </Content>
+    <Content Include="Assets\Js\organisations.js">
+      <DependentUpon>organisations.coffee</DependentUpon>
+    </Content>
+    <Content Include="Assets\Js\rules.js">
+      <DependentUpon>rules.coffee</DependentUpon>
+    </Content>
+    <Content Include="Assets\Js\systemadmin.js">
+      <DependentUpon>systemadmin.coffee</DependentUpon>
+    </Content>
+    <Content Include="Assets\Js\users.js">
+      <DependentUpon>users.coffee</DependentUpon>
+    </Content>
+    <Content Include="favicon.ico" />
+    <Content Include="Global.asax" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\ServerError.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\codetrip\CodeTrip.Core\CodeTrip.Core.csproj">
+      <Project>{7AD42F34-0629-45B8-BF45-87F8B791376E}</Project>
+      <Name>CodeTrip.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Errordite.Core\Errordite.Core.csproj">
+      <Project>{418F4BC8-7042-49B1-9F69-95189A2A5837}</Project>
+      <Name>Errordite.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Errors\Index.cshtml" />
+    <Content Include="Views\Issue\Index.cshtml" />
+    <Content Include="Views\Shared\Pagination.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Config\paging.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Authentication\SignUp.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Authentication\SignIn.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Authentication.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Authentication.designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Account.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Account.designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Users\Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Notifications.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Admin\PaymentPlan.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\EditorTemplates\RuleViewModel.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Applications\Add.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Application.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Application.Designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Applications\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Users\Add.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Users\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Authentication\Password.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Authentication\ResetPassword.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Applications\Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\Errordite.Build\Configuration\log4net.config">
+      <Link>Config\log4net.config</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Rules.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Rules.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Errors.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Errors.Designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Errors\ErrorCriteria.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Groups\Add.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Groups\Edit.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Groups\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\Errordite.Build\Configuration\cache.config">
+      <Link>Config\cache.config</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Errors\ErrorItem.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Help\Faq.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\History.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>History.Designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\System\Views\Cache\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\Errordite.Build\Configuration\errordite.config">
+      <Link>Config\errordite.config</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\System\Views\System\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\Errordite.Build\Configuration\email.config">
+      <Link>Config\email.config</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\IssueResources.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>IssueResources1.designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\System\Views\System\ErrorditeErrors.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\System\Views\Shared\System\Errors.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Shared.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Shared.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\EditorTemplates\GroupViewModel.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\EditorTemplates\GroupMemberViewModel.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Notifications.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Notifications.Designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Issues\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Issue\Details.cshtml" />
+    <Content Include="Views\Issue\Rules.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\Contact.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Home.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Home.Designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Issue\NotFound.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Dashboard\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Errors\ErrorItems.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Dashboard\Statistics.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Dashboard\Tabs.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Admin\Tabs.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Help\Tabs.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Help\GettingStarted.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Help\Pricing.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Issues\IssuesCriteria.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Issues\Issues.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Audit.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Audit.Designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Audit\AuditCriteria.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Audit\AuditRecords.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Errors\ErrorInfo.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Issues\Add.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\StatusUpdate.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>StatusUpdate.designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Issues\Merge.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Issue\Reports.cshtml" />
+    <Content Include="Areas\System\Views\Web.config" />
+    <Content Include="Areas\System\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\System\Views\Shared\Organisations\SuspendModal.cshtml" />
+    <Content Include="Areas\System\Views\Organisations\Applications.cshtml" />
+    <Content Include="Assets\Fonts\normal-300.woff" />
+    <Content Include="Assets\Fonts\normal-400.woff" />
+    <Content Include="Assets\Fonts\normal-600.woff" />
+    <Content Include="Assets\Fonts\normal-700.woff" />
+    <Content Include="Assets\Js\applications.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>False</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Assets\Js\dashboard.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>False</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Assets\Js\errors.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>False</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Assets\Js\groups.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>False</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Assets\Js\issue.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>False</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Assets\Js\issues.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>False</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Assets\Js\rules.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>False</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Assets\Js\users.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>False</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Assets\Js\organisations.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>False</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Assets\Js\global.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>False</Bare>
+      <Iced>False</Iced>
+    </Content>
+    <Content Include="Assets\Fonts\normal-800.woff" />
+    <Content Include="Assets\icons.xcf" />
+    <Content Include="Views\Issue\RuleUpdates.cshtml" />
+    <Content Include="Views\Shared\Dashboard\RecentIssues.cshtml" />
+    <Content Include="Views\Help\Features.cshtml" />
+    <Content Include="Views\Shared\Dashboard\RecentErrors.cshtml" />
+    <Content Include="Areas\System\Views\Cache\Item.cshtml" />
+    <Content Include="Views\Shared\NotAuthorised.cshtml" />
+    <Content Include="Views\Shared\NotFound.cshtml" />
+    <Content Include="Views\Admin\Upgrade.cshtml" />
+    <Content Include="Views\Shared\Help\PaymentPlan.cshtml" />
+    <Content Include="Views\Admin\Billing.cshtml" />
+    <Content Include="Views\Admin\Downgrade.cshtml" />
+    <Content Include="Views\EmailTest\List.cshtml" />
+    <Content Include="Views\EmailTest\Index.cshtml" />
+    <Content Include="Views\Admin\Settings.cshtml" />
+    <Content Include="Views\Help\Client.cshtml" />
+    <Content Include="Views\Shared\Users\List.cshtml" />
+    <Content Include="Areas\System\Views\Organisations\Users.cshtml" />
+    <Content Include="Areas\System\Views\Organisations\Index.cshtml" />
+    <Content Include="Areas\System\Views\Impersonation\Index.cshtml" />
+    <Content Include="Views\Shared\Applications\List.cshtml" />
+    <Content Include="Views\Issue\History.cshtml" />
+    <Content Include="Views\Shared\Errors\TraceMessages.cshtml" />
+    <Content Include="Views\Help\SendErrorWithJson.cshtml" />
+    <Content Include="packages.config" />
+    <Content Include="Views\Shared\Master.cshtml" />
+    <Content Include="Views\Shared\HeaderAssets.cshtml" />
+    <Content Include="Views\Shared\FooterAssets.cshtml" />
+    <Content Include="Views\Shared\Header.cshtml" />
+    <Content Include="Views\Help\Privacy.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Breadcrumbs.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Admin.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Admin.Designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\Js\systemadmin.coffee">
+      <Compile>True</Compile>
+      <Minify>False</Minify>
+      <Bare>False</Bare>
+      <Iced>False</Iced>
+    </Content>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>2289</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://dev-site.errordite.com</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>http://errordite</CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+</Project>

@@ -1,0 +1,128 @@
+﻿
+@using Errordite.Web.Extensions
+@using CodeTrip.Core.Extensions
+@model Errordite.Web.Areas.System.Models.System.ErrorditeErrorsViewModel
+
+@using (Html.BeginForm("errorditeerrors", "system", FormMethod.Get, new { id = "errorsForm" }))
+{
+    <div class="form form-inline">
+        <ul>
+            <li>
+                @Html.TextBoxFor(m => m.Query, new { autocomplete = "off", placeholder = "Search your errors" })
+            </li>
+            <li>
+                @Html.TextBoxFor(m => m.ExceptionType, new { autocomplete = "off", placeholder = "Exception Type" })
+            </li>
+            <li>
+                @Html.TextBoxFor(m => m.Application, new { autocomplete = "off", placeholder = "Application" })
+            </li>
+            <li>
+                 @Html.TextBoxFor(m => m.MessageId, new { autocomplete = "off", placeholder = "Message Id" })
+            </li>
+            <li>
+                <div id="daterange" class="daterange">
+                    @Html.HiddenFor(m => m.StartDate)
+                    <i class="icon-calendar"></i>
+                    <span>Select Date Range</span>
+                    <b class="caret"></b>
+                </div>
+            </li>
+            <li>
+                <input type="submit" class="btn btn-medium btn-blue" value="Apply" />
+                <a class="btn btn-medium btn-cancel" href="@Url.ErrorditeErrors()">Clear</a>
+            </li>
+        </ul>
+    </div>
+    <div class="clear"></div>
+}
+@if (Model.Errors != null && Model.Errors.Items.Any())
+{
+    <div id="results">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Exception</th>    
+                    <th>Timestamp</th> 
+                    <th>Method</th>
+                    <th>Module</th> 
+                    <th>Machine</th>
+                    <th>User</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var error in Model.Errors.Items)
+                {
+                    <tr id="@error.Id"> 
+                        <td class="error-rowstate collapsed">&nbsp;</td> 
+                        <td>@error.Type</td>
+                        <td>@error.TimestampUtc.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                        <td>@error.Method</td>
+                        <td>@error.Module </td>
+                        <td>@error.Machine</td>
+                        <td>@error.User</td>
+                    </tr>
+                    <tr style="display: none;">
+                        <td class="error-item" colspan="7">
+                            <div class="inner-tabs">
+                                <ul class="nav">
+                                    <li class="ui-tabs-selected">
+                                        <a href="#" data-val="stacktrace">Stack trace</a>
+                                    </li>
+                                    @if (error.Data.Count > 0)
+                                    {
+                                        <li>
+                                            <a href="#" data-val="clientdata">Data</a>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                            <div class="inner-tabs">
+                                <div id="stacktrace" class="inner-tab" data-val="0">
+                                    <div class="error-fields">
+                                        <span class="error-field">Url:</span> <span class="error-value">@(error.Data.GetValue("Url")) </span><br />
+                                        <span class="error-field">Application:</span> <span class="error-value">@error.Application</span><br />
+                                        <span class="error-field">MessageId:</span> <span class="error-value">@error.MessageId</span>
+                                    </div>
+                                    <div class="clear"></div>
+                                    <div class="error-detail">
+                                        <pre>@error.Text</pre>
+                                    </div>
+                                </div>
+                                @if (error.Data.Count > 0)
+                                {
+                                    <div id="clientdata" class="inner-tab hidden">
+                                        <table>
+                                            <tr>
+                                                <th>Key</th>
+                                                <th>Value</th>
+                                            </tr>
+                                            @foreach (var kvp in error.Data)
+                                            {
+                                                <tr>
+                                                    <td>@kvp.Key</td>
+                                                    <td>@kvp.Value</td>
+                                                </tr>
+                                            }
+                                        </table>
+                                    </div>
+                                }
+                            </div> 
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="7">@Html.Partial("Pagination", Model.Paging)</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+}
+else
+{
+    <div id="no-errors">
+        <p>No errors were returned from your query.</p>   
+    </div> 
+}

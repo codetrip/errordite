@@ -1,0 +1,95 @@
+﻿@using Errordite.Core.Extensions
+@using Errordite.Web.Extensions
+@using CodeTrip.Core.Paging
+@model Errordite.Web.Models.Issues.IssueCriteriaViewModel
+           
+<div id="results">
+    @using (Html.BeginForm("batchissueaction", "issues", FormMethod.Post, new {id="actionForm"}))
+    {
+        @Html.Hidden("Action")
+        @Html.Hidden("Status")
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th><input type="checkbox"/></th>
+                    <th>Issue Details</th>
+                    <th>Assignment</th>
+                    <th class="sort"><span>Error Count</span> @Html.SortLinks(Model.Paging.PagingId, "ErrorCount")</th>
+                    <th class="sort"><span>Last Error</span> @Html.SortLinks(Model.Paging.PagingId, "LastErrorUtc") </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var issue in Model.Issues)
+                {
+                    <tr>
+                        <td><input type="checkbox" name="issueIds" value="@issue.IssueId|@issue.ApplicationId"/></td>
+                        <td>
+                            <span class="table-info-header">
+                                <a href="@Url.Issue(issue.IssueId)">@issue.IssueId - @issue.Name</a>
+                            </span><br />
+                            <span class="table-info">@issue.Status</span>
+                        </td>
+                        <td>
+                            <span class="table-info-header">@issue.ApplicationName</span><br />
+                            <span class="table-info">@issue.UserName</span>
+                        </td>
+                        <td><span class="badge badge-info">@issue.ErrorCount</span></td>
+                        <td>@issue.LastErrorUtc.ToLocalTimeFormatted()</td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5">
+                        @Html.Partial("Pagination", Model.Paging)
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+        <div class="modal hide" id="StatusUpdate">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">x</a>
+                <h3>Make <span class="batch-issue-count"></span> issue<span class="batch-issue-plural">s</span> "<span class="batch-issue-status"></span>"</h3>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger hidden">
+                    <h4 class="alert-heading"></h4>
+                </div>
+                <div class="form">
+                    <ul>
+                        <li>
+                            <label class="control-label" for="AssignToUser">Assign to user:</label>
+                            @Html.DropDownList("AssignToUser", new[] { new SelectListItem { Selected = true, Text = "Currently assigned user", Value = "" } }.Union(Model.Users), new { style = "width:300px" })
+                        </li>
+                        <li>
+                            <textarea name="Comment" style="width:290px; height:65px;" placeholder="Enter a comment (optional)..."></textarea>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-medium btn-blue">OK</button>
+                <a class="btn-cancel" data-dismiss="modal">Cancel</a>
+            </div>
+        </div>
+        
+        <div class="modal hide" id="Delete">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">x</a>
+                <h3>Delete <span class="batch-issue-count"></span> issue<span class="batch-issue-plural">s</span></h3>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger hidden">
+                    <h4 class="alert-heading"></h4>
+                </div>
+                <p>
+                    Click Ok to delete the selected issues, click Cancel to return to the page.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-medium btn-blue">OK</button>
+                <a class="btn-cancel" data-dismiss="modal">Cancel</a>
+            </div>
+        </div>
+    }
+</div>

@@ -1,0 +1,43 @@
+﻿@using Errordite.Web.Extensions
+@using CodeTrip.Core.Extensions
+@using Errordite.Web.Models.Errors
+@model ErrorCriteriaViewModel
+
+@using (Html.BeginForm(Model.Action, Model.Controller, FormMethod.Get, new { id = "errorsForm"}))
+{
+    @Html.HiddenFor(m => m.IssueId)
+    <input type="hidden" name="pgst" value="@Model.Sort" id="pgst"/>
+    <input type="hidden" name="pgsd" value="@Model.SortDescending" id="pgsd"/>
+
+    if (Model.Controller == "issue")
+    {
+        @Html.HiddenFor(m => m.ApplicationId)
+        @Html.Hidden("tab", "errors")
+    }  
+
+    <div class="form form-inline criteria">
+        <ul>
+            <li>
+                @Html.TextBoxFor(m => m.Query, new { autocomplete = "off", placeholder = "Search your errors"})
+            </li>
+            @if (Model.Controller != "issue")
+            {
+                <li>
+                    @Html.DropDownListFor(m => m.ApplicationId, Model.Applications)
+                </li>
+            } 
+            <li>
+                 <div id="daterange" class="daterange" style="width:410px">
+                    @Html.HiddenFor(m => m.DateRange)
+                    <i class="icon-calendar"></i>
+                    <span>@(Model.DateRange.IsNullOrEmpty() ? "Select date range" : Model.DateRange)</span>
+                    <b class="caret"></b>
+                </div>
+            </li>
+            <li>
+                <input type="submit" class="btn btn-small btn-blue" value="Apply" />
+                <a class="btn btn-small btn-lightblue" href="@Url.ClearErrors(Model.ApplicationId, Model.IssueId)">Clear</a>
+            </li>
+        </ul>
+    </div>
+}

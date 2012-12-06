@@ -1,0 +1,66 @@
+﻿@using Errordite.Web.Extensions
+@using Errordite.Core.Domain.Error;
+
+@model Errordite.Web.Models.Issues.AddIssueViewModel
+           
+@{
+    ViewBag.Title = "Create Issue";
+}
+
+<section class="centered" id="addissue">
+    <h1>Create an issue</h1>
+    <p>Use this form to create an issue so you can preemptively monitor for a particular exception within your application.</p>
+    @using (Html.BeginForm("add", "issues", FormMethod.Post, new { id = "addIssue" }))
+    {
+        <div class="form double push-up">
+            <ul>
+                <li>
+                    @Html.LabelFor(m => m.Name, "Issue Name")
+                    @Html.TextBoxFor(m => m.Name)
+                    <i title="Give this issue a more meaningful name to help identify and search for it." class="icon-info"></i>
+                    @Html.ValidationMessageFor(m => m.Name)
+                </li>
+                <li>
+                    @Html.LabelFor(m => m.Status, "Status")
+                    @Html.DropDownListFor(m => m.Status, Model.Statuses.Where(s => s.Value != IssueStatus.Unacknowledged.ToString()))
+                    <i title="Assign an initial status to the issue." class="icon-info"></i>
+                </li>
+            </ul>
+        </div>
+        <div class="form double push-up">
+            <ul>
+               <li>
+                    @Html.LabelFor(m => m.ApplicationId, "Application")
+                    @Html.DropDownListFor(m => m.ApplicationId, Model.Applications)
+                    <i title="The application to which this issue is associated." class="icon-info"></i>
+                </li>
+                <li class="right">
+                    @Html.LabelFor(m => m.UserId, "Assigned User")
+                    @Html.DropDownListFor(m => m.UserId, Model.Users)
+                    <i title="Assign a user to this issue." class="icon-info"></i>
+                </li>
+            </ul>
+        </div>
+        <div id="rules" class="rules">
+            <table class="table table-bordered" id="rules-table">
+                <thead>
+                    <tr>
+                        <th class="property">Property</th>
+                        <th class="operator">Operator</th>
+                        <th class="value">Match</th>
+                        <th class="tablebtn">Remove Rule</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int rr = 0; rr < Model.Rules.Count; rr++)
+                    {
+                        @Html.EditorFor(m => m.Rules[rr])
+                    } 
+                    <tr><td colspan="4"><a class="add" href="#">Add Rule</a></td></tr>
+                </tbody>
+            </table>
+        </div>
+        <input type="submit" class="btn btn-medium btn-blue" value="Add" />
+        <a class="btn-cancel" href="@Url.Issues()" >Cancel</a>
+    }
+</section>

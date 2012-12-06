@@ -1,0 +1,111 @@
+﻿@using CodeTrip.Core.Extensions
+@using Errordite.Core.Configuration
+@using Errordite.Core.Domain.Organisation
+@using Errordite.Web.Models.Issues
+@using Errordite.Web.Extensions
+@model IssueViewModel
+
+@{
+    ViewBag.Title = "Issue {0} ({1}) | {2}".FormatWith(Model.Details.IssueId, Model.Tab, Model.Details.Name);
+    ViewBag.FinalBreadcrumb = "Issue {0}".FormatWith(Model.Details.IssueId);
+}
+
+@section footerassets
+{
+	@if(ErrorditeConfiguration.Current.RenderMinifiedContent)
+	{
+		<script type='text/javascript' src='@Url.Content("~/assets/js/lib/jqplot/jqplot.min.js")'></script>
+	}
+	else
+	{
+		<script type='text/javascript' src='@Url.Content("~/assets/js/lib/jqplot/jquery.jqplot.js")'></script>
+		<script type='text/javascript' src='@Url.Content("~/assets/js/lib/jqplot/jqplot.barRenderer.js")'></script>
+		<script type='text/javascript' src='@Url.Content("~/assets/js/lib/jqplot/jqplot.dateAxisRenderer.js")'></script>
+		<script type='text/javascript' src='@Url.Content("~/assets/js/lib/jqplot/jqplot.categoryAxisRenderer.js")'></script>
+		<script type='text/javascript' src='@Url.Content("~/assets/js/lib/jqplot/jqplot.highlighter.js")'></script>
+	}
+}
+
+@section header
+{
+    @*<div id="pagetitle">
+        <h1 class="small issue">@(Model.Details.TestIssue ? "TEST" : "") Issue @Model.Details.IssueId - @Model.Details.Name</h1>
+        <h3 class="small issue"><span class="badge badge-info">@Model.Details.ErrorCount</span> error@(Model.Details.ErrorCount == 1 ? "" : "s"). Most recent at @Model.Details.LastErrorUtc.ToLocalTimeFormatted()</h3>
+        <div id="rules-adjusted">
+            <button id="apply-rule-updates" class="btn btn-success" title="You have made rule changes but not yet saved them. Click here to save.">Apply Rule Updates</button>
+        </div>
+    </div>
+
+    <div class="clear"></div>*@
+    <div class="tabs-container">
+        <ul id="issue-tabs" class="tabs">
+            <li @(Model.Tab == IssueTab.Details ? " class=active" : " class=inactive") >
+                <a href="@Url.Issue(Model.Details.IssueId, IssueTab.Details)" class="tablink" data-val="details"><span>Details</span></a> 
+            </li>
+            <li @(Model.Tab == IssueTab.History ? " class=active" : " class=inactive") >
+                <a href="@Url.Issue(Model.Details.IssueId, IssueTab.History)" class="tablink" data-val="history"><span>History</span></a>
+            </li>
+            <li @(Model.Tab == IssueTab.Rules ? " class=active" : " class=inactive") >
+                <a href="@Url.Issue(Model.Details.IssueId, IssueTab.Rules)" class="tablink" data-val="rules"><span>Rules</span></a>
+            </li>
+            <li @(Model.Tab == IssueTab.Reports ? " class=active" : " class=inactive") >
+                <a href="@Url.Issue(Model.Details.IssueId, IssueTab.Reports)" class="tablink" data-val="reports"><span>Reports</span></a> 
+            </li>
+            <li @(Model.Tab == IssueTab.Errors ? " class=active" : " class=inactive") >
+                <a href="@Url.Issue(Model.Details.IssueId, IssueTab.Errors)" class="tablink" data-val="errors"><span>Errors</span></a>
+            </li>
+            @if (Model.Details.ProdProfRecords.Any() && ViewData.GetAppContext().CurrentUser.Role == UserRole.SuperUser)
+            {
+                <li @(Model.Tab == IssueTab.Debug ? "class=active" : " class=inactive")>
+                    <a href="@Url.Issue(Model.Details.IssueId, IssueTab.Debug)" class="tablink" data-val="debug"><span>Debug</span></a>
+                </li>
+            }
+            <li class="button">
+                <div id="rules-adjusted">
+                    <button id="apply-rule-updates" class="btn btn-small btn-blue tool-tip" title="You have made rule changes but not yet saved them. Click here to save.">Apply Rule Updates</button>
+                </div>
+            </li>
+        </ul>
+    </div>
+}
+           
+<section id="issue" class="centered">
+    <div id="details" class="@(Model.Tab == IssueTab.Details ? "" : "hidden")">
+        @Html.Partial("Details", Model.Details)
+    </div>
+    <div id="history" class="@(Model.Tab == IssueTab.History ? "" : "hidden")">
+        @Html.Partial("History", Model.Details)
+    </div>
+    @using (Html.BeginForm("adjustRules", "issue", FormMethod.Post, new { id = "rulesForm" }))
+    {
+        <div id="rules" class="@(Model.Tab == IssueTab.Rules ? "" : "hidden")">
+            @Html.Partial("Rules", Model.Rules)
+        </div>
+        @Html.Partial("RuleUpdates", Model.Rules)
+    }
+    <div id="reports" class="@(Model.Tab == IssueTab.Reports ? "" : "hidden")">
+        @Html.Partial("Reports", Model.Details)
+    </div>
+    <div id="errors" class="@(Model.Tab == IssueTab.Errors ? "" : "hidden") ajax-container">
+        <p>
+            <strong>Note</strong> we only store <strong>@ErrorditeConfiguration.Current.IssueErrorLimit</strong> errors per issue, although we track each occurence of an issue. The instance count 
+            shown against an issue indicates the <strong>true number of occurences</strong> received for the issue.
+        </p>
+        <div id="error-criteria">
+            @Html.Partial("Errors/ErrorCriteria", Model.Errors)
+        </div>
+    </div>
+    @if (Model.Details.ProdProfRecords.Any() && ViewData.GetAppContext().CurrentUser.Role == UserRole.SuperUser)
+    {
+        <div id="debug" class="@(Model.Tab == IssueTab.Debug ? "" : "hidden")">
+            <ul>
+                @foreach (var record in Model.Details.ProdProfRecords)
+                {
+                    <li><a href="/profiler?handler=results&action=resultsdetail&id=@record.RequestId"> @record.TimestampUtc.ToString("yyyy-MM-dd hh:mm:ss"): @record.Url </a></li>
+                }
+            </ul>
+        </div>
+    }
+</section>
+
+    

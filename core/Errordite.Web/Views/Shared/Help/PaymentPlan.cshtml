@@ -1,0 +1,17 @@
+﻿@using Errordite.Web.Extensions
+@using Errordite.Core.Domain.Organisation
+@model PaymentPlan
+           
+<div class="four-col">
+    <div class="payment-plan">
+        <h2>@Model.Name<span>$@Model.Price.ToString("0") / Month</span></h2>
+        <ul>
+            <li><b>@Model.MaximumIssues</b> Issues</li>
+            <li><b>@Model.MaximumUsers</b> User@(Model.MaximumUsers == 1 ? "": "s")</li>
+            <li><b>@Model.MaximumApplications</b> Application@(Model.MaximumApplications == 1 ? "": "s")</li>
+        </ul>
+        <div>
+            <a href="@Url.SignUp()">Sign Up Now ›</a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,65 @@
+﻿@using Errordite.Web.Extensions
+@model Errordite.Web.Models.Applications.ApplicationsViewModel
+           
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            @if(Model.SystemView)
+            {
+                <th>Id</th>    
+            }  
+            <th>Name</th>
+            <th>Active</th>
+            <th>Default User</th> 
+            <th>Token</th> 
+            @*<th>Group Errors By</th>    *@
+            @if (!Model.SystemView)
+            {
+                <th colspan="3">Actions</th>
+            }  
+            
+        </tr>  
+    </thead>   
+    <tbody>
+    @foreach (var application in Model.Applications)
+    {
+        <tr>
+            @if(Model.SystemView)
+            {
+                <td>@application.Id</td>    
+            }   
+            <td>@application.Name</td>
+            <td>@application.IsActive</td>
+            <td>@application.DefaultUser</td>
+            <td>@application.Token</td>
+            @*<td>@application.RuleMatchFactory</td>*@
+
+            @if (!Model.SystemView)
+            {
+                <td><a href="@Url.EditApplication(application.Id)">Edit</a></td>
+                <td>
+                    @using (Html.BeginForm("delete", "applications", new { applicationId = application.Id }, FormMethod.Post))
+                    {
+                        <a class="confirm delete-application" href="#">Delete</a>
+                    }
+                </td>
+                <td>
+                    @using (Html.BeginForm("generateerror", "applications", new {applicationId = application.Id}, FormMethod.Post))
+                    {
+                        <input type="hidden" name="returnUrl" value="@Url.CurrentRequest()"/>
+                        <a class="generate-error" href="#">Generate Test Error</a>
+                    }
+                </td>  
+            }
+                       
+        </tr>
+    }
+    </tbody>  
+    <tfoot>
+        <tr>
+            <td @(Model.SystemView ? "colspan=8" : "colspan=9")>
+                @Html.Partial("Pagination", Model.Paging)
+            </td>
+        </tr>
+    </tfoot>
+</table>

@@ -1,0 +1,54 @@
+﻿
+@using CodeTrip.Core.Extensions
+@model Errordite.Web.Models.Errors.ExceptionViewModel
+           
+<div class="info">
+	<table class="table table-bordered table-condensed">
+		@if(Model.Info.MethodName.IsNotNullOrEmpty())
+		{
+			<tr>
+				<td>Method</td>
+				<td data-error-attr="MethodName">@Model.Info.MethodName</td>
+			</tr>
+		}
+		@if (Model.Info.Module.IsNotNullOrEmpty())
+		{
+			<tr>
+				<td>Module</td>
+				<td data-error-attr="Module">@Model.Info.Module</td>
+			</tr>
+		}
+        
+		@if (!Model.InnerException)
+		{
+			if (Model.Url.IsNotNullOrEmpty())
+			{
+				<tr>
+					<td>Url</td>
+					<td data-error-attr="Url">@Model.Url</td>
+				</tr>
+			}
+			if (Model.UserAgent.IsNotNullOrEmpty())
+			{
+				<tr>
+					<td>User Agent</td>
+					<td data-error-attr="UserAgent">@Model.UserAgent</td>
+				</tr>
+			}
+		}
+        
+		@if (Model.Info.ExtraData != null)
+		{
+			foreach (var kvp in Model.Info.ExtraData)
+			{
+				<tr>
+					<td class="nobreak">@kvp.Key.Replace("_", ".")</td>
+					<td>@kvp.Value</td>
+				</tr>
+			}
+		}
+	</table>
+</div>
+<div class="stacktrace">
+    <pre><span class="st-type" data-error-attr="Type">@Model.Info.Type</span>: <span data-error-attr="Message" class="st-message">@Model.Info.Message</span><div data-error-attr="StackTrace">@Model.Info.StackTrace</div></pre>
+</div> 
