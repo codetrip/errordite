@@ -1,13 +1,18 @@
 ﻿@using CodeTrip.Core.Paging
+@using Errordite.Web.Extensions
 @model Errordite.Web.Models.Errors.ErrorCriteriaViewModel
            
-<div id="error-items" class="errors">
+<div class="errors">
     @if (Model.Errors != null && Model.Errors.Any())
     {
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th></th>
+					<th></th>
+					@if (!Model.HideIssues)
+					{
+						<th>Issue</th>
+					} 
                     <th>Exception</th>            
                     <th>Message</th>     
                     <th class="sort"><span>Received On</span> @Html.SortLinks(Model.Paging.PagingId, "Timestamp")</th>
@@ -21,7 +26,7 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="4">
+                    <td colspan="5">
                         @Html.Partial("Pagination", Model.Paging) 
                     </td>
                 </tr>

@@ -251,7 +251,7 @@ table {
     font-size:12px;
     .links {
       float: right;
-      margin-top: 4px;
+      margin:4px 10px 0 0;
     }
     a {
       color: #fff;
@@ -278,11 +278,15 @@ table {
   background: $extralightblue;
   height: 40px;
   .trail {
-    margin: 0 auto;
+	margin: 0 auto;
     width: $minwidth;
-    color:$verydarkblue;
-    font-weight:400;
-    font-size: 13px;
+	ul {
+		color:$verydarkblue;
+		font-weight:400;
+		font-size: 13px;
+		margin: 0;
+		padding: 0 0 0 5px;
+	}
     .divider {
 	  font-size: 14px;
 	  padding:0 2px;
@@ -294,9 +298,6 @@ table {
 		color:$verydarkblue;
 		font-size: 13px;
 	  }
-    }
-    li:first-child {
-	  margin-left:-18px;
     }
     li.active {
 	  color: $mediumbrown;
@@ -359,6 +360,15 @@ section {
 .centered {
   margin: 0 auto;
   width: $minwidth;
+  padding:0 5px;
+}
+
+.full {
+  width: 100%;
+  .tabs {
+	width:100%;
+	margin:0;
+  }
 }
 
 .four-col {
@@ -389,7 +399,7 @@ section {
 .tabs {
     margin: 0 auto;
     width: $minwidth;
-    padding:8px 0 0 0;
+    padding:8px 0 0 5px;
     font-size:13px;
     li {
 	  float:left;
@@ -1286,8 +1296,8 @@ section {
 
 .logo {
   float: left;
-  width: 225px;
-  margin: 15px 0 0 2px;
+  width: 215px;
+  margin: 15px 0 0 5px;
 }
 
 .search {
@@ -1338,32 +1348,33 @@ section {
 }
 
 nav {
-  float: right;
-  .nav {
-  list-style: none;
-  margin: 0 0 10px 0;
   float: left;
-  width: 100%;
-  li.nav-item {
-    float: left;
-    margin-left: 15px;
-    position: relative;
-    line-height: 50px;
-    > a {
-      background: $verydarkbrown;
-      display: block;
-      padding: 5px;
-      color: #fff;
-	  font-size: 14px;
-	  font-weight: $lightfontweight;
-	  text-decoration:none;
-      &:hover {
-        color: $mediumblue;
-      }
-	  small {
-		margin-left:4px;
-	  }
-    }
+  .nav {
+	  list-style: none;
+	  margin: 0;
+	  padding: 0;
+	  float: left;
+	  width: 100%;
+	  li.nav-item {
+		float: left;
+		margin-left: 15px;
+		position: relative;
+		line-height: 50px;
+		> a {
+		  background: $verydarkbrown;
+		  display: block;
+		  padding: 5px;
+		  color: #fff;
+		  font-size: 14px;
+		  font-weight: $lightfontweight;
+		  text-decoration:none;
+		  &:hover {
+			color: $mediumblue;
+		  }
+		  small {
+			margin-left:4px;
+		  }
+		}
   }
   ul {
     background: rgba(255, 255, 255, 0); 
@@ -1403,7 +1414,7 @@ nav {
       left: -80px;
     }
     &.docs:hover ul {
-      left: -135px;
+      left: -133px;
     }
     &.dashboard:hover div.pointer::before {
       left: 35px;
@@ -1415,7 +1426,7 @@ nav {
       left: 30px;
     }
     &.docs:hover div.pointer::before {
-      left: 16px;
+      left: 18px;
     }
     &:hover ul a:hover {
       color: #555;
@@ -1595,6 +1606,8 @@ nav {
 }
 
 .errors {
+	margin:0 10px;
+
 	.toggle {
 		padding:12px;
 		cursor:pointer;
@@ -1619,7 +1632,7 @@ nav {
 	.stacktrace {
 		background-color:#FFFFCC;
 		padding:5px;
-		margin:20px 1px -1px 1px;
+		margin:10px 1px -1px 1px;
 		border:1px solid $tabbordercolor;
 	}
 

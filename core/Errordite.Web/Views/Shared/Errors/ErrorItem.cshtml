@@ -5,13 +5,15 @@
 @model ErrorInstanceViewModel
            
 <tr id="@Model.Error.FriendlyId"> 
-    <td class="toggle collapsed"></td> 
-    <td>
+	<td class="toggle collapsed"></td>
+	@if (!Model.HideIssues)
+    {
+        <td><a href="@Url.Issue(Model.Error.IssueId.GetFriendlyId())">Issue @Model.Error.IssueId.GetFriendlyId()</a> </td>
+    } 
+	
+	<td>
         <span class="table-info-header">
-            @if (!Model.HideIssues)
-            {
-                @Model.Error.ExceptionInfo.Type <a href="@Url.Issue(Model.Error.IssueId.GetFriendlyId())">(Issue @Model.Error.IssueId.GetFriendlyId())</a> 
-            }
+            @Model.Error.ExceptionInfo.Type
         </span><br />
         <span class="table-info">@Model.Error.MachineName</span>
     </td>
@@ -44,7 +46,7 @@
                 }
             }
         </ul>
-        <div class="tab-content">
+        <div class="tab-content exception">
             @Html.Partial("Errors/ErrorInfo", new ExceptionViewModel(Model.Error.ExceptionInfo, Model.Error.Url, Model.Error.UserAgent))
         </div>
         @{
@@ -52,14 +54,14 @@
             foreach (var inner in Model.Error.ExceptionInfos.Skip(1))
             {
                 count++;
-                <div class="tab-content hidden">
+                <div class="tab-content hidden inner-@count">
                     @Html.Partial("Errors/ErrorInfo", new ExceptionViewModel(inner, null, Model.Error.UserAgent, true))
                 </div>
             }
         }
         @if (Model.Error.Messages != null)
         {
-            <div class="tab-content hidden">
+            <div class="tab-content hidden messages">
                 @Html.Partial("Errors/TraceMessages", Model.Error.Messages)
             </div>
         }

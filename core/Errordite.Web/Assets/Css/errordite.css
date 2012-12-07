@@ -180,7 +180,7 @@ table {
     font-size: 12px; }
     .welcome-bar-container .welcome-bar .links {
       float: right;
-      margin-top: 4px; }
+      margin: 4px 10px 0 0; }
     .welcome-bar-container .welcome-bar a {
       color: #fff;
       font-size: 12px; }
@@ -201,10 +201,13 @@ table {
   height: 40px; }
   .trail-container .trail {
     margin: 0 auto;
-    width: 974px;
-    color: #729db7;
-    font-weight: 400;
-    font-size: 13px; }
+    width: 974px; }
+    .trail-container .trail ul {
+      color: #729db7;
+      font-weight: 400;
+      font-size: 13px;
+      margin: 0;
+      padding: 0 0 0 5px; }
     .trail-container .trail .divider {
       font-size: 14px;
       padding: 0 2px; }
@@ -214,8 +217,6 @@ table {
       .trail-container .trail li a {
         color: #729db7;
         font-size: 13px; }
-    .trail-container .trail li:first-child {
-      margin-left: -18px; }
     .trail-container .trail li.active {
       color: #525252; }
 
@@ -265,7 +266,14 @@ section {
 
 .centered {
   margin: 0 auto;
-  width: 974px; }
+  width: 974px;
+  padding: 0 5px; }
+
+.full {
+  width: 100%; }
+  .full .tabs {
+    width: 100%;
+    margin: 0; }
 
 .four-col {
   width: 25%;
@@ -289,7 +297,7 @@ section {
 .tabs {
   margin: 0 auto;
   width: 974px;
-  padding: 8px 0 0 0;
+  padding: 8px 0 0 5px;
   font-size: 13px; }
   .tabs li {
     float: left; }
@@ -1012,8 +1020,8 @@ section {
 /*-----------------------------------------------------------------------------------*/
 .logo {
   float: left;
-  width: 225px;
-  margin: 15px 0 0 2px; }
+  width: 215px;
+  margin: 15px 0 0 5px; }
 
 .search {
   float: left;
@@ -1057,10 +1065,11 @@ section {
       margin-left: 4px; }
 
 nav {
-  float: right; }
+  float: left; }
   nav .nav {
     list-style: none;
-    margin: 0 0 10px 0;
+    margin: 0;
+    padding: 0;
     float: left;
     width: 100%; }
     nav .nav li.nav-item {
@@ -1110,7 +1119,7 @@ nav {
     nav .nav li.admin:hover ul {
       left: -80px; }
     nav .nav li.docs:hover ul {
-      left: -135px; }
+      left: -133px; }
     nav .nav li.dashboard:hover div.pointer::before {
       left: 35px; }
     nav .nav li.admin:hover div.pointer::before {
@@ -1118,7 +1127,7 @@ nav {
     nav .nav li.sysadmin:hover div.pointer::before {
       left: 30px; }
     nav .nav li.docs:hover div.pointer::before {
-      left: 16px; }
+      left: 18px; }
     nav .nav li:hover ul a:hover {
       color: #555; }
     nav .nav div.pointer::before {
@@ -1251,55 +1260,57 @@ nav {
     float: right;
     margin: 8px 5px 0 0; }
 
-.errors .toggle {
-  padding: 12px;
-  cursor: pointer; }
-  .errors .toggle.collapsed {
-    background: url("img/plus.png") no-repeat center; }
-  .errors .toggle.expanded {
-    background: url("img/minus.png") no-repeat center; }
-.errors .info {
-  max-height: 300px;
-  overflow-x: auto;
-  margin: 0 5px 0 0;
-  padding-right: 5px; }
-  .errors .info td.nobreak {
-    width: 300px; }
-.errors .stacktrace {
-  background-color: #FFFFCC;
-  padding: 5px;
-  margin: 20px 1px -1px 1px;
-  border: 1px solid #dee7ee; }
-.errors pre, .errors code {
-  font-family: "Courier New", Courier;
-  background-color: #ffffcc;
-  font-size: 11px; }
-.errors .rule-match, .errors .new-rule-match {
-  border: solid 1px;
-  padding: 2px 0 2px 0; }
-.errors .rule-match.last-selected, .errors .new-rule-match.last-selected {
-  border: solid 2px; }
-.errors .rule-match {
-  background-color: #97f997;
-  border-color: green; }
-.errors .new-rule-match {
-  background-color: yellow; }
-.errors .old-rule-match {
-  background-color: #ddd; }
-.errors .rule-controls {
-  position: absolute;
-  background-color: white;
-  padding: 3px;
-  display: inline;
-  padding-left: 6px; }
-  .errors .rule-controls .btn-mini {
-    padding: 1px;
-    margin-right: 2px;
-    margin-left: 2px; }
-.errors .error-stack .rule-controls {
-  background-color: #FFC; }
-.errors .st-type, .errors .st-message {
-  display: inline-block;
-  font-weight: bold;
-  vertical-align: top; }
+.errors {
+  margin: 0 10px; }
+  .errors .toggle {
+    padding: 12px;
+    cursor: pointer; }
+    .errors .toggle.collapsed {
+      background: url("img/plus.png") no-repeat center; }
+    .errors .toggle.expanded {
+      background: url("img/minus.png") no-repeat center; }
+  .errors .info {
+    max-height: 300px;
+    overflow-x: auto;
+    margin: 0 5px 0 0;
+    padding-right: 5px; }
+    .errors .info td.nobreak {
+      width: 300px; }
+  .errors .stacktrace {
+    background-color: #FFFFCC;
+    padding: 5px;
+    margin: 10px 1px -1px 1px;
+    border: 1px solid #dee7ee; }
+  .errors pre, .errors code {
+    font-family: "Courier New", Courier;
+    background-color: #ffffcc;
+    font-size: 11px; }
+  .errors .rule-match, .errors .new-rule-match {
+    border: solid 1px;
+    padding: 2px 0 2px 0; }
+  .errors .rule-match.last-selected, .errors .new-rule-match.last-selected {
+    border: solid 2px; }
+  .errors .rule-match {
+    background-color: #97f997;
+    border-color: green; }
+  .errors .new-rule-match {
+    background-color: yellow; }
+  .errors .old-rule-match {
+    background-color: #ddd; }
+  .errors .rule-controls {
+    position: absolute;
+    background-color: white;
+    padding: 3px;
+    display: inline;
+    padding-left: 6px; }
+    .errors .rule-controls .btn-mini {
+      padding: 1px;
+      margin-right: 2px;
+      margin-left: 2px; }
+  .errors .error-stack .rule-controls {
+    background-color: #FFC; }
+  .errors .st-type, .errors .st-message {
+    display: inline-block;
+    font-weight: bold;
+    vertical-align: top; }
 
