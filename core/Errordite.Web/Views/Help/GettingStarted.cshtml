@@ -10,36 +10,36 @@
 }
 
 <section class="centered">
-    <div class="title">
-        <h1>Quick start guide</h1>
+    <div class="content">
+         <h1>Quick start guide</h1>
+        <p>Getting started with Errordite couldn't be simpler. Once you have <a href="@Url.SignUp()">signed up</a> follow the steps below to start using Errordite in your applications.</p>
+        <h2>1. Get your application token</h2>
+        <p>
+            When you signed up, an Errordite Application was created.  To find its token, just go to the <a href="@Url.Applications()">applications</a> page.
+        </p>
+        <h2>2. Configure your code</h2>
+        <p>
+            If you are using .net, the best way to send errors to Errordite is to use the Errordite client.  We recommend you download it from Nuget.  Search for "Errordite" in the 
+            package manager or at <a href="https://nuget.org/packages?q=errordite">nuget.org</a>.  If you prefer, you can download the binaries directly <a href="@Url.ClientDownload()">here</a>. For more information, see the <a href="@Url.Client()">help page</a>.
+        </p>
+        <p>The minimal configuration is the following:</p>
+        <pre class="prettyprint lang-xml xml">
+    &lt;configSections>
+        &lt;section name="errordite" type="Errordite.Client.Configuration.ClientConfiguration, Errordite.Client.v3.5" />
+    &lt;/configSections>
+
+    &lt;errordite
+        token="**your token here**"
+        enabled="true"
+        endpoint="https://www.errordite.com/receiveerror" />
+        </pre>
+
+        <p>
+            If you are using a different technology, you can <a href="@Url.JsonFormat()">send your errors directly via JSON</a>.  
+        </p>
+        <h2>3. Start managing your errors!</h2>
+        <p>
+            Once your application starts generating errors you will receive notifications of issues being created via email and in the alerts panel in Errordite.
+        </p>
     </div>
-    <p>Getting started with Errordite couldn't be simpler. Once you have <a href="@Url.SignUp()">signed up</a> follow the steps below to start using Errordite in your applications.</p>
-    <h2>1. Get your application token</h2>
-    <p>
-        When you signed up, an Errordite Application was created.  To find its token, just go to the <a href="@Url.Applications()">applications</a> page.
-    </p>
-    <h2>2. Configure your code</h2>
-    <p>
-        If you are using .net, the best way to send errors to Errordite is to use the Errordite client.  We recommend you download it from Nuget.  Search for "Errordite" in the 
-        package manager or at <a href="https://nuget.org/packages?q=errordite">nuget.org</a>.  If you prefer, you can download the binaries directly <a href="@Url.ClientDownload()">here</a>. For more information, see the <a href="@Url.Client()">help page</a>.
-    </p>
-    <p>The minimal configuration is the following:</p>
-    <pre class="prettyprint lang-xml xml">
-&lt;configSections>
-    &lt;section name="errordite" type="Errordite.Client.Configuration.ClientConfiguration, Errordite.Client.v3.5" />
-&lt;/configSections>
-
-&lt;errordite
-    token="**your token here**"
-    enabled="true"
-    endpoint="https://www.errordite.com/receiveerror" />
-    </pre>
-
-    <p>
-        If you are using a different technology, you can <a href="@Url.JsonFormat()">send your errors directly via JSON</a>.  
-    </p>
-    <h2>3. Start managing your errors!</h2>
-    <p>
-        Once your application starts generating errors you will receive notifications of issues being created via email and in the alerts panel in Errordite.
-    </p>
 </section>

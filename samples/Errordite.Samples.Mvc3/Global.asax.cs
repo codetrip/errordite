@@ -34,7 +34,7 @@ namespace Errordite.Samples.Mvc3
 
         }
 
-        private class Logger : IErrorditeLogger
+        private class Logger// : IErrorditeLogger
         {
             public void Debug(string message, params object[] args)
             {
@@ -51,7 +51,7 @@ namespace Errordite.Samples.Mvc3
         {
             AreaRegistration.RegisterAllAreas();
 
-            ErrorditeClient.SetLogger(new Logger());
+           // ErrorditeClient.SetLogger(new Logger());
 
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);

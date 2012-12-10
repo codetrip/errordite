@@ -6,22 +6,17 @@
     ViewBag.Title = "Errors";
 }
 
-<section id="criteria" class="centered">
-	@if (!Model.ErrorsViewModel.Applications.Any())
-	{
-		<p>You do not have any applications set up, <a href="@Url.AddApplication()">click here to create an application.</a></p>    
-	}
-	else
-	{
-		@Html.Partial("Errors/ErrorCriteria", Model.ErrorsViewModel)
-	}
-</section>
-
-<section id="errors" class="full">
-	@if (Model.ErrorsViewModel.Applications.Any())
-	{
-		<div class="clear"></div>
-
-		@Html.Partial("Errors/ErrorItems", Model.ErrorsViewModel)
-	}
+<section id="errors" class="centered">
+    <div class="content">
+        @if (!Model.ErrorsViewModel.Applications.Any())
+        {
+            <p>You do not have any applications set up, <a href="@Url.AddApplication()">click here to create an application.</a></p>    
+        }
+        else
+        {
+            @Html.Partial("Errors/ErrorCriteria", Model.ErrorsViewModel)
+            <div class="clear"></div>
+            @Html.Partial("Errors/ErrorItems", Model.ErrorsViewModel)
+        }
+    </div>
 </section>

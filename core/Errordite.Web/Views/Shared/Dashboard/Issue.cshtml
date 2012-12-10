@@ -1,0 +1,92 @@
+﻿@model Errordite.Web.Models.Issues.IssueItemViewModel
+
+<tr>
+    <td rowspan="2">
+        <div class="info-bar"></div>
+    </td>
+</tr>
+<tr>
+    <td colspan="3" class="info-item-heading">
+		Name
+    </td>
+</tr>
+<tr>
+    <td colspan="3" class="info-item">
+		@Model.Name
+    </td>
+</tr>
+<tr>
+    <td>
+        <div class="info-item-heading">
+            Status
+        </div>
+    </td>
+    <td>
+        <div class="info-item-heading">
+            Assigned To
+        </div>
+        <div class="info-item">
+            @Model.UserName
+        </div>
+    </td>
+    <td>
+        <div class="info-item-heading">
+            Count
+        </div>
+        <div class="info-item">
+            @Model.ErrorCount
+        </div>
+    </td>
+</tr>
+<tr>
+    <td>
+        <div class="info-item-heading">
+            Count
+        </div>
+    </td>
+    <td>
+        <div class="info-item-heading">
+            Count
+        </div>
+    </td>
+    <td>
+        <div class="info-item-heading">
+            Count
+        </div>
+    </td>
+</tr>
+
+@*<div class="dashboard-item">
+	<div class="info-bar">&nbsp;</div>	
+	<div class="info-content">
+		<div class="info-row">
+			<div class="info-item-heading">
+			    Name
+			</div>
+			<div class="info-item">
+				@Model.Name
+			</div>
+		</div>
+		<div class="info-row">
+			<div class="info-item-heading split">
+				Status
+			</div>
+		    <div class="info-item">
+		        @Model.Status
+		    </div>
+            <div class="info-item-heading">
+				Assigned To
+			</div>
+		    <div class="info-item">
+		        @Model.UserName
+		    </div>
+            <div class="info-item-heading">
+				Count
+			</div>
+			<div class="info-item">
+				@Model.ErrorCount
+			</div>
+		</div>
+	</div>
+</div>*@
+        

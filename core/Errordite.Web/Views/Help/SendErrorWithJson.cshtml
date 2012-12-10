@@ -10,14 +10,15 @@
 }
 
 <section class="centered">
-    <h1>Send error with JSON</h1>
+    <div class="content">
+        <h1>Send error with JSON</h1>
         
-    <p>
-        Errordite can work with any language or technology.  Simply post the JSON below to https://www.errordite.com/receiveerror.  
-        If you would like to create a client plug-in for your favoured technology, we'd love to <a href="@Url.Contact()">hear from you</a>.
-    </p>
+        <p>
+            Errordite can work with any language or technology.  Simply post the JSON below to https://www.errordite.com/receiveerror.  
+            If you would like to create a client plug-in for your favoured technology, we'd love to <a href="@Url.Contact()">hear from you</a>.
+        </p>
 
-    <pre class="prettyprint json-api">
+        <pre class="prettyprint">
 {
     "Token" : &lt;string>,              //your application token, taken from Errordite
     "MachineName" : &lt;string>,        //the machine that generated the error
@@ -42,5 +43,7 @@
         }
     }
 }
-    </pre>
+        </pre>
+    </div>
+    
 </section>

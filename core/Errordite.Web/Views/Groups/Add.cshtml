@@ -12,29 +12,29 @@
 }
 
 <section class="centered">
-
-    @using (Html.BeginForm("add", "groups", FormMethod.Post, new {id = "addGroupForm"}))
-    {
-        <h1>Add Group</h1>
-        <div class="form push-up">
-            <ul>
-                <li>
-                    @Html.LabelFor(m => m.Name, "Name")
-                    @Html.TextBoxFor(m => m.Name)
-                    @Html.ValidationMessageFor(m => m.Name)
-                </li>
-                <li class="sublist">
-                    <label>Group Members</label>
-                    <ul>
-                        @Html.EditorFor(m => m.Users)
-                    </ul>
-                </li>
-                <li>
-                    <input class="btn btn-medium btn-blue" type="submit" value="Add" />
-                    <a class="btn btn-medium btn-cancel" href="@Url.Groups()">Cancel</a>
-                </li>
-            </ul>
-        </div>
-    }
-
+    <div class="content">
+        @using (Html.BeginForm("add", "groups", FormMethod.Post, new {id = "addGroupForm"}))
+        {
+            <h1>Add Group</h1>
+            <div class="form push-up">
+                <ul>
+                    <li>
+                        @Html.LabelFor(m => m.Name, "Name")
+                        @Html.TextBoxFor(m => m.Name)
+                        @Html.ValidationMessageFor(m => m.Name)
+                    </li>
+                    <li class="sublist">
+                        <label>Group Members</label>
+                        <ul>
+                            @Html.EditorFor(m => m.Users)
+                        </ul>
+                    </li>
+                    <li>
+                        <input class="btn btn-medium btn-blue" type="submit" value="Add" />
+                        <a class="btn btn-medium btn-cancel" href="@Url.Groups()">Cancel</a>
+                    </li>
+                </ul>
+            </div>
+        }
+    </div>
 </section>
