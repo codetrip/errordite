@@ -425,7 +425,6 @@
     <Content Include="Assets\Js\lib\jquery.history.js" />
     <Content Include="Assets\Js\lib\jquery.cookie.js" />
     <Content Include="Assets\Js\lib\jquery.loader.js" />
-    <Content Include="Assets\Js\lib\knockout-2.0.0.js" />
     <Content Include="Assets\Js\lib\prettify.js" />
     <Content Include="Assets\Js\lib\underscore.js" />
     <Content Include="Assets\Js\lib\modernizr-2.6.2.min.js">
