@@ -330,7 +330,7 @@
       <DebugInfo>False</DebugInfo>
     </Content>
     <Content Include="Assets\Css\img\ajax-loader.gif" />
-    <Content Include="Assets\Css\lib\fonts.css" />
+    <Content Include="Assets\Css\fonts.css" />
     <Content Include="Assets\Css\img\glyphicons-halflings.png" />
     <Content Include="Assets\Css\img\icons.png" />
     <Content Include="Assets\Css\img\info.png" />

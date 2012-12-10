@@ -57,7 +57,7 @@ h1 {
   margin: 20px 0 15px 0; }
   h1.superlarge {
     margin: 0;
-    padding: 20px 0;
+    padding: 20px 5px;
     font-size: 36px;
     font-weight: 300; }
     h1.superlarge a {
@@ -266,8 +266,7 @@ section {
 
 .centered {
   margin: 0 auto;
-  width: 974px;
-  padding: 0 5px; }
+  width: 974px; }
 
 .full {
   width: 100%; }
@@ -291,14 +290,20 @@ section {
 .medium-padding {
   padding: 10px 10px 10px 0; }
 
+.content {
+  width: 99%;
+  padding: 10px 5px; }
+
 /*-----------------------------------------------------------------------------------*/
 /*	COMPONENTS
 /*-----------------------------------------------------------------------------------*/
 .tabs {
   margin: 0 auto;
   width: 974px;
-  padding: 8px 0 0 5px;
+  padding: 8px 0 0 0;
   font-size: 13px; }
+  .tabs li:first-child {
+    margin-left: 5px; }
   .tabs li {
     float: left; }
     .tabs li > a {
@@ -325,6 +330,8 @@ section {
     cursor: default; }
   .tabs.inner {
     width: 955px; }
+    .tabs.inner li:first-child {
+      margin-left: 0; }
 
 .tab-content {
   margin-top: 28px;
@@ -1066,6 +1073,10 @@ section {
 
 nav {
   float: left; }
+  nav .nav-container {
+    padding-left: 123px; }
+  nav .nav-container-system {
+    padding-left: 41px; }
   nav .nav {
     list-style: none;
     margin: 0;
@@ -1119,7 +1130,7 @@ nav {
     nav .nav li.admin:hover ul {
       left: -80px; }
     nav .nav li.docs:hover ul {
-      left: -133px; }
+      left: -123px; }
     nav .nav li.dashboard:hover div.pointer::before {
       left: 35px; }
     nav .nav li.admin:hover div.pointer::before {
@@ -1260,57 +1271,55 @@ nav {
     float: right;
     margin: 8px 5px 0 0; }
 
-.errors {
-  margin: 0 10px; }
-  .errors .toggle {
-    padding: 12px;
-    cursor: pointer; }
-    .errors .toggle.collapsed {
-      background: url("img/plus.png") no-repeat center; }
-    .errors .toggle.expanded {
-      background: url("img/minus.png") no-repeat center; }
-  .errors .info {
-    max-height: 300px;
-    overflow-x: auto;
-    margin: 0 5px 0 0;
-    padding-right: 5px; }
-    .errors .info td.nobreak {
-      width: 300px; }
-  .errors .stacktrace {
-    background-color: #FFFFCC;
-    padding: 5px;
-    margin: 10px 1px -1px 1px;
-    border: 1px solid #dee7ee; }
-  .errors pre, .errors code {
-    font-family: "Courier New", Courier;
-    background-color: #ffffcc;
-    font-size: 11px; }
-  .errors .rule-match, .errors .new-rule-match {
-    border: solid 1px;
-    padding: 2px 0 2px 0; }
-  .errors .rule-match.last-selected, .errors .new-rule-match.last-selected {
-    border: solid 2px; }
-  .errors .rule-match {
-    background-color: #97f997;
-    border-color: green; }
-  .errors .new-rule-match {
-    background-color: yellow; }
-  .errors .old-rule-match {
-    background-color: #ddd; }
-  .errors .rule-controls {
-    position: absolute;
-    background-color: white;
-    padding: 3px;
-    display: inline;
-    padding-left: 6px; }
-    .errors .rule-controls .btn-mini {
-      padding: 1px;
-      margin-right: 2px;
-      margin-left: 2px; }
-  .errors .error-stack .rule-controls {
-    background-color: #FFC; }
-  .errors .st-type, .errors .st-message {
-    display: inline-block;
-    font-weight: bold;
-    vertical-align: top; }
+.errors .toggle {
+  padding: 12px;
+  cursor: pointer; }
+  .errors .toggle.collapsed {
+    background: url("img/plus.png") no-repeat center; }
+  .errors .toggle.expanded {
+    background: url("img/minus.png") no-repeat center; }
+.errors .info {
+  max-height: 300px;
+  overflow-x: auto;
+  margin: 0 5px 0 0;
+  padding-right: 5px; }
+  .errors .info td.nobreak {
+    width: 300px; }
+.errors .stacktrace {
+  background-color: #FFFFCC;
+  padding: 5px;
+  margin: 10px 1px -1px 1px;
+  border: 1px solid #dee7ee; }
+.errors pre, .errors code {
+  font-family: "Courier New", Courier;
+  background-color: #ffffcc;
+  font-size: 11px; }
+.errors .rule-match, .errors .new-rule-match {
+  border: solid 1px;
+  padding: 2px 0 2px 0; }
+.errors .rule-match.last-selected, .errors .new-rule-match.last-selected {
+  border: solid 2px; }
+.errors .rule-match {
+  background-color: #97f997;
+  border-color: green; }
+.errors .new-rule-match {
+  background-color: yellow; }
+.errors .old-rule-match {
+  background-color: #ddd; }
+.errors .rule-controls {
+  position: absolute;
+  background-color: white;
+  padding: 3px;
+  display: inline;
+  padding-left: 6px; }
+  .errors .rule-controls .btn-mini {
+    padding: 1px;
+    margin-right: 2px;
+    margin-left: 2px; }
+.errors .error-stack .rule-controls {
+  background-color: #FFC; }
+.errors .st-type, .errors .st-message {
+  display: inline-block;
+  font-weight: bold;
+  vertical-align: top; }
 

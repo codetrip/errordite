@@ -177,11 +177,9 @@ namespace Errordite.Web.Controllers
 
             var request = new GetApplicationErrorsRequest
             {
-                ApplicationId = postModel.ApplicationId,
                 OrganisationId = Core.AppContext.CurrentUser.OrganisationId,
                 IssueId = postModel.IssueId,
                 Paging = paging,
-                Query = postModel.Query, 
                 UserTimezoneId = AppContext.CurrentUser.EffectiveTimezoneId(),
             }; 
             
@@ -218,7 +216,7 @@ namespace Errordite.Web.Controllers
 
             model.Paging.Tab = IssueTab.Errors.ToString();
 
-            return PartialView("Errors/ErrorCriteria", model);
+            return PartialView("Errors/ErrorItems", model);
         }
 
         private IssueViewModel GetViewModel(ErrorCriteriaPostModel postModel, IssueTab tab)

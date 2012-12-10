@@ -12,19 +12,21 @@
 }     
 
 <section class="centered">
-    <h1>Pricing</h1>
-
-    <p>
-        Errordite is a subscription-based service, with payments made monthly. The first 30 days is a free trial, after which you may select
-        from one of 4 different plans - details below.  (At present we are in beta - the 30 day trials will not start until the beta period is over.)
-    </p>
+    <div class="content">
+        <h1>Pricing</h1>
+        <p>
+            Errordite is a subscription-based service, with payments made monthly. The first 30 days is a free trial, after which you may select
+            from one of 4 different plans - details below.  (At present we are in beta - the 30 day trials will not start until the beta period is over.)
+        </p>
     
-    @foreach (var paymentPlan in Model)
-    {
-        @Html.Partial("Help/PaymentPlan", paymentPlan)
-    }
+        @foreach (var paymentPlan in Model)
+        {
+            @Html.Partial("Help/PaymentPlan", paymentPlan)
+        }
 
-    <p>
-        If you needs are not met by what is here, please <a href="@Url.Contact()">contact us</a>.
-    </p>
+        <p>
+            If you needs are not met by what is here, please <a href="@Url.Contact()">contact us</a>.
+        </p>
+    </div>
+    
 </section>

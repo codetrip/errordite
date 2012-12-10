@@ -93,7 +93,7 @@ h1 {
 	margin:20px 0 15px 0;
 	&.superlarge {
 		margin:0;
-		padding:20px 0;
+		padding:20px 5px;
 		font-size:36px;
 		font-weight: $lightfontweight;
 		a {
@@ -360,7 +360,6 @@ section {
 .centered {
   margin: 0 auto;
   width: $minwidth;
-  padding:0 5px;
 }
 
 .full {
@@ -392,6 +391,11 @@ section {
 	padding:10px 10px 10px 0;
 }
 
+.content {
+	width: 99%;
+	padding: 10px 5px;
+}
+
 /*-----------------------------------------------------------------------------------*/
 /*	COMPONENTS
 /*-----------------------------------------------------------------------------------*/
@@ -399,8 +403,11 @@ section {
 .tabs {
     margin: 0 auto;
     width: $minwidth;
-    padding:8px 0 0 5px;
+    padding:8px 0 0 0;
     font-size:13px;
+	li:first-child {
+		margin-left:5px;
+	}
     li {
 	  float:left;
 	  > a {
@@ -432,6 +439,9 @@ section {
 	  }
 	&.inner {
 		width:955px;
+		li:first-child {
+			margin-left:0;
+		}
 	}
 }
 
@@ -1349,6 +1359,12 @@ section {
 
 nav {
   float: left;
+  .nav-container {
+	padding-left: 123px;
+  }
+  .nav-container-system {
+	padding-left: 41px;
+  }
   .nav {
 	  list-style: none;
 	  margin: 0;
@@ -1414,7 +1430,7 @@ nav {
       left: -80px;
     }
     &.docs:hover ul {
-      left: -133px;
+      left: -123px;
     }
     &.dashboard:hover div.pointer::before {
       left: 35px;
@@ -1606,8 +1622,6 @@ nav {
 }
 
 .errors {
-	margin:0 10px;
-
 	.toggle {
 		padding:12px;
 		cursor:pointer;

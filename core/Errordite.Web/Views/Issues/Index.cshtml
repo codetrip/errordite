@@ -13,21 +13,24 @@
 }
            
 <section class="centered" id="issues">
-    @if (!Model.Applications.Any())
-    {
-        <p>You do not have any applications set up, <a href="@Url.AddApplication()">click here to create an application.</a></p>    
-    }
-    else
-    {
-        @Html.Partial("Issues/IssuesCriteria", Model)
-
-        if (Model.Issues != null && Model.Issues.Any())
+    <div class="content">
+        @if (!Model.Applications.Any())
         {
-            @Html.Partial("Issues/Issues", Model)
+            <p>You do not have any applications set up, <a href="@Url.AddApplication()">click here to create an application.</a></p>    
         }
         else
         {
-            <p>No issues were returned from your query.</p>  
+            @Html.Partial("Issues/IssuesCriteria", Model)
+
+            if (Model.Issues != null && Model.Issues.Any())
+            {
+                @Html.Partial("Issues/Issues", Model)
+            }
+            else
+            {
+                <p>No issues were returned from your query.</p>  
+            }
         }
-    }
+    </div>
+    
 </section>

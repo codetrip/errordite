@@ -42,58 +42,60 @@
             }
         </div>
         <nav>
-            <ul class="nav">
-                @if (appContext.AuthenticationStatus == AuthenticationStatus.Authenticated && (appContext.CurrentUser.Role == UserRole.SuperUser || appContext.ImpersonatorAppContext != null))
-                {
-                    <li class="nav-item sysadmin">
-                        <a href="@Url.SysAdmin()">System <span class="rotate">›</span></a>
+            <div class="@(appContext.CurrentUser.Role == UserRole.SuperUser ? "nav-container-system" : "nav-container")">
+                <ul class="nav">
+                    @if (appContext.AuthenticationStatus == AuthenticationStatus.Authenticated && (appContext.CurrentUser.Role == UserRole.SuperUser || appContext.ImpersonatorAppContext != null))
+                    {
+                        <li class="nav-item sysadmin">
+                            <a href="@Url.SysAdmin()">System <span class="rotate">›</span></a>
+                            <div class="pointer">
+                                <ul>
+                                    <li><a href="@Url.Organisations()">Organisations ›</a></li> 
+                                    <li><a href="@Url.Impersonate()">Impersonate ›</a></li> 
+                                    <li><a href="@Url.ErrorditeErrors()">Errors ›</a></li> 
+                                    <li><a href="@Url.FlushAllCaches()">Flush Caches ›</a></li> 
+                                    @foreach (var cache in Enum.GetNames(typeof (CacheProfiles)))
+                                    {
+                                        <li><a href="@Url.Cache(cache)">@cache Cache ›</a></li>
+                                    }
+                                </ul>
+                            </div>
+                        </li>
+                    }
+                    <li class="nav-item dashboard">
+                        <a href="@Url.Dashboard()">Dashboard <span class="rotate">›</span></a>
                         <div class="pointer">
                             <ul>
-                                <li><a href="@Url.Organisations()">Organisations ›</a></li> 
-                                <li><a href="@Url.Impersonate()">Impersonate ›</a></li> 
-                                <li><a href="@Url.ErrorditeErrors()">Errors ›</a></li> 
-                                <li><a href="@Url.FlushAllCaches()">Flush Caches ›</a></li> 
-                                @foreach (var cache in Enum.GetNames(typeof (CacheProfiles)))
+                                <li><a href="@ViewData.GetIssuesUrl(Url.Issues())">Issues ›</a></li>
+                                <li><a href="@ViewData.GetErrorsUrl(Url.Errors())">Errors ›</a></li>
+                                <li><a href="@Url.AddIssue()">Create Issue ›</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item admin">
+                        <a href="@Url.Applications()">Admin <span class="rotate">›</span></a>
+                        <div class="pointer">
+                            <ul>
+                                @foreach (var adminPage in Breadcrumbs.GetById(BreadcrumbId.Admin, Url).Children)
                                 {
-                                    <li><a href="@Url.Cache(cache)">@cache Cache ›</a></li>
+                                    <li><a href="@adminPage.Link">@adminPage.Title ›</a></li>
                                 }
                             </ul>
                         </div>
                     </li>
-                }
-                <li class="nav-item dashboard">
-                    <a href="@Url.Dashboard()">Dashboard <span class="rotate">›</span></a>
-                    <div class="pointer">
-                        <ul>
-                            <li><a href="@ViewData.GetIssuesUrl(Url.Issues())">Issues ›</a></li>
-                            <li><a href="@ViewData.GetErrorsUrl(Url.Errors())">Errors ›</a></li>
-                            <li><a href="@Url.AddIssue()">Create Issue ›</a></li>
-                        </ul>
-                    </div>
-                </li>
-                <li class="nav-item admin">
-                    <a href="@Url.Applications()">Admin <span class="rotate">›</span></a>
-                    <div class="pointer">
-                        <ul>
-                            @foreach (var adminPage in Breadcrumbs.GetById(BreadcrumbId.Admin, Url).Children)
-                            {
-                                <li><a href="@adminPage.Link">@adminPage.Title ›</a></li>
-                            }
-                        </ul>
-                    </div>
-                </li>
-                <li class="nav-item docs">
-                    <a href="@Url.GettingStarted()">Docs <span class="rotate">›</span></a>
-                    <div class="pointer">
-                        <ul>
-                            <li><a href="@Url.GettingStarted()">Getting Started ›</a></li>
-                            <li><a href="@Url.Pricing()">Pricing ›</a></li>
-                            <li><a href="@Url.Client()">Client Help ›</a></li>
-                            <li><a href="@Url.Features()">Features ›</a></li>
-                        </ul>
-                    </div>
-                </li>
-            </ul>
+                    <li class="nav-item docs">
+                        <a href="@Url.GettingStarted()">Docs <span class="rotate">›</span></a>
+                        <div class="pointer">
+                            <ul>
+                                <li><a href="@Url.GettingStarted()">Getting Started ›</a></li>
+                                <li><a href="@Url.Pricing()">Pricing ›</a></li>
+                                <li><a href="@Url.Client()">Client Help ›</a></li>
+                                <li><a href="@Url.Features()">Features ›</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
         </nav>
     </div>
     </div>
