@@ -1688,6 +1688,34 @@ nav {
   }
 }
 
+.dashboard-item {
+	border:1px solid $darkblue;
+	-webkit-border-radius: $borderradius;
+	-moz-border-radius: $borderradius;
+	border-radius: $borderradius;
+	width:100%;
+	.bar {
+		width:25px;
+		height:100%;
+		background-color:$darkblue;
+		-webkit-border-radius: $borderradius;
+		-moz-border-radius: $borderradius;
+		border-radius: $borderradius;
+		float:left;
+		margin:5px;
+	}
+	.content {
+		float:left;
+	}
+	.info-items {
 
+	}
+	.info-item {
+
+	}
+	.info-name {
+
+	}
+}
 
 
