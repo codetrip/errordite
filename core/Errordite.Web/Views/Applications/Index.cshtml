@@ -12,14 +12,16 @@
 }
 
 <section id="applications" class="centered">
-    <h1>Applications</h1>
-    <p>Your applications are displayed below. <a href="@Url.AddApplication()">Click here to add a new application</a></p>
-    @if (Model.Applications.Count > 0)
-    {
-        @Html.Partial("Applications/List")
-    }
-    else
-    {
-        <p>You have no applications.</p>
-    }
+    <div class="content">
+        <h1>Applications</h1>
+        <p>Your applications are displayed below. <a href="@Url.AddApplication()">Click here to add a new application</a></p>
+        @if (Model.Applications.Count > 0)
+        {
+            @Html.Partial("Applications/List")
+        }
+        else
+        {
+            <p>You have no applications.</p>
+        }
+    </div>
 </section>

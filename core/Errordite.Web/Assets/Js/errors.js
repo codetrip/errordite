@@ -5,7 +5,7 @@
     $root = $('section#errors, section#issue, section#errordite-errors').first();
     if ($root.length > 0) {
       init = new Initalisation();
-      init.datepicker($('section#criteria'));
+      init.datepicker($root);
       openedErrors = [];
       $root.delegate('ul.tabs li a', 'click', function(e) {
         var $this;

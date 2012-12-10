@@ -12,58 +12,59 @@
 }
 
 <section class="centered">
+    <div class="content">
+        @using (Html.BeginForm("edit", "applications", FormMethod.Post, new { id = "editapplicationForm" }))
+        {
+            @Html.HiddenFor(m => m.Id)
+            @Html.HiddenFor(m => m.MatchRuleFactoryId)
 
-    @using (Html.BeginForm("edit", "applications", FormMethod.Post, new { id = "editapplicationForm" }))
-    {
-        @Html.HiddenFor(m => m.Id)
-        @Html.HiddenFor(m => m.MatchRuleFactoryId)
-
-    <h1>Edit application</h1>
-        <div class="form double push-up">
-            <ul>
-                <li>
-                    @Html.LabelFor(m => m.Name, "Name")
-                    @Html.TextBoxFor(m => m.Name)
-                    @Html.ValidationMessageFor(m => m.Name)
-                </li>
-                <li>
-                    @Html.LabelFor(m => m.UserId, "Default assigned user")
-                    @Html.DropDownListFor(m => m.UserId, Model.Users)
-                    <i rel="tooltip" title="Who will the default assignee be for issues created within this application?" class="icon-info"></i>
-                    @Html.ValidationMessageFor(m => m.UserId)
-                </li>
-                <li class="sublist">
-                    @Html.LabelFor(m => m.NotificationGroups, "Send notifications to these groups")
-                    <ul>
-                        @Html.EditorFor(m => m.NotificationGroups)
-                    </ul>
-                </li>
-                <li class="inline">
-                    @Html.CheckBoxFor(m => m.IsActive) 
-                    @Html.LabelFor(m => m.IsActive, "Activate application")
-                    <i rel="tooltip" title="Only active applications will receive errors and have issues created." class="icon-info"></i>
-                </li>
-                <li>
-                    <input type="submit" class="btn btn-medium btn-blue" value="Save" />
-                    <a class="btn btn-medium btn-cancel" href="@Url.Applications()" >Cancel</a>
-                </li>
-            </ul>
-        </div>
-        <div class="form double push-up">
-            <ul>
-                <li>
-                    @Html.LabelFor(m => m.HipChatRoomId, "HipChat room number")
-                    @Html.TextBoxFor(m => m.HipChatRoomId)
-                    <i rel="tooltip" title="Tell us the HipChat room number you want notifications for this application to go to." class="icon-info"></i>
-                    @Html.ValidationMessageFor(m => m.HipChatRoomId)
-                </li>
-                <li>
-                    @Html.LabelFor(m => m.HipChatAuthToken, "HipChat auth token")
-                    @Html.TextBoxFor(m => m.HipChatAuthToken)
-                    <i rel="tooltip" title="We need your HipChat auth token to allow us to post to your room." class="icon-info"></i>
-                    @Html.ValidationMessageFor(m => m.HipChatAuthToken)
-                </li>
-            </ul>
-        </div>
-    }
+        <h1>Edit application</h1>
+            <div class="form double push-up">
+                <ul>
+                    <li>
+                        @Html.LabelFor(m => m.Name, "Name")
+                        @Html.TextBoxFor(m => m.Name)
+                        @Html.ValidationMessageFor(m => m.Name)
+                    </li>
+                    <li>
+                        @Html.LabelFor(m => m.UserId, "Default assigned user")
+                        @Html.DropDownListFor(m => m.UserId, Model.Users)
+                        <i rel="tooltip" title="Who will the default assignee be for issues created within this application?" class="icon-info"></i>
+                        @Html.ValidationMessageFor(m => m.UserId)
+                    </li>
+                    <li class="sublist">
+                        @Html.LabelFor(m => m.NotificationGroups, "Send notifications to these groups")
+                        <ul>
+                            @Html.EditorFor(m => m.NotificationGroups)
+                        </ul>
+                    </li>
+                    <li class="inline">
+                        @Html.CheckBoxFor(m => m.IsActive) 
+                        @Html.LabelFor(m => m.IsActive, "Activate application")
+                        <i rel="tooltip" title="Only active applications will receive errors and have issues created." class="icon-info"></i>
+                    </li>
+                    <li>
+                        <input type="submit" class="btn btn-medium btn-blue" value="Save" />
+                        <a class="btn btn-medium btn-cancel" href="@Url.Applications()" >Cancel</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="form double push-up">
+                <ul>
+                    <li>
+                        @Html.LabelFor(m => m.HipChatRoomId, "HipChat room number")
+                        @Html.TextBoxFor(m => m.HipChatRoomId)
+                        <i rel="tooltip" title="Tell us the HipChat room number you want notifications for this application to go to." class="icon-info"></i>
+                        @Html.ValidationMessageFor(m => m.HipChatRoomId)
+                    </li>
+                    <li>
+                        @Html.LabelFor(m => m.HipChatAuthToken, "HipChat auth token")
+                        @Html.TextBoxFor(m => m.HipChatAuthToken)
+                        <i rel="tooltip" title="We need your HipChat auth token to allow us to post to your room." class="icon-info"></i>
+                        @Html.ValidationMessageFor(m => m.HipChatAuthToken)
+                    </li>
+                </ul>
+            </div>
+        }
+    </div>
 </section>
