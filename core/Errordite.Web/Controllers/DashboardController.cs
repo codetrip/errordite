@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using CodeTrip.Core.Paging;
 using Errordite.Core.Domain.Organisation;
@@ -62,7 +63,7 @@ namespace Errordite.Web.Controllers
 
                 var recentErrors = _getApplicationErrorsQuery.Invoke(new GetApplicationErrorsRequest
                 {
-                    Paging = new PageRequestWithSort(1, 10, sortDescending: true),
+                    Paging = new PageRequestWithSort(1, 5, sortDescending: true),
                     OrganisationId = Core.AppContext.CurrentUser.OrganisationId,
                     Query = q
                 }).Errors;
@@ -70,7 +71,11 @@ namespace Errordite.Web.Controllers
                 viewModel.Stats = _getOrganisationStatisticsQuery.Invoke(new GetOrganisationStatisticsRequest { OrganisationId = Core.AppContext.CurrentUser.OrganisationId }).Statistics ?? new Statistics();
                 viewModel.Stats.CurrentUserIssueCount = issues.PagingStatus.TotalItems;
                 viewModel.RecentIssues = IssueItemViewModel.FromIssues(recentIssues.Items, applications.Items, Core.GetUsers().Items);
-                viewModel.RecentErrors = recentErrors.Items.Select(e => new ErrorInstanceViewModel { Error = e }).ToList();
+                viewModel.RecentErrors = recentErrors.Items.Select(e => new ErrorInstanceViewModel
+	            {
+		            Error = e,
+					ApplicationName = GetApplicationName(applications.Items, e.ApplicationId)
+	            }).ToList();
             }
             else
             {
@@ -79,5 +84,11 @@ namespace Errordite.Web.Controllers
 
             return View(viewModel);
         }
+
+		private string GetApplicationName(IEnumerable<Application> applications, string applicationId)
+		{
+			var application = applications.FirstOrDefault(a => a.Id == applicationId);
+			return application == null ? "Not Found" : application.Name;
+		}
     }
 }
