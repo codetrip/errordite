@@ -57,14 +57,29 @@
 
     @if (Model.HasApplications)
     {
-        <div class="two-col" style="margin-top:-5px">
+        <div class="two-col">
             <h2 class="section-header"><i class="icon-eye"></i>Most Recent Issues</h2>
-            @Html.Partial("Dashboard/RecentIssues", Model.RecentIssues)
+            <table class="dashboard-table">
+                <tbody>
+                    @foreach(var issue in Model.RecentIssues)
+			        {
+				        @Html.Partial("Dashboard/Issue", issue)
+			        }
+                </tbody>
+            </table>
+            
         </div>
-        <div class="two-col" style="margin-top:-5px">
+        <div class="two-col">
             <h2 class="section-header"><i class="icon-cross"></i>Most Recent Errors</h2>
+            <table class="dashboard-table">
+                <tbody>
+			        @foreach (var error in Model.RecentErrors)
+			        {
+			            @Html.Partial("Dashboard/Error", error)
+			        }
+                </tbody>
+            </table>
         </div>
-        
     }
     
 </section>

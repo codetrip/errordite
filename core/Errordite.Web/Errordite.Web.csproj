@@ -330,7 +330,7 @@
       <DebugInfo>False</DebugInfo>
     </Content>
     <Content Include="Assets\Css\img\ajax-loader.gif" />
-    <Content Include="Assets\Css\lib\fonts.css" />
+    <Content Include="Assets\Css\fonts.css" />
     <Content Include="Assets\Css\img\glyphicons-halflings.png" />
     <Content Include="Assets\Css\img\icons.png" />
     <Content Include="Assets\Css\img\info.png" />
@@ -425,7 +425,6 @@
     <Content Include="Assets\Js\lib\jquery.history.js" />
     <Content Include="Assets\Js\lib\jquery.cookie.js" />
     <Content Include="Assets\Js\lib\jquery.loader.js" />
-    <Content Include="Assets\Js\lib\knockout-2.0.0.js" />
     <Content Include="Assets\Js\lib\prettify.js" />
     <Content Include="Assets\Js\lib\underscore.js" />
     <Content Include="Assets\Js\lib\modernizr-2.6.2.min.js">
@@ -788,9 +787,7 @@
     <Content Include="Assets\Fonts\normal-800.woff" />
     <Content Include="Assets\icons.xcf" />
     <Content Include="Views\Issue\RuleUpdates.cshtml" />
-    <Content Include="Views\Shared\Dashboard\RecentIssues.cshtml" />
     <Content Include="Views\Help\Features.cshtml" />
-    <Content Include="Views\Shared\Dashboard\RecentErrors.cshtml" />
     <Content Include="Areas\System\Views\Cache\Item.cshtml" />
     <Content Include="Views\Shared\NotAuthorised.cshtml" />
     <Content Include="Views\Shared\NotFound.cshtml" />
@@ -835,6 +832,12 @@
       <Bare>False</Bare>
       <Iced>False</Iced>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Dashboard\Issue.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Dashboard\Error.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

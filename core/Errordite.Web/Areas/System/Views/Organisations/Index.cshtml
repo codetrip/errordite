@@ -15,74 +15,76 @@
 }
 
 <section id="organisations" class="centered">
-    <h1>Organisations</h1>
-    @if (Model.Organisations != null && Model.Organisations.Items.Any())
-    {
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Name</th>
-                    <th>Payment Plan Id</th>
-                    <th>Status</th>  
-                    <th>Timezone</th>      
-                    <th>Created On Utc</th>   
-                    <th>Users</th>   
-                    <th>Applications</th>  
-                    <th>Suspend / Activate</th> 
-                    <th>Delete</th> 
-                </tr>  
-            </thead>
-            <tbody>
-                @foreach (var organisation in Model.Organisations.Items)
-                {
-                    <tr>  
-                        <td>@organisation.FriendlyId</td>
-                        <td>@organisation.Name</td>
-                        <td>@organisation.PaymentPlanId</td>
-                        <td>@organisation.Status</td>
-                        <td>@organisation.TimezoneId</td>
-                        <td>@organisation.CreatedOnUtc</td>
-                        <td><a href="@Url.OrganisationUsers(organisation.FriendlyId)">Users</a></td>
-                        <td><a href="@Url.OrganisationApplications(organisation.FriendlyId)">Applications</a></td>
-                        @if(organisation.Status == OrganisationStatus.Active)
-                        {
-                            <td><a href="#" class="btn btn-small btn-blue suspend" data-val="@organisation.Id">Suspend</a></td>
-                        }
-                        else
-                        {
+    <div class="content">
+        <h1>Organisations</h1>
+        @if (Model.Organisations != null && Model.Organisations.Items.Any())
+        {
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Payment Plan Id</th>
+                        <th>Status</th>  
+                        <th>Timezone</th>      
+                        <th>Created On Utc</th>   
+                        <th>Users</th>   
+                        <th>Applications</th>  
+                        <th>Suspend / Activate</th> 
+                        <th>Delete</th> 
+                    </tr>  
+                </thead>
+                <tbody>
+                    @foreach (var organisation in Model.Organisations.Items)
+                    {
+                        <tr>  
+                            <td>@organisation.FriendlyId</td>
+                            <td>@organisation.Name</td>
+                            <td>@organisation.PaymentPlanId</td>
+                            <td>@organisation.Status</td>
+                            <td>@organisation.TimezoneId</td>
+                            <td>@organisation.CreatedOnUtc</td>
+                            <td><a href="@Url.OrganisationUsers(organisation.FriendlyId)">Users</a></td>
+                            <td><a href="@Url.OrganisationApplications(organisation.FriendlyId)">Applications</a></td>
+                            @if(organisation.Status == OrganisationStatus.Active)
+                            {
+                                <td><a href="#" class="btn btn-small btn-blue suspend" data-val="@organisation.Id">Suspend</a></td>
+                            }
+                            else
+                            {
+                                <td>
+                                    @using (Html.BeginForm("activateorganisation", "organisations", FormMethod.Post, new { name = "activateForm" }))
+                                    {
+                                        @Html.Hidden("OrganisationId", organisation.Id)
+                                        <input type="submit" class="btn btn-small btn-blue activate" value="Activate" />
+                                    }
+                                </td>
+                            }
                             <td>
-                                @using (Html.BeginForm("activateorganisation", "organisations", FormMethod.Post, new { name = "activateForm" }))
+                                @using (Html.BeginForm("deleteorganisation", "organisations", FormMethod.Post, new { name = "deleteForm" }))
                                 {
                                     @Html.Hidden("OrganisationId", organisation.Id)
-                                    <input type="submit" class="btn btn-small btn-blue activate" value="Activate" />
+                                    <input type="submit" class="btn btn-small btn-blue delete" value="Delete" />
                                 }
                             </td>
-                        }
-                        <td>
-                            @using (Html.BeginForm("deleteorganisation", "organisations", FormMethod.Post, new { name = "deleteForm" }))
-                            {
-                                @Html.Hidden("OrganisationId", organisation.Id)
-                                <input type="submit" class="btn btn-small btn-blue delete" value="Delete" />
-                            }
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="10">
+                            @Html.Partial("Pagination", Model.Paging)
                         </td>
                     </tr>
-                }
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="10">
-                        @Html.Partial("Pagination", Model.Paging)
-                    </td>
-                </tr>
-            </tfoot>
-        </table>
-        @Html.Partial("Organisations/SuspendModal", new SuspendOrganisationViewModel())
-    }
-    else
-    {
-        <div>
-            <p>No organisations were found.</p>   
-        </div> 
-    }
+                </tfoot>
+            </table>
+            @Html.Partial("Organisations/SuspendModal", new SuspendOrganisationViewModel())
+        }
+        else
+        {
+            <div>
+                <p>No organisations were found.</p>   
+            </div> 
+        }
+    </div>
 </section>

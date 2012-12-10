@@ -70,42 +70,44 @@
 }
            
 <section id="issue" class="centered">
-    <div id="details" class="@(Model.Tab == IssueTab.Details ? "" : "hidden")">
-        @Html.Partial("Details", Model.Details)
-    </div>
-    <div id="history" class="@(Model.Tab == IssueTab.History ? "" : "hidden")">
-        @Html.Partial("History", Model.Details)
-    </div>
-    @using (Html.BeginForm("adjustRules", "issue", FormMethod.Post, new { id = "rulesForm" }))
-    {
-        <div id="rules" class="@(Model.Tab == IssueTab.Rules ? "" : "hidden")">
-            @Html.Partial("Rules", Model.Rules)
+    <div class="content">
+        <div id="details" class="@(Model.Tab == IssueTab.Details ? "" : "hidden")">
+            @Html.Partial("Details", Model.Details)
         </div>
-        @Html.Partial("RuleUpdates", Model.Rules)
-    }
-    <div id="reports" class="@(Model.Tab == IssueTab.Reports ? "" : "hidden")">
-        @Html.Partial("Reports", Model.Details)
-    </div>
-    <div id="errors" class="@(Model.Tab == IssueTab.Errors ? "" : "hidden") ajax-container">
-        <p>
-            <strong>Note</strong> we only store <strong>@ErrorditeConfiguration.Current.IssueErrorLimit</strong> errors per issue, although we track each occurence of an issue. The instance count 
-            shown against an issue indicates the <strong>true number of occurences</strong> received for the issue.
-        </p>
-        <div id="error-criteria">
-            @Html.Partial("Errors/ErrorCriteria", Model.Errors)
+        <div id="history" class="@(Model.Tab == IssueTab.History ? "" : "hidden")">
+            @Html.Partial("History", Model.Details)
         </div>
-    </div>
-    @if (Model.Details.ProdProfRecords.Any() && ViewData.GetAppContext().CurrentUser.Role == UserRole.SuperUser)
-    {
-        <div id="debug" class="@(Model.Tab == IssueTab.Debug ? "" : "hidden")">
-            <ul>
-                @foreach (var record in Model.Details.ProdProfRecords)
-                {
-                    <li><a href="/profiler?handler=results&action=resultsdetail&id=@record.RequestId"> @record.TimestampUtc.ToString("yyyy-MM-dd hh:mm:ss"): @record.Url </a></li>
-                }
-            </ul>
+        @using (Html.BeginForm("adjustRules", "issue", FormMethod.Post, new { id = "rulesForm" }))
+        {
+            <div id="rules" class="@(Model.Tab == IssueTab.Rules ? "" : "hidden")">
+                @Html.Partial("Rules", Model.Rules)
+            </div>
+            @Html.Partial("RuleUpdates", Model.Rules)
+        }
+        <div id="reports" class="@(Model.Tab == IssueTab.Reports ? "" : "hidden")">
+            @Html.Partial("Reports", Model.Details)
         </div>
-    }
+        <div id="errors" class="@(Model.Tab == IssueTab.Errors ? "" : "hidden") ajax-container">
+            <p>
+                <strong>Note</strong> we only store <strong>@ErrorditeConfiguration.Current.IssueErrorLimit</strong> errors per issue, although we track each occurence of an issue. The instance count 
+                shown against an issue indicates the <strong>true number of occurences</strong> received for the issue.
+            </p>
+            <div id="error-items" data-val="@Model.Details.IssueId">
+                @Html.Partial("Errors/ErrorItems", Model.Errors)
+            </div>
+        </div>
+        @if (Model.Details.ProdProfRecords.Any() && ViewData.GetAppContext().CurrentUser.Role == UserRole.SuperUser)
+        {
+            <div id="debug" class="@(Model.Tab == IssueTab.Debug ? "" : "hidden")">
+                <ul>
+                    @foreach (var record in Model.Details.ProdProfRecords)
+                    {
+                        <li><a href="/profiler?handler=results&action=resultsdetail&id=@record.RequestId"> @record.TimestampUtc.ToString("yyyy-MM-dd hh:mm:ss"): @record.Url </a></li>
+                    }
+                </ul>
+            </div>
+        }
+    </div>
 </section>
 
     

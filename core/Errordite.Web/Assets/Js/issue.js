@@ -64,13 +64,11 @@
       };
       renderErrors = function() {
         var $node, url;
-        url = '/issue/errors?' + $('#errorsForm').serialize();
-        $node = $issue.find('#error-criteria');
+        $node = $issue.find('#error-items');
+        url = '/issue/errors?IssueId=' + $issue.find('#IssueId').val();
+        console.log(url);
         return $.get(url, function(data) {
-          var init;
           $node.html(data);
-          init = new Initalisation();
-          init.datepicker($issue);
           return $('div.content').animate({
             scrollTop: 0
           }, 'slow');

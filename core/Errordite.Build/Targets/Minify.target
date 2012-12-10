@@ -24,7 +24,7 @@
           $(SourcePath)\core\Errordite.Web\Assets\Css\lib\prettify.css;
           $(SourcePath)\core\Errordite.Web\Assets\Css\lib\jquery.jqplot.css;
           $(SourcePath)\core\Errordite.Web\Assets\Css\lib\daterangepicker.css;
-          $(SourcePath)\core\Errordite.Web\Assets\Css\lib\fonts.css;
+          $(SourcePath)\core\Errordite.Web\Assets\Css\fonts.css;
           $(SourcePath)\core\Errordite.Web\Assets\Css\errordite.css;">
       </CssFiles>
       <JavaScriptFiles Include="

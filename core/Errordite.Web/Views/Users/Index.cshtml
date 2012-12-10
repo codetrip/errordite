@@ -13,14 +13,16 @@
 }
 
 <section id="users" class="centered">
-    <h1>Users</h1>
-    <p>Your organisation's users are listed below. <a href="@Url.AddUser()">Click here to add a user</a></p>
-    @if (Model.Users != null && Model.Users.Any())
-    {
-        @Html.Partial("Users/List", Model)
-    }
-    else
-    {
-        <p>No users were found.</p>
-    }
+    <div class="content">
+        <h1>Users</h1>
+        <p>Your organisation's users are listed below. <a href="@Url.AddUser()">Click here to add a user</a></p>
+        @if (Model.Users != null && Model.Users.Any())
+        {
+            @Html.Partial("Users/List", Model)
+        }
+        else
+        {
+            <p>No users were found.</p>
+        }
+    </div>
 </section>
