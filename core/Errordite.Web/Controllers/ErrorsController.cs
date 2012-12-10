@@ -53,6 +53,7 @@ namespace Errordite.Web.Controllers
                     Query = postModel.Query,
                     OrganisationId = Core.AppContext.CurrentUser.OrganisationId,
                     UserTimezoneId = AppContext.CurrentUser.EffectiveTimezoneId(),
+					
                 };
 
                 if (postModel.DateRange.IsNotNullOrEmpty())
