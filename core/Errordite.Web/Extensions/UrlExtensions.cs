@@ -31,15 +31,15 @@ namespace Errordite.Web.Extensions
 
         #region Dashboard
 
-        public static string Audit(this UrlHelper helper)
-        {
-            return helper.Action("index", "audit", new { Area = string.Empty });
-        }
-
         public static string Dashboard(this UrlHelper helper)
         {
             return helper.Action("index", "dashboard", new { Area = string.Empty });
         }
+
+		public static string Error(this UrlHelper helper, string errorId)
+		{
+			return helper.Action("index", "errors", new { errorId, Area = string.Empty });
+		}
         
         public static string Errors(this UrlHelper helper, string applicationId = null)
         {
