@@ -1323,14 +1323,18 @@ nav {
   font-weight: bold;
   vertical-align: top; }
 
-.dashboard-item {
+.dashboard-table {
   border: 1px solid #95c0df;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
-  width: 100%; }
-  .dashboard-item .bar {
-    width: 25px;
+  width: 97%; }
+  .dashboard-table td {
+    border: 0; }
+  .dashboard-table tr {
+    border: 0; }
+  .dashboard-table .info-bar {
+    width: 8px;
     height: 100%;
     background-color: #95c0df;
     -webkit-border-radius: 3px;
@@ -1338,6 +1342,20 @@ nav {
     border-radius: 3px;
     float: left;
     margin: 5px; }
-  .dashboard-item .content {
+  .dashboard-table .info-content {
+    float: left;
+    height: 100%;
+    margin: 5px 5px 5px 0; }
+  .dashboard-table .info-row {
+    width: 100%;
+    float: left; }
+  .dashboard-table .info-item {
+    font-size: 13px;
+    float: left; }
+  .dashboard-table .info-item-heading {
+    text-transform: uppercase;
+    font-size: 10px;
+    color: #95c0df;
+    font-weight: 600;
     float: left; }
 

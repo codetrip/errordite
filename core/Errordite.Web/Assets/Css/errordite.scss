@@ -1702,14 +1702,20 @@ nav {
   }
 }
 
-.dashboard-item {
+.dashboard-table {
 	border:1px solid $darkblue;
 	-webkit-border-radius: $borderradius;
 	-moz-border-radius: $borderradius;
 	border-radius: $borderradius;
-	width:100%;
-	.bar {
-		width:25px;
+	width:97%;
+	td {
+		border:0;
+	}
+	tr {
+		border:0;
+	}
+	.info-bar {
+		width:8px;
 		height:100%;
 		background-color:$darkblue;
 		-webkit-border-radius: $borderradius;
@@ -1718,17 +1724,25 @@ nav {
 		float:left;
 		margin:5px;
 	}
-	.content {
+	.info-content {
+		float:left;
+		height:100%;
+		margin:5px 5px 5px 0;
+	}
+	.info-row {
+		width:100%;
 		float:left;
 	}
-	.info-items {
-
-	}
 	.info-item {
-
+		font-size:13px;
+		float:left;
 	}
-	.info-name {
-
+	.info-item-heading {
+		text-transform:uppercase;
+		font-size:10px;
+		color:$darkblue;
+		font-weight: $boldfontweight;
+		float:left;
 	}
 }
 
