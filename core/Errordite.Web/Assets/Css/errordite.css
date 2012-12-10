@@ -1323,3 +1323,21 @@ nav {
   font-weight: bold;
   vertical-align: top; }
 
+.dashboard-item {
+  border: 1px solid #95c0df;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  width: 100%; }
+  .dashboard-item .bar {
+    width: 25px;
+    height: 100%;
+    background-color: #95c0df;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    float: left;
+    margin: 5px; }
+  .dashboard-item .content {
+    float: left; }
+
