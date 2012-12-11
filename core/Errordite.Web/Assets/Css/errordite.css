@@ -166,6 +166,22 @@ table {
   .white-container .centered {
     background-color: #fff; }
 
+.notification-container {
+  width: 100%;
+  float: left;
+  font-size: 12px;
+  background-color: #f3f8fc;
+  font-weight: 600;
+  text-transform: uppercase; }
+  .notification-container .centered {
+    padding: 5px; }
+  .notification-container .error {
+    color: #cc0d3d; }
+  .notification-container .confirmation {
+    color: #5aa567; }
+  .notification-container .info {
+    color: #95c0df; }
+
 .welcome-bar-container {
   width: 100%;
   background: #3d3d3d;
@@ -617,7 +633,7 @@ section {
   background-repeat: no-repeat;
   margin: 2px 5px 0 0; }
 
-.icon-cross {
+.icon-error {
   background-position: 0 0; }
 
 .icon-eye {
@@ -634,6 +650,12 @@ section {
 
 .icon-search {
   background-position: -90px 0; }
+
+.icon-warning {
+  background-position: -108px 0; }
+
+.icon-confirmation {
+  background-position: -126px 0; }
 
 .icon-people {
   width: 30px;
@@ -1335,12 +1357,12 @@ nav {
   margin: 5px 5px 5px 0;
   position: relative; }
   .dashboard-item.error {
-    border: 1px solid #CC0D3D;
+    border: 1px solid #cc0d3d;
     -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 4px rgba(204, 13, 61, 0.6);
     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 4px rgba(204, 13, 61, 0.6);
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 4px rgba(204, 13, 61, 0.6); }
     .dashboard-item.error .item-bar {
-      background-color: #CC0D3D; }
+      background-color: #cc0d3d; }
   .dashboard-item.issue {
     border: 1px solid #95c0df;
     -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 4px rgba(82, 168, 236, 0.6);
@@ -1370,7 +1392,8 @@ nav {
   .dashboard-item .item-info {
     font-size: 13px;
     float: left;
-    width: 40%; }
+    width: 40%;
+    word-wrap: break-word; }
     .dashboard-item .item-info.heading {
       text-transform: uppercase;
       font-size: 10px;
