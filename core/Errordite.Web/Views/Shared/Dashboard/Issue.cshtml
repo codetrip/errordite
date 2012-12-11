@@ -2,30 +2,30 @@
 @model Errordite.Web.Models.Issues.IssueItemViewModel
 
 <div class="dashboard-item issue">
-	<div class="info-bar">&nbsp;</div>	
-	<div class="info-content">
-		<div class="info-item-heading full">
+	<div class="item-bar">&nbsp;</div>	
+	<div class="item-content">
+		<div class="item-info heading full">
 			Name
 		</div>
-		<div class="info-item full" style="margin-bottom:5px;">
+		<div class="item-item full" style="margin-bottom:5px;">
 			<a href="@Url.Issue(Model.IssueId)">@Model.Name</a>
 		</div>
-		<div class="info-item-heading">
+		<div class="item-info heading">
 			Status
 		</div>
-        <div class="info-item-heading divider">
+        <div class="item-info heading divider">
 			Assigned To
 		</div>
-        <div class="info-item-heading divider short">
+        <div class="item-info heading divider short">
 			Count
 		</div>
-		<div class="info-item">
+		<div class="item-info">
 		    @Model.Status
 		</div>
-		<div class="info-item divider">
+		<div class="item-info divider">
 		    @Model.UserName
 		</div>
-		<div class="info-item divider short">
+		<div class="item-info divider short">
 			@Model.ErrorCount
 		</div>
 	</div>

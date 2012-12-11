@@ -174,7 +174,7 @@ namespace Errordite.Web
             }
 
             Server.ClearError();
-            IController controller = new ErrorController();
+            IController controller = new ErrorController(null);
             controller.Execute(new RequestContext(new HttpContextWrapper(Context), routeData));
         }
 

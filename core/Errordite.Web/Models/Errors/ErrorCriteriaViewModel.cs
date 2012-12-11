@@ -25,7 +25,8 @@ namespace Errordite.Web.Models.Errors
     public class ErrorInstanceViewModel
     {
         public Error Error { get; set; }
-        public bool HideIssues { get; set; }
+		public bool HideIssues { get; set; }
+		public bool AutoOpen { get; set; }
 		public string ApplicationName { get; set; }
     }
 
@@ -35,7 +36,6 @@ namespace Errordite.Web.Models.Errors
         public string Action { get; set; }
         public string Controller { get; set; }
 		public string IssueId { get; set; }
-		public string ErrorId { get; set; }
         public string Query { get; set; }
         public string DateRange { get; set; }
         public string ApplicationId { get; set; }
