@@ -177,7 +177,9 @@
     <None Include="nservicebus.host.exe.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\codetrip\CodeTrip.Core\CodeTrip.Core.csproj">
