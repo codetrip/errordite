@@ -159,6 +159,24 @@ table {
   .blue-container .centered {
     background-color: #f3f8fc; }
 
+.issue-title-container {
+  width: 100%;
+  color: #486c81;
+  background-color: #f3f8fc; }
+  .issue-title-container .centered {
+    background-color: #f3f8fc;
+    padding: 0 5px 15px 15px; }
+  .issue-title-container span.details {
+    font-size: 13px;
+    color: #95c0df; }
+    .issue-title-container span.details span.bold {
+      font-weight: 600; }
+  .issue-title-container span.title {
+    font-size: 15px;
+    font-weight: 700;
+    display: block;
+    width: 100%; }
+
 .white-container {
   width: 100%;
   float: left;
@@ -169,10 +187,15 @@ table {
 .notification-container {
   width: 100%;
   float: left;
-  font-size: 12px;
+  font-size: 13px;
   background-color: #f3f8fc;
-  font-weight: 600;
-  text-transform: uppercase; }
+  border-bottom: 1px solid #c2e0f2; }
+  .notification-container span {
+    height: 23px;
+    line-height: 23px;
+    vertical-align: middle; }
+  .notification-container i {
+    margin-top: 1px; }
   .notification-container .centered {
     padding: 5px; }
   .notification-container .error {
@@ -308,7 +331,7 @@ section {
 
 .content {
   width: 99%;
-  padding: 5px; }
+  padding: 10px 5px; }
 
 /*-----------------------------------------------------------------------------------*/
 /*	COMPONENTS
@@ -339,7 +362,7 @@ section {
         background-color: #ffffff; }
     .tabs li.button {
       float: right;
-      margin: -21px 5px 0 0; }
+      margin: -25px 5px 0 0; }
   .tabs .active > a {
     border-bottom-color: transparent;
     background-color: #ffffff;
@@ -1044,6 +1067,36 @@ section {
   word-break: break-all;
   word-wrap: break-word; }
 
+.badge {
+  padding: 1px 9px 2px;
+  font-size: 12.025px;
+  font-weight: 600;
+  white-space: nowrap;
+  color: #ffffff;
+  background-color: #999999;
+  -webkit-border-radius: 9px;
+  -moz-border-radius: 9px;
+  border-radius: 9px; }
+  .badge:hover {
+    color: #ffffff;
+    text-decoration: none; }
+  .badge.badge-error {
+    background-color: #b94a48; }
+    .badge.badge-error:hover {
+      background-color: #953b39; }
+  .badge.badge-warning {
+    background-color: #f89406; }
+    .badge.badge-warning:hover {
+      background-color: #c67605; }
+  .badge .badge-success {
+    background-color: #468847; }
+    .badge .badge-success:hover {
+      background-color: #356635; }
+  .badge.badge-info {
+    background-color: #3a87ad; }
+    .badge.badge-info:hover {
+      background-color: #2d6987; }
+
 /*-----------------------------------------------------------------------------------*/
 /* SPECIFICS
 /*-----------------------------------------------------------------------------------*/
@@ -1307,6 +1360,8 @@ nav {
   padding-right: 5px; }
   .errors .info td.nobreak {
     width: 300px; }
+.errors .tabs li > a {
+  text-transform: none; }
 .errors .error-content {
   padding: 8px 0px 8px 5px;
   width: 99%; }
@@ -1321,31 +1376,34 @@ nav {
   font-size: 11px; }
 .errors .rule-match, .errors .new-rule-match {
   border: solid 1px;
-  padding: 2px 0 2px 0; }
+  padding: 1px 5px; }
 .errors .rule-match.last-selected, .errors .new-rule-match.last-selected {
   border: solid 2px; }
 .errors .rule-match {
   background-color: #97f997;
   border-color: green; }
 .errors .new-rule-match {
-  background-color: yellow; }
+  background-color: #c2e0f2; }
 .errors .old-rule-match {
-  background-color: #ddd; }
+  background-color: #92c7e7; }
 .errors .rule-controls {
   position: absolute;
-  background-color: white;
-  padding: 3px;
+  padding: 3px 3px 3px 6px;
   display: inline;
-  padding-left: 6px; }
-  .errors .rule-controls .btn-mini {
+  margin-top: -5px; }
+  .errors .rule-controls .btn-rule {
     padding: 1px;
-    margin-right: 2px;
-    margin-left: 2px; }
+    margin: 2px 2px;
+    background-color: #95c0df;
+    font-size: 11px;
+    color: #fff;
+    padding: 2px 10px;
+    font-weight: 400; }
 .errors .error-stack .rule-controls {
   background-color: #FFC; }
 .errors .st-type, .errors .st-message {
   display: inline-block;
-  font-weight: bold;
+  font-weight: 600;
   vertical-align: top; }
 
 .dashboard-item {

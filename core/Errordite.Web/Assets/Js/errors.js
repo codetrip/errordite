@@ -222,8 +222,8 @@
                 $buttons = $('<span class="rule-controls"/>').css({
                   display: 'inline'
                 }).hide();
-                $button = $('<button/>').addClass('btn').addClass('btn-mini').addClass('make-rule').text('Create Rule');
-                $removeButton = $('<button/>').addClass('btn').addClass('btn-mini').addClass('remove-rule').text('Remove Rule').hide();
+                $button = $('<button/>').addClass('btn').addClass('btn-rule').addClass('make-rule').text('Create Rule');
+                $removeButton = $('<button/>').addClass('btn').addClass('btn-rule').addClass('remove-rule').text('Remove Rule').hide();
                 $buttons.append($button, $removeButton);
                 $errorAttr.on('mouseenter', function() {
                   return $buttons.show();

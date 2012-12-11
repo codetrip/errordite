@@ -11,7 +11,7 @@
             <span>Please enter the name you would like this issue to have after adjusting its rules.</span>
             <ul>
                 <li>
-                    @Html.TextBoxFor(m => m.IssueNameAfterUpdate, new { @class = "issue-name" })
+                    @Html.TextBoxFor(m => m.IssueNameAfterUpdate, new { @class = "issue-name", style="width:500px" })
                     @Html.ValidationMessageFor(m => m.IssueNameAfterUpdate)
                 </li>
             </ul>    
@@ -20,7 +20,7 @@
             <span>Please enter the name of the issue that any errors not matching the new rules will be attached to after the rules of this issue have been adjusted.</span>
             <ul>
                 <li>
-                    @Html.TextBoxFor(m => m.UnmatchedIssueName, new { @class = "issue-name" })
+                    @Html.TextBoxFor(m => m.UnmatchedIssueName, new { @class = "issue-name", style="width:500px" })
                     @Html.ValidationMessageFor(m => m.UnmatchedIssueName)
                 </li>
             </ul>    

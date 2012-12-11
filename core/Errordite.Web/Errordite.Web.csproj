@@ -273,7 +273,6 @@
     <Compile Include="Models\Applications\AddApplicationViewModel.cs" />
     <Compile Include="Models\Applications\ApplicationViewModel.cs" />
     <Compile Include="Models\Applications\EditApplicationViewModel.cs" />
-    <Compile Include="Models\Audit\AuditViewModel.cs" />
     <Compile Include="Models\Authentication\ResetPasswordViewModel.cs" />
     <Compile Include="Models\Authentication\PasswordViewModel.cs" />
     <Compile Include="Models\Common\IWizardViewModel.cs" />
