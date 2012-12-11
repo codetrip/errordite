@@ -1,0 +1,32 @@
+﻿
+@model Errordite.Web.Models.Errors.ErrorInstanceViewModel
+     
+<section id="errors" class="centered">
+	<div class="content">      
+		<div class="errors">
+			@if(Model.Error != null)
+			{
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th></th>
+							<th>Issue</th>
+							<th>Exception</th>            
+							<th>Message</th>     
+							<th>Received On</th>
+						</tr>
+					</thead>
+					<tbody>
+						@Html.Partial("Errors/ErrorItem", Model)
+					</tbody>
+				</table>
+			}
+			else
+			{
+				<div class="clear"></div>
+				<p>Coule not locate the requested error.</p>  
+				<div class="clear"></div>
+			}
+		</div>
+	</div>
+</section>

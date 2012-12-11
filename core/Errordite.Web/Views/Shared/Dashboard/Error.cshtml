@@ -4,30 +4,30 @@
 @model Errordite.Web.Models.Errors.ErrorInstanceViewModel
 
 <div class="dashboard-item error">
-	<div class="info-bar">&nbsp;</div>	
-	<div class="info-content">
-		<div class="info-item-heading full">
+	<div class="item-bar">&nbsp;</div>	
+	<div class="item-content">
+		<div class="item-info heading full">
 			Name
 		</div>
-		<div class="info-item full" style="margin-bottom:5px;">
+		<div class="item-item full" style="margin-bottom:5px;">
 			<a href="@Url.Error(Model.Error.FriendlyId)">@Model.Error.ExceptionInfo.Type</a>
 		</div>
-		<div class="info-item-heading">
+		<div class="item-info heading">
 			Application
 		</div>
-        <div class="info-item-heading divider">
+        <div class="item-info heading divider">
 			Received On
 		</div>
-        <div class="info-item-heading divider short">
+        <div class="item-info heading divider short">
 			Issue
 		</div>
-		<div class="info-item">
+		<div class="item-info">
 			@Model.ApplicationName
 		</div>
-		<div class="info-item divider">
+		<div class="item-info divider">
 		    @Model.Error.TimestampUtc.ToLocalTimeFormatted()
 		</div>
-		<div class="info-item divider short">
+		<div class="item-info divider short">
 			<a href="@Url.Issue(Model.Error.IssueId)">#@Model.Error.IssueId.GetFriendlyId()</a>
 		</div>
 	</div>

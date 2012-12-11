@@ -38,7 +38,7 @@ namespace Errordite.Web.Extensions
 
 		public static string Error(this UrlHelper helper, string errorId)
 		{
-			return helper.Action("index", "errors", new { errorId, Area = string.Empty });
+			return helper.Action("index", "error", new { id = errorId, Area = string.Empty });
 		}
         
         public static string Errors(this UrlHelper helper, string applicationId = null)

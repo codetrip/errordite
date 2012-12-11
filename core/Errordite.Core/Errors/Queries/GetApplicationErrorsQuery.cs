@@ -88,7 +88,7 @@ namespace Errordite.Core.Errors.Queries
         public string Query { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
-        public string IssueId { get; set; }
+		public string IssueId { get; set; }
         public bool? Classified { get; set; }
         public PageRequestWithSort Paging { get; set; }
         public string UserTimezoneId { get; set; }
