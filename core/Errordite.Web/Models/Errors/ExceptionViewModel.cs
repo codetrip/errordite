@@ -1,4 +1,5 @@
 ﻿
+using CodeTrip.Core.Extensions;
 using Errordite.Core.Domain.Error;
 
 namespace Errordite.Web.Models.Errors
@@ -17,5 +18,15 @@ namespace Errordite.Web.Models.Errors
             UserAgent = userAgent;
             InnerException = innerException;
         }
+
+		public bool DisplayInfoTable()
+		{
+			if(InnerException)
+			{
+				return Info.MethodName.IsNotNullOrEmpty() || Info.Module.IsNotNullOrEmpty() || (Info.ExtraData != null && Info.ExtraData.Count > 0);
+			}
+
+			return Url.IsNotNullOrEmpty() || UserAgent.IsNotNullOrEmpty() || Info.MethodName.IsNotNullOrEmpty() || Info.Module.IsNotNullOrEmpty() || (Info.ExtraData != null && Info.ExtraData.Count > 0);
+		}
     }
 }

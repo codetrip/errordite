@@ -1,6 +1,7 @@
 ﻿@using CodeTrip.Core.Extensions
 @using Errordite.Core.Configuration
 @using Errordite.Core.Domain.Organisation
+@using Errordite.Core.Extensions
 @using Errordite.Web.Models.Issues
 @using Errordite.Web.Extensions
 @model IssueViewModel
@@ -28,15 +29,30 @@
 
 @section header
 {
-    @*<div id="pagetitle">
-        <h1 class="small issue">@(Model.Details.TestIssue ? "TEST" : "") Issue @Model.Details.IssueId - @Model.Details.Name</h1>
-        <h3 class="small issue"><span class="badge badge-info">@Model.Details.ErrorCount</span> error@(Model.Details.ErrorCount == 1 ? "" : "s"). Most recent at @Model.Details.LastErrorUtc.ToLocalTimeFormatted()</h3>
+	@*<div id="pagetitle">
+        
         <div id="rules-adjusted">
             <button id="apply-rule-updates" class="btn btn-success" title="You have made rule changes but not yet saved them. Click here to save.">Apply Rule Updates</button>
         </div>
     </div>
 
     <div class="clear"></div>*@
+	<div class="issue-title-container">
+		<div class="centered">
+			<span class="title">
+				@Model.Details.Name @(Model.Details.TestIssue ? "(TEST)" : string.Empty)
+			</span>
+			<span class="details">
+				<span id="instance-count" class="bold">
+					@Model.Details.ErrorCount
+				</span> 
+				error@(Model.Details.ErrorCount == 1 ? "" : "s"), most recent received at 
+				<span class="bold">
+					@Model.Details.LastErrorUtc.ToLocalTimeFormatted()
+				</span>
+			</span>
+		</div>
+	</div>
     <div class="tabs-container">
         <ul id="issue-tabs" class="tabs">
             <li @(Model.Tab == IssueTab.Details ? " class=active" : " class=inactive") >
@@ -61,7 +77,7 @@
                 </li>
             }
             <li class="button">
-                <div id="rules-adjusted">
+                <div id="rules-adjusted" style="display:none">
                     <button id="apply-rule-updates" class="btn btn-small btn-blue tool-tip" title="You have made rule changes but not yet saved them. Click here to save.">Apply Rule Updates</button>
                 </div>
             </li>

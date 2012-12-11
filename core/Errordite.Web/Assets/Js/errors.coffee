@@ -175,13 +175,13 @@ jQuery ->
 
 							$button = $('<button/>')
 								.addClass('btn')
-								.addClass('btn-mini')
+								.addClass('btn-rule')
 								.addClass('make-rule') 
 								.text('Create Rule')						
 									
 							$removeButton = $('<button/>')
 								.addClass('btn')
-								.addClass('btn-mini')
+								.addClass('btn-rule')
 								.addClass('remove-rule') 
 								.text('Remove Rule')						
 								.hide()

@@ -47,7 +47,7 @@ namespace Errordite.Web.Models.Navigation
 
         public static List<Breadcrumb> GetPath(Breadcrumb child)
         {
-            List<Breadcrumb> items = new List<Breadcrumb>();
+            var items = new List<Breadcrumb>();
 
             Breadcrumb current = child;
 

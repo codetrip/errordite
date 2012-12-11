@@ -2,7 +2,7 @@
 @using CodeTrip.Core.Extensions
 @model Errordite.Web.Models.Errors.ExceptionViewModel
            
-<div class="info">
+<div class="info" @(Model.DisplayInfoTable() ? string.Empty : "style=display:none")>
 	<table class="table table-bordered table-condensed">
 		@if(Model.Info.MethodName.IsNotNullOrEmpty())
 		{
