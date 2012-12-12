@@ -37,10 +37,10 @@
 		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\jquery.form.js;
 		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\jquery.history.js;
 		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\jquery.cookie.js;
-		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\bootstrap.js;
 		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\underscore.js;
 		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\date.js;
 		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\daterangepicker.js;
+		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\bootstrap.js;
 		  $(SourcePath)\core\Errordite.Web\Assets\Js\global.js;
 		  $(SourcePath)\core\Errordite.Web\Assets\Js\applications.js;
 		  $(SourcePath)\core\Errordite.Web\Assets\Js\users.js;
