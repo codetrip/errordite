@@ -822,7 +822,8 @@ section {
   background-color: #000000;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
-  border-radius: 3px; }
+  border-radius: 3px;
+  font-family: "Open Sans", sans-serif; }
 
 .tooltip-arrow {
   position: absolute;

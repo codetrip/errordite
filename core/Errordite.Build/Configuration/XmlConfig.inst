@@ -38,7 +38,7 @@ the config file.  If you wish to allow a choice of folders, they can be separate
     <SiteBaseUrl theRest="$(SiteBaseUrl)" />
     <ReceptionEndpoint theRest="$(ReceptionEndpoint)" />
     <ReceptionHttpEndpoint theRest="http://localhost:800/api" />
-    <RenderMinifiedContent theRest="false" /> <!--TODO change back to true when fixed-->
+    <RenderMinifiedContent theRest="true" /> <!--TODO change back to true when fixed-->
   </File>
 
   <File match="email.config">

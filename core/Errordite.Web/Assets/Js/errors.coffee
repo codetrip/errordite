@@ -35,7 +35,7 @@ jQuery ->
 					.bind 'click', () -> 
 						Errordite.ruleManager.removeRule $ruleMatch.data 'ruleId'
 						$(this).hide()
-					.attr('title', "Click to remove Rule: '#{$ruleMatch.attr('title')}'")
+					.attr('data-title', "Click to remove Rule: '#{$ruleMatch.attr('data-title')}'")
 					.tooltip()
 
 			$('body').on 'changedrule', (e, rule) -> 
@@ -53,7 +53,7 @@ jQuery ->
 				if $match.hasClass 'rule-match'
 					$match.addClass('old-rule-match')
 						.removeClass('rule-match')
-						.attr('title', 'REMOVED: ' + $match.attr 'title')	
+						.attr('data-title', 'REMOVED: ' + $match.attr 'title')	
 						.tooltip();												
 				else					
 					$match.replaceWith $match.text()
@@ -96,7 +96,7 @@ jQuery ->
 							"""
 							$1<span data-rule-id='#{matchInfo.rule.counter}' 
 							class='ruletip #{if matchInfo.rule.status == 'new' then 'new-' else ''}rule-match' 
-							title='#{matchInfo.rule.description()}'>$2</span>$3
+							data-title='#{matchInfo.rule.description()}'>$2</span>$3
 							""") 
 					prevMatchInfo = matchInfo					
 				
@@ -250,7 +250,7 @@ jQuery ->
 							$button.on 'mouseenter', () -> 
 								rule = getRule()
 								$this = $ this
-								$this.attr 'title', "Click to add rule: '#{rule.description()}'"
+								$this.attr 'data-title', "Click to add rule: '#{rule.description()}'"
 								$this.tooltip();
 
 							$button.on 'click', () ->							
