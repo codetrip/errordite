@@ -31,7 +31,7 @@
           return $ruleMatch.closest('.prop-val').parent().find('.remove-rule').show().unbind('click').bind('click', function() {
             Errordite.ruleManager.removeRule($ruleMatch.data('ruleId'));
             return $(this).hide();
-          }).attr('title', "Click to remove Rule: '" + ($ruleMatch.attr('title')) + "'");
+          }).attr('title', "Click to remove Rule: '" + ($ruleMatch.attr('title')) + "'").tooltip();
         });
         $('body').on('changedrule', function(e, rule) {
           var error, _i, _len, _results;
@@ -62,7 +62,7 @@
           match = _ref[_i];
           $match = $(match);
           if ($match.hasClass('rule-match')) {
-            _results.push($match.addClass('old-rule-match').removeClass('rule-match').attr('title', 'REMOVED: ' + $match.attr('title')));
+            _results.push($match.addClass('old-rule-match').removeClass('rule-match').attr('title', 'REMOVED: ' + $match.attr('title')).tooltip());
           } else {
             _results.push($match.replaceWith($match.text()));
           }
@@ -111,9 +111,10 @@
               length = prevMatchInfo.start - matchInfo.start;
             }
             regex = RegExp("^([\\S\\s]{" + matchInfo.start + "})([\\S\\s]{" + length + "})([\\S\\s]*)");
-            visualisedHtml = visualisedHtml.replace(regex, "$1<span data-rule-id='" + matchInfo.rule.counter + "' \nclass='" + (matchInfo.rule.status === 'new' ? 'new-' : '') + "rule-match' \ntitle='" + (matchInfo.rule.description()) + "'>$2</span>$3");
+            visualisedHtml = visualisedHtml.replace(regex, "$1<span data-rule-id='" + matchInfo.rule.counter + "' \nclass='ruletip " + (matchInfo.rule.status === 'new' ? 'new-' : '') + "rule-match' \ntitle='" + (matchInfo.rule.description()) + "'>$2</span>$3");
             prevMatchInfo = matchInfo;
           }
+          $('span.ruletip').tooltip();
           return this.$propEl.find('.prop-val').html(visualisedHtml);
         };
 
@@ -287,9 +288,11 @@
                   }
                 };
                 $button.on('mouseenter', function() {
-                  var rule;
+                  var $this, rule;
                   rule = getRule();
-                  return $(this).attr('title', "Click to add Rule: '" + (rule.description()) + "'");
+                  $this = $(this);
+                  $this.attr('title', "Click to add rule: '" + (rule.description()) + "'");
+                  return $this.tooltip();
                 });
                 return $button.on('click', function() {
                   var errorProp, newRule, rule;

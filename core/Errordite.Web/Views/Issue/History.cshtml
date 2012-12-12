@@ -3,24 +3,33 @@
 @using Errordite.Web.Models.Issues
 @model IssueDetailsViewModel
 
-<div class="base fullwidth" id="history">
-    <div class="base-content">
-        <div class="history-items">
-            @{
-                int count = 0;
-            }
-            @foreach (var item in Model.History)
-            {
-                <div class="history-item well well-small">
-                    <h4 class="alert-heading">@(item.SystemMessage ? "System Message" : item.Username) - @item.DateAddedUtc.ToLocalTimeFormatted()</h4>
-                    @Html.Raw(item.Message)
-                    @if (item.Reference.IsNotNullOrEmpty())
-                    {
-                        <br /><i>Reference set: @item.Reference</i>
-                    }
-                </div>
-                count++;
-            }
-        </div>
-    </div>
-</div>
+@foreach (var item in Model.History)
+{
+    <div class="boxed-item history">
+		<div class="item-bar">&nbsp;</div>	
+		<div class="item-content">
+			<div class="item-info heading short">
+				Created By
+			</div>
+			<div class="item-info heading divider" style="width:75%">
+				Created At
+			</div>
+			<div class="item-info short" style="margin-bottom:5px;">
+				@(item.SystemMessage ? "System" : item.Username)
+			</div>
+			<div class="item-info divider" style="margin-bottom:5px;width:75%">
+				@item.DateAddedUtc.ToLocalTimeFormatted()
+			</div>
+			<div class="item-info heading full">
+				Message
+			</div>
+			<div class="item-info full">
+				@Html.Raw(item.Message)
+                @if (item.Reference.IsNotNullOrEmpty())
+                {
+                    <br /><i>Reference set: @item.Reference</i>
+                }
+			</div>
+		</div>
+	</div>
+}

@@ -36,6 +36,7 @@ jQuery ->
 						Errordite.ruleManager.removeRule $ruleMatch.data 'ruleId'
 						$(this).hide()
 					.attr('title', "Click to remove Rule: '#{$ruleMatch.attr('title')}'")
+					.tooltip()
 
 			$('body').on 'changedrule', (e, rule) -> 
 				error.visualiseRules() for error in openedErrors
@@ -52,7 +53,8 @@ jQuery ->
 				if $match.hasClass 'rule-match'
 					$match.addClass('old-rule-match')
 						.removeClass('rule-match')
-						.attr('title', 'REMOVED: ' + $match.attr 'title')													
+						.attr('title', 'REMOVED: ' + $match.attr 'title')	
+						.tooltip();												
 				else					
 					$match.replaceWith $match.text()
 
@@ -93,11 +95,12 @@ jQuery ->
 					visualisedHtml = visualisedHtml.replace(regex, 
 							"""
 							$1<span data-rule-id='#{matchInfo.rule.counter}' 
-							class='#{if matchInfo.rule.status == 'new' then 'new-' else ''}rule-match' 
+							class='ruletip #{if matchInfo.rule.status == 'new' then 'new-' else ''}rule-match' 
 							title='#{matchInfo.rule.description()}'>$2</span>$3
 							""") 
 					prevMatchInfo = matchInfo					
-					
+				
+				$('span.ruletip').tooltip();	
 				this.$propEl.find('.prop-val').html(visualisedHtml)
 
 			getMatchInfos: (rule) ->
@@ -187,7 +190,6 @@ jQuery ->
 								.hide()
 
 							$buttons.append $button, $removeButton
-
 							
 							$errorAttr.on 'mouseenter', () -> 
 								$buttons.show()
@@ -247,7 +249,9 @@ jQuery ->
 
 							$button.on 'mouseenter', () -> 
 								rule = getRule()
-								$(this).attr 'title', "Click to add Rule: '#{rule.description()}'"
+								$this = $ this
+								$this.attr 'title', "Click to add rule: '#{rule.description()}'"
+								$this.tooltip();
 
 							$button.on 'click', () ->							
 								rule = getRule()

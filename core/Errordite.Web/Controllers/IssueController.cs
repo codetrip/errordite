@@ -375,6 +375,8 @@ namespace Errordite.Web.Controllers
                     return h.Comment; //TODO - record more - like, what got updated
                 case HistoryItemType.RulesAdjustedCreatedNewIssue:
                     return CoreResources.HistoryRulesAdjusted.FormatWith(user.IfPoss(u => u.FullName), user.IfPoss(u => u.Email), h.SpawnedIssueId);
+				case HistoryItemType.AutoCreated:
+		            return "Issue created by new error";
                 default:
                     return h.Type + " " + h.Comment;
             }
