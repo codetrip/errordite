@@ -32,7 +32,7 @@
             <a href="@Url.Home(ViewData.GetAppContext())"><img alt="Errordite: Home" src="@Url.Content("~/Assets/Images/header-logo.png")"/></a>
         </div>
         <div class="search">
-            @using (Html.BeginForm("index", "dashboard", FormMethod.Get))
+            @using (Html.BeginForm("index", "search", FormMethod.Get))
             {
                 <div class="search-box">
                     <i class="icon-search"></i>

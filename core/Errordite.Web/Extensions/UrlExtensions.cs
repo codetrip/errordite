@@ -46,6 +46,11 @@ namespace Errordite.Web.Extensions
             return applicationId != null ? helper.Action("index", "errors", new { applicationId, Area = string.Empty }) : helper.Action("index", "errors", new { Area = string.Empty });
         }
 
+		public static string ErrorSearch(this UrlHelper helper, string query)
+		{
+			return helper.Action("index", "errors", new { Area = string.Empty, query});
+		}
+
         public static string ClearErrors(this UrlHelper helper, string applicationId, string issueId)
         {
             if(issueId.IsNullOrEmpty())
@@ -67,6 +72,11 @@ namespace Errordite.Web.Extensions
         {
             return applicationId != null ? helper.Action("index", "issues", new { applicationId, Area = string.Empty }) : helper.Action("index", "issues", new { Area = string.Empty });
         }
+
+		public static string IssueSearch(this UrlHelper helper, string name)
+		{
+			return helper.Action("index", "issues", new { Area = string.Empty, name });
+		}
 
         public static string AddIssue(this UrlHelper helper)
         {
