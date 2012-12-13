@@ -19,7 +19,7 @@ jQuery ->
 		$root.delegate('td.toggle', 'click', (e) -> 
 			$this = $ this
 			error = new Error $this
-			error.toggle()			
+			error.toggle();		
 			e.preventDefault()
 		)
 

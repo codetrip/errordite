@@ -12,6 +12,7 @@ class Initialisation
 		#todo - need to distinguish between things to be initialised after an ajax call and those to be globally initialised for the page
 		$('.icon-info').tooltip()
 		$('.tool-tip').tooltip()
+		$('div.search-box').tooltip()
 		$('.dropdown-toggle').dropdown()
 		$paging = $('div.paging')	
 		#if $paging.length > 0

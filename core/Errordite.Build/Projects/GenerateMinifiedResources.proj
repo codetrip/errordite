@@ -2,7 +2,7 @@
 
   <Import Project="$(MSBuildProjectDirectory)\..\Targets\Minify.target" />
   
-  <Target Name="Build" DependsOnTargets="MinifyResources;MinifyJqPlotBuild">
+  <Target Name="Build" DependsOnTargets="MinifyResources">
     <Message Text="Done..." />
   </Target>
 

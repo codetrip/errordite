@@ -16,6 +16,7 @@
       var $paging, $tabHolders, controller, paging, tabHolder, _i, _len;
       $('.icon-info').tooltip();
       $('.tool-tip').tooltip();
+      $('div.search-box').tooltip();
       $('.dropdown-toggle').dropdown();
       $paging = $('div.paging');
       paging = new Paging(pagingFunc);
