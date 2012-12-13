@@ -423,7 +423,6 @@
     <Content Include="Assets\Js\lib\jquery.validate.unobtrusive.js" />
     <Content Include="Assets\Js\lib\jquery.placeholder.js" />
     <Content Include="Assets\Js\lib\jquery.form.js" />
-    <Content Include="Assets\Js\lib\jquery.history.js" />
     <Content Include="Assets\Js\lib\jquery.cookie.js" />
     <Content Include="Assets\Js\lib\jquery.loader.js" />
     <Content Include="Assets\Js\lib\prettify.js" />

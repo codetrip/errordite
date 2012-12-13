@@ -311,12 +311,6 @@ section {
   margin: 0 auto;
   width: 974px; }
 
-.full {
-  width: 100%; }
-  .full .tabs {
-    width: 100%;
-    margin: 0; }
-
 .four-col {
   width: 25%;
   float: left; }

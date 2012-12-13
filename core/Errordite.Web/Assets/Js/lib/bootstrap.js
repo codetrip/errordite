@@ -1,12 +1,6 @@
 ﻿
 !function ($) {
 
-    "use strict"; // jshint ;_;
-
-
-    /* MODAL CLASS DEFINITION
-     * ====================== */
-
     var Modal = function(element, options) {
         this.options = options;
         this.$element = $(element)
@@ -157,10 +151,6 @@
         }
     };
 
-
-    /* MODAL PLUGIN DEFINITION
-     * ======================= */
-
     var old = $.fn.modal;
 
     $.fn.modal = function(option) {
@@ -180,18 +170,10 @@
     
     $.fn.modal.Constructor = Modal;
 
-
-    /* MODAL NO CONFLICT
-     * ================= */
-
     $.fn.modal.noConflict = function() {
         $.fn.modal = old;
         return this;
     };
-
-
-    /* MODAL DATA-API
-     * ============== */
 
     $(document).on('click.modal.data-api', '[data-toggle="modal"]', function(e) {
         var $this = $(this), href = $this.attr('href'), $target = $($this.attr('data-target') || (href && href.replace(/.*(?=#[^\s]+$)/, ''))) //strip for ie7
@@ -211,12 +193,6 @@
 
 
 !function ($) {
-
-    "use strict"; // jshint ;_;
-
-
-    /* TOOLTIP PUBLIC CLASS DEFINITION
-     * =============================== */
 
     var Tooltip = function(element, options) {
         this.init('tooltip', element, options);
@@ -355,12 +331,7 @@
 
             return this;
         },
-        fixTitle: function() {
-            //var $e = this.$element;
-            //if ($e.attr('title') || typeof($e.attr('data-original-title')) != 'string') {
-            //    $e.attr('data-original-title', $e.attr('title') || '').removeAttr('title');
-            //}
-        },
+        fixTitle: function() {},
         hasContent: function() {
             return this.getTitle();
         },
@@ -371,11 +342,6 @@
             });
         },
         getTitle: function() {
-            //var $e = this.$element, o = this.options;
-
-            //title = $e.attr('data-original-title')
-            //    || (typeof o.title == 'function' ? o.title.call($e[0]) : o.title);
-
             return this.$element.attr('data-title');
         },
         tip: function() {
@@ -407,9 +373,6 @@
     };
 
 
-    /* TOOLTIP PLUGIN DEFINITION
-     * ========================= */
-
     var old = $.fn.tooltip;
 
     $.fn.tooltip = function(option) {
@@ -433,10 +396,6 @@
         html: false
     };
 
-
-    /* TOOLTIP NO CONFLICT
-     * =================== */
-
     $.fn.tooltip.noConflict = function() {
         $.fn.tooltip = old;
         return this;
@@ -447,12 +406,6 @@
 
 
 !function ($) {
-
-    "use strict"; // jshint ;_;
-
-
-    /* DROPDOWN CLASS DEFINITION
-     * ========================= */
 
     var toggle = '[data-toggle=dropdown]', Dropdown = function(element) {
         var $el = $(element).on('click.dropdown.data-api', this.toggle);
@@ -536,10 +489,6 @@
         return $parent;
     }
 
-
-    /* DROPDOWN PLUGIN DEFINITION
-     * ========================== */
-
     var old = $.fn.dropdown;
 
     $.fn.dropdown = function(option) {
@@ -552,17 +501,10 @@
 
     $.fn.dropdown.Constructor = Dropdown;
 
-    /* DROPDOWN NO CONFLICT
-     * ==================== */
-
     $.fn.dropdown.noConflict = function() {
         $.fn.dropdown = old;
         return this;
     };
-
-
-    /* APPLY TO STANDARD DROPDOWN ELEMENTS
-     * =================================== */
 
     $(document)
         .on('click.dropdown.data-api touchstart.dropdown.data-api', clearMenus)

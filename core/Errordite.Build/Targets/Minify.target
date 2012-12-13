@@ -29,28 +29,27 @@
       </CssFiles>
       <JavaScriptFiles Include="
           $(SourcePath)\core\Errordite.Web\Assets\Js\lib\jquery-1.8.3.js;
-		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\prettify.js;
-		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\jquery.validate.js;
-		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\jquery.unobtrusive-ajax.js;
-		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\jquery.validate.unobtrusive.js;
-		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\jquery.placeholder.js;
-		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\jquery.form.js;
-		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\jquery.history.js;
-		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\jquery.cookie.js;
-		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\underscore.js;
-		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\date.js;
-		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\daterangepicker.js;
-		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\bootstrap.js;
-		  $(SourcePath)\core\Errordite.Web\Assets\Js\global.js;
-		  $(SourcePath)\core\Errordite.Web\Assets\Js\applications.js;
-		  $(SourcePath)\core\Errordite.Web\Assets\Js\users.js;
-		  $(SourcePath)\core\Errordite.Web\Assets\Js\groups.js;
-		  $(SourcePath)\core\Errordite.Web\Assets\Js\errors.js;
-		  $(SourcePath)\core\Errordite.Web\Assets\Js\issues.js;
-		  $(SourcePath)\core\Errordite.Web\Assets\Js\issue.js;
-		  $(SourcePath)\core\Errordite.Web\Assets\Js\rules.js;
-		  $(SourcePath)\core\Errordite.Web\Assets\Js\dashboard.js;
-		  $(SourcePath)\core\Errordite.Web\Assets\Js\systemadmin.js;">
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\prettify.js;
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\jquery.validate.js;
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\jquery.unobtrusive-ajax.js;
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\jquery.validate.unobtrusive.js;
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\jquery.placeholder.js;
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\jquery.form.js;
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\jquery.cookie.js;
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\underscore.js;
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\date.js;
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\daterangepicker.js;
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\bootstrap.js;
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\global.js;
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\applications.js;
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\users.js;
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\groups.js;
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\errors.js;
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\issues.js;
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\issue.js;
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\rules.js;
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\dashboard.js;
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\systemadmin.js;">
 	  </JavaScriptFiles>
     </ItemGroup>
 
