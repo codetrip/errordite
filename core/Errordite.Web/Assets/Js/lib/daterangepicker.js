@@ -9,7 +9,7 @@
 !function ($) {
 
     var DateRangePicker = function (element, options, cb) {
-        var hasOptions = typeof options == 'object'
+        var hasOptions = typeof options == 'object';
         var localeObject;
 
         //state

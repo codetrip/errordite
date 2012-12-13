@@ -1,7 +1,7 @@
 ﻿window.Errordite = {}
 
 `RegExp.escape= function(s) {
-	return s.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&')
+	return s.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
 };`
 
 #TODO: put these in Errordite namespace

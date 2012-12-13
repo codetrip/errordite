@@ -4,7 +4,7 @@
   window.Errordite = {};
 
   RegExp.escape= function(s) {
-	return s.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&')
+	return s.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
 };;
 
 
