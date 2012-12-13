@@ -255,6 +255,7 @@
     <Compile Include="Controllers\IssueController.cs" />
     <Compile Include="Controllers\HelpController.cs" />
     <Compile Include="Controllers\GroupsController.cs" />
+    <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\AuthenticationController.cs" />
     <Compile Include="Controllers\IssuesController.cs" />
@@ -294,6 +295,7 @@
     <Compile Include="Models\Navigation\Breadcrumbs.cs" />
     <Compile Include="Models\Admin\OrganisationsViewModel.cs" />
     <Compile Include="Models\Admin\OrganisationViewModel.cs" />
+    <Compile Include="Models\Search\SearchViewModel.cs" />
     <Compile Include="Models\Users\AddUserViewModel.cs" />
     <Compile Include="Models\Beta\SignUpViewModel.cs" />
     <Compile Include="Models\Users\UserViewModel.cs" />
@@ -835,6 +837,9 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="Views\Error\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Search\Index.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
