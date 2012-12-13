@@ -18,13 +18,13 @@
                     <li>
                         @Html.LabelFor(m => m.Name, "Issue Name")
                         @Html.TextBoxFor(m => m.Name)
-                        <i title="Give this issue a more meaningful name to help identify and search for it." class="icon-info"></i>
+                        <i data-title="Give this issue a more meaningful name to help identify and search for it." class="icon-info"></i>
                         @Html.ValidationMessageFor(m => m.Name)
                     </li>
                     <li>
                         @Html.LabelFor(m => m.Status, "Status")
                         @Html.DropDownListFor(m => m.Status, Model.Statuses.Where(s => s.Value != IssueStatus.Unacknowledged.ToString()))
-                        <i title="Assign an initial status to the issue." class="icon-info"></i>
+                        <i data-title="Assign an initial status to the issue." class="icon-info"></i>
                     </li>
                 </ul>
             </div>
@@ -33,12 +33,12 @@
                     <li>
                         @Html.LabelFor(m => m.ApplicationId, "Application")
                         @Html.DropDownListFor(m => m.ApplicationId, Model.Applications)
-                        <i title="The application to which this issue is associated." class="icon-info"></i>
+                        <i data-title="The application to which this issue is associated." class="icon-info"></i>
                     </li>
                     <li class="right">
                         @Html.LabelFor(m => m.UserId, "Assigned User")
                         @Html.DropDownListFor(m => m.UserId, Model.Users)
-                        <i title="Assign a user to this issue." class="icon-info"></i>
+                        <i data-title="Assign a user to this issue." class="icon-info"></i>
                     </li>
                 </ul>
             </div>

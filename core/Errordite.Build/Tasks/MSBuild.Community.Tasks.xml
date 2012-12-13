@@ -144,7 +144,7 @@
             <code><![CDATA[
             <AssemblyInfo CodeLanguage="CS"  
                 OutputFile="$(MSBuildProjectDirectory)\Test\GlobalInfo.cs" 
-                AssemblyTitle="AssemblyInfoTask" 
+                Assemblydata-title="AssemblyInfoTask" 
                 AssemblyDescription="AssemblyInfo Description"
                 AssemblyConfiguration=""
                 AssemblyCompany="Company Name, LLC"
@@ -161,7 +161,7 @@
             <code><![CDATA[
             <AssemblyInfo CodeLanguage="CPP"  
                 OutputFile="$(MSBuildProjectDirectory)\Properties\AssemblyInfo.cpp"
-                AssemblyTitle="MyAssembly" 
+                Assemblydata-title="MyAssembly" 
                 AssemblyDescription="MyAssembly Description"
                 AssemblyConfiguration="$(Configuration)"
                 AssemblyCompany="Company Name, LLC"
@@ -1756,7 +1756,7 @@
       RegularExpressions="@(RegexPatterns)"
       Namespace="MSBuild.RegularExpressions"
       AssemblyName="MSBuild.RegularExpressions.dll"
-      AssemblyTitle="MSBuild.RegularExpressions"
+      Assemblydata-title="MSBuild.RegularExpressions"
       AssemblyDescription="MSBuild Community Tasks Regular Expressions"
       AssemblyCompany="Company Name, LLC"
       AssemblyProduct="MSBuildTasks"

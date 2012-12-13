@@ -364,6 +364,7 @@ table {
   background: $extralightblue;
   height: 36px;
   border-bottom: 1px solid $tabbordercolor;
+  float:left;
 }
 
 .wrapper {
@@ -440,6 +441,7 @@ section {
 .content {
 	width: 99%;
 	padding: 10px 5px;
+	float:left;
 }
 
 /*-----------------------------------------------------------------------------------*/

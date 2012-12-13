@@ -267,7 +267,8 @@ table {
   width: 100%;
   background: #f3f8fc;
   height: 36px;
-  border-bottom: 1px solid #dee7ee; }
+  border-bottom: 1px solid #dee7ee;
+  float: left; }
 
 .wrapper {
   min-height: 100%;
@@ -329,7 +330,8 @@ section {
 
 .content {
   width: 99%;
-  padding: 10px 5px; }
+  padding: 10px 5px;
+  float: left; }
 
 /*-----------------------------------------------------------------------------------*/
 /*	COMPONENTS
