@@ -922,8 +922,10 @@ section {
 					text-align:top;
 				}
 				label {
-					font-size:13px;
-					vertical-align:top;
+					font-size: 13px;
+					vertical-align: text-top;
+					line-height: 9px;
+					padding: 5px 5px;
 				}
 				&.tall {
 					height:220px;
@@ -1801,7 +1803,7 @@ nav {
 
 .errors {
 	.toggle {
-		padding:12px;
+		padding:0 18px;
 		cursor:pointer;
 		&.collapsed {
 			background: url('img/plus.png') no-repeat center;

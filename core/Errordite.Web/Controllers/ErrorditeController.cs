@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Resources;
 using System.Web.Mvc;
 using CodeTrip.Core.Dynamic;
@@ -94,5 +95,32 @@ namespace Errordite.Web.Controllers
             
             Error(exceptionContext.Exception);
         }
+
+		public string RenderPartial(string partialPath, object model)
+		{
+			if (string.IsNullOrEmpty(partialPath))
+				partialPath = ControllerContext.RouteData.GetRequiredString("action");
+
+			ViewData.Model = model;
+
+			using (var sw = new StringWriter())
+			{
+				var viewResult = ViewEngines.Engines.FindPartialView(ControllerContext, partialPath);
+				var viewContext = new ViewContext(ControllerContext, viewResult.View, ViewData, TempData, sw);
+
+				// copy model state items to the html helper 
+				foreach (var item in viewContext.Controller.ViewData.ModelState)
+				{
+					if (!viewContext.ViewData.ModelState.Keys.Contains(item.Key))
+					{
+						viewContext.ViewData.ModelState.Add(item);
+					}
+				}
+
+				viewResult.View.Render(viewContext, sw);
+
+				return sw.GetStringBuilder().ToString();
+			}
+		}
     }
 }
