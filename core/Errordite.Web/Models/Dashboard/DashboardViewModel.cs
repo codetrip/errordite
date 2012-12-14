@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Errordite.Core.Domain.Error;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Web.Models.Errors;
 using Errordite.Web.Models.Issues;
@@ -15,6 +14,8 @@ namespace Errordite.Web.Models.Dashboard
         public string SingleApplicationId { get; set; }
         public string SingleApplicationToken { get; set; }
         public string TestIssueId { get; set; }
+        public int LastIssueDisplayed { get; set; }
+        public int LastErrorDisplayed { get; set; }
     }
 
     public enum DashboardTab
