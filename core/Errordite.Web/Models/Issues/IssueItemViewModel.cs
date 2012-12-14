@@ -30,7 +30,7 @@ namespace Errordite.Web.Models.Issues
         public bool Selected { get; set; }
         public IssueStatus Status { get; set; }
 
-        public static List<IssueItemViewModel> FromIssues(IEnumerable<Issue> issues, IEnumerable<Application> applications, IEnumerable<User> users)
+        public static List<IssueItemViewModel> Convert(IEnumerable<Issue> issues, IEnumerable<Application> applications, IEnumerable<User> users)
         {
             return issues.Select(issue => new IssueItemViewModel
             {
@@ -47,5 +47,17 @@ namespace Errordite.Web.Models.Issues
                 ApplicationId = issue.ApplicationId
             }).ToList();
         }
+
+		public static List<IssueItemViewModel> ConvertSimple(IEnumerable<Issue> issues, IEnumerable<User> users)
+		{
+			return issues.Select(issue => new IssueItemViewModel
+			{
+				IssueId = issue.FriendlyId,
+				ErrorCount = issue.ErrorCount,
+				Name = issue.Name,
+				Status = issue.Status,
+				UserName = users.FirstOrDefault(u => u.Id == issue.UserId).IfPoss(u => u.FullName, issue.UserId),
+			}).ToList();
+		}
     }
 }

@@ -99,7 +99,7 @@ namespace Errordite.Web.Controllers
                 viewModel.Paging = _pagingViewModelGenerator.Generate(PagingConstants.DefaultPagingId, issues.PagingStatus, pagingRequest);
                 viewModel.Users = users.Items.ToSelectList(u => u.FriendlyId, u => u.FullName, u => u.FriendlyId == postModel.AssignedTo);
                 viewModel.Statuses = Enum.GetNames(typeof(IssueStatus)).ToSelectList(s => s, s => s, s => s.IsIn(postModel.Status));
-                viewModel.Issues = IssueItemViewModel.FromIssues(issues.Items, applications.Items, users.Items);
+                viewModel.Issues = IssueItemViewModel.Convert(issues.Items, applications.Items, users.Items);
                 viewModel.ApplicationName = postModel.ApplicationId.IsNullOrEmpty() ? Resources.Application.AllApplications : applications.Items.First(a => a.Id == Application.GetId(postModel.ApplicationId)).Name;
                 viewModel.ApplicationId = postModel.ApplicationId;
                 viewModel.Applications = applications.Items.ToSelectList(a => a.FriendlyId, a => a.Name, u => u.FriendlyId == postModel.ApplicationId, Resources.Shared.Application, string.Empty, SortSelectListBy.Text);

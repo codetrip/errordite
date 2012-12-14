@@ -34,7 +34,7 @@
         <div class="search">
             @using (Html.BeginForm("index", "search", FormMethod.Get))
             {
-                <div class="search-box" data-title="@(appContext.AuthenticationStatus != AuthenticationStatus.Authenticated ? "Please login to search" : string.Empty)">
+                <div class="search-box" data-title="@(appContext.AuthenticationStatus != AuthenticationStatus.Authenticated ? "Please login to enable search" : string.Empty)">
                     <i class="icon-search"></i>
                     <input autocomplete="off" class="search-input" id="q" name="q" placeholder="Search your errors & issues..." type="text"  @(appContext.AuthenticationStatus != AuthenticationStatus.Authenticated ? "disabled=disabled" : string.Empty) />
                     <input type="submit" class="search-btn" value="Go" @(appContext.AuthenticationStatus != AuthenticationStatus.Authenticated ? "disabled=disabled" : string.Empty) />
