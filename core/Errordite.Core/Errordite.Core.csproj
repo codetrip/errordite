@@ -162,7 +162,6 @@
     <Compile Include="Extensions\RulesExtensions.cs" />
     <Compile Include="Extensions\IssueExtensions.cs" />
     <Compile Include="Identity\IImpersonationManager.cs" />
-    <Compile Include="Indexing\AuditRecords.cs" />
     <Compile Include="Indexing\Applications_Search.cs" />
     <Compile Include="Indexing\Errors_ByIssueByDate.cs" />
     <Compile Include="Indexing\UserAlerts_Search.cs" />

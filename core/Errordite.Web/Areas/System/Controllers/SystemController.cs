@@ -7,6 +7,7 @@ using Errordite.Core;
 using Errordite.Core.Applications.Commands;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Errors.Queries;
+using Errordite.Core.Organisations.Queries;
 using Errordite.Core.Session;
 using Errordite.Web.ActionFilters;
 using Errordite.Web.Areas.System.Models.System;
@@ -25,18 +26,21 @@ namespace Errordite.Web.Areas.System.Controllers
         private readonly IGetErrorditeErrorsQuery _getErrorditeErrorsQuery;
         private readonly IPagingViewModelGenerator _pagingViewModelGenerator;
         private readonly IEncryptor _encryptor;
+        private readonly IGetOrganisationsQuery _getOrganisationsQuery;
 
         public SystemController(IAppSession session, 
             IDeleteApplicationCommand deleteApplicationCommand, 
             IGetErrorditeErrorsQuery getErrorditeErrorsQuery, 
             IPagingViewModelGenerator pagingViewModelGenerator, 
-            IEncryptor encryptor)
+            IEncryptor encryptor, 
+            IGetOrganisationsQuery getOrganisationsQuery)
         {
             _session = session;
             _deleteApplicationCommand = deleteApplicationCommand;
             _getErrorditeErrorsQuery = getErrorditeErrorsQuery;
             _pagingViewModelGenerator = pagingViewModelGenerator;
             _encryptor = encryptor;
+            _getOrganisationsQuery = getOrganisationsQuery;
         }
 
         [HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.SysAdmin)]
@@ -156,5 +160,19 @@ namespace Errordite.Web.Areas.System.Controllers
             throw new InvalidOperationException("Something went wrong");
         }
 
+        public ActionResult SyncIndexes()
+        {
+            var organisations = _getOrganisationsQuery.Invoke(new GetOrganisationsRequest
+            {
+                Paging = new PageRequestWithSort(1, int.MaxValue)
+            }).Organisations;
+
+            foreach (var organisation in organisations.Items)
+            {
+                Core.Session.BootstrapOrganisation(organisation);
+            }
+
+            return new EmptyResult();
+        }
     }
 }

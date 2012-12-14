@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using CodeTrip.Core.Paging;
@@ -51,12 +50,13 @@ namespace Errordite.Web.Controllers
                 var issues = _getApplicationIssuesQuery.Invoke(new GetApplicationIssuesRequest
                 {
                     OrganisationId = Core.AppContext.CurrentUser.OrganisationId,
-                    Paging = new PageRequestWithSort(1, 0)
+                    Paging = new PageRequestWithSort(1, 0),
+                    AssignedTo = Core.AppContext.CurrentUser.Id
                 }).Issues;
 
                 var recentIssues = _getApplicationIssuesQuery.Invoke(new GetApplicationIssuesRequest
                 {
-                    Paging = new PageRequestWithSort(1, 5, "FriendlyId", true),
+                    Paging = new PageRequestWithSort(1, 8, "FriendlyId", true),
                     OrganisationId = Core.AppContext.CurrentUser.OrganisationId
                 }).Issues;
 
@@ -64,10 +64,12 @@ namespace Errordite.Web.Controllers
 
                 var recentErrors = _getApplicationErrorsQuery.Invoke(new GetApplicationErrorsRequest
                 {
-                    Paging = new PageRequestWithSort(1, 5, sortDescending: true),
+                    Paging = new PageRequestWithSort(1, 8, "FriendlyId", true),
                     OrganisationId = Core.AppContext.CurrentUser.OrganisationId
                 }).Errors;
 
+                viewModel.LastErrorDisplayed = recentErrors.PagingStatus.TotalItems > 0 ? int.Parse(recentErrors.Items.First().FriendlyId) : -1;
+                viewModel.LastIssueDisplayed = recentIssues.PagingStatus.TotalItems > 0 ? int.Parse(recentIssues.Items.First().FriendlyId) : -1;
                 viewModel.Stats = _getOrganisationStatisticsQuery.Invoke(new GetOrganisationStatisticsRequest { OrganisationId = Core.AppContext.CurrentUser.OrganisationId }).Statistics ?? new Statistics();
                 viewModel.Stats.CurrentUserIssueCount = issues.PagingStatus.TotalItems;
 				viewModel.RecentIssues = IssueItemViewModel.ConvertSimple(recentIssues.Items, Core.GetUsers().Items);
@@ -85,36 +87,36 @@ namespace Errordite.Web.Controllers
             return View(viewModel);
         }
 
-		public ActionResult Update(DateTime lastUpdated)
+        public ActionResult Update(int lastErrorDisplayed, int lastIssueDisplayed)
 		{
 			var applications = Core.GetApplications();
 
-			var issues = _getApplicationIssuesQuery.Invoke(new GetApplicationIssuesRequest
+            var issues = lastIssueDisplayed == -1 ? null : _getApplicationIssuesQuery.Invoke(new GetApplicationIssuesRequest
 			{
 				Paging = new PageRequestWithSort(1, 50, "FriendlyId", true),
 				OrganisationId = Core.AppContext.CurrentUser.OrganisationId,
-				StartDate = lastUpdated,
-				EndDate = DateTime.UtcNow,
+                LastFriendlyId = lastIssueDisplayed,
                 UserTimezoneId = AppContext.CurrentUser.EffectiveTimezoneId(),
 			}).Issues;
 
-			var errors = _getApplicationErrorsQuery.Invoke(new GetApplicationErrorsRequest
+			var errors = lastErrorDisplayed == -1 ? null : _getApplicationErrorsQuery.Invoke(new GetApplicationErrorsRequest
 			{
-				Paging = new PageRequestWithSort(1, 50, sortDescending: true),
+                Paging = new PageRequestWithSort(1, 50, "FriendlyId", true),
 				OrganisationId = Core.AppContext.CurrentUser.OrganisationId,
-				StartDate = lastUpdated,
-				EndDate = DateTime.UtcNow,
+                LastFriendlyId = lastErrorDisplayed,
 				UserTimezoneId = AppContext.CurrentUser.EffectiveTimezoneId(),
-			}).Errors.Items.Select(e => new ErrorInstanceViewModel
-	            {
-		            Error = e,
-					ApplicationName = GetApplicationName(applications.Items, e.ApplicationId)
-	            });
+			}).Errors;
 
 			var result = new
 			{
-				issues = IssueItemViewModel.ConvertSimple(issues.Items, Core.GetUsers().Items).Select(i => RenderPartial("Dashboard/Issue", i)),
-				errors = errors.Select(e => RenderPartial("Dashboard/Error", e))
+                issues = issues == null ? new string[] { } : IssueItemViewModel.ConvertSimple(issues.Items, Core.GetUsers().Items).Select(i => RenderPartial("Dashboard/Issue", i)),
+                errors = errors == null ? new string[] { } : errors.Items.Select(e => new ErrorInstanceViewModel
+	            {
+		            Error = e,
+					ApplicationName = GetApplicationName(applications.Items, e.ApplicationId)
+	            }).Select(e => RenderPartial("Dashboard/Error", e)),
+                lastErrorDisplayed = errors != null && errors.PagingStatus.TotalItems > 0 ? int.Parse(errors.Items.First().FriendlyId) : lastErrorDisplayed,
+                lastIssueDisplayed = issues != null && issues.PagingStatus.TotalItems > 0 ? int.Parse(issues.Items.First().FriendlyId) : lastIssueDisplayed
 			};
 
 			return new JsonSuccessResult(result, allowGet: true);

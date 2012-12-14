@@ -18,6 +18,7 @@ namespace Errordite.Core.Indexing
         public string ApplicationId { get; set; }
         public string IssueId { get; set; }
         public string Id { get; set; }
+        public int FriendlyId { get; set; }
     }
 
     public class Errors_Search : AbstractIndexCreationTask<Error, ErrorDocument>
@@ -50,7 +51,8 @@ namespace Errordite.Core.Indexing
                                 error.OrganisationId,
                                 error.ApplicationId,
                                 error.IssueId,
-                                error.Id
+                                error.Id,
+                                FriendlyId = int.Parse(error.Id.Split('/')[1])
                             };
 
             Indexes = new Dictionary<Expression<Func<ErrorDocument, object>>, FieldIndexing>
@@ -64,6 +66,7 @@ namespace Errordite.Core.Indexing
                 };
 
             Sort(e => e.TimestampUtc, SortOptions.String);
+            Sort(e => e.FriendlyId, SortOptions.Int);
         }
     }
 }

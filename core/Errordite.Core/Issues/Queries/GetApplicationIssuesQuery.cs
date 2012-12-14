@@ -18,7 +18,7 @@ namespace Errordite.Core.Issues.Queries
         {
             Trace("Starting...");
 
-            Raven.Client.RavenQueryStatistics stats;
+            RavenQueryStatistics stats;
 
             var query = Session.Raven.Query<IssueDocument, Issues_Search>().Statistics(out stats)
                 .Where(i => i.OrganisationId == Organisation.GetId(request.OrganisationId));
@@ -28,10 +28,16 @@ namespace Errordite.Core.Issues.Queries
                 query = query.Where(i => i.ApplicationId == Application.GetId(request.ApplicationId));
             }
 
+            if (request.LastFriendlyId.HasValue)
+            {
+                query = query.Where(e => e.FriendlyId > request.LastFriendlyId);
+            }
+
             if (request.StartDate.HasValue)
             {
                 //TODO: I think this should be from the First Error (we are not currently recording this...)
-                query = query.Where(i => i.LastErrorUtc >= TimeZoneInfo.ConvertTimeBySystemTimeZoneId(request.StartDate.Value, request.UserTimezoneId, "UTC"));
+                var startDate = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(request.StartDate.Value, request.UserTimezoneId, "UTC");
+                query = query.Where(i => i.LastErrorUtc >= startDate);
             }
 
             if (request.EndDate.HasValue)
@@ -99,5 +105,6 @@ namespace Errordite.Core.Issues.Queries
         public string[] Status { get; set; }
         public PageRequestWithSort Paging { get; set; }
         public string UserTimezoneId { get; set; }
+        public int? LastFriendlyId { get; set; }
     }
 }

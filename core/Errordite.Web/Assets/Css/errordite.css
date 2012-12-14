@@ -136,7 +136,8 @@ table {
   max-width: 100%;
   border-collapse: collapse;
   border-spacing: 0;
-  background-color: transparent; }
+  background-color: transparent;
+  float: left; }
 
 /*-----------------------------------------------------------------------------------*/
 /*	LAYOUT
