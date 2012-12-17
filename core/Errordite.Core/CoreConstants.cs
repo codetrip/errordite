@@ -18,7 +18,7 @@ namespace Errordite.Core
             public static string ErrorditeErrors = new ErrorditeErrors().IndexName;
             public static string Errors = new Errors_Search().IndexName;
             public static string Issues = new Issues_Search().IndexName;
-            public static string UnloggedErrors = new UnloggedErrors().IndexName;
+            //public static string UnloggedErrors = new UnloggedErrors().IndexName;
             //public static string UserAlerts = new UserAlerts_Search().IndexName;
         }
 

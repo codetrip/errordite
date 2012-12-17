@@ -12,7 +12,7 @@ namespace Errordite.Core.Indexing
         public Errors_CountByIssue()
         {
             AddMap<Error>(docs => from error in docs select new { error.IssueId, Count = 1 });
-            AddMap<UnloggedError>(docs => from error in docs select new { error.IssueId, Count = 1 });
+            //AddMap<UnloggedError>(docs => from error in docs select new { error.IssueId, Count = 1 });
 
             Reduce = results => from result in results
                                 group result by new { result.IssueId }

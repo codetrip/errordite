@@ -136,6 +136,7 @@
     <Compile Include="Configuration\HttpServerConfiguration.cs" />
     <Compile Include="Domain\Central\UserOrganisationMapping.cs" />
     <Compile Include="Domain\Error\ErrorditeError.cs" />
+    <Compile Include="Domain\Error\IssueStatistics.cs" />
     <Compile Include="Domain\IdHelper.cs" />
     <Compile Include="Domain\Organisation\PaymentPlan.cs" />
     <Compile Include="Applications\Commands\DeleteApplicationCommand.cs" />

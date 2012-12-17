@@ -59,20 +59,20 @@ namespace Errordite.Core.Issues.Commands
             }, true);
 
             //also move all core errors fron the MergeFromIssue to the MergeToIssue
-            Session.RavenDatabaseCommands.UpdateByIndex(CoreConstants.IndexNames.UnloggedErrors,
-                new IndexQuery
-                {
-                    Query = "IssueId:{0}".FormatWith(mergeFromIssue.Id)
-                },
-                new[]
-                {
-                    new PatchRequest
-                    {
-                        Name = "IssueId",
-                        Type = PatchCommandType.Set,
-                        Value = mergeToIssue.Id
-                    }   
-            }, true);
+            //Session.RavenDatabaseCommands.UpdateByIndex(CoreConstants.IndexNames.UnloggedErrors,
+            //    new IndexQuery
+            //    {
+            //        Query = "IssueId:{0}".FormatWith(mergeFromIssue.Id)
+            //    },
+            //    new[]
+            //    {
+            //        new PatchRequest
+            //        {
+            //            Name = "IssueId",
+            //            Type = PatchCommandType.Set,
+            //            Value = mergeToIssue.Id
+            //        }   
+            //}, true);
 
             mergeToIssue.History.Add(new IssueHistory
             {

@@ -19,18 +19,18 @@ namespace Errordite.Core.Domain.Error
         public string ApplicationId { get; set; }
     }
 
-    [ProtoContract]
-    public class UnloggedError : ErrorBase
-    {
-        public UnloggedError()
-        {}
+    //[ProtoContract]
+    //public class UnloggedError : ErrorBase
+    //{
+    //    public UnloggedError()
+    //    {}
 
-        public UnloggedError(Error error)
-        {
-            IssueId = error.IssueId;
-            TimestampUtc = error.TimestampUtc;
-        }
-    }
+    //    public UnloggedError(Error error)
+    //    {
+    //        IssueId = error.IssueId;
+    //        TimestampUtc = error.TimestampUtc;
+    //    }
+    //}
 
     [ProtoContract]
     public class Error : ErrorBase

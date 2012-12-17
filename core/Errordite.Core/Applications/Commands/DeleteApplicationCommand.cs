@@ -41,10 +41,10 @@ namespace Errordite.Core.Applications.Commands
 
             _authorisationManager.Authorise(application, request.CurrentUser);
 
-            Session.RavenDatabaseCommands.DeleteByIndex(CoreConstants.IndexNames.UnloggedErrors, new IndexQuery
-            {
-                Query = "ApplicationId:{0}".FormatWith(applicationId)
-            }, true);
+            //Session.RavenDatabaseCommands.DeleteByIndex(CoreConstants.IndexNames.UnloggedErrors, new IndexQuery
+            //{
+            //    Query = "ApplicationId:{0}".FormatWith(applicationId)
+            //}, true);
 
             Session.RavenDatabaseCommands.DeleteByIndex(CoreConstants.IndexNames.Errors, new IndexQuery
             {

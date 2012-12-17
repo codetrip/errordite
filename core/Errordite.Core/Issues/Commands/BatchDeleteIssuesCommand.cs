@@ -44,7 +44,7 @@ namespace Errordite.Core.Issues.Commands
             }
 
             Session.AddCommitAction(new RaiseIssueDeletedEvent(string.Join("^", request.IssueIds)));
-            Session.SynchroniseIndexes<Issues_Search, Errors_Search, UnloggedErrors>();
+            //Session.SynchroniseIndexes<Issues_Search, Errors_Search, UnloggedErrors>();
 
             return new BatchDeleteIssuesResponse();
         }

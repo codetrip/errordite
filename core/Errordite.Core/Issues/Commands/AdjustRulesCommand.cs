@@ -76,10 +76,10 @@ namespace Errordite.Core.Issues.Commands
                 Session.AddCommitAction(new RaiseIssueCreatedEvent(tempIssue));
 
                 //also we need to clear the core errors for the original issue as we no longer know if these should match the new rules
-                Session.RavenDatabaseCommands.DeleteByIndex(CoreConstants.IndexNames.UnloggedErrors, new IndexQuery
-                {
-                    Query = "IssueId:{0}".FormatWith(currentIssue.Id)
-                }, true);
+                //Session.RavenDatabaseCommands.DeleteByIndex(CoreConstants.IndexNames.UnloggedErrors, new IndexQuery
+                //{
+                //    Query = "IssueId:{0}".FormatWith(currentIssue.Id)
+                //}, true);
 
                 //move all these errors to the new issue in a batch
                 _moveErrorsToNewIssueCommand.Invoke(new MoveErrorsToNewIssueRequest
