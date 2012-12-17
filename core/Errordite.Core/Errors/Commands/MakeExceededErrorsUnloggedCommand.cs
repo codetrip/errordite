@@ -43,7 +43,7 @@ namespace Errordite.Core.Errors.Commands
 
             foreach (var error in errors)
             {
-                Store(new UnloggedError(error));
+                //Store(new UnloggedError(error));
                 Delete(error);
             }
 

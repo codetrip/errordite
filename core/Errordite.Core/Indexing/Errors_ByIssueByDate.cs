@@ -21,7 +21,7 @@ namespace Errordite.Core.Indexing
         public Errors_ByIssueByDate()
         {
             AddErrorMap<Error>();
-            AddErrorMap<UnloggedError>();
+            //AddErrorMap<UnloggedError>();
 
             Reduce = results => from result in results
                                 group result by new { result.IssueId, result.Date }

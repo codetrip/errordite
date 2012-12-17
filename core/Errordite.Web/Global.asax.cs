@@ -13,12 +13,14 @@ using Castle.Core.Internal;
 using CodeTrip.Core.Auditing.Entities;
 using CodeTrip.Core.Interfaces;
 using CodeTrip.Core.IoC;
+using CodeTrip.Core.Paging;
 using Errordite.Client.Mvc3;
 using Errordite.Core;
 using Errordite.Core.Domain.Exceptions;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Indexing;
 using Errordite.Core.IoC;
+using Errordite.Core.Organisations.Queries;
 using Errordite.Core.Session;
 using Errordite.Web.ActionFilters;
 using Errordite.Web.Controllers;
@@ -120,7 +122,7 @@ namespace Errordite.Web
             };
 
            // ErrorditeLogger.Initialise(true, "Errordite.Web");
-            BootstrapErrorditeDatabase();
+            BootstrapRaven();
         }
 
         protected void Application_Error(object sender, EventArgs e)
@@ -180,7 +182,7 @@ namespace Errordite.Web
 
         #region Bootstrap Raven
 
-        private void BootstrapErrorditeDatabase()
+        private void BootstrapRaven()
         {
             var documentStore = ObjectFactory.GetObject<IDocumentStore>();
             documentStore.DatabaseCommands.EnsureDatabaseExists(CoreConstants.ErrorditeMasterDatabaseName);
@@ -252,6 +254,29 @@ namespace Errordite.Web
                 });
 
                 session.SaveChanges();
+            }
+
+            var organisations = session.Query<Organisation, Organisations_Search>();
+
+            foreach (var organisation in organisations)
+            {
+                session.Advanced.DocumentStore.DatabaseCommands.EnsureDatabaseExists(organisation.FriendlyId);
+
+                IndexCreation.CreateIndexes(
+                    new CompositionContainer(new AssemblyCatalog(typeof(Issues_Search).Assembly), new ExportProvider[0]), 
+                    session.Advanced.DocumentStore.DatabaseCommands.ForDatabase(organisation.FriendlyId), 
+                    documentStore.Conventions);
+
+                using (var organisationSession = documentStore.OpenSession(organisation.FriendlyId))
+                {
+                    var facets = new List<Facet>
+                    {
+                        new Facet {Name = "Status"},
+                    };
+
+                    organisationSession.Store(new FacetSetup { Id = CoreConstants.FacetDocuments.IssueStatus, Facets = facets });
+                    organisationSession.SaveChanges();
+                }
             }
         }
 
