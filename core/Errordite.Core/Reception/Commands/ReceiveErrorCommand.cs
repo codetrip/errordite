@@ -83,28 +83,6 @@ namespace Errordite.Core.Reception.Commands
             {
 	            //moving to new issue, so update the existing issue's counts
 	            existingIssue.ErrorCount--;
-
-				var issueDailyCount = Load<IssueDailyCount>("IssueDailyCount/{0}-{1}".FormatWith(existingIssue.FriendlyId, existingIssue.CreatedOnUtc.ToString("yyyy-MM-dd")));
-
-				if (issueDailyCount == null)
-				{
-					issueDailyCount = new IssueDailyCount
-					{
-						Id = "IssueDailyCount/{0}-{1}".FormatWith(issue.FriendlyId, issue.CreatedOnUtc.ToString("yyyy-MM-dd")),
-						IssueId = issue.Id,
-						Count = 1,
-						Date = issue.CreatedOnUtc.Date
-					};
-
-					Store(issueDailyCount);
-				}
-				else
-				{
-					issueDailyCount.Count++;
-				}
-
-				var issueHourlyCount = Load<IssueHourlyCount>("IssueHourlyCount/{0}".FormatWith(issue.FriendlyId));
-				issueHourlyCount.IncrementHourlyCount(error.TimestampUtc);
             }
 
             var issue = matchingIssue == null
