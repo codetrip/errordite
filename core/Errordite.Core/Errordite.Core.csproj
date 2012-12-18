@@ -136,7 +136,7 @@
     <Compile Include="Configuration\HttpServerConfiguration.cs" />
     <Compile Include="Domain\Central\UserOrganisationMapping.cs" />
     <Compile Include="Domain\Error\ErrorditeError.cs" />
-    <Compile Include="Domain\Error\IssueStatistics.cs" />
+    <Compile Include="Domain\Error\IssueDailyCount.cs" />
     <Compile Include="Domain\IdHelper.cs" />
     <Compile Include="Domain\Organisation\PaymentPlan.cs" />
     <Compile Include="Applications\Commands\DeleteApplicationCommand.cs" />
@@ -154,7 +154,6 @@
     <Compile Include="Domain\Organisation\Notification.cs" />
     <Compile Include="Domain\Organisation\Statistics.cs" />
     <Compile Include="ErrorditeCore.cs" />
-    <Compile Include="Errors\Commands\PurgeUnloggedErrorsCommand.cs" />
     <Compile Include="Errors\Commands\MakeExceededErrorsUnloggedCommand.cs" />
     <Compile Include="Errors\Commands\MoveErrorsToNewIssueCommand.cs" />
     <Compile Include="Errors\Commands\DeleteErrorsCommand.cs" />
@@ -171,10 +170,8 @@
     <Compile Include="Indexing\UserOrganisationMappings.cs" />
     <Compile Include="Indexing\Users_Search.cs" />
     <Compile Include="Indexing\Issues_Search.cs" />
-    <Compile Include="Indexing\Errors_CountByIssue.cs" />
-    <Compile Include="Indexing\UnloggedErrors.cs" />
     <Compile Include="Indexing\ErrorditeErrors.cs" />
-    <Compile Include="Indexing\Errors_ByIssueByHour.cs" />
+    <Compile Include="Indexing\IssueDailyCount_Search.cs" />
     <Compile Include="Indexing\Errors_Search.cs" />
     <Compile Include="IoC\AppSessionInstaller.cs" />
     <Compile Include="IoC\NServiceBusAppSessionUnitOfWorkInstaller.cs" />

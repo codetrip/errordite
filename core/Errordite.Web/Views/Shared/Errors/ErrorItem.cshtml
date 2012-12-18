@@ -5,7 +5,7 @@
 @model ErrorInstanceViewModel
            
 <tr id="@Model.Error.FriendlyId"> 
-	<td class="toggle collapsed"></td>
+	<td class="toggle @(Model.AutoOpen ? "expanded" : "collapsed")"></td>
 	@if (!Model.HideIssues)
     {
         <td><a href="@Url.Issue(Model.Error.IssueId.GetFriendlyId())">Issue @Model.Error.IssueId.GetFriendlyId()</a> </td>

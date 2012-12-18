@@ -45,6 +45,9 @@ namespace Errordite.Core.Issues.Commands
                 CurrentUser = request.CurrentUser
             });
 
+			var hourlyCount = Session.Raven.Load<IssueHourlyCount>("IssueHourlyCount/{0}".FormatWith(issue.FriendlyId));
+
+			Delete(hourlyCount);
             Delete(issue);
 
             Session.AddCommitAction(new RaiseIssueDeletedEvent("{0}|{1}".FormatWith(issue.FriendlyId, IdHelper.GetFriendlyId(issue.ApplicationId))));

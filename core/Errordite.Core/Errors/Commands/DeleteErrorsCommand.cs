@@ -27,10 +27,10 @@ namespace Errordite.Core.Errors.Commands
                     Query = issueIdQuery
                 });
 
-                //Session.RavenDatabaseCommands.DeleteByIndex(CoreConstants.IndexNames.UnloggedErrors, new IndexQuery
-                //{
-                //    Query = issueIdQuery
-                //});
+				Session.RavenDatabaseCommands.DeleteByIndex(CoreConstants.IndexNames.IssueDailyCount, new IndexQuery
+				{
+					Query = issueIdQuery
+				});
             }
 
             return new DeleteErrorsResponse();

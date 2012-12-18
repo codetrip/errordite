@@ -72,6 +72,39 @@ namespace Errordite.Core.Reception.Commands
             {
                 Trace("No issues matched, attaching to the existing issue with Id:={0}", existingIssue.Id);
                 matchingIssue = existingIssue;
+
+				return new ReceiveErrorResponse
+				{
+					IssueId = matchingIssue.Id
+				};
+            }
+
+			if (matchingIssue != null && existingIssue != null)
+            {
+	            //moving to new issue, so update the existing issue's counts
+	            existingIssue.ErrorCount--;
+
+				var issueDailyCount = Load<IssueDailyCount>("IssueDailyCount/{0}-{1}".FormatWith(existingIssue.FriendlyId, existingIssue.CreatedOnUtc.ToString("yyyy-MM-dd")));
+
+				if (issueDailyCount == null)
+				{
+					issueDailyCount = new IssueDailyCount
+					{
+						Id = "IssueDailyCount/{0}-{1}".FormatWith(issue.FriendlyId, issue.CreatedOnUtc.ToString("yyyy-MM-dd")),
+						IssueId = issue.Id,
+						Count = 1,
+						Date = issue.CreatedOnUtc.Date
+					};
+
+					Store(issueDailyCount);
+				}
+				else
+				{
+					issueDailyCount.Count++;
+				}
+
+				var issueHourlyCount = Load<IssueHourlyCount>("IssueHourlyCount/{0}".FormatWith(issue.FriendlyId));
+				issueHourlyCount.IncrementHourlyCount(error.TimestampUtc);
             }
 
             var issue = matchingIssue == null
@@ -144,6 +177,28 @@ namespace Errordite.Core.Reception.Commands
             if (error.TimestampUtc > issue.LastErrorUtc)
                 issue.LastErrorUtc = error.TimestampUtc;
 
+	        var issueDailyCount = Load<IssueDailyCount>("IssueDailyCount/{0}-{1}".FormatWith(issue.FriendlyId, issue.CreatedOnUtc.ToString("yyyy-MM-dd")));
+
+			if (issueDailyCount == null)
+			{
+				issueDailyCount = new IssueDailyCount
+				{
+					Id = "IssueDailyCount/{0}-{1}".FormatWith(issue.FriendlyId, issue.CreatedOnUtc.ToString("yyyy-MM-dd")),
+					IssueId = issue.Id,
+					Count = 1,
+					Date = issue.CreatedOnUtc.Date
+				};
+
+				Store(issueDailyCount);
+			}
+			else
+			{
+				issueDailyCount.Count++;
+			}
+
+	        var issueHourlyCount = Load<IssueHourlyCount>("IssueHourlyCount/{0}".FormatWith(issue.FriendlyId));
+			issueHourlyCount.IncrementHourlyCount(error.TimestampUtc);
+
             SetLimitStatus(application, issue);
 
             //should the error be classified, yes if the issue has been acknowledged
@@ -171,7 +226,6 @@ namespace Errordite.Core.Reception.Commands
                         .FormatWith(error.Id, issue.Id, issue.ApplicationId));
             }
 
-            //if LimitStatus == ErrorLimitStatus.Exceeded make a any errors over the limit UnloggedErrors
             if (issue.LimitStatus == ErrorLimitStatus.Exceeded)
             {
                 _makeExceededErrorsUnloggedCommand.Invoke(new MakeExceededErrorsUnloggedRequest {IssueId = issue.Id});
@@ -238,6 +292,27 @@ namespace Errordite.Core.Reception.Commands
             };
 
             Store(issue);
+
+	        var issueHourlyCount = new IssueHourlyCount
+		    {
+			    IssueId = issue.Id,
+			    Id = "IssueHourlyCount/{0}".FormatWith(issue.FriendlyId)
+		    };
+
+			issueHourlyCount.Initialise();
+			issueHourlyCount.IncrementHourlyCount(issue.CreatedOnUtc);
+	        Store(issueHourlyCount);
+
+	        var issueDailyCount = new IssueDailyCount
+		    {
+				Id = "IssueDailyCount/{0}-{1}".FormatWith(issue.FriendlyId, issue.CreatedOnUtc.ToString("yyyy-MM-dd")),
+			    IssueId = issue.Id,
+			    Count = 1,
+			    Date = issue.CreatedOnUtc.Date
+		    };
+
+			Store(issueDailyCount);
+
             Trace("Created issue: Id:={0}, Name:={1}", issue.Id, issue.Name);
             error.IssueId = issue.Id;
             MaybeSendNotification(issue, application, NotificationType.NotifyOnNewClassCreated, error);

@@ -27,7 +27,7 @@ namespace Errordite.Core.Issues.Commands
             Trace("Starting...");
             TraceObject(request);
 
-            var issueIds = request.IssueIds.Select(i => Issue.GetId(i.Split('|')[0]));
+            var issueIds = request.IssueIds.Select(i => Issue.GetId(i.Split('|')[0])).ToList();
 
             _deleteErrorsCommand.Invoke(new DeleteErrorsRequest
             {
@@ -43,8 +43,13 @@ namespace Errordite.Core.Issues.Commands
                 });
             }
 
-            Session.AddCommitAction(new RaiseIssueDeletedEvent(string.Join("^", request.IssueIds)));
-            //Session.SynchroniseIndexes<Issues_Search, Errors_Search, UnloggedErrors>();
+			foreach (var issueId in issueIds)
+			{
+				//re-initialise the hourly count document
+				Session.Raven.Load<IssueHourlyCount>("IssueHourlyCount/{0}".FormatWith(issueId.GetFriendlyId())).Initialise();
+			}
+
+			Session.AddCommitAction(new RaiseIssueDeletedEvent(string.Join("^", request.IssueIds)));
 
             return new BatchDeleteIssuesResponse();
         }

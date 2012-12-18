@@ -38,6 +38,8 @@ namespace Errordite.Core.Issues.Commands
                     CurrentUser = request.CurrentUser
                 });
 
+				Session.Raven.Load<IssueHourlyCount>("IssueHourlyCount/{0}".FormatWith(issue.FriendlyId)).Initialise();
+
                 issue.History.Add(new IssueHistory
                 {
                     DateAddedUtc = DateTime.UtcNow,

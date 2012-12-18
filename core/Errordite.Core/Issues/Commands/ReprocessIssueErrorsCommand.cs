@@ -25,8 +25,7 @@ namespace Errordite.Core.Issues.Commands
         private readonly ErrorditeConfiguration _configuration;
         private readonly IReceiveErrorCommand _receiveErrorCommand;
 
-        public ReprocessIssueErrorsCommand( 
-            IAuthorisationManager authorisationManager, 
+        public ReprocessIssueErrorsCommand(IAuthorisationManager authorisationManager, 
             IGetApplicationErrorsQuery getApplicationErrorsQuery, 
             ErrorditeConfiguration configuration,
             IReceiveErrorCommand receiveErrorCommand)

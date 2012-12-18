@@ -143,6 +143,9 @@ h3 {
 h4 {
 	font-size:14px;
 	margin:5px 0;
+	&.formodal {
+		margin:15px 0;
+	}
 }
 
 h5 {
@@ -628,6 +631,8 @@ section {
 	font-weight: $extraboldfontweight;
 	&.btn-cancel {
 		font-size: 13px;
+		padding:6px 14px;
+		text-decoration:none;
 	}
   }
   &.btn-blue {
@@ -637,7 +642,7 @@ section {
 		color:$mediumbrown;
 	}
   }
-   &.btn-lightblue {
+  &.btn-lightblue {
     color:$darkbrown;
 	background-color:$extralightblue;
 	&:hover {
@@ -650,7 +655,6 @@ section {
 	text-transform:none;
 	font-weight: $normalfontweight;
 	&:hover {
-		text-decoration:underline;
 		color:$mediumbrown;
 	}
   }

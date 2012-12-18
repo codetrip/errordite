@@ -90,10 +90,10 @@ namespace Errordite.Test.IntegrationTests
             ravenSession.SaveChanges();
             
 
-            var result = ravenSession.Query<ByHourReduceResult, Errors_ByIssueByHour>()
-                .Customize(x => x.WaitForNonStaleResults())
-                .Where(r => r.IssueId == issue.Id)
-                .ToArray();
+			//var result = ravenSession.Query<ByHourReduceResult, Errors_ByIssueByHour>()
+			//	.Customize(x => x.WaitForNonStaleResults())
+			//	.Where(r => r.IssueId == issue.Id)
+			//	.ToArray();
 
 
 

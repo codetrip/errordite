@@ -5,6 +5,7 @@ using CodeTrip.Core.Extensions;
 using CodeTrip.Core.Paging;
 using Errordite.Core;
 using Errordite.Core.Applications.Commands;
+using Errordite.Core.Domain.Error;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Errors.Queries;
 using Errordite.Core.Organisations.Queries;
@@ -105,6 +106,34 @@ namespace Errordite.Web.Areas.System.Controllers
 
             return RedirectToAction("index");
         }
+
+		[HttpPost, ExportViewData]
+		public ActionResult SetupHourlyCounts(DateTime fromDate)
+		{
+			var organisations = _getOrganisationsQuery.Invoke(new GetOrganisationsRequest
+			{
+				Paging = new PageRequestWithSort(1, int.MaxValue)
+			}).Organisations;
+
+			foreach (var organisation in organisations.Items)
+			{
+				Core.Session.BootstrapOrganisation(organisation);
+
+				foreach(var issue in Core.Session.Raven.Query<Issue>())
+				{
+					var issueHourlyCount = new IssueHourlyCount
+					{
+						IssueId = issue.Id,
+						Id = "IssueHourlyCount/{0}".FormatWith(issue.FriendlyId)
+					};
+
+					issueHourlyCount.Initialise();
+					Core.Session.Raven.Store(issueHourlyCount);
+				}
+			}
+
+			return RedirectToAction("index");
+		}
 
         [HttpPost, ExportViewData]
         public ActionResult RebuildIndex(string indexName)

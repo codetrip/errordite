@@ -7,21 +7,16 @@ namespace Errordite.Core.Indexing
 {
     public class Errors_ByIssueByDate : AbstractMultiMapIndexCreationTask<ByDateReduceResult>
     {
-        private void AddErrorMap<T>() where T: ErrorBase
-        {
-            AddMap<T>(docs => from error in docs
-                              select new
-                              {
-                                  IssueId = error.IssueId,
-                                  Date = error.TimestampUtc.Date, //TODO: could have a property on an error called OrganisationLocalTimestamp
-                                  Count = 1,
-                              });
-        }
-
         public Errors_ByIssueByDate()
         {
-            AddErrorMap<Error>();
-            //AddErrorMap<UnloggedError>();
+			AddMap<IssueDailyCount>(docs => 
+				from dailyCount in docs
+				select new
+				{
+					IssueId = dailyCount.IssueId,
+					Date = dailyCount.Date.Date,
+					Count = dailyCount.Count,
+				});
 
             Reduce = results => from result in results
                                 group result by new { result.IssueId, result.Date }
