@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using CodeTrip.Core.Extensions;
@@ -28,7 +27,6 @@ using Errordite.Web.Models.Navigation;
 using Newtonsoft.Json;
 using Resources;
 using CoreConstants = Errordite.Core.CoreConstants;
-using Errordite.Core.Extensions;
 
 namespace Errordite.Web.Controllers
 {
@@ -42,10 +40,8 @@ namespace Errordite.Web.Controllers
         private readonly IUpdateIssueDetailsCommand _updateIssueDetailsCommand;
         private readonly ErrorditeConfiguration _configuration;
         private readonly IPurgeIssueCommand _purgeIssueCommand;
-        private readonly IReprocessIssueErrorsCommand _reprocessIssueErrorsCommand;
         private readonly IDeleteIssueCommand _deleteIssueCommand;
         private readonly IGetUserQuery _getUserQuery;
-
 
         public IssueController(IGetIssueQuery getIssueQuery, 
             IAdjustRulesCommand adjustRulesCommand, 
@@ -54,8 +50,8 @@ namespace Errordite.Web.Controllers
             IUpdateIssueDetailsCommand updateIssueDetailsCommand, 
             ErrorditeConfiguration configuration, 
             IPurgeIssueCommand purgeIssueCommand, 
-            IReprocessIssueErrorsCommand reprocessIssueErrorsCommand, 
-            IDeleteIssueCommand deleteIssueCommand, IGetUserQuery getUserQuery)
+            IDeleteIssueCommand deleteIssueCommand,
+			IGetUserQuery getUserQuery)
         {
             _getIssueQuery = getIssueQuery;
             _adjustRulesCommand = adjustRulesCommand;
@@ -64,7 +60,6 @@ namespace Errordite.Web.Controllers
             _updateIssueDetailsCommand = updateIssueDetailsCommand;
             _configuration = configuration;
             _purgeIssueCommand = purgeIssueCommand;
-            _reprocessIssueErrorsCommand = reprocessIssueErrorsCommand;
             _deleteIssueCommand = deleteIssueCommand;
             _getUserQuery = getUserQuery;
         }
@@ -116,27 +111,28 @@ namespace Errordite.Web.Controllers
         {
             var data = new Dictionary<string, object>();
 
-            var hourResults = Core.Session.Raven.Query<ByHourReduceResult, Errors_ByIssueByHour>()
-                .Where(i => i.IssueId == Errordite.Core.Domain.Error.Issue.GetId(issueId))
-                .AsEnumerable()
-                .Select(h => new
-                                 {
-                                     hour = (DateTime.Today + new TimeSpan(h.Hour.Hour, 0, 0)).ToLocal().Hour,
-                                     count = h.Count,
-                                 });
+			//var hourResults = Core.Session.Raven.Query<ByHourReduceResult, Errors_ByIssueByHour>()
+			//	.Where(i => i.IssueId == Errordite.Core.Domain.Error.Issue.GetId(issueId))
+			//	.AsEnumerable()
+			//	.Select(h => new
+			//					 {
+			//						 hour = (DateTime.Today + new TimeSpan(h.Hour.Hour, 0, 0)).ToLocal().Hour,
+			//						 count = h.Count,
+			//					 });
 
-            var allHourResults =
-                (from hour in Enumerable.Range(0, 24)
-                 join result in hourResults on hour equals result.hour into countsTemp
-                 from hours in countsTemp.DefaultIfEmpty()
-                 select new {hour, count = hours.IfPoss(h => h.count)}).ToArray();
+			//var allHourResults =
+			//	(from hour in Enumerable.Range(0, 24)
+			//	 join result in hourResults on hour equals result.hour into countsTemp
+			//	 from hours in countsTemp.DefaultIfEmpty()
+			//	 select new {hour, count = hours.IfPoss(h => h.count)}).ToArray();
+
+	        var hourlyCount = Core.Session.Raven.Load<IssueHourlyCount>("IssueHourlyCount/{0}".FormatWith(issueId.GetFriendlyId()));
 
             data.Add("ByHour", new
-                {
-                    x = allHourResults.Select(h => h.hour.ToString("0")),
-                    y = allHourResults.Select(h => h.count)
-                });
-
+            {
+				x = hourlyCount.HourlyCount.Select(h => h.Key.ToString("0")),
+				y = hourlyCount.HourlyCount.Select(h => h.Value)
+            });
 
             var dateResults = Core.Session.Raven.Query<ByDateReduceResult, Errors_ByIssueByDate>()
                 .Where(i => i.IssueId == Issue.GetId(issueId))
@@ -147,11 +143,11 @@ namespace Errordite.Web.Controllers
             {
                 var allDateResults =
                 (
-                from date in Enumerable.Range(0, (dateResults.Last().Date - dateResults.First().Date).Days + 1)
-                    .Select(d => dateResults.First().Date.AddDays(d))
-                join result in dateResults on date equals result.Date into countsTemp
-                from dates in countsTemp.DefaultIfEmpty()
-                select new { date, count = dates.IfPoss(d => d.Count) }
+					from date in Enumerable.Range(0, (dateResults.Last().Date - dateResults.First().Date).Days + 1)
+						.Select(d => dateResults.First().Date.AddDays(d))
+					join result in dateResults on date equals result.Date into countsTemp
+					from dates in countsTemp.DefaultIfEmpty()
+					select new { date, count = dates.IfPoss(d => d.Count) }
                 ).ToArray();
 
                 data.Add("ByDate", new

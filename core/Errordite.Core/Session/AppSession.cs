@@ -149,7 +149,7 @@ namespace Errordite.Core.Session
                     return _session;
 
                 _session = _documentStore.OpenSession(CoreConstants.ErrorditeMasterDatabaseName);
-                _session.Advanced.MaxNumberOfRequestsPerSession = RequestLimit == 0 ? 250 : RequestLimit;
+                _session.Advanced.MaxNumberOfRequestsPerSession = RequestLimit == 0 ? 500 : RequestLimit;
                 return _session;
             }
         }
