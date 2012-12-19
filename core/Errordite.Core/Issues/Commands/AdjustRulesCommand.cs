@@ -62,7 +62,7 @@ namespace Errordite.Core.Issues.Commands
             UpdateCurrentIssue(currentIssue, tempIssue, request);
 
             Trace("Starting to determining non matching errors , Current Error Count:={0}, Temp Issue Error Count:={1}...", currentIssue.ErrorCount, tempIssue.ErrorCount);
-            var nonMatchingErrorsResponse = _getErrorsThatDoNotMatchNewRulesQuery.Invoke(new FindErrorsMatchingRulesRequest
+            var nonMatchingErrorsResponse = _getErrorsThatDoNotMatchNewRulesQuery.Invoke(new GetErrorsThatDoNotMatchNewRulesRequest
             {
                 IssueWithModifiedRules = currentIssue,
                 IssueWithOldRules = tempIssue

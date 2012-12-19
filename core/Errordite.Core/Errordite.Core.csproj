@@ -182,7 +182,7 @@
     <Compile Include="Issues\Commands\AdjustRulesCommand.cs" />
     <Compile Include="Issues\Commands\AddIssueCommand.cs" />
     <Compile Include="Issues\Commands\BatchStatusUpdateCommand.cs" />
-    <Compile Include="Errors\Queries\FindErrorsMatchingRulesQuery.cs" />
+    <Compile Include="Errors\Queries\GetErrorsThatDoNotMatchNewRulesQuery.cs" />
     <Compile Include="Issues\Commands\ReprocessIssueErrorsCommand.cs" />
     <Compile Include="Issues\Commands\MergeIssuesCommand.cs" />
     <Compile Include="Issues\Commands\DeleteIssueCommand.cs" />
@@ -192,7 +192,6 @@
     <Compile Include="Identity\NoAuthenticationManager.cs" />
     <Compile Include="IoC\ErrorditeNServiceBusClientInstaller.cs" />
     <Compile Include="Errors\Queries\GetUnclassifiedErrorsThatMatchRulesQuery.cs" />
-    <Compile Include="Issues\Commands\CheckIssueCommand.cs" />
     <Compile Include="Issues\Commands\UpdateIssueDetailsCommand.cs" />
     <Compile Include="Issues\Queries\GetIssueWithMatchingRulesQuery.cs" />
     <Compile Include="Issues\Queries\GetIssuesWithNoErrorsWithinPeriodQuery.cs" />
@@ -281,6 +280,8 @@
     <Compile Include="Organisations\Queries\GetOrganisationStatisticsQuery.cs" />
     <Compile Include="Organisations\Queries\GetOrganisationQuery.cs" />
     <Compile Include="Issues\ReceptionServiceIssueCache.cs" />
+    <Compile Include="Reception\Commands\AttachToExistingIssueCommand.cs" />
+    <Compile Include="Reception\Commands\AttachToNewIssueCommand.cs" />
     <Compile Include="Reception\Commands\ProcessIncomingExceptionCommand.cs" />
     <Compile Include="Reception\ExceptionRateLimiter.cs" />
     <Compile Include="Resources\CoreResources.Designer.cs">

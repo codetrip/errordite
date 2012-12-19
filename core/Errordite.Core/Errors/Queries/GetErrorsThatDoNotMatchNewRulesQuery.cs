@@ -4,20 +4,20 @@ using CodeTrip.Core.Interfaces;
 using CodeTrip.Core.Paging;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Issues.Commands;
-using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
+using Errordite.Core.Session;
 
 namespace Errordite.Core.Errors.Queries
 {
-    public class FindErrorsMatchingRulesQuery : SessionAccessBase, IGetErrorsThatDoNotMatchNewRulesQuery
+    public class GetErrorsThatDoNotMatchNewRulesQuery : SessionAccessBase, IGetErrorsThatDoNotMatchNewRulesQuery
     {
         private readonly IGetApplicationErrorsQuery _getApplicationErrorsQuery;
 
-        public FindErrorsMatchingRulesQuery(IGetApplicationErrorsQuery getApplicationErrorsQuery)
+        public GetErrorsThatDoNotMatchNewRulesQuery(IGetApplicationErrorsQuery getApplicationErrorsQuery)
         {
             _getApplicationErrorsQuery = getApplicationErrorsQuery;
         }
 
-        public FindErrorsMatchingRulesResponse Invoke(FindErrorsMatchingRulesRequest request)
+        public GetErrorsThatDoNotMatchNewRulesResponse Invoke(GetErrorsThatDoNotMatchNewRulesRequest request)
         {
             Trace("Starting...");
 
@@ -27,7 +27,7 @@ namespace Errordite.Core.Errors.Queries
 
             Trace("...Complete");
 
-            return new FindErrorsMatchingRulesResponse
+            return new GetErrorsThatDoNotMatchNewRulesResponse
             {
                 Status = AdjustRulesStatus.Ok,
                 NonMatches = nonMatches,
@@ -75,17 +75,17 @@ namespace Errordite.Core.Errors.Queries
         }
     }
 
-    public interface IGetErrorsThatDoNotMatchNewRulesQuery : ICommand<FindErrorsMatchingRulesRequest, FindErrorsMatchingRulesResponse>
+    public interface IGetErrorsThatDoNotMatchNewRulesQuery : ICommand<GetErrorsThatDoNotMatchNewRulesRequest, GetErrorsThatDoNotMatchNewRulesResponse>
     { }
 
-    public class FindErrorsMatchingRulesResponse
+    public class GetErrorsThatDoNotMatchNewRulesResponse
     {
         public AdjustRulesStatus Status { get; set; }
         public List<Error> NonMatches { get; set; }
         public List<Error> Matches { get; set; }
     }
 
-    public class FindErrorsMatchingRulesRequest
+    public class GetErrorsThatDoNotMatchNewRulesRequest
     {
         public Issue IssueWithOldRules { get; set; }
         public Issue IssueWithModifiedRules { get; set; }
