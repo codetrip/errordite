@@ -4,9 +4,9 @@ using Errordite.Core.Authorisation;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Errors.Commands;
 using Errordite.Core.Organisations;
-using Errordite.Core.Resources;
 using CodeTrip.Core.Extensions;
-using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
+using Errordite.Core.Session;
+using Raven.Abstractions.Data;
 
 namespace Errordite.Core.Issues.Commands
 {
@@ -23,38 +23,43 @@ namespace Errordite.Core.Issues.Commands
 
         public PurgeIssueResponse Invoke(PurgeIssueRequest request)
         {
-            Trace("Starting...");
-            TraceObject(request);
+			Trace("Starting...");
+			TraceObject(request);
 
-            var issue = Load<Issue>(Issue.GetId(request.IssueId));
+			var issue = Load<Issue>(Issue.GetId(request.IssueId));
 
-            if(issue != null)
-            {
-                _authorisationManager.Authorise(issue, request.CurrentUser);
+			if (issue == null)
+				return new PurgeIssueResponse();
 
-                _deleteErrorsCommand.Invoke(new DeleteErrorsRequest
-                {
-                    IssueIds = new []{ issue.Id },
-                    CurrentUser = request.CurrentUser
-                });
+			_authorisationManager.Authorise(issue, request.CurrentUser);
 
-				Session.Raven.Load<IssueHourlyCount>("IssueHourlyCount/{0}".FormatWith(issue.FriendlyId)).Initialise();
+			//delete the issues errors
+			Session.RavenDatabaseCommands.DeleteByIndex(CoreConstants.IndexNames.Errors, new IndexQuery
+			{
+				Query = "IssueId:{0}".FormatWith(issue.Id)
+			});
 
-                issue.History.Add(new IssueHistory
-                {
-                    DateAddedUtc = DateTime.UtcNow,
-                    //Message = CoreResources.HistoryIssuePurged.FormatWith(request.CurrentUser.FullName, request.CurrentUser.Email),
-                    UserId = request.CurrentUser.Id,    
-                    Type = HistoryItemType.ErrorsPurged,
-                });
+			//delete any daily issue count docs
+			Session.RavenDatabaseCommands.DeleteByIndex(CoreConstants.IndexNames.IssueDailyCount, new IndexQuery
+			{
+				Query = "IssueId:{0}".FormatWith(issue.Id)
+			});
 
-                issue.ErrorCount = 0;
-                issue.LimitStatus = ErrorLimitStatus.Ok;
-            }
+			Session.Raven.Load<IssueHourlyCount>("IssueHourlyCount/{0}".FormatWith(issue.FriendlyId)).Initialise();
 
-            return new PurgeIssueResponse();
-        }
-    }
+			issue.History.Add(new IssueHistory
+			{
+				DateAddedUtc = DateTime.UtcNow,
+				UserId = request.CurrentUser.Id,
+				Type = HistoryItemType.ErrorsPurged,
+			});
+
+			issue.ErrorCount = 0;
+			issue.LimitStatus = ErrorLimitStatus.Ok;
+
+			return new PurgeIssueResponse();
+		}
+	}
 
     public interface IPurgeIssueCommand : ICommand<PurgeIssueRequest, PurgeIssueResponse>
     { }

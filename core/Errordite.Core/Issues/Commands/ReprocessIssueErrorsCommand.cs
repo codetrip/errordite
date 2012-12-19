@@ -14,7 +14,7 @@ using Errordite.Core.Organisations;
 using Errordite.Core.Reception.Commands;
 using CodeTrip.Core.Extensions;
 using System.Linq;
-using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
+using Errordite.Core.Session;
 
 namespace Errordite.Core.Issues.Commands
 {

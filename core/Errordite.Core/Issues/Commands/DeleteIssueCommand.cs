@@ -6,7 +6,7 @@ using Errordite.Core.Domain.Error;
 using Errordite.Core.Errors.Commands;
 using Errordite.Core.Organisations;
 using Errordite.Core.Session;
-using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
+using Raven.Abstractions.Data;
 
 namespace Errordite.Core.Issues.Commands
 {
@@ -39,17 +39,25 @@ namespace Errordite.Core.Issues.Commands
 
             _authorisationManager.Authorise(issue, request.CurrentUser);
 
-            _deleteErrorsCommand.Invoke(new DeleteErrorsRequest
-            {
-                IssueIds = new[] { issueId },
-                CurrentUser = request.CurrentUser
-            });
+			//delete the issues errors
+			Session.RavenDatabaseCommands.DeleteByIndex(CoreConstants.IndexNames.Errors, new IndexQuery
+			{
+				Query = "IssueId:{0}".FormatWith(issueId)
+			});
 
-			var hourlyCount = Session.Raven.Load<IssueHourlyCount>("IssueHourlyCount/{0}".FormatWith(issue.FriendlyId));
+			//delete any daily issue count docs
+			Session.RavenDatabaseCommands.DeleteByIndex(CoreConstants.IndexNames.IssueDailyCount, new IndexQuery
+			{
+				Query = "IssueId:{0}".FormatWith(issueId)
+			});
 
-			Delete(hourlyCount);
+			//delete the hourly count doc
+			Delete(Session.Raven.Load<IssueHourlyCount>("IssueHourlyCount/{0}".FormatWith(issue.FriendlyId)));
+
+			//and delete the issue
             Delete(issue);
 
+			//tell the reception service an issue has been deleted
             Session.AddCommitAction(new RaiseIssueDeletedEvent("{0}|{1}".FormatWith(issue.FriendlyId, IdHelper.GetFriendlyId(issue.ApplicationId))));
 
             return new DeleteIssueResponse

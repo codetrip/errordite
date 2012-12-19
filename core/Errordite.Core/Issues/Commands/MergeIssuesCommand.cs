@@ -3,10 +3,9 @@ using CodeTrip.Core.Interfaces;
 using Errordite.Core.Authorisation;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Organisations;
-using Errordite.Core.Resources;
 using CodeTrip.Core.Extensions;
+using Errordite.Core.Session;
 using Raven.Abstractions.Data;
-using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
 
 namespace Errordite.Core.Issues.Commands
 {
@@ -58,27 +57,10 @@ namespace Errordite.Core.Issues.Commands
                     }
             }, true);
 
-            //also move all core errors fron the MergeFromIssue to the MergeToIssue
-            //Session.RavenDatabaseCommands.UpdateByIndex(CoreConstants.IndexNames.UnloggedErrors,
-            //    new IndexQuery
-            //    {
-            //        Query = "IssueId:{0}".FormatWith(mergeFromIssue.Id)
-            //    },
-            //    new[]
-            //    {
-            //        new PatchRequest
-            //        {
-            //            Name = "IssueId",
-            //            Type = PatchCommandType.Set,
-            //            Value = mergeToIssue.Id
-            //        }   
-            //}, true);
-
             mergeToIssue.History.Add(new IssueHistory
             {
                 DateAddedUtc = DateTime.UtcNow,
                 SpawningIssueId = mergeFromIssue.Id,
-                //Message = CoreResources.HIstoryIssueMerged.FormatWith(mergeFromIssue.FriendlyId, mergeFromIssue.Name),
                 SystemMessage = true,
                 Type = HistoryItemType.MergedTo,
             });
