@@ -52,21 +52,6 @@ namespace Errordite.Test.IntegrationTests
         }
 
         [Test]
-        public void SelectIssuesForPurge()
-        {
-            var query = Get<IGetIssuesWithNoErrorsWithinPeriodQuery>();
-
-            var issues = query.Invoke(new GetIssuesWithNoErrorsWithinPeriodRequest
-            {
-                ApplicationId = "1",
-                Paging = new PageRequestWithSort(1, 10),
-                PurgeDate = DateTime.UtcNow.AddDays(-3)
-            }).Issues;
-
-            Assert.That(issues != null);
-        }
-
-        [Test]
         public void HourIndex()
         {
             var ravenSession = Get<IAppSession>().Raven;

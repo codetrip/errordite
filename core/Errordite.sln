@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2010
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Errordite.Web", "Errordite.Web\Errordite.Web.csproj", "{CEF8FB25-38DC-403F-A783-2AF2B8717193}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Errordite.Core", "Errordite.Core\Errordite.Core.csproj", "{418F4BC8-7042-49B1-9F69-95189A2A5837}"
@@ -28,6 +28,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Errordite.Raven", "Errordite.Raven\Errordite.Raven.csproj", "{E4804C8C-8237-4243-A86A-6BCD06273870}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Errordite.Utils.NServiceBusCastleBridge", "Errordite.Utils.NServiceBusCastleBridge\Errordite.Utils.NServiceBusCastleBridge.csproj", "{24344728-3CE7-4ACE-B1F1-83A1DFA3F3C0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Errordite.Events.Service", "Errordite.Events.Service\Errordite.Events.Service.csproj", "{78F9A4B8-AD03-4207-9125-DCD0F5F69340}"
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
@@ -106,6 +108,12 @@ Global
 		{24344728-3CE7-4ACE-B1F1-83A1DFA3F3C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{24344728-3CE7-4ACE-B1F1-83A1DFA3F3C0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{24344728-3CE7-4ACE-B1F1-83A1DFA3F3C0}.Release|x86.ActiveCfg = Release|Any CPU
+		{78F9A4B8-AD03-4207-9125-DCD0F5F69340}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78F9A4B8-AD03-4207-9125-DCD0F5F69340}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78F9A4B8-AD03-4207-9125-DCD0F5F69340}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{78F9A4B8-AD03-4207-9125-DCD0F5F69340}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78F9A4B8-AD03-4207-9125-DCD0F5F69340}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78F9A4B8-AD03-4207-9125-DCD0F5F69340}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

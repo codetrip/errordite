@@ -21,9 +21,25 @@ namespace Errordite.Core.Errors.Queries
         {
             Trace("Starting...");
 
-            List<Error> matches;
-            List<Error> nonMatches;
-            GetMatches(request.IssueWithModifiedRules, request.IssueWithOldRules, out matches, out nonMatches);
+            var matches = new List<Error>();
+            var nonMatches = new List<Error>();
+
+            var errors = _getApplicationErrorsQuery.Invoke(new GetApplicationErrorsRequest
+            {
+                ApplicationId = request.IssueWithModifiedRules.ApplicationId,
+                OrganisationId = request.IssueWithModifiedRules.OrganisationId,
+                Paging = new PageRequestWithSort(1, int.MaxValue),
+                IssueId = request.IssueWithModifiedRules.Id
+            }).Errors;
+
+            //find any errors which do not match the new rules and move them to our new temporary issue
+            foreach (var error in errors.Items)
+            {
+                if (request.IssueWithModifiedRules.Rules.All(rule => rule.IsMatch(error)))
+                    matches.Add(error);
+                else
+                    nonMatches.Add(error);
+            } 
 
             Trace("...Complete");
 
@@ -33,45 +49,6 @@ namespace Errordite.Core.Errors.Queries
                 NonMatches = nonMatches,
                 Matches = matches,
             };
-        }
-
-        private List<Error> GetMatches(Issue issueWithModifiedRules, Issue issueWithOldRules, out List<Error> matches, out List<Error> nonMatches)
-        {
-            nonMatches = new List<Error>();
-            matches = new List<Error>();
-            var errors = _getApplicationErrorsQuery.Invoke(new GetApplicationErrorsRequest
-            {
-                ApplicationId = issueWithModifiedRules.ApplicationId,
-                OrganisationId = issueWithModifiedRules.OrganisationId,
-                Paging = new PageRequestWithSort(1, int.MaxValue, CoreConstants.SortFields.TimestampUtc, false),
-                IssueId = issueWithModifiedRules.Id
-            }).Errors;
-            
-            //find any errors which do not match the new rules and move them to our new temporary issue
-            foreach (var error in errors.Items)
-            {
-                if (issueWithModifiedRules.Rules.All(rule => rule.IsMatch(error)))
-                    matches.Add(error);
-                else
-                    nonMatches.Add(error);
-
-                UpdateIssue(issueWithOldRules, error);
-            } 
-
-            return nonMatches;
-        }
-
-        private void UpdateIssue(Issue issue, Error error)
-        {
-            if (error.IssueId == issue.Id)
-                return;
-
-            //increment the new issue count
-            issue.ErrorCount++;
-
-            //attempt to correct the last error utc as this is lost when we create a new issue by adjusting rules of another issue
-            if (issue.LastErrorUtc < error.TimestampUtc)
-                issue.LastErrorUtc = error.TimestampUtc;
         }
     }
 

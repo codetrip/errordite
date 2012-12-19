@@ -2,7 +2,6 @@
 using CodeTrip.Core.Interfaces;
 using Errordite.Core.Authorisation;
 using Errordite.Core.Domain.Error;
-using Errordite.Core.Errors.Commands;
 using Errordite.Core.Organisations;
 using CodeTrip.Core.Extensions;
 using Errordite.Core.Session;
@@ -13,11 +12,9 @@ namespace Errordite.Core.Issues.Commands
     public class PurgeIssueCommand : SessionAccessBase, IPurgeIssueCommand
     {
         private readonly IAuthorisationManager _authorisationManager;
-        private readonly IDeleteErrorsCommand _deleteErrorsCommand;
 
-        public PurgeIssueCommand(IDeleteErrorsCommand deleteErrorsCommand, IAuthorisationManager authorisationManager)
+        public PurgeIssueCommand(IAuthorisationManager authorisationManager)
         {
-            _deleteErrorsCommand = deleteErrorsCommand;
             _authorisationManager = authorisationManager;
         }
 
@@ -34,16 +31,15 @@ namespace Errordite.Core.Issues.Commands
 			_authorisationManager.Authorise(issue, request.CurrentUser);
 
 			//delete the issues errors
-			Session.RavenDatabaseCommands.DeleteByIndex(CoreConstants.IndexNames.Errors, new IndexQuery
+            Session.AddCommitAction(new DeleteByIndexCommitAction(CoreConstants.IndexNames.Errors, new IndexQuery
 			{
 				Query = "IssueId:{0}".FormatWith(issue.Id)
-			});
+            }, true));
 
-			//delete any daily issue count docs
-			Session.RavenDatabaseCommands.DeleteByIndex(CoreConstants.IndexNames.IssueDailyCount, new IndexQuery
-			{
-				Query = "IssueId:{0}".FormatWith(issue.Id)
-			});
+            Session.AddCommitAction(new DeleteByIndexCommitAction(CoreConstants.IndexNames.IssueDailyCount, new IndexQuery
+            {
+                Query = "IssueId:{0}".FormatWith(issue.Id)
+            }, true));
 
 			Session.Raven.Load<IssueHourlyCount>("IssueHourlyCount/{0}".FormatWith(issue.FriendlyId)).Initialise();
 

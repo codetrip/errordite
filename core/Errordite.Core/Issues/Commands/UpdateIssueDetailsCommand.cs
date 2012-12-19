@@ -3,6 +3,7 @@ using CodeTrip.Core.Extensions;
 using CodeTrip.Core.Interfaces;
 using Errordite.Core.Authorisation;
 using Errordite.Core.Domain.Error;
+using Errordite.Core.Indexing;
 using Errordite.Core.Notifications.Commands;
 using Errordite.Core.Notifications.EmailInfo;
 using Errordite.Core.Organisations;
@@ -46,7 +47,9 @@ namespace Errordite.Core.Issues.Commands
 
             if (issue.Status == IssueStatus.Unacknowledged && request.Status != IssueStatus.Unacknowledged)
             {
-                Session.RavenDatabaseCommands.UpdateByIndex(CoreConstants.IndexNames.Errors,
+                Session.SynchroniseIndexes<Errors_Search>();
+                Session.AddCommitAction(new UpdateByIndexCommitAction(
+                    CoreConstants.IndexNames.Errors,
                     new IndexQuery
                     {
                         Query = "IssueId:{0} AND Classified:false".FormatWith(issue.Id)
@@ -59,7 +62,8 @@ namespace Errordite.Core.Issues.Commands
                             Type = PatchCommandType.Set,
                             Value = true
                         }
-                    });
+                    }, 
+                    true));
             }
 
             //if we are assigning this issue to a new user, notify them
@@ -87,7 +91,6 @@ namespace Errordite.Core.Issues.Commands
             issue.UserId = request.AssignedUserId;
             issue.Name = request.Name;
             issue.AlwaysNotify = request.AlwaysNotify;
-            //issue.MatchPriority = request.Priority;
             issue.Reference = request.Reference;
 
             string message = Resources.CoreResources.HistoryIssueUpdated.FormatWith(request.CurrentUser.FullName,

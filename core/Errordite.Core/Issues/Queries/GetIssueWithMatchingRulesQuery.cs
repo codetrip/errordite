@@ -2,9 +2,9 @@
 using Errordite.Core.Domain.Error;
 using System.Linq;
 using Errordite.Core.Indexing;
+using Errordite.Core.Session;
 using Raven.Client;
 using Raven.Client.Linq;
-using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
 
 namespace Errordite.Core.Issues.Queries
 {

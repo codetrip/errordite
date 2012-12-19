@@ -8,7 +8,8 @@ namespace Errordite.Core.Domain.Error
 		public string Id { get; set; }
 		public string IssueId { get; set; }
 		public int Count { get; set; }
-		public DateTime Date { get; set; }
+        public DateTime Date { get; set; }
+        public DateTime CreatedOnUtc { get; set; }
 	}
 
 	public class IssueHourlyCount
