@@ -150,6 +150,7 @@ namespace Errordite.Core.Session
 
                 _session = _documentStore.OpenSession(CoreConstants.ErrorditeMasterDatabaseName);
                 _session.Advanced.MaxNumberOfRequestsPerSession = RequestLimit == 0 ? 500 : RequestLimit;
+                _session.Advanced.UseOptimisticConcurrency = true;
                 return _session;
             }
         }
@@ -165,6 +166,8 @@ namespace Errordite.Core.Session
                     throw new InvalidOperationException("Can't get session till Organisation has beens set.");
 
                 _organisationSession = _documentStore.OpenSession(_organisationDatabaseId);
+                _organisationSession.Advanced.MaxNumberOfRequestsPerSession = RequestLimit == 0 ? 500 : RequestLimit;
+                _organisationSession.Advanced.UseOptimisticConcurrency = true;
                 return _organisationSession;
             }
         }
@@ -174,12 +177,21 @@ namespace Errordite.Core.Session
             get { return _redisSession; }
         }
 
-        public IDatabaseCommands RavenDatabaseCommands { get { return _session.Advanced.DocumentStore.DatabaseCommands.ForDatabase(_organisationDatabaseId); } }
-        public IDatabaseCommands MasterRavenDatabaseCommands { get
-        {
-            return
-                _session.Advanced.DocumentStore.DatabaseCommands.ForDatabase(CoreConstants.ErrorditeMasterDatabaseName);
-        } }
+        public IDatabaseCommands RavenDatabaseCommands
+        { 
+            get
+            {
+                return _session.Advanced.DocumentStore.DatabaseCommands.ForDatabase(_organisationDatabaseId);
+            } 
+        }
+
+        public IDatabaseCommands MasterRavenDatabaseCommands 
+        { 
+            get
+            {
+                return _session.Advanced.DocumentStore.DatabaseCommands.ForDatabase(CoreConstants.ErrorditeMasterDatabaseName);
+            } 
+        }
 
         public void Close()
         {

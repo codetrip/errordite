@@ -156,14 +156,12 @@
     <Compile Include="ErrorditeCore.cs" />
     <Compile Include="Errors\Commands\MakeExceededErrorsUnloggedCommand.cs" />
     <Compile Include="Errors\Commands\MoveErrorsToNewIssueCommand.cs" />
-    <Compile Include="Errors\Commands\DeleteErrorsCommand.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\ExceptionExtensions.cs" />
     <Compile Include="Extensions\RulesExtensions.cs" />
     <Compile Include="Extensions\IssueExtensions.cs" />
     <Compile Include="Identity\IImpersonationManager.cs" />
     <Compile Include="Indexing\Applications_Search.cs" />
-    <Compile Include="Indexing\Errors_ByIssueByDate.cs" />
     <Compile Include="Indexing\UserAlerts_Search.cs" />
     <Compile Include="Indexing\Organisations_Search.cs" />
     <Compile Include="Indexing\Groups_Search.cs" />
@@ -183,6 +181,7 @@
     <Compile Include="Issues\Commands\AddIssueCommand.cs" />
     <Compile Include="Issues\Commands\BatchStatusUpdateCommand.cs" />
     <Compile Include="Errors\Queries\GetErrorsThatDoNotMatchNewRulesQuery.cs" />
+    <Compile Include="Issues\Commands\SyncIssueErrorCountsCommand.cs" />
     <Compile Include="Issues\Commands\ReprocessIssueErrorsCommand.cs" />
     <Compile Include="Issues\Commands\MergeIssuesCommand.cs" />
     <Compile Include="Issues\Commands\DeleteIssueCommand.cs" />
@@ -193,8 +192,8 @@
     <Compile Include="IoC\ErrorditeNServiceBusClientInstaller.cs" />
     <Compile Include="Errors\Queries\GetUnclassifiedErrorsThatMatchRulesQuery.cs" />
     <Compile Include="Issues\Commands\UpdateIssueDetailsCommand.cs" />
+    <Compile Include="Issues\Queries\GetIssueReportDataQuery.cs" />
     <Compile Include="Issues\Queries\GetIssueWithMatchingRulesQuery.cs" />
-    <Compile Include="Issues\Queries\GetIssuesWithNoErrorsWithinPeriodQuery.cs" />
     <Compile Include="Issues\Queries\GetAllApplicationIssuesQuery.cs" />
     <Compile Include="Issues\Queries\GetApplicationIssuesQuery.cs" />
     <Compile Include="Issues\Queries\GetIssueQuery.cs" />
@@ -227,8 +226,7 @@
     <Compile Include="Matching\PropertyMatchRule.cs" />
     <Compile Include="Matching\DefaultMatchRuleFactory.cs" />
     <Compile Include="Configuration\EmailConfiguration.cs" />
-    <Compile Include="Messages\AttachUnclassifiedErrorsToIssueMessage.cs" />
-    <Compile Include="Messages\CheckIssueMessage.cs" />
+    <Compile Include="Messages\SyncIssueErrorCountsMessage.cs" />
     <Compile Include="Messages\ReceiveErrorMessage.cs" />
     <Compile Include="Messages\SendHipChatMessage.cs" />
     <Compile Include="Notifications\Commands\SendHipChatMessageCommand.cs" />
@@ -297,6 +295,8 @@
     <Compile Include="ServiceBus\ErrorditeNServiceBusMessageBase.cs" />
     <Compile Include="ServiceBus\MessageHandlerSessionBase.cs" />
     <Compile Include="Session\AppSession.cs" />
+    <Compile Include="Session\UpdateByIndexCommitAction.cs" />
+    <Compile Include="Session\DeleteByIndexCommitAction.cs" />
     <Compile Include="Users\Queries\GetUserByEmailAddressQuery.cs" />
     <Compile Include="WebApi\LoggingHttpMessageHandler.cs" />
     <Compile Include="Session\RaiseIssueEvent.cs" />

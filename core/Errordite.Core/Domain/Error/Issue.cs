@@ -81,6 +81,8 @@ namespace Errordite.Core.Domain.Error
         public string Reference { get; set; }
         [ProtoMember(19)]
         public DateTime LastErrorUtc { get; set; }
+        [ProtoMember(20)]
+        public DateTime LastSyncUtc { get; set; }
 
         [Raven.Imports.Newtonsoft.Json.JsonIgnore]
         public string FriendlyId { get { return Id == null ? string.Empty : Id.Split('/')[1]; } }

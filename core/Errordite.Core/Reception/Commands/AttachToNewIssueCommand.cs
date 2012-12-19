@@ -67,6 +67,7 @@ namespace Errordite.Core.Reception.Commands
                 },
 				MatchPriority = MatchPriority.Low, //will get a low score when weighting the rules against errors,
 				TestIssue = error.TestError,
+                LastSyncUtc = DateTime.UtcNow
 			};
 
 			Store(issue);
@@ -86,7 +87,8 @@ namespace Errordite.Core.Reception.Commands
 				Id = "IssueDailyCount/{0}-{1}".FormatWith(issue.FriendlyId, issue.CreatedOnUtc.ToString("yyyy-MM-dd")),
 				IssueId = issue.Id,
 				Count = 1,
-				Date = issue.CreatedOnUtc.Date
+				Date = issue.CreatedOnUtc.Date,
+                CreatedOnUtc = DateTime.UtcNow
 			};
 
 			Store(issueDailyCount);

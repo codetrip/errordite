@@ -25,6 +25,7 @@ using Errordite.Web.Models.Errors;
 using Errordite.Web.Models.Issues;
 using Errordite.Web.Models.Navigation;
 using Newtonsoft.Json;
+using Raven.Abstractions.Exceptions;
 using Resources;
 using CoreConstants = Errordite.Core.CoreConstants;
 
@@ -42,6 +43,7 @@ namespace Errordite.Web.Controllers
         private readonly IPurgeIssueCommand _purgeIssueCommand;
         private readonly IDeleteIssueCommand _deleteIssueCommand;
         private readonly IGetUserQuery _getUserQuery;
+        private readonly IGetIssueReportDataQuery _getIssueReportDataQuery;
 
         public IssueController(IGetIssueQuery getIssueQuery, 
             IAdjustRulesCommand adjustRulesCommand, 
@@ -51,7 +53,8 @@ namespace Errordite.Web.Controllers
             ErrorditeConfiguration configuration, 
             IPurgeIssueCommand purgeIssueCommand, 
             IDeleteIssueCommand deleteIssueCommand,
-			IGetUserQuery getUserQuery)
+			IGetUserQuery getUserQuery, 
+            IGetIssueReportDataQuery getIssueReportDataQuery)
         {
             _getIssueQuery = getIssueQuery;
             _adjustRulesCommand = adjustRulesCommand;
@@ -62,6 +65,7 @@ namespace Errordite.Web.Controllers
             _purgeIssueCommand = purgeIssueCommand;
             _deleteIssueCommand = deleteIssueCommand;
             _getUserQuery = getUserQuery;
+            _getIssueReportDataQuery = getIssueReportDataQuery;
         }
 
         [ImportViewData, GenerateBreadcrumbs(BreadcrumbId.Issue, BreadcrumbId.Issues, WebConstants.CookieSettings.IssueSearchCookieKey)]
@@ -91,6 +95,7 @@ namespace Errordite.Web.Controllers
                     viewModel.Details.Reference = postedModel.Reference;
                     viewModel.Details.Comment = postedModel.Comment;
                     viewModel.Details.AlwaysNotify = postedModel.AlwaysNotify;
+                    viewModel.Details.DateRange = "{0} - {1}".FormatWith(DateTime.UtcNow.AddDays(-30).ToString("MMMM d, yyyy"), DateTime.UtcNow.ToString("MMMM d, yyyy"));
                 }
                 else if (ViewData.Model is IssueRulesPostModel)
                 {
@@ -107,55 +112,31 @@ namespace Errordite.Web.Controllers
         }
 
         [ImportViewData]
-        public ActionResult GetReportData(string issueId)
+        public ActionResult GetReportData(IssueDetailsPostModel postModel)
         {
-            var data = new Dictionary<string, object>();
-
-			//var hourResults = Core.Session.Raven.Query<ByHourReduceResult, Errors_ByIssueByHour>()
-			//	.Where(i => i.IssueId == Errordite.Core.Domain.Error.Issue.GetId(issueId))
-			//	.AsEnumerable()
-			//	.Select(h => new
-			//					 {
-			//						 hour = (DateTime.Today + new TimeSpan(h.Hour.Hour, 0, 0)).ToLocal().Hour,
-			//						 count = h.Count,
-			//					 });
-
-			//var allHourResults =
-			//	(from hour in Enumerable.Range(0, 24)
-			//	 join result in hourResults on hour equals result.hour into countsTemp
-			//	 from hours in countsTemp.DefaultIfEmpty()
-			//	 select new {hour, count = hours.IfPoss(h => h.count)}).ToArray();
-
-	        var hourlyCount = Core.Session.Raven.Load<IssueHourlyCount>("IssueHourlyCount/{0}".FormatWith(issueId.GetFriendlyId()));
-
-            data.Add("ByHour", new
+            var request = new GetIssueReportDataRequest
             {
-				x = hourlyCount.HourlyCount.Select(h => h.Key.ToString("0")),
-				y = hourlyCount.HourlyCount.Select(h => h.Value)
-            });
+                CurrentUser = Core.AppContext.CurrentUser,
+                IssueId = postModel.IssueId,
+                StartDate = DateTime.UtcNow.AddDays(-30).Date,
+                EndDate = DateTime.UtcNow.Date
+            };
 
-            var dateResults = Core.Session.Raven.Query<ByDateReduceResult, Errors_ByIssueByDate>()
-                .Where(i => i.IssueId == Issue.GetId(issueId))
-                .OrderBy(i => i.Date)
-                .ToList();
-
-            if (dateResults.Any())
+            if (postModel.DateRange.IsNotNullOrEmpty())
             {
-                var allDateResults =
-                (
-					from date in Enumerable.Range(0, (dateResults.Last().Date - dateResults.First().Date).Days + 1)
-						.Select(d => dateResults.First().Date.AddDays(d))
-					join result in dateResults on date equals result.Date into countsTemp
-					from dates in countsTemp.DefaultIfEmpty()
-					select new { date, count = dates.IfPoss(d => d.Count) }
-                ).ToArray();
+                string[] dates = postModel.DateRange.Split('|');
 
-                data.Add("ByDate", new
-                    {
-                        x = allDateResults.Select(d => d.date.ToString("yyyy-MM-dd")),
-                        y = allDateResults.Select(d => d.count)
-                    });
+                DateTime startDate;
+                DateTime endDate;
+
+                if (DateTime.TryParse(dates[0], out startDate) && DateTime.TryParse(dates[1], out endDate))
+                {
+                    request.StartDate = startDate;
+                    request.EndDate = endDate;
+                }
             }
+
+            var data = _getIssueReportDataQuery.Invoke(request).Data;
 
             return new PlainJsonNetResult(data, true);
         }
@@ -291,6 +272,7 @@ namespace Errordite.Web.Controllers
                         };
                     }).ToList(),
                     TestIssue = issue.TestIssue,
+                    DateRange = "{0} - {1}".FormatWith(DateTime.UtcNow.AddDays(-30).ToString("MMMM d, yyyy"), DateTime.UtcNow.ToString("MMMM d, yyyy"))
                 },
                 Errors = new ErrorCriteriaViewModel
                 {
@@ -413,48 +395,55 @@ namespace Errordite.Web.Controllers
                 return RedirectWithViewModel(postModel, "index", routeValues: new { id = postModel.Id, tab = IssueTab.Rules.ToString() }); 
             }
 
-            var result = _adjustRulesCommand.Invoke(new AdjustRulesRequest
+            try
             {
-                IssueId = postModel.Id,
-                ApplicationId = postModel.ApplicationId,
-                Rules = postModel.Rules.Select(r => (IMatchRule)new PropertyMatchRule(r.ErrorProperty, r.StringOperator, r.Value)).ToList(),
-                CurrentUser = Core.AppContext.CurrentUser,
-                NewIssueName = postModel.UnmatchedIssueName,
-                //NewPriority = postModel.UnmatchedIssuePriority,
-                OriginalIssueName = postModel.IssueNameAfterUpdate,
-                //OriginalPriority = postModel.MatchPriorityAfterUpdate
-            });
+                var result = _adjustRulesCommand.Invoke(new AdjustRulesRequest
+                {
+                    IssueId = postModel.Id,
+                    ApplicationId = postModel.ApplicationId,
+                    Rules = postModel.Rules.Select(r => (IMatchRule)new PropertyMatchRule(r.ErrorProperty, r.StringOperator, r.Value)).ToList(),
+                    CurrentUser = Core.AppContext.CurrentUser,
+                    NewIssueName = postModel.UnmatchedIssueName,
+                    OriginalIssueName = postModel.IssueNameAfterUpdate
+                }); 
+                
+                switch (result.Status)
+                {
+                    case AdjustRulesStatus.IssueNotFound:
+                        return RedirectToAction("notfound", new { FriendlyId = postModel.Id.GetFriendlyId() });
+                    case AdjustRulesStatus.Ok:
+                        ConfirmationNotification(new MvcHtmlString("Rules adjusted successfully. Of {0} errors, {1} still match{2} and remain{3} attached to the issue.{4}".FormatWith(
+                            result.ErrorsMatched + result.ErrorsNotMatched,
+                            result.ErrorsNotMatched == 0 ? "all" : result.ErrorsMatched.ToString(),
+                            result.ErrorsMatched == 1 ? "es" : "",
+                            result.ErrorsMatched == 1 ? "s" : "",
+                            result.ErrorsNotMatched > 0
+                                ? " The {0} that did not match {1} been attached to newly created issue # <a href='{2}'>{3}</a>".FormatWith(
+                                    result.ErrorsNotMatched,
+                                    result.ErrorsNotMatched == 1 ? "has" : "have",
+                                    Url.Issue(result.UnmatchedIssueId),
+                                    result.UnmatchedIssueId)
+                                : string.Empty
+                            )));
+                        break;
+                    case AdjustRulesStatus.RulesMatchedOtherIssue:
+                        ConfirmationNotification(Rules.RulesMatchedOtherIssue);
+                        return RedirectToAction("merge", "issues", new { leftIssueId = result.IssueId, rightIssueId = result.MatchingIssueId });
+                    case AdjustRulesStatus.AutoMergedWithOtherIssue:
+                        ConfirmationNotification(Rules.AutoMergedWithOtherIssue);
+                        break;
+                    default:
+                        return RedirectWithViewModel(postModel, "index", result.Status.MapToResource(Rules.ResourceManager), false, new { id = postModel.Id, tab = IssueTab.Rules.ToString() });
+                }
 
-            switch(result.Status)
-            {
-                case AdjustRulesStatus.IssueNotFound:
-                    return RedirectToAction("notfound", new { FriendlyId = postModel.Id.GetFriendlyId() });
-                case AdjustRulesStatus.Ok:
-                    ConfirmationNotification(new MvcHtmlString("Rules adjusted successfully. Of {0} errors, {1} still match{2} and remain{3} attached to the issue.{4}".FormatWith(
-                        result.ErrorsMatched + result.ErrorsNotMatched,
-                        result.ErrorsNotMatched == 0 ? "all" : result.ErrorsMatched.ToString(),
-                        result.ErrorsMatched == 1 ? "es": "",
-                        result.ErrorsMatched == 1 ? "s" : "",
-                        result.ErrorsNotMatched > 0 
-                            ? " The {0} that did not match {1} been attached to newly created issue # <a href='{2}'>{3}</a>".FormatWith(
-                                result.ErrorsNotMatched,
-                                result.ErrorsNotMatched == 1 ? "has" : "have",
-                                Url.Issue(result.UnmatchedIssueId),
-                                result.UnmatchedIssueId)
-                            : string.Empty
-                        )));
-                    break;
-                case AdjustRulesStatus.RulesMatchedOtherIssue:
-                    ConfirmationNotification(Rules.RulesMatchedOtherIssue);
-                    return RedirectToAction("merge", "issues", new { leftIssueId = result.IssueId, rightIssueId = result.MatchingIssueId });
-                case AdjustRulesStatus.AutoMergedWithOtherIssue:
-                    ConfirmationNotification(Rules.AutoMergedWithOtherIssue);
-                    break;
-                default:
-                    return RedirectWithViewModel(postModel, "index", result.Status.MapToResource(Rules.ResourceManager), false, new { id = postModel.Id, tab = IssueTab.Rules.ToString() });
+                ConfirmationNotification(IssueResources.IssuePurged);
+                return RedirectToAction("index", new { id = result.IssueId, tab = IssueTab.Rules.ToString() });
             }
-
-            return RedirectToAction("index", new { id = result.IssueId, tab = IssueTab.Rules.ToString() });
+            catch (ConcurrencyException e)
+            {
+                ErrorNotification("A background process modified this issues data at the same time as you requested to adjust the rules, please try again.");
+                return RedirectToAction("index", new { id = postModel.Id, tab = IssueTab.Rules.ToString() });
+            }
         }
 
         [HttpPost, ExportViewData]
@@ -489,15 +478,22 @@ namespace Errordite.Web.Controllers
         [HttpPost, ExportViewData]
         public ActionResult Purge(string issueId)
         {
-            _purgeIssueCommand.Invoke(new PurgeIssueRequest
+            try
             {
-                IssueId = issueId,
-                CurrentUser = Core.AppContext.CurrentUser
-            });
+                _purgeIssueCommand.Invoke(new PurgeIssueRequest
+                {
+                    IssueId = issueId,
+                    CurrentUser = Core.AppContext.CurrentUser
+                });
 
-            ConfirmationNotification(IssueResources.IssuePurged);
+                ConfirmationNotification(IssueResources.IssuePurged);
+            }
+            catch (ConcurrencyException e)
+            {
+                ErrorNotification("A background process modified this issues data at the same time as you requested to delete the errors, please try again.");
+            }
 
-            if(Request.IsAjaxRequest())
+            if (Request.IsAjaxRequest())
                 return new JsonSuccessResult();
 
             return RedirectToAction("index", new { id = issueId, tab = IssueTab.History.ToString() });

@@ -1,7 +1,10 @@
 ﻿using System;
 using CodeTrip.Core.Interfaces;
 using Errordite.Core.Authorisation;
+using Errordite.Core.Configuration;
 using Errordite.Core.Domain.Error;
+using Errordite.Core.Indexing;
+using Errordite.Core.Messages;
 using Errordite.Core.Organisations;
 using CodeTrip.Core.Extensions;
 using Errordite.Core.Session;
@@ -12,10 +15,12 @@ namespace Errordite.Core.Issues.Commands
     public class MergeIssuesCommand : SessionAccessBase, IMergeIssuesCommand
     {
         private readonly IAuthorisationManager _authorisationManager;
+        private readonly ErrorditeConfiguration _configuration;
 
-        public MergeIssuesCommand(IAuthorisationManager authorisationManager)
+        public MergeIssuesCommand(IAuthorisationManager authorisationManager, ErrorditeConfiguration configuration)
         {
             _authorisationManager = authorisationManager;
+            _configuration = configuration;
         }
 
         public MergeIssuesResponse Invoke(MergeIssuesRequest request)
@@ -35,8 +40,10 @@ namespace Errordite.Core.Issues.Commands
             _authorisationManager.Authorise(mergeFromIssue, request.CurrentUser);
             _authorisationManager.Authorise(mergeToIssue, request.CurrentUser);
 
+            new SynchroniseIndex<Errors_Search>().Execute(Session);
+
             //move all errors fron the MergeFromIssue to the MergeToIssue
-            Session.RavenDatabaseCommands.UpdateByIndex(CoreConstants.IndexNames.Errors,
+            Session.AddCommitAction(new UpdateByIndexCommitAction(CoreConstants.IndexNames.Errors,
                 new IndexQuery
                 {
                     Query = "IssueId:{0}".FormatWith(mergeFromIssue.Id)
@@ -55,7 +62,7 @@ namespace Errordite.Core.Issues.Commands
                         Type = PatchCommandType.Set,
                         Value = mergeToIssue.Id
                     }
-            }, true);
+            }, true));
 
             mergeToIssue.History.Add(new IssueHistory
             {
@@ -66,6 +73,14 @@ namespace Errordite.Core.Issues.Commands
             });
 
             Delete(mergeFromIssue);
+
+            //re-sync the error counts
+            Session.AddCommitAction(new SendNServiceBusMessage("Sync Issue Error Counts", new SyncIssueErrorCountsMessage
+            {
+                CurrentUser = request.CurrentUser,
+                IssueId = request.MergeToIssueId,
+                OrganisationId = request.CurrentUser.OrganisationId
+            }, _configuration.EventsQueueName));
 
             return new MergeIssuesResponse
             {

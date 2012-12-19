@@ -10,6 +10,7 @@ using Errordite.Core.Domain.Error;
 using Errordite.Core.Domain.Exceptions;
 using Errordite.Core.Errors.Queries;
 using Errordite.Core.Indexing;
+using Errordite.Core.Messages;
 using Errordite.Core.Organisations;
 using Errordite.Core.Reception.Commands;
 using CodeTrip.Core.Extensions;
@@ -24,16 +25,22 @@ namespace Errordite.Core.Issues.Commands
         private readonly IGetApplicationErrorsQuery _getApplicationErrorsQuery;
         private readonly ErrorditeConfiguration _configuration;
         private readonly IReceiveErrorCommand _receiveErrorCommand;
+        private readonly IPurgeIssueCommand _purgeIssueCommand;
+        private readonly ISyncIssueErrorCountsCommand _syncIssueErrorCountsCommand;
 
         public ReprocessIssueErrorsCommand(IAuthorisationManager authorisationManager, 
             IGetApplicationErrorsQuery getApplicationErrorsQuery, 
             ErrorditeConfiguration configuration,
-            IReceiveErrorCommand receiveErrorCommand)
+            IReceiveErrorCommand receiveErrorCommand, 
+            IPurgeIssueCommand purgeIssueCommand, 
+            ISyncIssueErrorCountsCommand syncIssueErrorCountsCommand)
         {
             _authorisationManager = authorisationManager;
             _getApplicationErrorsQuery = getApplicationErrorsQuery;
             _configuration = configuration;
             _receiveErrorCommand = receiveErrorCommand;
+            _purgeIssueCommand = purgeIssueCommand;
+            _syncIssueErrorCountsCommand = syncIssueErrorCountsCommand;
         }
 
         public ReprocessIssueErrorsResponse Invoke(ReprocessIssueErrorsRequest request)
@@ -89,16 +96,28 @@ namespace Errordite.Core.Issues.Commands
 
                 if (response.AttachedIssueIds.Any(i => i.Key == issue.Id))
                 {
-                    var issueCount = response.AttachedIssueIds.First(i => i.Key == issue.Id);
-                    issue.LimitStatus = issueCount.Value >= _configuration.IssueErrorLimit
-                        ? ErrorLimitStatus.Exceeded
-                        : ErrorLimitStatus.Ok;
-                    issue.ErrorCount = issueCount.Value;
+                    //if some errors were moved from this issue, then we need to reset the counters
+                    //as we have lost the ability to know which counts refer to this issue
+                    if (response.AttachedIssueIds.Count == 1)
+                    {
+                        //re-sync the error counts
+                        Session.AddCommitAction(new SendNServiceBusMessage("Sync Issue Error Counts", new SyncIssueErrorCountsMessage
+                        {
+                            CurrentUser = request.CurrentUser,
+                            IssueId = issue.Id,
+                            OrganisationId = request.CurrentUser.OrganisationId
+                        }, _configuration.EventsQueueName));
+                    }
                 }
                 else
                 {
-                    issue.LimitStatus = ErrorLimitStatus.Ok;
-                    issue.ErrorCount = 0;
+                    //if no errors remain attached to the current issue, then purge the issue of all its errors
+                    //this will reset the counts for this issue
+                    _purgeIssueCommand.Invoke(new PurgeIssueRequest
+                    {
+                        CurrentUser = request.CurrentUser,
+                        IssueId = issue.Id
+                    });
                 }
 
                 Session.SynchroniseIndexes<Issues_Search, Errors_Search>();

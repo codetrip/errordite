@@ -3,7 +3,6 @@ using CodeTrip.Core.Interfaces;
 using Errordite.Core.Authorisation;
 using Errordite.Core.Domain;
 using Errordite.Core.Domain.Error;
-using Errordite.Core.Errors.Commands;
 using Errordite.Core.Organisations;
 using Errordite.Core.Session;
 using Raven.Abstractions.Data;
@@ -12,12 +11,10 @@ namespace Errordite.Core.Issues.Commands
 {
     public class DeleteIssueCommand : SessionAccessBase, IDeleteIssueCommand
     {
-        private readonly IDeleteErrorsCommand _deleteErrorsCommand; 
         private readonly IAuthorisationManager _authorisationManager;
 
-        public DeleteIssueCommand(IDeleteErrorsCommand deleteErrorsCommand, IAuthorisationManager authorisationManager)
+        public DeleteIssueCommand(IAuthorisationManager authorisationManager)
         {
-            _deleteErrorsCommand = deleteErrorsCommand;
             _authorisationManager = authorisationManager;
         }
 
@@ -40,16 +37,16 @@ namespace Errordite.Core.Issues.Commands
             _authorisationManager.Authorise(issue, request.CurrentUser);
 
 			//delete the issues errors
-			Session.RavenDatabaseCommands.DeleteByIndex(CoreConstants.IndexNames.Errors, new IndexQuery
+			Session.AddCommitAction(new DeleteByIndexCommitAction(CoreConstants.IndexNames.Errors, new IndexQuery
 			{
 				Query = "IssueId:{0}".FormatWith(issueId)
-			});
+			}, true));
 
 			//delete any daily issue count docs
-			Session.RavenDatabaseCommands.DeleteByIndex(CoreConstants.IndexNames.IssueDailyCount, new IndexQuery
+			Session.AddCommitAction(new DeleteByIndexCommitAction(CoreConstants.IndexNames.IssueDailyCount, new IndexQuery
 			{
 				Query = "IssueId:{0}".FormatWith(issueId)
-			});
+            }, true));
 
 			//delete the hourly count doc
 			Delete(Session.Raven.Load<IssueHourlyCount>("IssueHourlyCount/{0}".FormatWith(issue.FriendlyId)));
@@ -57,8 +54,11 @@ namespace Errordite.Core.Issues.Commands
 			//and delete the issue
             Delete(issue);
 
-			//tell the reception service an issue has been deleted
-            Session.AddCommitAction(new RaiseIssueDeletedEvent("{0}|{1}".FormatWith(issue.FriendlyId, IdHelper.GetFriendlyId(issue.ApplicationId))));
+            if (!request.IsBatchDelete)
+            {
+                //tell the reception service an issue has been deleted
+                Session.AddCommitAction(new RaiseIssueDeletedEvent("{0}|{1}".FormatWith(issue.FriendlyId, IdHelper.GetFriendlyId(issue.ApplicationId))));
+            }
 
             return new DeleteIssueResponse
             {
@@ -78,6 +78,7 @@ namespace Errordite.Core.Issues.Commands
     public class DeleteIssueRequest : OrganisationRequestBase
     {
         public string IssueId { get; set; }
+        public bool IsBatchDelete { get; set; }
     }
 
     public enum DeleteIssueStatus

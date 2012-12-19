@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Errordite.Core.Domain.Error;
+using Raven.Abstractions.Indexing;
 using Raven.Client.Indexes;
 
 namespace Errordite.Core.Indexing
@@ -12,8 +13,13 @@ namespace Errordite.Core.Indexing
 				from count in dailyCounts
 				select new
 				{
-					count.IssueId
+					count.IssueId,
+                    count.Date,
+                    count.Count,
+                    count.CreatedOnUtc
 				};
+
+            Sort(e => e.Date, SortOptions.String);
 		}
 	}
 }

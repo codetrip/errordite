@@ -53,22 +53,15 @@ namespace Errordite.Core.Reception.Commands
 
             Trace("Matching issue: {0}", existingIssue == null ? "NONE" : existingIssue.Id);
 
-            //if we are re-ingesting an issues errors and we cant find another match, attach the error to the original issue
+            //if we are re-ingesting an issues errors and we cant find another match, do nothing so the error remains attached to the existing issue
             if (matchingIssue == null && existingIssue != null)
             {
-                Trace("No issues matched, attaching to the existing issue with Id:={0}", existingIssue.Id);
-                matchingIssue = existingIssue;
+                Trace("No issues matched, error remains attached to the existing issue Id:={0}", existingIssue.Id);
 
 				return new ReceiveErrorResponse
 				{
-					IssueId = matchingIssue.Id
+                    IssueId = existingIssue.Id
 				};
-            }
-
-			if (matchingIssue != null && existingIssue != null)
-            {
-	            //moving to new issue, so update the existing issue's counts
-	            existingIssue.ErrorCount--;
             }
 
             var issue = matchingIssue == null

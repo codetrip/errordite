@@ -8,7 +8,6 @@ using Errordite.Core.Issues.Queries;
 using Errordite.Core.Matching;
 using Errordite.Core.Organisations;
 using Errordite.Core.Session;
-using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
 
 namespace Errordite.Core.Issues.Commands
 {
@@ -47,7 +46,6 @@ namespace Errordite.Core.Issues.Commands
                     new IssueHistory
                     {
                         DateAddedUtc = DateTime.UtcNow,
-                        //Message = Resources.CoreResources.HistoryIssueCreatedBy.FormatWith(request.CurrentUser.FullName, request.CurrentUser.Email),
                         UserId = request.CurrentUser.Id,
                         Type = HistoryItemType.ManuallyCreated,
                     }
@@ -70,6 +68,16 @@ namespace Errordite.Core.Issues.Commands
             }
 
             Store(issue);
+
+            var issueHourlyCount = new IssueHourlyCount
+            {
+                IssueId = issue.Id,
+                Id = "IssueHourlyCount/{0}".FormatWith(issue.FriendlyId)
+            };
+
+            issueHourlyCount.Initialise();
+            Store(issueHourlyCount);
+
             Session.AddCommitAction(new RaiseIssueCreatedEvent(issue));
 
             return new AddIssueResponse

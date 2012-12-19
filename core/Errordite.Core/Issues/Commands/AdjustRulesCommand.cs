@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using CodeTrip.Core.Extensions;
 using CodeTrip.Core.Interfaces;
 using Errordite.Core.Authorisation;
+using Errordite.Core.Configuration;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Errors.Commands;
 using Errordite.Core.Errors.Queries;
 using Errordite.Core.Issues.Queries;
 using Errordite.Core.Matching;
+using Errordite.Core.Messages;
 using Errordite.Core.Organisations;
 using Errordite.Core.Session;
 using Raven.Abstractions.Data;
-using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
 
 namespace Errordite.Core.Issues.Commands
 {
@@ -23,18 +23,21 @@ namespace Errordite.Core.Issues.Commands
         private readonly IMoveErrorsToNewIssueCommand _moveErrorsToNewIssueCommand;
         private readonly IMergeIssuesCommand _mergeIssuesCommand;
         private readonly IAuthorisationManager _authorisationManager;
+        private readonly ErrorditeConfiguration _configuration;
 
         public AdjustRulesCommand(IGetIssueWithMatchingRulesQuery getIssueWithMatchingRulesQuery, 
             IGetErrorsThatDoNotMatchNewRulesQuery getErrorsThatDoNotMatchNewRulesQuery, 
             IMoveErrorsToNewIssueCommand moveErrorsToNewIssueCommand, 
             IMergeIssuesCommand mergeIssuesCommand, 
-            IAuthorisationManager authorisationManager)
+            IAuthorisationManager authorisationManager,
+            ErrorditeConfiguration configuration)
         {
             _getIssueWithMatchingRulesQuery = getIssueWithMatchingRulesQuery;
             _getErrorsThatDoNotMatchNewRulesQuery = getErrorsThatDoNotMatchNewRulesQuery;
             _moveErrorsToNewIssueCommand = moveErrorsToNewIssueCommand;
             _mergeIssuesCommand = mergeIssuesCommand;
             _authorisationManager = authorisationManager;
+            _configuration = configuration;
         }
 
         public AdjustRulesResponse Invoke(AdjustRulesRequest request)
@@ -72,26 +75,28 @@ namespace Errordite.Core.Issues.Commands
             if (nonMatchingErrorsResponse.NonMatches.Count > 0)
             {
                 //if errors on the original issue did not match the new rules, store the temp issue and move the non matching errors to it
-                Store(tempIssue);
                 Session.AddCommitAction(new RaiseIssueCreatedEvent(tempIssue));
-
-                //also we need to clear the core errors for the original issue as we no longer know if these should match the new rules
-                //Session.RavenDatabaseCommands.DeleteByIndex(CoreConstants.IndexNames.UnloggedErrors, new IndexQuery
-                //{
-                //    Query = "IssueId:{0}".FormatWith(currentIssue.Id)
-                //}, true);
 
                 //move all these errors to the new issue in a batch
                 _moveErrorsToNewIssueCommand.Invoke(new MoveErrorsToNewIssueRequest
                 {
                     Errors = nonMatchingErrorsResponse.NonMatches,
-                    IssueId = tempIssue.Id
+                    IssueId = tempIssue.Id,
+                    CurrentUser = request.CurrentUser
                 });
             }
             else
             {
                 Delete(tempIssue);
             }
+
+            //re-sync the error counts
+            Session.AddCommitAction(new SendNServiceBusMessage("Sync Issue Error Counts", new SyncIssueErrorCountsMessage
+            {
+                CurrentUser = request.CurrentUser,
+                IssueId = currentIssue.Id,
+                OrganisationId = request.CurrentUser.OrganisationId
+            }, _configuration.EventsQueueName));
 
             //this bit is checking to see if there are any other issues for this application which have the same rule set
             //as the issue we just created, if there is we either auto merge the issues (if the matching issue is unacknowledged)
@@ -127,18 +132,7 @@ namespace Errordite.Core.Issues.Commands
                 }
             }
 
-            currentIssue.ErrorCount = nonMatchingErrorsResponse.Matches.Count;
-            tempIssue.ErrorCount = nonMatchingErrorsResponse.NonMatches.Count;
-            currentIssue.LastErrorUtc = nonMatchingErrorsResponse.Matches.Any()
-                                            ? nonMatchingErrorsResponse.Matches.Max(m => m.TimestampUtc)
-                                            : DateTime.MinValue;
-            tempIssue.LastErrorUtc = nonMatchingErrorsResponse.NonMatches.Any()
-                                            ? nonMatchingErrorsResponse.NonMatches.Max(m => m.TimestampUtc)
-                                            : DateTime.MinValue;
-
             Session.AddCommitAction(new RaiseIssueModifiedEvent(currentIssue));
-
-
 
             return new AdjustRulesResponse
             {
@@ -178,7 +172,6 @@ namespace Errordite.Core.Issues.Commands
             currentIssue.History.Add(new IssueHistory
             {
                 DateAddedUtc = DateTime.UtcNow,
-                //Message = Resources.CoreResources.HistoryRulesAdjusted.FormatWith(request.CurrentUser.FullName, request.CurrentUser.Email, tempIssue.FriendlyId),
                 Type = HistoryItemType.RulesAdjustedCreatedNewIssue,
                 SpawnedIssueId = tempIssue.Id,
                 SystemMessage = true,
@@ -205,7 +198,6 @@ namespace Errordite.Core.Issues.Commands
                     new IssueHistory
                     {
                         DateAddedUtc = DateTime.UtcNow,
-                        //Message = Resources.CoreResources.HistoryCreatedByRulesAdjustment.FormatWith(currentIssue.FriendlyId, request.CurrentUser.FullName, request.CurrentUser.Email),
                         SystemMessage = true,
                         Type = HistoryItemType.CreatedByRuleAdjustment,
                         SpawningIssueId = currentIssue.Id,

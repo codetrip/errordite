@@ -69,6 +69,7 @@
     <None Include="Imports\Global.imports" />
     <None Include="Key\Errordite.snk" />
     <None Include="Projects\Build.proj" />
+    <None Include="Projects\InstallEventsService.proj" />
     <None Include="Projects\InstallScheduledTasks.proj">
       <SubType>Designer</SubType>
     </None>

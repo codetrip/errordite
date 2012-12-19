@@ -1450,7 +1450,7 @@ nav {
   font-size: 11px; }
 .errors .rule-match, .errors .new-rule-match {
   border: solid 1px;
-  padding: 1px 5px; }
+  padding: 1px 0; }
 .errors .rule-match.last-selected, .errors .new-rule-match.last-selected {
   border: solid 2px; }
 .errors .rule-match {

@@ -21,7 +21,10 @@ jQuery ->
 				$tab.data 'loaded', true	
 
 		renderReports = () -> 
-			$.get "/issue/getreportdata?issueId=" + $issue.find('#IssueId').val(),
+			$('div#date-graph').empty()
+			$('div#hour-graph').empty()
+
+			$.get "/issue/getreportdata?issueId=" + $issue.find('input#IssueId').val() + '&dateRange=' + $issue.find('input#DateRange').val(),
 				(d) -> 										
 					$.jqplot 'hour-graph', [d.ByHour.y], 
 						seriesDefaults: 
@@ -30,31 +33,25 @@ jQuery ->
 							xaxis: 
 								renderer: $.jqplot.CategoryAxisRenderer
 								ticks: d.ByHour.x							
-				
-					if d.ByDate? && d.ByDate.x.length && d.ByDate.y.length						
-						$.jqplot 'date-graph', 
-							[_.zip d.ByDate.x, d.ByDate.y],
-							seriesDefaults:
-								renderer:$.jqplot.LineRenderer
-							axes:
-								xaxis:
-									renderer: $.jqplot.DateAxisRenderer
-									tickOptions:
-										formatString:'%a %#d %b %y'
-									#min: _.min d.ByDate.x
-									#ticks: d[1].ticks
-								yaxis:
-									min: 0
-							highlighter:
-								show: true
-								sizeAdjust: 7.5
-					else
-						$('#date-graph-box').hide()
+									
+					$.jqplot 'date-graph', 
+						[_.zip d.ByDate.x, d.ByDate.y],
+						seriesDefaults:
+							renderer:$.jqplot.LineRenderer
+						axes:
+							xaxis:
+								renderer: $.jqplot.DateAxisRenderer
+								tickOptions:
+									formatString:'%a %#d %b'
+							yaxis:
+								min: 0
+						highlighter:
+							show: true
+							sizeAdjust: 7.5
 
 		renderErrors = () -> 
 			$node = $issue.find('#error-items')
 			url = '/issue/errors?IssueId=' + $issue.find('#IssueId').val()
-			console.log url
 			
 			$.get url,
 				(data) -> 
@@ -66,6 +63,10 @@ jQuery ->
 		loadTabData($ 'ul#issue-tabs li.active a.tablink')
 			
 		setReferenceLink()
+
+		$issue.delegate 'form#reportform', 'submit', (e) ->
+			e.preventDefault()
+			renderReports()
 
 		$issue.delegate ':input[name=Reference]', 'change', setReferenceLink
 

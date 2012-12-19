@@ -50,6 +50,8 @@ In time we hope to use this for replacing values in sql files as well, but we ar
     <ErrorditeReceptionWebPassword theRest="Err0rD1t3_R3p$" />
     <ErrorditeReceptionServiceUser theRest="errordite_svc_rcp" />
     <ErrorditeReceptionServicePassword theRest="Err0rD1t3_R5v$" />
+    <ErrorditeEventsServiceUser theRest="errordite_svc_evt" />
+    <ErrorditeEventsServicePassword theRest="Err0rD1t3_Evt$" />
     <ErrorditeRavenUser theRest="errordite_raven" />
     <ErrorditeRavenPassword theRest="Err0rD1t3_RVN$" />
     <ErrorditeNotificationsServiceUser theRest="errordite_svc_not" />

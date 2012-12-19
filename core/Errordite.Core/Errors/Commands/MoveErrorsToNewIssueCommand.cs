@@ -2,14 +2,24 @@
 using System.Linq;
 using CodeTrip.Core.Extensions;
 using CodeTrip.Core.Interfaces;
+using Errordite.Core.Configuration;
 using Errordite.Core.Domain.Error;
+using Errordite.Core.Messages;
+using Errordite.Core.Organisations;
+using Errordite.Core.Session;
 using Raven.Abstractions.Data;
-using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
 
 namespace Errordite.Core.Errors.Commands
 {
     public class MoveErrorsToNewIssueCommand : SessionAccessBase, IMoveErrorsToNewIssueCommand
     {
+        private readonly ErrorditeConfiguration _configuration;
+
+        public MoveErrorsToNewIssueCommand(ErrorditeConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         public MoveErrorsToNewIssueResponse Invoke(MoveErrorsToNewIssueRequest request)
         {
             Trace("Starting...");
@@ -36,6 +46,13 @@ namespace Errordite.Core.Errors.Commands
                         Value = Issue.GetId(request.IssueId)
                     }
             }, true);
+
+            Session.AddCommitAction(new SendNServiceBusMessage("Sync Issue Error Counts", new SyncIssueErrorCountsMessage
+            {
+                CurrentUser = request.CurrentUser,
+                IssueId = request.IssueId,
+                OrganisationId = request.CurrentUser.OrganisationId
+            }, _configuration.EventsQueueName));
             
             return new MoveErrorsToNewIssueResponse();
         }
@@ -47,7 +64,7 @@ namespace Errordite.Core.Errors.Commands
     public class MoveErrorsToNewIssueResponse
     { }
 
-    public class MoveErrorsToNewIssueRequest
+    public class MoveErrorsToNewIssueRequest : OrganisationRequestBase
     {
         public List<Error> Errors { get; set; }
         public string IssueId { get; set; }

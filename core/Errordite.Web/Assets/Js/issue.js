@@ -24,7 +24,9 @@
         }
       };
       renderReports = function() {
-        return $.get("/issue/getreportdata?issueId=" + $issue.find('#IssueId').val(), function(d) {
+        $('div#date-graph').empty();
+        $('div#hour-graph').empty();
+        return $.get("/issue/getreportdata?issueId=" + $issue.find('input#IssueId').val() + '&dateRange=' + $issue.find('input#DateRange').val(), function(d) {
           $.jqplot('hour-graph', [d.ByHour.y], {
             seriesDefaults: {
               renderer: $.jqplot.BarRenderer
@@ -36,37 +38,32 @@
               }
             }
           });
-          if ((d.ByDate != null) && d.ByDate.x.length && d.ByDate.y.length) {
-            return $.jqplot('date-graph', [_.zip(d.ByDate.x, d.ByDate.y)], {
-              seriesDefaults: {
-                renderer: $.jqplot.LineRenderer
-              },
-              axes: {
-                xaxis: {
-                  renderer: $.jqplot.DateAxisRenderer,
-                  tickOptions: {
-                    formatString: '%a %#d %b %y'
-                  }
-                },
-                yaxis: {
-                  min: 0
+          return $.jqplot('date-graph', [_.zip(d.ByDate.x, d.ByDate.y)], {
+            seriesDefaults: {
+              renderer: $.jqplot.LineRenderer
+            },
+            axes: {
+              xaxis: {
+                renderer: $.jqplot.DateAxisRenderer,
+                tickOptions: {
+                  formatString: '%a %#d %b'
                 }
               },
-              highlighter: {
-                show: true,
-                sizeAdjust: 7.5
+              yaxis: {
+                min: 0
               }
-            });
-          } else {
-            return $('#date-graph-box').hide();
-          }
+            },
+            highlighter: {
+              show: true,
+              sizeAdjust: 7.5
+            }
+          });
         });
       };
       renderErrors = function() {
         var $node, url;
         $node = $issue.find('#error-items');
         url = '/issue/errors?IssueId=' + $issue.find('#IssueId').val();
-        console.log(url);
         return $.get(url, function(data) {
           $node.html(data);
           return $('div.content').animate({
@@ -76,6 +73,10 @@
       };
       loadTabData($('ul#issue-tabs li.active a.tablink'));
       setReferenceLink();
+      $issue.delegate('form#reportform', 'submit', function(e) {
+        e.preventDefault();
+        return renderReports();
+      });
       $issue.delegate(':input[name=Reference]', 'change', setReferenceLink);
       $issue.delegate('input[type="button"].confirm', 'click', function() {
         var $this;

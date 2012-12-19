@@ -41,6 +41,7 @@ namespace Errordite.Web.Models.Issues
         public IssueStatus Status { get; set; }
         public MatchPriority Priority { get; set; }
         public bool AlwaysNotify { get; set; }
+        public string DateRange { get; set; }
     }
 
     public class IssueHistoryItemViewModel
