@@ -43,7 +43,6 @@ namespace Errordite.Core.Reception.Commands
             }
 
             issue.ErrorCount++;
-		    issue.LastSyncUtc = DateTime.UtcNow;
 
 			if (request.Error.TimestampUtc > issue.LastErrorUtc)
 				issue.LastErrorUtc = request.Error.TimestampUtc;
@@ -69,13 +68,25 @@ namespace Errordite.Core.Reception.Commands
 			}
 
 	        var issueHourlyCount = Load<IssueHourlyCount>("IssueHourlyCount/{0}".FormatWith(issue.FriendlyId));
-			issueHourlyCount.IncrementHourlyCount(request.Error.TimestampUtc);
+
+            if (issueHourlyCount == null)
+            {
+                issueHourlyCount = new IssueHourlyCount
+                {
+                    IssueId = issue.Id,
+                    Id = "IssueHourlyCount/{0}".FormatWith(issue.FriendlyId)
+                };
+
+                issueHourlyCount.Initialise();
+                issueHourlyCount.IncrementHourlyCount(issue.CreatedOnUtc);
+                Store(issueHourlyCount);
+            }
+            else
+            {
+                issueHourlyCount.IncrementHourlyCount(request.Error.TimestampUtc);
+            }
 
 			SetLimitStatus(request.Application, issue);
-
-            //should the error be classified, yes if the issue has been acknowledged
-            if (issue.Status != IssueStatus.Unacknowledged)
-				request.Error.Classified = true;
 
 			Trace("Assigning issue Id to error with Id:={0}, Existing Error IssueId:={1}, New IssueId:={2}", request.Error.Id, request.Error.IssueId, issue.Id);
 			request.Error.IssueId = issue.Id;

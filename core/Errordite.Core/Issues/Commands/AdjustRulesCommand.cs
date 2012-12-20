@@ -149,21 +149,6 @@ namespace Errordite.Core.Issues.Commands
             if (currentIssue.Status == IssueStatus.Unacknowledged)
             {
                 currentIssue.Status = IssueStatus.Acknowledged;
-
-				Session.RavenDatabaseCommands.UpdateByIndex(CoreConstants.IndexNames.Errors,
-                    new IndexQuery
-                    {
-                        Query = "IssueId:{0} AND Classified:false".FormatWith(currentIssue.Id)
-                    },
-                    new[]
-                    {
-                        new PatchRequest
-                        {
-                            Name = "Classified",
-                            Type = PatchCommandType.Set,
-                            Value = true
-                        }
-                    }, true);
             }
 
             currentIssue.Name = request.OriginalIssueName;

@@ -7,6 +7,7 @@ namespace Errordite.Core
     {
         public const string ErrorditeMasterDatabaseName = "Errordite";
         public const string MatchRuleFactoryIdFormat = "mf-{0}";
+        public const string QueryDateFormat = "yyyy-MM-ddTHH:mm:ss.fff";
 
         public static class FacetDocuments
         {
@@ -19,7 +20,6 @@ namespace Errordite.Core
             public static string Errors = new Errors_Search().IndexName;
             public static string Issues = new Issues_Search().IndexName;
 			public static string IssueDailyCount = new IssueDailyCount_Search().IndexName;
-            //public static string UserAlerts = new UserAlerts_Search().IndexName;
         }
 
         public static class Authentication

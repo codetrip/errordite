@@ -3,7 +3,6 @@ using Errordite.Core;
 using Errordite.Core.Domain.Error;
 using NUnit.Framework;
 using Raven.Abstractions.Data;
-using Raven.Client.Document;
 using System.Linq;
 
 namespace Errordite.Test.Indexing
@@ -20,21 +19,6 @@ namespace Errordite.Test.Indexing
             Assert.That(errors.Results.Count > 0);
 
             RollbackTransaction = false;
-
-			Session.RavenDatabaseCommands.UpdateByIndex("Errors/Search",
-                    new IndexQuery
-                    {
-                        Query = "IssueId:issues/105 AND Classified:false"
-                    },
-                    new[]
-                    {
-                        new PatchRequest
-                        {
-                            Name = "Classified",
-                            Type = PatchCommandType.Set,
-                            Value = true
-                        }
-                    }, true);
 
             Session.Commit();
         }

@@ -40,7 +40,7 @@ echo	A. WEB: Errordite Web
 echo	B. WEB: Errordite Reception Web
 echo	C. SVC: Errordite Reception Svc
 echo	D. SVC: Errordite Notifications Svc
-echo	E. SVC: Errordite Notifications Svc
+echo	E. SVC: Errordite Events Svc
 echo	F. SVC: Errordite Scheduled Tasks
 echo	G. All Web
 echo	H. All Services
@@ -48,7 +48,7 @@ echo	0. ABORT DEPLOYMENT
 echo.
 choice /C ABCDEFGH0 /M "Please select the component you wish to deploy:"
 
-if "%ERRORLEVEL%" == "8" goto DOABORT
+if "%ERRORLEVEL%" == "9" goto DOABORT
 if "%ERRORLEVEL%" == "1" (
 	set MSBUILDTARGET=InstallWeb
 	set DEPLOYDISPLAYNAME=WEB: Errordite Web

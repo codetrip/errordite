@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using CodeTrip.Core.Paging;
+using Errordite.Core;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Errors.Queries;
 using Errordite.Core.Issues.Queries;
@@ -14,6 +16,8 @@ using Errordite.Web.Models.Dashboard;
 using Errordite.Web.Models.Errors;
 using Errordite.Web.Models.Issues;
 using CodeTrip.Core.Extensions;
+using Raven.Abstractions.Data;
+using Raven.Abstractions.Linq;
 
 namespace Errordite.Web.Controllers
 {
@@ -39,11 +43,11 @@ namespace Errordite.Web.Controllers
 			Core.Session.AddCommitAction(new SendNServiceBusMessage("Sync Issue Error Counts", new SyncIssueErrorCountsMessage
 			{
 				CurrentUser = Core.AppContext.CurrentUser,
-				IssueId = "issues/129",
+				IssueId = "issues/259",
 				OrganisationId = "organisations/1"
 			}, "Errordite.Events.Service"));
 
-			return RedirectToAction("index");
+			return new EmptyResult();
 		}
 
         [ImportViewData]

@@ -52,12 +52,6 @@ namespace Errordite.Core.Issues.Commands
                 {
                     new PatchRequest
                     {
-                        Name = "Classified",
-                        Type = PatchCommandType.Set,
-                        Value = true
-                    },
-                    new PatchRequest
-                    {
                         Name = "IssueId",
                         Type = PatchCommandType.Set,
                         Value = mergeToIssue.Id

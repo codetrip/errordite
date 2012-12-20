@@ -51,12 +51,12 @@ In time we hope to use this for replacing values in sql files as well, but we ar
     <ErrorditeReceptionServiceUser theRest="errordite_svc_rcp" />
     <ErrorditeReceptionServicePassword theRest="Err0rD1t3_R5v$" />
     <ErrorditeEventsServiceUser theRest="errordite_svc_evt" />
-    <ErrorditeEventsServicePassword theRest="Err0rD1t3_Evt$" />
+    <ErrorditeEventsServicePassword theRest="Err0rD1t3_E7t$" />
     <ErrorditeRavenUser theRest="errordite_raven" />
     <ErrorditeRavenPassword theRest="Err0rD1t3_RVN$" />
     <ErrorditeNotificationsServiceUser theRest="errordite_svc_not" />
     <ErrorditeNotificationsServicePassword theRest="Err0rD1t3_N0T$" />
-    <ErrorditeScheduledTasksUser theRest="errordite_svc_evt" />
+    <ErrorditeScheduledTasksUser theRest="errordite_svc_tasks" />
     <ErrorditeScheduledTasksPassword theRest="Err0rD1t3_3vT$" />
     
   </Replacements>

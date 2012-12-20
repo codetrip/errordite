@@ -28,8 +28,8 @@ namespace Errordite.Core.Errors.Commands
             IEnumerable<Error> errors;
 
             //aggresively cache this query, when reprocessing errors this gets called for each error we reprocess, its unnecessary 
-            //as the extra errors will be deleted next time round anyway, so aggresively cache for 3 minutes
-            using (Session.Raven.Advanced.DocumentStore.AggressivelyCacheFor(TimeSpan.FromMinutes(3)))
+            //as the extra errors will be deleted next time round anyway, so aggresively cache for 1 minute
+            using (Session.Raven.Advanced.DocumentStore.AggressivelyCacheFor(TimeSpan.FromMinutes(1)))
             {
                 errors = Session.Raven.Query<ErrorDocument, Errors_Search>()
                      .Where(e => e.IssueId == request.IssueId)
@@ -43,7 +43,6 @@ namespace Errordite.Core.Errors.Commands
 
             foreach (var error in errors)
             {
-                //Store(new UnloggedError(error));
                 Delete(error);
             }
 

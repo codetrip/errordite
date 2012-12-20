@@ -3,14 +3,10 @@ using System;
 using System.Linq;
 using System.Reflection;
 using CodeTrip.Core.Extensions;
-using CodeTrip.Core.Paging;
-using Errordite.Core;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Indexing;
-using Errordite.Core.Issues.Queries;
 using Errordite.Core.Session;
 using NUnit.Framework;
-using Raven.Abstractions.Data;
 using Raven.Client;
 using Raven.Client.Indexes;
 using Raven.Client.Linq;
@@ -73,40 +69,6 @@ namespace Errordite.Test.IntegrationTests
                 TimestampUtc = new DateTime(2011, 1, 1, 4, 0, 0),
             });
             ravenSession.SaveChanges();
-            
-
-			//var result = ravenSession.Query<ByHourReduceResult, Errors_ByIssueByHour>()
-			//	.Customize(x => x.WaitForNonStaleResults())
-			//	.Where(r => r.IssueId == issue.Id)
-			//	.ToArray();
-
-
-
-
-        }
-
-        [Test]
-        public void UpdateClassifiedByIndex()
-        {
-            var session = Get<IAppSession>();
-
-			session.RavenDatabaseCommands.UpdateByIndex(CoreConstants.IndexNames.Errors,
-                new IndexQuery
-                {
-                    Query = "ApplicationId:{0} AND IssueIds:{1} AND Classified:false".FormatWith("applications/1", "5123")
-                },
-                new[]
-                {
-                    new PatchRequest
-                    {
-                        Name = "Classified",
-                        Type = PatchCommandType.Set,
-                        Value = false
-                    }
-                });
-
-            Assert.That(true);
         }
     }
-
 }

@@ -7,7 +7,7 @@ using System.Linq;
 namespace Errordite.Core.Domain.Error
 {
     [ProtoContract]
-    public abstract class ErrorBase
+    public class Error
     {
         [ProtoMember(1)]
         public string Id { get; set; }
@@ -17,31 +17,11 @@ namespace Errordite.Core.Domain.Error
         public DateTime TimestampUtc { get; set; }
         [ProtoMember(4)]
         public string ApplicationId { get; set; }
-    }
-
-    //[ProtoContract]
-    //public class UnloggedError : ErrorBase
-    //{
-    //    public UnloggedError()
-    //    {}
-
-    //    public UnloggedError(Error error)
-    //    {
-    //        IssueId = error.IssueId;
-    //        TimestampUtc = error.TimestampUtc;
-    //    }
-    //}
-
-    [ProtoContract]
-    public class Error : ErrorBase
-    {
         [ProtoMember(5)]
         public string OrganisationId { get; set; }
         [ProtoMember(6)]
         public string MachineName { get; set; }
         [ProtoMember(7)]
-        public bool Classified { get; set; }
-        [ProtoMember(8)]
         public string Url { get; set; }
         /// <summary>
         /// Here mainly for legacy reasons - for items serialized with nested ExceptionInfos rather than flattened into a single list,
@@ -52,13 +32,13 @@ namespace Errordite.Core.Domain.Error
             get { return ExceptionInfos.First(); } 
             set { ExceptionInfos = value.RecursiveGetInfos().ToArray(); }
         }
-        [ProtoMember(9)]
+        [ProtoMember(8)]
         public string UserAgent { get; set; }
-        [ProtoMember(10)]
+        [ProtoMember(9)]
         public bool TestError { get; set; }
-        [ProtoMember(11)]
+        [ProtoMember(10)]
         public List<TraceMessage> Messages { get; set; }
-        [ProtoMember(12)]
+        [ProtoMember(11)]
         public ExceptionInfo[] ExceptionInfos { get; set; }
 
         [Raven.Imports.Newtonsoft.Json.JsonIgnore]

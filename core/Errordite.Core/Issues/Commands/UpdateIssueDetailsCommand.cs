@@ -45,27 +45,6 @@ namespace Errordite.Core.Issues.Commands
 
             _authorisationManager.Authorise(issue, request.CurrentUser);
 
-            if (issue.Status == IssueStatus.Unacknowledged && request.Status != IssueStatus.Unacknowledged)
-            {
-                Session.SynchroniseIndexes<Errors_Search>();
-                Session.AddCommitAction(new UpdateByIndexCommitAction(
-                    CoreConstants.IndexNames.Errors,
-                    new IndexQuery
-                    {
-                        Query = "IssueId:{0} AND Classified:false".FormatWith(issue.Id)
-                    },
-                    new[]
-                    {
-                        new PatchRequest
-                        {
-                            Name = "Classified",
-                            Type = PatchCommandType.Set,
-                            Value = true
-                        }
-                    }, 
-                    true));
-            }
-
             //if we are assigning this issue to a new user, notify them
             if (issue.UserId != request.AssignedUserId)
             {

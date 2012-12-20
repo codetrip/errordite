@@ -66,7 +66,8 @@
     <Reference Include="Lucene.Net">
       <HintPath>..\..\lib\Lucene.net\Lucene.Net.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NServiceBus, Version=3.0.0.0, Culture=neutral, PublicKeyToken=9fc386479f8a226c, processorArchitecture=MSIL">
@@ -85,13 +86,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\protobuf\protobuf-net.dll</HintPath>
     </Reference>
-    <Reference Include="Raven.Abstractions, Version=1.2.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+    <Reference Include="Raven.Abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\RavenDB.Client.2.0.2161-Unstable\lib\net40\Raven.Abstractions.dll</HintPath>
+      <HintPath>..\packages\RavenDB.Client.2.0.2175-Unstable\lib\net40\Raven.Abstractions.dll</HintPath>
     </Reference>
-    <Reference Include="Raven.Client.Lightweight, Version=1.2.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+    <Reference Include="Raven.Client.Lightweight, Version=2.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\RavenDB.Client.2.0.2161-Unstable\lib\net40\Raven.Client.Lightweight.dll</HintPath>
+      <HintPath>..\packages\RavenDB.Client.2.0.2175-Unstable\lib\net40\Raven.Client.Lightweight.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -162,7 +163,6 @@
     <Compile Include="Extensions\IssueExtensions.cs" />
     <Compile Include="Identity\IImpersonationManager.cs" />
     <Compile Include="Indexing\Applications_Search.cs" />
-    <Compile Include="Indexing\UserAlerts_Search.cs" />
     <Compile Include="Indexing\Organisations_Search.cs" />
     <Compile Include="Indexing\Groups_Search.cs" />
     <Compile Include="Indexing\UserOrganisationMappings.cs" />
@@ -190,7 +190,6 @@
     <Compile Include="Errors\Queries\GetErrorditeErrorsQuery.cs" />
     <Compile Include="Identity\NoAuthenticationManager.cs" />
     <Compile Include="IoC\ErrorditeNServiceBusClientInstaller.cs" />
-    <Compile Include="Errors\Queries\GetUnclassifiedErrorsThatMatchRulesQuery.cs" />
     <Compile Include="Issues\Commands\UpdateIssueDetailsCommand.cs" />
     <Compile Include="Issues\Queries\GetIssueReportDataQuery.cs" />
     <Compile Include="Issues\Queries\GetIssueWithMatchingRulesQuery.cs" />

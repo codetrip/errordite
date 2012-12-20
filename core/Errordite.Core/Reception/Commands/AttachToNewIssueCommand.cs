@@ -35,9 +35,6 @@ namespace Errordite.Core.Reception.Commands
 			//mark the error as unclassified
 			var error = request.Error;
 			var application = request.Application;
-
-			error.Classified = false;
-
 			var matchRuleFactory = _matchRuleFactoryFactory.Create(application.MatchRuleFactoryId);
 			var rules = matchRuleFactory.Create(error).ToList();
 
