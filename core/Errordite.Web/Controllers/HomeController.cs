@@ -1,6 +1,7 @@
 ﻿using System.Web.Mvc;
 using Errordite.Core.Configuration;
 using Errordite.Core.Identity;
+using Errordite.Core.Messages;
 using Errordite.Core.Notifications.Commands;
 using Errordite.Core.Notifications.EmailInfo;
 using Errordite.Core.Session;
@@ -21,12 +22,6 @@ namespace Errordite.Web.Controllers
         {
             _sendNotificationCommand = sendNotificationCommand;
             _configuration = configuration;
-        }
-
-        [ImportViewData]
-        public ActionResult New()
-        {
-            return View();
         }
 
         [ImportViewData]

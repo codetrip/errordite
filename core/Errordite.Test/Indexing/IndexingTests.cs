@@ -14,14 +14,14 @@ namespace Errordite.Test.Indexing
         [Test]
         public void UpdateLastItem()
         {
-            var errors = Session.RavenDatabaseCommands.Query("Errors/Search", new IndexQuery { Query = "IssueId:issues/105" }, new[] { "Classified", "IssueId" });
+			var errors = Session.RavenDatabaseCommands.Query("Errors/Search", new IndexQuery { Query = "IssueId:issues/105" }, new[] { "Classified", "IssueId" });
 
             Assert.That(errors.Results != null);
             Assert.That(errors.Results.Count > 0);
 
             RollbackTransaction = false;
 
-            Session.RavenDatabaseCommands.UpdateByIndex("Errors/Search",
+			Session.RavenDatabaseCommands.UpdateByIndex("Errors/Search",
                     new IndexQuery
                     {
                         Query = "IssueId:issues/105 AND Classified:false"

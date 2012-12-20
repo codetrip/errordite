@@ -98,7 +98,7 @@ namespace Errordite.Core.Issues.Commands
                 {
                     //if some errors were moved from this issue, then we need to reset the counters
                     //as we have lost the ability to know which counts refer to this issue
-                    if (response.AttachedIssueIds.Count == 1)
+                    if (response.AttachedIssueIds.Count > 1)
                     {
                         //re-sync the error counts
                         Session.AddCommitAction(new SendNServiceBusMessage("Sync Issue Error Counts", new SyncIssueErrorCountsMessage

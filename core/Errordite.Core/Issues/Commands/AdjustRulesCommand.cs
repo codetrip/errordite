@@ -150,7 +150,7 @@ namespace Errordite.Core.Issues.Commands
             {
                 currentIssue.Status = IssueStatus.Acknowledged;
 
-                Session.RavenDatabaseCommands.UpdateByIndex(CoreConstants.IndexNames.Errors,
+				Session.RavenDatabaseCommands.UpdateByIndex(CoreConstants.IndexNames.Errors,
                     new IndexQuery
                     {
                         Query = "IssueId:{0} AND Classified:false".FormatWith(currentIssue.Id)

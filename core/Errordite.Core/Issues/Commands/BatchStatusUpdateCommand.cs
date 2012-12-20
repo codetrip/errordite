@@ -55,7 +55,7 @@ namespace Errordite.Core.Issues.Commands
 
                     if (issue.Status == IssueStatus.Unacknowledged)
                     {
-                        Session.RavenDatabaseCommands.UpdateByIndex(CoreConstants.IndexNames.Errors,
+						Session.RavenDatabaseCommands.UpdateByIndex(CoreConstants.IndexNames.Errors,
                             new IndexQuery
                             {
                                 Query = "IssueId:{0} AND Classified:false".FormatWith(issue.Id)
