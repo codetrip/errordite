@@ -43,15 +43,13 @@ namespace Errordite.Core.Issues.Commands
 
             //make sure the errors index is not stale
             new SynchroniseIndex<Errors_Search>().Execute(Session);
-            new SynchroniseIndex<IssueDailyCount_Search>().Execute(Session);
+
+            string query = "(IssueId:{0} AND CreatedOnUtc:[* TO {1}])".FormatWith(issue.Id, DateTime.UtcNow.ToString(CoreConstants.QueryDateFormat));
+
+            Trace("Deleting counts with query:={0}", query);
 
 			//delete any daily issue count docs
-			Session.RavenDatabaseCommands.DeleteByIndex(CoreConstants.IndexNames.IssueDailyCount, new IndexQuery
-			{
-				Query = "IssueId:{0}".FormatWith(issue.Id)
-            }, true);
-
-            new SynchroniseIndex<IssueDailyCount_Search>().Execute(Session);
+            Session.AddCommitAction(new DeleteByIndexCommitAction(CoreConstants.IndexNames.IssueDailyCount, new IndexQuery { Query = query }, true));
 
             //re-initialise the issue hourly counts
 			var hourlyCount = Session.Raven.Load<IssueHourlyCount>("IssueHourlyCount/{0}".FormatWith(issue.FriendlyId));
@@ -66,6 +64,9 @@ namespace Errordite.Core.Issues.Commands
 
                 Store(hourlyCount);
             }
+
+            //update the last sync utc for this issue
+            issue.LastSyncUtc = DateTime.UtcNow.AddMilliseconds(100);
 
             hourlyCount.Initialise();
 
@@ -93,8 +94,7 @@ namespace Errordite.Core.Issues.Commands
                         IssueId = issue.Id,
                         Count = 1,
                         Date = error.TimestampUtc.Date,
-                        Id = "IssueDailyCount/{0}-{1}".FormatWith(issue.FriendlyId, issue.CreatedOnUtc.ToString("yyyy-MM-dd")),
-                        CreatedOnUtc = DateTime.UtcNow
+                        CreatedOnUtc = DateTime.UtcNow.AddMilliseconds(100)
                     });
                 }
 
@@ -107,9 +107,10 @@ namespace Errordite.Core.Issues.Commands
                 Store(dailyCount.Value);
             }
 
+            Trace("Last sync:={0}", issue.LastSyncUtc);
+
             issue.ErrorCount = errors.PagingStatus.TotalItems;
 			issue.LimitStatus = issue.ErrorCount >= _configuration.IssueErrorLimit ? ErrorLimitStatus.Exceeded : ErrorLimitStatus.Ok;
-            issue.LastSyncUtc = DateTime.UtcNow;
 
 			return new SyncIssueErrorCountsResponse();
 		}

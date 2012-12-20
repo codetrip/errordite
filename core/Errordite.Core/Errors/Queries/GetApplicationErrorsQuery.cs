@@ -5,10 +5,10 @@ using CodeTrip.Core.Paging;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Indexing;
+using Errordite.Core.Session;
 using Raven.Client;
 using Raven.Client.Linq;
 using CodeTrip.Core.Extensions;
-using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
 
 namespace Errordite.Core.Errors.Queries
 {
@@ -49,11 +49,6 @@ namespace Errordite.Core.Errors.Queries
             {
                 var endDate = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(request.EndDate.Value.ToUniversalTime().RangeEnd(), request.UserTimezoneId, "UTC");
                 query = query.Where(e => e.TimestampUtc < endDate);
-            }
-
-            if (request.Classified.HasValue)
-            {
-                query = query.Where(e => e.Classified == request.Classified.Value);
             }
 
             if (!request.IssueId.IsNullOrEmpty())
@@ -102,7 +97,6 @@ namespace Errordite.Core.Errors.Queries
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
 		public string IssueId { get; set; }
-        public bool? Classified { get; set; }
         public PageRequestWithSort Paging { get; set; }
         public string UserTimezoneId { get; set; }
         public int? LastFriendlyId { get; set; }

@@ -63,6 +63,7 @@
             $(MSBuildProjectDirectory)\..\Projects\InstallWeb.proj;
             $(MSBuildProjectDirectory)\..\Projects\InstallReceptionWeb.proj;
             $(MSBuildProjectDirectory)\..\Projects\InstallReceptionService.proj;
+            $(MSBuildProjectDirectory)\..\Projects\InstallEventsService.proj;
             $(MSBuildProjectDirectory)\..\Projects\InstallScheduledTasks.proj;
             $(MSBuildProjectDirectory)\..\Projects\InstallNotificationsService.proj;
             $(MSBuildProjectDirectory)\..\Projects\InstallMaster.proj;">

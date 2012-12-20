@@ -18,7 +18,7 @@ namespace Errordite.Core.Session
 
         public override void Execute(IAppSession session)
         {
-            session.Raven.Advanced.DocumentStore.DatabaseCommands.DeleteByIndex(_indexName, _query, _allowStale);
+            session.RavenDatabaseCommands.DeleteByIndex(_indexName, _query, _allowStale);
         }
     }
 }

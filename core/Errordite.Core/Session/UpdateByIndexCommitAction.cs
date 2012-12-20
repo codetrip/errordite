@@ -20,7 +20,7 @@ namespace Errordite.Core.Session
 
         public override void Execute(IAppSession session)
         {
-            session.Raven.Advanced.DocumentStore.DatabaseCommands.UpdateByIndex(_indexName, _query, _patchRequests, _allowStale);
+            session.RavenDatabaseCommands.UpdateByIndex(_indexName, _query, _patchRequests, _allowStale);
         }
     }
 }

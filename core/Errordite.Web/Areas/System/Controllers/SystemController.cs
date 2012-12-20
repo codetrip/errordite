@@ -5,9 +5,12 @@ using CodeTrip.Core.Extensions;
 using CodeTrip.Core.Paging;
 using Errordite.Core;
 using Errordite.Core.Applications.Commands;
+using Errordite.Core.Configuration;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Errors.Queries;
+using Errordite.Core.Indexing;
+using Errordite.Core.Messages;
 using Errordite.Core.Organisations.Queries;
 using Errordite.Core.Session;
 using Errordite.Web.ActionFilters;
@@ -28,13 +31,15 @@ namespace Errordite.Web.Areas.System.Controllers
         private readonly IPagingViewModelGenerator _pagingViewModelGenerator;
         private readonly IEncryptor _encryptor;
         private readonly IGetOrganisationsQuery _getOrganisationsQuery;
+        private readonly ErrorditeConfiguration _configuration;
 
         public SystemController(IAppSession session, 
             IDeleteApplicationCommand deleteApplicationCommand, 
             IGetErrorditeErrorsQuery getErrorditeErrorsQuery, 
             IPagingViewModelGenerator pagingViewModelGenerator, 
             IEncryptor encryptor, 
-            IGetOrganisationsQuery getOrganisationsQuery)
+            IGetOrganisationsQuery getOrganisationsQuery, 
+            ErrorditeConfiguration configuration)
         {
             _session = session;
             _deleteApplicationCommand = deleteApplicationCommand;
@@ -42,6 +47,7 @@ namespace Errordite.Web.Areas.System.Controllers
             _pagingViewModelGenerator = pagingViewModelGenerator;
             _encryptor = encryptor;
             _getOrganisationsQuery = getOrganisationsQuery;
+            _configuration = configuration;
         }
 
         [HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.SysAdmin)]
@@ -199,6 +205,30 @@ namespace Errordite.Web.Areas.System.Controllers
             foreach (var organisation in organisations.Items)
             {
                 Core.Session.BootstrapOrganisation(organisation);
+            }
+
+            return new EmptyResult();
+        }
+
+        public ActionResult UpdateIssueCounts()
+        {
+            var organisations = _getOrganisationsQuery.Invoke(new GetOrganisationsRequest
+            {
+                Paging = new PageRequestWithSort(1, int.MaxValue)
+            }).Organisations;
+
+            foreach (var organisation in organisations.Items)
+            {
+                Core.Session.SetOrganisation(organisation);
+
+                foreach (var issue in Core.Session.Raven.Query<Issue, Issues_Search>())
+                {
+                    Core.Session.AddCommitAction(new SendNServiceBusMessage("Sync Issue Error Counts", new SyncIssueErrorCountsMessage
+                    {
+                        IssueId = issue.Id,
+                        OrganisationId = issue.OrganisationId
+                    }, _configuration.EventsQueueName));
+                }
             }
 
             return new EmptyResult();

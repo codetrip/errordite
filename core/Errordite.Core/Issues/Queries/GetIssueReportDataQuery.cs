@@ -7,7 +7,7 @@ using Errordite.Core.Authorisation;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Indexing;
 using Errordite.Core.Organisations;
-using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
+using Errordite.Core.Session;
 
 namespace Errordite.Core.Issues.Queries
 {
@@ -24,6 +24,7 @@ namespace Errordite.Core.Issues.Queries
         {
             Trace("Starting...");
 
+            var issue = Load<Issue>(Issue.GetId(request.IssueId));
             var data = new Dictionary<string, object>();
             var hourlyCount = Session.Raven.Load<IssueHourlyCount>("IssueHourlyCount/{0}".FormatWith(request.IssueId.GetFriendlyId()));
 
@@ -35,16 +36,18 @@ namespace Errordite.Core.Issues.Queries
 
             var dateResults = Query<IssueDailyCount, IssueDailyCount_Search>()
                 .Where(i => i.IssueId == Issue.GetId(request.IssueId))
+                .Where(i => i.CreatedOnUtc >= issue.LastSyncUtc)
                 .Where(i => i.Date >= request.StartDate && i.Date <= request.EndDate)
                 .OrderBy(i => i.Date)
                 .ToList();
 
             if (dateResults.Any())
             {
+                var range = Enumerable.Range(0, (request.EndDate - request.StartDate).Days + 1).ToList();
                 data.Add("ByDate", new
                 {
-                    x = dateResults.Select(d => d.Date.ToString("yyyy-MM-dd")),
-                    y = dateResults.Select(d => d.Count)
+                    x = range.Select(index => FindIssueCount(dateResults, request.StartDate.AddDays(index)).Date.ToString("yyyy-MM-dd")),
+                    y = range.Select(index => FindIssueCount(dateResults, request.StartDate.AddDays(index)).Count)
                 });
             }
             else
@@ -61,6 +64,22 @@ namespace Errordite.Core.Issues.Queries
             {
                 Data = data
             };
+        }
+
+        private IssueDailyCount FindIssueCount(IEnumerable<IssueDailyCount> results, DateTime date)
+        {
+            var result = results.FirstOrDefault(r => r.Date == date);
+
+            if (result == null)
+            {
+                return new IssueDailyCount
+                {
+                    Count = 0,
+                    Date = date
+                };
+            }
+
+            return result;
         }
     }
 

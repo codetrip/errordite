@@ -4,6 +4,7 @@ using CodeTrip.Core.Extensions;
 using CodeTrip.Core.Interfaces;
 using Errordite.Core.Configuration;
 using Errordite.Core.Domain.Error;
+using Errordite.Core.Indexing;
 using Errordite.Core.Messages;
 using Errordite.Core.Organisations;
 using Errordite.Core.Session;
@@ -25,6 +26,8 @@ namespace Errordite.Core.Errors.Commands
             Trace("Starting...");
             TraceObject(request);
 
+            new SynchroniseIndex<Errors_Search>().Execute(Session);
+
             //now move errors from the other issues
             Session.RavenDatabaseCommands.UpdateByIndex(CoreConstants.IndexNames.Errors,
                 new IndexQuery
@@ -33,12 +36,6 @@ namespace Errordite.Core.Errors.Commands
                 },
                 new[]
                 {
-                    new PatchRequest
-                    {
-                        Name = "Classified",
-                        Type = PatchCommandType.Set,
-                        Value = true
-                    },
                     new PatchRequest
                     {
                         Name = "IssueId",
