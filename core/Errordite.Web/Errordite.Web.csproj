@@ -63,8 +63,8 @@
     <Reference Include="Castle.Windsor">
       <HintPath>..\packages\Castle.Windsor.3.1.0\lib\net40\Castle.Windsor.dll</HintPath>
     </Reference>
-    <Reference Include="Errordite.Client.Mvc3">
-      <HintPath>..\packages\Errordite.Client.Mvc3.1.2.9.0\lib\net40\Errordite.Client.Mvc3.dll</HintPath>
+    <Reference Include="Errordite.Client.Mvc">
+      <HintPath>..\packages\Errordite.Client.Mvc.1.2.11.0\lib\net40\Errordite.Client.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
       <HintPath>..\..\lib\log4net\log4net.dll</HintPath>
