@@ -138,7 +138,7 @@ namespace Errordite.Web.Areas.System.Controllers
         [HttpPost, ExportViewData]
         public ActionResult RebuildIndex(string indexName)
         {
-            _session.RavenDatabaseCommands.ResetIndex(indexName);
+			_session.RavenDatabaseCommands.ResetIndex(indexName);
             ConfirmationNotification("Index '{0}' was successfully rebuilt.");
             return RedirectToAction("index");
         }

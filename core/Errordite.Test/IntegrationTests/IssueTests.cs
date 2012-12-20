@@ -90,7 +90,7 @@ namespace Errordite.Test.IntegrationTests
         {
             var session = Get<IAppSession>();
 
-            session.RavenDatabaseCommands.UpdateByIndex(CoreConstants.IndexNames.Errors,
+			session.RavenDatabaseCommands.UpdateByIndex(CoreConstants.IndexNames.Errors,
                 new IndexQuery
                 {
                     Query = "ApplicationId:{0} AND IssueIds:{1} AND Classified:false".FormatWith("applications/1", "5123")

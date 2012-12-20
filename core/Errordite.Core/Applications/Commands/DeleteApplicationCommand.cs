@@ -46,12 +46,12 @@ namespace Errordite.Core.Applications.Commands
             //    Query = "ApplicationId:{0}".FormatWith(applicationId)
             //}, true);
 
-            Session.RavenDatabaseCommands.DeleteByIndex(CoreConstants.IndexNames.Errors, new IndexQuery
+			Session.RavenDatabaseCommands.DeleteByIndex(CoreConstants.IndexNames.Errors, new IndexQuery
             {
                 Query = "ApplicationId:{0}".FormatWith(applicationId)
             }, true);
 
-            Session.RavenDatabaseCommands.DeleteByIndex(CoreConstants.IndexNames.Issues, new IndexQuery
+			Session.RavenDatabaseCommands.DeleteByIndex(CoreConstants.IndexNames.Issues, new IndexQuery
             {
                 Query = "ApplicationId:{0}".FormatWith(applicationId)
             }, true);

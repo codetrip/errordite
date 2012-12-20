@@ -436,7 +436,6 @@ namespace Errordite.Web.Controllers
                         return RedirectWithViewModel(postModel, "index", result.Status.MapToResource(Rules.ResourceManager), false, new { id = postModel.Id, tab = IssueTab.Rules.ToString() });
                 }
 
-                ConfirmationNotification(IssueResources.IssuePurged);
                 return RedirectToAction("index", new { id = result.IssueId, tab = IssueTab.Rules.ToString() });
             }
             catch (ConcurrencyException e)

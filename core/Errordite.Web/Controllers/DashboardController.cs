@@ -5,7 +5,9 @@ using CodeTrip.Core.Paging;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Errors.Queries;
 using Errordite.Core.Issues.Queries;
+using Errordite.Core.Messages;
 using Errordite.Core.Organisations.Queries;
+using Errordite.Core.Session;
 using Errordite.Web.ActionFilters;
 using Errordite.Web.ActionResults;
 using Errordite.Web.Models.Dashboard;
@@ -30,6 +32,19 @@ namespace Errordite.Web.Controllers
             _getApplicationIssuesQuery = getApplicationIssuesQuery;
             _getApplicationErrorsQuery = getApplicationErrorsQuery;
         }
+
+		[ImportViewData]
+		public ActionResult New()
+		{
+			Core.Session.AddCommitAction(new SendNServiceBusMessage("Sync Issue Error Counts", new SyncIssueErrorCountsMessage
+			{
+				CurrentUser = Core.AppContext.CurrentUser,
+				IssueId = "issues/129",
+				OrganisationId = "organisations/1"
+			}, "Errordite.Events.Service"));
+
+			return RedirectToAction("index");
+		}
 
         [ImportViewData]
         public ActionResult Index()

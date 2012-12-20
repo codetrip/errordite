@@ -39,8 +39,8 @@ namespace Errordite.Core.Session
         IRedisSession Redis { get; }
 
         //TODO: make these part of the UoW by adding an action on IDatabaseCommands
-        IDatabaseCommands RavenDatabaseCommands { get; }
-        IDatabaseCommands MasterRavenDatabaseCommands { get; }
+	    IDatabaseCommands RavenDatabaseCommands { get; }
+	    IDatabaseCommands MasterRavenDatabaseCommands { get; }
 
         /// <summary>
         /// Disposes and nulls the Raven session, does not perform any other operations, you 
@@ -178,19 +178,19 @@ namespace Errordite.Core.Session
         }
 
         public IDatabaseCommands RavenDatabaseCommands
-        { 
-            get
-            {
-                return _session.Advanced.DocumentStore.DatabaseCommands.ForDatabase(_organisationDatabaseId);
-            } 
+        {
+			get
+			{
+				return MasterRaven.Advanced.DocumentStore.DatabaseCommands.ForDatabase(OrganisationDatabaseName);
+			}
         }
 
-        public IDatabaseCommands MasterRavenDatabaseCommands 
+        public IDatabaseCommands MasterRavenDatabaseCommands
         { 
-            get
-            {
-                return _session.Advanced.DocumentStore.DatabaseCommands.ForDatabase(CoreConstants.ErrorditeMasterDatabaseName);
-            } 
+			get
+			{
+				return MasterRaven.Advanced.DocumentStore.DatabaseCommands.ForDatabase(CoreConstants.ErrorditeMasterDatabaseName);
+			}
         }
 
         public void Close()
@@ -303,7 +303,7 @@ namespace Errordite.Core.Session
         public void BootstrapOrganisation(Organisation organisation)
         {
             SetDbId(organisation);
-            MasterRavenDatabaseCommands.EnsureDatabaseExists(_organisationDatabaseId);
+			MasterRavenDatabaseCommands.EnsureDatabaseExists(_organisationDatabaseId);
 
             IndexCreation.CreateIndexes(
                 new CompositionContainer(new AssemblyCatalog(typeof(Issues_Search).Assembly), new ExportProvider[0]),

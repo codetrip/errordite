@@ -10,6 +10,7 @@ using Errordite.Core.Organisations;
 using CodeTrip.Core.Extensions;
 using Errordite.Core.Session;
 using Raven.Abstractions.Data;
+using Raven.Abstractions.Linq;
 
 namespace Errordite.Core.Issues.Commands
 {
@@ -45,10 +46,10 @@ namespace Errordite.Core.Issues.Commands
             new SynchroniseIndex<IssueDailyCount_Search>().Execute(Session);
 
 			//delete any daily issue count docs
-			Session.AddCommitAction(new DeleteByIndexCommitAction(CoreConstants.IndexNames.IssueDailyCount, new IndexQuery
+			Session.RavenDatabaseCommands.DeleteByIndex(CoreConstants.IndexNames.IssueDailyCount, new IndexQuery
 			{
-				Query = "IssueId:{0} AND CreatedOnUtc < {1}".FormatWith(issue.Id)
-            }, true));
+				Query = "IssueId:{0}".FormatWith(issue.Id)
+            }, true);
 
             new SynchroniseIndex<IssueDailyCount_Search>().Execute(Session);
 
