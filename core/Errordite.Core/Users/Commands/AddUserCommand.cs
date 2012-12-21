@@ -12,8 +12,8 @@ using Errordite.Core.Notifications.Commands;
 using Errordite.Core.Notifications.EmailInfo;
 using System.Linq;
 using CodeTrip.Core.Extensions;
+using Errordite.Core.Session;
 using Raven.Client.Linq;
-using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
 
 namespace Errordite.Core.Users.Commands
 {
