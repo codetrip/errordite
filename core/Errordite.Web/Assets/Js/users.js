@@ -12,6 +12,12 @@
         this.user["delete"]();
         return false;
       });
+      $body.delegate('a.invite', 'click', function() {
+        var $this;
+        $this = $(this);
+        $this.closest('form').submit();
+        return false;
+      });
       return User = (function() {
 
         function User($form) {

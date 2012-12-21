@@ -75,7 +75,6 @@ namespace Errordite.Web.Models.Navigation
                     }),
                     new Breadcrumb(BreadcrumbId.Errors, string.Empty, "Errors")
                 }),  
-                new Breadcrumb(BreadcrumbId.YourDetails, urlHelper.YourDetails(), "Your Details"), 
                 new Breadcrumb(BreadcrumbId.Home, urlHelper.Home(), "Home", new []
                 {
                     //new Breadcrumb(BreadcrumbId.WhatIsIt, string.Empty, "What Is It"),
@@ -161,7 +160,6 @@ namespace Errordite.Web.Models.Navigation
         Errors,
         MergeIssues,
         Issue,
-        YourDetails,
 
         Help,
         //WhatIsIt,

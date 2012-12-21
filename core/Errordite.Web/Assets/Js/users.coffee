@@ -12,6 +12,12 @@ jQuery ->
 			false	
 		)	
 
+		$body.delegate('a.invite', 'click', () -> 
+			$this = $ this
+			$this.closest('form').submit()
+			false	
+		)	
+
 		class User
 			constructor: ($form) -> 
 				this.$form = $form

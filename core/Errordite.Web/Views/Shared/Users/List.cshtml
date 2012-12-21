@@ -1,4 +1,5 @@
-﻿@using Errordite.Web.Extensions
+﻿@using Errordite.Core.Domain.Organisation
+@using Errordite.Web.Extensions
 @model Errordite.Web.Models.Users.UsersViewModel
            
 <table class="table table-bordered">
@@ -28,7 +29,16 @@
                 <td>@user.Email</td>
                 <td>@user.Role</td>
                 <td>@user.Groups</td>
-                <td>@user.Status</td>
+				<td>
+					@user.Status
+					@if(user.Status == UserStatus.Inactive)
+					{
+						using (Html.BeginForm("resendinvite", "users", new { userId = user.Id }, FormMethod.Post, new {style="display:inline"}))
+                        {
+							<span>(</span><a class="invite" href="#" title="Resend a new user invite to this user">resend invite</a><span>)</span>
+                        }
+					}
+				</td>
                     
                 @if (Model.EnableImpersonation)
                 {

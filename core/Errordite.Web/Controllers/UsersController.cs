@@ -1,9 +1,12 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
 using AutoMapper;
+using CodeTrip.Core.Encryption;
 using CodeTrip.Core.Extensions;
 using CodeTrip.Core.Paging;
 using Errordite.Core.Domain.Organisation;
+using Errordite.Core.Notifications.Commands;
+using Errordite.Core.Notifications.EmailInfo;
 using Errordite.Core.Users.Commands;
 using Errordite.Core.Users.Queries;
 using Errordite.Web.ActionFilters;
@@ -22,18 +25,24 @@ namespace Errordite.Web.Controllers
         private readonly IAddUserCommand _addUserCommand;
         private readonly IDeleteUserCommand _deleteUserCommand;
         private readonly IPagingViewModelGenerator _pagingViewModelGenerator;
+		private readonly ISendNotificationCommand _sendNotificationCommand;
+		private readonly IEncryptor _encryptor;
 
         public UsersController(IAddUserCommand addUserCommand, 
             IEditUserCommand editUserCommand, 
             IDeleteUserCommand deleteUserCommand, 
             IPagingViewModelGenerator pagingViewModelGenerator, 
-            IGetUserQuery getUserQuery)
+            IGetUserQuery getUserQuery, 
+			ISendNotificationCommand sendNotificationCommand, 
+			IEncryptor encryptor)
         {
             _addUserCommand = addUserCommand;
             _editUserCommand = editUserCommand;
             _deleteUserCommand = deleteUserCommand;
             _pagingViewModelGenerator = pagingViewModelGenerator;
             _getUserQuery = getUserQuery;
+	        _sendNotificationCommand = sendNotificationCommand;
+	        _encryptor = encryptor;
         }
 
         [PagingView, HttpGet, RoleAuthorize(UserRole.Administrator), ImportViewData, GenerateBreadcrumbs(BreadcrumbId.Users)]
@@ -73,6 +82,34 @@ namespace Errordite.Web.Controllers
 
             return View(viewModel);
         }
+
+		[HttpPost, RoleAuthorize(UserRole.Administrator), ExportViewData]
+		public ActionResult ResendInvite(string userId)
+		{
+			var user = Core.Session.Raven.Load<User>(Errordite.Core.Domain.Organisation.User.GetId(userId));
+
+			if(user != null)
+			{
+				_sendNotificationCommand.Invoke(new SendNotificationRequest
+				{
+					EmailInfo = new NewUserEmailInfo
+					{
+						To = user.Email,
+						Token = _encryptor.Encrypt("{0}|{1}".FormatWith(user.PasswordToken.ToString(), Core.AppContext.CurrentUser.Organisation.FriendlyId)).Base64Encode(),
+						UserName = user.FirstName
+					},
+					OrganisationId = Core.AppContext.CurrentUser.OrganisationId
+				});
+
+				ConfirmationNotification("A new invite has been sent to {0}".FormatWith(user.Email));
+			}
+			else
+			{
+				ErrorNotification("Failed to locate the user with Id {0}".FormatWith(userId));	
+			}
+
+			return RedirectToAction("index");
+		}
 
         [HttpPost, RoleAuthorize(UserRole.Administrator), ExportViewData]
         public ActionResult Add(AddUserViewModel viewModel)
@@ -130,7 +167,7 @@ namespace Errordite.Web.Controllers
             return RedirectWithViewModel(viewModel, "index", result.Status.MapToResource(Resources.Account.ResourceManager), result.Status != EditUserStatus.Ok, new {userId = viewModel.UserId});
         }
 
-        [HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.YourDetails)]
+		[HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.EditYourDetails)]
         public ActionResult YourDetails()
         {
             return EditUser(Core.AppContext.CurrentUser, true);
