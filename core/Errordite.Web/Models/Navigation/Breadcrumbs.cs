@@ -98,7 +98,8 @@ namespace Errordite.Web.Models.Navigation
                     new Breadcrumb(BreadcrumbId.Users, urlHelper.Users(), "Users", new []
                     {
                         new Breadcrumb(BreadcrumbId.AddUser, string.Empty, "Add User"),
-                        new Breadcrumb(BreadcrumbId.EditUser, string.Empty, "Edit User")
+                        new Breadcrumb(BreadcrumbId.EditUser, string.Empty, "Edit User"),
+                        new Breadcrumb(BreadcrumbId.EditYourDetails, string.Empty, "Edit Your Details")
                     }),
                     new Breadcrumb(BreadcrumbId.Groups, urlHelper.Groups(), "Groups", new []
                     {
@@ -185,6 +186,7 @@ namespace Errordite.Web.Models.Navigation
         Users,
         AddUser,
         EditUser,
+		EditYourDetails,
 
         Groups,
         AddGroup,

@@ -23,7 +23,7 @@
                         @Html.DropDownListFor(m => m.TimezoneId, TimeZoneInfo.GetSystemTimeZones().Select(t => new SelectListItem {Selected = Model.TimezoneId == t.Id || (Model.TimezoneId == null && t.Id == "UTC"), Value = t.Id, Text = t.DisplayName}))
                         <i data-title="The default timezone for your application. Users can set their own timezone in their personal settings." class="icon-info"></i>
                     </li>
-                    <li>
+                    <li class="buttons">
                         <input type="submit" value="Save Changes" class="btn btn-medium btn-blue"/>
                     </li>
                 </ul>
