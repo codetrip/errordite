@@ -17,12 +17,22 @@ namespace Errordite.Core.Session
             _centralRaven = centralRaven;
         }
 
-        public override void Execute(IAppSession session)
-        {
-            var result = session.Raven.Advanced.LuceneQuery<object>(new T().IndexName)
-                .WaitForNonStaleResultsAsOfLastWrite()
-                .Take(1)
-                .FirstOrDefault();
-        }
+		public override void Execute(IAppSession session)
+		{
+			if (_centralRaven)
+			{
+				var result = session.MasterRaven.Advanced.LuceneQuery<object>(new T().IndexName)
+					.WaitForNonStaleResultsAsOfLastWrite()
+					.Take(1)
+					.FirstOrDefault();
+			}
+			else
+			{
+				var result = session.Raven.Advanced.LuceneQuery<object>(new T().IndexName)
+					.WaitForNonStaleResultsAsOfLastWrite()
+					.Take(1)
+					.FirstOrDefault();
+			}
+		}
     }
 }

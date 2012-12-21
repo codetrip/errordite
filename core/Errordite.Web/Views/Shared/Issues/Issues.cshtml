@@ -52,18 +52,19 @@
                 <h4 class="formodal">Make <span class="batch-issue-count"></span> issue<span class="batch-issue-plural">s</span> "<span class="batch-issue-status"></span>"</h4>
             </div>
             <div class="modal-body">
-                <div class="alert alert-danger hidden">
-                    <h4 class="alert-heading"></h4>
-                </div>
+                <div class="error">
+					<i class="icon-error"></i><span></span>
+				</div>
                 <div class="form">
                     <ul>
                         <li>
-                            <label class="control-label" for="AssignToUser">Assign to user:</label>
+                            <label for="AssignToUser">Assign to user:</label>
                             @Html.DropDownList("AssignToUser", new[] { new SelectListItem { Selected = true, Text = "Currently assigned user", Value = "" } }.Union(Model.Users), new { style = "width:300px" })
                         </li>
-                        <li>
-                            <textarea name="Comment" style="width:290px; height:65px;" placeholder="Enter a comment (optional)..."></textarea>
-                        </li>
+						<li>
+							<label>Enter a comment</label>
+							<textarea name="Comment" style="width:290px; height:65px;" placeholder="Enter a comment (optional)..."></textarea>
+						</li>
                     </ul>
                 </div>
             </div>
@@ -78,14 +79,14 @@
                 <a href="#" class="close" data-dismiss="modal">x</a>
                 <h4 class="formodal">Delete <span class="batch-issue-count"></span> issue<span class="batch-issue-plural">s</span></h4>
             </div>
-            <div class="modal-body">
-                <div class="alert alert-danger hidden">
-                    <h4 class="alert-heading"></h4>
-                </div>
-                <p>
-                    Click Ok to delete the selected issues, click Cancel to return to the page.
-                </p>
-            </div>
+			<div class="modal-body">
+				<div class="error">
+					<i class="icon-error"></i><span></span>
+				</div>
+				<p>
+					Click Ok to delete the selected issues, click Cancel to return to the page.
+				</p>
+			</div>
             <div class="modal-footer">
                 <button class="btn btn-small btn-blue">OK</button>
                 <a class="btn btn-small btn-cancel" data-dismiss="modal">Cancel</a>

@@ -13,8 +13,8 @@
           return window.location.reload();
         }).error(function(e) {
           if ($activeModal != null) {
-            $activeModal.find('div.alert').removeClass('hidden');
-            return $activeModal.find("div.alert h4").text("An error occurred, please close the modal window and try again.");
+            $activeModal.find('div.error').removeClass('hidden');
+            return $activeModal.find("div.error span").text("An error occurred, please close the modal window and try again.");
           }
         });
       });

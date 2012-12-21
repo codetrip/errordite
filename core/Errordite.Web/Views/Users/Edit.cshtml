@@ -58,7 +58,7 @@
                             <i data-title="Only administrators can manage your organisation (managing users, groups and applications)." class="icon-info"></i>
                         </li>
                     }
-                    <li>
+                    <li class="buttons">
                         <input type="submit" class="btn btn-medium btn-blue" value="Save" />
                         <a class="btn btn-medium btn-cancel" href="@(Model.CurrentUser ? Url.Home(ViewData.GetAppContext()) : Url.Users())">Cancel</a>
                     </li>

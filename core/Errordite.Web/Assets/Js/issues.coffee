@@ -12,8 +12,8 @@
 				window.location.reload();
 			).error((e) -> 
 				if $activeModal?
-					$activeModal.find('div.alert').removeClass('hidden');
-					$activeModal.find("div.alert h4").text "An error occurred, please close the modal window and try again."
+					$activeModal.find('div.error').removeClass('hidden');
+					$activeModal.find("div.error span").text "An error occurred, please close the modal window and try again."
 			)
 			
 		$root.delegate 'ul.dropdown-menu li input', 'click', (e) -> 
