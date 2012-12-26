@@ -259,7 +259,7 @@ table {
       padding: 0 2px; }
     .trail-container .trail li {
       float: left;
-      line-height: 40px; }
+      line-height: 36px; }
       .trail-container .trail li a {
         color: #729db7;
         font-size: 13px; }
@@ -349,7 +349,7 @@ section {
   .tabs li {
     float: left; }
     .tabs li > a {
-      margin-right: 7px;
+      margin-right: 5px;
       text-transform: uppercase;
       padding: 10px 15px 10px 15px;
       border: 1px solid #dee7ee;
@@ -1434,6 +1434,12 @@ nav {
   padding-right: 5px; }
   .errors .info td.nobreak {
     width: 300px; }
+.errors .messages {
+  max-height: 500px;
+  overflow-x: auto;
+  padding-right: 5px; }
+  .errors .messages .table {
+    margin-bottom: 0px; }
 .errors .tabs li > a {
   text-transform: none; }
 .errors .error-content {
