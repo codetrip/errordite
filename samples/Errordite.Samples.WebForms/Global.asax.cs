@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using Errordite.Client;
 
 namespace Errordite.Samples.WebForms
 {
@@ -21,7 +20,7 @@ namespace Errordite.Samples.WebForms
 
         void Application_Error(object sender, EventArgs e)
         {
-            ErrorditeClient.ReportException(Server.GetLastError());
+            //ErrorditeClient.ReportException(Server.GetLastError());
         }
 
         void Session_Start(object sender, EventArgs e)

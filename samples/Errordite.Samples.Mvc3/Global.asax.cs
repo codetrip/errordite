@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.IO;
 using System.Web.Mvc;
 using System.Web.Routing;
 using Errordite.Client;
@@ -34,7 +35,7 @@ namespace Errordite.Samples.Mvc3
 
         }
 
-        private class Logger// : IErrorditeLogger
+        private class Logger : IErrorditeLogger
         {
             public void Debug(string message, params object[] args)
             {
@@ -49,9 +50,14 @@ namespace Errordite.Samples.Mvc3
 
         protected void Application_Start()
         {
+			log4net.Config.XmlConfigurator.Configure();
+
+			System.Diagnostics.Trace.Write("Application_Start");
+
             AreaRegistration.RegisterAllAreas();
 
-           // ErrorditeClient.SetLogger(new Logger());
+            ErrorditeClient.SetLogger(new Logger());
+			Errordite.Client.Log4net.ErrorditeLogger.Initialise(true, "Errordite.Samples");
 
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);

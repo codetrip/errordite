@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using System.Web.Mvc;
+using log4net;
 
 namespace Errordite.Samples.Mvc3.Controllers
 {
@@ -33,10 +34,14 @@ namespace Errordite.Samples.Mvc3.Controllers
 
         public ActionResult Error(int? index, string errorMessage)
         {
+	        var logger = LogManager.GetLogger("Errordite.Samples");
+			logger.Debug(string.Format("Logging error index:={0}, message:={1}", index, errorMessage));
+
             switch (index)
             {
                 case 1:
                     {
+						logger.Debug("Case 1");
                         try
                         {
                             int zero = 0;
@@ -49,25 +54,30 @@ namespace Errordite.Samples.Mvc3.Controllers
                     }
                     break;
                 case 2:
-                    {
+					{
+						logger.Debug("Case 2");
                         if (index == 2)
                             throw new ArgumentException(errorMessage + "The argument cannot be 2", "index");
                     }
                     break;
                 case 3:
-                    {
+					{
+						logger.Debug("Case 3");
                         throw new ArgumentNullException("index", errorMessage + "parameter index cannot be null");
                     }
                 case 4:
-                    {
+					{
+						logger.Debug("Case 4");
                         throw new ConfigurationErrorsException(errorMessage + "Some config was invalid, cannot continue");
                     }
                 case 5:
-                    {
+					{
+						logger.Debug("Case 5");
                         throw new IOException("with an inner exception", new EventLogException("inner message"));
                     }
                 default:
-                    {
+					{
+						logger.Debug("Case Default");
                         throw new Exception(errorMessage);
                     }
             }
