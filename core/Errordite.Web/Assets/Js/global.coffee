@@ -133,7 +133,7 @@ class Tabs
 				first = false
 			else	
 				#if there is a state, show that tab; if not, show the first tab
-				this.show evt.state || this.node.find('li a [data-val]:first').data 'val'
+				this.show evt.state || this.node.find('li a[data-val]:first').data 'val'
 
 		
 		this.node.delegate 'li a.tablink', 'click', (e) => 

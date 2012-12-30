@@ -169,7 +169,7 @@
         if (first) {
           return first = false;
         } else {
-          return _this.show(evt.state || _this.node.find('li a [data-val]:first').data('val'));
+          return _this.show(evt.state || _this.node.find('li a[data-val]:first').data('val'));
         }
       };
       return this.node.delegate('li a.tablink', 'click', function(e) {
