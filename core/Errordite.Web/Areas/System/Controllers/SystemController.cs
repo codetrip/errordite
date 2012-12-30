@@ -233,5 +233,10 @@ namespace Errordite.Web.Areas.System.Controllers
 
             return new EmptyResult();
         }
+
+        public ActionResult Throw()
+        {
+            throw new Exception("");
+        }
     }
 }
