@@ -46,7 +46,7 @@ namespace Errordite.Core.Issues.Commands
             _authorisationManager.Authorise(issue, request.CurrentUser);
 
             //if we are assigning this issue to a new user, notify them
-            if (issue.UserId != request.AssignedUserId)
+            if (issue.UserId != request.AssignedUserId && request.AssignedUserId != request.CurrentUser.Id)
             {
                 var user = _getUserQuery.Invoke(new GetUserRequest
                 {
