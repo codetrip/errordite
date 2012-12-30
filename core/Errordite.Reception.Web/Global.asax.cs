@@ -5,6 +5,8 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using CodeTrip.Core.Auditing.Entities;
 using CodeTrip.Core.IoC;
+using CodeTrip.Core.Misc;
+using Errordite.Client;
 using Errordite.Client.Abstractions;
 using Errordite.Client.Mvc;
 using Errordite.Core.IoC;
@@ -55,6 +57,7 @@ namespace Errordite.Reception.Web
 
             ObjectFactory.Container.Install(new ReceptionWebInstaller());
 
+            ErrorditeClient.ConfigurationAugmenter = ErrorditeClientOverrideHelper.Augment;
             var controllerFactory = new WindsorControllerFactory(ObjectFactory.Container.Kernel);
             ControllerBuilder.Current.SetControllerFactory(controllerFactory);
 

@@ -13,6 +13,9 @@ using Castle.Core.Internal;
 using CodeTrip.Core.Auditing.Entities;
 using CodeTrip.Core.Interfaces;
 using CodeTrip.Core.IoC;
+using CodeTrip.Core.Misc;
+using Errordite.Client;
+using Errordite.Client.Configuration;
 using Errordite.Client.Mvc;
 using Errordite.Core;
 using Errordite.Core.Domain.Exceptions;
@@ -119,10 +122,12 @@ namespace Errordite.Web
                 args.SetObserved();
             };
 
+
+            ErrorditeClient.ConfigurationAugmenter = ErrorditeClientOverrideHelper.Augment;
            // ErrorditeLogger.Initialise(true, "Errordite.Web");
             BootstrapRaven();
         }
-
+        
         protected void Application_Error(object sender, EventArgs e)
         {
             if (Context.IsCustomErrorEnabled)

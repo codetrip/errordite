@@ -16,6 +16,7 @@ the config file.  If you wish to allow a choice of folders, they can be separate
     <param xpath="//system.web/customErrors/@mode" theRest="On" />
     <param xpath="//system.web/authentication/forms/@timeout" theRest="1440" />
     <param xpath="//errordite/@endpoint" theRest="$(InternalReceptionEndpoint)" />
+    <param xpath="//errordite/@token" theRest="$(ErrorditeToken)"/>
     <param xpath="//connectionStrings/add[@name='RavenDB']/@connectionString" theRest="$(RavenConnectionString)" />
   </File>
 
@@ -26,7 +27,8 @@ the config file.  If you wish to allow a choice of folders, they can be separate
 
   <File match="app.config">
     <param xpath="//errordite/@endpoint" theRest="$(InternalReceptionEndpoint)" />
-    <param xpath="//connectionStrings/add[@name='RavenDB']/@connectionString" theRest="$(RavenConnectionString)" />
+    <param xpath="//errordite/@token" theRest="$(ErrorditeToken)"/>
+    <param xpath="//connectionStrings/add[@name='RavenDB']/@connectionString" theRest="$(RavenConnectionString)" />    
   </File>
 
     <File match="Errordite.Reception.Service.dll.config">

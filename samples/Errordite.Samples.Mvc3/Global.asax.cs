@@ -3,8 +3,12 @@ using System;
 using System.IO;
 using System.Web.Mvc;
 using System.Web.Routing;
+using System.Xml.Linq;
+using CodeTrip.Core.Misc;
 using Errordite.Client;
+using Errordite.Client.Configuration;
 using Errordite.Client.Interfaces;
+using CodeTrip.Core.Extensions;
 
 namespace Errordite.Samples.Mvc3
 {
@@ -56,11 +60,15 @@ namespace Errordite.Samples.Mvc3
 
             AreaRegistration.RegisterAllAreas();
 
+            ErrorditeClient.ConfigurationAugmenter = ErrorditeClientOverrideHelper.Augment;
             ErrorditeClient.SetLogger(new Logger());
 			Errordite.Client.Log4net.ErrorditeLogger.Initialise(true, "Errordite.Samples");
 
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
         }
+
+
     }
+
 }

@@ -17,6 +17,7 @@ In time we hope to use this for replacing values in sql files as well, but we ar
 
     <ErrorditeWebsiteHostName dev="dev-site.errordite.com" test="test-site.errordite.com" production="site.errordite.com" />
     <ErrorditeReceptionWebsiteHostName dev="dev-reception.errordite.com" test="test-reception.errordite.com" production="reception.errordite.com" />
+    <ErrorditeToken production="c0kH5d4B9FbfJxSScry5EQ==" theRest="TODO"/>
     
     <RavenConnectionString 
       dev="Url = http://dev-raven.errordite.com;user=errordite_raven;password=Err0rD1t3_RVN$" 

@@ -18,5 +18,40 @@ namespace CodeTrip.Core.Extensions
         {
             return instance.GetType().GetProperty(propertyName).GetValue(instance, null);
         }
+
+        public static void SetPrimitiveToString<T>(this T component, string propertyName, string stringValue)
+        {
+            var property = component.GetType().GetProperty(propertyName);
+
+            if (TrySetProperty(property, component, stringValue, int.Parse))
+                return;
+            if (TrySetProperty(property, component, stringValue, long.Parse))
+                return;
+            if (TrySetProperty(property, component, stringValue, decimal.Parse))
+                return;
+            if (TrySetProperty(property, component, stringValue, DateTime.Parse))
+                return;
+            if (TrySetProperty(property, component, stringValue, bool.Parse))
+                return;
+            if (property.PropertyType == typeof(string))
+            {
+                property.SetValue(component, stringValue, null);
+                return;
+            }
+        }
+
+        private static bool TrySetProperty<T>(PropertyInfo property, object component, string overrideValue, Func<string, T> map)
+            where T : struct
+        {
+            if (!property.PropertyType.IsIn(typeof(T), typeof(T?)))
+                return false;
+
+            if (overrideValue.IsNullOrEmpty() && property.PropertyType == typeof(T?))
+                property.SetValue(component, null, null);
+            else
+                property.SetValue(component, map(overrideValue), null);
+
+            return true;
+        }
     }
 }

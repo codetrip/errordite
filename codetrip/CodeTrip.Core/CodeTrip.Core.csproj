@@ -193,6 +193,7 @@
     <Compile Include="Exceptions\CodeTripValidationException.cs" />
     <Compile Include="Exceptions\CodeTripRedisConnectivityException.cs" />
     <Compile Include="Extensions\AssemblyExtensions.cs" />
+    <Compile Include="Misc\ErrorditeClientOverrideHelper.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\PageExtensions.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
