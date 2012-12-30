@@ -37,6 +37,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CodeTrip.Core">
+      <HintPath>..\..\lib\Errordite\Debug\CodeTrip.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Errordite.Client.Mvc4, Version=1.3.0.0, Culture=neutral, PublicKeyToken=0c2d28c225f773ee, processorArchitecture=MSIL">
       <HintPath>..\packages\Errordite.Client.Mvc4.1.3.13.2\lib\net40\Errordite.Client.Mvc4.dll</HintPath>
     </Reference>
