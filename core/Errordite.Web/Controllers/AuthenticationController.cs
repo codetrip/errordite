@@ -39,9 +39,14 @@ namespace Errordite.Web.Controllers
             return Redirect(Url.Home());
         }
 
-        [HttpGet, ImportViewData]
+        [HttpGet, ImportViewData, ExportViewData]
         public ActionResult Password(string token)
         {
+            if (AppContext.AuthenticationStatus != AuthenticationStatus.Anonymous)
+            {
+                ErrorNotification("You are already logged in to Errordite.  To use this invitation please log out first then click on the link in the email again.");
+                return Redirect(Url.Dashboard());
+            }
             return View(ViewData.Model == null ? new PasswordViewModel { Token = token } : ViewData.Model as PasswordViewModel);
         }
 
