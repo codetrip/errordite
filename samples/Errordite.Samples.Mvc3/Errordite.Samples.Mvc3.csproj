@@ -47,11 +47,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CodeTrip.Core">
+      <HintPath>..\..\lib\Errordite\Debug\CodeTrip.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Errordite.Client.Log4net">
       <HintPath>..\packages\Errordite.Client.Log4net.1.2.12.2\lib\net40\Errordite.Client.Log4net.dll</HintPath>
     </Reference>
-    <Reference Include="Errordite.Client.Mvc3">
-      <HintPath>..\packages\Errordite.Client.Mvc3.1.2.12.2\lib\net40\Errordite.Client.Mvc3.dll</HintPath>
+    <Reference Include="Errordite.Client.Mvc3, Version=1.3.0.0, Culture=neutral, PublicKeyToken=0c2d28c225f773ee, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Errordite.Client.Mvc3.1.3.13.2\lib\net40\Errordite.Client.Mvc3.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

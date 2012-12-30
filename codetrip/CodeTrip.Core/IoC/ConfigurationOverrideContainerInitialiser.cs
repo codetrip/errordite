@@ -52,43 +52,8 @@ namespace CodeTrip.Core.IoC
                 string propertyName = configObjectElement.SafeAttributeValue("Name");
                 string propertyValue = configObjectElement.SafeAttributeValue("Value");
 
-                if (propertyName.IsNullOrEmpty() || propertyValue.IsNullOrEmpty())
-                    continue;
-
-                var property = component.GetType().GetProperty(propertyName);
-
-                if (TrySetProperty(property, component, propertyValue, int.Parse))
-                    continue;
-                if (TrySetProperty(property, component, propertyValue, long.Parse))
-                    continue;
-                if (TrySetProperty(property, component, propertyValue, decimal.Parse))
-                    continue;
-                if (TrySetProperty(property, component, propertyValue, DateTime.Parse))
-                    continue;
-                if (TrySetProperty(property, component, propertyValue, bool.Parse))                   
-                    continue;
-                if (property.PropertyType == typeof(string))
-                {
-                    property.SetValue(component, propertyValue, null);
-                    continue;
-                }
+                component.SetPrimitiveToString(propertyName, propertyValue);
             }
-        }
-
-
-
-        private static bool TrySetProperty<T>(PropertyInfo property, object component, string overrideValue, Func<string, T> map) 
-            where T : struct 
-        {
-            if (!property.PropertyType.IsIn(typeof(T), typeof(T?)))
-                return false;
-
-            if (overrideValue.IsNullOrEmpty() && property.PropertyType == typeof(T?))
-                property.SetValue(component, null, null);
-            else
-                property.SetValue(component, map(overrideValue), null);
-
-            return true;
         }
     }
 }
