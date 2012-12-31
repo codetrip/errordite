@@ -104,6 +104,12 @@ namespace Errordite.Core.Session
             where T1 : AbstractIndexCreationTask, new()
             where T2 : AbstractIndexCreationTask, new()
             where T3 : AbstractIndexCreationTask, new();
+
+        /// <summary>
+        /// For use when you temporarily want read-only access to an org db other than your own.
+        /// Note this only switches the db, not any other per-org things (e.g. reception service web api endpoint)
+        /// </summary>
+        IDisposable SwitchOrg(Organisation organisation);
     }
 
     public class AppSession : IAppSession
@@ -119,6 +125,7 @@ namespace Errordite.Core.Session
         private HttpClient _receptionServiceHttpClient;
         private string _organisationDatabaseId;
         private IDocumentSession _organisationSession;
+        private bool _orgSwitched;
 
         public AppSession(IDocumentStore documentStore, IBus bus, IRedisSession redisSession, ErrorditeConfiguration config, IComponentAuditor auditor)
         {
@@ -228,13 +235,15 @@ namespace Errordite.Core.Session
                     _session.SaveChanges();
                 if (_organisationSession != null)
                     _organisationSession.SaveChanges();
-
+            
                 foreach (var sessionCommitAction in _sessionCommitActions)
                     sessionCommitAction.Execute(this);
 
                 _sessionCommitActions.Clear();
             }
         }
+
+        
 
         public void AddCommitAction(SessionCommitAction sessionCommitAction)
         {
@@ -247,6 +256,40 @@ namespace Errordite.Core.Session
         }
 
         public int RequestLimit { get; set; }
+
+        public IDisposable SwitchOrg(Organisation organisation)
+        {
+            return new SwitchOrgBack(this, organisation);
+        }
+
+        private class SwitchOrgBack : IDisposable
+        {
+            private IDocumentSession _oldSession;
+            private string _oldDbId;
+            private AppSession _appSession;
+
+            public SwitchOrgBack(AppSession appSession, Organisation tempOrg)
+            {
+                _oldSession = appSession._organisationSession;
+                _oldDbId = appSession._organisationDatabaseId;
+                appSession._organisationSession = null;
+                appSession._organisationDatabaseId = null;
+
+                appSession.SetDbId(tempOrg);
+                appSession._orgSwitched = true;
+
+                _appSession = appSession;
+            }
+
+            public void Dispose()
+            {
+                //temp session does not get committed - just disposed.  If / when we need r/w access we'll have to change this.
+                if (_appSession._organisationSession != null)
+                    _appSession._organisationSession.Dispose();
+                _appSession._organisationSession = _oldSession;
+                _appSession._organisationDatabaseId = _oldDbId;
+            }
+        }
 
         public void SetOrganisation(Organisation organisation)
         {
@@ -296,8 +339,12 @@ namespace Errordite.Core.Session
 
         private void SetDbId(Organisation organisation)
         {
-            _organisationDatabaseId = IdHelper.GetFriendlyId(organisation.OrganisationId);
-            _auditor.Trace(GetType(), "Set organisation id to {0}", _organisationDatabaseId);
+            if (_organisationSession == null)
+            {
+                _organisationDatabaseId = IdHelper.GetFriendlyId(organisation.OrganisationId);
+                _auditor.Trace(GetType(), "Set organisation id to {0}", _organisationDatabaseId);    
+            }
+            
         }
 
         public void BootstrapOrganisation(Organisation organisation)

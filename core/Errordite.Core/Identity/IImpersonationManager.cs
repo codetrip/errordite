@@ -44,5 +44,7 @@ namespace Errordite.Core.Identity
         /// When the impersonation expires.
         /// </summary>
         public DateTime? ExpiryUtc { get; set; }
+
+        public string EmailAddress { get; set; }
     }
 }

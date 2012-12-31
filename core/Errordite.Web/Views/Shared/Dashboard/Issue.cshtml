@@ -3,31 +3,31 @@
 
 <div class="boxed-item issue" style="display:none">
 	<div class="item-bar">&nbsp;</div>	
-	<div class="item-content">
-		<div class="item-info heading full">
-			Name
-		</div>
-		<div class="item-info full" style="margin-bottom:5px;">
-			<a href="@Url.Issue(Model.IssueId)">@Model.Name</a>
-		</div>
-		<div class="item-info heading">
-			Status
-		</div>
+    <div class="item-content">
+        <div class="item-info heading full">
+            Name
+        </div>
+        <div class="item-info full" style="margin-bottom:5px;">
+            <a href="@Url.Issue(Model.IssueId)">@Model.Name (#@Model.IssueId)</a>
+        </div>
+        <div class="item-info heading">
+            Status
+        </div>
         <div class="item-info heading divider">
-			Assigned To
-		</div>
+            Assigned To
+        </div>
         <div class="item-info heading divider short">
-			Errors
-		</div>
-		<div class="item-info">
-		    @Model.Status
-		</div>
-		<div class="item-info divider">
-		    @Model.UserName
-		</div>
-		<div class="item-info divider short">
-			@Model.ErrorCount
-		</div>
-	</div>
+            Errors
+        </div>
+        <div class="item-info">
+            @Model.Status
+        </div>
+        <div class="item-info divider">
+            @Model.UserName
+        </div>
+        <div class="item-info divider short">
+            @Model.ErrorCount
+        </div>
+    </div>
 </div>
         

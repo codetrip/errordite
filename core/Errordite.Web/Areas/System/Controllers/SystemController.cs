@@ -23,7 +23,7 @@ using Raven.Abstractions.Linq;
 namespace Errordite.Web.Areas.System.Controllers
 {
     [Authorize, RoleAuthorize]
-    public class SystemController : ErrorditeController
+    public class SystemController : AdminControllerBase
     {
         private readonly IAppSession _session;
         private readonly IDeleteApplicationCommand _deleteApplicationCommand;
@@ -232,11 +232,6 @@ namespace Errordite.Web.Areas.System.Controllers
             }
 
             return new EmptyResult();
-        }
-
-        public ActionResult Throw()
-        {
-            throw new Exception("");
         }
     }
 }

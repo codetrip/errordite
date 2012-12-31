@@ -40,13 +40,13 @@
 	<div class="issue-title-container">
 		<div class="centered">
 			<span class="title">
-				@Model.Details.Name @(Model.Details.TestIssue ? "(TEST)" : string.Empty)
+				@Model.Details.Name @(Model.Details.TestIssue ? "(TEST)" : string.Empty) (Issue #@Model.Details.IssueId)
 			</span>
 			<span class="details">
 				<span id="instance-count" class="bold">
 					@Model.Details.ErrorCount
 				</span> 
-				error@(Model.Details.ErrorCount == 1 ? "" : "s"), most recent received at 
+				error@(Model.Details.ErrorCount == 1 ? "" : "s") | Last:
 				<span class="bold">
 					@Model.Details.LastErrorUtc.ToLocalTimeFormatted()
 				</span>
