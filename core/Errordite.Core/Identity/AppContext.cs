@@ -29,7 +29,7 @@ namespace Errordite.Core.Identity
         public User CurrentUser { get; set; }
         public AuthenticationStatus AuthenticationStatus { get; set; }
         public IAuthenticationManager Authentication { get; set; }
-        public AppContext ImpersonatorAppContext { get; set; }
+        public bool Impersonated { get; set; }
 
         public static void AddToHttpContext(AppContext context)
         {

@@ -240,6 +240,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Shared.resx</DependentUpon>
     </Compile>
+    <Compile Include="Areas\System\Controllers\AdminControllerBase.cs" />
     <Compile Include="Areas\System\SysAdminAreaRegistration.cs" />
     <Compile Include="Areas\System\Controllers\SystemController.cs" />
     <Compile Include="Areas\System\Models\Organisations\SuspendOrganisationViewModel.cs" />

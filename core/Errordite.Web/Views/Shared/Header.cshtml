@@ -21,7 +21,18 @@
             }
             else
             {
-                @: Welcome to Errordite <strong>@appContext.CurrentUser.FirstName </strong> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.YourDetails()">Your Details</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.SignOut()">Sign Out</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.Contact()">Contact Us</a>
+                <text>
+                    Welcome to Errordite <strong>
+                                             @appContext.CurrentUser.FirstName
+                                             @if (appContext.Impersonated)
+                                             {
+                                             <a href="@Url.Impersonate()">(IMPERSONATED)</a>
+                                             }
+                                         </strong>
+                
+            &nbsp;&nbsp;|&nbsp;&nbsp; 
+            <a href="@Url.YourDetails()">Your Details</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.SignOut()">Sign Out</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.Contact()">Contact Us</a>
+            </text> 
             }
         </nav>
     </div>
@@ -42,9 +53,9 @@
             }
         </div>
         <nav>
-            <div class="@(appContext.CurrentUser.Role == UserRole.SuperUser ? "nav-container-system" : "nav-container")">
+            <div class="@(appContext.CurrentUser.Role == UserRole.SuperUser || appContext.Impersonated ? "nav-container-system" : "nav-container")">
                 <ul class="nav">
-                    @if (appContext.AuthenticationStatus == AuthenticationStatus.Authenticated && (appContext.CurrentUser.Role == UserRole.SuperUser || appContext.ImpersonatorAppContext != null))
+                    @if (appContext.AuthenticationStatus == AuthenticationStatus.Authenticated && (appContext.CurrentUser.Role == UserRole.SuperUser || appContext.Impersonated))
                     {
                         <li class="nav-item sysadmin">
                             <a href="@Url.SysAdmin()">System <span class="rotate">›</span></a>

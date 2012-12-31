@@ -20,17 +20,15 @@ namespace Errordite.Core.Identity
         private readonly IAuthenticationManager _authenticationManager;
         private readonly IGetUserQuery _getUserQuery;
         private readonly IImpersonationManager _impersonationManager;
-        private readonly IAppSession _appSession;
-        private readonly IGetOrganisationQuery _getOrganisationQuery;
+        private readonly IAppSession _session;
         private readonly IGetOrganisationByEmailAddressCommand _getOrganisationByEmailAddressCommand;
 
-        public AppContextFactory(IAuthenticationManager authenticationManager, IGetUserQuery getUserQuery, IAppSession appSession, IGetOrganisationQuery getOrganisationQuery, IGetOrganisationByEmailAddressCommand getOrganisationByEmailAddressCommand)
+        public AppContextFactory(IAuthenticationManager authenticationManager, IGetUserQuery getUserQuery, IGetOrganisationByEmailAddressCommand getOrganisationByEmailAddressCommand, IAppSession session)
         {
             _authenticationManager = authenticationManager;
             _getUserQuery = getUserQuery;
-            _appSession = appSession;
-            _getOrganisationQuery = getOrganisationQuery;
             _getOrganisationByEmailAddressCommand = getOrganisationByEmailAddressCommand;
+            _session = session;
             _impersonationManager = this;
         }
 
@@ -42,25 +40,33 @@ namespace Errordite.Core.Identity
 
                 if (appContext == null)
                 {
-                    AuthenticationIdentity currentAuthenticationIdentity = _authenticationManager.GetCurrentUser();
-
-                    appContext = currentAuthenticationIdentity.HasUserProfile ?
-                        CreateKnownUser(currentAuthenticationIdentity) :
-                        CreateAnonymousUser(currentAuthenticationIdentity);
-
                     var impersonationStatus = _impersonationManager.CurrentStatus;
 
+                    //GT: ideally we'd like to have a record of *who* is impersonating, but this would
+                    //    mean loading the impersonating user, which would mean we'd need to set the 
+                    //    org on the session twice, which kind of breaks the security model.
+                    //    If we really wanted this information, we could set it into the ImpersonationStatus
+                    //    when starting the impersonation
                     if (impersonationStatus.Impersonating)
                     {
                         var impersonatedIdentity = new AuthenticationIdentity
                         {
                             HasUserProfile = true,
                             UserId = impersonationStatus.UserId,
-                            OrganisationId = impersonationStatus.OrganisationId
+                            OrganisationId = impersonationStatus.OrganisationId,
+                            Email = impersonationStatus.EmailAddress,
                         };
-                        var impersonatorAppContext = appContext;
+                        
                         appContext = CreateKnownUser(impersonatedIdentity);
-                        appContext.ImpersonatorAppContext = impersonatorAppContext;
+                        appContext.Impersonated = true;
+                    }
+                    else
+                    {
+                        AuthenticationIdentity currentAuthenticationIdentity = _authenticationManager.GetCurrentUser();
+
+                        appContext = currentAuthenticationIdentity.HasUserProfile ?
+                            CreateKnownUser(currentAuthenticationIdentity) :
+                            CreateAnonymousUser(currentAuthenticationIdentity);    
                     }
 
                     AppContext.AddToHttpContext(appContext);
@@ -88,6 +94,7 @@ namespace Errordite.Core.Identity
             User user = null;
             if (organisation != null)
             {
+                _session.SetOrganisation(organisation);
                 user = _getUserQuery.Invoke(new GetUserRequest
                 {
                     OrganisationId = organisation.Id, 

@@ -4,13 +4,12 @@ using CodeTrip.Core.Extensions;
 using Errordite.Core.Identity;
 using Errordite.Core.Users.Queries;
 using Errordite.Web.ActionFilters;
-using Errordite.Web.Controllers;
 using Errordite.Web.Models.Navigation;
 
 namespace Errordite.Web.Areas.System.Controllers
 {
     [Authorize, RoleAuthorize]
-    public class ImpersonationController : ErrorditeController
+    public class ImpersonationController : AdminControllerBase
     {
         private readonly IImpersonationManager _impersonationManager;
         private readonly IGetUserQuery _getUserQuery;
@@ -39,17 +38,22 @@ namespace Errordite.Web.Areas.System.Controllers
         {
             if (status.Impersonating)
             {
-                var user = _getUserQuery.Invoke(new GetUserRequest
+                using (SwitchOrgScope(status.OrganisationId))
                 {
-                    UserId = status.UserId,
-                    OrganisationId = status.OrganisationId
-                }).User;
+                    var user = _getUserQuery.Invoke(new GetUserRequest
+                        {
+                            UserId = status.UserId,
+                            OrganisationId = status.OrganisationId
+                        }).User;
 
-                if (user == null)
-                    return RedirectWithViewModel(status, "index", "Failed to find user with Id {0}".FormatWith(status.UserId));
+                    if (user == null)
+                        return RedirectWithViewModel(status, "index",
+                                                     "Failed to find user with Id {0}".FormatWith(status.UserId));
 
-                status.ExpiryUtc = DateTime.Now.AddMinutes(30);
-                _impersonationManager.Impersonate(status);
+                    status.ExpiryUtc = DateTime.Now.AddMinutes(30);
+                    status.EmailAddress = user.Email;
+                    _impersonationManager.Impersonate(status);
+                }
             }
             else
             {

@@ -26,7 +26,7 @@ namespace Errordite.Web.ActionFilters
         {
             AppContext appContext = ObjectFactory.GetObject<AppContext>();
 
-            if (appContext.ImpersonatorAppContext != null)
+            if (appContext.Impersonated)
                 return;
 
             if (appContext.CurrentUser == null || !IsUserInRole(appContext.CurrentUser.Role))

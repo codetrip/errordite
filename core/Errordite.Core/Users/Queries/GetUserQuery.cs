@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Castle.Core;
 using CodeTrip.Core;
 using CodeTrip.Core.Caching.Entities;
@@ -13,6 +14,7 @@ using Errordite.Core.Organisations.Queries;
 using System.Linq;
 using ProtoBuf;
 using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
+using CodeTrip.Core.Extensions;
 
 namespace Errordite.Core.Users.Queries
 {
@@ -42,6 +44,12 @@ namespace Errordite.Core.Users.Queries
 
             if (user != null)
             {
+                if (user.OrganisationId != Organisation.GetId(request.OrganisationId))
+                {
+                    throw new UnexpectedOrganisationIdException(user.OrganisationId,
+                                                                Organisation.GetId(request.OrganisationId));
+                }
+
                 user.Organisation = _getOrganisationQuery.Invoke(new GetOrganisationRequest { OrganisationId = user.OrganisationId }).Organisation;
 
                 if(user.GroupIds != null && user.GroupIds.Count > 0)
@@ -65,6 +73,15 @@ namespace Errordite.Core.Users.Queries
             {
                 User = user
             };
+        }
+    }
+
+    public class UnexpectedOrganisationIdException : Exception
+    {
+        public UnexpectedOrganisationIdException(string organisationId, string expectedId)
+            :base("Loaded entity from org {0} but expected to be from {1}".FormatWith(organisationId, expectedId))
+        {
+            
         }
     }
 
