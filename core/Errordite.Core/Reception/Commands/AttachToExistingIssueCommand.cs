@@ -53,7 +53,7 @@ namespace Errordite.Core.Reception.Commands
 			{
 				issueDailyCount = new IssueDailyCount
 				{
-					Id = "IssueDailyCount/{0}-{1}".FormatWith(issue.FriendlyId, issue.CreatedOnUtc.ToString("yyyy-MM-dd")),
+					Id = "IssueDailyCount/{0}-{1}".FormatWith(issue.FriendlyId, request.Error.TimestampUtc.ToString("yyyy-MM-dd")),
 					IssueId = issue.Id,
 					Count = 1,
                     Date = issue.CreatedOnUtc.Date,
