@@ -112,6 +112,7 @@
     <Compile Include="IntegrationTests\ReceptionTests.cs" />
     <Compile Include="Json\SerialisationTests.cs" />
     <Compile Include="Misc\EncryptorTests.cs" />
+    <Compile Include="Misc\RateLimiterTests.cs" />
     <Compile Include="Mocks\MockServiceBus.cs" />
     <Compile Include="Raven\HttpRavenTestHarness.cs" />
     <Compile Include="Raven\RavenTestHarness.cs" />
