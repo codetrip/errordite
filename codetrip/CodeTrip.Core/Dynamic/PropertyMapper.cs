@@ -27,7 +27,7 @@ namespace CodeTrip.Core.Dynamic
     /// </summary>
     public static class PropertyMapper<TSource, TDestination> 
     {
-        private const string DynamicNamespace = "ProductionProfiler.Core.Dynamic";
+        private const string DynamicNamespace = "CodeTrip.Core.Dynamic";
         private const bool KeepTempFiles = true;
         private static readonly string DynamicClassName = "IdenticalPropertySetter_" + Guid.NewGuid().ToString().Replace("-", string.Empty);
 

@@ -44,7 +44,7 @@ namespace Errordite.Core.Session
 
         public override void Execute(IAppSession session)
         {
-            var issues = _issues.Select(i => i.ToIssueBase());
+            var issues = _issues.Select(i => i.ToIssueBase()).ToList(); //need to materialise this at IEnumerable as otherwise the dynamic property setter on the other side fails due to HttpContext.Current being null - didn't expect that one did you?!
             session.ReceptionServiceHttpClient.PutJsonAsync("issue", issues);
         }
     }
