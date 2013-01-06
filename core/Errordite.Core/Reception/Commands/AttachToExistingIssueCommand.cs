@@ -47,7 +47,7 @@ namespace Errordite.Core.Reception.Commands
 			if (request.Error.TimestampUtc > issue.LastErrorUtc)
 				issue.LastErrorUtc = request.Error.TimestampUtc;
 
-	        var issueDailyCount = Load<IssueDailyCount>("IssueDailyCount/{0}-{1}".FormatWith(issue.FriendlyId, issue.CreatedOnUtc.ToString("yyyy-MM-dd")));
+	        var issueDailyCount = Load<IssueDailyCount>("IssueDailyCount/{0}-{1}".FormatWith(issue.FriendlyId, request.Error.TimestampUtc.ToString("yyyy-MM-dd")));
 
 			if (issueDailyCount == null)
 			{
