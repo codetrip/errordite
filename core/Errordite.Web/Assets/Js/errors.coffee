@@ -35,8 +35,7 @@ jQuery ->
 					.bind 'click', () -> 
 						Errordite.ruleManager.removeRule $ruleMatch.data 'ruleId'
 						$(this).hide()
-					.attr('data-title', "Click to remove Rule: '#{$ruleMatch.attr('data-title')}'")
-					.tooltip()
+					.attr('title', "Click to remove Rule: '#{$ruleMatch.attr('title')}'")					
 
 			$('body').on 'changedrule', (e, rule) -> 
 				error.visualiseRules() for error in openedErrors
@@ -53,8 +52,7 @@ jQuery ->
 				if $match.hasClass 'rule-match'
 					$match.addClass('old-rule-match')
 						.removeClass('rule-match')
-						.attr('data-title', 'REMOVED: ' + $match.attr 'title')	
-						.tooltip();												
+						.attr('title', 'REMOVED: ' + $match.attr 'title')							
 				else					
 					$match.replaceWith $match.text()
 
@@ -96,11 +94,10 @@ jQuery ->
 							"""
 							$1<span data-rule-id='#{matchInfo.rule.counter}' 
 							class='ruletip #{if matchInfo.rule.status == 'new' then 'new-' else ''}rule-match' 
-							data-title='#{matchInfo.rule.description()}'>$2</span>$3
+							title='#{matchInfo.rule.description()}'>$2</span>$3
 							""") 
 					prevMatchInfo = matchInfo					
 				
-				$('span.ruletip').tooltip();	
 				this.$propEl.find('.prop-val').html(visualisedHtml)
 
 			getMatchInfos: (rule) ->
@@ -171,10 +168,7 @@ jQuery ->
 
 							return if propVal.trim? and not propVal.trim()
 
-							$buttons = $('<span class="rule-controls"/>')
-								.css(
-									display: 'inline')
-								.hide()
+							$buttons = $('<span class="rule-controls hide"/>')																
 
 							$button = $('<button/>')
 								.addClass('btn')
@@ -192,13 +186,23 @@ jQuery ->
 							$buttons.append $button, $removeButton
 							
 							$errorAttr.on 'mouseenter', () -> 
-								$buttons.show()
+								$buttons.removeClass 'hide'
+																	
 							$errorAttr.on 'mouseleave', () -> 
-								$buttons.hide()
-							
+								$buttons.addClass 'hide'	
+								$errorAttr.unbind 'mousemove'						
+
 							$textSpan =  $('<span/>').addClass('prop-val').text(propVal)
 							$errorAttr.html $textSpan
 							$errorAttr.append $buttons
+										
+							if $errorAttr.data('error-attr') == 'StackTrace'	
+								$buttons.css
+									position: 'absolute'
+								$errorAttr.on 'click', (e) -> 
+									$buttons.css 
+										top: e.offsetY
+										left: e.offsetX		
 
 							getRule = () -> 
 								rule = new Errordite.Rule()
@@ -250,10 +254,9 @@ jQuery ->
 							$button.on 'mouseenter', () -> 
 								rule = getRule()
 								$this = $ this
-								$this.attr 'data-title', "Click to add rule: '#{rule.description()}'"
-								$this.tooltip();
+								$this.attr 'title', "Click to add rule: '#{rule.description()}'"
 
-							$button.on 'click', () ->							
+							$button.on 'click', (e) ->							
 								rule = getRule()
 
 								newRule = Errordite.ruleManager.addRule rule.prop,
@@ -262,6 +265,7 @@ jQuery ->
 
 								errorProp = new ErrorProp ($button.closest('[data-error-attr]'))
 								errorProp.visualiseRules()
+								e.stopPropagation()
 						
 						this.visualiseRules()
 
