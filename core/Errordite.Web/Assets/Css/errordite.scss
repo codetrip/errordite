@@ -1851,6 +1851,7 @@ nav {
 		padding:5px;
 		margin:10px 1px -1px 1px;
 		border:1px solid $tabbordercolor;
+		position: relative;
 	}
 
 	pre, code {
@@ -1880,7 +1881,7 @@ nav {
 	.old-rule-match {
 	  background-color: $mediumblue;
 	}
-
+	
 	.rule-controls {
 	  .btn-rule {
 		padding: 1px;
@@ -1890,11 +1891,16 @@ nav {
 		color: #fff;
 		padding: 2px 10px;
 		font-weight: $normalfontweight;
+		float: left;
 	  }
 	  position: absolute;
 	  padding: 3px 3px 3px 6px;
 	  display: inline;
 	  margin-top:-5px;
+	}
+
+	.rule-controls.hide{
+		display:none;
 	}
 
 	.error-stack .rule-controls {

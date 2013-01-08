@@ -1449,7 +1449,8 @@ nav {
   background-color: #FFFFCC;
   padding: 5px;
   margin: 10px 1px -1px 1px;
-  border: 1px solid #dee7ee; }
+  border: 1px solid #dee7ee;
+  position: relative; }
 .errors pre, .errors code {
   font-family: "Courier New", Courier;
   background-color: #ffffcc;
@@ -1478,7 +1479,10 @@ nav {
     font-size: 11px;
     color: #fff;
     padding: 2px 10px;
-    font-weight: 400; }
+    font-weight: 400;
+    float: left; }
+.errors .rule-controls.hide {
+  display: none; }
 .errors .error-stack .rule-controls {
   background-color: #FFC; }
 .errors .st-type, .errors .st-message {

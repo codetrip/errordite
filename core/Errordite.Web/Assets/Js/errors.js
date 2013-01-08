@@ -31,7 +31,7 @@
           return $ruleMatch.closest('.prop-val').parent().find('.remove-rule').show().unbind('click').bind('click', function() {
             Errordite.ruleManager.removeRule($ruleMatch.data('ruleId'));
             return $(this).hide();
-          }).attr('data-title', "Click to remove Rule: '" + ($ruleMatch.attr('data-title')) + "'").tooltip();
+          }).attr('title', "Click to remove Rule: '" + ($ruleMatch.attr('title')) + "'");
         });
         $('body').on('changedrule', function(e, rule) {
           var error, _i, _len, _results;
@@ -62,7 +62,7 @@
           match = _ref[_i];
           $match = $(match);
           if ($match.hasClass('rule-match')) {
-            _results.push($match.addClass('old-rule-match').removeClass('rule-match').attr('data-title', 'REMOVED: ' + $match.attr('title')).tooltip());
+            _results.push($match.addClass('old-rule-match').removeClass('rule-match').attr('title', 'REMOVED: ' + $match.attr('title')));
           } else {
             _results.push($match.replaceWith($match.text()));
           }
@@ -111,10 +111,9 @@
               length = prevMatchInfo.start - matchInfo.start;
             }
             regex = RegExp("^([\\S\\s]{" + matchInfo.start + "})([\\S\\s]{" + length + "})([\\S\\s]*)");
-            visualisedHtml = visualisedHtml.replace(regex, "$1<span data-rule-id='" + matchInfo.rule.counter + "' \nclass='ruletip " + (matchInfo.rule.status === 'new' ? 'new-' : '') + "rule-match' \ndata-title='" + (matchInfo.rule.description()) + "'>$2</span>$3");
+            visualisedHtml = visualisedHtml.replace(regex, "$1<span data-rule-id='" + matchInfo.rule.counter + "' \nclass='ruletip " + (matchInfo.rule.status === 'new' ? 'new-' : '') + "rule-match' \ntitle='" + (matchInfo.rule.description()) + "'>$2</span>$3");
             prevMatchInfo = matchInfo;
           }
-          $('span.ruletip').tooltip();
           return this.$propEl.find('.prop-val').html(visualisedHtml);
         };
 
@@ -220,21 +219,31 @@
                 if ((propVal.trim != null) && !propVal.trim()) {
                   return;
                 }
-                $buttons = $('<span class="rule-controls"/>').css({
-                  display: 'inline'
-                }).hide();
+                $buttons = $('<span class="rule-controls hide"/>');
                 $button = $('<button/>').addClass('btn').addClass('btn-rule').addClass('make-rule').text('Create Rule');
                 $removeButton = $('<button/>').addClass('btn').addClass('btn-rule').addClass('remove-rule').text('Remove Rule').hide();
                 $buttons.append($button, $removeButton);
                 $errorAttr.on('mouseenter', function() {
-                  return $buttons.show();
+                  return $buttons.removeClass('hide');
                 });
                 $errorAttr.on('mouseleave', function() {
-                  return $buttons.hide();
+                  $buttons.addClass('hide');
+                  return $errorAttr.unbind('mousemove');
                 });
                 $textSpan = $('<span/>').addClass('prop-val').text(propVal);
                 $errorAttr.html($textSpan);
                 $errorAttr.append($buttons);
+                if ($errorAttr.data('error-attr') === 'StackTrace') {
+                  $buttons.css({
+                    position: 'absolute'
+                  });
+                  $errorAttr.on('click', function(e) {
+                    return $buttons.css({
+                      top: e.offsetY,
+                      left: e.offsetX
+                    });
+                  });
+                }
                 getRule = function() {
                   var endTextRange, propValSpan, rangeComparison, rule, selectedRange, selection, startTextRange;
                   rule = new Errordite.Rule();
@@ -291,15 +300,15 @@
                   var $this, rule;
                   rule = getRule();
                   $this = $(this);
-                  $this.attr('data-title', "Click to add rule: '" + (rule.description()) + "'");
-                  return $this.tooltip();
+                  return $this.attr('title', "Click to add rule: '" + (rule.description()) + "'");
                 });
-                return $button.on('click', function() {
+                return $button.on('click', function(e) {
                   var errorProp, newRule, rule;
                   rule = getRule();
                   newRule = Errordite.ruleManager.addRule(rule.prop, rule.op, rule.val);
                   errorProp = new ErrorProp($button.closest('[data-error-attr]'));
-                  return errorProp.visualiseRules();
+                  errorProp.visualiseRules();
+                  return e.stopPropagation();
                 });
               });
               this.visualiseRules();
