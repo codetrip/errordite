@@ -22,17 +22,6 @@
         return e.preventDefault();
       });
       if ($('section#issue').length > 0) {
-        $root.delegate('.new-rule-match, .rule-match', 'click', function() {
-          var $ruleMatch;
-          $('.last-selected').removeClass('last-selected');
-          $('.remove-rule').hide();
-          $ruleMatch = $(this);
-          $ruleMatch.addClass('last-selected');
-          return $ruleMatch.closest('.prop-val').parent().find('.remove-rule').show().unbind('click').bind('click', function() {
-            Errordite.ruleManager.removeRule($ruleMatch.data('ruleId'));
-            return $(this).hide();
-          }).attr('title', "Click to remove Rule: '" + ($ruleMatch.attr('title')) + "'");
-        });
         $('body').on('changedrule', function(e, rule) {
           var error, _i, _len, _results;
           _results = [];
@@ -52,7 +41,7 @@
           return _results;
         });
       }
-      $('body').on('remove', 'tr.rule', function() {
+      $('body').on('remove', 'tr.rule', function(e) {
         var $match, $tr, id, match, _i, _len, _ref, _results;
         $tr = $(this);
         id = $tr.data('counter');
@@ -76,9 +65,30 @@
       ErrorProp = (function() {
 
         function ErrorProp($propEl) {
+          var _this = this;
           this.$propEl = $propEl;
           this.propName = $propEl.data('error-attr');
+          this.$propEl.delegate('.new-rule-match, .rule-match', 'click', function(e) {
+            var $ruleMatch;
+            $('.last-selected').removeClass('last-selected');
+            $('.remove-rule').hide();
+            $ruleMatch = $(e.currentTarget);
+            _this.selectRule($ruleMatch.data('rule-id'));
+            return e.doNotUnselect = true;
+          });
         }
+
+        ErrorProp.prototype.selectRule = function(ruleId) {
+          var $ruleMatches;
+          $ruleMatches = this.$propEl.find('.new-rule-match, .rule-match').filter("[data-rule-id=" + ruleId + "]");
+          $ruleMatches.addClass('last-selected');
+          return this.$propEl.find('.remove-rule').show().unbind('click').bind('click', function(e) {
+            Errordite.ruleManager.removeRule(ruleId);
+            $(this).closest('.rule-controls').addClass('hide');
+            $(this).hide();
+            return e.stopPropagation();
+          }).attr('title', "Click to remove Rule: '" + ($ruleMatches.attr('title')) + "'");
+        };
 
         ErrorProp.prototype.visualiseRules = function() {
           var length, matchInfo, matchInfos, prevMatchInfo, propValText, regex, rule, visualisedHtml, _i, _len;
@@ -198,6 +208,24 @@
           return _results;
         };
 
+        Error.prototype.getControls = function() {
+          /*
+          				The result of this is like <div class=rule-controls><div class=buttons>buttons</div><div>&nbsp;</div></div>
+          				The purpose of the div with just a space is to allow us to have some space between the cursor and the controls
+          				panel but without having the mouseleave event trigger if we are at the top of the stack trace area.s
+          */
+
+          var $button, $buttons, $removeButton;
+          $button = $('<button/>').addClass('btn').addClass('btn-rule').addClass('make-rule').text('Create Rule');
+          $removeButton = $('<button/>').addClass('btn').addClass('btn-rule').addClass('remove-rule').text('Remove Rule').hide();
+          $buttons = $('<div/>').addClass('rule-controls').addClass('hide').append($('<div/>').addClass('buttons').append($button, $removeButton), $('<div/>').html('&nbsp;'));
+          return {
+            $button: $button,
+            $removeButton: $removeButton,
+            $buttons: $buttons
+          };
+        };
+
         Error.prototype.toggle = function() {
           var $details, $error, error;
           error = this;
@@ -213,18 +241,20 @@
               openedErrors.push(this);
               $error.data('rules-visualised', true);
               $details.find('[data-error-attr]').each(function() {
-                var $button, $buttons, $errorAttr, $removeButton, $textSpan, getRule, propVal;
+                var $button, $buttons, $errorAttr, $textSpan, addOffset, controls, getRule, isMultiLine, propVal;
                 $errorAttr = $(this);
+                isMultiLine = $errorAttr.data('error-attr') === 'StackTrace';
                 propVal = $errorAttr.text();
                 if ((propVal.trim != null) && !propVal.trim()) {
                   return;
                 }
-                $buttons = $('<span class="rule-controls hide"/>');
-                $button = $('<button/>').addClass('btn').addClass('btn-rule').addClass('make-rule').text('Create Rule');
-                $removeButton = $('<button/>').addClass('btn').addClass('btn-rule').addClass('remove-rule').text('Remove Rule').hide();
-                $buttons.append($button, $removeButton);
+                controls = error.getControls();
+                $button = controls.$button;
+                $buttons = controls.$buttons;
                 $errorAttr.on('mouseenter', function() {
-                  return $buttons.removeClass('hide');
+                  if (!isMultiLine) {
+                    return $buttons.removeClass('hide');
+                  }
                 });
                 $errorAttr.on('mouseleave', function() {
                   $buttons.addClass('hide');
@@ -233,17 +263,33 @@
                 $textSpan = $('<span/>').addClass('prop-val').text(propVal);
                 $errorAttr.html($textSpan);
                 $errorAttr.append($buttons);
-                if ($errorAttr.data('error-attr') === 'StackTrace') {
+                $errorAttr.on('click', function(e) {
+                  if (!e.doNotUnselect) {
+                    return $('.last-selected').removeClass('last-selected');
+                  }
+                });
+                if (isMultiLine) {
                   $buttons.css({
                     position: 'absolute'
                   });
                   $errorAttr.on('click', function(e) {
+                    addOffset(e);
+                    $buttons.removeClass('hide');
+                    $buttons.addClass('floating');
                     return $buttons.css({
                       top: e.offsetY,
-                      left: e.offsetX
+                      left: e.offsetX - 48
                     });
                   });
                 }
+                addOffset = function(event) {
+                  var element;
+                  element = event.currentTarget;
+                  if (!event.offsetX) {
+                    event.offsetX = event.pageX - $(element).offset().left;
+                    return event.offsetY = event.pageY - $(element).offset().top;
+                  }
+                };
                 getRule = function() {
                   var endTextRange, propValSpan, rangeComparison, rule, selectedRange, selection, startTextRange;
                   rule = new Errordite.Rule();
@@ -255,7 +301,7 @@
 
                   if (!(window.getSelection != null)) {
                     rule.op = 'Equals';
-                    return rule.val = propVal;
+                    rule.val = propVal;
                   } else {
                     selection = window.getSelection();
                     selectedRange = selection.getRangeAt(0);
@@ -293,8 +339,8 @@
                         }
                       }
                     }
-                    return rule;
                   }
+                  return rule;
                 };
                 $button.on('mouseenter', function() {
                   var $this, rule;
@@ -308,7 +354,11 @@
                   newRule = Errordite.ruleManager.addRule(rule.prop, rule.op, rule.val);
                   errorProp = new ErrorProp($button.closest('[data-error-attr]'));
                   errorProp.visualiseRules();
-                  return e.stopPropagation();
+                  e.stopPropagation();
+                  errorProp.selectRule(newRule.counter);
+                  if (document.selection) {
+                    return document.selection.empty();
+                  }
                 });
               });
               this.visualiseRules();
