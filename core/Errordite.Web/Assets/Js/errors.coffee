@@ -24,29 +24,16 @@ jQuery ->
 		)
 
 		if $('section#issue').length > 0
-			$root.delegate '.new-rule-match, .rule-match', 'click', () ->				
-				$('.last-selected').removeClass 'last-selected'
-				$('.remove-rule').hide()
-				$ruleMatch = $ this
-				$ruleMatch.addClass 'last-selected'			
-				$ruleMatch.closest('.prop-val').parent().find('.remove-rule')
-					.show()
-					.unbind('click')
-					.bind 'click', () -> 
-						Errordite.ruleManager.removeRule $ruleMatch.data 'ruleId'
-						$(this).hide()
-					.attr('title', "Click to remove Rule: '#{$ruleMatch.attr('title')}'")					
-
 			$('body').on 'changedrule', (e, rule) -> 
 				error.visualiseRules() for error in openedErrors
 			$('body').on 'ruleadded', ->
 				error.visualiseRules() for error in openedErrors	
 
-		$('body').on 'remove', 'tr.rule', () ->
+		$('body').on 'remove', 'tr.rule', (e) ->
 			$tr = $ this
 			id = $tr.data 'counter'
-			#if removing the rule means that the visualisation can now be better, it won't be happen because we're just
-			#dealing with the one rule that was removed...
+			#even if removing the rule means that the visualisation can now be better, it be made better because we're just
+			#dealing with the rule that was removed...
 			for match in $ "[data-rule-id=#{id}]"
 				$match = $ match
 				if $match.hasClass 'rule-match'
@@ -63,6 +50,26 @@ jQuery ->
 			constructor: ($propEl) ->
 				this.$propEl = $propEl
 				this.propName = $propEl.data 'error-attr'
+				this.$propEl.delegate '.new-rule-match, .rule-match', 'click', (e) =>				
+					$('.last-selected').removeClass 'last-selected'
+					$('.remove-rule').hide()
+					$ruleMatch = $ e.currentTarget
+					this.selectRule $ruleMatch.data('rule-id')
+					e.doNotUnselect = true
+
+			selectRule: (ruleId) -> 
+				$ruleMatches = this.$propEl.find('.new-rule-match, .rule-match').filter("[data-rule-id=#{ruleId}]")
+				$ruleMatches.addClass 'last-selected'
+				#$ruleMatch.addClass 'last-selected'
+				this.$propEl.find('.remove-rule')	
+					.show()
+					.unbind('click')
+					.bind 'click', (e) -> 
+						Errordite.ruleManager.removeRule ruleId
+						$(this).closest('.rule-controls').addClass 'hide'
+						$(this).hide()
+						e.stopPropagation()
+					.attr('title', "Click to remove Rule: '#{$ruleMatches.attr('title')}'")	
 
 			visualiseRules: ->
 				return null if not this.propName
@@ -146,6 +153,36 @@ jQuery ->
 				for errorProp in (new ErrorProp $ errorProp for errorProp in this.$detailsEl.find("[data-error-attr]"))						
 					errorProp.visualiseRules() 
 
+			getControls: ->
+				###
+				The result of this is like <div class=rule-controls><div class=buttons>buttons</div><div>&nbsp;</div></div>
+				The purpose of the div with just a space is to allow us to have some space between the cursor and the controls
+				panel but without having the mouseleave event trigger if we are at the top of the stack trace area.s
+				###
+				$button = $('<button/>')
+					.addClass('btn')
+					.addClass('btn-rule')
+					.addClass('make-rule') 
+					.text('Create Rule')						
+									
+				$removeButton = $('<button/>')
+					.addClass('btn')
+					.addClass('btn-rule')
+					.addClass('remove-rule') 
+					.text('Remove Rule')						
+					.hide()
+
+				$buttons = $('<div/>')
+					.addClass('rule-controls')
+					.addClass('hide')													
+					.append $('<div/>').addClass('buttons').append($button, $removeButton),
+						$('<div/>').html('&nbsp;')
+
+					#notice indent, which returns a complex object.  CS is strange sometimes!s
+					$button: $button
+					$removeButton: $removeButton
+					$buttons: $buttons
+
 			toggle: () -> 
 				error = this
 				$error = this.$errorEl
@@ -164,45 +201,50 @@ jQuery ->
 						
 						$details.find('[data-error-attr]').each ->	
 							$errorAttr = $ this
+
+							isMultiLine = $errorAttr.data('error-attr') == 'StackTrace'
+
 							propVal = $errorAttr.text()
 
 							return if propVal.trim? and not propVal.trim()
 
-							$buttons = $('<span class="rule-controls hide"/>')																
-
-							$button = $('<button/>')
-								.addClass('btn')
-								.addClass('btn-rule')
-								.addClass('make-rule') 
-								.text('Create Rule')						
-									
-							$removeButton = $('<button/>')
-								.addClass('btn')
-								.addClass('btn-rule')
-								.addClass('remove-rule') 
-								.text('Remove Rule')						
-								.hide()
-
-							$buttons.append $button, $removeButton
+							controls = error.getControls()
+							$button = controls.$button
+							$buttons = controls.$buttons
 							
+
 							$errorAttr.on 'mouseenter', () -> 
-								$buttons.removeClass 'hide'
+								$buttons.removeClass 'hide' if !isMultiLine
 																	
 							$errorAttr.on 'mouseleave', () -> 
-								$buttons.addClass 'hide'	
+								$buttons.addClass 'hide'
 								$errorAttr.unbind 'mousemove'						
 
 							$textSpan =  $('<span/>').addClass('prop-val').text(propVal)
 							$errorAttr.html $textSpan
 							$errorAttr.append $buttons
 										
-							if $errorAttr.data('error-attr') == 'StackTrace'	
+							$errorAttr.on 'click', (e) -> 
+								if !e.doNotUnselect
+									$('.last-selected').removeClass 'last-selected'
+
+							if isMultiLine	
 								$buttons.css
 									position: 'absolute'
 								$errorAttr.on 'click', (e) -> 
+									addOffset e
+									$buttons.removeClass 'hide'
+									$buttons.addClass 'floating'
 									$buttons.css 
 										top: e.offsetY
-										left: e.offsetX		
+										left: e.offsetX - 48		
+							
+							#firefox doesn't have offset coords on the event so we use this to put them in 
+							addOffset = (event) ->
+								element = event.currentTarget
+								if !event.offsetX
+									event.offsetX = (event.pageX - $(element).offset().left)
+									event.offsetY = (event.pageY - $(element).offset().top)
 
 							getRule = () -> 
 								rule = new Errordite.Rule()
@@ -249,7 +291,7 @@ jQuery ->
 												rule.op = 'EndsWith'
 											else
 												rule.op = 'Contains'
-									rule
+								rule
 
 							$button.on 'mouseenter', () -> 
 								rule = getRule()
@@ -266,7 +308,12 @@ jQuery ->
 								errorProp = new ErrorProp ($button.closest('[data-error-attr]'))
 								errorProp.visualiseRules()
 								e.stopPropagation()
-						
+								errorProp.selectRule newRule.counter
+
+								#for some reason, IE ends up with the whole of the stack trace selected after rule added
+								#so explicitly clear it all here
+								document.selection.empty() if document.selection
+								
 						this.visualiseRules()
 
 				$details.toggle()

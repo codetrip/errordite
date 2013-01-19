@@ -1467,6 +1467,12 @@ nav {
   background-color: #c2e0f2; }
 .errors .old-rule-match {
   background-color: #92c7e7; }
+.errors .rule-controls.floating .buttons {
+  float: left;
+  border: 1px solid;
+  background-color: white;
+  padding: 1px;
+  margin: -7px 0px; }
 .errors .rule-controls {
   position: absolute;
   padding: 3px 3px 3px 6px;
