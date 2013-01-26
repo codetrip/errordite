@@ -43,8 +43,11 @@
           }
         });
       });
-      return $('body').on('click', '[data-confirm]', function() {
+      $('body').on('click', '[data-confirm]', function() {
         return confirm($(this).data('confirm'));
+      });
+      return $('body').on('click', 'a.hide-notification', function() {
+        return $(this).closest('div').hide('fast');
       });
     };
 

@@ -7,17 +7,21 @@
     ViewBag.Title = "Dashboard";
 }
 
+<div class="dark-container">
+    <section class="centered">
+        @Html.Partial("Dashboard/Statistics", Model.Stats)
+    </section> 
+</div>
 <section id="dashboard" class="centered">
     <div class="content">
         @Html.HiddenFor(m => m.LastErrorDisplayed)
         @Html.HiddenFor(m => m.LastIssueDisplayed)
         @if (Model.SingleApplicationId != null && Model.Stats.Issues < 3)
         {
-            <h1>Welcome to Errordite</h1>
             <div class="two-col">
                 <div class="small-padding right">
                     <p>
-                        This is your dashboard, where you can see the most recent issues and errors affecting your system, the issues that need your attention, and overall statistics.
+						This is your <strong>dashboard</strong>, where you can see the most recent issues and errors affecting your system, the issues that need your attention, and overall statistics.
                     </p>
                     <p>
                         You do not have much going on at the moment.  
@@ -48,10 +52,6 @@
             </div>
             <div class="clear border"></div>
         }
-    
-        @Html.Partial("Dashboard/Statistics", Model.Stats)
-
-        <div class="clear border"></div>
 
         @if (Model.HasApplications)
         {
@@ -66,7 +66,7 @@
 				
             </div>
             <div class="two-col">
-                <h2 class="section-header"><i class="icon-error"></i>Most Recent Errors</h2>
+                <h2 class="section-header"><i class="icon-errors"></i>Most Recent Errors</h2>
                 <div id="errors">
                     @foreach (var error in Model.RecentErrors)
                     {

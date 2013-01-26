@@ -2,11 +2,11 @@
     
 @if (ViewData.HasNotification())
 {
-    var notification = ViewData.GetNotification();
-    
-    <div id="notifications" class="notification-container">
-		<div class="centered @notification.Type.ToString().ToLowerInvariant()">
-			<i class="icon-@notification.Type.ToString().ToLowerInvariant()"></i><span>@Html.Raw(notification.Message.ToString())</span>
-		</div>
+	var notification = ViewData.GetNotification();
+
+	<div id="notifications" class="notification @notification.Type.ToString().ToLowerInvariant()-container">
+		<section class="centered">
+			<i class="icon-@notification.Type.ToString().ToLowerInvariant()"></i><span>@Html.Raw(notification.Message.ToString())</span><a class="hide-notification" href="#"><i class="icon-close"></i></a>
+		</section> 
 	</div>
 }

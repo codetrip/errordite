@@ -26,7 +26,7 @@
                                              @appContext.CurrentUser.FirstName
                                              @if (appContext.Impersonated)
                                              {
-                                             <a href="@Url.Impersonate()">(IMPERSONATED)</a>
+												<a href="@Url.Impersonate()">(IMPERSONATED)</a>
                                              }
                                          </strong>
                 
@@ -36,8 +36,8 @@
             }
         </nav>
     </div>
-    </div>
-    <div class="header-container">
+</div>
+<div class="header-container">
     <div class="header">
         <div class="logo">
             <a href="@Url.Home(ViewData.GetAppContext())"><img alt="Errordite: Home" src="@Url.Content("~/Assets/Images/header-logo.png")"/></a>
