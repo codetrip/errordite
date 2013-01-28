@@ -100,26 +100,10 @@ h1 {
         padding:20px 5px;
         font-size:36px;
         font-weight: $lightfontweight;
-        a {
-            background-color:#000;
-            float:right;
-            padding:15px 20px;
-            font-size:14px;
-            color:#fff;
+		.btn-black {
+			float:right;
 			margin-top:-20px;
-            font-weight: $normalfontweight;
-            -webkit-border-radius: $borderradius;
-            -moz-border-radius: $borderradius;
-            border-radius: $borderradius;
-            &:hover{
-                text-decoration:none;
-                color:$darkblue;
-            }
-            span{
-                text-transform:uppercase;
-                color:$darkblue;
-            }
-        }
+		}
     }
 }
 
@@ -161,6 +145,24 @@ a {
     color:$verydarkblue;
     &:hover{
         text-decoration:underline;
+    }
+	&.btn-black {
+        background-color:#000;
+        padding:15px 20px;
+        font-size:14px;
+        color:#fff;
+        font-weight: $normalfontweight;
+        -webkit-border-radius: $borderradius;
+        -moz-border-radius: $borderradius;
+        border-radius: $borderradius;
+        &:hover{
+            text-decoration:none;
+            color:$darkblue;
+        }
+        span{
+            text-transform:uppercase;
+            color:$darkblue;
+        }
     }
 }
 
@@ -1494,6 +1496,21 @@ section {
 	}
 }
 
+.video {
+	height:135px;
+	background-color:#91C6E5;
+	.preview {
+		line-height: 225px;
+		text-align:center;
+		.btn-black {
+			padding: 15px 50px;
+		}
+	}
+	.player {
+		
+	}
+}
+
 /*-----------------------------------------------------------------------------------*/
 /* SPECIFICS
 /*-----------------------------------------------------------------------------------*/
@@ -1750,8 +1767,6 @@ nav {
         margin:0 0 25px 0;
     }
 }
-
-
 
 .quicklinks {
 	margin: 17px 0;

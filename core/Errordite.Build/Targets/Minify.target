@@ -42,6 +42,7 @@
     		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\bootstrap.js;
     		  $(SourcePath)\core\Errordite.Web\Assets\Js\global.js;
     		  $(SourcePath)\core\Errordite.Web\Assets\Js\applications.js;
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\home.js;
     		  $(SourcePath)\core\Errordite.Web\Assets\Js\users.js;
     		  $(SourcePath)\core\Errordite.Web\Assets\Js\groups.js;
     		  $(SourcePath)\core\Errordite.Web\Assets\Js\errors.js;

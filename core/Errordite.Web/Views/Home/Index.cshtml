@@ -4,11 +4,19 @@
     ViewBag.Title = "Home"; 
 }
 
-<div class="dark-container">
+<div id="home" class="dark-container">
     <section class="centered">
-        <h1 class="superlarge">
-			Making sense of your <br /> exception logs <a href="@Url.SignUp()">Try Errordite for <span>free</span></a>
-        </h1>
+		<h1 class="superlarge">
+			Making sense of your <br /> exception logs <a class="btn-black" href="@Url.SignUp()">Try Errordite for <span>free</span></a>
+		</h1>
+		<div class="video">
+			<div class="preview">
+				<a id="showplayer" class="btn-black" href="#">Watch the <span>video</span></a>
+			</div>
+			<div class="player">
+				
+			</div>
+		</div>
     </section> 
 </div>
 <div class="blue-container">
@@ -21,7 +29,7 @@
                 <div class="blurb">
                     <span class="item">1. </span>
                     <span class="heading">Simply configure your application to use the Errordite client...</span><br />
-                    <span class="shortdesc">Short description here</span>
+                    <span class="shortdesc">Nuget packages available</span>
                 </div>
             </div>
             <div class="two-col">
@@ -37,7 +45,7 @@
                 <div class="blurb">
                     <span class="item">3. </span>
                     <span class="heading">Errordite will then group the errors intelligently into seperate issues...</span><br />
-                    <span class="shortdesc">Short description here</span>
+                  @*  <span class="shortdesc">Short description here</span>*@
                 </div>
             </div>
             <div class="two-col">
@@ -53,7 +61,7 @@
                 <div class="blurb">
                     <span class="item">5. </span>
                     <span class="heading">Once you're done, mark your issues as solved...</span><br />
-                    <span class="shortdesc">Short description here</span>
+                    @*<span class="shortdesc">Short description here</span>*@
                 </div>
             </div>
             <div class="two-col">
@@ -61,7 +69,7 @@
                 <div class="blurb">
                     <span class="item">6. </span>
                     <span class="heading">Also... reports, user-defined rules and alerts, HipChat integration, fast search and much more!</span><br />
-                    <span class="shortdesc">Short description here</span>
+                    @*<span class="shortdesc">Short description here</span>*@
                 </div>
             </div>
         </div>
