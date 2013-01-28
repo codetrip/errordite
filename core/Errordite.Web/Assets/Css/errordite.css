@@ -60,23 +60,9 @@ h1 {
     padding: 20px 5px;
     font-size: 36px;
     font-weight: 300; }
-    h1.superlarge a {
-      background-color: #000;
+    h1.superlarge .btn-black {
       float: right;
-      padding: 15px 20px;
-      font-size: 14px;
-      color: #fff;
-      margin-top: -20px;
-      font-weight: 400;
-      -webkit-border-radius: 3px;
-      -moz-border-radius: 3px;
-      border-radius: 3px; }
-      h1.superlarge a:hover {
-        text-decoration: none;
-        color: #95c0df; }
-      h1.superlarge a span {
-        text-transform: uppercase;
-        color: #95c0df; }
+      margin-top: -20px; }
 
 h2 {
   font-size: 18px;
@@ -109,6 +95,21 @@ a {
   color: #729db7; }
   a:hover {
     text-decoration: underline; }
+  a.btn-black {
+    background-color: #000;
+    padding: 15px 20px;
+    font-size: 14px;
+    color: #fff;
+    font-weight: 400;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px; }
+    a.btn-black:hover {
+      text-decoration: none;
+      color: #95c0df; }
+    a.btn-black span {
+      text-transform: uppercase;
+      color: #95c0df; }
 
 p {
   margin: 0 0 10px 0; }
@@ -1177,6 +1178,15 @@ section {
     margin-top: 3px; }
   .notification a.hide-notification {
     float: right; }
+
+.video {
+  height: 135px;
+  background-color: #91C6E5; }
+  .video .preview {
+    line-height: 225px;
+    text-align: center; }
+    .video .preview .btn-black {
+      padding: 15px 50px; }
 
 /*-----------------------------------------------------------------------------------*/
 /* SPECIFICS

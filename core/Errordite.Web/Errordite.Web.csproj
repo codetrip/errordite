@@ -376,6 +376,12 @@
     <Content Include="Assets\Js\groups.js">
       <DependentUpon>groups.coffee</DependentUpon>
     </Content>
+    <Content Include="Assets\Js\home.js">
+      <DependentUpon>home.coffee</DependentUpon>
+    </Content>
+    <Content Include="Assets\Js\home.min.js">
+      <DependentUpon>home.coffee</DependentUpon>
+    </Content>
     <Content Include="Assets\Js\issue.js">
       <DependentUpon>issue.coffee</DependentUpon>
     </Content>
@@ -834,7 +840,9 @@
   <ItemGroup>
     <Content Include="Views\Shared\Dashboard\Error.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Assets\Js\home.coffee" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Error\Index.cshtml" />
   </ItemGroup>
