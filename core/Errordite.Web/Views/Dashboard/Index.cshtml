@@ -9,7 +9,7 @@
 
 <div class="dark-container">
     <section class="centered">
-        @Html.Partial("Dashboard/Statistics", Model.Stats)
+        @Html.Partial("Dashboard/Links", Model)
     </section> 
 </div>
 <section id="dashboard" class="centered">
@@ -55,8 +55,11 @@
 
         @if (Model.HasApplications)
         {
+            <h2 class="section-header"><i class="icon-window"></i>Errors from the last 7 days</h2>
+            <div class="content graph" id="date-graph"></div>
+            
             <div class="two-col">
-                <h2 class="section-header"><i class="icon-eye"></i>Most Recent Issues</h2>
+                <h2 class="section-header"><i class="icon-cube"></i>Most Recent Issues</h2>
                 <div id="issues">
                     @foreach(var issue in Model.RecentIssues)
                     {

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using CodeTrip.Core.Extensions;
 using CodeTrip.Core.Interfaces;
-using Errordite.Core.Authorisation;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Indexing;
 using Errordite.Core.Organisations;
@@ -13,13 +12,6 @@ namespace Errordite.Core.Issues.Queries
 {
     public class GetIssueReportDataQuery : SessionAccessBase, IGetIssueReportDataQuery
     {
-        private readonly IAuthorisationManager _authorisationManager;
-
-        public GetIssueReportDataQuery(IAuthorisationManager authorisationManager)
-        {
-            _authorisationManager = authorisationManager;
-        }
-
         public GetIssueReportDataResponse Invoke(GetIssueReportDataRequest request)
         {
             Trace("Starting...");

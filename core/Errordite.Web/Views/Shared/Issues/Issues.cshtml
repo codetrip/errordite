@@ -23,9 +23,9 @@
                 {
                     <tr>
                         <td><input type="checkbox" name="issueIds" value="@issue.IssueId|@issue.ApplicationId"/></td>
-                        <td>
+                        <td style="max-width:500px">
                             <span class="table-info-header">
-                                <a href="@Url.Issue(issue.IssueId)">@issue.IssueId - @issue.Name</a>
+                                <a class="word-break" href="@Url.Issue(issue.IssueId)">@issue.IssueId - @issue.Name</a>
                             </span><br />
                             <span class="table-info">@issue.Status</span>
                         </td>
@@ -52,7 +52,7 @@
                 <h4 class="formodal">Make <span class="batch-issue-count"></span> issue<span class="batch-issue-plural">s</span> "<span class="batch-issue-status"></span>"</h4>
             </div>
             <div class="modal-body">
-                <div class="error">
+                <div class="error hidden">
 					<i class="icon-error"></i><span></span>
 				</div>
                 <div class="form">
@@ -80,7 +80,7 @@
                 <h4 class="formodal">Delete <span class="batch-issue-count"></span> issue<span class="batch-issue-plural">s</span></h4>
             </div>
 			<div class="modal-body">
-				<div class="error">
+				<div class="error hidden">
 					<i class="icon-error"></i><span></span>
 				</div>
 				<p>

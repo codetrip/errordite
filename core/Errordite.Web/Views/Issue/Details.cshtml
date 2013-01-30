@@ -7,7 +7,7 @@
     @Html.HiddenFor(m => m.IssueId)
     @Html.HiddenFor(m => m.Priority)
 	<div class="form double extrawide">
-		<h2 class="section-header border"><i class="icon-eye"></i>Issue Details</h2>
+		<h2 class="section-header border"><i class="icon-cube"></i>Issue Details</h2>
 		<ul>
 			<li>
 				@Html.LabelFor(m => m.Name, "Issue Name")
@@ -57,17 +57,17 @@
 		<div class="issue-error-info">
 			<h2 class="section-header border"><i class="icon-errors"></i>Sample Error Details</h2>
 			<h3>Exception Type</h3>
-			<p>@Model.SampleError.ExceptionInfo.Type</p>
+			<p class="word-break">@Model.SampleError.ExceptionInfo.Type</p>
 			<h3>Message</h3>
-			<p>@(Model.SampleError.ExceptionInfo.Message.IsNullOrEmpty() ? "No message" : Model.SampleError.ExceptionInfo.Message)</p>
+			<p class="word-break">@(Model.SampleError.ExceptionInfo.Message.IsNullOrEmpty() ? "No message" : Model.SampleError.ExceptionInfo.Message)</p>
 			<h3>Machine</h3>
 			<p>@Model.SampleError.MachineName</p>
 			<h3>Method</h3>
-			<p>@Model.SampleError.ExceptionInfo.MethodName</p>
+			<p class="word-break">@Model.SampleError.ExceptionInfo.MethodName</p>
 			<h3>Url</h3>
-			<p>@Model.SampleError.Url</p>
+			<p class="word-break">@Model.SampleError.Url</p>
 			<h3>User Agent</h3>
-			<p>@Model.SampleError.UserAgent</p>
+			<p class="word-break">@Model.SampleError.UserAgent</p>
 		</div>
 	 }
 	

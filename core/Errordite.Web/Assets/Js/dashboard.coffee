@@ -14,7 +14,7 @@ jQuery ->
 				this.showItems()
 			poll: ->
 				$.ajax
-					url: "/dashboard/update?lastErrorDisplayed=" + dashboard.lastError + '&lastIssueDisplayed=' + dashboard.lastIssue
+					url: "/dashboard/update?lastErrorDisplayed=" + dashboard.lastError + '&lastIssueDisplayed=' + dashboard.lastIssue + '&applicationId=' + $('input#ApplicationId').val()
 					success: (result) ->
 						console.log "success"
 						if result.success
@@ -26,6 +26,28 @@ jQuery ->
 					dataType: "json"
 					complete: ->
 						setTimeout dashboard.poll, 10000
+				true
+			rendergraph: ->
+				$.ajax
+					url: "/dashboard/getgraphdata?applicationId=" + $('input#ApplicationId').val()
+					success: (data) ->
+						$.jqplot 'date-graph', 
+							[_.zip data.x, data.y],
+							seriesDefaults:
+								renderer:$.jqplot.LineRenderer
+							axes:
+								xaxis:
+									renderer: $.jqplot.DateAxisRenderer
+									tickOptions:
+										formatString:'%a %#d %b'
+								yaxis:
+									min: 0
+							highlighter:
+								show: true
+								sizeAdjust: 7.5
+					error: ->
+						dashboard.error()
+					dataType: "json"
 				true
 			bind: (data) ->
 				console.log "binding"
@@ -53,5 +75,7 @@ jQuery ->
 					count = $container.find(' > div').length
 
 		dashboard = new Dashboard();
+		dashboard.rendergraph();
+
 		setTimeout dashboard.poll, 10000
 		true

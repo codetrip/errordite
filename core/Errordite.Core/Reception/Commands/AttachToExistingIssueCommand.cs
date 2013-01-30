@@ -57,7 +57,9 @@ namespace Errordite.Core.Reception.Commands
 					IssueId = issue.Id,
 					Count = 1,
                     Date = request.Error.TimestampUtc.Date,
-                    CreatedOnUtc = DateTime.UtcNow
+                    CreatedOnUtc = DateTime.UtcNow,
+                    OrganisationId = issue.OrganisationId,
+                    ApplicationId = issue.ApplicationId
 				};
 
 				Store(issueDailyCount);

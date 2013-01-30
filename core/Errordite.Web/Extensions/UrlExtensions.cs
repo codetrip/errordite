@@ -36,6 +36,11 @@ namespace Errordite.Web.Extensions
             return helper.Action("index", "dashboard", new { Area = string.Empty });
         }
 
+        public static string Dashboard(this UrlHelper helper, string applicationId)
+        {
+            return helper.Action("index", "dashboard", new { Area = string.Empty, applicationId });
+        }
+
 		public static string Error(this UrlHelper helper, string errorId)
 		{
 			return helper.Action("index", "error", new { id = errorId, Area = string.Empty });

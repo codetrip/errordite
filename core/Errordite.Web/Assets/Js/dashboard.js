@@ -16,7 +16,7 @@
 
         Dashboard.prototype.poll = function() {
           $.ajax({
-            url: "/dashboard/update?lastErrorDisplayed=" + dashboard.lastError + '&lastIssueDisplayed=' + dashboard.lastIssue,
+            url: "/dashboard/update?lastErrorDisplayed=" + dashboard.lastError + '&lastIssueDisplayed=' + dashboard.lastIssue + '&applicationId=' + $('input#ApplicationId').val(),
             success: function(result) {
               console.log("success");
               if (result.success) {
@@ -32,6 +32,39 @@
             complete: function() {
               return setTimeout(dashboard.poll, 10000);
             }
+          });
+          return true;
+        };
+
+        Dashboard.prototype.rendergraph = function() {
+          $.ajax({
+            url: "/dashboard/getgraphdata?applicationId=" + $('input#ApplicationId').val(),
+            success: function(data) {
+              return $.jqplot('date-graph', [_.zip(data.x, data.y)], {
+                seriesDefaults: {
+                  renderer: $.jqplot.LineRenderer
+                },
+                axes: {
+                  xaxis: {
+                    renderer: $.jqplot.DateAxisRenderer,
+                    tickOptions: {
+                      formatString: '%a %#d %b'
+                    }
+                  },
+                  yaxis: {
+                    min: 0
+                  }
+                },
+                highlighter: {
+                  show: true,
+                  sizeAdjust: 7.5
+                }
+              });
+            },
+            error: function() {
+              return dashboard.error();
+            },
+            dataType: "json"
           });
           return true;
         };
@@ -82,6 +115,7 @@
 
       })();
       dashboard = new Dashboard();
+      dashboard.rendergraph();
       setTimeout(dashboard.poll, 10000);
       return true;
     }

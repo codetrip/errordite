@@ -10,7 +10,7 @@
 			Exception Type
 		</div>
 		<div class="item-info full" style="margin-bottom:5px;">
-			<a href="@Url.Error(Model.Error.FriendlyId)">@Model.Error.ExceptionInfo.Type</a>
+			<a href="@Url.Error(Model.Error.FriendlyId)" data-title="@Model.Error.ExceptionInfo.Type" @(Model.Error.ExceptionInfo.Type.Length > 65 ? "class=tool-tip" : "")>@(@Model.Error.ExceptionInfo.Type.Length > 65 ?@Model.Error.ExceptionInfo.Type.Substring(0, 65) + "..." : @Model.Error.ExceptionInfo.Type)</a>
 		</div>
 		<div class="item-info heading">
 			Application

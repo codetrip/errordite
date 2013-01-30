@@ -5,11 +5,9 @@ namespace Errordite.Core.Domain.Organisation
     {
         public int Issues { get; set; }
         public int Unacknowledged { get; set; }
-        public int Ignorable { get; set; }
+        public int Ignored { get; set; }
         public int Acknowledged { get; set; }
         public int Solved { get; set; }
-        public int Investigating { get; set; }
-        public int AwaitingDeployment { get; set; }
         public int Applications { get; set; }
         public int Users { get; set; }
         public int Groups { get; set; }
@@ -19,15 +17,7 @@ namespace Errordite.Core.Domain.Organisation
         {
             get
             {
-                return Unacknowledged + Ignorable + Acknowledged + Solved + Investigating + AwaitingDeployment;
-            }
-        }
-
-        public int ActiveIssues
-        {
-            get
-            {
-                return Unacknowledged + Ignorable + Acknowledged + Investigating + AwaitingDeployment;
+                return Unacknowledged + Ignored + Acknowledged + Solved;
             }
         }
     }

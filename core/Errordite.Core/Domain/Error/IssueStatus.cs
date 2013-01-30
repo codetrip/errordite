@@ -1,4 +1,3 @@
-using CodeTrip.Core.Extensions;
 using ProtoBuf;
 
 namespace Errordite.Core.Domain.Error
@@ -11,13 +10,8 @@ namespace Errordite.Core.Domain.Error
         [ProtoMember(2)]
         Acknowledged,
         [ProtoMember(3)]
-        Investigating,
-        [ProtoMember(4)]
-        [FriendlyName("Awaiting Deployment")]
-        AwaitingDeployment,
-        [ProtoMember(5)]
         Solved,
-        [ProtoMember(6)]
-        Ignorable
+        [ProtoMember(4)]
+        Ignored
     }
 }
