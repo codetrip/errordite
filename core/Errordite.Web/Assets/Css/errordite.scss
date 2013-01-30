@@ -527,6 +527,7 @@ section {
     color:#000;
     font-weight: $boldfontweight;
     font-size: 12px;
+	word-wrap: break-word;
   }
   .table-info {
     color: $mediumblue;
@@ -583,7 +584,7 @@ section {
     background-color: $tablealternatecolor;
   }
   tfoot td {
-    padding:8px 8px 12px 8px;
+    padding:8px 8px 4px 8px;
   }
 }
 
@@ -627,10 +628,10 @@ section {
 	margin-bottom: 1px;
   }
   &.btn-blue {
-    color:#fff;
+    color:$darkbrown;
     background-color:$mediumblue;
     &:hover {
-        color:$darkbrown;
+        background-color:$lightblue;
     }
   }
   &.btn-grey {
@@ -662,7 +663,7 @@ section {
       width: 55%;
       float: left;
       text-align: center;
-      margin-top: -10px;
+      margin-top: -4px;
     }
   }
   input[type='text'] {
@@ -841,8 +842,11 @@ section {
 .icon-errors {
   background-position:0 0;
 }
-.icon-eye {
+.icon-cube {
   background-position:-18px 0;
+}
+.icon-window {
+  background-position:-18px -18px;
 }
 .icon-link {
   background-position:-36px 0;
@@ -1039,7 +1043,7 @@ section {
 
 .tooltip-inner {
   word-wrap: break-word;
-  max-width: 200px;
+  max-width: 250px;
   padding: 3px 8px;
   color: #ffffff;
   text-align: center;
@@ -1509,6 +1513,10 @@ section {
 	}
 }
 
+.graph {
+	margin-bottom:20px;
+}
+
 /*-----------------------------------------------------------------------------------*/
 /* SPECIFICS
 /*-----------------------------------------------------------------------------------*/
@@ -1787,6 +1795,31 @@ nav {
 		}
 		&.last {
 			border:0;
+		}
+	}
+	h3 {
+		margin: 2px 0;
+	}
+	ul {
+		padding-left: 0;
+	}
+	a.dropdown-toggle {
+		background-color: $mediumbrown;
+		border:0;
+	}
+	.caret {
+		margin: 10px 10px 0 0;
+	}
+	ul.dropdown-menu {
+		background-color: $mediumblue;
+		a {
+			color:#fff;
+		}
+		li:hover {
+			background-color: $lightblue;
+			a { 
+				color:$darkbrown;
+			}
 		}
 	}
 }

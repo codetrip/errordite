@@ -11,32 +11,8 @@
     ViewBag.FinalBreadcrumb = "Issue {0}".FormatWith(Model.Details.IssueId);
 }
 
-@section footerassets
-{
-	@if(ErrorditeConfiguration.Current.RenderMinifiedContent)
-	{
-		<script type='text/javascript' src='@Url.Content("~/assets/js/lib/jqplot/jqplot.min.js")'></script>
-	}
-	else
-	{
-		<script type='text/javascript' src='@Url.Content("~/assets/js/lib/jqplot/jquery.jqplot.js")'></script>
-		<script type='text/javascript' src='@Url.Content("~/assets/js/lib/jqplot/jqplot.barRenderer.js")'></script>
-		<script type='text/javascript' src='@Url.Content("~/assets/js/lib/jqplot/jqplot.dateAxisRenderer.js")'></script>
-		<script type='text/javascript' src='@Url.Content("~/assets/js/lib/jqplot/jqplot.categoryAxisRenderer.js")'></script>
-		<script type='text/javascript' src='@Url.Content("~/assets/js/lib/jqplot/jqplot.highlighter.js")'></script>
-	}
-}
-
 @section header
 {
-	@*<div id="pagetitle">
-        
-        <div id="rules-adjusted">
-            <button id="apply-rule-updates" class="btn btn-success" data-title="You have made rule changes but not yet saved them. Click here to save.">Apply Rule Updates</button>
-        </div>
-    </div>
-
-    <div class="clear"></div>*@
 	<div class="issue-title-container">
 		<div class="centered">
 			<span class="title">
@@ -110,10 +86,6 @@
             @Html.Partial("Reports", Model.Details)
         </div>
         <div id="errors" class="tab @(Model.Tab == IssueTab.Errors ? "" : "hidden") ajax-container">
-            <p>
-                <strong>Note</strong> we only store <strong>@ErrorditeConfiguration.Current.IssueErrorLimit</strong> errors per issue, although we track each occurence of an issue. The instance count 
-                shown against an issue indicates the <strong>true number of occurences</strong> received for the issue.
-            </p>
             <div id="error-items" data-val="@Model.Details.IssueId">
                 @Html.Partial("Errors/ErrorItems", Model.Errors)
             </div>

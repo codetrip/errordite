@@ -154,6 +154,7 @@
     <Compile Include="ErrorditeCore.cs" />
     <Compile Include="Errors\Commands\MakeExceededErrorsUnloggedCommand.cs" />
     <Compile Include="Errors\Commands\MoveErrorsToNewIssueCommand.cs" />
+    <Compile Include="Extensions\RavenQueryableExtensions.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\ExceptionExtensions.cs" />
     <Compile Include="Extensions\RulesExtensions.cs" />
@@ -188,6 +189,7 @@
     <Compile Include="Identity\NoAuthenticationManager.cs" />
     <Compile Include="IoC\ErrorditeNServiceBusClientInstaller.cs" />
     <Compile Include="Issues\Commands\UpdateIssueDetailsCommand.cs" />
+    <Compile Include="Issues\Queries\GetDashboardReportQuery.cs" />
     <Compile Include="Issues\Queries\GetIssueReportDataQuery.cs" />
     <Compile Include="Issues\Queries\GetIssueWithMatchingRulesQuery.cs" />
     <Compile Include="Issues\Queries\GetAllApplicationIssuesQuery.cs" />

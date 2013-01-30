@@ -671,7 +671,7 @@
     <Content Include="Views\Shared\Errors\ErrorItems.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\Dashboard\Statistics.cshtml" />
+    <Content Include="Views\Shared\Dashboard\Links.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\Dashboard\Tabs.cshtml" />

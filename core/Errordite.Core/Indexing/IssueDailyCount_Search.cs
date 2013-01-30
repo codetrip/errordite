@@ -16,7 +16,9 @@ namespace Errordite.Core.Indexing
 					count.IssueId,
                     count.Date,
                     count.Count,
-                    count.CreatedOnUtc
+                    count.CreatedOnUtc,
+                    count.OrganisationId,
+                    count.ApplicationId
 				};
 
             Sort(e => e.Date, SortOptions.String);

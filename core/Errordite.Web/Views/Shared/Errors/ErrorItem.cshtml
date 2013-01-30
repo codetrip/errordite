@@ -11,13 +11,13 @@
         <td><a href="@Url.Issue(Model.Error.IssueId.GetFriendlyId())">Issue @Model.Error.IssueId.GetFriendlyId()</a> </td>
     } 
 	
-	<td>
+	<td style="max-width:350px">
         <span class="table-info-header">
             @Model.Error.ExceptionInfo.Type
         </span><br />
         <span class="table-info">@Model.Error.MachineName</span>
     </td>
-    <td class="word-break">@Model.Error.ExceptionInfo.Message</td>
+    <td class="word-break">@(Model.Error.ExceptionInfo.Message.Length > 200 ? Model.Error.ExceptionInfo.Message.Substring(0, 200) + "..." : Model.Error.ExceptionInfo.Message) </td>
     <td>@Model.Error.TimestampUtc.ToLocalTimeFormatted()</td>
     
 </tr>

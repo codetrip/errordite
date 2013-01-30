@@ -403,7 +403,8 @@ section {
   .table .table-info-header {
     color: #000;
     font-weight: 600;
-    font-size: 12px; }
+    font-size: 12px;
+    word-wrap: break-word; }
   .table .table-info {
     color: #92c7e7;
     font-size: 12px; }
@@ -445,7 +446,7 @@ section {
   .table-bordered tbody tr:nth-child(even) {
     background-color: #ecf4f7; }
   .table-bordered tfoot td {
-    padding: 8px 8px 12px 8px; }
+    padding: 8px 8px 4px 8px; }
 
 .table-condensed th, .table-condensed td {
   padding: 4px 5px; }
@@ -480,10 +481,10 @@ section {
     font-weight: 800;
     margin-bottom: 1px; }
   .btn.btn-blue {
-    color: #fff;
+    color: #496d82;
     background-color: #92c7e7; }
     .btn.btn-blue:hover {
-      color: #496d82; }
+      background-color: #c2e0f2; }
   .btn.btn-grey {
     color: #496d82;
     background-color: #D3E4EE; }
@@ -507,7 +508,7 @@ section {
     width: 55%;
     float: left;
     text-align: center;
-    margin-top: -10px; }
+    margin-top: -4px; }
   .paging input[type='text'] {
     width: 35px;
     height: 14px;
@@ -649,8 +650,11 @@ section {
 .icon-errors {
   background-position: 0 0; }
 
-.icon-eye {
+.icon-cube {
   background-position: -18px 0; }
+
+.icon-window {
+  background-position: -18px -18px; }
 
 .icon-link {
   background-position: -36px 0; }
@@ -815,7 +819,7 @@ section {
 
 .tooltip-inner {
   word-wrap: break-word;
-  max-width: 200px;
+  max-width: 250px;
   padding: 3px 8px;
   color: #ffffff;
   text-align: center;
@@ -1184,6 +1188,9 @@ section {
     .video-panel .preview .btn-black {
       padding: 15px 50px; }
 
+.graph {
+  margin-bottom: 20px; }
+
 /*-----------------------------------------------------------------------------------*/
 /* SPECIFICS
 /*-----------------------------------------------------------------------------------*/
@@ -1405,6 +1412,23 @@ nav {
       display: block; }
     .quicklinks .home-links.last {
       border: 0; }
+  .quicklinks h3 {
+    margin: 2px 0; }
+  .quicklinks ul {
+    padding-left: 0; }
+  .quicklinks a.dropdown-toggle {
+    background-color: #525252;
+    border: 0; }
+  .quicklinks .caret {
+    margin: 10px 10px 0 0; }
+  .quicklinks ul.dropdown-menu {
+    background-color: #92c7e7; }
+    .quicklinks ul.dropdown-menu a {
+      color: #fff; }
+    .quicklinks ul.dropdown-menu li:hover {
+      background-color: #c2e0f2; }
+      .quicklinks ul.dropdown-menu li:hover a {
+        color: #496d82; }
 
 .rules select {
   width: 180px; }

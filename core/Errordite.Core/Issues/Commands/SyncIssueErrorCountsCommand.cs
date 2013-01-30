@@ -94,7 +94,9 @@ namespace Errordite.Core.Issues.Commands
                         IssueId = issue.Id,
                         Count = 1,
                         Date = error.TimestampUtc.Date,
-                        CreatedOnUtc = DateTime.UtcNow.AddMilliseconds(100)
+                        CreatedOnUtc = DateTime.UtcNow.AddMilliseconds(100),
+                        OrganisationId = issue.OrganisationId,
+                        ApplicationId = issue.ApplicationId
                     });
                 }
 
