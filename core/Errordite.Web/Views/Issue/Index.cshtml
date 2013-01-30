@@ -40,7 +40,7 @@
 	<div class="issue-title-container">
 		<div class="centered">
 			<span class="title">
-				@Model.Details.Name @(Model.Details.TestIssue ? "(TEST)" : string.Empty) (Issue #@Model.Details.IssueId)
+				@Model.Details.ApplicationName - @Model.Details.Name @(Model.Details.TestIssue ? "(TEST)" : string.Empty)
 			</span>
 			<span class="details">
 				<span id="instance-count" class="bold">
@@ -57,6 +57,9 @@
         <ul id="issue-tabs" class="tabs">
             <li @(Model.Tab == IssueTab.Details ? " class=active" : " class=inactive") >
                 <a href="@Url.Issue(Model.Details.IssueId, IssueTab.Details)" class="tablink" data-val="details"><span>Details</span></a> 
+            </li>
+            <li @(Model.Tab == IssueTab.Actions ? " class=active" : " class=inactive") >
+                <a href="@Url.Issue(Model.Details.IssueId, IssueTab.Actions)" class="tablink" data-val="actions"><span>Actions</span></a>
             </li>
             <li @(Model.Tab == IssueTab.History ? " class=active" : " class=inactive") >
                 <a href="@Url.Issue(Model.Details.IssueId, IssueTab.History)" class="tablink" data-val="history"><span>History</span></a>
@@ -89,6 +92,9 @@
     <div class="content">
         <div id="details" class="tab @(Model.Tab == IssueTab.Details ? "" : "hidden")">
             @Html.Partial("Details", Model.Details)
+        </div>
+        <div id="actions" class="tab @(Model.Tab == IssueTab.Actions ? "" : "hidden")">
+            @Html.Partial("Actions", Model.Details)
         </div>
         <div id="history" class="tab @(Model.Tab == IssueTab.History ? "" : "hidden")">
             @Html.Partial("History", Model.Details)

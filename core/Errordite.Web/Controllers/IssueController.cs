@@ -227,16 +227,15 @@ namespace Errordite.Web.Controllers
                 IssueNameAfterUpdate = issue.Name,
                 MatchPriorityAfterUpdate = issue.Status == IssueStatus.Unacknowledged ? MatchPriority.Medium : issue.MatchPriority, //assume that adjusting an issue means we want it to catch errors
                 UnmatchedIssueName = GetAdjustmentRejectsName(issue.Name),
-                //Priorities = priorities,
                 UnmatchedIssuePriority = issue.MatchPriority,
             };
 
             var userMemoizer =
                 new LocalMemoizer<string, User>(
                     id =>
-                    _getUserQuery.Invoke(new GetUserRequest() {OrganisationId = issue.OrganisationId, UserId = id}).User);
+                    _getUserQuery.Invoke(new GetUserRequest {OrganisationId = issue.OrganisationId, UserId = id}).User);
             var issueMemoizer = new LocalMemoizer<string, Issue>(id =>
-                    _getIssueQuery.Invoke(new GetIssueRequest() { CurrentUser = Core.AppContext.CurrentUser, IssueId = id }).Issue);
+                    _getIssueQuery.Invoke(new GetIssueRequest { CurrentUser = Core.AppContext.CurrentUser, IssueId = id }).Issue);
 
             var viewModel = new IssueViewModel
             {
@@ -251,7 +250,13 @@ namespace Errordite.Web.Controllers
                     UserName = assignedUser == null ? string.Empty : assignedUser.FullName,
                     Users = users.Items.ToSelectList(u => u.Id, u => "{0} {1}".FormatWith(u.FirstName, u.LastName), sortListBy: SortSelectListBy.Text, selected: u => u.Id == issue.UserId),
                     Statuses = issue.Status.ToSelectedList(IssueResources.ResourceManager, false, issue.Status.ToString()),
-                    //Priorities = priorities,
+                    SampleError = _getApplicationErrorsQuery.Invoke(new GetApplicationErrorsRequest
+	                {
+		                IssueId = issue.Id,
+						Paging = new PageRequestWithSort(1, 1),
+						OrganisationId = Core.AppContext.CurrentUser.OrganisationId,
+						UserTimezoneId = AppContext.CurrentUser.EffectiveTimezoneId()
+	                }).Errors.Items.FirstOrDefault(),
                     UserId = issue.UserId,
                     ApplicationName = applications.Items.First(a => a.Id == issue.ApplicationId).Name,
                     ErrorLimitStatus = IssueResources.ResourceManager.GetString("ErrorLimitStatus_{0}".FormatWith(issue.LimitStatus)) ,

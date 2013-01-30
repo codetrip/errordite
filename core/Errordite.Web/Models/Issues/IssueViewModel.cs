@@ -28,6 +28,7 @@ namespace Errordite.Web.Models.Issues
         public IList<IssueHistoryItemViewModel> History { get; set; }
         public IList<ProdProfRecord> ProdProfRecords { get; set; }
         public bool TestIssue { get; set; }
+		public Error SampleError { get; set; }
     }
 
     public class IssueDetailsPostModel
@@ -70,6 +71,7 @@ namespace Errordite.Web.Models.Issues
         Rules,
         Errors,
         Debug,
-        History
+        History,
+		Actions
     }
 }
