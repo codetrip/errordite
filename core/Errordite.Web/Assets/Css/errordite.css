@@ -13,7 +13,8 @@ body, html {
   color: #292c31; }
 
 ul {
-  list-style: none; }
+  list-style: none;
+  margin-top: 5px; }
   ul.info {
     list-style: square; }
     ul.info span {
@@ -180,8 +181,8 @@ table {
     .issue-title-container span.details span.bold {
       font-weight: 600; }
   .issue-title-container span.title {
-    font-size: 15px;
-    font-weight: 700;
+    font-size: 16px;
+    font-weight: 600;
     display: block;
     width: 100%; }
 
@@ -313,6 +314,10 @@ section {
   width: 25%;
   float: left; }
 
+.three-col {
+  width: 33%;
+  float: left; }
+
 .two-col {
   width: 50%;
   float: left; }
@@ -391,7 +396,7 @@ section {
   .table th {
     font-weight: 600;
     background-color: #d7e5ee;
-    color: #7B8992;
+    color: #000;
     text-transform: uppercase;
     font-size: 11px;
     white-space: nowrap; }
@@ -405,7 +410,7 @@ section {
   .table a {
     font-size: 13px; }
   .table tfoot tr {
-    background-color: #d7e5ee; }
+    background-color: #f3f8fc; }
 
 .table-bordered {
   border: 1px solid #cdd4da;
@@ -446,59 +451,44 @@ section {
   padding: 4px 5px; }
 
 .btn {
-  display: inline-block;
   border: 0;
-  *display: inline;
-  *zoom: 1;
   padding: 4px 10px 4px;
-  margin-bottom: 0;
   font-size: 13px;
   line-height: 18px;
   text-align: center;
   vertical-align: middle;
-  background-repeat: repeat-x;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
   cursor: pointer;
-  *margin-left: .3em;
+  margin: 0;
   text-transform: uppercase;
-  line-height: normal; }
+  line-height: 14px; }
   .btn:hover {
     text-decoration: none; }
   .btn.btn-large {
-    padding: 16px 35px;
+    padding: 16px 36px 16px 35px;
     font-size: 18px;
     font-weight: 800; }
   .btn.btn-medium {
-    padding: 12px 26px;
+    padding: 12px 26px 12px 26px;
     font-size: 14px;
     font-weight: 800; }
   .btn.btn-small {
-    padding: 8px 18px;
+    padding: 9px 18px 9px 18px;
     font-size: 11px;
-    font-weight: 700; }
-    .btn.btn-small.btn-cancel {
-      font-size: 13px;
-      padding: 6px 14px;
-      text-decoration: none; }
+    font-weight: 800;
+    margin-bottom: 1px; }
   .btn.btn-blue {
-    color: #496d82;
-    background-color: #c2e0f2; }
+    color: #fff;
+    background-color: #92c7e7; }
     .btn.btn-blue:hover {
-      color: #525252; }
-  .btn.btn-lightblue {
+      color: #496d82; }
+  .btn.btn-grey {
     color: #496d82;
-    background-color: #f3f8fc; }
-    .btn.btn-lightblue:hover {
-      color: #525252; }
-  .btn.btn-cancel {
-    color: #496d82;
-    background-color: #fff;
-    text-transform: none;
-    font-weight: 400; }
-    .btn.btn-cancel:hover {
-      color: #525252; }
+    background-color: #D3E4EE; }
+    .btn.btn-grey:hover {
+      color: #3d3d3d; }
 
 .paging {
   padding: 0;
@@ -683,6 +673,9 @@ section {
 .icon-close {
   background-position: -110px 0; }
 
+.icon-cog {
+  background-position: 0 -18px; }
+
 .icon-people {
   width: 30px;
   height: 30px;
@@ -755,6 +748,10 @@ section {
     float: left; }
     .form.double .field-validation-error {
       display: block; }
+  .form.extrawide input[type="text"], .form.extrawide textarea {
+    width: 360px; }
+  .form.extrawide select {
+    width: 370px; }
   .form.push-up {
     margin-top: -15px; }
   .form.form-inline {
@@ -1055,8 +1052,7 @@ section {
     content: "";
     clear: both; }
   .modal-footer .btn + .btn {
-    margin-left: 5px;
-    margin-bottom: 0; }
+    margin-left: 5px; }
   .modal-footer .btn-group .btn + .btn {
     margin-left: -1px; }
 
@@ -1179,13 +1175,13 @@ section {
   .notification a.hide-notification {
     float: right; }
 
-.video {
+.video-panel {
   height: 135px;
   background-color: #91C6E5; }
-  .video .preview {
+  .video-panel .preview {
     line-height: 225px;
     text-align: center; }
-    .video .preview .btn-black {
+    .video-panel .preview .btn-black {
       padding: 15px 50px; }
 
 /*-----------------------------------------------------------------------------------*/
@@ -1319,7 +1315,7 @@ nav {
       width: 0; }
 
 .payment-plan {
-  margin: 0 0 10px 5px;
+  margin: 0 0 10px 10px;
   background-color: #e7f0f5; }
   .payment-plan h2 {
     border-bottom: 1px solid #fff;
@@ -1533,4 +1529,17 @@ nav {
     padding-left: 5px;
     font-size: 13px;
     font-weight: 400; }
+
+.issue-error-info {
+  margin-left: 70px;
+  float: left;
+  width: 50%; }
+  .issue-error-info h3 {
+    text-transform: uppercase;
+    font-size: 13px;
+    margin: 5px 0 0 0; }
+  .issue-error-info p {
+    margin: 0;
+    font-size: 13px;
+    margin-bottom: 10px; }
 

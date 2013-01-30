@@ -202,9 +202,9 @@ namespace Errordite.Web
                 session.Store(new PaymentPlan
                 {
                     Id = "PaymentPlans/1",
-                    MaximumApplications = 5,
-                    MaximumUsers = 5,
-                    MaximumIssues = 100,
+                    MaximumApplications = 10,
+                    MaximumUsers = 20,
+                    MaximumIssues = 500,
                     Name = PaymentPlanNames.Trial,
                     Rank = 0,
                     Price = 0m,
@@ -215,44 +215,33 @@ namespace Errordite.Web
                 {
                     Id = "PaymentPlans/2",
                     MaximumApplications = 1,
-                    MaximumUsers = 1,
-                    MaximumIssues = 25,
-                    Name = PaymentPlanNames.Micro,
+                    MaximumUsers = 2,
+                    MaximumIssues = 50,
+                    Name = PaymentPlanNames.Small,
                     Rank = 100,
-                    Price = 10.00m,
+                    Price = 19.00m,
                     IsAvailable = true,
                 });
                 session.Store(new PaymentPlan
                 {
                     Id = "PaymentPlans/3",
-                    MaximumApplications = 5,
-                    MaximumUsers = 5,
-                    MaximumIssues = 100,
-                    Name = PaymentPlanNames.Small,
+                    MaximumApplications = 10,
+                    MaximumUsers = 20,
+                    MaximumIssues = 500,
+                    Name = PaymentPlanNames.Medium,
                     Rank = 200,
-                    Price = 35.00m,
+                    Price = 79.00m,
                     IsAvailable = true,
                 });
                 session.Store(new PaymentPlan
                 {
                     Id = "PaymentPlans/4",
-                    MaximumApplications = 30,
-                    MaximumUsers = 30,
-                    MaximumIssues = 250,
-                    Name = PaymentPlanNames.Big,
-                    Rank = 300,
-                    Price = 70.00m,
-                    IsAvailable = true,
-                });
-                session.Store(new PaymentPlan
-                {
-                    Id = "PaymentPlans/5",
                     MaximumApplications = 100,
-                    MaximumUsers = 100,
-                    MaximumIssues = 1000,
-                    Name = PaymentPlanNames.Huge,
-                    Rank = 400,
-                    Price = 100.00m,
+                    MaximumUsers = 200,
+                    MaximumIssues = 5000,
+                    Name = PaymentPlanNames.Large,
+                    Rank = 300,
+                    Price = 199.00m,
                     IsAvailable = true,
                 });
 

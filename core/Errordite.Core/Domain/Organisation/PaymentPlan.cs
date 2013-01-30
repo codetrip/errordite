@@ -30,9 +30,8 @@ namespace Errordite.Core.Domain.Organisation
     public static class PaymentPlanNames
     {
         public const string Trial = "Trial";
-        public const string Micro = "Micro";
         public const string Small = "Small";
-        public const string Big = "Big";
-        public const string Huge = "Huge";
+        public const string Medium = "Medium";
+        public const string Large = "Large";
     }
 }
