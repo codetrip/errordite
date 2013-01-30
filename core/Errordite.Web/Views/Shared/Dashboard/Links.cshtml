@@ -1,0 +1,45 @@
+﻿@using Errordite.Core.Domain.Error
+@using Errordite.Web.Extensions
+@using CodeTrip.Core.Extensions
+@model Errordite.Web.Models.Dashboard.DashboardViewModel
+
+<div class="quicklinks">
+	<div class="four-col home-links">
+		<span><a href="@Url.Issues()">All Issues</a> (@Model.Stats.TotalIssues)</span>
+		<span><a href="@Url.Issues(IssueStatus.Unacknowledged)">Unacknowledged Issues</a> (@Model.Stats.Unacknowledged)</span>
+		<span><a href="@Url.Issues(IssueStatus.Acknowledged)">Acknowledged Issues</a> (@Model.Stats.Acknowledged)</span>
+	</div>
+	<div class="four-col home-links">
+		<span><a href="@Url.Issues(IssueStatus.Solved)">Solved Issues</a> (@Model.Stats.Solved)</span>
+		<span><a href="@Url.Issues(IssueStatus.Ignored)">Ignored Issues</a> (@Model.Stats.Ignored)</span>
+		<span><a href="@Url.MyIssues(ViewData.GetAppContext().CurrentUser.FriendlyId)">Issues Assigned to me</a> (@Model.Stats.CurrentUserIssueCount)</span>
+	</div>
+	<div class="four-col home-links">
+		<span><a href="@Url.Applications()">Applications</a> (@Model.Stats.Applications)</span>
+		<span><a href="@Url.Users()">Users</a> (@Model.Stats.Users)</span>
+		<span><a href="@Url.Groups()">Groups</a> (@Model.Stats.Groups)</span>
+	</div>
+    <div class="four-col home-links last">
+        <input type="hidden" value="@Model.SelectedApplicationId" id="ApplicationId" />
+        <h3>Dashboard Application</h3>
+        <ul class="popup popup-pills">
+            <li class="dropdown" id="applications">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#applications">
+                    @(Model.SelectedApplicationName.IsNullOrEmpty() ? "All Applications" : Model.SelectedApplicationName)
+                    <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu" style="width: 224px;">
+                    <li>
+                        <a href="@Url.Dashboard()">All Applications</a>
+                    </li>
+                    @foreach (var application in Model.Applications)
+                    {
+                        <li>
+                            <a href="@Url.Dashboard(application.FriendlyId)">@application.Name</a>
+                        </li>
+                    }
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
