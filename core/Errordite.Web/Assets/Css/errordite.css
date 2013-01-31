@@ -711,7 +711,7 @@ section {
   .form li {
     margin: 2px 0; }
     .form li.inline {
-      margin: 10px 0; }
+      margin: 5px 0; }
       .form li.inline input {
         display: inline-block; }
       .form li.inline label {

@@ -1,16 +1,11 @@
-﻿using System;
-using CodeTrip.Core.Extensions;
-using CodeTrip.Core.Interfaces;
+﻿using CodeTrip.Core.Interfaces;
 using Errordite.Core.Authorisation;
 using Errordite.Core.Domain.Error;
-using Errordite.Core.Indexing;
 using Errordite.Core.Notifications.Commands;
 using Errordite.Core.Notifications.EmailInfo;
 using Errordite.Core.Organisations;
 using Errordite.Core.Session;
 using Errordite.Core.Users.Queries;
-using Raven.Abstractions.Data;
-using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
 
 namespace Errordite.Core.Issues.Commands
 {
@@ -45,48 +40,34 @@ namespace Errordite.Core.Issues.Commands
 
             _authorisationManager.Authorise(issue, request.CurrentUser);
 
-			if (request.Comment.IsNotNullOrEmpty())
+			//if we are assigning this issue to a new user, notify them
+			if (issue.UserId != request.AssignedUserId && request.AssignedUserId != request.CurrentUser.Id)
 			{
-				issue.History.Add(new IssueHistory
+				var user = _getUserQuery.Invoke(new GetUserRequest
 				{
-					Reference = request.Reference,
-					DateAddedUtc = DateTime.UtcNow,
-					Comment = request.Comment,
-					UserId = request.CurrentUser.Id,
-					Type = HistoryItemType.Comment
+					UserId = request.AssignedUserId,
+					OrganisationId = issue.OrganisationId
+				}).User;
+
+				_sendNotificationCommand.Invoke(new SendNotificationRequest
+				{
+					EmailInfo = new IssueAssignedToUserEmailInfo
+					{
+						To = user.Email,
+						IssueId = issue.Id,
+						IssueName = request.Name
+					},
+					OrganisationId = issue.OrganisationId,
 				});
 			}
-			else
-			{
-				//if we are assigning this issue to a new user, notify them
-				if (issue.UserId != request.AssignedUserId && request.AssignedUserId != request.CurrentUser.Id)
-				{
-					var user = _getUserQuery.Invoke(new GetUserRequest
-					{
-						UserId = request.AssignedUserId,
-						OrganisationId = issue.OrganisationId
-					}).User;
 
-					_sendNotificationCommand.Invoke(new SendNotificationRequest
-					{
-						EmailInfo = new IssueAssignedToUserEmailInfo
-						{
-							To = user.Email,
-							IssueId = issue.Id,
-							IssueName = request.Name
-						},
-						OrganisationId = issue.OrganisationId,
-					});
-				}
+			issue.Status = request.Status;
+			issue.UserId = request.AssignedUserId;
+			issue.Name = request.Name;
+			issue.AlwaysNotify = request.AlwaysNotify;
+			issue.Reference = request.Reference;
 
-				issue.Status = request.Status;
-				issue.UserId = request.AssignedUserId;
-				issue.Name = request.Name;
-				issue.AlwaysNotify = request.AlwaysNotify;
-				issue.Reference = request.Reference;
-
-				Session.AddCommitAction(new RaiseIssueModifiedEvent(issue));
-			}
+			Session.AddCommitAction(new RaiseIssueModifiedEvent(issue));
 
             return new UpdateIssueDetailsResponse
             {
@@ -107,7 +88,6 @@ namespace Errordite.Core.Issues.Commands
     {
         public string IssueId { get; set; }
         public string Name { get; set; }
-        public string Comment { get; set; }
         public string AssignedUserId { get; set; }
         public bool AlwaysNotify { get; set; }
         public IssueStatus Status { get; set; }

@@ -21,6 +21,7 @@
       $paging = $('div.paging');
       paging = new Paging(pagingFunc);
       paging.init(ajax);
+      setTimeout(new Initialisation().hideNotifications, 8000);
       $tabHolders = $('.tabs');
       prettyPrint();
       for (_i = 0, _len = $tabHolders.length; _i < _len; _i++) {
@@ -72,6 +73,10 @@
         $('#daterange span').html(start.toString('MMMM d, yyyy') + ' - ' + end.toString('MMMM d, yyyy'));
         return $('#daterange input').val(start.toString('u') + '|' + end.toString('u'));
       });
+    };
+
+    Initialisation.prototype.hideNotifications = function() {
+      return $('div#notifications').hide('slow');
     };
 
     return Initialisation;

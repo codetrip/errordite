@@ -11,7 +11,6 @@ using Errordite.Core.Domain.Error;
 using Errordite.Core.Domain.Exceptions;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Errors.Queries;
-using Errordite.Core.Indexing;
 using Errordite.Core.Issues.Commands;
 using Errordite.Core.Issues.Queries;
 using Errordite.Core.Matching;
@@ -44,6 +43,7 @@ namespace Errordite.Web.Controllers
         private readonly IDeleteIssueCommand _deleteIssueCommand;
         private readonly IGetUserQuery _getUserQuery;
         private readonly IGetIssueReportDataQuery _getIssueReportDataQuery;
+        private readonly IAddCommentCommand _addCommentCommand;
 
         public IssueController(IGetIssueQuery getIssueQuery, 
             IAdjustRulesCommand adjustRulesCommand, 
@@ -54,7 +54,8 @@ namespace Errordite.Web.Controllers
             IPurgeIssueCommand purgeIssueCommand, 
             IDeleteIssueCommand deleteIssueCommand,
 			IGetUserQuery getUserQuery, 
-            IGetIssueReportDataQuery getIssueReportDataQuery)
+            IGetIssueReportDataQuery getIssueReportDataQuery, 
+            IAddCommentCommand addCommentCommand)
         {
             _getIssueQuery = getIssueQuery;
             _adjustRulesCommand = adjustRulesCommand;
@@ -66,6 +67,7 @@ namespace Errordite.Web.Controllers
             _deleteIssueCommand = deleteIssueCommand;
             _getUserQuery = getUserQuery;
             _getIssueReportDataQuery = getIssueReportDataQuery;
+            _addCommentCommand = addCommentCommand;
         }
 
         [ImportViewData, GenerateBreadcrumbs(BreadcrumbId.Issue, BreadcrumbId.Issues, WebConstants.CookieSettings.IssueSearchCookieKey)]
@@ -453,14 +455,19 @@ namespace Errordite.Web.Controllers
 		[HttpPost, ExportViewData]
 		public ActionResult AddComment(AddCommentViewModel postModel)
 		{
-			var result = _updateIssueDetailsCommand.Invoke(new UpdateIssueDetailsRequest
+            if (!ModelState.IsValid)
+            {
+                return RedirectWithViewModel(postModel, "index", routeValues: new { id = postModel.IssueId, tab = IssueTab.History.ToString() });
+            }
+
+            var result = _addCommentCommand.Invoke(new AddCommentRequest
 			{
 				IssueId = postModel.IssueId,
 				CurrentUser = Core.AppContext.CurrentUser,
 				Comment = postModel.Comment
 			});
 
-			if (result.Status == UpdateIssueDetailsStatus.IssueNotFound)
+			if (result.Status == AddCommentStatus.IssueNotFound)
 			{
 				return RedirectToAction("notfound", new { FriendlyId = postModel.IssueId.GetFriendlyId() });
 			}
