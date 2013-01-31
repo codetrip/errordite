@@ -5,19 +5,19 @@
 
 <div class="quicklinks">
 	<div class="four-col home-links">
-		<span><a href="@Url.Issues()">All Issues</a> (@Model.Stats.TotalIssues)</span>
-		<span><a href="@Url.Issues(IssueStatus.Unacknowledged)">Unacknowledged Issues</a> (@Model.Stats.Unacknowledged)</span>
-		<span><a href="@Url.Issues(IssueStatus.Acknowledged)">Acknowledged Issues</a> (@Model.Stats.Acknowledged)</span>
+		<a class="link" href="@Url.Issues()">All Issues <span>(@Model.Stats.TotalIssues)</span></a>
+		<a class="link" href="@Url.Issues(IssueStatus.Unacknowledged)">Unacknowledged Issues <span>(@Model.Stats.Unacknowledged)</span></a>
+		<a class="link" href="@Url.Issues(IssueStatus.Acknowledged)">Acknowledged Issues <span>(@Model.Stats.Acknowledged)</span></a>
 	</div>
 	<div class="four-col home-links">
-		<span><a href="@Url.Issues(IssueStatus.Solved)">Solved Issues</a> (@Model.Stats.Solved)</span>
-		<span><a href="@Url.Issues(IssueStatus.Ignored)">Ignored Issues</a> (@Model.Stats.Ignored)</span>
-		<span><a href="@Url.MyIssues(ViewData.GetAppContext().CurrentUser.FriendlyId)">Issues Assigned to me</a> (@Model.Stats.CurrentUserIssueCount)</span>
+		<a class="link" href="@Url.Issues(IssueStatus.Solved)">Solved Issues <span>(@Model.Stats.Solved)</span></a>
+		<a class="link" href="@Url.Issues(IssueStatus.Ignored)">Ignored Issues <span>(@Model.Stats.Ignored)</span></a>
+		<a class="link" href="@Url.MyIssues(ViewData.GetAppContext().CurrentUser.FriendlyId)">Issues Assigned to me <span>(@Model.Stats.CurrentUserIssueCount)</span></a>
 	</div>
 	<div class="four-col home-links">
-		<span><a href="@Url.Applications()">Applications</a> (@Model.Stats.Applications)</span>
-		<span><a href="@Url.Users()">Users</a> (@Model.Stats.Users)</span>
-		<span><a href="@Url.Groups()">Groups</a> (@Model.Stats.Groups)</span>
+		<a class="link" href="@Url.Applications()">Applications <span>(@Model.Stats.Applications)</span></a>
+		<a class="link" href="@Url.Users()">Users <span>(@Model.Stats.Users)</span></a>
+		<a class="link" href="@Url.Groups()">Groups <span>(@Model.Stats.Groups)</span></a>
 	</div>
     <div class="four-col home-links last">
         <input type="hidden" value="@Model.SelectedApplicationId" id="ApplicationId" />
@@ -28,7 +28,7 @@
                     @(Model.SelectedApplicationName.IsNullOrEmpty() ? "All Applications" : Model.SelectedApplicationName)
                     <b class="caret"></b>
                 </a>
-                <ul class="dropdown-menu" style="width: 224px;">
+                <ul class="dropdown-menu">
                     <li>
                         <a href="@Url.Dashboard()">All Applications</a>
                     </li>
