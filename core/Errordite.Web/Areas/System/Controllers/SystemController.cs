@@ -19,6 +19,7 @@ using Errordite.Web.Controllers;
 using Errordite.Web.Models.Navigation;
 using Raven.Abstractions.Data;
 using Raven.Abstractions.Linq;
+using System.Linq;
 
 namespace Errordite.Web.Areas.System.Controllers
 {
@@ -210,25 +211,20 @@ namespace Errordite.Web.Areas.System.Controllers
             return new EmptyResult();
         }
 
-        public ActionResult UpdateIssueCounts()
+        public ActionResult UpdateIssueCounts(string organisationId)
         {
-            var organisations = _getOrganisationsQuery.Invoke(new GetOrganisationsRequest
+            Core.Session.SetOrganisation(new Organisation
             {
-                Paging = new PageRequestWithSort(1, int.MaxValue)
-            }).Organisations;
+                Id = Organisation.GetId(organisationId)
+            });
 
-            foreach (var organisation in organisations.Items)
+            foreach (var issue in Core.Session.Raven.Query<Issue, Issues_Search>())
             {
-                Core.Session.SetOrganisation(organisation);
-
-                foreach (var issue in Core.Session.Raven.Query<Issue, Issues_Search>())
+                Core.Session.AddCommitAction(new SendNServiceBusMessage("Sync Issue Error Counts", new SyncIssueErrorCountsMessage
                 {
-                    Core.Session.AddCommitAction(new SendNServiceBusMessage("Sync Issue Error Counts", new SyncIssueErrorCountsMessage
-                    {
-                        IssueId = issue.Id,
-                        OrganisationId = issue.OrganisationId
-                    }, _configuration.EventsQueueName));
-                }
+                    IssueId = issue.Id,
+                    OrganisationId = issue.OrganisationId
+                }, _configuration.EventsQueueName));
             }
 
             return new EmptyResult();

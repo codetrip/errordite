@@ -8,7 +8,7 @@
             Name
         </div>
         <div class="item-info full" style="margin-bottom:5px;">
-            <a href="@Url.Issue(Model.IssueId)" data-title="@Model.Name" @(Model.Name.Length > 65 ? "class=tool-tip" : "")>@(Model.Name.Length > 65 ? Model.Name.Substring(0, 65) + "..." : Model.Name)</a>
+            <a href="@Url.Issue(Model.IssueId)" data-title="@Model.Name" @(Model.Name.Length > 60 ? "class=tool-tip" : "")>@(Model.Name.Length > 60 ? Model.Name.Substring(0, 60) + "..." : Model.Name)</a>
         </div>
         <div class="item-info heading">
             Status

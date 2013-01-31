@@ -5,6 +5,11 @@ namespace CodeTrip.Core.Auditing.Entities
     public class ExceptionAuditEvent : AuditEvent
     {
         public Exception Error { get; set; }
+
+        public override string ToString()
+        {
+            return ExceptionUtility.FormatException(Error, true, true);
+        }
     }
 
     public class AuditEvent

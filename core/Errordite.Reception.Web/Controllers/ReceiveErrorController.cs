@@ -23,5 +23,10 @@ namespace Errordite.Reception.Web.Controllers
 
             return Content("Ok");
         }
+
+        public ActionResult Test()
+        {
+            return Content("Ok");
+        }
     }
 }
