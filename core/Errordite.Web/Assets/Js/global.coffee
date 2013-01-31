@@ -19,6 +19,8 @@ class Initialisation
 		paging = new Paging(pagingFunc) 
 		paging.init ajax
 
+		setTimeout new Initialisation().hideNotifications, 8000
+
 		$tabHolders = $('.tabs')
 
 		prettyPrint();		
@@ -61,6 +63,8 @@ class Initialisation
 				$('#daterange span').html start.toString('MMMM d, yyyy') + ' - ' + end.toString('MMMM d, yyyy')
 				$('#daterange input').val start.toString('u') + '|' + end.toString('u')
 
+	hideNotifications: ->
+		$('div#notifications').hide('slow');
 
 class Spinner
 
