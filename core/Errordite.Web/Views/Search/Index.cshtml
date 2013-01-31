@@ -6,7 +6,7 @@
     ViewBag.Title = "Search";
 }
 
-<section class="centered">
+<section id="search" class="centered">
 	<div class="content">
 		<h3>Your search for "@Model.Query" returned the following results...</h3>
 		<div class="two-col">
@@ -29,7 +29,7 @@
 			}
 		</div>
 		<div class="two-col">
-			<h2 class="section-header"><i class="icon-error"></i>Errors</h2>
+			<h2 class="section-header"><i class="icon-errors"></i>Errors</h2>
 			@if(Model.ErrorTotal > 0)
 			{
 				<div class="search-status">

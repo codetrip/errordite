@@ -36,7 +36,7 @@ namespace Errordite.Web.Models.Issues
         public string Comment { get; set; }
         public string Reference { get; set; }
         public string IssueId { get; set; }
-        [Required(ErrorMessageResourceType = typeof(Resources.IssueResources), ErrorMessageResourceName = "Name_Required")]
+        [Required(ErrorMessage = "Please enter a name")]
         public string Name { get; set; }
         public string UserId { get; set; }
         public IssueStatus Status { get; set; }
@@ -44,6 +44,13 @@ namespace Errordite.Web.Models.Issues
         public bool AlwaysNotify { get; set; }
         public string DateRange { get; set; }
     }
+
+	public class AddCommentViewModel
+	{
+		[Required(ErrorMessage = "Please enter a comment")]
+		public string Comment { get; set; }
+		public string IssueId { get; set; }
+	}
 
     public class IssueHistoryItemViewModel
     {

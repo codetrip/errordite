@@ -49,6 +49,7 @@
     		  $(SourcePath)\core\Errordite.Web\Assets\Js\applications.js;
     		  $(SourcePath)\core\Errordite.Web\Assets\Js\home.js;
     		  $(SourcePath)\core\Errordite.Web\Assets\Js\users.js;
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\search.js;
     		  $(SourcePath)\core\Errordite.Web\Assets\Js\groups.js;
     		  $(SourcePath)\core\Errordite.Web\Assets\Js\errors.js;
     		  $(SourcePath)\core\Errordite.Web\Assets\Js\issues.js;

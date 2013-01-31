@@ -123,6 +123,12 @@
   <data name="AssignedUser" xml:space="preserve">
     <value>Assigned User</value>
   </data>
+  <data name="CommentAdded" xml:space="preserve">
+    <value>Comment was saved successfully.</value>
+  </data>
+  <data name="CommentRequired" xml:space="preserve">
+    <value>Please enter a comment</value>
+  </data>
   <data name="DeleteIssueStatus_Ok" xml:space="preserve">
     <value>Issue with Id {0} was successfully deleted.</value>
   </data>

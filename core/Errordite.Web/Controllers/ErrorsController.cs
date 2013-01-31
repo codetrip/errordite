@@ -8,6 +8,7 @@ using Errordite.Web.Models.Errors;
 using System.Linq;
 using CodeTrip.Core.Extensions;
 using Errordite.Web.Extensions;
+using Errordite.Web.Models.Navigation;
 
 namespace Errordite.Web.Controllers
 {
@@ -28,7 +29,8 @@ namespace Errordite.Web.Controllers
         PagingView(DefaultSort = CoreConstants.SortFields.TimestampUtc, DefaultSortDescending = true), 
         ExportViewData,
         ImportViewData,
-        StoreQueryInCookie(WebConstants.CookieSettings.ErrorSearchCookieKey)
+        StoreQueryInCookie(WebConstants.CookieSettings.ErrorSearchCookieKey),
+		GenerateBreadcrumbs(BreadcrumbId.Errors)
         ]
         public ActionResult Index(ErrorCriteriaPostModel postModel)
         {

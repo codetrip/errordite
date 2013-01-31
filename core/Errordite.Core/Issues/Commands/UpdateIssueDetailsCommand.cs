@@ -45,52 +45,48 @@ namespace Errordite.Core.Issues.Commands
 
             _authorisationManager.Authorise(issue, request.CurrentUser);
 
-            //if we are assigning this issue to a new user, notify them
-            if (issue.UserId != request.AssignedUserId && request.AssignedUserId != request.CurrentUser.Id)
-            {
-                var user = _getUserQuery.Invoke(new GetUserRequest
-                {
-                    UserId = request.AssignedUserId, 
-                    OrganisationId = issue.OrganisationId
-                }).User;
+			if (request.Comment.IsNotNullOrEmpty())
+			{
+				issue.History.Add(new IssueHistory
+				{
+					Reference = request.Reference,
+					DateAddedUtc = DateTime.UtcNow,
+					Comment = request.Comment,
+					UserId = request.CurrentUser.Id,
+					Type = HistoryItemType.Comment
+				});
+			}
+			else
+			{
+				//if we are assigning this issue to a new user, notify them
+				if (issue.UserId != request.AssignedUserId && request.AssignedUserId != request.CurrentUser.Id)
+				{
+					var user = _getUserQuery.Invoke(new GetUserRequest
+					{
+						UserId = request.AssignedUserId,
+						OrganisationId = issue.OrganisationId
+					}).User;
 
-                _sendNotificationCommand.Invoke(new SendNotificationRequest
-                {
-                    EmailInfo = new IssueAssignedToUserEmailInfo
-                    {
-                        To = user.Email,
-                        IssueId = issue.Id,
-                        IssueName = request.Name
-                    },
-                    OrganisationId = issue.OrganisationId,
-                });
-            }
+					_sendNotificationCommand.Invoke(new SendNotificationRequest
+					{
+						EmailInfo = new IssueAssignedToUserEmailInfo
+						{
+							To = user.Email,
+							IssueId = issue.Id,
+							IssueName = request.Name
+						},
+						OrganisationId = issue.OrganisationId,
+					});
+				}
 
-            issue.Status = request.Status;
-            issue.UserId = request.AssignedUserId;
-            issue.Name = request.Name;
-            issue.AlwaysNotify = request.AlwaysNotify;
-            issue.Reference = request.Reference;
+				issue.Status = request.Status;
+				issue.UserId = request.AssignedUserId;
+				issue.Name = request.Name;
+				issue.AlwaysNotify = request.AlwaysNotify;
+				issue.Reference = request.Reference;
 
-            string message = Resources.CoreResources.HistoryIssueUpdated.FormatWith(request.CurrentUser.FullName,
-                request.CurrentUser.Email,
-                request.Status, 
-                request.Name,
-                request.AlwaysNotify);
-
-            if (request.Comment.IsNotNullOrEmpty())
-                message = "{0}<br /><strong>Comment: </strong><i>{1}</i>".FormatWith(message, request.Comment);
-
-            issue.History.Add(new IssueHistory
-            {
-                Reference = request.Reference,
-                DateAddedUtc = DateTime.UtcNow,
-                Comment = message,
-                UserId = request.CurrentUser.Id,
-                Type = HistoryItemType.DetailsUpdated
-            });
-
-            Session.AddCommitAction(new RaiseIssueModifiedEvent(issue));
+				Session.AddCommitAction(new RaiseIssueModifiedEvent(issue));
+			}
 
             return new UpdateIssueDetailsResponse
             {

@@ -8,6 +8,7 @@ body, html {
   width: 100%;
   height: 100%;
   min-width: 974px;
+  min-height: 500px;
   background-color: #fff;
   font-size: 15px;
   color: #292c31; }
@@ -84,7 +85,10 @@ h4 {
   font-size: 14px;
   margin: 5px 0; }
   h4.formodal {
-    margin: 15px 0; }
+    margin: 15px 0;
+    font-size: 18px;
+    color: #496d82;
+    font-weight: 600; }
 
 h5 {
   font-size: 12px;
@@ -239,7 +243,7 @@ table {
 .trail-container {
   width: 100%;
   background: #f3f8fc;
-  height: 40px;
+  height: 43px;
   float: left; }
   .trail-container .trail {
     margin: 0 auto;
@@ -255,7 +259,7 @@ table {
       padding: 0 2px; }
     .trail-container .trail li {
       float: left;
-      line-height: 40px; }
+      line-height: 42px; }
       .trail-container .trail li a {
         color: #729db7;
         font-size: 13px; }
@@ -482,9 +486,12 @@ section {
     margin-bottom: 1px; }
   .btn.btn-blue {
     color: #496d82;
-    background-color: #92c7e7; }
+    background-color: #c2e0f2; }
     .btn.btn-blue:hover {
-      background-color: #c2e0f2; }
+      background-color: #92c7e7;
+      color: #f3f8fc; }
+      .btn.btn-blue:hover a {
+        color: #f3f8fc; }
   .btn.btn-grey {
     color: #496d82;
     background-color: #D3E4EE; }
@@ -663,6 +670,7 @@ section {
   background-position: -54px 0; }
 
 .icon-calendar {
+  margin: 0;
   background-position: -72px 0; }
 
 .icon-search {
@@ -1441,9 +1449,8 @@ nav {
   text-align: left; }
 
 .criteria {
-  padding: 10px 0 5px 0; }
-  .criteria input[type="text"] {
-    width: 415px; }
+  padding: 0 0 5px 0;
+  margin: 0; }
   .criteria select {
     width: 210px; }
   .criteria .popup {
@@ -1456,9 +1463,8 @@ nav {
     font-size: 13px; }
 
 .daterange {
-  margin: 5px 0 5px 0;
   border: 1px solid #CCC;
-  padding: 6px 6px 6px 6px;
+  padding: 7px 6px;
   width: 346px;
   color: #525252;
   -webkit-border-radius: 3px;

@@ -55,6 +55,7 @@ namespace Errordite.Core.Domain.Error
         RulesAdjustedCreatedNewIssue,
         AutoCreated,
         BatchStatusUpdate,
-        DetailsUpdated
+        Comment,
+		DetailsUpdated
     }
 }

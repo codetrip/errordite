@@ -2,12 +2,12 @@
 @using ProductionProfiler.Core.Extensions
 @model IssueDetailsViewModel
 
-@using (Html.BeginForm("adjustdetails", "issue", FormMethod.Post, new { id = "adjustDetails" }))
-{
-    @Html.HiddenFor(m => m.IssueId)
-    @Html.HiddenFor(m => m.Priority)
-	<div class="form double extrawide">
-		<h2 class="section-header border"><i class="icon-cube"></i>Issue Details</h2>
+<div class="form double extrawide">
+	<h2 class="section-header border"><i class="icon-cube"></i>Issue Details</h2>
+	@using (Html.BeginForm("adjustdetails", "issue", FormMethod.Post, new { id = "adjustDetails" }))
+	{
+		 @Html.HiddenFor(m => m.IssueId)
+		 @Html.HiddenFor(m => m.Priority)
 		<ul>
 			<li>
 				@Html.LabelFor(m => m.Name, "Issue Name")
@@ -28,12 +28,6 @@
 				@Html.ValidationMessageFor(m => m.Status)   
 			</li>
 			<li>
-				<span>@Model.Comment</span>
-				@Html.LabelFor(m => m.Comment, "Add a comment")
-				<textarea name="Comment" style="height:50px">@Model.Comment</textarea>
-				<i data-title="Optionally add a comment, this will be added to the issues history." class="icon-info"></i>
-			</li>
-			<li>
 				<div>
 					@Html.LabelFor(m => m.Reference, "External Reference (bug tracker etc)")
 					<span id="reference-link"></span>
@@ -51,24 +45,23 @@
 				<input type="submit" class="btn btn-medium btn-blue" value="Update Details" />
 			</li>
 		</ul>
+	}
+</div>
+@if(Model.SampleError != null)
+{
+	<div class="issue-error-info">
+		<h2 class="section-header border"><i class="icon-errors"></i>Sample Error Details</h2>
+		<h3>Exception Type</h3>
+		<p class="word-break">@Model.SampleError.ExceptionInfo.Type</p>
+		<h3>Message</h3>
+		<p class="word-break">@(Model.SampleError.ExceptionInfo.Message.IsNullOrEmpty() ? "No message" : Model.SampleError.ExceptionInfo.Message)</p>
+		<h3>Machine</h3>
+		<p>@Model.SampleError.MachineName</p>
+		<h3>Method</h3>
+		<p class="word-break">@Model.SampleError.ExceptionInfo.MethodName</p>
+		<h3>Url</h3>
+		<p class="word-break">@Model.SampleError.Url</p>
+		<h3>User Agent</h3>
+		<p class="word-break">@Model.SampleError.UserAgent</p>
 	</div>
-	if(Model.SampleError != null)
-	{
-		<div class="issue-error-info">
-			<h2 class="section-header border"><i class="icon-errors"></i>Sample Error Details</h2>
-			<h3>Exception Type</h3>
-			<p class="word-break">@Model.SampleError.ExceptionInfo.Type</p>
-			<h3>Message</h3>
-			<p class="word-break">@(Model.SampleError.ExceptionInfo.Message.IsNullOrEmpty() ? "No message" : Model.SampleError.ExceptionInfo.Message)</p>
-			<h3>Machine</h3>
-			<p>@Model.SampleError.MachineName</p>
-			<h3>Method</h3>
-			<p class="word-break">@Model.SampleError.ExceptionInfo.MethodName</p>
-			<h3>Url</h3>
-			<p class="word-break">@Model.SampleError.Url</p>
-			<h3>User Agent</h3>
-			<p class="word-break">@Model.SampleError.UserAgent</p>
-		</div>
-	 }
-	
-}
+	}

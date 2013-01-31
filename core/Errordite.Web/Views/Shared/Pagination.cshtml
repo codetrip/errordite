@@ -10,7 +10,7 @@
             Page @Html.TextBox("pgno", Model.CurrentPage, Model.LastPage == 1 ? new {disabled="disabled"} : null) of <b>@Model.LastPage</b><i data-title="Enter the page number you want to go to and click anywhere on the page to trigger the page transition" class="icon-info-sign"></i>
         </div>
         
-        <div class="pagination" @(Model.LastPage == 1 ? "style=display:none" : "")>
+        <div class="pagination">
             <ul>
                 @if (Model.CurrentPage > 1)
                 {

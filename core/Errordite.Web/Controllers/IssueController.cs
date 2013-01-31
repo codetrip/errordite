@@ -354,7 +354,7 @@ namespace Errordite.Web.Controllers
                         user.IfPoss(u => u.Email),
                         new ReprocessIssueErrorsResponse() { AttachedIssueIds = h.ReprocessingResult, Status = ReprocessIssueErrorsStatus.Ok }.GetMessage
                             (issue.Id));
-                case HistoryItemType.DetailsUpdated:
+                case HistoryItemType.Comment:
                     return h.Comment; //TODO - record more - like, what got updated
                 case HistoryItemType.RulesAdjustedCreatedNewIssue:
                     return CoreResources.HistoryRulesAdjusted.FormatWith(user.IfPoss(u => u.FullName), user.IfPoss(u => u.Email), h.SpawnedIssueId);
@@ -450,6 +450,25 @@ namespace Errordite.Web.Controllers
             }
         }
 
+		[HttpPost, ExportViewData]
+		public ActionResult AddComment(AddCommentViewModel postModel)
+		{
+			var result = _updateIssueDetailsCommand.Invoke(new UpdateIssueDetailsRequest
+			{
+				IssueId = postModel.IssueId,
+				CurrentUser = Core.AppContext.CurrentUser,
+				Comment = postModel.Comment
+			});
+
+			if (result.Status == UpdateIssueDetailsStatus.IssueNotFound)
+			{
+				return RedirectToAction("notfound", new { FriendlyId = postModel.IssueId.GetFriendlyId() });
+			}
+
+			ConfirmationNotification("Comment was added to the history successfully");
+			return RedirectToAction("index", new { id = postModel.IssueId, tab = IssueTab.History.ToString() });
+		}
+
         [HttpPost, ExportViewData]
         public ActionResult AdjustDetails(IssueDetailsPostModel postModel)
         {
@@ -466,7 +485,6 @@ namespace Errordite.Web.Controllers
                 CurrentUser = Core.AppContext.CurrentUser,
                 AlwaysNotify = postModel.AlwaysNotify,
                 Reference = postModel.Reference,
-                Comment = postModel.Comment,
                 AssignedUserId = postModel.UserId
             });
 
