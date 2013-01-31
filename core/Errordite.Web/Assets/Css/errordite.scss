@@ -1789,18 +1789,27 @@ nav {
 	.home-links  {
 		font-weight: $normalfontweight;
 		font-size:12px;
-		color: $darkblue;
 		width: 225px;
 		border-right: 2px solid $darkestbrown;
 		margin-right: 10px;
 		a {
+			display:inline-block;
 			color:#fff;
 			font-size:13px;
-			line-height:25px;
 			font-weight: $lightfontweight;
-		}	
-		span {
-			display:block;
+			padding: 3px 8px 5px 8px;
+			-webkit-border-radius: $borderradius;
+			-moz-border-radius: $borderradius;
+			border-radius: $borderradius;
+			width:185px;
+			&.link:hover {
+				background-color:#414650;
+				text-decoration:none;
+			}
+			span {
+				display:inline-block;
+				color: $darkblue;
+			}
 		}
 		&.last {
 			border:0;
@@ -1815,11 +1824,14 @@ nav {
 	a.dropdown-toggle {
 		background-color: $mediumbrown;
 		border:0;
+		padding:10px 8px;
+		width:225px;
 	}
 	.caret {
-		margin: 10px 10px 0 0;
+		margin: 8px 10px 0 0;
 	}
 	ul.dropdown-menu {
+		width:240px;
 		background-color: $mediumblue;
 		a {
 			color:#fff;
