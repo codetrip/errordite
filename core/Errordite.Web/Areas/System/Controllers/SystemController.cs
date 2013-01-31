@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 using CodeTrip.Core.Encryption;
 using CodeTrip.Core.Extensions;
@@ -20,6 +21,7 @@ using Errordite.Web.Models.Navigation;
 using Raven.Abstractions.Data;
 using Raven.Abstractions.Linq;
 using System.Linq;
+using Raven.Client;
 
 namespace Errordite.Web.Areas.System.Controllers
 {
@@ -28,7 +30,6 @@ namespace Errordite.Web.Areas.System.Controllers
     {
         private readonly IAppSession _session;
         private readonly IDeleteApplicationCommand _deleteApplicationCommand;
-        private readonly IGetErrorditeErrorsQuery _getErrorditeErrorsQuery;
         private readonly IPagingViewModelGenerator _pagingViewModelGenerator;
         private readonly IEncryptor _encryptor;
         private readonly IGetOrganisationsQuery _getOrganisationsQuery;
@@ -36,7 +37,6 @@ namespace Errordite.Web.Areas.System.Controllers
 
         public SystemController(IAppSession session, 
             IDeleteApplicationCommand deleteApplicationCommand, 
-            IGetErrorditeErrorsQuery getErrorditeErrorsQuery, 
             IPagingViewModelGenerator pagingViewModelGenerator, 
             IEncryptor encryptor, 
             IGetOrganisationsQuery getOrganisationsQuery, 
@@ -44,7 +44,6 @@ namespace Errordite.Web.Areas.System.Controllers
         {
             _session = session;
             _deleteApplicationCommand = deleteApplicationCommand;
-            _getErrorditeErrorsQuery = getErrorditeErrorsQuery;
             _pagingViewModelGenerator = pagingViewModelGenerator;
             _encryptor = encryptor;
             _getOrganisationsQuery = getOrganisationsQuery;
@@ -55,35 +54,6 @@ namespace Errordite.Web.Areas.System.Controllers
         public ActionResult Index()
         {
             return View();
-        }
-
-        [PagingView, ExportViewData, GenerateBreadcrumbs(BreadcrumbId.AdminErrors)]
-        public ActionResult ErrorditeErrors(ErrorditeErrorsPostModel postModel)
-        {
-            var viewModel = new ErrorditeErrorsViewModel();
-            var pagingRequest = GetSinglePagingRequest();
-
-            var request = new GetErrorditeErrorsRequest
-            {
-                Paging = pagingRequest,
-                Query = postModel.Query,
-                Application = postModel.Application,
-                ExceptionType = postModel.ExceptionType,
-                StartDate = postModel.StartDate,
-                EndDate = postModel.EndDate,
-                MessageId = postModel.MessageId
-            };
-
-            var errors = _getErrorditeErrorsQuery.Invoke(request);
-
-            viewModel.ExceptionType = postModel.ExceptionType;
-            viewModel.Paging = _pagingViewModelGenerator.Generate(PagingConstants.DefaultPagingId, errors.Errors.PagingStatus, pagingRequest);
-            viewModel.Errors = errors.Errors;
-            viewModel.Application = postModel.Application;
-            viewModel.StartDate = postModel.StartDate;
-            viewModel.EndDate = postModel.EndDate;
-
-            return View(viewModel);
         }
 
         [HttpPost, ExportViewData]
@@ -100,47 +70,6 @@ namespace Errordite.Web.Areas.System.Controllers
 
             return RedirectToAction("index");
         }
-
-        [HttpPost, ExportViewData]
-        public ActionResult PurgeErrorditeErrors(DateTime fromDate)
-        {
-            _session.RavenDatabaseCommands.DeleteByIndex(CoreConstants.IndexNames.ErrorditeErrors, new IndexQuery
-            {
-                Query = "TimestampUtc:[* TO {0}]".FormatWith(DateTools.DateToString(fromDate, DateTools.Resolution.MILLISECOND))
-            });
-
-            ConfirmationNotification("Errordite Errors Purged Successfully.");
-
-            return RedirectToAction("index");
-        }
-
-		[HttpPost, ExportViewData]
-		public ActionResult SetupHourlyCounts(DateTime fromDate)
-		{
-			var organisations = _getOrganisationsQuery.Invoke(new GetOrganisationsRequest
-			{
-				Paging = new PageRequestWithSort(1, int.MaxValue)
-			}).Organisations;
-
-			foreach (var organisation in organisations.Items)
-			{
-				Core.Session.BootstrapOrganisation(organisation);
-
-				foreach(var issue in Core.Session.Raven.Query<Issue>())
-				{
-					var issueHourlyCount = new IssueHourlyCount
-					{
-						IssueId = issue.Id,
-						Id = "IssueHourlyCount/{0}".FormatWith(issue.FriendlyId)
-					};
-
-					issueHourlyCount.Initialise();
-					Core.Session.Raven.Store(issueHourlyCount);
-				}
-			}
-
-			return RedirectToAction("index");
-		}
 
         [HttpPost, ExportViewData]
         public ActionResult RebuildIndex(string indexName)
@@ -218,16 +147,54 @@ namespace Errordite.Web.Areas.System.Controllers
                 Id = Organisation.GetId(organisationId)
             });
 
-            foreach (var issue in Core.Session.Raven.Query<Issue, Issues_Search>())
+            RavenQueryStatistics stats;
+
+            var issues = Core.Session.Raven.Query<IssueDocument, Issues_Search>().Statistics(out stats)
+                .Skip(0)
+                .Take(_configuration.MaxPageSize)
+                .As<Issue>()
+                .ToList();
+
+            if (stats.TotalResults > _configuration.MaxPageSize)
             {
-                Core.Session.AddCommitAction(new SendNServiceBusMessage("Sync Issue Error Counts", new SyncIssueErrorCountsMessage
+                Trace("Total issues is greater than default page size, iterating to get all issues");
+                int pageNumber = stats.TotalResults / _configuration.MaxPageSize;
+
+                for (int i = 1; i < pageNumber; i++)
+                {
+                    issues.AddRange(Core.Session.Raven.Query<IssueDocument, Issues_Search>()
+                        .Skip(pageNumber * _configuration.MaxPageSize)
+                        .Take(_configuration.MaxPageSize)
+                        .As<Issue>());
+                }
+            }
+
+            foreach (var issue in issues)
+            {
+                Core.Session.Bus.Send(_configuration.EventsQueueName, new SyncIssueErrorCountsMessage
                 {
                     IssueId = issue.Id,
                     OrganisationId = issue.OrganisationId
-                }, _configuration.EventsQueueName));
+                });
             }
 
             return new EmptyResult();
+        }
+
+        public ActionResult SyncIssueCount(string organisationId, string issueId)
+        {
+            Core.Session.SetOrganisation(new Organisation
+            {
+                Id = Organisation.GetId(organisationId)
+            });
+
+            Core.Session.AddCommitAction(new SendNServiceBusMessage("Sync Issue Error Counts", new SyncIssueErrorCountsMessage
+            {
+                IssueId = Issue.GetId(issueId),
+                OrganisationId = Organisation.GetId(organisationId)
+            }, _configuration.EventsQueueName));
+
+            return Content("Queued");
         }
     }
 }

@@ -20,20 +20,24 @@ namespace Errordite.Core.Issues.Queries
 
             object data;
 
-            var dateResults = Query<IssueDailyCount, IssueDailyCount_Search>()
-                .Where(i => i.OrganisationId == Organisation.GetId(request.OrganisationId))
+            var dateResults = Query<IssueDailyCount, OrganisationDailyCount_Search>()
                 .ConditionalWhere(i => i.ApplicationId == Organisation.GetId(request.ApplicationId), request.ApplicationId.IsNotNullOrEmpty)
-                .Where(i => i.Date >= request.StartDate && i.Date <= request.EndDate)
+                .Where(i => i.Date >= request.StartDate.Date && i.Date <= request.EndDate.Date)
                 .OrderBy(i => i.Date)
                 .ToList();
+
+            foreach (var result in dateResults)
+            {
+                Trace("DASHBOARD: Date:{0}, IssueId:={1}, Count:={2}", result.Date, result.IssueId, result.Count);
+            }
 
             if (dateResults.Any())
             {
                 var range = Enumerable.Range(0, (request.EndDate - request.StartDate).Days + 1).ToList();
                 data = new
                 {
-                    x = range.Select(index => FindIssueCount(dateResults, request.StartDate.AddDays(index)).Date.ToString("yyyy-MM-dd")),
-                    y = range.Select(index => FindIssueCount(dateResults, request.StartDate.AddDays(index)).Count)
+                    x = range.Select(index => request.StartDate.AddDays(index).Date.ToString("yyyy-MM-dd")),
+                    y = range.Select(index => FindIssueCount(dateResults, request.StartDate.AddDays(index)))
                 };
             }
             else
@@ -52,20 +56,9 @@ namespace Errordite.Core.Issues.Queries
             };
         }
 
-        private IssueDailyCount FindIssueCount(IEnumerable<IssueDailyCount> results, DateTime date)
+        private int FindIssueCount(IEnumerable<IssueDailyCount> results, DateTime date)
         {
-            var result = results.FirstOrDefault(r => r.Date == date);
-
-            if (result == null)
-            {
-                return new IssueDailyCount
-                {
-                    Count = 0,
-                    Date = date
-                };
-            }
-
-            return result;
+            return results.Where(r => r.Date == date).Sum(r => r.Count);
         }
     }
 
