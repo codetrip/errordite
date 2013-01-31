@@ -3,6 +3,17 @@
 @using Errordite.Web.Models.Issues
 @model IssueDetailsViewModel
 
+
+<div class="form" style="margin-bottom:5px">
+	@using (Html.BeginForm("addcomment", "issue", FormMethod.Post, new { id = "comment" }))
+	{
+		@Html.HiddenFor(m => m.IssueId)
+		<textarea name="Comment" style="height: 50px; width:500px" placeholder="Add a comment to this issues history"></textarea>
+		<input type="submit" class="btn btn-medium btn-blue" value="Add" style="margin-top:22px" />
+		@Html.ValidationMessageFor(m => m.Status)   
+	}
+</div>
+
 @foreach (var item in Model.History)
 {
     <div class="boxed-item history">

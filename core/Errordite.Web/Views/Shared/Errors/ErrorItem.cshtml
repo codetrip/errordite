@@ -8,7 +8,7 @@
 	<td class="toggle @(Model.AutoOpen ? "expanded" : "collapsed")"></td>
 	@if (!Model.HideIssues)
     {
-        <td><a href="@Url.Issue(Model.Error.IssueId.GetFriendlyId())">Issue @Model.Error.IssueId.GetFriendlyId()</a> </td>
+        <td><a href="@Url.Issue(Model.Error.IssueId.GetFriendlyId())">Issue #@Model.Error.IssueId.GetFriendlyId()</a> </td>
     } 
 	
 	<td style="max-width:350px">

@@ -7,9 +7,9 @@
     <div class="form form-inline criteria">
         <ul>
             <li>
-                @Html.TextBoxFor(m => m.Name, new { autocomplete = "off", placeholder = "Issue Name" })
+                @Html.TextBoxFor(m => m.Name, new { autocomplete = "off", placeholder = "Search Issue Name", style="width:230px" })
             </li>
-            <li class="break">
+            <li>
                 @Html.DropDownListFor(m => m.ApplicationId, Model.Applications)
             </li>
             <li>
