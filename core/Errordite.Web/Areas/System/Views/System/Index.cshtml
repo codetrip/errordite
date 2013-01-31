@@ -5,7 +5,7 @@
 
 <section class="centered">
     <div class="content">
-        <h2>Delete Application Errors</h2>
+        <h3>Delete Application Errors</h3>
         <div class="form"> 
             @using (Html.BeginForm("deleteapplicationerrors", "system", FormMethod.Post, new { id = "delAppErrorsForm" }))
             {
@@ -20,7 +20,7 @@
                 </ul>
             }
         </div>
-        <h2>Rebuild Indexes</h2>
+        <h3>Rebuild Indexes</h3>
         <div class="form"> 
             @using (Html.BeginForm("rebuildindex", "system", FormMethod.Post, new { id = "rebuidIndexForm" }))
             {
@@ -31,21 +31,6 @@
                     </li>
                     <li>
                         <input type="submit" class="btn btn-medium btn-blue" value="Rebuild" />
-                    </li>
-                </ul>
-            }
-        </div>
-        <h2>Purge Errordite Errors</h2>
-        <div class="form"> 
-            @using (Html.BeginForm("purgeerrorditeerrors", "system", FormMethod.Post, new { id = "purgeErrors" }))
-            {
-                <ul>
-                    <li>
-                        @Html.Label("All Errors Before Date (yyyy-mm-dd hh:mm:ss)")
-                        @Html.TextBox("fromDate")
-                    </li>
-                    <li>
-                        <input type="submit" class="btn btn-medium btn-blue" value="Purge" />
                     </li>
                 </ul>
             }

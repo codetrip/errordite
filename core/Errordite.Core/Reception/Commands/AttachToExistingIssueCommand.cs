@@ -36,7 +36,7 @@ namespace Errordite.Core.Reception.Commands
             //if the matching issue is solved, send an email and set it back to Acknowledged
             if (issue.Status == IssueStatus.Solved || (issue.AlwaysNotify && issue.LastErrorUtc < DateTime.UtcNow.AddHours(-12)))
             {
-				MaybeSendNotification(issue, request.Application, NotificationType.NotifyOnNewInstanceOfSolvedClass, request.Error);
+				SendNotification(issue, request.Application, NotificationType.NotifyOnNewInstanceOfSolvedClass, request.Error);
 
                 if(issue.Status == IssueStatus.Solved)
                     issue.Status = IssueStatus.Acknowledged;
@@ -88,7 +88,7 @@ namespace Errordite.Core.Reception.Commands
                 issueHourlyCount.IncrementHourlyCount(request.Error.TimestampUtc);
             }
 
-			SetLimitStatus(request.Application, issue);
+			SetLimitStatus(issue);
 
 			Trace("Assigning issue Id to error with Id:={0}, Existing Error IssueId:={1}, New IssueId:={2}", request.Error.Id, request.Error.IssueId, issue.Id);
 			request.Error.IssueId = issue.Id;
@@ -122,7 +122,7 @@ namespace Errordite.Core.Reception.Commands
 			};
         }
 
-        private void SetLimitStatus(Application application, Issue issue)
+        private void SetLimitStatus(Issue issue)
         {
             if (issue.ErrorCount >= _configuration.IssueErrorLimit)
             {
@@ -130,7 +130,7 @@ namespace Errordite.Core.Reception.Commands
             }
         }
 
-        private void MaybeSendNotification(Issue issue, Application application, NotificationType notificationType, Error instance)
+        private void SendNotification(Issue issue, Application application, NotificationType notificationType, Error instance)
         {
             _sendNotificationCommand.Invoke(new SendNotificationRequest
             {

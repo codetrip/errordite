@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using CodeTrip.Core.Interfaces;
 using CodeTrip.Core.Paging;
 using Errordite.Core.Configuration;
@@ -33,7 +34,9 @@ namespace Errordite.Core.Issues.Commands
 
         public SyncIssueErrorCountsResponse Invoke(SyncIssueErrorCountsRequest request)
         {
-			Trace("Starting...");
+            Trace("Starting...");
+            Trace("Syncing issue with Id:={0}...", request.IssueId);
+
 			TraceObject(request);
 
 			var issue = Load<Issue>(Issue.GetId(request.IssueId));
@@ -49,7 +52,13 @@ namespace Errordite.Core.Issues.Commands
             Trace("Deleting counts with query:={0}", query);
 
 			//delete any daily issue count docs
-            Session.AddCommitAction(new DeleteByIndexCommitAction(CoreConstants.IndexNames.IssueDailyCount, new IndexQuery { Query = query }, true));
+            new DeleteByIndexCommitAction(CoreConstants.IndexNames.IssueDailyCount, new IndexQuery { Query = query }, true).Execute(Session);
+
+            //give it bit
+            Thread.Sleep(50);
+
+            //make sure the issue index is not stale
+            new SynchroniseIndex<Issues_Search>().Execute(Session);
 
             //re-initialise the issue hourly counts
 			var hourlyCount = Session.Raven.Load<IssueHourlyCount>("IssueHourlyCount/{0}".FormatWith(issue.FriendlyId));
@@ -89,15 +98,20 @@ namespace Errordite.Core.Issues.Commands
                 }
                 else
                 {
-                    dailyCounts.Add(error.TimestampUtc.Date, new IssueDailyCount
+                    var dailyCount = new IssueDailyCount
                     {
+                        Id = "IssueDailyCount/{0}-{1}".FormatWith(issue.FriendlyId, error.TimestampUtc.ToString("yyyy-MM-dd")),
                         IssueId = issue.Id,
                         Count = 1,
                         Date = error.TimestampUtc.Date,
                         CreatedOnUtc = DateTime.UtcNow.AddMilliseconds(100),
                         OrganisationId = issue.OrganisationId,
                         ApplicationId = issue.ApplicationId
-                    });
+                    };
+
+                    dailyCounts.Add(error.TimestampUtc.Date, dailyCount);
+
+                    Trace("Creating IssueDailyCount, Id:={0}", dailyCount.Id);
                 }
 
                 if (issue.LastErrorUtc < error.TimestampUtc)

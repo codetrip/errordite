@@ -129,7 +129,6 @@
     <Compile Include="..\Errordite.Build\Assembly\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Auditing\RavenExceptionAppender.cs" />
     <Compile Include="Caching\CacheKeys.cs" />
     <Compile Include="Configuration\HttpServerConfiguration.cs" />
     <Compile Include="Domain\Central\UserOrganisationMapping.cs" />
@@ -161,12 +160,12 @@
     <Compile Include="Extensions\IssueExtensions.cs" />
     <Compile Include="Identity\IImpersonationManager.cs" />
     <Compile Include="Indexing\Applications_Search.cs" />
+    <Compile Include="Indexing\OrganisationDailyCount_Search.cs" />
     <Compile Include="Indexing\Organisations_Search.cs" />
     <Compile Include="Indexing\Groups_Search.cs" />
     <Compile Include="Indexing\UserOrganisationMappings.cs" />
     <Compile Include="Indexing\Users_Search.cs" />
     <Compile Include="Indexing\Issues_Search.cs" />
-    <Compile Include="Indexing\ErrorditeErrors.cs" />
     <Compile Include="Indexing\IssueDailyCount_Search.cs" />
     <Compile Include="Indexing\Errors_Search.cs" />
     <Compile Include="IoC\AppSessionInstaller.cs" />
@@ -186,7 +185,6 @@
     <Compile Include="Issues\Commands\DeleteIssueCommand.cs" />
     <Compile Include="Issues\Commands\PurgeIssueCommand.cs" />
     <Compile Include="Issues\Commands\BatchDeleteIssuesCommand.cs" />
-    <Compile Include="Errors\Queries\GetErrorditeErrorsQuery.cs" />
     <Compile Include="Identity\NoAuthenticationManager.cs" />
     <Compile Include="IoC\ErrorditeNServiceBusClientInstaller.cs" />
     <Compile Include="Issues\Commands\UpdateIssueDetailsCommand.cs" />

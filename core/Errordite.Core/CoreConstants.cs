@@ -16,7 +16,6 @@ namespace Errordite.Core
 
         public static class IndexNames
         {
-            public static string ErrorditeErrors = new ErrorditeErrors().IndexName;
             public static string Errors = new Errors_Search().IndexName;
             public static string Issues = new Issues_Search().IndexName;
 			public static string IssueDailyCount = new IssueDailyCount_Search().IndexName;
