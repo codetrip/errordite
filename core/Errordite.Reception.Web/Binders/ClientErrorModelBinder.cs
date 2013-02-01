@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Web.Mvc;
 using System.Xml;
 using System.Xml.Serialization;
 using Errordite.Client.Abstractions;
 using Newtonsoft.Json;
-using System.Linq;
 
 namespace Errordite.Reception.Web.Binders
 {
@@ -55,7 +53,7 @@ namespace Errordite.Reception.Web.Binders
 
         public static ClientError DeserializeXml(string xml)
         {
-            using (XmlTextReader xmlTextReader = new XmlTextReader(new StringReader(xml)))
+            using (var xmlTextReader = new XmlTextReader(new StringReader(xml)))
             {
                 //there's a bit of funky stuff going on here. Let me explain:
                 
@@ -81,7 +79,7 @@ namespace Errordite.Reception.Web.Binders
                 var overrides = new XmlAttributeOverrides();
                 overrides.Add(typeof(ExceptionInfo), "Data", new XmlAttributes(){XmlIgnore = true});
                 overrides.Add(typeof(ClientError), "ExceptionInfo", new XmlAttributes() { XmlIgnore = true });
-                XmlSerializer xmlSerializer = new XmlSerializer(typeof(ClientErrorShim), overrides);
+                var xmlSerializer = new XmlSerializer(typeof(ClientErrorShim), overrides);
                 var ret = (ClientError)xmlSerializer.Deserialize(xmlTextReader);
                 return ret;
             }

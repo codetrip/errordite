@@ -18,11 +18,12 @@
         <span class="table-info">@Model.Error.MachineName</span>
     </td>
     <td class="word-break">@(Model.Error.ExceptionInfo.Message.Length > 200 ? Model.Error.ExceptionInfo.Message.Substring(0, 200) + "..." : Model.Error.ExceptionInfo.Message) </td>
+    <td>@(Model.Error.Version.IsNullOrEmpty() ? "Unknown" : Model.Error.Version)</td>
     <td>@Model.Error.TimestampUtc.ToLocalTimeFormatted()</td>
     
 </tr>
 <tr @(Model.AutoOpen? string.Empty : "style=display:none;")>
-	<td colspan="5" style="padding:0;margin:0">
+	<td colspan="6" style="padding:0;margin:0">
 		<div class="error-content">
 			<ul class="tabs inner">
 				<li class="active">

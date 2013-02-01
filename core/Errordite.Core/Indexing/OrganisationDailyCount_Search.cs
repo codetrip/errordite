@@ -19,12 +19,16 @@ namespace Errordite.Core.Indexing
                };
 
             Reduce = results => from result in results
-                                group result by new { result.ApplicationId, result.Date, result.Count }
+                                group result by new
+                                {
+                                    result.Date,
+                                    result.ApplicationId
+                                } 
                                 into dailyCount
                                 select new
                                 {
-                                    dailyCount.Key.ApplicationId,
                                     dailyCount.Key.Date,
+                                    dailyCount.Key.ApplicationId,
                                     Count = dailyCount.Sum(m => m.Count)
                                 };
 

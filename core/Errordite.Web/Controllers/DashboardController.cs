@@ -41,10 +41,7 @@ namespace Errordite.Web.Controllers
             var data = _getDashboardReportQuery.Invoke(new GetDashboardReportRequest
             {
                 ApplicationId = applicationId,
-                OrganisationId = Core.AppContext.CurrentUser.OrganisationId,
-                CurrentUser = Core.AppContext.CurrentUser,
-                EndDate = DateTime.UtcNow.Date,
-                StartDate = DateTime.UtcNow.Date.AddDays(-7),
+                OrganisationId = Core.AppContext.CurrentUser.OrganisationId
             }).Data;
 
             return new PlainJsonNetResult(data, true);

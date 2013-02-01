@@ -12,8 +12,8 @@ using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Groups.Queries;
 using Errordite.Core.Organisations.Queries;
 using System.Linq;
+using Errordite.Core.Session;
 using ProtoBuf;
-using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
 using CodeTrip.Core.Extensions;
 
 namespace Errordite.Core.Users.Queries
