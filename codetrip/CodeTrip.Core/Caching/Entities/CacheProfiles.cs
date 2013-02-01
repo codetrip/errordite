@@ -7,6 +7,7 @@ namespace CodeTrip.Core.Caching.Entities
         Groups,
         Organisations,
         Applications,
-        System
+        System,
+        Dashboard
     }
 }

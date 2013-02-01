@@ -18,6 +18,7 @@ namespace Errordite.Web.Models.Issues
     public class IssueDetailsViewModel : IssueDetailsPostModel
     {
         public DateTime LastErrorUtc { get; set; }
+        public DateTime FirstErrorUtc { get; set; }
         public int ErrorCount { get; set; }
         public string UserName { get; set; }
         public string ApplicationName { get; set; }

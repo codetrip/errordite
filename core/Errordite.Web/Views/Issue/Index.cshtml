@@ -1,5 +1,4 @@
 ﻿@using CodeTrip.Core.Extensions
-@using Errordite.Core.Configuration
 @using Errordite.Core.Domain.Organisation
 @using Errordite.Core.Extensions
 @using Errordite.Web.Models.Issues
@@ -22,7 +21,10 @@
 				<span id="instance-count" class="bold">
 					@Model.Details.ErrorCount
 				</span> 
-				error@(Model.Details.ErrorCount == 1 ? "" : "s") | Last:
+				error@(Model.Details.ErrorCount == 1 ? "" : "s") | First:
+				<span class="bold">
+					@Model.Details.FirstErrorUtc.ToLocalTimeFormatted()
+				</span> | Last:
 				<span class="bold">
 					@Model.Details.LastErrorUtc.ToLocalTimeFormatted()
 				</span>

@@ -247,6 +247,7 @@ namespace Errordite.Web.Controllers
                     Name = issue.Name,
                     ErrorCount = issue.ErrorCount,
                     LastErrorUtc = issue.LastErrorUtc,
+                    FirstErrorUtc = issue.CreatedOnUtc,
                     Status = issue.Status,
                     Priority = issue.MatchPriority,
                     UserName = assignedUser == null ? string.Empty : assignedUser.FullName,

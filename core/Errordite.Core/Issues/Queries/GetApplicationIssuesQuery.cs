@@ -6,9 +6,9 @@ using CodeTrip.Core.Paging;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Indexing;
+using Errordite.Core.Session;
 using Raven.Client;
 using Raven.Client.Linq;
-using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
 
 namespace Errordite.Core.Issues.Queries
 {

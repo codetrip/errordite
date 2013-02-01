@@ -40,6 +40,10 @@ namespace Errordite.Core.Domain.Error
         public List<TraceMessage> Messages { get; set; }
         [ProtoMember(11)]
         public ExceptionInfo[] ExceptionInfos { get; set; }
+        [ProtoMember(12)]
+        public List<string> Tags { get; set; }
+        [ProtoMember(13)]
+        public string Version { get; set; }
 
         [Raven.Imports.Newtonsoft.Json.JsonIgnore]
         public string FriendlyId { get { return Id == null ? string.Empty : Id.Split('/')[1]; } }

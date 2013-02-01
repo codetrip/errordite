@@ -124,6 +124,8 @@ namespace Errordite.Core.Reception.Commands
                 MachineName = clientError.MachineName,
                 Url = GetUrl(clientError),
                 UserAgent = GetUserAgent(clientError),
+                Version = clientError.Version,
+                Tags = clientError.Tags,
                 OrganisationId = application == null ? null : application.OrganisationId,
                 ExceptionInfos = GetErrorInfo(clientError.ExceptionInfo).ToArray(),
                 Messages = clientError.Messages == null ? null : clientError.Messages.Select(m => new TraceMessage
