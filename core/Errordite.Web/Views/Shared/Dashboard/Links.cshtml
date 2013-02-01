@@ -25,20 +25,34 @@
         <ul class="popup popup-pills">
             <li class="dropdown" id="applications">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#applications">
-                    @(Model.SelectedApplicationName.IsNullOrEmpty() ? "All Applications" : Model.SelectedApplicationName)
-                    <b class="caret"></b>
-                </a>
-                <ul class="dropdown-menu">
-                    <li>
-                        <a href="@Url.Dashboard()">All Applications</a>
-                    </li>
-                    @foreach (var application in Model.Applications)
+                    @if (Model.SelectedApplicationName.IsNullOrEmpty() && Model.Applications.Count() > 1)
                     {
-                        <li>
-                            <a href="@Url.Dashboard(application.FriendlyId)">@application.Name</a>
-                        </li>
+                        <text>All Applications</text> <span>(@Model.Applications.Count())</span>
                     }
-                </ul>
+                    else if(Model.Applications.Any())
+                    {
+                        @(Model.SelectedApplicationName.IsNullOrEmpty() ? Model.Applications.First().Name : Model.SelectedApplicationName)
+                    }
+                    @if (Model.Applications.Count() > 1)
+                    {
+                        <b class="caret"></b>
+                    }
+                </a>
+                @if (Model.Applications.Count() > 1)
+                {
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="@Url.Dashboard()">All Applications (@Model.Applications.Count())</a>
+                        </li>
+                        @foreach (var application in Model.Applications)
+                        {
+                            <li>
+                                <a href="@Url.Dashboard(application.FriendlyId)">@application.Name</a>
+                            </li>
+                        }
+                    </ul>
+                }
+                
             </li>
         </ul>
     </div>
