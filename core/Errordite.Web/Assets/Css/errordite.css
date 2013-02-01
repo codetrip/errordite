@@ -1307,11 +1307,11 @@ nav {
     nav .nav li.admin:hover ul {
       left: -80px; }
     nav .nav li.docs:hover ul {
-      left: -123px; }
+      left: -145px; }
     nav .nav li.dashboard:hover div.pointer::before {
       left: 35px; }
     nav .nav li.admin:hover div.pointer::before {
-      left: 22px; }
+      left: 28px; }
     nav .nav li.sysadmin:hover div.pointer::before {
       left: 30px; }
     nav .nav li.docs:hover div.pointer::before {
@@ -1433,7 +1433,7 @@ nav {
   .quicklinks ul {
     padding-left: 0; }
   .quicklinks a.dropdown-toggle {
-    background-color: #525252;
+    background-color: #414650;
     border: 0;
     padding: 10px 8px;
     width: 225px; }

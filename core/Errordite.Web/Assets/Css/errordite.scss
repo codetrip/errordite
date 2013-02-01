@@ -1656,13 +1656,13 @@ nav {
       left: -80px;
     }
     &.docs:hover ul {
-      left: -123px;
+      left: -145px;
     }
     &.dashboard:hover div.pointer::before {
       left: 35px;
     }
     &.admin:hover div.pointer::before {
-      left: 22px;
+      left: 28px;
     }
     &.sysadmin:hover div.pointer::before {
       left: 30px;
@@ -1822,7 +1822,7 @@ nav {
 		padding-left: 0;
 	}
 	a.dropdown-toggle {
-		background-color: $mediumbrown;
+		background-color: #414650;
 		border:0;
 		padding:10px 8px;
 		width:225px;

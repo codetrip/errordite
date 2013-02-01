@@ -20,9 +20,9 @@ In time we hope to use this for replacing values in sql files as well, but we ar
     <ErrorditeToken production="c0kH5d4B9FbfJxSScry5EQ==" theRest="TODO"/>
     
     <RavenConnectionString 
-      dev="Url = http://dev-raven.errordite.com;user=errordite_raven;password=Err0rD1t3_RVN$" 
-      test="Url = http://test-raven.errordite.com;user=errordite_raven;password=Err0rD1t3_RVN$" 
-      production="Url = http://raven.errordite.com;user=errordite_raven;password=Err0rD1t3_RVN$" />
+      dev="Url = http://dev-raven.errordite.com" 
+      test="Url = http://test-raven.errordite.com" 
+      production="Url = http://raven.errordite.com" />
     
     <RavenPort theRest="80" />
     <SiteBaseUrl dev="http://dev-site.errordite.com/" test="http://test.errordite.com/" production="https://www.errordite.com/" />
