@@ -9,9 +9,8 @@ using Errordite.Core.Domain.Organisation;
 using System.Linq;
 using Errordite.Core.Indexing;
 using Errordite.Core.Organisations;
-using Raven.Client.Linq;
+using Errordite.Core.Session;
 using CodeTrip.Core.Extensions;
-using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
 
 namespace Errordite.Core.Applications.Commands
 {
@@ -29,7 +28,7 @@ namespace Errordite.Core.Applications.Commands
         {
             Trace("Starting...");
 
-            var existingApplication = Session.Raven.Query<Application, Applications_Search>().FirstOrDefault(o => o.OrganisationId == request.CurrentUser.OrganisationId && o.Name == request.Name);
+            var existingApplication = Session.Raven.Query<Application, Applications_Search>().FirstOrDefault(a => a.Name == request.Name);
 
             if (existingApplication != null)
             {
@@ -40,9 +39,8 @@ namespace Errordite.Core.Applications.Commands
             }
 
             Raven.Client.RavenQueryStatistics stats;
-            var applications = Session.Raven.Query<Group, Groups_Search>()
+            var applications = Session.Raven.Query<Application, Applications_Search>()
                 .Statistics(out stats)
-                .Where(u => u.OrganisationId == request.CurrentUser.Organisation.Id)
                 .Customize(x => x.WaitForNonStaleResultsAsOfLastWrite())
                 .Take(0);
 

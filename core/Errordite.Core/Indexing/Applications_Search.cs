@@ -14,7 +14,6 @@ namespace Errordite.Core.Indexing
                 {
                     a.Id,
                     a.Name,
-                    a.OrganisationId,
                     a.Token,
                     a.DefaultUserId
                 };

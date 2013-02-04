@@ -119,9 +119,9 @@ namespace Errordite.Core.Identity
             _session.SetOrganisation(organisation);
 
             var user = _getUserByEmailAddressQuery.Invoke(new GetUserByEmailAddressRequest
-                {
-                    EmailAddress = name,
-                }).User;
+            {
+                EmailAddress = name,
+            }).User;
 
             if (user == null)
                 return SignInGuest();

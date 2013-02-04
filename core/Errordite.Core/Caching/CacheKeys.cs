@@ -60,6 +60,11 @@ namespace Errordite.Core.Caching
             {
                 return "{0}-{1}".FormatWith(PerOrganisationPrefix(organisationId), User.GetId(userId));
             }
+
+            public static string Email(string email)
+            {
+                return "{0}".FormatWith(email);
+            }
         }
     }
 }

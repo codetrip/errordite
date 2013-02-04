@@ -8,7 +8,7 @@ using Errordite.Core.Domain.Organisation;
 using System.Linq;
 using Errordite.Core.Indexing;
 using Errordite.Core.Organisations;
-using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
+using Errordite.Core.Session;
 
 namespace Errordite.Core.Applications.Commands
 {
@@ -28,7 +28,7 @@ namespace Errordite.Core.Applications.Commands
 
             var applicationId = Application.GetId(request.ApplicationId);
 
-            var existingApplication = Session.Raven.Query<Application, Applications_Search>().Count(o => o.OrganisationId == request.CurrentUser.OrganisationId && o.Name == request.Name && o.Id != applicationId);
+            var existingApplication = Session.Raven.Query<Application, Applications_Search>().Count(o => o.Name == request.Name && o.Id != applicationId);
 
             if (existingApplication > 0)
             {

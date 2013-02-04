@@ -105,7 +105,6 @@ namespace Errordite.Core.Issues.Commands
                         Count = 1,
                         Date = error.TimestampUtc.Date,
                         CreatedOnUtc = DateTime.UtcNow.AddMilliseconds(100),
-                        OrganisationId = issue.OrganisationId,
                         ApplicationId = issue.ApplicationId
                     };
 

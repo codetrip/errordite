@@ -2,7 +2,6 @@
 using Castle.Core;
 using CodeTrip.Core.Caching.Entities;
 using CodeTrip.Core.Caching.Interceptors;
-using CodeTrip.Core.Caching.Interfaces;
 using CodeTrip.Core.Interfaces;
 using CodeTrip.Core.Paging;
 using Errordite.Core.Authorisation;
@@ -11,9 +10,9 @@ using Errordite.Core.Domain.Organisation;
 using CodeTrip.Core.Extensions;
 using Errordite.Core.Indexing;
 using Errordite.Core.Organisations;
+using Errordite.Core.Session;
 using Errordite.Core.Users.Queries;
 using System.Linq;
-using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
 
 namespace Errordite.Core.Groups.Commands
 {
@@ -61,12 +60,13 @@ namespace Errordite.Core.Groups.Commands
             {
                 if (request.Users.Any(u => u == user.Id) && user.GroupIds.All(gId => gId != existingGroup.Id))
                 {
-                    user.GroupIds.Add(existingGroup.Id);
-                    Store(user); //does not seem to update here without calling store
+                    var loadedUser = Load<User>(User.GetId(user.Id));
+                    loadedUser.GroupIds.Add(existingGroup.Id);
                 }
                 else if (request.Users.All(u => u != user.Id) && user.GroupIds.Any(gId => gId == existingGroup.Id))
                 {
-                    user.GroupIds.Remove(existingGroup.Id);
+                    var loadedUser = Load<User>(User.GetId(user.Id));
+                    loadedUser.GroupIds.Remove(existingGroup.Id);
                 }
             }
 

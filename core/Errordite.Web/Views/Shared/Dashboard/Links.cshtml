@@ -5,14 +5,14 @@
 
 <div class="quicklinks">
 	<div class="four-col home-links">
-		<a class="link" href="@Url.Issues()">All Issues <span>(@Model.Stats.TotalIssues)</span></a>
-		<a class="link" href="@Url.Issues(IssueStatus.Unacknowledged)">Unacknowledged Issues <span>(@Model.Stats.Unacknowledged)</span></a>
-		<a class="link" href="@Url.Issues(IssueStatus.Acknowledged)">Acknowledged Issues <span>(@Model.Stats.Acknowledged)</span></a>
+		<a class="link" href="@Url.Issues(Model.SelectedApplicationId)">All Issues <span>(@Model.Stats.TotalIssues)</span></a>
+		<a class="link" href="@Url.Issues(IssueStatus.Unacknowledged, Model.SelectedApplicationId)">Unacknowledged Issues <span>(@Model.Stats.Unacknowledged)</span></a>
+		<a class="link" href="@Url.Issues(IssueStatus.Acknowledged, Model.SelectedApplicationId)">Acknowledged Issues <span>(@Model.Stats.Acknowledged)</span></a>
 	</div>
 	<div class="four-col home-links">
-		<a class="link" href="@Url.Issues(IssueStatus.Solved)">Solved Issues <span>(@Model.Stats.Solved)</span></a>
-		<a class="link" href="@Url.Issues(IssueStatus.Ignored)">Ignored Issues <span>(@Model.Stats.Ignored)</span></a>
-		<a class="link" href="@Url.MyIssues(ViewData.GetAppContext().CurrentUser.FriendlyId)">Issues Assigned to me <span>(@Model.Stats.CurrentUserIssueCount)</span></a>
+		<a class="link" href="@Url.Issues(IssueStatus.Solved, Model.SelectedApplicationId)">Solved Issues <span>(@Model.Stats.Solved)</span></a>
+		<a class="link" href="@Url.Issues(IssueStatus.Ignored, Model.SelectedApplicationId)">Ignored Issues <span>(@Model.Stats.Ignored)</span></a>
+		<a class="link" href="@Url.MyIssues(ViewData.GetAppContext().CurrentUser.FriendlyId, Model.SelectedApplicationId)">Issues Assigned to me <span>(@Model.Stats.CurrentUserIssueCount)</span></a>
 	</div>
 	<div class="four-col home-links">
 		<a class="link" href="@Url.Applications()">Applications <span>(@Model.Stats.Applications)</span></a>

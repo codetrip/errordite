@@ -27,7 +27,7 @@ namespace Errordite.Core.Issues.Queries
             object data;
 
             var dateResults = Query<IssueDailyCount, OrganisationDailyCount_Search>()
-                .ConditionalWhere(i => i.ApplicationId == Organisation.GetId(request.ApplicationId), request.ApplicationId.IsNotNullOrEmpty)
+                .ConditionalWhere(i => i.ApplicationId == Application.GetId(request.ApplicationId), request.ApplicationId.IsNotNullOrEmpty)
                 .Where(i => i.Date >= startDate && i.Date <= endDate)
                 .OrderBy(i => i.Date)
                 .ToList();

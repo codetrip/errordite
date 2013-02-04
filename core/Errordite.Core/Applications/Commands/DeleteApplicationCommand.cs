@@ -8,9 +8,9 @@ using Errordite.Core.Caching;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Indexing;
 using Errordite.Core.Organisations;
+using Errordite.Core.Session;
 using Raven.Abstractions.Data;
 using CodeTrip.Core.Extensions;
-using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
 
 namespace Errordite.Core.Applications.Commands
 {
@@ -47,6 +47,16 @@ namespace Errordite.Core.Applications.Commands
             }, true);
 
 			Session.RavenDatabaseCommands.DeleteByIndex(CoreConstants.IndexNames.Issues, new IndexQuery
+            {
+                Query = "ApplicationId:{0}".FormatWith(applicationId)
+            }, true);
+
+            Session.RavenDatabaseCommands.DeleteByIndex(CoreConstants.IndexNames.IssueDailyCount, new IndexQuery
+            {
+                Query = "ApplicationId:{0}".FormatWith(applicationId)
+            }, true);
+
+            Session.RavenDatabaseCommands.DeleteByIndex(CoreConstants.IndexNames.OrganisationIssueDailyCount, new IndexQuery
             {
                 Query = "ApplicationId:{0}".FormatWith(applicationId)
             }, true);

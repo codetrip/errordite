@@ -99,14 +99,18 @@ namespace Errordite.Web.Extensions
             return helper.Action("index", "issue", new {id = "{0}", Area = string.Empty});
         }
 
-        public static string Issues(this UrlHelper helper, IssueStatus status)
+        public static string Issues(this UrlHelper helper, IssueStatus status, string applicationId = null)
         {
-            return helper.Action("index", "issues", new { Status = status, Area = string.Empty });
+            return applicationId == null
+                ? helper.Action("index", "issues", new {Status = status, Area = string.Empty})
+                : helper.Action("index", "issues", new {Status = status, ApplicationId = applicationId, Area = string.Empty});
         }
 
-        public static string MyIssues(this UrlHelper helper, string userId)
+        public static string MyIssues(this UrlHelper helper, string userId, string applicationId = null)
         {
-            return helper.Action("index", "issues", new { AssignedTo = userId, Area = string.Empty });
+            return applicationId == null
+                ? helper.Action("index", "issues", new { AssignedTo = userId, Area = string.Empty })
+                : helper.Action("index", "issues", new { AssignedTo = userId, Area = string.Empty, ApplicationId = applicationId });
         }
 
         public static string Rules(this UrlHelper helper, string id)

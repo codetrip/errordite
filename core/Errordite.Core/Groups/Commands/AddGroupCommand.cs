@@ -29,7 +29,7 @@ namespace Errordite.Core.Groups.Commands
         {
             Trace("Starting...");
 
-            var existingGroup = Session.Raven.Query<Group, Groups_Search>().FirstOrDefault(o => o.Name == request.Name && o.OrganisationId == request.Organisation.Id);
+            var existingGroup = Session.Raven.Query<Group, Groups_Search>().FirstOrDefault(o => o.Name == request.Name);
 
             if (existingGroup != null)
             {
@@ -50,18 +50,12 @@ namespace Errordite.Core.Groups.Commands
             //update the groups users
             if (request.Users != null && request.Users.Count > 0)
             {
-                var currentUsers = _getUsersQuery.Invoke(new GetUsersRequest
+                foreach (var userId in request.Users)
                 {
-                    OrganisationId = request.Organisation.Id,
-                    Paging = new PageRequestWithSort(1, _configuration.MaxPageSize)
-                }).Users;
+                    var user = Load<User>(User.GetId(userId));
 
-                foreach (var user in currentUsers.Items)
-                {
-                    if (request.Users.Any(u => u == user.Id))
-                    {
+                    if(user != null)
                         user.GroupIds.Add(group.Id);
-                    }
                 }
             }
 

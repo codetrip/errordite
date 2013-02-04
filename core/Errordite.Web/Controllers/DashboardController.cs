@@ -93,7 +93,7 @@ namespace Errordite.Web.Controllers
 
                 viewModel.LastErrorDisplayed = recentErrors.PagingStatus.TotalItems > 0 ? int.Parse(recentErrors.Items.First().FriendlyId) : -1;
                 viewModel.LastIssueDisplayed = recentIssues.PagingStatus.TotalItems > 0 ? int.Parse(recentIssues.Items.First().FriendlyId) : -1;
-                viewModel.Stats = _getOrganisationStatisticsQuery.Invoke(new GetOrganisationStatisticsRequest { OrganisationId = Core.AppContext.CurrentUser.OrganisationId }).Statistics ?? new Statistics();
+                viewModel.Stats = _getOrganisationStatisticsQuery.Invoke(new GetOrganisationStatisticsRequest { ApplicationId = applicationId }).Statistics ?? new Statistics();
                 viewModel.Stats.CurrentUserIssueCount = issues.PagingStatus.TotalItems;
 				viewModel.RecentIssues = IssueItemViewModel.ConvertSimple(recentIssues.Items, Core.GetUsers().Items);
                 viewModel.SelectedApplicationId = selectedApplication == null ? null : selectedApplication.FriendlyId;
@@ -107,7 +107,7 @@ namespace Errordite.Web.Controllers
             }
             else
             {
-                viewModel.Stats = _getOrganisationStatisticsQuery.Invoke(new GetOrganisationStatisticsRequest { OrganisationId = Core.AppContext.CurrentUser.OrganisationId }).Statistics ?? new Statistics();
+                viewModel.Stats = _getOrganisationStatisticsQuery.Invoke(new GetOrganisationStatisticsRequest { ApplicationId = Core.AppContext.CurrentUser.OrganisationId }).Statistics ?? new Statistics();
             }
 
             return View(viewModel);

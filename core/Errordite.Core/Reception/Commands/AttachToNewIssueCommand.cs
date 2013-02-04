@@ -86,7 +86,6 @@ namespace Errordite.Core.Reception.Commands
 				Count = 1,
 				Date = issue.CreatedOnUtc.Date,
                 CreatedOnUtc = DateTime.UtcNow,
-                OrganisationId = issue.OrganisationId,
                 ApplicationId = issue.ApplicationId
 			};
 
