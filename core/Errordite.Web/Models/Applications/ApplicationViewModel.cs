@@ -17,6 +17,7 @@ namespace Errordite.Web.Models.Applications
         public string RuleMatchFactory { get; set; }
         public string Token { get; set; }
         public string DefaultUser { get; set; }
+        public string Version { get; set; }
         public string DefaultUserId { get; set; }
         public bool IsActive { get; set; }
         public int HipChatRoomId { get; set; }

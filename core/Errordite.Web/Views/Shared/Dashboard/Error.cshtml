@@ -1,6 +1,7 @@
 ﻿@using CodeTrip.Core.Extensions
 @using Errordite.Core.Extensions
 @using Errordite.Web.Extensions
+@using Errordite.Web.Models.Issues
 @model Errordite.Web.Models.Errors.ErrorInstanceViewModel
 
 <div class="boxed-item error" style="display:none">
@@ -10,7 +11,7 @@
 			Exception Type
 		</div>
 		<div class="item-info full" style="margin-bottom:5px;">
-			<a href="@Url.Error(Model.Error.FriendlyId)" data-title="@Model.Error.ExceptionInfo.Type" @(Model.Error.ExceptionInfo.Type.Length > 60 ? "class=tool-tip" : "")>@(@Model.Error.ExceptionInfo.Type.Length > 60 ?@Model.Error.ExceptionInfo.Type.Substring(0, 60) + "..." : @Model.Error.ExceptionInfo.Type)</a>
+			<a href="@Url.Issue(Model.Error.IssueId, IssueTab.Errors)" data-title="@Model.Error.ExceptionInfo.Type" @(Model.Error.ExceptionInfo.Type.Length > 60 ? "class=tool-tip" : "")>@(@Model.Error.ExceptionInfo.Type.Length > 60 ?@Model.Error.ExceptionInfo.Type.Substring(0, 60) + "..." : @Model.Error.ExceptionInfo.Type)</a>
 		</div>
 		<div class="item-info heading">
 			Application

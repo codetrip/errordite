@@ -63,6 +63,7 @@ namespace Errordite.Core.Applications.Commands
                 HipChatRoomId = request.HipChatRoomId,
                 HipChatAuthToken = request.HipChatAuthToken,
                 TokenSalt = Membership.GeneratePassword(4, 0),
+                Version = request.Version,
             };
 
             Store(application);
@@ -112,6 +113,7 @@ namespace Errordite.Core.Applications.Commands
         public string HipChatAuthToken { get; set; }
         public string WebHookUri { get; set; }
         public bool IsActive { get; set; }
+        public string Version { get; set; }
         public List<string> NotificationGroups { get; set; }
     }
 

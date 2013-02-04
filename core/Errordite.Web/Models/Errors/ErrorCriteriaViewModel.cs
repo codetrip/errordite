@@ -25,8 +25,8 @@ namespace Errordite.Web.Models.Errors
     public class ErrorInstanceViewModel
     {
         public Error Error { get; set; }
-		public bool HideIssues { get; set; }
-		public bool AutoOpen { get; set; }
+        public bool HideIssues { get; set; }
+        public bool AutoOpen { get; set; }
 		public string ApplicationName { get; set; }
     }
 

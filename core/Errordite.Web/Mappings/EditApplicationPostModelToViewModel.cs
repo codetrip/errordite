@@ -15,6 +15,7 @@ namespace Errordite.Web.Mappings
                 .ForMember(ci => ci.Id, opt => opt.MapFrom(i => i.Id))
                 .ForMember(ci => ci.MatchRuleFactoryId, opt => opt.MapFrom(i => i.MatchRuleFactoryId))
                 .ForMember(ci => ci.Name, opt => opt.MapFrom(i => i.Name))
+                .ForMember(ci => ci.Version, opt => opt.MapFrom(i => i.Version))
                 .ForMember(ci => ci.HipChatAuthToken, opt => opt.MapFrom(i => i.HipChatAuthToken))
                 .ForMember(ci => ci.HipChatRoomId, opt => opt.MapFrom(i => i.HipChatRoomId));
         }

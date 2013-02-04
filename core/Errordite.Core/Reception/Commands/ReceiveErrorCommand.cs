@@ -111,6 +111,7 @@ namespace Errordite.Core.Reception.Commands
 
             request.Error.ApplicationId = application.Id;
             request.Error.OrganisationId = application.OrganisationId;
+            request.Error.Version = application.Version;
 
             return application;
         }

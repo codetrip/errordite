@@ -58,6 +58,7 @@ namespace Errordite.Core.Applications.Commands
             application.NotificationGroups = request.NotificationGroups;
             application.HipChatRoomId = request.HipChatRoomId;
             application.HipChatAuthToken = request.HipChatAuthToken;
+            application.Version = request.Version;
 
             Session.SynchroniseIndexes<Applications_Search>();
 
@@ -99,6 +100,7 @@ namespace Errordite.Core.Applications.Commands
         public string UserId { get; set; }
         public int? HipChatRoomId { get; set; }
         public string HipChatAuthToken { get; set; }
+        public string Version { get; set; }
         public bool IsActive { get; set; }
         public List<string> NotificationGroups { get; set; }
     }

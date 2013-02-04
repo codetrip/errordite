@@ -27,6 +27,12 @@
                         @Html.ValidationMessageFor(m => m.Name)
                     </li>
                     <li>
+                        @Html.LabelFor(m => m.Version, "Version")
+                        @Html.TextBoxFor(m => m.Version)
+                        <i data-title="All errors received into this application will be tagged with this version number, update it when you deploy a new build." class="icon-info"></i>
+                        @Html.ValidationMessageFor(m => m.Version)
+                    </li>
+                    <li>
                         @Html.LabelFor(m => m.UserId, "Default assigned user")
                         @Html.DropDownListFor(m => m.UserId, Model.Users)
                         <i data-title="Who will the default assignee be for issues created within this application?" class="icon-info"></i>
@@ -45,6 +51,7 @@
                     </li>
                     <li>
                         <input type="submit" class="btn btn-medium btn-blue" value="Save" />
+                        <a href="@Url.Applications()" class="btn btn-grey btn-medium">Cancel</a>
                     </li>
                 </ul>
             </div>

@@ -14,8 +14,10 @@
 
 <section id="users" class="centered">
     <div class="content">
-        <h1>Users</h1>
-        <p>Your organisation's users are listed below. <a href="@Url.AddUser()">Click here to add a user</a></p>
+        <p class="pull-right">
+            <a href="@Url.AddUser()" class="btn btn-medium btn-blue pull-right">Add User</a>
+        </p>
+
         @if (Model.Users != null && Model.Users.Any())
         {
             @Html.Partial("Users/List", Model)

@@ -193,6 +193,7 @@ namespace Errordite.Web.Controllers
                 SortDescending = paging.SortDescending,
             };
 
+            model.Errors[0].AutoOpen = true;
             model.Paging.Tab = IssueTab.Errors.ToString();
 
             return PartialView("Errors/ErrorItems", model);

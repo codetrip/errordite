@@ -13,19 +13,19 @@
 	
 	<td style="max-width:350px">
         <span class="table-info-header">
-            @Model.Error.ExceptionInfo.Type
+            @Html.Raw(Model.Error.ExceptionInfo.Type)
         </span><br />
-        <span class="table-info">@Model.Error.MachineName</span>
+        <span class="table-info">@Html.Raw(Model.Error.MachineName)</span>
     </td>
-    <td class="word-break">@(Model.Error.ExceptionInfo.Message.Length > 200 ? Model.Error.ExceptionInfo.Message.Substring(0, 200) + "..." : Model.Error.ExceptionInfo.Message) </td>
-    <td>@(Model.Error.Version.IsNullOrEmpty() ? "Unknown" : Model.Error.Version)</td>
-    <td>@Model.Error.TimestampUtc.ToLocalTimeFormatted()</td>
+    <td class="word-break">@(Model.Error.ExceptionInfo.Message.Length > 200 ? Html.Raw(Model.Error.ExceptionInfo.Message.Substring(0, 200) + "...") : Html.Raw(Model.Error.ExceptionInfo.Message)) </td>
+    <td class="word-break">@(Model.Error.Version.IsNullOrEmpty() ? new HtmlString("Unknown") : Html.Raw(Model.Error.Version))</td>
+    <td class="word-break">@Model.Error.TimestampUtc.ToLocalTimeFormatted()</td>
     
 </tr>
 <tr @(Model.AutoOpen? string.Empty : "style=display:none;")>
 	<td colspan="6" style="padding:0;margin:0">
 		<div class="error-content">
-			<ul class="tabs inner">
+			<ul class="tabs inner" style="margin-left:0;">
 				<li class="active">
 					<a href="#" data-val="exception" data-title="@Model.Error.ExceptionInfo.Type">
 						@(Model.Error.ExceptionInfos.Length == 1 ? "" :  "Outer: ")@Model.Error.ExceptionInfo.Type.LastElement('.')
