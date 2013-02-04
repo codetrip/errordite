@@ -50,9 +50,13 @@ namespace Errordite.Core.Users.Commands
                 };
             }
 
+            var email = existingUser.Email;
+
             if (existingUser.Email != request.Email)
-                Session.MasterRaven.Query<UserOrganisationMapping>().First(u => u.EmailAddress == existingUser.Email).EmailAddress = request.Email;
-            //TODO: sync email
+            {
+                var userMapping = Session.MasterRaven.Query<UserOrganisationMapping>().First(u => u.EmailAddress == existingUser.Email);
+                userMapping.EmailAddress = request.Email;
+            }
 
             existingUser.FirstName = request.FirstName;
             existingUser.LastName = request.LastName;
@@ -68,7 +72,7 @@ namespace Errordite.Core.Users.Commands
             Session.SynchroniseIndexes<Users_Search, Groups_Search>();
             Session.SynchroniseIndexes<UserOrganisationMappings>(true);
 
-            return new EditUserResponse(false, request.UserId, request.CurrentUser.OrganisationId)
+            return new EditUserResponse(false, request.UserId, request.CurrentUser.OrganisationId, email)
             {
                 Status = EditUserStatus.Ok
             };
@@ -81,12 +85,14 @@ namespace Errordite.Core.Users.Commands
     public class EditUserResponse : CacheInvalidationResponseBase
     {
         private readonly string _userId;
+        private readonly string _email;
         private readonly string _organisationId;
 
-        public EditUserResponse(bool ignoreCache, string userId = "", string organisationId = "")
+        public EditUserResponse(bool ignoreCache, string userId = "", string organisationId = "", string email = "")
             : base(ignoreCache)
         {
             _userId = userId;
+            _email = email;
             _organisationId = organisationId;
         }
 
@@ -94,7 +100,7 @@ namespace Errordite.Core.Users.Commands
 
         protected override IEnumerable<CacheInvalidationItem> GetCacheInvalidationItems()
         {
-            return Caching.CacheInvalidation.GetUserInvalidationItems(_organisationId, _userId);
+            return Caching.CacheInvalidation.GetUserInvalidationItems(_organisationId, _userId, _email);
         }
     }
 

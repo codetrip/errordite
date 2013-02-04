@@ -3,7 +3,6 @@ using System.Linq;
 using Castle.Core;
 using CodeTrip.Core.Caching.Entities;
 using CodeTrip.Core.Caching.Interceptors;
-using CodeTrip.Core.Caching.Interfaces;
 using CodeTrip.Core.Extensions;
 using CodeTrip.Core.Interfaces;
 using Errordite.Core.Authorisation;
@@ -12,8 +11,8 @@ using Errordite.Core.Domain.Central;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Indexing;
 using Errordite.Core.Organisations;
+using Errordite.Core.Session;
 using Raven.Abstractions.Data;
-using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
 
 namespace Errordite.Core.Users.Commands
 {
@@ -53,7 +52,7 @@ namespace Errordite.Core.Users.Commands
 			Session.RavenDatabaseCommands.UpdateByIndex(CoreConstants.IndexNames.Issues,
                 new IndexQuery
                 {
-                    Query = "OrganisationId:{0} AND UserId:{1}".FormatWith(request.CurrentUser.OrganisationId, userId)
+                    Query = "UserId:{0}".FormatWith(userId)
                 },
                 new[]
                 {
@@ -69,7 +68,7 @@ namespace Errordite.Core.Users.Commands
 
             Session.SynchroniseIndexes<Users_Search, Issues_Search>();
 
-            return new DeleteUserResponse(userId: request.UserId, organisationId: request.CurrentUser.OrganisationId)
+            return new DeleteUserResponse(userId: request.UserId, organisationId: request.CurrentUser.OrganisationId, email: existingUser.Email)
             {
                 Status = DeleteUserStatus.Ok
             };
@@ -82,19 +81,21 @@ namespace Errordite.Core.Users.Commands
     public class DeleteUserResponse : CacheInvalidationResponseBase
     {
         private readonly string _userId;
+        private readonly string _email;
         private readonly string _organisationId;
         public DeleteUserStatus Status { get; set; }
 
-        public DeleteUserResponse(bool ignoreCache = false, string userId = "", string organisationId = "")
+        public DeleteUserResponse(bool ignoreCache = false, string userId = "", string organisationId = "", string email = "")
             : base(ignoreCache)
         {
             _userId = userId;
             _organisationId = organisationId;
+            _email = email;
         }
 
         protected override IEnumerable<CacheInvalidationItem> GetCacheInvalidationItems()
         {
-            return CacheInvalidation.GetUserInvalidationItems(_organisationId, _userId);
+            return CacheInvalidation.GetUserInvalidationItems(_organisationId, _userId, _email);
         }
     }
 

@@ -13,7 +13,6 @@ namespace Errordite.Core.Indexing
                             {
                                 user.Id,
                                 user.GroupIds,
-                                user.OrganisationId,
                                 user.Password,
                                 user.PasswordToken,
                                 user.Email,

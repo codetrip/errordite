@@ -7,8 +7,8 @@ using Errordite.Core.Caching;
 using Errordite.Core.Domain.Organisation;
 using CodeTrip.Core.Extensions;
 using Errordite.Core.Indexing;
+using Errordite.Core.Session;
 using ProtoBuf;
-using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
 
 namespace Errordite.Core.Groups.Queries
 {
@@ -19,7 +19,7 @@ namespace Errordite.Core.Groups.Queries
         {
             Trace("Starting...");
 
-            var groups = GetPage<Group, Groups_Search, string>(request.Paging, u => u.OrganisationId == Organisation.GetId(request.OrganisationId), u => u.Name);
+            var groups = GetPage<Group, Groups_Search, string>(request.Paging, orderByClause: u => u.Name);
 
             return new GetGroupsResponse
             {

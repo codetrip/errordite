@@ -17,7 +17,6 @@ namespace Errordite.Core.Indexing
                     count.Date,
                     count.Count,
                     count.CreatedOnUtc,
-                    count.OrganisationId,
                     count.ApplicationId
 				};
 

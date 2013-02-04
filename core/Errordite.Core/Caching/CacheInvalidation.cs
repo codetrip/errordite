@@ -25,10 +25,13 @@ namespace Errordite.Core.Caching
             yield return new CacheInvalidationItem(CacheProfiles.Applications, CacheKeys.Applications.PerOrganisationPrefix(organisationId), true);
         }
 
-        public static IEnumerable<CacheInvalidationItem> GetUserInvalidationItems(string organisationId, string userId = null)
+        public static IEnumerable<CacheInvalidationItem> GetUserInvalidationItems(string organisationId, string userId = null, string email = null)
         {
             if (userId != null)
                 yield return new CacheInvalidationItem(CacheProfiles.Users, CacheKeys.Users.Key(organisationId, userId));
+
+            if (email != null)
+                yield return new CacheInvalidationItem(CacheProfiles.Users, CacheKeys.Users.Email(email));
 
             yield return new CacheInvalidationItem(CacheProfiles.Users, CacheKeys.Users.PerOrganisationPrefix(organisationId), true);
         }

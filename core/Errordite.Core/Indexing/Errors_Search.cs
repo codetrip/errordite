@@ -13,7 +13,6 @@ namespace Errordite.Core.Indexing
     {
         public string Query { get; set; }
         public DateTime TimestampUtc { get; set; }
-        public string OrganisationId { get; set; }
         public string ApplicationId { get; set; }
         public string IssueId { get; set; }
         public string Id { get; set; }
@@ -48,7 +47,6 @@ namespace Errordite.Core.Indexing
                                     })
                                 },
                                 error.TimestampUtc,
-                                error.OrganisationId,
                                 error.ApplicationId,
                                 error.IssueId,
                                 error.Id,

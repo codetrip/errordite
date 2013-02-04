@@ -12,7 +12,6 @@ namespace Errordite.Core.Indexing
                             select new
                             {
                                 g.Id,
-                                g.OrganisationId,
                                 g.Name
                             };
         }

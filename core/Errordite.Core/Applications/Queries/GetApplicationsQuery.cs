@@ -7,8 +7,8 @@ using CodeTrip.Core.Paging;
 using Errordite.Core.Caching;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Indexing;
+using Errordite.Core.Session;
 using ProtoBuf;
-using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
 
 namespace Errordite.Core.Applications.Queries
 {
@@ -19,8 +19,7 @@ namespace Errordite.Core.Applications.Queries
         {
             Trace("Starting...");
 
-            var organisationId = Organisation.GetId(request.OrganisationId);
-            var page = GetPage<Application, Applications_Search, string>(request.Paging, a => a.OrganisationId == organisationId, a => a.Name);
+            var page = GetPage<Application, Applications_Search, string>(request.Paging, orderByClause: a => a.Name);
 
             return new GetApplicationsResponse
             {

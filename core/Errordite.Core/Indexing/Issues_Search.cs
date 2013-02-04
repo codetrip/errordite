@@ -13,7 +13,6 @@ namespace Errordite.Core.Indexing
     {
         public string Name { get; set; }
         public string UserId { get; set; }
-        public string OrganisationId { get; set; }
         public string ApplicationId { get; set; }
         public string Status { get; set; }
         public int ErrorCount { get; set; }
@@ -37,7 +36,6 @@ namespace Errordite.Core.Indexing
                                 doc.UserId,
                                 doc.Id,
                                 doc.Name,
-                                doc.OrganisationId,
                                 doc.ErrorCount,
                                 doc.RulesHash,
                                 FriendlyId = int.Parse(doc.Id.Split('/')[1])

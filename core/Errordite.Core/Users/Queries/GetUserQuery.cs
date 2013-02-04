@@ -46,8 +46,7 @@ namespace Errordite.Core.Users.Queries
             {
                 if (user.OrganisationId != Organisation.GetId(request.OrganisationId))
                 {
-                    throw new UnexpectedOrganisationIdException(user.OrganisationId,
-                                                                Organisation.GetId(request.OrganisationId));
+                    throw new UnexpectedOrganisationIdException(user.OrganisationId, Organisation.GetId(request.OrganisationId));
                 }
 
                 user.Organisation = _getOrganisationQuery.Invoke(new GetOrganisationRequest { OrganisationId = user.OrganisationId }).Organisation;

@@ -21,8 +21,7 @@ namespace Errordite.Core.Errors.Queries
             RavenQueryStatistics stats;
             
             var query = Session.Raven.Query<ErrorDocument, Errors_Search>()
-                .Statistics(out stats)
-                .Where(e => e.OrganisationId == request.OrganisationId);
+                .Statistics(out stats);
 
             if (!request.ApplicationId.IsNullOrEmpty())
             {

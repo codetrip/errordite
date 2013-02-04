@@ -1,12 +1,13 @@
 ﻿using System;
+using System.Linq;
 using CodeTrip.Core.Interfaces;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Indexing;
+using Errordite.Core.Session;
 using Raven.Client;
-using Raven.Client.Linq;
-using System.Linq;
-using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
+using Errordite.Core.Extensions;
+using CodeTrip.Core.Extensions;
 
 namespace Errordite.Core.Organisations.Queries
 {
@@ -26,7 +27,7 @@ namespace Errordite.Core.Organisations.Queries
             var stats = new Statistics();
 
             var results = Session.Raven.Query<IssueDocument, Issues_Search>()
-                .Where(r => r.OrganisationId == Organisation.GetId(request.OrganisationId))
+                .ConditionalWhere(r => r.ApplicationId == Application.GetId(request.ApplicationId), request.ApplicationId.IsNotNullOrEmpty)
                 .ToFacets(CoreConstants.FacetDocuments.IssueStatus);
             
             var statusFacetValues = results.Results["Status"];
@@ -66,6 +67,6 @@ namespace Errordite.Core.Organisations.Queries
 
     public class GetOrganisationStatisticsRequest
     {
-        public string OrganisationId { get; set; }
+        public string ApplicationId { get; set; }
     }
 }

@@ -13,7 +13,6 @@ using Errordite.Core.Notifications.EmailInfo;
 using System.Linq;
 using CodeTrip.Core.Extensions;
 using Errordite.Core.Session;
-using Raven.Client.Linq;
 
 namespace Errordite.Core.Users.Commands
 {
@@ -67,7 +66,6 @@ namespace Errordite.Core.Users.Commands
             Raven.Client.RavenQueryStatistics stats;
             var users = Session.Raven.Query<User, Users_Search>()
                 .Statistics(out stats)
-                .Where(u => u.OrganisationId == request.Organisation.Id)
                 .Customize(x => x.WaitForNonStaleResultsAsOfLastWrite())
                 .Take(0);
 
