@@ -248,6 +248,8 @@
     <Compile Include="Areas\System\Controllers\SystemController.cs" />
     <Compile Include="Areas\System\Models\Organisations\SuspendOrganisationViewModel.cs" />
     <Compile Include="ActionFilters\GenerateBreadcrumbs.cs" />
+    <Compile Include="Controllers\ErrorditeApiController.cs" />
+    <Compile Include="Controllers\WebApiController.cs" />
     <Compile Include="Controllers\ApplicationsController.cs" />
     <Compile Include="Areas\System\Controllers\CacheController.cs" />
     <Compile Include="Areas\System\Controllers\OrganisationsController.cs" />
@@ -847,9 +849,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Js\home.coffee" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Error\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Search\Index.cshtml" />

@@ -9,10 +9,10 @@
                 <th>Id</th>    
             }  
             <th>Name</th>
+            <th>Version</th>
             <th>Active</th>
             <th>Default User</th> 
             <th>Token</th> 
-            @*<th>Group Errors By</th>    *@
             @if (!Model.SystemView)
             {
                 <th colspan="3">Actions</th>
@@ -29,10 +29,10 @@
                 <td>@application.Id</td>    
             }   
             <td>@application.Name</td>
+            <td>@application.Version</td>
             <td>@application.IsActive</td>
             <td>@application.DefaultUser</td>
             <td>@application.Token</td>
-            @*<td>@application.RuleMatchFactory</td>*@
 
             @if (!Model.SystemView)
             {
@@ -57,7 +57,7 @@
     </tbody>  
     <tfoot>
         <tr>
-            <td @(Model.SystemView ? "colspan=8" : "colspan=9")>
+            <td @(Model.SystemView ? "colspan=9" : "colspan=10")>
                 @Html.Partial("Pagination", Model.Paging)
             </td>
         </tr>

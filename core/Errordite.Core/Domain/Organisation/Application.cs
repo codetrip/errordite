@@ -39,6 +39,8 @@ namespace Errordite.Core.Domain.Organisation
 
         [ProtoMember(11)]
         public string TokenSalt { get; set; }
+        [ProtoMember(12)]
+        public string Version { get; set; }
 
         public static string GetId(string friendlyId)
         {

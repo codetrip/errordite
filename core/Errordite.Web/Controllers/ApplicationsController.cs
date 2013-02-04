@@ -108,6 +108,8 @@ namespace Errordite.Web.Controllers
             if (newOrganisation.HasValue && newOrganisation.Value)
                 viewModel.NewOrganisation = true;
 
+            viewModel.Version = "1.0.0.0";
+
             return View(viewModel);
         }
 
@@ -128,7 +130,8 @@ namespace Errordite.Web.Controllers
                 UserId = viewModel.UserId,
                 HipChatAuthToken = viewModel.HipChatAuthToken,
                 HipChatRoomId = viewModel.HipChatRoomId,
-                NotificationGroups = viewModel.NotificationGroups.Where(n => n.Selected).Select(g => g.Id).ToList()
+                NotificationGroups = viewModel.NotificationGroups.Where(n => n.Selected).Select(g => g.Id).ToList(),
+                Version = viewModel.Version
             });
 
             if (response.Status != AddApplicationStatus.Ok)
@@ -193,7 +196,8 @@ namespace Errordite.Web.Controllers
                 HipChatAuthToken = viewModel.HipChatAuthToken,
                 HipChatRoomId = viewModel.HipChatRoomId,
                 UserId = Errordite.Core.Domain.Organisation.User.GetId(viewModel.UserId),
-                NotificationGroups = viewModel.NotificationGroups.Where(n => n.Selected).Select(g => g.Id).ToList()
+                NotificationGroups = viewModel.NotificationGroups.Where(n => n.Selected).Select(g => g.Id).ToList(),
+                Version = viewModel.Version,
             });
 
             if (response.Status != EditApplicationStatus.Ok)
@@ -261,6 +265,7 @@ namespace Errordite.Web.Controllers
                     ApplicationId = application.Id,
                     OrganisationId = application.OrganisationId,
                     TestError = true,
+                    Version = application.Version
                 },
                 ApplicationId = application.Id,
             }).ContinueWith(t =>

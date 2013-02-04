@@ -15,9 +15,9 @@
 			@foreach (var msg in Model)
 			{
 				<tr> 
-					<td>@msg.Logger</td>
-					<td>@msg.Level</td>
-					<td>@msg.Message</td>
+					<td>@Html.Raw(msg.Logger)</td>
+					<td>@Html.Raw(msg.Level)</td>
+					<td>@Html.Raw(msg.Message)</td>
 					<td>@msg.Milliseconds<span>ms</span></td>
 				</tr>
 			}

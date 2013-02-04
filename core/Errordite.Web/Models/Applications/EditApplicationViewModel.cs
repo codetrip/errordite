@@ -19,6 +19,7 @@ namespace Errordite.Web.Models.Applications
         public string Token { get; set; }
         public string UserId { get; set; }
         public string MatchRuleFactoryId { get; set; }
+        public string Version { get; set; }
         public bool IsActive { get; set; }
         public int? HipChatRoomId { get; set; }
         public string HipChatAuthToken { get; set; }

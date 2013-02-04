@@ -373,9 +373,10 @@ section {
     border-bottom-color: transparent;
     background-color: #ffffff; }
   .tabs.inner {
-    width: 955px; }
-    .tabs.inner li:first-child {
-      margin-left: 0; }
+    width: 955px;
+    margin-top: -1px; }
+    .tabs.inner li {
+      margin: 0; }
 
 .tab-content {
   margin-top: 28px;
@@ -1574,7 +1575,9 @@ nav {
   .issue-error-info h3 {
     text-transform: uppercase;
     font-size: 13px;
-    margin: 5px 0 0 0; }
+    margin: 5px 0 0 0;
+    float: left;
+    width: 100%; }
   .issue-error-info p {
     margin: 0;
     font-size: 13px;
