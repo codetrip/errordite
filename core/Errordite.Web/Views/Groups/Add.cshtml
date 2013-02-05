@@ -15,8 +15,8 @@
     <div class="content">
         @using (Html.BeginForm("add", "groups", FormMethod.Post, new {id = "addGroupForm"}))
         {
-            <h1>Add Group</h1>
-            <div class="form push-up">
+            <h1 class="section-header border">Add Group</h1>
+            <div class="form">
                 <ul>
                     <li>
                         @Html.LabelFor(m => m.Name, "Name")

@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Web.Mvc;
 
 namespace CodeTrip.Core.Extensions
 {
     public static class StringExtensions
     {
+        private static readonly Regex StripCssRegex = new Regex(@"(.*)(\<style\>.*\<\/style\>)(.*)", RegexOptions.Compiled | RegexOptions.Multiline);
+
         public static int SafeParseInt(this string s)
         {
             int result;
@@ -16,6 +19,14 @@ namespace CodeTrip.Core.Extensions
                 return -1;
 
             return result;
+        }
+
+        public static string StripCss(this string input)
+        {
+            if (input.IsNullOrEmpty())
+                return null;
+
+            return StripCssRegex.Replace(input, "$1$3");
         }
 
         public static Dictionary<string, T> ToDictionary<T>(this string s, Func<string, T> valueAction)

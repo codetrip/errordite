@@ -16,8 +16,8 @@
         @using (Html.BeginForm("edit", "groups", FormMethod.Post, new {id = "editGroupForm"}))
         {
             @Html.HiddenFor(m => m.Id)
-            <h1>Edit Group</h1>
-            <div class="form push-up">
+            <h1 class="section-header border">Edit Group</h1>
+            <div class="form">
                 <ul>
                     <li>
                         @Html.LabelFor(m => m.Name, "Name")
@@ -30,7 +30,7 @@
                             @Html.EditorFor(m => m.Users)
                         </ul>
                     </li>
-                    <li>
+                    <li class="buttons">
                         <input class="btn btn-medium btn-blue" type="submit" value="Save" />
                         <a href="@Url.Groups()" class="btn btn-grey btn-medium">Cancel</a>
                     </li>

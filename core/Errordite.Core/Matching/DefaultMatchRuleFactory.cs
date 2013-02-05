@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Resources;
 
@@ -17,8 +18,8 @@ namespace Errordite.Core.Matching
     {
         public IEnumerable<IMatchRule> Create(Error instance)
         {
-            yield return new PropertyMatchRule("MethodName", StringOperator.Equals, instance.ExceptionInfo.MethodName);
-            yield return new PropertyMatchRule("Type", StringOperator.Equals, instance.ExceptionInfo.Type);
+            yield return new PropertyMatchRule("MethodName", StringOperator.Equals, instance.ExceptionInfos.First().MethodName);
+            yield return new PropertyMatchRule("Type", StringOperator.Equals, instance.ExceptionInfos.First().Type);
         }
 
         public IEnumerable<IMatchRule> CreateEmpty()
@@ -47,8 +48,8 @@ namespace Errordite.Core.Matching
     {
         public IEnumerable<IMatchRule> Create(Error instance)
         {
-            yield return new PropertyMatchRule("Module", StringOperator.Equals, instance.ExceptionInfo.Module);
-            yield return new PropertyMatchRule("Type", StringOperator.Equals, instance.ExceptionInfo.Type);
+            yield return new PropertyMatchRule("Module", StringOperator.Equals, instance.ExceptionInfos.First().Module);
+            yield return new PropertyMatchRule("Type", StringOperator.Equals, instance.ExceptionInfos.First().Type);
         }
 
         public IEnumerable<IMatchRule> CreateEmpty()
