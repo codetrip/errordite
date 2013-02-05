@@ -69,7 +69,7 @@ namespace Errordite.Core.Errors.Queries
                     break;
             }
 
-            var page = new Page<Error>(errors.As<Error>().ToList(), new PagingStatus(request.Paging.PageSize, request.Paging.PageNumber, stats.TotalResults));
+            var page = new Page<Error>(errors.As<Error>().ToList(), new PagingStatus(request.Paging.PageSize, request.Paging.PageNumber, stats.TotalResults > 50 ? 50 : stats.TotalResults));
 
             Trace("...Located {0} Items from page {1}, page size:={2}", stats.TotalResults, request.Paging.PageNumber, request.Paging.PageSize);
 

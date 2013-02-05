@@ -88,7 +88,7 @@ namespace Errordite.Test
         {
             var session = _container.Resolve<IDocumentSession>();
 
-            var x = session.Query<Error>().Count(e => e.ExceptionInfo.Message == "test message");
+            var x = session.Query<Error>().Count(e => e.ExceptionInfos.First().Message == "test message");
 
             Console.WriteLine(x);
         }
@@ -96,7 +96,7 @@ namespace Errordite.Test
         [Test]
         public void SaveExpressionTest()
         {
-            var tc1 = new TestClass() {SGetter = ei => ei.ExceptionInfo.Type};
+            var tc1 = new TestClass() { SGetter = ei => ei.ExceptionInfos.First().Type };
 
             var session = _container.Resolve<IDocumentSession>();
 

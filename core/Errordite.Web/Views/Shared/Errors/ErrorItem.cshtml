@@ -5,7 +5,7 @@
 @model ErrorInstanceViewModel
            
 <tr id="@Model.Error.FriendlyId"> 
-	<td class="toggle @(Model.AutoOpen ? "expanded" : "collapsed")"></td>
+	<td class="toggle collapsed"></td>
 	@if (!Model.HideIssues)
     {
         <td><a href="@Url.Issue(Model.Error.IssueId.GetFriendlyId())">Issue #@Model.Error.IssueId.GetFriendlyId()</a> </td>
@@ -13,22 +13,22 @@
 	
 	<td style="max-width:350px">
         <span class="table-info-header">
-            @Html.Raw(Model.Error.ExceptionInfo.Type)
+            @Html.Raw(Model.Error.ExceptionInfos.First().Type)
         </span><br />
         <span class="table-info">@Html.Raw(Model.Error.MachineName)</span>
     </td>
-    <td class="word-break">@(Model.Error.ExceptionInfo.Message.Length > 200 ? Html.Raw(Model.Error.ExceptionInfo.Message.Substring(0, 200) + "...") : Html.Raw(Model.Error.ExceptionInfo.Message)) </td>
+    <td class="word-break">@(Model.Error.ExceptionInfos.First().Message.Length > 200 ? Html.Raw(Model.Error.ExceptionInfos.First().Message.Substring(0, 200) + "...") : Html.Raw(Model.Error.ExceptionInfos.First().Message)) </td>
     <td class="word-break">@(Model.Error.Version.IsNullOrEmpty() ? new HtmlString("Unknown") : Html.Raw(Model.Error.Version))</td>
     <td class="word-break">@Model.Error.TimestampUtc.ToLocalTimeFormatted()</td>
     
 </tr>
-<tr @(Model.AutoOpen? string.Empty : "style=display:none;")>
+<tr style="display:none;">
 	<td colspan="6" style="padding:0;margin:0">
 		<div class="error-content">
 			<ul class="tabs inner" style="margin-left:0;">
 				<li class="active">
-					<a href="#" data-val="exception" data-title="@Model.Error.ExceptionInfo.Type">
-						@(Model.Error.ExceptionInfos.Length == 1 ? "" :  "Outer: ")@Model.Error.ExceptionInfo.Type.LastElement('.')
+					<a href="#" data-val="exception" data-title="@Model.Error.ExceptionInfos.First().Type">
+						@(Model.Error.ExceptionInfos.Length == 1 ? "" :  "Outer: ")@Model.Error.ExceptionInfos.First().Type.LastElement('.')
 					</a>
 				</li>
 				@{
@@ -49,7 +49,7 @@
 				}
 			</ul>
 			<div class="tab-content exception">
-				@Html.Partial("Errors/ErrorInfo", new ExceptionViewModel(Model.Error.ExceptionInfo, Model.Error.Url, Model.Error.UserAgent))
+				@Html.Partial("Errors/ErrorInfo", new ExceptionViewModel(Model.Error.ExceptionInfos.First(), Model.Error.Url, Model.Error.UserAgent))
 			</div>
 			@{
 				count = 0;

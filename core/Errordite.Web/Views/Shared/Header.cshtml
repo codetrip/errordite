@@ -17,12 +17,12 @@
             }
             else if (appContext.AuthenticationStatus == AuthenticationStatus.NotAuthenticated)
             {
-                @: Welcome to Errordite <strong>@appContext.CurrentUser.FirstName</strong> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.SignIn()">Sign In</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.SignOut()">Not @appContext.CurrentUser.FirstName?</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.Contact()">Contact Us</a>
+                @: Welcome back <strong>@appContext.CurrentUser.FirstName</strong> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.SignIn()">Sign In</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.SignOut()">Not @appContext.CurrentUser.FirstName?</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.Contact()">Contact Us</a>
             }
             else
             {
                 <text>
-                    Welcome to Errordite <strong>@appContext.CurrentUser.FirstName
+                    Welcome back <strong>@appContext.CurrentUser.FirstName
                                              @if (appContext.Impersonated)
                                              {
 												<a href="@Url.Impersonate()">(IMPERSONATED)</a>
@@ -42,7 +42,7 @@
         <div class="search">
             @using (Html.BeginForm("index", "search", FormMethod.Get))
             {
-                <div class="search-box" data-title="@(appContext.AuthenticationStatus != AuthenticationStatus.Authenticated ? "Please login to enable search" : string.Empty)">
+                <div class="search-box" data-title="@(appContext.AuthenticationStatus != AuthenticationStatus.Authenticated ? "Please sign in to enable search" : string.Empty)">
                     <i class="icon-search"></i>
                     <input autocomplete="off" class="search-input" id="q" name="q" placeholder="Search your errors & issues..." type="text"  @(appContext.AuthenticationStatus != AuthenticationStatus.Authenticated ? "disabled=disabled" : string.Empty) />
                     <input type="submit" class="search-btn" value="Go" @(appContext.AuthenticationStatus != AuthenticationStatus.Authenticated ? "disabled=disabled" : string.Empty) />

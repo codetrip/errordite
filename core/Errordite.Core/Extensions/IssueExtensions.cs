@@ -1,6 +1,7 @@
 ﻿using Errordite.Core.Domain.Error;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Notifications.EmailInfo;
+using System.Linq;
 
 namespace Errordite.Core.Extensions  
 {
@@ -14,12 +15,11 @@ namespace Errordite.Core.Extensions
                     : new NewInstanceOfSolvedIssueEmailInfo();
 
             emailInfo.ApplicationName = application.Name;
-            emailInfo.ExceptionMessage = instance.ExceptionInfo.Message;
-            emailInfo.Type = instance.ExceptionInfo.Type;
-            emailInfo.Method = instance.ExceptionInfo.MethodName;
+            emailInfo.ExceptionMessage = instance.ExceptionInfos.First().Message;
+            emailInfo.Type = instance.ExceptionInfos.First().Type;
+            emailInfo.Method = instance.ExceptionInfos.First().MethodName;
             emailInfo.IssueId = issue.FriendlyId;
             emailInfo.IssueName = issue.Name;
-            //emailInfo.Subject = Resources.Notifications.ResourceManager.GetString(notificationType.ToString() + "_Subject");
             return emailInfo;
         }
     }

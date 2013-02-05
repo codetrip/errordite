@@ -22,7 +22,7 @@
                             Issue Status
                             <b class="caret"></b>
                         </a>
-                        <ul class="dropdown-menu" style="width: 198px;">
+                        <ul class="dropdown-menu" style="width: 208px;">
                             <li>
                                 <a href="#">Check all</a>
                             </li>
@@ -48,7 +48,7 @@
                             Issue Actions
                             <b class="caret"></b>
                         </a>
-                        <ul class="dropdown-menu pull-right">
+                        <ul class="dropdown-menu pull-right" style="width: 208px;">
                             @foreach (var status in Enum.GetNames(typeof(IssueStatus)).Where(name => name != IssueStatus.Unacknowledged.ToString()))
                             {
                                 <li><a href="#" data-val-modal="StatusUpdate" data-val-status="@Regex.Replace(status, "([a-z])([A-Z])", "$1 $2")">Change status: @status</a></li>

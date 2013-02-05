@@ -15,8 +15,8 @@
     <div class="content">
         @using (Html.BeginForm("add", "users", FormMethod.Post, new { id = "addUserForm" }))
         {
-            <h1>Add User</h1>
-            <div class="form double push-up">
+            <h1 class="section-header border">Add User</h1>
+            <div class="form double">
                 <ul>
                     <li>
                         @Html.LabelFor(m => m.FirstName, "First name")
@@ -53,13 +53,13 @@
                         @Html.CheckBoxFor(m => m.IsAdministrator) @Html.LabelFor(m => m.IsAdministrator, "Make user an administrator?")
                         <i data-title="Only administrators can manage your organisation (managing users, groups and applications)." class="icon-info"></i>
                     </li>
-                    <li>
+                    <li class="buttons">
                         <input type="submit" class="btn btn-medium btn-blue" value="Add" />
                         <a href="@Url.Users()" class="btn btn-grey btn-medium">Cancel</a>
                     </li>
                 </ul>
             </div>
-            <div class="form double push-up">
+            <div class="form double">
                 <ul>
                     <li class="sublist pushed-up">
                         <label>Group Membership</label>

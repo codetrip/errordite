@@ -23,15 +23,6 @@ namespace Errordite.Core.Domain.Error
         public string MachineName { get; set; }
         [ProtoMember(7)]
         public string Url { get; set; }
-        /// <summary>
-        /// Here mainly for legacy reasons - for items serialized with nested ExceptionInfos rather than flattened into a single list,
-        /// we need a setter here to pull them all out on deserialisation.
-        /// </summary>
-        public ExceptionInfo ExceptionInfo
-        {
-            get { return ExceptionInfos.First(); } 
-            set { ExceptionInfos = value.RecursiveGetInfos().ToArray(); }
-        }
         [ProtoMember(8)]
         public string UserAgent { get; set; }
         [ProtoMember(9)]
@@ -82,19 +73,5 @@ namespace Errordite.Core.Domain.Error
         public string MethodName { get; set; }
         [ProtoMember(6)]
         public string Module { get; set; }
-        /// <summary>
-        /// Legacy property.  Can delete once we no longer care about errors in db with this property set.
-        /// </summary>
-        public ExceptionInfo InnerExceptionInfo { get; set; }
-
-        internal IEnumerable<ExceptionInfo> RecursiveGetInfos()
-        {
-            IEnumerable<ExceptionInfo> ret = new[] { this };
-
-            if (InnerExceptionInfo != null)
-                ret = ret.Union(InnerExceptionInfo.RecursiveGetInfos());
-
-            return ret;
-        }
     }
 }

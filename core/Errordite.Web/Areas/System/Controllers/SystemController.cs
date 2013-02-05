@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Web.Mvc;
 using CodeTrip.Core.Encryption;
 using CodeTrip.Core.Extensions;
 using CodeTrip.Core.Paging;
-using Errordite.Core;
 using Errordite.Core.Applications.Commands;
 using Errordite.Core.Configuration;
 using Errordite.Core.Domain.Error;
@@ -15,11 +13,7 @@ using Errordite.Core.Messages;
 using Errordite.Core.Organisations.Queries;
 using Errordite.Core.Session;
 using Errordite.Web.ActionFilters;
-using Errordite.Web.Areas.System.Models.System;
-using Errordite.Web.Controllers;
 using Errordite.Web.Models.Navigation;
-using Raven.Abstractions.Data;
-using Raven.Abstractions.Linq;
 using System.Linq;
 using Raven.Client;
 
@@ -30,24 +24,24 @@ namespace Errordite.Web.Areas.System.Controllers
     {
         private readonly IAppSession _session;
         private readonly IDeleteApplicationCommand _deleteApplicationCommand;
-        private readonly IPagingViewModelGenerator _pagingViewModelGenerator;
         private readonly IEncryptor _encryptor;
         private readonly IGetOrganisationsQuery _getOrganisationsQuery;
         private readonly ErrorditeConfiguration _configuration;
+        private readonly IGetApplicationErrorsQuery _getApplicationErrorsQuery;
 
         public SystemController(IAppSession session, 
             IDeleteApplicationCommand deleteApplicationCommand, 
-            IPagingViewModelGenerator pagingViewModelGenerator, 
             IEncryptor encryptor, 
             IGetOrganisationsQuery getOrganisationsQuery, 
-            ErrorditeConfiguration configuration)
+            ErrorditeConfiguration configuration, 
+            IGetApplicationErrorsQuery getApplicationErrorsQuery)
         {
             _session = session;
             _deleteApplicationCommand = deleteApplicationCommand;
-            _pagingViewModelGenerator = pagingViewModelGenerator;
             _encryptor = encryptor;
             _getOrganisationsQuery = getOrganisationsQuery;
             _configuration = configuration;
+            _getApplicationErrorsQuery = getApplicationErrorsQuery;
         }
 
         [HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.SysAdmin)]
@@ -193,6 +187,34 @@ namespace Errordite.Web.Areas.System.Controllers
                 IssueId = Issue.GetId(issueId),
                 OrganisationId = Organisation.GetId(organisationId)
             }, _configuration.EventsQueueName));
+
+            return Content("Queued");
+        }
+
+        public ActionResult StripCss(string organisationId, string issueId)
+        {
+            Core.Session.SetOrganisation(new Organisation
+            {
+                Id = Organisation.GetId(organisationId)
+            });
+
+            var errors = _getApplicationErrorsQuery.Invoke(new GetApplicationErrorsRequest
+                {
+                    IssueId = issueId,
+                    OrganisationId = organisationId,
+                    Paging = new PageRequestWithSort(1, 128)
+                }).Errors.Items;
+
+            foreach (var e in errors)
+            {
+                foreach (var info in e.ExceptionInfos)
+                {
+                    info.Message = info.Message.StripCss();
+                    info.StackTrace = info.StackTrace.StripCss();
+                }
+            }
+
+            Core.Session.Commit();
 
             return Content("Queued");
         }

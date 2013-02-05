@@ -94,8 +94,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-    font-size:28px;
-    margin:10px 0;
+    font-size:26px;
+    margin:10px 0 4px 0;
     &.superlarge {
         margin:0;
         padding:20px 5px;
@@ -105,6 +105,15 @@ h1 {
 			float:right;
 			margin-top:-20px;
 		}
+    }
+    &.section-header {
+        text-transform:uppercase;
+        font-weight:$boldfontweight;
+        font-size:18px;
+        &.border {
+            padding-bottom:10px;
+            border-bottom:1px solid $lightblue;
+        }
     }
 }
 
@@ -172,6 +181,7 @@ a {
 
 p {
 	float:left;
+	width:100%;
     margin:0 0 10px 0;
     &.boldblue {
         color:$superdarkblue;
@@ -607,7 +617,6 @@ section {
   vertical-align: middle;
   cursor: pointer;
   margin:0 5px 0 0;
-  text-transform:uppercase;
   &.btn-inline {
 	display:block;
   }
@@ -615,35 +624,36 @@ section {
     text-decoration:none;
   }
   &.btn-large {
+    text-transform:uppercase;
     padding: 16px 36px 16px 35px;
     font-size:18px;
-    font-weight: $extraboldfontweight;
+    font-weight: $boldfontweight;
   }
   &.btn-medium {
-    padding: 9px 22px;
+    padding: 8px 20px;
     font-size:14px;
 	line-height:19px;
-    font-weight: $extraboldfontweight;
+    font-weight: $normalfontweight;
   }
   &.btn-small {
     padding: 9px 18px 9px 18px;
-    font-size: 11px;
+    font-size: 13px;
 	line-height:15px;
-    font-weight: $extraboldfontweight;
+    font-weight: $normalfontweight;
 	margin-bottom: -1px;
   }
   &.btn-blue {
-    color:#496D82;
-    background-color:#C2E0F2;
+    color:#fff;
+    background-color:#1570a6;
     &:hover {
-        background-color:#A1D0EB;
+        background-color:#1A87C8;
     }
   }
   &.btn-grey {
-    color:#496D82;
-    background-color:#DCE3E7;
+    color:#fff;
+    background-color:$verylightbrown;
     &:hover {
-		background-color:#D3E4EE;
+		background-color:#B0B0B0;
     }
   }
 }
@@ -945,7 +955,7 @@ section {
     label {
         display:block;
         font-size:14px;
-        padding: 5px 0 5px 1px;
+        padding: 8px 0 2px 1px;
     }
     .field-validation-error {
         font-size:13px;
@@ -969,9 +979,6 @@ section {
 			width:370px;
 		}
 	}
-    &.push-up {
-        margin-top:-15px;
-    }
     &.form-inline {
         display:inline-block;
         float:left;
@@ -1164,10 +1171,10 @@ section {
     white-space: nowrap;
   }
   li {
-    padding:3px 5px;
+    padding:5px 5px;
     font-size:13px;
     label {
-        padding:0px;
+        padding:0 0 0px 3px;;
         font-size:13px;
     }
   }
@@ -1770,13 +1777,11 @@ nav {
     width:100%;
     line-height:30px;
     text-align: center;
+	margin-bottom: 30px;
     p {
         font-size:20px;
         font-weight: $lightfontweight;
-        margin:20px 200px;
-    }
-    a {
-        margin:0 0 25px 0;
+        margin:20px 0;
     }
 }
 
@@ -2031,8 +2036,6 @@ nav {
 		text-transform:uppercase;
 		font-size:13px;
 		margin:5px 0 0 0;
-		float:left;
-		width:100%;
 	}
 	p {
 		margin:0;

@@ -40,7 +40,7 @@ namespace Errordite.Core.Reception.Commands
 
 			var issue = new Issue
 			{
-				Name = "{0} ({1})".FormatWith(error.ExceptionInfo.Type, DateTime.UtcNow.ToLocalTime().ToString("yyyy.MM.ddTHH.mm.ss")),
+				Name = "{0} ({1})".FormatWith(error.ExceptionInfos.First().Type, DateTime.UtcNow.ToLocalTime().ToString("yyyy.MM.ddTHH.mm.ss")),
 				Rules = rules,
 				ApplicationId = application.Id,
 				CreatedOnUtc = error.TimestampUtc,
@@ -55,9 +55,9 @@ namespace Errordite.Core.Reception.Commands
                     {
                         DateAddedUtc = DateTime.UtcNow,
                         Type = HistoryItemType.AutoCreated,
-                        ExceptionType = error.ExceptionInfo.Type,
-                        ExceptionMethod = error.ExceptionInfo.MethodName,
-                        ExceptionModule = error.ExceptionInfo.Module,
+                        ExceptionType = error.ExceptionInfos.First().Type,
+                        ExceptionMethod = error.ExceptionInfos.First().MethodName,
+                        ExceptionModule = error.ExceptionInfos.First().Module,
                         ExceptionMachine = error.MachineName,
                         SystemMessage = true,
                     }

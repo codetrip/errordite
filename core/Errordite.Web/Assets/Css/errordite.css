@@ -54,8 +54,8 @@ h1, h2, h3, h4, h5, h6 {
   color: #729db7; }
 
 h1 {
-  font-size: 28px;
-  margin: 10px 0; }
+  font-size: 26px;
+  margin: 10px 0 4px 0; }
   h1.superlarge {
     margin: 0;
     padding: 20px 5px;
@@ -64,6 +64,13 @@ h1 {
     h1.superlarge .btn-black {
       float: right;
       margin-top: -20px; }
+  h1.section-header {
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 18px; }
+    h1.section-header.border {
+      padding-bottom: 10px;
+      border-bottom: 1px solid #c2e0f2; }
 
 h2 {
   font-size: 18px;
@@ -117,6 +124,7 @@ a {
 
 p {
   float: left;
+  width: 100%;
   margin: 0 0 10px 0; }
   p.boldblue {
     color: #486c81;
@@ -463,37 +471,37 @@ section {
   text-align: center;
   vertical-align: middle;
   cursor: pointer;
-  margin: 0 5px 0 0;
-  text-transform: uppercase; }
+  margin: 0 5px 0 0; }
   .btn.btn-inline {
     display: block; }
   .btn:hover {
     text-decoration: none; }
   .btn.btn-large {
+    text-transform: uppercase;
     padding: 16px 36px 16px 35px;
     font-size: 18px;
-    font-weight: 700; }
+    font-weight: 600; }
   .btn.btn-medium {
-    padding: 9px 22px;
+    padding: 8px 20px;
     font-size: 14px;
     line-height: 19px;
-    font-weight: 700; }
+    font-weight: 400; }
   .btn.btn-small {
     padding: 9px 18px 9px 18px;
-    font-size: 11px;
+    font-size: 13px;
     line-height: 15px;
-    font-weight: 700;
+    font-weight: 400;
     margin-bottom: -1px; }
   .btn.btn-blue {
-    color: #496D82;
-    background-color: #C2E0F2; }
+    color: #fff;
+    background-color: #1570a6; }
     .btn.btn-blue:hover {
-      background-color: #A1D0EB; }
+      background-color: #1A87C8; }
   .btn.btn-grey {
-    color: #496D82;
-    background-color: #DCE3E7; }
+    color: #fff;
+    background-color: #8e9090; }
     .btn.btn-grey:hover {
-      background-color: #D3E4EE; }
+      background-color: #B0B0B0; }
 
 .paging {
   padding: 0;
@@ -745,7 +753,7 @@ section {
   .form label {
     display: block;
     font-size: 14px;
-    padding: 5px 0 5px 1px; }
+    padding: 8px 0 2px 1px; }
   .form .field-validation-error {
     font-size: 13px;
     display: inline-block;
@@ -761,8 +769,6 @@ section {
     width: 360px; }
   .form.extrawide select {
     width: 370px; }
-  .form.push-up {
-    margin-top: -15px; }
   .form.form-inline {
     display: inline-block;
     float: left; }
@@ -923,10 +929,10 @@ section {
     line-height: 16px;
     white-space: nowrap; }
   .dropdown-menu li {
-    padding: 3px 5px;
+    padding: 5px 5px;
     font-size: 13px; }
     .dropdown-menu li label {
-      padding: 0px;
+      padding: 0 0 0px 3px;
       font-size: 13px; }
   .dropdown-menu li:hover {
     background-color: #95c0df;
@@ -1390,13 +1396,12 @@ nav {
 .home-footer {
   width: 100%;
   line-height: 30px;
-  text-align: center; }
+  text-align: center;
+  margin-bottom: 30px; }
   .home-footer p {
     font-size: 20px;
     font-weight: 300;
-    margin: 20px 200px; }
-  .home-footer a {
-    margin: 0 0 25px 0; }
+    margin: 20px 0; }
 
 .quicklinks {
   margin: 17px 0;
@@ -1575,9 +1580,7 @@ nav {
   .issue-error-info h3 {
     text-transform: uppercase;
     font-size: 13px;
-    margin: 5px 0 0 0;
-    float: left;
-    width: 100%; }
+    margin: 5px 0 0 0; }
   .issue-error-info p {
     margin: 0;
     font-size: 13px;

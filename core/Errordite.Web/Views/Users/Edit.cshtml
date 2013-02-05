@@ -17,8 +17,8 @@
         {
             @Html.HiddenFor(m => m.CurrentUser)
             @Html.HiddenFor(m => m.UserId)
-            <h1>Edit @(Model.CurrentUser ? "Your Details" : "User")</h1>
-            <div class="form double push-up">
+            <h1 class="section-header border">Edit @(Model.CurrentUser ? "Your Details" : "User")</h1>
+            <div class="form double">
                 <ul>
                     <li>
                         @Html.LabelFor(m => m.FirstName, "First name")
@@ -64,7 +64,7 @@
                     </li>
                 </ul>
             </div>
-            <div class="form double push-up">
+            <div class="form double">
                 <ul>
                     <li class="sublist pushed-up">
                         <label>Group Membership</label>

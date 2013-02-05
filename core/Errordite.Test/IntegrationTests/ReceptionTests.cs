@@ -90,7 +90,7 @@ namespace Errordite.Test.IntegrationTests
             });
 
             var errorInstances = ravenSession.Query<Error>().Where(
-                e => e.ApplicationId == app.Id && e.ExceptionInfo.Type == "ExceptionType1").ToArray();
+                e => e.ApplicationId == app.Id && e.ExceptionInfos.First().Type == "ExceptionType1").ToArray();
 
             ravenSession.SaveChanges();
 

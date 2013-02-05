@@ -144,8 +144,8 @@ namespace Errordite.Core.Reception.Commands
         {
             var exceptionInfo = new Domain.Error.ExceptionInfo
             {
-                StackTrace = clientExceptionInfo.StackTrace,
-                Message = clientExceptionInfo.Message,
+                StackTrace = clientExceptionInfo.StackTrace.StripCss(),
+                Message = clientExceptionInfo.Message.StripCss(),
                 Type = clientExceptionInfo.ExceptionType,
                 //we do this because .'s in dictionary keys mean Raven querying is impossible as it is expecting a nested
                 //json object rather than a property with a . in its name..  
