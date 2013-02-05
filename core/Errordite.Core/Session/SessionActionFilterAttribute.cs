@@ -1,31 +1,17 @@
+using System.Web.Http.Filters;
 using System.Web.Mvc;
 using CodeTrip.Core.IoC;
 
 namespace Errordite.Core.Session
 {
-    public class SessionActionFilterAttribute : ActionFilterAttribute
+    public class SessionActionFilterAttribute : System.Web.Mvc.ActionFilterAttribute
     {
-        //private const string TransactionScopeItemId = "__TransactionScope";
-
-        public override void OnActionExecuting(ActionExecutingContext filterContext)
-        {
-            //TODO: transactionscope not working - do we need it?
-            //var ts = new TransactionScope();
-            //filterContext.HttpContext.Items[TransactionScopeItemId] = ts;
-        }
-
-        public override void OnActionExecuted(ActionExecutedContext filterContext)
-        {
-            //if (filterContext.Exception != null)
-            //{
-            //    var ts = (TransactionScope)filterContext.HttpContext.Items[TransactionScopeItemId];
-            //    if (ts != null)
-            //        ts.Dispose();
-            //}
-        }
-
         public override void OnResultExecuted(ResultExecutedContext filterContext)
         {
+            //don't commit if there has been an error
+            if (filterContext.Exception != null)
+                return;
+
             var session = ObjectFactory.GetObject<IAppSession>();
 
             try
@@ -36,15 +22,27 @@ namespace Errordite.Core.Session
             {
                 session.Close();
             }
+        }
+    }
 
-            //var ts = (TransactionScope)filterContext.HttpContext.Items[TransactionScopeItemId];
-            //if (ts != null)
-            //{
-            //    if (filterContext.Exception == null)
-            //        ts.Complete();
-            //    else 
-            //        ts.Dispose();
-            //}
+    public class SessionActionFilter : System.Web.Http.Filters.ActionFilterAttribute
+    {
+        public override void OnActionExecuted(HttpActionExecutedContext actionExecutedContext)
+        {
+            //don't commit if there has been an error
+            if (actionExecutedContext.Exception != null)
+                return;
+
+            var session = ObjectFactory.GetObject<IAppSession>();
+
+            try
+            {
+                session.Commit();
+            }
+            finally
+            {
+                session.Close();
+            }
         }
     }
 }

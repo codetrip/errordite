@@ -5,12 +5,10 @@ namespace Errordite.Web.Models.Issues
     {
         public string LeftIssueName { get; set; }
         public string LeftIssueStatus { get; set; }
-        public string LeftIssuePriority { get; set; }
         public string LeftIssueId { get; set; }
 
         public string RightIssueName { get; set; }
         public string RightIssueStatus { get; set; }
-        public string RightIssuePriority { get; set; }
         public string RightIssueId { get; set; }
     }
 

@@ -119,8 +119,10 @@
       <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.Helpers.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\WebApi\System.Web.Http.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.4.0.20710.0\lib\net40\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.4.0.20710.0\lib\net40\System.Web.Http.WebHost.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
@@ -178,6 +180,7 @@
     <Compile Include="ActionResults\JsonSuccessResult.cs" />
     <Compile Include="ActionResults\PlainJsonNetResult.cs" />
     <Compile Include="ActionSelectors\IfButtonClickedAttribute.cs" />
+    <Compile Include="ApiControllers\ApplicationApiController.cs" />
     <Compile Include="App_GlobalResources\Admin.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -248,8 +251,7 @@
     <Compile Include="Areas\System\Controllers\SystemController.cs" />
     <Compile Include="Areas\System\Models\Organisations\SuspendOrganisationViewModel.cs" />
     <Compile Include="ActionFilters\GenerateBreadcrumbs.cs" />
-    <Compile Include="Controllers\ErrorditeApiController.cs" />
-    <Compile Include="Controllers\WebApiController.cs" />
+    <Compile Include="ApiControllers\IssueApiController.cs" />
     <Compile Include="Controllers\ApplicationsController.cs" />
     <Compile Include="Areas\System\Controllers\CacheController.cs" />
     <Compile Include="Areas\System\Controllers\OrganisationsController.cs" />
@@ -298,8 +300,8 @@
     <Compile Include="Models\Issues\IssueCriteriaViewModel.cs" />
     <Compile Include="Models\Issues\IssueViewModel.cs" />
     <Compile Include="Models\Navigation\Breadcrumbs.cs" />
-    <Compile Include="Models\Admin\OrganisationsViewModel.cs" />
-    <Compile Include="Models\Admin\OrganisationViewModel.cs" />
+    <Compile Include="Models\Account\OrganisationsViewModel.cs" />
+    <Compile Include="Models\Account\OrganisationViewModel.cs" />
     <Compile Include="Models\Search\SearchViewModel.cs" />
     <Compile Include="Models\Users\AddUserViewModel.cs" />
     <Compile Include="Models\Beta\SignUpViewModel.cs" />
@@ -307,7 +309,7 @@
     <Compile Include="Models\Users\EditUserViewModel.cs" />
     <Compile Include="Models\Users\UserViewModelBase.cs" />
     <Compile Include="Models\Errors\ErrorCriteriaViewModel.cs" />
-    <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ErrorditeController.cs" />
     <Compile Include="Controllers\ErrorsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -524,7 +526,7 @@
     <Content Include="Views\Shared\Notifications.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Admin\PaymentPlan.cshtml" />
+    <Content Include="Views\Account\PaymentPlan.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\EditorTemplates\RuleViewModel.cshtml" />
@@ -685,7 +687,7 @@
     <Content Include="Views\Shared\Dashboard\Tabs.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\Admin\Tabs.cshtml" />
+    <Content Include="Views\Shared\Account\Tabs.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\Help\Tabs.cshtml" />
@@ -799,13 +801,13 @@
     <Content Include="Areas\System\Views\Cache\Item.cshtml" />
     <Content Include="Views\Shared\NotAuthorised.cshtml" />
     <Content Include="Views\Shared\NotFound.cshtml" />
-    <Content Include="Views\Admin\Upgrade.cshtml" />
+    <Content Include="Views\Account\Upgrade.cshtml" />
     <Content Include="Views\Shared\Help\PaymentPlan.cshtml" />
-    <Content Include="Views\Admin\Billing.cshtml" />
-    <Content Include="Views\Admin\Downgrade.cshtml" />
+    <Content Include="Views\Account\Billing.cshtml" />
+    <Content Include="Views\Account\Downgrade.cshtml" />
     <Content Include="Views\EmailTest\List.cshtml" />
     <Content Include="Views\EmailTest\Index.cshtml" />
-    <Content Include="Views\Admin\Settings.cshtml" />
+    <Content Include="Views\Account\Settings.cshtml" />
     <Content Include="Views\Help\Client.cshtml" />
     <Content Include="Views\Shared\Users\List.cshtml" />
     <Content Include="Areas\System\Views\Organisations\Users.cshtml" />

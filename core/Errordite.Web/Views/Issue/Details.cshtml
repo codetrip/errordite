@@ -7,7 +7,6 @@
 	@using (Html.BeginForm("adjustdetails", "issue", FormMethod.Post, new { id = "adjustDetails" }))
 	{
 		 @Html.HiddenFor(m => m.IssueId)
-		 @Html.HiddenFor(m => m.Priority)
 		<ul>
 			<li>
 				@Html.LabelFor(m => m.Name, "Issue Name")

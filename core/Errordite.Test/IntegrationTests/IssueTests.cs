@@ -29,7 +29,6 @@ namespace Errordite.Test.IntegrationTests
                     Id = issue.Id,
                     Rules = issue.Rules,
                     LastRuleAdjustmentUtc = issue.LastErrorUtc,
-                    MatchPriority = issue.MatchPriority
                 })
                 .ToList();
 

@@ -17,29 +17,34 @@ the config file.  If you wish to allow a choice of folders, they can be separate
         <param xpath="//system.web/authentication/forms/@timeout" theRest="1440" />
         <param xpath="//errordite/@endpoint" theRest="$(InternalReceptionEndpoint)" />
         <param xpath="//errordite/@token" theRest="$(ErrorditeToken)"/>
-        <param xpath="//connectionStrings/add[@name='RavenDB']/@connectionString" theRest="$(RavenConnectionString)" />
-    </File>
-
-    <File match="Errordite.Notifications.Service.dll.config">
-        <param xpath="//errordite/@endpoint" theRest="$(InternalReceptionEndpoint)" />
-        <param xpath="//errordite/@enabled" theRest="true" />
+        <param xpath="//errordite/@enabled" theRest="true"/>
         <param xpath="//connectionStrings/add[@name='RavenDB']/@connectionString" theRest="$(RavenConnectionString)" />
     </File>
 
     <File match="app.config">
         <param xpath="//errordite/@endpoint" theRest="$(InternalReceptionEndpoint)" />
         <param xpath="//errordite/@token" theRest="$(ErrorditeToken)"/>
+        <param xpath="//errordite/@enabled" theRest="true"/>
+        <param xpath="//connectionStrings/add[@name='RavenDB']/@connectionString" theRest="$(RavenConnectionString)" />
+    </File>
+
+    <File match="Errordite.Notifications.Service.dll.config">
+        <param xpath="//errordite/@endpoint" theRest="$(InternalReceptionEndpoint)" />
+        <param xpath="//errordite/@token" theRest="$(ErrorditeToken)"/>
+        <param xpath="//errordite/@enabled" theRest="true" />
         <param xpath="//connectionStrings/add[@name='RavenDB']/@connectionString" theRest="$(RavenConnectionString)" />
     </File>
 
     <File match="Errordite.Reception.Service.dll.config">
         <param xpath="//errordite/@endpoint" theRest="$(InternalReceptionEndpoint)" />
+        <param xpath="//errordite/@token" theRest="$(ErrorditeToken)"/>
         <param xpath="//errordite/@enabled" theRest="true" />
         <param xpath="//connectionStrings/add[@name='RavenDB']/@connectionString" theRest="$(RavenConnectionString)" />
     </File>
 
     <File match="Errordite.Events.Service.dll.config">
         <param xpath="//errordite/@endpoint" theRest="$(InternalReceptionEndpoint)" />
+        <param xpath="//errordite/@token" theRest="$(ErrorditeToken)"/>
         <param xpath="//errordite/@enabled" theRest="true" />
         <param xpath="//connectionStrings/add[@name='RavenDB']/@connectionString" theRest="$(RavenConnectionString)" />
     </File>

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using CodeTrip.Core.Dynamic;
 using CodeTrip.Core.Extensions;
 using Errordite.Core.Authorisation;
-using Errordite.Core.IoC;
 using Errordite.Core.Matching;
 using System.Linq;
-using ProductionProfiler.Core.Profiling.Entities;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using ProtoBuf;
 using Errordite.Core.Extensions;
 
@@ -21,10 +21,8 @@ namespace Errordite.Core.Domain.Error
         [ProtoMember(3)]
         public DateTime? LastRuleAdjustmentUtc { get; set; }
         [ProtoMember(4)]
-        public MatchPriority MatchPriority { get; set; }
-        [ProtoMember(5)]
         public string ApplicationId { get; set; }
-        [ProtoMember(6)]
+        [ProtoMember(5)]
         public string OrganisationId { get; set; }
 
         public bool RulesEqual(List<IMatchRule> rules)
@@ -53,35 +51,33 @@ namespace Errordite.Core.Domain.Error
     }
 
     [ProtoContract]
-    public class Issue : IssueBase, IWantToKnowAboutProdProf
+    public class Issue : IssueBase
     {
-        [ProtoMember(7)]
+        [ProtoMember(6)]
         public ErrorLimitStatus LimitStatus { get; set; }
-        [ProtoMember(8)]
+        [ProtoMember(7)]
         public string Name { get; set; }
-        [ProtoMember(9)]
+        [ProtoMember(8)]
         public string UserId { get; set; }
-        [ProtoMember(10)]
+        [ProtoMember(9), JsonConverter(typeof(StringEnumConverter))]
         public IssueStatus Status { get; set; }
-        [ProtoMember(11)]
+        [ProtoMember(10)]
         public IList<IssueHistory> History { get; set; }
-        [ProtoMember(12)]
+        [ProtoMember(11)]
         public int ErrorCount { get; set; }
-        [ProtoMember(13)]
+        [ProtoMember(12)]
         public DateTime CreatedOnUtc { get; set; }
-        [ProtoMember(14)]
+        [ProtoMember(13)]
         public DateTime LastModifiedUtc { get; set; }
-        [ProtoMember(15)]
-        public IList<ProdProfRecord> ProdProfRecords { get; set; }
-        [ProtoMember(16)]
+        [ProtoMember(14)]
         public bool TestIssue { get; set; }
-        [ProtoMember(17)]
+        [ProtoMember(15)]
         public bool AlwaysNotify { get; set; }
-        [ProtoMember(18)]
+        [ProtoMember(16)]
         public string Reference { get; set; }
-        [ProtoMember(19)]
+        [ProtoMember(17)]
         public DateTime LastErrorUtc { get; set; }
-        [ProtoMember(20)]
+        [ProtoMember(18)]
         public DateTime LastSyncUtc { get; set; }
 
         [Raven.Imports.Newtonsoft.Json.JsonIgnore]
@@ -92,21 +88,6 @@ namespace Errordite.Core.Domain.Error
             return friendlyId.Contains("/") ? friendlyId : "issues/{0}".FormatWith(friendlyId);
         }
 
-        void IWantToKnowAboutProdProf.TellMe(ProfiledRequestData data)
-        {
-            ProdProfRecords.Add(new ProdProfRecord
-            {
-                RequestId = data.Id,
-                TimestampUtc = DateTime.UtcNow,
-                Url = data.Url,
-            });
-        }
-
-        public Issue()
-        {
-            ProdProfRecords = new List<ProdProfRecord>();
-        }
-
         public IssueBase ToIssueBase()
         {
             var issueBase = new IssueBase();
@@ -115,28 +96,10 @@ namespace Errordite.Core.Domain.Error
         }
     }
 
-    [ProtoContract]
-    public class ProdProfRecord
-    {
-        [ProtoMember(1)]
-        public string Url { get; set; }
-        [ProtoMember(2)]
-        public Guid RequestId { get; set; }
-        [ProtoMember(3)]
-        public DateTime TimestampUtc { get; set; }
-    }
-
     public enum ErrorLimitStatus
     {
         Ok,
         Warning,
         Exceeded
-    }
-
-    public enum MatchPriority
-    {
-        Low = 0,
-        Medium = 25,
-        High = 50
     }
 }

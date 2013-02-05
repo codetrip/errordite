@@ -197,7 +197,6 @@
     <Compile Include="Issues\Queries\GetAllApplicationIssuesQuery.cs" />
     <Compile Include="Issues\Queries\GetApplicationIssuesQuery.cs" />
     <Compile Include="Issues\Queries\GetIssueQuery.cs" />
-    <Compile Include="Matching\IFindClosestMatchingIssue.cs" />
     <Compile Include="Matching\MatchRuleFactoryFactory.cs" />
     <Compile Include="Domain\Error\SearchFilter.cs" />
     <Compile Include="Domain\Organisation\Application.cs" />
@@ -298,6 +297,7 @@
     <Compile Include="Session\UpdateByIndexCommitAction.cs" />
     <Compile Include="Session\DeleteByIndexCommitAction.cs" />
     <Compile Include="Users\Queries\GetUserByEmailAddressQuery.cs" />
+    <Compile Include="WebApi\ErrorditeApiController.cs" />
     <Compile Include="WebApi\LoggingHttpMessageHandler.cs" />
     <Compile Include="Session\RaiseIssueEvent.cs" />
     <Compile Include="Session\SendNServiceBusMessage.cs" />

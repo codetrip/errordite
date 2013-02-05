@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
+using System.Web.Security;
 using Castle.Core;
 using CodeTrip.Core.Caching.Entities;
 using CodeTrip.Core.Caching.Interceptors;
+using CodeTrip.Core.Encryption;
 using CodeTrip.Core.Interfaces;
 using Errordite.Core.Applications.Commands;
 using Errordite.Core.Caching;
@@ -13,7 +16,7 @@ using System.Linq;
 using Errordite.Core.Indexing;
 using Errordite.Core.Matching;
 using Errordite.Core.Organisations.Queries;
-using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
+using Errordite.Core.Session;
 
 namespace Errordite.Core.Organisations.Commands
 {
@@ -22,11 +25,15 @@ namespace Errordite.Core.Organisations.Commands
     {
         private readonly IGetAvailablePaymentPlansQuery _getAvailablePaymentPlansQuery;
         private readonly IAddApplicationCommand _addApplicationCommand;
+        private readonly IEncryptor _encryptor;
 
-        public CreateOrganisationCommand(IGetAvailablePaymentPlansQuery getAvailablePaymentPlansQuery, IAddApplicationCommand addApplicationCommand)
+        public CreateOrganisationCommand(IGetAvailablePaymentPlansQuery getAvailablePaymentPlansQuery, 
+            IAddApplicationCommand addApplicationCommand, 
+            IEncryptor encryptor)
         {
             _getAvailablePaymentPlansQuery = getAvailablePaymentPlansQuery;
             _addApplicationCommand = addApplicationCommand;
+            _encryptor = encryptor;
         }
 
         public CreateOrganisationResponse Invoke(CreateOrganisationRequest request)
@@ -63,11 +70,16 @@ namespace Errordite.Core.Organisations.Commands
                 PaymentPlanId = freeTrialPlan.Id,
                 CreatedOnUtc = DateTime.UtcNow,
                 TimezoneId = "UTC",
-                PaymentPlan = freeTrialPlan
+                PaymentPlan = freeTrialPlan,
+                ApiKeySalt = Membership.GeneratePassword(8, 1),
             };
 
             MasterStore(organisation);
             MasterStore(new UserOrganisationMapping{EmailAddress = request.Email, OrganisationId = organisation.Id});
+
+            organisation.ApiKey = Convert.ToBase64String(
+                Encoding.UTF8.GetBytes(
+                _encryptor.Encrypt("{0}|{1}".FormatWith(organisation.FriendlyId, organisation.ApiKeySalt))));
 
             Session.BootstrapOrganisation(organisation);
 

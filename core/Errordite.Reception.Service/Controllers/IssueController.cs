@@ -5,6 +5,7 @@ using System.Net.Http;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Issues;
 using System.Linq;
+using Errordite.Core.WebApi;
 
 namespace Errordite.Reception.Service.Controllers
 {
