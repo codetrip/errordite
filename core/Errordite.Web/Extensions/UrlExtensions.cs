@@ -186,11 +186,6 @@ namespace Errordite.Web.Extensions
             return helper.Action("privacy", "help", new { Area = string.Empty });
         }
 
-        public static string TermsAndConditions(this UrlHelper helper)
-        {
-            return helper.Action("termsandconditions", "help", new { Area = string.Empty });
-        }
-
         #endregion
 
         #region Authentication
@@ -264,27 +259,27 @@ namespace Errordite.Web.Extensions
 
         public static string PaymentPlan(this UrlHelper helper)
         {
-            return helper.Action("paymentplan", "admin", new {Area = string.Empty});
+            return helper.Action("paymentplan", "account", new {Area = string.Empty});
         }
 
         public static string Billing(this UrlHelper helper)
         {
-            return helper.Action("billing", "admin", new { Area = string.Empty });
+            return helper.Action("billing", "account", new { Area = string.Empty });
         }
 
         public static string Settings(this UrlHelper helper)
         {
-            return helper.Action("settings", "admin", new { Area = string.Empty });
+            return helper.Action("settings", "account", new { Area = string.Empty });
         }
 
         public static string Upgrade(this UrlHelper helper)
         {
-            return helper.Action("upgrade", "admin", new { Area = string.Empty });
+            return helper.Action("upgrade", "account", new { Area = string.Empty });
         }
 
         public static string Downgrade(this UrlHelper helper)
         {
-            return helper.Action("downgrade", "admin", new { Area = string.Empty });
+            return helper.Action("downgrade", "account", new { Area = string.Empty });
         }
 
         #endregion
@@ -323,11 +318,6 @@ namespace Errordite.Web.Extensions
         public static string SysAdmin(this UrlHelper helper)
         {
             return helper.Action("index", "system", new { Area = WebConstants.AreaNames.System });
-        }
-
-        public static string ErrorditeErrors(this UrlHelper helper)
-        {
-            return helper.Action("errorditeerrors", "system", new { Area = WebConstants.AreaNames.System });
         }
 
         public static string Organisations(this UrlHelper helper)
