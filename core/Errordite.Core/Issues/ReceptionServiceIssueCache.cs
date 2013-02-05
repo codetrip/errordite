@@ -88,9 +88,9 @@ namespace Errordite.Core.Issues
 
         private static void OrderIssues(ListHolder<IssueBase> appIssues)
         {
-            appIssues.List = appIssues.List.OrderByDescending(i => i.MatchPriority)
-                            .ThenByDescending(i => i.LastRuleAdjustmentUtc ?? DateTime.MinValue)
-                            .ToList();
+            appIssues.List = appIssues.List
+                .OrderByDescending(i => i.LastRuleAdjustmentUtc ?? DateTime.MinValue)
+                .ToList();
         }
 
         public void Delete(string issueId, string applicationId, string organisationId)

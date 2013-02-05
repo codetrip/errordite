@@ -139,7 +139,6 @@ namespace Errordite.Test.IntegrationTests
                 LastErrorUtc = DateTime.UtcNow.AddMinutes(-10),
                 UserId = "users/1",
                 LimitStatus = ErrorLimitStatus.Ok,
-                MatchPriority = MatchPriority.Low,
                 OrganisationId = "organisations/1",
                 Rules = new List<IMatchRule> {new PropertyMatchRule("Module", StringOperator.Equals, "Source1")}
             };

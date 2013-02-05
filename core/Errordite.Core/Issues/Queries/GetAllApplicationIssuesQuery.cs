@@ -36,7 +36,6 @@ namespace Errordite.Core.Issues.Queries
                         Id = issue.Id,
                         Rules = issue.Rules,
                         LastRuleAdjustmentUtc = issue.LastRuleAdjustmentUtc,
-                        MatchPriority = issue.MatchPriority,
                         ApplicationId = issue.ApplicationId
                     })
                 .ToList();
@@ -58,7 +57,6 @@ namespace Errordite.Core.Issues.Queries
                             Id = issue.Id,
                             Rules = issue.Rules,
                             LastRuleAdjustmentUtc = issue.LastRuleAdjustmentUtc,
-                            MatchPriority = issue.MatchPriority,
                             ApplicationId = issue.ApplicationId
                         }));
                 }

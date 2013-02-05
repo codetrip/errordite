@@ -93,7 +93,6 @@ namespace Errordite.Web.Controllers
                     viewModel.Details.Status = postedModel.Status;
                     viewModel.Details.UserId = postedModel.UserId;
                     viewModel.Details.Name = postedModel.Name;
-                    viewModel.Details.Priority = postedModel.Priority;
                     viewModel.Details.Reference = postedModel.Reference;
                     viewModel.Details.Comment = postedModel.Comment;
                     viewModel.Details.AlwaysNotify = postedModel.AlwaysNotify;
@@ -221,15 +220,13 @@ namespace Errordite.Web.Controllers
 
             //var priorities = issue.MatchPriority.ToSelectedList(Issue.ResourceManager, false, issue.MatchPriority.ToString());
 
-            var rulesViewModel = new IssueRulesViewModel
+            var rulesViewModel = new IssueRulesPostModel
             {
                 Id = issue.Id,
                 ApplicationId = issue.ApplicationId,
                 Rules = ruleViewModels,
                 IssueNameAfterUpdate = issue.Name,
-                MatchPriorityAfterUpdate = issue.Status == IssueStatus.Unacknowledged ? MatchPriority.Medium : issue.MatchPriority, //assume that adjusting an issue means we want it to catch errors
                 UnmatchedIssueName = GetAdjustmentRejectsName(issue.Name),
-                UnmatchedIssuePriority = issue.MatchPriority,
             };
 
             var userMemoizer =
@@ -249,7 +246,6 @@ namespace Errordite.Web.Controllers
                     LastErrorUtc = issue.LastErrorUtc,
                     FirstErrorUtc = issue.CreatedOnUtc,
                     Status = issue.Status,
-                    Priority = issue.MatchPriority,
                     UserName = assignedUser == null ? string.Empty : assignedUser.FullName,
                     Users = users.Items.ToSelectList(u => u.Id, u => "{0} {1}".FormatWith(u.FirstName, u.LastName), sortListBy: SortSelectListBy.Text, selected: u => u.Id == issue.UserId),
                     Statuses = issue.Status.ToSelectedList(IssueResources.ResourceManager, false, issue.Status.ToString()),
@@ -262,8 +258,7 @@ namespace Errordite.Web.Controllers
 	                }).Errors.Items.FirstOrDefault(),
                     UserId = issue.UserId,
                     ApplicationName = applications.Items.First(a => a.Id == issue.ApplicationId).Name,
-                    ErrorLimitStatus = IssueResources.ResourceManager.GetString("ErrorLimitStatus_{0}".FormatWith(issue.LimitStatus)) ,
-                    ProdProfRecords = issue.ProdProfRecords,
+                    ErrorLimitStatus = IssueResources.ResourceManager.GetString("ErrorLimitStatus_{0}".FormatWith(issue.LimitStatus)),
                     AlwaysNotify = issue.AlwaysNotify,
                     Reference = issue.Reference,
                     History = issue.History.OrderByDescending(h => h.DateAddedUtc).Select(h => 

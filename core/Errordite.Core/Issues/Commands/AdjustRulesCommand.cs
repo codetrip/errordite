@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using CodeTrip.Core.Extensions;
 using CodeTrip.Core.Interfaces;
 using Errordite.Core.Authorisation;
 using Errordite.Core.Configuration;
@@ -12,7 +11,6 @@ using Errordite.Core.Matching;
 using Errordite.Core.Messages;
 using Errordite.Core.Organisations;
 using Errordite.Core.Session;
-using Raven.Abstractions.Data;
 
 namespace Errordite.Core.Issues.Commands
 {
@@ -177,7 +175,6 @@ namespace Errordite.Core.Issues.Commands
                 Rules = currentIssue.Rules,
                 UserId = currentIssue.UserId, //GT: by the same token as status, not 100% sure what this should be - will have to suck it and see
                 OrganisationId = currentIssue.OrganisationId,
-                MatchPriority = currentIssue.MatchPriority,
                 History = new List<IssueHistory>
                 {
                     new IssueHistory
@@ -257,8 +254,6 @@ namespace Errordite.Core.Issues.Commands
         public string ApplicationId { get; set; }
         public string NewIssueName { get; set; }
         public string OriginalIssueName { get; set; }
-        public MatchPriority NewPriority { get; set; }
-        public MatchPriority OriginalPriority { get; set; }
         public List<IMatchRule> Rules { get; set; }
     }
 

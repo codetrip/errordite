@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net.Http;
 using System.Web.Http.Controllers;
-using Castle.Windsor;
 
 namespace Errordite.Core.IoC
 {

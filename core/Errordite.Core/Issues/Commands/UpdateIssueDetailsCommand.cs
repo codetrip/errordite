@@ -91,7 +91,6 @@ namespace Errordite.Core.Issues.Commands
         public string AssignedUserId { get; set; }
         public bool AlwaysNotify { get; set; }
         public IssueStatus Status { get; set; }
-        public MatchPriority Priority { get; set; }
         public string Reference { get; set; }
     }
 

@@ -19,7 +19,6 @@
         <div class="form double">
             <h2>Merge Issue 1</h2>
             <strong>Name</strong>: <a href="@Url.Issue(Model.LeftIssueId)" target="_blank">@Model.LeftIssueName</a><br />
-            <strong>MatchPriority</strong>: @Model.LeftIssuePriority<br />
             <strong>Status</strong>: @Model.LeftIssueStatus<br /><br />
             
             @using (Html.BeginForm("merge", "issues", FormMethod.Post, new { id = "leftMerge" }))
@@ -32,7 +31,6 @@
         <div class="form double">
             <h2>Merge Issue 2</h2>
             <strong>Name</strong>: <a href="@Url.Issue(Model.RightIssueId)" target="_blank">@Model.RightIssueName</a><br />
-            <strong>Match Priority</strong>: @Model.RightIssuePriority<br />
             <strong>Status</strong>: @Model.RightIssueStatus<br /><br />
             
             @using (Html.BeginForm("merge", "issues", FormMethod.Post, new { id = "rightMerge" }))

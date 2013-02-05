@@ -62,7 +62,6 @@ namespace Errordite.Core.Reception.Commands
                         SystemMessage = true,
                     }
                 },
-				MatchPriority = MatchPriority.Low, //will get a low score when weighting the rules against errors,
 				TestIssue = error.TestError,
                 LastSyncUtc = DateTime.UtcNow
 			};

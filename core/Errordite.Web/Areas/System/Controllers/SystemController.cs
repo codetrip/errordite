@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Text;
 using System.Web.Mvc;
+using System.Web.Security;
 using CodeTrip.Core.Encryption;
 using CodeTrip.Core.Extensions;
 using CodeTrip.Core.Paging;
@@ -121,18 +123,25 @@ namespace Errordite.Web.Areas.System.Controllers
 
         public ActionResult SyncIndexes()
         {
-            var organisations = _getOrganisationsQuery.Invoke(new GetOrganisationsRequest
-            {
-                Paging = new PageRequestWithSort(1, int.MaxValue)
-            }).Organisations;
-
-            foreach (var organisation in organisations.Items)
+            foreach (var organisation in Core.Session.MasterRaven.GetPage<Organisation, Organisations_Search, string>(new PageRequestWithSort(1, 128)).Items)
             {
                 Core.Session.BootstrapOrganisation(organisation);
             }
 
             return new EmptyResult();
         }
+
+        public ActionResult SetApiKeys()
+        {
+            foreach (var organisation in Core.Session.MasterRaven.GetPage<Organisation, Organisations_Search, string>(new PageRequestWithSort(1, 128)).Items)
+            {
+                organisation.ApiKeySalt = Membership.GeneratePassword(8, 1);
+                organisation.ApiKey = Convert.ToBase64String(Encoding.UTF8.GetBytes(_encryptor.Encrypt("{0}|{1}".FormatWith(organisation.FriendlyId, organisation.ApiKeySalt))));
+            }
+
+            return new EmptyResult();
+        }
+
 
         public ActionResult UpdateIssueCounts(string organisationId)
         {

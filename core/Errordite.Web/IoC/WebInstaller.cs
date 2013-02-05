@@ -1,4 +1,6 @@
-﻿using System.Web.Mvc;
+﻿using System.Reflection;
+using System.Web.Http.Controllers;
+using System.Web.Mvc;
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
@@ -17,6 +19,10 @@ namespace Errordite.Web.IoC
             container.Register(AllTypes.FromThisAssembly()
                 .BasedOn<IController>()
                 .If(t => t.Name.EndsWith("Controller"))
+                .LifestyleTransient());
+
+            container.Register(AllTypes.FromAssembly(Assembly.GetExecutingAssembly())
+                .BasedOn<IHttpController>()
                 .LifestyleTransient());
 
             container.Register(AllTypes.FromThisAssembly()

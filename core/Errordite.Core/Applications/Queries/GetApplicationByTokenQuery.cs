@@ -3,7 +3,6 @@ using CodeTrip.Core.Encryption;
 using CodeTrip.Core.Interfaces;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Organisations;
-using CodeTrip.Core.Extensions;
 using Errordite.Core.Organisations.Queries;
 using Errordite.Core.Session;
 
@@ -61,7 +60,7 @@ namespace Errordite.Core.Applications.Queries
                 CurrentUser = request.CurrentUser,
             }).Application;
 
-            if (tokenParts.Length == 3 && application.TokenSalt != tokenParts[2])
+            if (application.TokenSalt != tokenParts[2])
             {
                 Trace("Application {0} salt is {1} but salt in token was {2}", application.Id, application.TokenSalt, tokenParts[2]);
                 return new GetApplicationByTokenResponse();

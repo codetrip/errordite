@@ -49,8 +49,7 @@ namespace Errordite.Core.Issues.Commands
                         UserId = request.CurrentUser.Id,
                         Type = HistoryItemType.ManuallyCreated,
                     }
-                },
-                MatchPriority = MatchPriority.Low,
+                }
             };
 
             var issuesWithSameRules = _getIssueWithMatchingRulesQuery.Invoke(new GetIssueWithMatchingRulesRequest
@@ -102,7 +101,6 @@ namespace Errordite.Core.Issues.Commands
         public string Name { get; set; }
         public string UserId { get; set; }
         public string ApplicationId { get; set; }
-        public MatchPriority Priority { get; set; }
         public IssueStatus Status { get; set; }
         public List<IMatchRule> Rules { get; set; }
     }

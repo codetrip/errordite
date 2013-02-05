@@ -10,7 +10,7 @@ namespace Errordite.Web.Models.Issues
     public class IssueViewModel
     {
         public IssueTab Tab { get; set; }
-        public IssueRulesViewModel Rules { get; set; }
+        public IssueRulesPostModel Rules { get; set; }
         public IssueDetailsViewModel Details { get; set; }
         public ErrorCriteriaViewModel Errors { get; set; }
     }
@@ -25,9 +25,7 @@ namespace Errordite.Web.Models.Issues
         public string ErrorLimitStatus { get; set; }
         public IEnumerable<SelectListItem> Users { get; set; }
         public IEnumerable<SelectListItem> Statuses { get; set; }
-        public IEnumerable<SelectListItem> Priorities { get; set; }
         public IList<IssueHistoryItemViewModel> History { get; set; }
-        public IList<ProdProfRecord> ProdProfRecords { get; set; }
         public bool TestIssue { get; set; }
 		public Error SampleError { get; set; }
     }
@@ -41,7 +39,6 @@ namespace Errordite.Web.Models.Issues
         public string Name { get; set; }
         public string UserId { get; set; }
         public IssueStatus Status { get; set; }
-        public MatchPriority Priority { get; set; }
         public bool AlwaysNotify { get; set; }
         public string DateRange { get; set; }
     }

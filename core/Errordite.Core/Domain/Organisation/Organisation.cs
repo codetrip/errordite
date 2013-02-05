@@ -19,6 +19,18 @@ namespace Errordite.Core.Domain.Organisation
         public string PaymentPlanId { get; set; }
         [ProtoMember(5)]
         public DateTime CreatedOnUtc { get; set; }
+        [Raven.Imports.Newtonsoft.Json.JsonIgnore, ProtoMember(6)]
+        public PaymentPlan PaymentPlan { get; set; }
+        [ProtoMember(7)]
+        public string TimezoneId { get; set; }
+        [ProtoMember(8)]
+        public SuspendedReason? SuspendedReason { get; set; }
+        [ProtoMember(9)]
+        public string SuspendedMessage { get; set; }
+        [ProtoMember(10)]
+        public string ApiKey { get; set; }
+        [ProtoMember(11)]
+        public string ApiKeySalt { get; set; }
 
         [Raven.Imports.Newtonsoft.Json.JsonIgnore]
         public string FriendlyId { get { return Id == null ? string.Empty : Id.Split('/')[1]; } }
@@ -33,14 +45,6 @@ namespace Errordite.Core.Domain.Organisation
             get { return Id; }
         }
 
-        [Raven.Imports.Newtonsoft.Json.JsonIgnore, ProtoMember(6)]
-        public PaymentPlan PaymentPlan { get; set; }
-        [ProtoMember(7)]
-        public string TimezoneId { get; set; }
-        [ProtoMember(8)]
-        public SuspendedReason? SuspendedReason { get; set; }
-        [ProtoMember(9)]
-        public string SuspendedMessage { get; set; }
     }
 
     [ProtoContract]

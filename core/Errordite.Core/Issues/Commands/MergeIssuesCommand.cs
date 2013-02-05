@@ -127,6 +127,5 @@ namespace Errordite.Core.Issues.Commands
         public string MergeFromIssueId { get; set; }
         public string MergeToIssueId { get; set; }
         public string MergedIssueName { get; set; }
-        public MatchPriority? MergedIssuePriority { get; set; }
     }
 }

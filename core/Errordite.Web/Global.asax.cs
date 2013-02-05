@@ -7,6 +7,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Http;
+using System.Web.Http.Dispatcher;
 using System.Web.Mvc;
 using System.Web.Routing;
 using Castle.Core.Internal;
@@ -15,14 +17,13 @@ using CodeTrip.Core.Interfaces;
 using CodeTrip.Core.IoC;
 using CodeTrip.Core.Misc;
 using Errordite.Client;
-using Errordite.Client.Configuration;
-using Errordite.Client.Mvc;
 using Errordite.Core;
 using Errordite.Core.Domain.Exceptions;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Indexing;
 using Errordite.Core.IoC;
 using Errordite.Core.Session;
+using Errordite.Core.WebApi;
 using Errordite.Web.ActionFilters;
 using Errordite.Web.Controllers;
 using Errordite.Web.IoC;
@@ -37,9 +38,13 @@ namespace Errordite.Web
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
-            filters.Add(new ErrorditeExceptionFilter());
             filters.Add(new ViewDataActionFilter());
             filters.Add(new SessionActionFilterAttribute());
+        }
+
+        public static void RegisterWebApiFilters(System.Web.Http.Filters.HttpFilterCollection filters)
+        {
+            filters.Add(new SessionActionFilter());
         }
 
         public static void RegisterRoutes(RouteCollection routes)
@@ -47,6 +52,18 @@ namespace Errordite.Web
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             routes.IgnoreRoute("profiler/{*pathInfo}");
             routes.IgnoreRoute("errorditelogging/{*pathInfo}");
+
+            routes.MapHttpRoute(
+                name: "issueapi",
+                routeTemplate: "api/issues/{id}",
+                defaults: new { controller = "issueapi", id = RouteParameter.Optional }
+            );
+            routes.MapHttpRoute(
+                name: "applicationapi",
+                routeTemplate: "api/applications/{id}",
+                defaults: new { controller = "applicationapi", id = RouteParameter.Optional }
+            );
+
             routes.MapRoute(
                 "Home", // Route name
                 "{action}", // URL with parameters
@@ -80,6 +97,7 @@ namespace Errordite.Web
             AreaRegistration.RegisterAllAreas();
 
             RegisterGlobalFilters(GlobalFilters.Filters);
+            RegisterWebApiFilters(GlobalConfiguration.Configuration.Filters);
             RegisterRoutes(RouteTable.Routes);
 
             log4net.Config.XmlConfigurator.ConfigureAndWatch(new FileInfo(Server.MapPath(@"bin\config\log4net.config")));
@@ -122,9 +140,14 @@ namespace Errordite.Web
                 args.SetObserved();
             };
 
+            //web API config
+            GlobalConfiguration.Configuration.Services.Replace(typeof(IHttpControllerActivator), new WindsorHttpControllerActivator());
+            GlobalConfiguration.Configuration.DependencyResolver = new WindsorDependencyResolver(ObjectFactory.Container);
+            //this has the effect of always defaulting to Json serialization as there are no Xml formatters registered
+            GlobalConfiguration.Configuration.Formatters.XmlFormatter.SupportedMediaTypes.Clear();
+            GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings = WebApiSettings.JsonSerializerSettings;
 
             ErrorditeClient.ConfigurationAugmenter = ErrorditeClientOverrideHelper.Augment;
-           // ErrorditeLogger.Initialise(true, "Errordite.Web");
             BootstrapRaven();
         }
         
