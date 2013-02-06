@@ -4,7 +4,7 @@
     ViewBag.Title = "Home"; 
 }
 
-<div id="home" class="dark-container">
+<section id="home" class="dark-container">
     <section class="centered">
 		<h1 class="superlarge">
 			Making sense of your <br /> exception logs <a class="btn-black" href="@Url.SignUp()">Try Errordite for <span>free</span></a>
@@ -13,13 +13,16 @@
 			<div class="preview">
 				<a id="showplayer" class="btn-black" href="#">Watch the <span>video</span></a>
 			</div>
-			<div class="player">
-				
-			</div>
+		    <div class="player">
+		        <div class="hide-button">
+			        <a id="hideplayer" class="btn-black" href="#">Hide the <span>video</span></a>
+			    </div>
+		        <iframe src="http://player.vimeo.com/video/51609452?title=0&amp;byline=0&amp;portrait=0" width="960" height="540" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+		    </div>
 		</div>
     </section> 
-</div>
-<div class="blue-container">
+</section>
+<section class="blue-container">
     <section class="centered">
         <div class="howitworks">	
             <p><span>Errordite</span> receives all your application exceptions and groups together those that are the same - automatically or with rules you define. You then decide how to progress the errors. You can fix them, ignore them, or wait and see how often the error occurs.</p>
@@ -74,14 +77,14 @@
             </div>
         </div>
     </section> 
-</div>
-<div class="white-container">
+</section>
+<section class="white-container">
     <section class="centered">
         <div class="home-footer">
             <p class="">Errordite is currently running an open beta, <br />so please jump in and start making sense of your exception logs.</p>
             <a class="btn btn-large btn-blue" href="@Url.SignUp()">Sign Up</a>
         </div>
     </section> 
-</div>
+</section>
 
 
