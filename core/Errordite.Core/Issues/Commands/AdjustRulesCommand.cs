@@ -43,7 +43,6 @@ namespace Errordite.Core.Issues.Commands
             Trace("Starting...");
 
             var currentIssue = Session.Raven.Load<Issue>(Issue.GetId(request.IssueId));
-            var currentStatus = currentIssue.Status;
 
             AdjustRulesResponse response;
             if (!ValidateCommand(currentIssue, request.Rules, out response))
@@ -82,60 +81,26 @@ namespace Errordite.Core.Issues.Commands
                     IssueId = tempIssue.Id,
                     CurrentUser = request.CurrentUser
                 });
+
+                //re-sync the error counts only if we have moved errors
+                Session.AddCommitAction(new SendNServiceBusMessage("Sync Issue Error Counts", new SyncIssueErrorCountsMessage
+                {
+                    CurrentUser = request.CurrentUser,
+                    IssueId = currentIssue.Id,
+                    OrganisationId = request.CurrentUser.OrganisationId
+                }, _configuration.EventsQueueName));
             }
             else
             {
                 Delete(tempIssue);
             }
 
-            //re-sync the error counts
-            Session.AddCommitAction(new SendNServiceBusMessage("Sync Issue Error Counts", new SyncIssueErrorCountsMessage
-            {
-                CurrentUser = request.CurrentUser,
-                IssueId = currentIssue.Id,
-                OrganisationId = request.CurrentUser.OrganisationId
-            }, _configuration.EventsQueueName));
-
-            //this bit is checking to see if there are any other issues for this application which have the same rule set
-            //as the issue we just created, if there is we either auto merge the issues (if the matching issue is unacknowledged)
-            //or return a status which will trigger an manual merge by the user.
-            var matchingIssue = GetMatchingIssue(currentIssue);
-            string retainedIssueId = null;
-
-            if(matchingIssue != null)
-            {
-                if (matchingIssue.Status == IssueStatus.Unacknowledged || currentStatus == IssueStatus.Unacknowledged)
-                {
-                    retainedIssueId = currentStatus == IssueStatus.Unacknowledged
-                        ? matchingIssue.FriendlyId
-                        : currentIssue.FriendlyId;
-
-                    //auto merge with currentIssue
-                    _mergeIssuesCommand.Invoke(new MergeIssuesRequest
-                    {
-                        MergeToIssueId = currentStatus == IssueStatus.Unacknowledged ? matchingIssue.Id : currentIssue.Id,
-                        MergeFromIssueId = currentStatus == IssueStatus.Unacknowledged ? currentIssue.Id : matchingIssue.Id,
-                        CurrentUser = request.CurrentUser
-                    });
-                }
-                else
-                {
-                    //tell the user whats up and let them choose how to merge
-                    return new AdjustRulesResponse
-                    {
-                        IssueId = currentIssue.FriendlyId,
-                        Status = AdjustRulesStatus.RulesMatchedOtherIssue,
-                        MatchingIssueId = matchingIssue.FriendlyId
-                    };
-                }
-            }
-
             Session.AddCommitAction(new RaiseIssueModifiedEvent(currentIssue));
 
             return new AdjustRulesResponse
             {
-                Status = retainedIssueId == null ? AdjustRulesStatus.Ok : AdjustRulesStatus.AutoMergedWithOtherIssue,
-                IssueId = retainedIssueId ?? currentIssue.FriendlyId,
+                Status = AdjustRulesStatus.Ok,
+                IssueId = currentIssue.FriendlyId,
                 ErrorsMatched = nonMatchingErrorsResponse.Matches.Count,
                 ErrorsNotMatched = nonMatchingErrorsResponse.NonMatches.Count,
                 UnmatchedIssueId = tempIssue.FriendlyId,
@@ -187,22 +152,6 @@ namespace Errordite.Core.Issues.Commands
                     }
                 }
             };
-        }
-
-        private Issue GetMatchingIssue(Issue issue)
-        {
-            var matchingIssue = _getIssueWithMatchingRulesQuery.Invoke(new GetIssueWithMatchingRulesRequest
-            {
-                IssueToMatch = issue,
-            });
-
-            if (matchingIssue.Issue != null)
-            {
-                Trace("Rules exist on another issue:={0}, returning...", matchingIssue.Issue.Id);
-                return matchingIssue.Issue;
-            }
-
-            return null;
         }
 
         private bool ValidateCommand(Issue currentIssue, List<IMatchRule> rules, out AdjustRulesResponse response)

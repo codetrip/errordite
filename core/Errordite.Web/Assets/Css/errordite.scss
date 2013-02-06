@@ -57,7 +57,7 @@ ul {
 
 input[type='text'],input[type='password'], textarea, select {
     display: inline-block;
-    width: 300px;
+    width: 375px;
     height: 24px;
     padding: 4px;
     font-size: 13px;
@@ -81,7 +81,7 @@ input[type='text'],input[type='password'], textarea, select {
 select {
   height: 34px;
   line-height: 34px;
-  width: 310px;
+  width: 385px;
   padding: 6px 5px;
   &[multiple], &[size] {
     height: auto;
@@ -913,12 +913,12 @@ section {
     li {
         margin: 2px 0;
         &.inline {
-            margin: 5px 0;
+            margin: 10px 1px;
             input { display:inline-block; }
             label { display:inline-block; }
         }
         &.sublist {
-            width:310px;
+            width:385px;
             input { display:inline-block; }
             label { display:inline-block; }
             ul { 
@@ -965,19 +965,14 @@ section {
     }
     &.double {
       display:inline;
-      width:42%;
+      width:50%;
       float:left;
       .field-validation-error {
         display:block;
       }
     }
-	&.extrawide{
-		input[type="text"], textarea {
-			width:360px;
-		}
-		select {
-			width:370px;
-		}
+	&.narrow {
+		width:45%;
 	}
     &.form-inline {
         display:inline-block;
@@ -1936,7 +1931,8 @@ nav {
 
     .error-content {
         padding: 8px 0px 8px 5px;
-        width: 99%;
+		width:950px;
+		max-width:950px;
     }
 
     .stacktrace {
@@ -2029,9 +2025,9 @@ nav {
 }
 
 .issue-error-info {
-	margin-left:70px;
+	margin-left:60px;
 	float:left;
-	width:50%;
+	width:48%;
 	h3 {
 		text-transform:uppercase;
 		font-size:13px;
