@@ -4,10 +4,7 @@
 <table class="table table-bordered">
     <thead>
         <tr>
-            @if(Model.SystemView)
-            {
-                <th>Id</th>    
-            }  
+            <th>Id</th>   
             <th>Name</th>
             <th>Version</th>
             <th>Active</th>
@@ -24,10 +21,7 @@
     @foreach (var application in Model.Applications)
     {
         <tr>
-            @if(Model.SystemView)
-            {
-                <td>@application.Id</td>    
-            }   
+            <td>@application.Id</td>  
             <td>@application.Name</td>
             <td>@application.Version</td>
             <td>@application.IsActive</td>
@@ -38,7 +32,7 @@
             {
                 <td><a href="@Url.EditApplication(application.Id)">Edit</a></td>
                 <td>
-                    @using (Html.BeginForm("delete", "applications", new { applicationId = application.Id }, FormMethod.Post))
+                    @using (Html.BeginForm("delete", "applications", new {applicationId = application.Id}, FormMethod.Post))
                     {
                         <a class="confirm delete-application" href="#">Delete</a>
                     }
@@ -49,7 +43,7 @@
                         <input type="hidden" name="returnUrl" value="@Url.CurrentRequest()"/>
                         <a class="generate-error" href="#">Generate Test Error</a>
                     }
-                </td>  
+                </td>
             }
                        
         </tr>

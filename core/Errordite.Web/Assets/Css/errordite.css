@@ -15,10 +15,6 @@ body, html {
 ul {
   list-style: none;
   margin-top: 5px; }
-  ul.info {
-    list-style: square; }
-    ul.info span {
-      color: #95c0df; }
 
 input[type='text'], input[type='password'], textarea, select {
   display: inline-block;
@@ -51,7 +47,7 @@ select {
 
 h1, h2, h3, h4, h5, h6 {
   font-weight: 400;
-  color: #729db7; }
+  color: #525252; }
 
 h1 {
   font-size: 26px;
@@ -64,13 +60,6 @@ h1 {
     h1.superlarge .btn-black {
       float: right;
       margin-top: -20px; }
-  h1.section-header {
-    text-transform: uppercase;
-    font-weight: 600;
-    font-size: 18px; }
-    h1.section-header.border {
-      padding-bottom: 10px;
-      border-bottom: 1px solid #c2e0f2; }
 
 h2 {
   font-size: 18px;
@@ -81,7 +70,7 @@ h2 {
     font-size: 16px; }
     h2.section-header.border {
       padding-bottom: 10px;
-      border-bottom: 1px solid #95c0df; }
+      border-bottom: 1px solid #8e9090; }
 
 h3 {
   font-size: 16px;
@@ -137,7 +126,9 @@ pre.prettyprint {
   padding: 12px 0 0 15px!important;
   line-height: 14px;
   border: 1px solid #D8DEE2!important;
-  border-radius: 0; }
+  border-radius: 0;
+  float: left;
+  width: 100%; }
 pre.lang-xml .tag {
   color: maroon; }
 pre.lang-xml .att, pre.lang-xml .atn {
@@ -662,12 +653,6 @@ section {
 .icon-errors {
   background-position: 0 0; }
 
-.icon-cube {
-  background-position: -18px 0; }
-
-.icon-window {
-  background-position: -18px -18px; }
-
 .icon-link {
   background-position: -36px 0; }
 
@@ -690,8 +675,29 @@ section {
 .icon-close {
   background-position: -110px 0; }
 
+.icon-cube {
+  background-position: -18px 0; }
+
 .icon-cog {
   background-position: 0 -18px; }
+
+.icon-window {
+  background-position: -18px -18px; }
+
+.icon-files {
+  background-position: -36px -18px; }
+
+.icon-file {
+  background-position: -54px -18px; }
+
+.icon-barchart {
+  background-position: -72px -18px; }
+
+.icon-down-arrow {
+  background-position: -90px -18px; }
+
+.icon-up-arrow {
+  background-position: -108px -18px; }
 
 .icon-people {
   width: 30px;
@@ -716,11 +722,13 @@ section {
   .form li {
     margin: 2px 0; }
     .form li.inline {
-      margin: 10px 1px; }
+      cursor: pointer; }
       .form li.inline input {
-        display: inline-block; }
+        display: inline-block;
+        cursor: pointer; }
       .form li.inline label {
-        display: inline-block; }
+        display: inline-block;
+        cursor: pointer; }
     .form li.sublist {
       width: 385px; }
       .form li.sublist input {
@@ -785,7 +793,8 @@ section {
   font-weight: 400;
   font-size: 11px;
   opacity: 0;
-  filter: alpha(opacity=0); }
+  filter: alpha(opacity=0);
+  text-transform: none; }
   .tooltip.in {
     opacity: 1;
     filter: alpha(opacity=100); }
@@ -930,7 +939,7 @@ section {
     padding: 5px 5px;
     font-size: 13px; }
     .dropdown-menu li label {
-      padding: 0 0 0px 3px;
+      padding: 0 0 0 2px;
       font-size: 13px; }
   .dropdown-menu li:hover {
     background-color: #95c0df;
@@ -1216,6 +1225,28 @@ section {
 
 .graph {
   margin-bottom: 20px; }
+
+.sort-header span {
+  margin-right: 5px; }
+.sort-header a.sort {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  line-height: 18px;
+  vertical-align: text-top;
+  background-repeat: no-repeat;
+  background-image: url("img/icons.png");
+  background-position: 18px 18px;
+  background-repeat: no-repeat;
+  margin: -1px 2px 0 0; }
+  .sort-header a.sort.sort-asc {
+    background-position: -91px -18px; }
+  .sort-header a.sort.sort-desc {
+    background-position: -111px -18px; }
+  .sort-header a.sort.sort-asc-selected {
+    background-position: -129px -18px; }
+  .sort-header a.sort.sort-desc-selected {
+    background-position: -147px -18px; }
 
 /*-----------------------------------------------------------------------------------*/
 /* SPECIFICS
@@ -1601,4 +1632,28 @@ nav {
     margin: 0;
     font-size: 13px;
     margin-bottom: 10px; }
+
+.help {
+  float: left; }
+  .help p {
+    float: left;
+    margin: 0 0 10px 0; }
+  .help h1 {
+    float: left;
+    margin: 10px 0 15px 0; }
+  .help h2 {
+    float: left;
+    margin: 10px 0 5px 0;
+    font-weight: 600; }
+  .help ul {
+    float: left;
+    width: 100%;
+    list-style: square; }
+    .help ul li {
+      float: left;
+      width: 100%; }
+      .help ul li span.heading {
+        font-weight: 600;
+        color: #525252;
+        font-size: 15px; }
 

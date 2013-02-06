@@ -156,14 +156,9 @@ namespace Errordite.Web.Extensions
             return helper.Action("client", "help", new { Area = string.Empty });
         }
 
-        public static string Features(this UrlHelper helper)
+        public static string Api(this UrlHelper helper)
         {
-            return helper.Action("features", "help", new { Area = string.Empty });
-        }
-
-        public static string Faq(this UrlHelper helper)
-        {
-            return helper.Action("faq", "help", new { Area = string.Empty });
+            return helper.Action("api", "help", new { Area = string.Empty });
         }
 
         public static string JsonFormat(this UrlHelper helper)
