@@ -1509,15 +1509,32 @@ section {
 .video-panel {
 	height:135px;
 	background-color:#91C6E5;
+	float:left;
+	width:$minwidth;
+	.btn-black {
+		padding: 15px 50px;
+	}
 	.preview {
 		line-height: 225px;
 		text-align:center;
-		.btn-black {
-			padding: 15px 50px;
-		}
 	}
 	.player {
-		
+		text-align: center;
+		float:left;
+		width:$minwidth;
+		display:none;
+		margin-top:10px;
+		iframe {
+			margin-top:10px;
+			display:none;
+			width: 900px;
+			margin: 0 auto;
+		}
+	}
+	.hide-button {
+		text-align: center;
+		margin:10px 0 20px 0;
+		display:none;
 	}
 }
 
