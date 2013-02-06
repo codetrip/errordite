@@ -368,6 +368,12 @@
     <Content Include="Assets\Images\people.png" />
     <Content Include="Assets\Images\settings.png" />
     <Content Include="Assets\Images\waiterrors.png" />
+    <Content Include="Assets\Js\api.js">
+      <DependentUpon>api.coffee</DependentUpon>
+    </Content>
+    <Content Include="Assets\Js\api.min.js">
+      <DependentUpon>api.coffee</DependentUpon>
+    </Content>
     <Content Include="Assets\Js\applications.js">
       <DependentUpon>applications.coffee</DependentUpon>
     </Content>
@@ -600,7 +606,7 @@
     <Content Include="Views\Shared\Errors\ErrorItem.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Help\Faq.cshtml" />
+    <Content Include="Views\Help\API.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_GlobalResources\History.resx">
@@ -857,6 +863,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Js\search.coffee" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\Js\api.coffee" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

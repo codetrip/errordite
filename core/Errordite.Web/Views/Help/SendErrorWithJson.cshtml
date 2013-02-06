@@ -10,7 +10,7 @@
 }
 
 <section class="centered">
-    <div class="content">
+    <div class="content help">
         <h1>Send error with JSON</h1>
         
         <p>
@@ -25,6 +25,7 @@
     "Url" : &lt;string>,                //the url of the request that caused the error if a webapp (null otherwise)
     "UserAgent" : &lt;string>,          //the user-agent from the request that caused the error if a web app (null otherwise)
     "TimestampUtc" : &lt;datetime>,     //the timestamp of the error (in UTC).  Use an ISO format like yyyy-MM-dd hh:mm:ss
+    "Version" : &lt;string>,            //the version of your application when the error was raised
     "ExceptionInfo" : {
         "Message" : &lt;string>,        //the message of the exception
         "Source" : &lt;string>,         //the programmatic module that threw the exception 

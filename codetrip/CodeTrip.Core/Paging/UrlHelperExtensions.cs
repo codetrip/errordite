@@ -53,20 +53,26 @@ namespace CodeTrip.Core.Paging
             var sortDescendingParam = PagingConstants.QueryStringParameters.PageSortDescending + pagingId;
 
             var currentSort = helper.ViewContext.RequestContext.HttpContext.Request.QueryString[sortIdParam];
-            var currentSortDescending =
-                helper.ViewContext.RequestContext.HttpContext.Request.QueryString[sortDescendingParam];
+            var currentSortDescending = helper.ViewContext.RequestContext.HttpContext.Request.QueryString[sortDescendingParam];
 
-            bool selected = (sort.Equals(currentSort, StringComparison.OrdinalIgnoreCase) &&
-                             !(sortDescending ^ currentSortDescending.Equals("true", StringComparison.OrdinalIgnoreCase)));
+            bool selected = (sort.Equals(currentSort, StringComparison.OrdinalIgnoreCase) && !(sortDescending ^ currentSortDescending.Equals("true", StringComparison.OrdinalIgnoreCase)));
 
-            return GetSlightlyChangedLink(helper, customLinkText ?? (sortDescending ? "&#8659" : "&#8657"), 
-                new[]{
-                new KeyValuePair<string, string>(PagingConstants.QueryStringParameters.PageSort + pagingId, sort),
-                new KeyValuePair<string, string>(PagingConstants.QueryStringParameters.PageSortDescending + pagingId, sortDescending.ToString()),
-                new KeyValuePair<string, string>(PagingConstants.QueryStringParameters.PageTab, tab)},
-                sortDescending ? "Sort Descending" : "Sort Ascending",
-                selected ? new[]{"sort-selected"} : new string[0],
-                new {pgst = sort, pgsd = sortDescending});
+            return GetSlightlyChangedLink(
+                helper, 
+                customLinkText ?? string.Empty, 
+                new[]
+                {
+                    new KeyValuePair<string, string>(PagingConstants.QueryStringParameters.PageSort + pagingId, sort),
+                    new KeyValuePair<string, string>(PagingConstants.QueryStringParameters.PageSortDescending + pagingId, sortDescending.ToString()),
+                    new KeyValuePair<string, string>(PagingConstants.QueryStringParameters.PageTab, tab)
+                },
+                sortDescending ? selected ? "Sorted by '{0}' descending".FormatWith(sort) : "Sort by '{0}' descending".FormatWith(sort) : selected ? "Sorted by '{0}' ascending".FormatWith(sort) : "Sort by '{0}' ascending".FormatWith(sort),
+                sortDescending ? new[] { selected ? "sort sort-desc-selected tool-tip" : "sort sort-desc tool-tip" } : new[] { selected ? "sort sort-asc-selected tool-tip" : "sort sort-asc tool-tip" },
+                new
+                {
+                    pgst = sort, 
+                    pgsd = sortDescending
+                });
         }
 
         public static MvcHtmlString PageLink(this HtmlHelper helper, string linkText, string pagingId, int pageNumber, string tab = null)
@@ -97,14 +103,12 @@ namespace CodeTrip.Core.Paging
             var tb = new TagBuilder("a");
             tb.MergeAttribute("href", changedUrl);
             if (tooltip != null)
-                tb.MergeAttribute("title", tooltip);
+                tb.MergeAttribute("data-title", tooltip);
             foreach (var cssClass in cssClasses ?? new string[0])
                 tb.AddCssClass(cssClass);
             tb.InnerHtml = linkText;
             tb.MergeAttributes(new DataAttributes(dataSet));
             return MvcHtmlString.Create(tb.ToString());
-
-            //return MvcHtmlString.Create("<a href='{0}' {1} class='{2}'>{3}</a>".FormatWith(changedUrl, tooltip != null ? "title='{0}'".FormatWith(tooltip) : "", classString, linkText));
         }
     }
 

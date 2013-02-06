@@ -21,10 +21,6 @@
       $root.delegate('ul.dropdown-menu li input', 'click', function(e) {
         return e.stopPropagation();
       });
-      $root.delegate('ul.dropdown-menu li a', 'click', function(e) {
-        e.preventDefault();
-        return $(this).closest('ul').find('li :checkbox').prop('checked', true);
-      });
       $root.delegate('ul.dropdown-menu li', 'click', function(e) {
         var $chk, $this;
         $this = $(this);

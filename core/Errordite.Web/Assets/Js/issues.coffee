@@ -19,10 +19,6 @@
 		$root.delegate 'ul.dropdown-menu li input', 'click', (e) -> 
 			e.stopPropagation()
 
-		$root.delegate 'ul.dropdown-menu li a', 'click', (e) -> 
-			e.preventDefault()
-			$(this).closest('ul').find('li :checkbox').prop('checked', true)
-
 		$root.delegate 'ul.dropdown-menu li', 'click', (e) ->
 			$this = $ this
 			$chk = $this.closest('li').children('input');

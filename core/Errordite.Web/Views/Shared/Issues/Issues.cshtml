@@ -14,8 +14,8 @@
                     <th><input type="checkbox"/></th>
                     <th>Issue Details</th>
                     <th>Assignment</th>
-                    <th class="sort"><span>Error Count</span> @Html.SortLinks(Model.Paging.PagingId, "ErrorCount")</th>
-                    <th class="sort"><span>Last Error</span> @Html.SortLinks(Model.Paging.PagingId, "LastErrorUtc") </th>
+                    <th class="sort-header"><span>Error Count</span> @Html.SortLinks(Model.Paging.PagingId, "ErrorCount")</th>
+                    <th class="sort-header"><span>Last Error</span> @Html.SortLinks(Model.Paging.PagingId, "LastErrorUtc") </th>
                 </tr>
             </thead>
             <tbody>
@@ -25,7 +25,7 @@
                         <td><input type="checkbox" name="issueIds" value="@issue.IssueId|@issue.ApplicationId"/></td>
                         <td style="max-width:500px">
                             <span class="table-info-header">
-                                <a class="word-break" href="@Url.Issue(issue.IssueId)">@issue.IssueId - @issue.Name</a>
+                                <a class="word-break" href="@Url.Issue(issue.IssueId)">@issue.Name</a> Id: <strong>@issue.IssueId</strong>
                             </span><br />
                             <span class="table-info">@issue.Status</span>
                         </td>

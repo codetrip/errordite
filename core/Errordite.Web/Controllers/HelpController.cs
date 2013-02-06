@@ -15,12 +15,6 @@ namespace Errordite.Web.Controllers
             _getAvailablePaymentPlansQuery = getAvailablePaymentPlansQuery;
         }
 
-        [GenerateBreadcrumbs(BreadcrumbId.Faq)]
-        public ActionResult Faq()
-        {
-            return View();
-        }
-
         [GenerateBreadcrumbs(BreadcrumbId.Pricing)]
         public ActionResult Pricing()
         {
@@ -37,7 +31,7 @@ namespace Errordite.Web.Controllers
         }
 
         [GenerateBreadcrumbs(BreadcrumbId.Features)]
-        public ActionResult Features()
+        public ActionResult API()
         {
             return View();
         }
@@ -59,11 +53,5 @@ namespace Errordite.Web.Controllers
         {
             return View();
         }
-
-        //[GenerateBreadcrumbs(BreadcrumbId.TermsAndConditions)]
-        //public ActionResult TermsAndConditions()
-        //{
-        //    return View();
-        //}
     }
 }
