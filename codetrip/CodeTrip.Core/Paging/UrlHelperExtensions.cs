@@ -39,12 +39,12 @@ namespace CodeTrip.Core.Paging
 
     public static class HtmlHelperExtensions
     {
-        public static MvcHtmlString SortLinks(this HtmlHelper helper, string pagingId, string sort)
+        public static MvcHtmlString SortLinks(this HtmlHelper helper, string pagingId, string sort, string display)
         {
-            return new MvcHtmlString(SortLink(helper, pagingId, sort, false).ToString() + SortLink(helper, pagingId, sort, true));
+            return new MvcHtmlString(SortLink(helper, pagingId, sort, false, display).ToString() + SortLink(helper, pagingId, sort, true, display));
         }
 
-        public static MvcHtmlString SortLink(this HtmlHelper helper, string pagingId, string sort, bool sortDescending, string tab = null, string customLinkText = null)
+        public static MvcHtmlString SortLink(this HtmlHelper helper, string pagingId, string sort, bool sortDescending, string display, string tab = null, string customLinkText = null)
         {
             if (pagingId == PagingConstants.DefaultPagingId)
                 pagingId = string.Empty;
@@ -66,7 +66,7 @@ namespace CodeTrip.Core.Paging
                     new KeyValuePair<string, string>(PagingConstants.QueryStringParameters.PageSortDescending + pagingId, sortDescending.ToString()),
                     new KeyValuePair<string, string>(PagingConstants.QueryStringParameters.PageTab, tab)
                 },
-                sortDescending ? selected ? "Sorted by '{0}' descending".FormatWith(sort) : "Sort by '{0}' descending".FormatWith(sort) : selected ? "Sorted by '{0}' ascending".FormatWith(sort) : "Sort by '{0}' ascending".FormatWith(sort),
+                sortDescending ? selected ? "Sorted by '{0}' descending".FormatWith(display) : "Sort by '{0}' descending".FormatWith(display) : selected ? "Sorted by '{0}' ascending".FormatWith(display) : "Sort by '{0}' ascending".FormatWith(display),
                 sortDescending ? new[] { selected ? "sort sort-desc-selected tool-tip" : "sort sort-desc tool-tip" } : new[] { selected ? "sort sort-asc-selected tool-tip" : "sort sort-asc tool-tip" },
                 new
                 {

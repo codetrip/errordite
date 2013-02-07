@@ -2,7 +2,6 @@
 using Castle.Core;
 using CodeTrip.Core.Caching.Entities;
 using CodeTrip.Core.Caching.Interceptors;
-using CodeTrip.Core.Extensions;
 using CodeTrip.Core.Interfaces;
 using CodeTrip.Core.Paging;
 using Errordite.Core.Applications.Commands;
@@ -12,8 +11,7 @@ using Errordite.Core.Configuration;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Indexing;
 using System.Linq;
-using Raven.Abstractions.Data;
-using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
+using Errordite.Core.Session;
 
 namespace Errordite.Core.Organisations.Commands
 {
@@ -63,11 +61,6 @@ namespace Errordite.Core.Organisations.Commands
             foreach(var user in users)
             {
                 Delete(user);
-
-                //Session.Raven.Advanced.DocumentStore.DatabaseCommands.DeleteByIndex(CoreConstants.IndexNames.UserAlerts, new IndexQuery
-                //{
-                //    Query = "UserId:{0}".FormatWith(user.Id)
-                //}, true);
             }
 
             var groups = Session.Raven.Query<Group, Groups_Search>().Where(u => u.OrganisationId == organisation.Id).ToList();

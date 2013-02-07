@@ -16,7 +16,6 @@ namespace Errordite.Core.Issues.Queries
         {
             Trace("Starting...");
 
-            var issue = Load<Issue>(Issue.GetId(request.IssueId));
             var data = new Dictionary<string, object>();
             var hourlyCount = Session.Raven.Load<IssueHourlyCount>("IssueHourlyCount/{0}".FormatWith(request.IssueId.GetFriendlyId()));
 
@@ -28,7 +27,7 @@ namespace Errordite.Core.Issues.Queries
 
             var dateResults = Query<IssueDailyCount, IssueDailyCount_Search>()
                 .Where(i => i.IssueId == Issue.GetId(request.IssueId))
-                .Where(i => i.CreatedOnUtc >= issue.LastSyncUtc)
+                .Where(i => i.Historical == false)
                 .Where(i => i.Date >= request.StartDate && i.Date <= request.EndDate)
                 .OrderBy(i => i.Date)
                 .ToList();

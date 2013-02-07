@@ -26,21 +26,21 @@ namespace Errordite.Core.Issues.Commands
         private readonly ErrorditeConfiguration _configuration;
         private readonly IReceiveErrorCommand _receiveErrorCommand;
         private readonly IPurgeIssueCommand _purgeIssueCommand;
-        private readonly ISyncIssueErrorCountsCommand _syncIssueErrorCountsCommand;
+        private readonly IResetIssueErrorCountsCommand _resetIssueErrorCountsCommand;
 
         public ReprocessIssueErrorsCommand(IAuthorisationManager authorisationManager, 
             IGetApplicationErrorsQuery getApplicationErrorsQuery, 
             ErrorditeConfiguration configuration,
             IReceiveErrorCommand receiveErrorCommand, 
             IPurgeIssueCommand purgeIssueCommand, 
-            ISyncIssueErrorCountsCommand syncIssueErrorCountsCommand)
+            IResetIssueErrorCountsCommand resetIssueErrorCountsCommand)
         {
             _authorisationManager = authorisationManager;
             _getApplicationErrorsQuery = getApplicationErrorsQuery;
             _configuration = configuration;
             _receiveErrorCommand = receiveErrorCommand;
             _purgeIssueCommand = purgeIssueCommand;
-            _syncIssueErrorCountsCommand = syncIssueErrorCountsCommand;
+            _resetIssueErrorCountsCommand = resetIssueErrorCountsCommand;
         }
 
         public ReprocessIssueErrorsResponse Invoke(ReprocessIssueErrorsRequest request)

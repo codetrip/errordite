@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading;
 using System.Transactions;
 using CodeTrip.Core;
 using CodeTrip.Core.Extensions;
 using Errordite.Client;
 using Errordite.Core.Domain.Organisation;
 using NServiceBus;
+using Raven.Abstractions.Exceptions;
 using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
 
 namespace Errordite.Core.ServiceBus
@@ -43,6 +45,12 @@ namespace Errordite.Core.ServiceBus
             }
             catch (Exception e)
             {
+                //if the error is a concurrency exception wait 250ms to force a retry delay (not supported by NServiceBus)
+                if (e is ConcurrencyException)
+                {
+                    Thread.Sleep(250);    
+                }
+
                 e.Data.Add("MessageType", typeof(T).Name); 
 
                 try
