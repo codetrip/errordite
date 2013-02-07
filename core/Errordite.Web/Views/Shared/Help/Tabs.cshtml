@@ -13,9 +13,9 @@
         <li @(Model == HelpTab.Client ? " class=active" : " class=inactive") >
             <a href="@Url.Client()">The .NET Client</a>
         </li>
-        <li @(Model == HelpTab.Api ? " class=active" : " class=inactive") >
+        @*<li @(Model == HelpTab.Api ? " class=active" : " class=inactive") >
             <a href="@Url.Api()">Errordite API</a>
-        </li>
+        </li>*@
         <li @(Model == HelpTab.SendErrorWithJson ? " class=active" : " class=inactive") >
             <a href="@Url.JsonFormat()">Send error with JSON</a>
         </li>

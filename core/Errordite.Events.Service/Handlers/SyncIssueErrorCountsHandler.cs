@@ -7,13 +7,13 @@ namespace Errordite.Events.Service.Handlers
 {
     public class SyncIssueErrorCountsHandler : MessageHandlerSessionBase<SyncIssueErrorCountsMessage>
     {
-        private readonly ISyncIssueErrorCountsCommand _syncIssueErrorCountsCommand;
+        private readonly IResetIssueErrorCountsCommand _resetIssueErrorCountsCommand;
         private readonly IGetOrganisationQuery _getOrganisationQuery;
 
-        public SyncIssueErrorCountsHandler(ISyncIssueErrorCountsCommand syncIssueErrorCountsCommand, 
+        public SyncIssueErrorCountsHandler(IResetIssueErrorCountsCommand resetIssueErrorCountsCommand, 
             IGetOrganisationQuery getOrganisationQuery)
         {
-            _syncIssueErrorCountsCommand = syncIssueErrorCountsCommand;
+            _resetIssueErrorCountsCommand = resetIssueErrorCountsCommand;
             _getOrganisationQuery = getOrganisationQuery;
         }
 
@@ -37,7 +37,7 @@ namespace Errordite.Events.Service.Handlers
                 }
             }
 
-            _syncIssueErrorCountsCommand.Invoke(new SyncIssueErrorCountsRequest
+            _resetIssueErrorCountsCommand.Invoke(new ResetIssueErrorCountsRequest
             {
                 IssueId = message.IssueId
             });

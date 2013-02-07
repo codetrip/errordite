@@ -62,8 +62,7 @@ namespace Errordite.Core.Reception.Commands
                         SystemMessage = true,
                     }
                 },
-				TestIssue = error.TestError,
-                LastSyncUtc = DateTime.UtcNow
+				TestIssue = error.TestError
 			};
 
 			Store(issue);
@@ -84,7 +83,6 @@ namespace Errordite.Core.Reception.Commands
 				IssueId = issue.Id,
 				Count = 1,
 				Date = issue.CreatedOnUtc.Date,
-                CreatedOnUtc = DateTime.UtcNow,
                 ApplicationId = issue.ApplicationId
 			};
 
@@ -98,17 +96,6 @@ namespace Errordite.Core.Reception.Commands
 			_receptionServiceIssueCache.Add(issue);
 
 			Store(error);
-
-			if (issue.RulesMatch(error))
-			{
-				Trace("Error definately matches issue we are about to assign it to");
-			}
-			else
-			{
-				throw new InvalidOperationException(
-					"ERROR DOES NOT MATCH RULES Error with Id:={0} does not match issue {1} which it has been assigned to, applicationID:={2}"
-						.FormatWith(error.Id, issue.Id, issue.ApplicationId));
-			}
 
             Trace("Complete");
 

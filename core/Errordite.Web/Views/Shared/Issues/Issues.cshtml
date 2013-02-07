@@ -12,10 +12,11 @@
             <thead>
                 <tr>
                     <th><input type="checkbox"/></th>
+                    <th>Id</th>
                     <th>Issue Details</th>
                     <th>Assignment</th>
-                    <th class="sort-header"><span>Error Count</span> @Html.SortLinks(Model.Paging.PagingId, "ErrorCount")</th>
-                    <th class="sort-header"><span>Last Error</span> @Html.SortLinks(Model.Paging.PagingId, "LastErrorUtc") </th>
+                    <th class="sort-header"><span>Errors</span> @Html.SortLinks(Model.Paging.PagingId, "ErrorCount", "Error Count")</th>
+                    <th class="sort-header"><span>Last Error</span> @Html.SortLinks(Model.Paging.PagingId, "LastErrorUtc", "Last Error Received On") </th>
                 </tr>
             </thead>
             <tbody>
@@ -23,9 +24,10 @@
                 {
                     <tr>
                         <td><input type="checkbox" name="issueIds" value="@issue.IssueId|@issue.ApplicationId"/></td>
-                        <td style="max-width:500px">
+                        <td>@issue.IssueId</td>
+                        <td style="max-width:450px">
                             <span class="table-info-header">
-                                <a class="word-break" href="@Url.Issue(issue.IssueId)">@issue.Name</a> Id: <strong>@issue.IssueId</strong>
+                                <a class="word-break" href="@Url.Issue(issue.IssueId)">@issue.Name</a>
                             </span><br />
                             <span class="table-info">@issue.Status</span>
                         </td>
@@ -40,7 +42,7 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="5">
+                    <td colspan="6">
                         @Html.Partial("Pagination", Model.Paging)
                     </td>
                 </tr>
