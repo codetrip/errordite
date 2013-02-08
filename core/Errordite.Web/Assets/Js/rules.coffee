@@ -135,6 +135,13 @@ jQuery ->
 			Errordite.ruleManager.removeRule $(this).closest 'tr'			
 			e.preventDefault()
 
+		ruleValTimeout = null
+		$body.delegate '.rule-val', 'keyup', () -> 
+			clearTimeout(ruleValTimeout) if ruleValTimeout?
+			ruleValTimeout = setTimeout -> 
+				Errordite.ruleManager.showRuleUpdatesPanel()
+			, 1000
+
 		$body.delegate 'tr.rule :input', 'change', () -> 
 			$rule = $(this).closest 'tr.rule'
 			$rule.data('rule').update()			

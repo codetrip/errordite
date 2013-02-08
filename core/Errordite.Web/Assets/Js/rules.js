@@ -4,7 +4,7 @@
   ruleCounter = 0;
 
   jQuery(function() {
-    var $body;
+    var $body, ruleValTimeout;
     if ($('section#issue, section#addissue').length > 0) {
       $body = $('body');
       Errordite.Rule = (function() {
@@ -183,6 +183,15 @@
       $body.delegate('div#rules a.delete', 'click', function(e) {
         Errordite.ruleManager.removeRule($(this).closest('tr'));
         return e.preventDefault();
+      });
+      ruleValTimeout = null;
+      $body.delegate('.rule-val', 'keyup', function() {
+        if (ruleValTimeout != null) {
+          clearTimeout(ruleValTimeout);
+        }
+        return ruleValTimeout = setTimeout(function() {
+          return Errordite.ruleManager.showRuleUpdatesPanel();
+        }, 1000);
       });
       $body.delegate('tr.rule :input', 'change', function() {
         var $rule;
