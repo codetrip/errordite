@@ -25,21 +25,18 @@ namespace Errordite.Core.Issues.Commands
         private readonly IGetApplicationErrorsQuery _getApplicationErrorsQuery;
         private readonly ErrorditeConfiguration _configuration;
         private readonly IReceiveErrorCommand _receiveErrorCommand;
-        private readonly IPurgeIssueCommand _purgeIssueCommand;
         private readonly IResetIssueErrorCountsCommand _resetIssueErrorCountsCommand;
 
         public ReprocessIssueErrorsCommand(IAuthorisationManager authorisationManager, 
             IGetApplicationErrorsQuery getApplicationErrorsQuery, 
             ErrorditeConfiguration configuration,
             IReceiveErrorCommand receiveErrorCommand, 
-            IPurgeIssueCommand purgeIssueCommand, 
             IResetIssueErrorCountsCommand resetIssueErrorCountsCommand)
         {
             _authorisationManager = authorisationManager;
             _getApplicationErrorsQuery = getApplicationErrorsQuery;
             _configuration = configuration;
             _receiveErrorCommand = receiveErrorCommand;
-            _purgeIssueCommand = purgeIssueCommand;
             _resetIssueErrorCountsCommand = resetIssueErrorCountsCommand;
         }
 
@@ -111,12 +108,12 @@ namespace Errordite.Core.Issues.Commands
                 }
                 else
                 {
-                    //if no errors remain attached to the current issue, then purge the issue of all its errors
-                    //this will reset the counts for this issue
-                    _purgeIssueCommand.Invoke(new PurgeIssueRequest
+                    //if no errors remain attached to the current issue, then reset the counts for this issue
+                    //TODO: is this actually necessary?  I changed it from Purge but don't really get why we need to do this
+                    _resetIssueErrorCountsCommand.Invoke(new ResetIssueErrorCountsRequest()
                     {
                         CurrentUser = request.CurrentUser,
-                        IssueId = issue.Id
+                        IssueId = issue.Id,
                     });
                 }
 
