@@ -109,7 +109,7 @@
       $('#issue-tabs .tablink').bind('shown', function(e) {
         return loadTabData($(e.currentTarget));
       });
-      return $issue.delegate('.sort a[data-pgst]', 'click', function(e) {
+      $issue.delegate('.sort a[data-pgst]', 'click', function(e) {
         var $this;
         e.preventDefault();
         $this = $(this);
@@ -117,6 +117,17 @@
         $('#pgsd').val($this.data('pgsd'));
         renderErrors();
         return false;
+      });
+      return $issue.delegate('#apply-rules-confirmation input[name="WhatIf"]', 'click', function(e) {
+        e.preventDefault();
+        return $(this).closest('form').ajaxSubmit({
+          data: {
+            WhatIf: true
+          },
+          success: function(response) {
+            return alert(response.message);
+          }
+        });
       });
     }
   });

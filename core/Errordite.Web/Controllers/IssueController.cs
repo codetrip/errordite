@@ -19,6 +19,7 @@ using Errordite.Core.Users.Queries;
 using Errordite.Core.WebApi;
 using Errordite.Web.ActionFilters;
 using Errordite.Web.ActionResults;
+using Errordite.Web.ActionSelectors;
 using Errordite.Web.Extensions;
 using Errordite.Web.Models.Errors;
 using Errordite.Web.Models.Issues;
@@ -390,7 +391,58 @@ namespace Errordite.Web.Controllers
             return name;
         }
 
-        [HttpPost, ExportViewData, ValidateInput(false)]
+        [HttpPost, ValidateInput(false), ActionName("AdjustRules"), IfButtonClicked("WhatIf")]
+        public ActionResult WhatIfAdjustRules(IssueRulesPostModel postModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return RedirectWithViewModel(postModel, "index", routeValues: new { id = postModel.Id, tab = IssueTab.Rules.ToString() });
+            }
+
+            var result = _adjustRulesCommand.Invoke(new AdjustRulesRequest()
+                {
+                    IssueId = postModel.Id,
+                    ApplicationId = postModel.ApplicationId,
+                    Rules =
+                        postModel.Rules.Select(
+                            r => (IMatchRule) new PropertyMatchRule(r.ErrorProperty, r.StringOperator, r.Value))
+                                 .ToList(),
+                    CurrentUser = Core.AppContext.CurrentUser,
+                    NewIssueName = postModel.UnmatchedIssueName,
+                    OriginalIssueName = postModel.IssueNameAfterUpdate,
+                    WhatIf = true,
+                });
+
+            string whatWouldHappen = "";
+            switch (result.Status)
+            {
+                case AdjustRulesStatus.Ok:
+                    whatWouldHappen = "Of {0} error{1}, {2} still match{3} and will remain attached to the issue.{4}".FormatWith(
+                        result.ErrorsMatched + result.ErrorsNotMatched,
+                        result.ErrorsMatched + result.ErrorsNotMatched == 1 ? "" : "s",
+                        result.ErrorsNotMatched == 0 ? "all" : result.ErrorsMatched.ToString(),
+                        result.ErrorsMatched == 1 && result.ErrorsNotMatched > 0 ? "es" : "",
+                        result.ErrorsNotMatched > 0
+                            ? " The {0} that did not match will be attached to a newly created issue.".FormatWith(
+                                result.ErrorsNotMatched)
+                            : string.Empty
+                        );
+                    break;
+                case AdjustRulesStatus.RulesNotChanged:
+                    whatWouldHappen = "The rules are unchanged.";
+                    break;
+                case AdjustRulesStatus.RulesMatchedOtherIssue:
+                    ConfirmationNotification(Rules.RulesMatchedOtherIssue); //TODO - this message is nonsense
+                    return RedirectToAction("merge", "issues", new { leftIssueId = result.IssueId, rightIssueId = result.MatchingIssueId });
+                case AdjustRulesStatus.AutoMergedWithOtherIssue:
+                    ConfirmationNotification(Rules.AutoMergedWithOtherIssue); //TODO - this message is also nonsense
+                    break;
+            }
+
+            return new JsonSuccessResult(message: whatWouldHappen);
+        }
+
+        [HttpPost, ExportViewData, ValidateInput(false), IfButtonClicked("AdjustRules")]
         public ActionResult AdjustRules(IssueRulesPostModel postModel)
         {
             if (!ModelState.IsValid)
@@ -415,11 +467,12 @@ namespace Errordite.Web.Controllers
                     case AdjustRulesStatus.IssueNotFound:
                         return RedirectToAction("notfound", new { FriendlyId = postModel.Id.GetFriendlyId() });
                     case AdjustRulesStatus.Ok:
-                        ConfirmationNotification(new MvcHtmlString("Rules adjusted successfully. Of {0} errors, {1} still match{2} and remain{3} attached to the issue.{4}".FormatWith(
+                        ConfirmationNotification(new MvcHtmlString("Rules adjusted successfully. Of {0} error{1}, {2} still match{3} and remain{4} attached to the issue.{5}".FormatWith(
                             result.ErrorsMatched + result.ErrorsNotMatched,
+                            result.ErrorsNotMatched + result.ErrorsNotMatched == 1 ? "" : "s",
                             result.ErrorsNotMatched == 0 ? "all" : result.ErrorsMatched.ToString(),
                             result.ErrorsMatched == 1 ? "es" : "",
-                            result.ErrorsMatched == 1 ? "s" : "",
+                            result.ErrorsMatched == 1 && result.ErrorsNotMatched > 0 ? "s" : "",
                             result.ErrorsNotMatched > 0
                                 ? " The {0} that did not match {1} been attached to newly created issue # <a href='{2}'>{3}</a>".FormatWith(
                                     result.ErrorsNotMatched,

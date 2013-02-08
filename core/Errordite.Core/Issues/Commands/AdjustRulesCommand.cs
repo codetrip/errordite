@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using CodeTrip.Core.Dynamic;
 using CodeTrip.Core.Interfaces;
 using Errordite.Core.Authorisation;
 using Errordite.Core.Configuration;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Errors.Commands;
 using Errordite.Core.Errors.Queries;
-using Errordite.Core.Issues.Queries;
 using Errordite.Core.Matching;
 using Errordite.Core.Messages;
 using Errordite.Core.Organisations;
@@ -16,24 +16,18 @@ namespace Errordite.Core.Issues.Commands
 {
     public class AdjustRulesCommand : SessionAccessBase, IAdjustRulesCommand
     {
-        private readonly IGetIssueWithMatchingRulesQuery _getIssueWithMatchingRulesQuery;
         private readonly IGetErrorsThatDoNotMatchNewRulesQuery _getErrorsThatDoNotMatchNewRulesQuery;
         private readonly IMoveErrorsToNewIssueCommand _moveErrorsToNewIssueCommand;
-        private readonly IMergeIssuesCommand _mergeIssuesCommand;
         private readonly IAuthorisationManager _authorisationManager;
         private readonly ErrorditeConfiguration _configuration;
 
-        public AdjustRulesCommand(IGetIssueWithMatchingRulesQuery getIssueWithMatchingRulesQuery, 
-            IGetErrorsThatDoNotMatchNewRulesQuery getErrorsThatDoNotMatchNewRulesQuery, 
+        public AdjustRulesCommand(IGetErrorsThatDoNotMatchNewRulesQuery getErrorsThatDoNotMatchNewRulesQuery, 
             IMoveErrorsToNewIssueCommand moveErrorsToNewIssueCommand, 
-            IMergeIssuesCommand mergeIssuesCommand, 
             IAuthorisationManager authorisationManager,
             ErrorditeConfiguration configuration)
         {
-            _getIssueWithMatchingRulesQuery = getIssueWithMatchingRulesQuery;
             _getErrorsThatDoNotMatchNewRulesQuery = getErrorsThatDoNotMatchNewRulesQuery;
             _moveErrorsToNewIssueCommand = moveErrorsToNewIssueCommand;
-            _mergeIssuesCommand = mergeIssuesCommand;
             _authorisationManager = authorisationManager;
             _configuration = configuration;
         }
@@ -55,13 +49,26 @@ namespace Errordite.Core.Issues.Commands
             //craete the new temp issue
             var tempIssue = CreateTempIssue(currentIssue, request);
 
-            //makes sure we get an Id for the isssue
-            Store(tempIssue);
+            var currentDbIssue = currentIssue;
+
+            if (!request.WhatIf)
+            {
+                //storing at this point makes sure we get an Id for the isssue
+                Store(tempIssue);
+            }
+            else
+            {
+                //if we're just doing a whatif we don't want to actually change the issue in the db
+                //note the properties on the new "currentissue" will still presumably be proxies 
+                //so need to be careful not to change anything on them...
+                currentIssue = new Issue();
+                PropertyMapper.Map(currentDbIssue, currentIssue);
+            }
 
             //and update the existing issue
             UpdateCurrentIssue(currentIssue, tempIssue, request);
 
-            Trace("Starting to determining non matching errors , Current Error Count:={0}, Temp Issue Error Count:={1}...", currentIssue.ErrorCount, tempIssue.ErrorCount);
+            Trace("Starting to determine non matching errors , Current Error Count:={0}, Temp Issue Error Count:={1}...", currentIssue.ErrorCount, tempIssue.ErrorCount);
             var nonMatchingErrorsResponse = _getErrorsThatDoNotMatchNewRulesQuery.Invoke(new GetErrorsThatDoNotMatchNewRulesRequest
             {
                 IssueWithModifiedRules = currentIssue,
@@ -69,33 +76,39 @@ namespace Errordite.Core.Issues.Commands
             });
             Trace("Completed determining non matching errors, temp issue error count:={0}, remaining errors:={1}...", tempIssue.ErrorCount, nonMatchingErrorsResponse.Matches);
 
-            if (nonMatchingErrorsResponse.NonMatches.Count > 0)
+            if (!request.WhatIf)
             {
-                //if errors on the original issue did not match the new rules, store the temp issue and move the non matching errors to it
-                Session.AddCommitAction(new RaiseIssueCreatedEvent(tempIssue));
-
-                //move all these errors to the new issue in a batch
-                _moveErrorsToNewIssueCommand.Invoke(new MoveErrorsToNewIssueRequest
+                if (nonMatchingErrorsResponse.NonMatches.Count > 0)
                 {
-                    Errors = nonMatchingErrorsResponse.NonMatches,
-                    IssueId = tempIssue.Id,
-                    CurrentUser = request.CurrentUser
-                });
+                    //if errors on the original issue did not match the new rules, store the temp issue and move the non matching errors to it
+                    Session.AddCommitAction(new RaiseIssueCreatedEvent(tempIssue));
 
-                //re-sync the error counts only if we have moved errors
-                Session.AddCommitAction(new SendNServiceBusMessage("Sync Issue Error Counts", new SyncIssueErrorCountsMessage
+                    //move all these errors to the new issue in a batch
+                    _moveErrorsToNewIssueCommand.Invoke(new MoveErrorsToNewIssueRequest
+                        {
+                            Errors = nonMatchingErrorsResponse.NonMatches,
+                            IssueId = tempIssue.Id,
+                            CurrentUser = request.CurrentUser
+                        });
+
+                    //re-sync the error counts only if we have moved errors
+                    Session.AddCommitAction(new SendNServiceBusMessage("Sync Issue Error Counts",
+                                                                       new SyncIssueErrorCountsMessage
+                                                                           {
+                                                                               CurrentUser = request.CurrentUser,
+                                                                               IssueId = currentIssue.Id,
+                                                                               OrganisationId =
+                                                                                   request.CurrentUser.OrganisationId
+                                                                           }, _configuration.EventsQueueName));
+                }
+                else
                 {
-                    CurrentUser = request.CurrentUser,
-                    IssueId = currentIssue.Id,
-                    OrganisationId = request.CurrentUser.OrganisationId
-                }, _configuration.EventsQueueName));
-            }
-            else
-            {
-                Delete(tempIssue);
+                    Delete(tempIssue);
+                }
+
+                Session.AddCommitAction(new RaiseIssueModifiedEvent(currentIssue));
             }
 
-            Session.AddCommitAction(new RaiseIssueModifiedEvent(currentIssue));
 
             return new AdjustRulesResponse
             {
@@ -204,6 +217,7 @@ namespace Errordite.Core.Issues.Commands
         public string NewIssueName { get; set; }
         public string OriginalIssueName { get; set; }
         public List<IMatchRule> Rules { get; set; }
+        public bool WhatIf { get; set; }
     }
 
     public enum AdjustRulesStatus
