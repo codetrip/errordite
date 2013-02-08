@@ -1203,6 +1203,8 @@ section {
     margin-top: 3px; }
   .notification a.hide-notification {
     float: right; }
+  .notification a {
+    color: inherit; }
 
 .video-panel {
   height: 135px;

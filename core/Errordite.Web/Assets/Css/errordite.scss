@@ -1514,6 +1514,10 @@ section {
 	a.hide-notification {
 		float:right;
 	}
+
+	a {
+		color: inherit;
+	}
 }
 
 .video-panel {
