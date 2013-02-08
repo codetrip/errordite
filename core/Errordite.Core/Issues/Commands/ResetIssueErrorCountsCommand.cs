@@ -98,7 +98,7 @@ namespace Errordite.Core.Issues.Commands
             }
 
             //delete any daily issue count docs except the historical one
-            new DeleteByIndexCommitAction(CoreConstants.IndexNames.IssueDailyCount, new IndexQuery { Query = "IssueId:{0} AND Historical:false".FormatWith(issue.Id) }, true).Execute(Session);
+            new DeleteAllDailyCountsCommitAction(issue.Id, deleteHistorical: false).Execute(Session);
 
             //make sure the issue index is not stale
             new SynchroniseIndex<IssueDailyCount_Search>().Execute(Session);

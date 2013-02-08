@@ -30,16 +30,9 @@ namespace Errordite.Core.Issues.Commands
 
 			_authorisationManager.Authorise(issue, request.CurrentUser);
 
-			//delete the issues errors
-            Session.AddCommitAction(new DeleteByIndexCommitAction(CoreConstants.IndexNames.Errors, new IndexQuery
-			{
-				Query = "IssueId:{0}".FormatWith(issue.Id)
-            }, true));
-
-            Session.AddCommitAction(new DeleteByIndexCommitAction(CoreConstants.IndexNames.IssueDailyCount, new IndexQuery
-            {
-                Query = "IssueId:{0}".FormatWith(issue.Id)
-            }, true));
+			//delete the issue's errors
+            Session.AddCommitAction(new DeleteAllErrorsCommitAction(issue.Id));
+            Session.AddCommitAction(new DeleteAllDailyCountsCommitAction(issue.Id));
 
 			Session.Raven.Load<IssueHourlyCount>("IssueHourlyCount/{0}".FormatWith(issue.FriendlyId)).Initialise();
 
