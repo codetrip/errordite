@@ -2,8 +2,9 @@
 using System;
 using System.Configuration;
 using System.Diagnostics.Eventing.Reader;
-using System.IO;
+using System.Threading;
 using System.Web.Mvc;
+using Mindscape.Raygun4Net;
 
 namespace Errordite.Samples.Mvc4.Controllers
 {
@@ -11,14 +12,15 @@ namespace Errordite.Samples.Mvc4.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.Message = "Welcome to ASP.NET MVC!";
-
-            return View();
-        }
-
-        public ActionResult NeedsParam(int param)
-        {
-            return Content(param.ToString());
+            try
+            {
+                throw new Exception("test exception");
+            }
+            catch (Exception ex)
+            {
+                new RaygunClient().Send(ex);
+                throw;
+            }
         }
 
         public ActionResult ErrorInView()

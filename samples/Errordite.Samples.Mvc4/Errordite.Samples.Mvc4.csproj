@@ -48,6 +48,9 @@
       <HintPath>..\packages\Errordite.Client.Mvc4.1.3.13.2\lib\net40\Errordite.Client.Mvc4.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Mindscape.Raygun4Net">
+      <HintPath>..\..\lib\RayGun\Mindscape.Raygun4Net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
