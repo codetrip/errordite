@@ -182,7 +182,7 @@
     <Compile Include="Issues\Commands\BatchStatusUpdateCommand.cs" />
     <Compile Include="Errors\Queries\GetErrorsThatDoNotMatchNewRulesQuery.cs" />
     <Compile Include="Issues\Commands\AddCommentCommand.cs" />
-    <Compile Include="Issues\Commands\SyncIssueErrorCountsCommand.cs" />
+    <Compile Include="Issues\Commands\ResetIssueErrorCountsCommand.cs" />
     <Compile Include="Issues\Commands\ReprocessIssueErrorsCommand.cs" />
     <Compile Include="Issues\Commands\MergeIssuesCommand.cs" />
     <Compile Include="Issues\Commands\DeleteIssueCommand.cs" />

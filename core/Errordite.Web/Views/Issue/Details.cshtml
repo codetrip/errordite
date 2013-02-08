@@ -3,7 +3,7 @@
 @model IssueDetailsViewModel
 
 <div class="form double narrow">
-	<h2 class="section-header border"><i class="icon-cube"></i>Issue Details</h2>
+	<h2 class="section-header border"><i class="icon-files"></i>Issue Details</h2>
 	@using (Html.BeginForm("adjustdetails", "issue", FormMethod.Post, new { id = "adjustDetails" }))
 	{
 		 @Html.HiddenFor(m => m.IssueId)
@@ -49,7 +49,7 @@
 @if(Model.SampleError != null)
 {
 	<div class="issue-error-info">
-		<h2 class="section-header border"><i class="icon-errors"></i>Sample Error Details</h2>
+		<h2 class="section-header border"><i class="icon-file"></i>Sample Error Details</h2>
 		<h3>Exception Type</h3>
 		<p class="word-break">@Model.SampleError.ExceptionInfos.First().Type</p>
 		<h3>Message</h3>

@@ -42,27 +42,7 @@ namespace Errordite.Core.Issues.Commands
 			if (issue == null)
 				return new ResetIssueErrorCountsResponse();
 
-            //create or update the historical count of errors for this issue
-            var historicalCount = Load<IssueDailyCount>("IssueDailyCount/{0}-Historical".FormatWith(issue.FriendlyId));
-
-            if (historicalCount == null)
-            {
-                historicalCount = new IssueDailyCount
-                {
-                    IssueId = issue.Id,
-                    ApplicationId = issue.ApplicationId,
-                    Count = issue.ErrorCount,
-                    Date = DateTime.MinValue.Date,
-                    Historical = true,
-                    Id = "IssueDailyCount/{0}-Historical".FormatWith(issue.FriendlyId)
-                };
-
-                Store(historicalCount);
-            }
-            else
-            {
-                historicalCount.Count += issue.ErrorCount;
-            }
+            var currentIssueCount = issue.ErrorCount;
 
             //re-initialise the issue hourly counts
 			var hourlyCount = Session.Raven.Load<IssueHourlyCount>("IssueHourlyCount/{0}".FormatWith(issue.FriendlyId));
@@ -118,7 +98,7 @@ namespace Errordite.Core.Issues.Commands
             }
 
             //delete any daily issue count docs except the historical one
-            new DeleteByIndexCommitAction(CoreConstants.IndexNames.IssueDailyCount, new IndexQuery { Query = "IssueId:{0} AND Historical:false" }, true).Execute(Session);
+            new DeleteByIndexCommitAction(CoreConstants.IndexNames.IssueDailyCount, new IndexQuery { Query = "IssueId:{0} AND Historical:false".FormatWith(issue.Id) }, true).Execute(Session);
 
             //make sure the issue index is not stale
             new SynchroniseIndex<IssueDailyCount_Search>().Execute(Session);
@@ -130,6 +110,28 @@ namespace Errordite.Core.Issues.Commands
 
             issue.ErrorCount = errors.PagingStatus.TotalItems;
 			issue.LimitStatus = issue.ErrorCount >= _configuration.IssueErrorLimit ? ErrorLimitStatus.Exceeded : ErrorLimitStatus.Ok;
+
+            //create or update the historical count of errors for this issue
+            var historicalCount = Load<IssueDailyCount>("IssueDailyCount/{0}-Historical".FormatWith(issue.FriendlyId));
+
+            if (historicalCount == null)
+            {
+                historicalCount = new IssueDailyCount
+                {
+                    IssueId = issue.Id,
+                    ApplicationId = issue.ApplicationId,
+                    Count = currentIssueCount - issue.ErrorCount,
+                    Date = DateTime.MinValue.Date,
+                    Historical = true,
+                    Id = "IssueDailyCount/{0}-Historical".FormatWith(issue.FriendlyId)
+                };
+
+                Store(historicalCount);
+            }
+            else
+            {
+                historicalCount.Count += (currentIssueCount - issue.ErrorCount);
+            }
 
 			return new ResetIssueErrorCountsResponse();
 		}

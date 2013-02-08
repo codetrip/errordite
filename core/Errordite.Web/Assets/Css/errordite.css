@@ -67,7 +67,8 @@ h2 {
   h2.section-header {
     text-transform: uppercase;
     font-weight: 700;
-    font-size: 16px; }
+    font-size: 16px;
+    color: #6B94AC; }
     h2.section-header.border {
       padding-bottom: 10px;
       border-bottom: 1px solid #8e9090; }
@@ -698,6 +699,12 @@ section {
 
 .icon-up-arrow {
   background-position: -108px -18px; }
+
+.icon-arrow-left {
+  background-position: 0 -36px; }
+
+.icon-arrow-right {
+  background-position: -165px -18px; }
 
 .icon-people {
   width: 30px;
@@ -1627,7 +1634,8 @@ nav {
   .issue-error-info h3 {
     text-transform: uppercase;
     font-size: 13px;
-    margin: 5px 0 0 0; }
+    margin: 5px 0 0 0;
+    font-weight: 600; }
   .issue-error-info p {
     margin: 0;
     font-size: 13px;
