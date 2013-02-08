@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -198,6 +199,54 @@ namespace Errordite.Web.Areas.System.Controllers
             }, _configuration.EventsQueueName));
 
             return Content("Queued");
+        }
+
+        public ActionResult UpdateSync(string organisationId)
+        {
+            Core.Session.SetOrganisation(new Organisation
+            {
+                Id = Organisation.GetId(organisationId)
+            });
+
+            RavenQueryStatistics stats;
+            var dateResults = Core.Session.Raven.Query<IssueDailyCount>().Statistics(out stats).Skip(0)
+                .Take(50)
+                .Select(r => r.Id)
+                .ToList();
+
+            if (stats.TotalResults > 50)
+            {
+                int pageNumber = stats.TotalResults / 50;
+
+                for (int i = 1; i < pageNumber; i++)
+                {
+                    var range = Core.Session.Raven.Query<IssueDailyCount>()
+                                    .Skip(i * 50)
+                                    .Take(50)
+                                    .Select(r => r.Id)
+                                    .ToList();
+
+                    dateResults.AddRange(range);
+                }
+            }
+
+            foreach (var partition in dateResults.Partition(100))
+            {
+                foreach (var id in partition)
+                {
+                    var count = Core.Session.Raven.Load<IssueDailyCount>(id);
+                    count.Historical = false;
+                }
+
+                Core.Session.Commit();
+                Core.Session.Close();
+                Core.Session.SetOrganisation(new Organisation
+                {
+                    Id = Organisation.GetId(organisationId)
+                });
+            }
+
+            return Content("Done");
         }
 
         public ActionResult StripCss(string organisationId, string issueId)

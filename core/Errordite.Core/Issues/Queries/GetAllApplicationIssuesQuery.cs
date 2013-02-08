@@ -43,9 +43,9 @@ namespace Errordite.Core.Issues.Queries
             if(stats.TotalResults > _configuration.MaxPageSize)
             {
                 Trace("Total issues is greater than default page size, iterating to get all issues");
-                int pageNumber = stats.TotalResults/_configuration.MaxPageSize;
+                int pageCount = stats.TotalResults/_configuration.MaxPageSize;
 
-                for(int i=1;i<pageNumber;i++)
+                for(int pageNumber=1;pageNumber<pageCount;pageNumber++)
                 {
                     issues.AddRange(Session.Raven.Query<IssueDocument, Issues_Search>()
                         .Where(issue => issue.ApplicationId == Application.GetId(request.ApplicationId))

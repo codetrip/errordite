@@ -109,6 +109,7 @@ h2 {
         text-transform:uppercase;
         font-weight:$extraboldfontweight;
         font-size:16px;
+		color:#6B94AC;
         &.border {
             padding-bottom:10px;
             border-bottom:1px solid $verylightbrown;
@@ -889,6 +890,12 @@ section {
 }
 .icon-up-arrow {
   background-position:-108px -18px;
+}
+.icon-arrow-left {
+  background-position:-0 -36px;
+}
+.icon-arrow-right {
+  background-position:-165px -18px;
 }
 .icon-people {
   width: 30px;
@@ -2082,6 +2089,7 @@ nav {
 		text-transform:uppercase;
 		font-size:13px;
 		margin:5px 0 0 0;
+		font-weight: $boldfontweight;
 	}
 	p {
 		margin:0;
