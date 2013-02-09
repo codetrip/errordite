@@ -54,6 +54,10 @@ the config file.  If you wish to allow a choice of folders, they can be separate
         <ReceptionEndpoint theRest="$(ReceptionEndpoint)" />
         <ReceptionHttpEndpoint theRest="http://localhost:800/api" />
         <RenderMinifiedContent theRest="true" />
+        <EventsQueueName production="errordite.events.service@services.errordite.com"/>
+        <ReceptionQueueName production="errordite.reception.service@services.errordite.com"/>
+        <NotificationsQueueName production="errordite.notifications.service@services.errordite.com"/>
+        <ReceptionHttpEndpoint production="http://services.errordite.com:800/api"/>
     </File>
 
     <File match="email.config">

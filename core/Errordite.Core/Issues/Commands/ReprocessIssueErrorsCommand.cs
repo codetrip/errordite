@@ -109,7 +109,9 @@ namespace Errordite.Core.Issues.Commands
                     //counts.  Note we do NOT want to call purge as this may delete all the errors previously-owned
                     //errors if the index has not caught up yet!
                     Session.AddCommitAction(new DeleteAllDailyCountsCommitAction(issue.Id));
-                    Session.Raven.Load<IssueHourlyCount>("IssueHourlyCount/{0}".FormatWith(issue.FriendlyId)).Initialise();
+                    var hourlyCount = Session.Raven.Load<IssueHourlyCount>("IssueHourlyCount/{0}".FormatWith(issue.FriendlyId));
+                     if (hourlyCount != null)
+                        hourlyCount.Initialise();
                     issue.ErrorCount = 0;
                     issue.LimitStatus = ErrorLimitStatus.Ok;
                 }
