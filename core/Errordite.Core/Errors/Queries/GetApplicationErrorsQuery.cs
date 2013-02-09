@@ -23,6 +23,9 @@ namespace Errordite.Core.Errors.Queries
             var query = Session.Raven.Query<ErrorDocument, Errors_Search>()
                 .Statistics(out stats);
 
+            if (request.WaitForIndexStaleAtUtc.HasValue)
+                query = query.Customize(c => c.WaitForNonStaleResultsAsOf(request.WaitForIndexStaleAtUtc.Value));
+
             if (!request.ApplicationId.IsNullOrEmpty())
             {
                 query = query.Where(e => e.ApplicationId == Application.GetId(request.ApplicationId));
@@ -99,5 +102,7 @@ namespace Errordite.Core.Errors.Queries
         public PageRequestWithSort Paging { get; set; }
         public string UserTimezoneId { get; set; }
         public int? LastFriendlyId { get; set; }
+
+        public DateTime? WaitForIndexStaleAtUtc { get; set; }
     }
 }

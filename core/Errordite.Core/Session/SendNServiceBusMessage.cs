@@ -1,4 +1,6 @@
-﻿using NServiceBus;
+﻿using System;
+using Errordite.Core.ServiceBus;
+using NServiceBus;
 
 namespace Errordite.Core.Session
 {
@@ -22,6 +24,10 @@ namespace Errordite.Core.Session
 
         public override void Execute(IAppSession session)
         {
+            var baseMessage = _message as ErrorditeNServiceBusMessageBase;
+            if (baseMessage != null)
+                baseMessage.SentAtUtc = DateTime.UtcNow;
+                
             if (_destination == null)
                 session.Bus.Send(_message);
             else

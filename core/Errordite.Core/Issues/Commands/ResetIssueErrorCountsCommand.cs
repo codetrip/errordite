@@ -65,7 +65,8 @@ namespace Errordite.Core.Issues.Commands
                 ApplicationId = issue.ApplicationId,
                 OrganisationId = issue.OrganisationId,
                 IssueId = issue.Id,
-                Paging = new PageRequestWithSort(1, int.MaxValue)
+                Paging = new PageRequestWithSort(1, int.MaxValue),
+                WaitForIndexStaleAtUtc = request.TriggerEventUtc,
             }).Errors;
 
             var dailyCounts = new Dictionary<DateTime, IssueDailyCount>(); 
@@ -146,5 +147,7 @@ namespace Errordite.Core.Issues.Commands
     public class ResetIssueErrorCountsRequest : OrganisationRequestBase
     {
         public string IssueId { get; set; }
+
+        public DateTime TriggerEventUtc { get; set; }
     }
 }
