@@ -63,10 +63,11 @@ namespace Errordite.Core.Issues.Commands
                 //so need to be careful not to change anything on them...
                 currentIssue = new Issue();
                 PropertyMapper.Map(currentDbIssue, currentIssue);
+                currentIssue.History = new List<IssueHistory>();
             }
 
             //and update the existing issue
-            UpdateCurrentIssue(currentIssue, tempIssue, request);
+            UpdateCurrentIssue(currentIssue, request);
 
             Trace("Starting to determine non matching errors , Current Error Count:={0}, Temp Issue Error Count:={1}...", currentIssue.ErrorCount, tempIssue.ErrorCount);
             var nonMatchingErrorsResponse = _getErrorsThatDoNotMatchNewRulesQuery.Invoke(new GetErrorsThatDoNotMatchNewRulesRequest
@@ -100,9 +101,22 @@ namespace Errordite.Core.Issues.Commands
                                                                                OrganisationId =
                                                                                    request.CurrentUser.OrganisationId
                                                                            }, _configuration.EventsQueueName));
+                    currentIssue.History.Add(new IssueHistory
+                    {
+                        DateAddedUtc = DateTime.UtcNow,
+                        Type = HistoryItemType.RulesAdjustedCreatedNewIssue,
+                        SpawnedIssueId = tempIssue.Id,
+                        UserId = request.CurrentUser.Id,
+                    });
                 }
                 else
                 {
+                    currentIssue.History.Add(new IssueHistory()
+                        {
+                            DateAddedUtc = DateTime.UtcNow,
+                            Type = HistoryItemType.RulesAdjustedNoNewIssue,
+                            UserId = request.CurrentUser.Id,
+                        });
                     Delete(tempIssue);
                 }
 
@@ -120,7 +134,7 @@ namespace Errordite.Core.Issues.Commands
             };
         }
 
-        private void UpdateCurrentIssue(Issue currentIssue, Issue tempIssue, AdjustRulesRequest request)
+        private void UpdateCurrentIssue(Issue currentIssue, AdjustRulesRequest request)
         {
             if (currentIssue.Status == IssueStatus.Unacknowledged)
             {
@@ -130,13 +144,6 @@ namespace Errordite.Core.Issues.Commands
             currentIssue.Name = request.OriginalIssueName;
             currentIssue.Rules = request.Rules;
             currentIssue.LastRuleAdjustmentUtc = DateTime.UtcNow;
-            currentIssue.History.Add(new IssueHistory
-            {
-                DateAddedUtc = DateTime.UtcNow,
-                Type = HistoryItemType.RulesAdjustedCreatedNewIssue,
-                SpawnedIssueId = tempIssue.Id,
-                SystemMessage = true,
-            });
         }
         
         private Issue CreateTempIssue(Issue currentIssue, AdjustRulesRequest request)
@@ -158,7 +165,6 @@ namespace Errordite.Core.Issues.Commands
                     new IssueHistory
                     {
                         DateAddedUtc = DateTime.UtcNow,
-                        SystemMessage = true,
                         Type = HistoryItemType.CreatedByRuleAdjustment,
                         SpawningIssueId = currentIssue.Id,
                         UserId = request.CurrentUser.Id,

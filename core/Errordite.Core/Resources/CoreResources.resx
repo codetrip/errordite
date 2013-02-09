@@ -136,14 +136,17 @@
     <value>Issue details were updated by {0} ({1}), Status = {2}, Name = {3}, Always Notify = {4}.</value>
   </data>
   <data name="HistoryRulesAdjusted" xml:space="preserve">
-    <value>Issue rules were adjusted by {0} ({1}). New issue with Id {2} was created by this rules adjustment.</value>
+    <value>Issue rules were adjusted by {0}. Non matching errors got attached to {1}.</value>
+  </data>
+  <data name="HistoryRulesAdjustedNoNewIssue" xml:space="preserve">
+    <value>Issue rules were adjusted by {0}. All errors stayed attached.</value>
   </data>
   <data name="HistoryIssuePurged" xml:space="preserve">
-    <value>Issue was purged of all errors, job was triggered by {0} ({1}).
+    <value>Issue was purged of all errors by {0}.
 </value>
   </data>
   <data name="HistoryCreatedByRulesAdjustment" xml:space="preserve">
-    <value>Issue was created by adjusting rules of issue with id {0} by {1} ({2}).</value>
+    <value>Issue was created by adjustment of rules of {0} by {1}.</value>
   </data>
   <data name="DeleteIssuesMessage" xml:space="preserve">
     <value>Batch Delete Issues</value>
@@ -170,10 +173,10 @@
     <value>Reapply Issue Rules</value>
   </data>
   <data name="HistoryIssueCreatedBy" xml:space="preserve">
-    <value>Issue created by {0} ({1}).</value>
+    <value>Issue created by {0}.</value>
   </data>
   <data name="HistoryIssueStatusUpdated" xml:space="preserve">
-    <value>Status updated from {0} to {1} by {2} ({3}).</value>
+    <value>Status updated from {0} to {1} by {3}.</value>
   </data>
   <data name="BulkStatusUpdateAuditMessage" xml:space="preserve">
     <value>Successfully updated {0} issues to {1} in {2}s {3}ms.</value>
@@ -182,9 +185,9 @@
     <value>Batch Status Update</value>
   </data>
   <data name="HistoryIssueMerged" xml:space="preserve">
-    <value>The errors from issue with Id {0} ({1}) were merged into this issue as a result of a rules adjustment.</value>
+    <value>The errors from Issue {0} ({1}) were merged into this issue as a result of a rules adjustment.</value>
   </data>
   <data name="HistoryIssueErrorsReceivedAgain" xml:space="preserve">
-    <value>All errors associated with this issue were re-imported into the system, triggered by {0} ({1}).&lt;br /&gt;{2}</value>
+    <value>All errors associated with this issue were re-processed by {0}.&lt;br /&gt;{2}</value>
   </data>
 </root>
