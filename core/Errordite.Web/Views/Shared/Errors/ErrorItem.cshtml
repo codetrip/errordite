@@ -17,7 +17,7 @@
         </span><br />
         <span class="table-info">@Html.Raw(Model.Error.MachineName)</span>
     </td>
-    <td class="word-break">@(Model.Error.ExceptionInfos.First().Message.Length > 200 ? Html.Raw(Model.Error.ExceptionInfos.First().Message.Substring(0, 200) + "...") : Html.Raw(Model.Error.ExceptionInfos.First().Message)) </td>
+    <td class="word-break">@(Model.Error.ExceptionInfos.First().Message.IfPoss(m => m.Length) > 200 ? Html.Raw(Model.Error.ExceptionInfos.First().Message.Substring(0, 200) + "...") : Html.Raw(Model.Error.ExceptionInfos.First().Message)) </td>
     <td class="word-break">@(Model.Error.Version.IsNullOrEmpty() ? new HtmlString("Unknown") : Html.Raw(Model.Error.Version))</td>
     <td class="word-break">@Model.Error.TimestampUtc.ToLocalTimeFormatted()</td>
     
