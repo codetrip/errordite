@@ -191,7 +191,7 @@
         }
         return ruleValTimeout = setTimeout(function() {
           return Errordite.ruleManager.showRuleUpdatesPanel();
-        }, 1000);
+        }, 800);
       });
       $body.delegate('tr.rule :input', 'change', function() {
         var $rule;

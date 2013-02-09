@@ -140,7 +140,7 @@ jQuery ->
 			clearTimeout(ruleValTimeout) if ruleValTimeout?
 			ruleValTimeout = setTimeout -> 
 				Errordite.ruleManager.showRuleUpdatesPanel()
-			, 1000
+			, 800
 
 		$body.delegate 'tr.rule :input', 'change', () -> 
 			$rule = $(this).closest 'tr.rule'

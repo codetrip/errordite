@@ -144,12 +144,12 @@ namespace Errordite.Core.Issues.Commands
             {
                 if (AttachedIssueIds.Count == 1)
                 {
-                    message = "All errors remain attached to this issue.";
+                    message = "All errors remained attached to this issue.";
                 }
                 else
                 {
                     var otherAttachedIssueIds = AttachedIssueIds.Keys.Where(k => k != issueId);
-                    message = "{0} error{1} remain attached to this issue. The rest became attached to issue{2} {3}"
+                    message = "{0} error{1} remained attached to this issue. The rest became attached to issue{2} {3}"
                         .FormatWith(attachedToThis, attachedToThis == 1 ? "" : "s", otherAttachedIssueIds.Count() == 1 ? "" : "s",
                                     otherAttachedIssueIds
                                         .StringConcat(k => " {0}:{1}".FormatWith(GetIssueLink(k), AttachedIssueIds[k])));

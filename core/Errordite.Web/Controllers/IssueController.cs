@@ -330,38 +330,50 @@ namespace Errordite.Web.Controllers
             switch (h.Type)
             {
                 case HistoryItemType.CreatedByRuleAdjustment:
-                    return CoreResources.HistoryCreatedByRulesAdjustment.FormatWith(IdHelper.GetFriendlyId(h.SpawningIssueId),
-                        user.IfPoss(u => u.FullName),
-                        user.IfPoss(u => u.FirstName));
+                    return CoreResources.HistoryCreatedByRulesAdjustment.FormatWith(GetIssueLink(h.SpawningIssueId),
+                                                                                    GetUserString(user));
                 case HistoryItemType.ManuallyCreated:
-                    return CoreResources.HistoryIssueCreatedBy.FormatWith(user.IfPoss(u => u.FullName), user.IfPoss(u => u.FirstName));
+                    return CoreResources.HistoryIssueCreatedBy.FormatWith(GetUserString(user));
                 case HistoryItemType.BatchStatusUpdate:
                     return "{0}{1}{2}".FormatWith(
-                        CoreResources.HistoryIssueStatusUpdated.FormatWith(h.PreviousStatus, h.NewStatus, user.IfPoss(u => u.FullName), user.IfPoss(u => u.Email)),
-                        h.AssignedToUserId == null ? "" : "{0}Assigned to {1} ({2})".FormatWith(
+                        CoreResources.HistoryIssueStatusUpdated.FormatWith(h.PreviousStatus, h.NewStatus, GetUserString(user)),
+                        h.AssignedToUserId == null ? "" : "{0}Assigned to {1}".FormatWith(
                                 Environment.NewLine,
-                                userMemoizer.Get(h.AssignedToUserId).IfPoss(u => u.FullName),
-                                userMemoizer.Get(h.AssignedToUserId).IfPoss(u => u.Email)),
+                                GetUserString(
+                                userMemoizer.Get(h.AssignedToUserId))),
                         h.Comment == null ? "" : Environment.NewLine + h.Comment);
                 case HistoryItemType.MergedTo:
                     return CoreResources.HistoryIssueMerged.FormatWith(IdHelper.GetFriendlyId(h.SpawningIssueId), issueMemoizer.Get(h.SpawningIssueId).IfPoss(i => i.Name, "DELETED"));
                 case HistoryItemType.ErrorsPurged:
-                    return CoreResources.HistoryIssuePurged.FormatWith(user.IfPoss(u => u.FullName), user.IfPoss(u => u.Email));
+                    return CoreResources.HistoryIssuePurged.FormatWith(GetUserString(user));
                 case HistoryItemType.ErrorsReprocessed:
-                    return CoreResources.HistoryIssueErrorsReceivedAgain.FormatWith(
-                        user.IfPoss(u => u.FullName),
-                        user.IfPoss(u => u.Email),
+                    return CoreResources.HistoryIssueErrorsReceivedAgain.FormatWith(GetUserString(user),
                         new ReprocessIssueErrorsResponse() { AttachedIssueIds = h.ReprocessingResult, Status = ReprocessIssueErrorsStatus.Ok }.GetMessage
                             (issue.Id));
                 case HistoryItemType.Comment:
                     return h.Comment; //TODO - record more - like, what got updated
                 case HistoryItemType.RulesAdjustedCreatedNewIssue:
-                    return CoreResources.HistoryRulesAdjusted.FormatWith(user.IfPoss(u => u.FullName), user.IfPoss(u => u.Email), h.SpawnedIssueId);
+                    return CoreResources.HistoryRulesAdjusted.FormatWith(GetUserString(user), GetIssueLink(h.SpawnedIssueId));
+                case HistoryItemType.RulesAdjustedNoNewIssue:
+                    return CoreResources.HistoryRulesAdjustedNoNewIssue.FormatWith(GetUserString(user));
 				case HistoryItemType.AutoCreated:
 		            return "Issue created by new error";
                 default:
                     return h.Type + " " + h.Comment;
             }
+        }
+
+        private string GetUserString(User user)
+        {
+            if (user == null)
+                return "DELETED USER";
+
+            return "{0} ({1})".FormatWith(user.FullName, user.Email);
+        }
+
+        private string GetIssueLink(string issueId)
+        {
+            return "<a href='{0}'>Issue {1}</a>".FormatWith(Url.Issue(issueId ?? "0"), IdHelper.GetFriendlyId(issueId ?? "0"));
         }
 
         private const string RejectPrefix = "Adjustment Rejects";
