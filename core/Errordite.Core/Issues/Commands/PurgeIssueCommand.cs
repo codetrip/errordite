@@ -5,7 +5,6 @@ using Errordite.Core.Domain.Error;
 using Errordite.Core.Organisations;
 using CodeTrip.Core.Extensions;
 using Errordite.Core.Session;
-using Raven.Abstractions.Data;
 
 namespace Errordite.Core.Issues.Commands
 {
@@ -36,16 +35,13 @@ namespace Errordite.Core.Issues.Commands
 
 			Session.Raven.Load<IssueHourlyCount>("IssueHourlyCount/{0}".FormatWith(issue.FriendlyId)).Initialise();
 
-            if (!request.SkipHistoryEntry)
-            {
-                issue.History.Add(new IssueHistory
-                    {
-                        DateAddedUtc = DateTime.UtcNow,
-                        UserId = request.CurrentUser.Id,
-                        Type = HistoryItemType.ErrorsPurged,
-                    });
-            }
-
+            issue.History.Add(new IssueHistory
+                {
+                    DateAddedUtc = DateTime.UtcNow,
+                    UserId = request.CurrentUser.Id,
+                    Type = HistoryItemType.ErrorsPurged,
+                });
+            
             issue.ErrorCount = 0;
 			issue.LimitStatus = ErrorLimitStatus.Ok;
 
@@ -62,7 +58,5 @@ namespace Errordite.Core.Issues.Commands
     public class PurgeIssueRequest : OrganisationRequestBase
     {
         public string IssueId { get; set; }
-
-        public bool SkipHistoryEntry { get; set; }
     }
 }
