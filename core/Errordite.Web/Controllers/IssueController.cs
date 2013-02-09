@@ -423,8 +423,9 @@ namespace Errordite.Web.Controllers
                         result.ErrorsNotMatched == 0 ? "all" : result.ErrorsMatched.ToString(),
                         result.ErrorsMatched == 1 && result.ErrorsNotMatched > 0 ? "es" : "",
                         result.ErrorsNotMatched > 0
-                            ? " The {0} that did not match will be attached to a newly created issue.".FormatWith(
-                                result.ErrorsNotMatched)
+                            ? " The {0} that do{1} not match will be attached to a newly created issue.".FormatWith(
+                                result.ErrorsNotMatched,
+                                result.ErrorsNotMatched == 1 ? "es": "")
                             : string.Empty
                         );
                     break;

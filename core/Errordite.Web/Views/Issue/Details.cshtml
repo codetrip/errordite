@@ -47,20 +47,23 @@
 	}
 </div>
 @if(Model.SampleError != null)
-{
-	<div class="issue-error-info">
-		<h2 class="section-header border"><i class="icon-file"></i>Sample Error Details</h2>
-		<h3>Exception Type</h3>
-		<p class="word-break">@Model.SampleError.ExceptionInfos.First().Type</p>
-		<h3>Message</h3>
-		<p class="word-break">@(Model.SampleError.ExceptionInfos.First().Message.IsNullOrEmpty() ? "No message" : Model.SampleError.ExceptionInfos.First().Message)</p>
-		<h3>Machine</h3>
-		<p>@Model.SampleError.MachineName</p>
-		<h3>Method</h3>
-		<p class="word-break">@Model.SampleError.ExceptionInfos.First().MethodName</p>
-		<h3>Url</h3>
-		<p class="word-break">@Model.SampleError.Url</p>
-		<h3>User Agent</h3>
-		<p class="word-break">@Model.SampleError.UserAgent</p>
-	</div>
+{   
+    <div class="issue-error-info">
+        <div class="tabs">
+            
+        </div>
+        <h2 class="section-header border"><i class="icon-file"></i>Sample Error Details</h2>
+        <h3>Exception Type</h3>
+        <p class="word-break">@Model.SampleError.ExceptionInfos.First().Type</p>
+        <h3>Message</h3>
+        <p class="word-break">@(Model.SampleError.ExceptionInfos.First().Message.IsNullOrEmpty() ? "No message" : Model.SampleError.ExceptionInfos.First().Message)</p>
+        <h3>Method</h3>
+        <p class="word-break">@Model.SampleError.ExceptionInfos.First().MethodName</p>
+        <h3>Machine</h3>
+        <p>@Model.SampleError.MachineName</p>
+        <h3>Url</h3>
+        <p class="word-break">@Model.SampleError.Url</p>
+        <h3>User Agent</h3>
+        <p class="word-break">@Model.SampleError.UserAgent</p>
+    </div>
 	}
