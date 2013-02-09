@@ -25,19 +25,16 @@ namespace Errordite.Core.Issues.Commands
         private readonly IGetApplicationErrorsQuery _getApplicationErrorsQuery;
         private readonly ErrorditeConfiguration _configuration;
         private readonly IReceiveErrorCommand _receiveErrorCommand;
-        private readonly IPurgeIssueCommand _purgeIssueCommand;
 
         public ReprocessIssueErrorsCommand(IAuthorisationManager authorisationManager, 
             IGetApplicationErrorsQuery getApplicationErrorsQuery, 
             ErrorditeConfiguration configuration,
-            IReceiveErrorCommand receiveErrorCommand, 
-            IPurgeIssueCommand purgeIssueCommand)
+            IReceiveErrorCommand receiveErrorCommand)
         {
             _authorisationManager = authorisationManager;
             _getApplicationErrorsQuery = getApplicationErrorsQuery;
             _configuration = configuration;
             _receiveErrorCommand = receiveErrorCommand;
-            _purgeIssueCommand = purgeIssueCommand;
         }
 
         public ReprocessIssueErrorsResponse Invoke(ReprocessIssueErrorsRequest request)
@@ -108,14 +105,13 @@ namespace Errordite.Core.Issues.Commands
                 }
                 else
                 {
-                    //if no errors remain attached to the current issue, then call purge, to short-circuit the zeroing of counts
-                    _purgeIssueCommand.Invoke(new PurgeIssueRequest()
-                        {
-                            CurrentUser = request.CurrentUser,
-                            IssueId = issue.Id,
-                            SkipHistoryEntry = true,
-                        });
-
+                    //if no errors remain attached to the current issue, then short-circuit the zeroing of the
+                    //counts.  Note we do NOT want to call purge as this may delete all the errors previously-owned
+                    //errors if the index has not caught up yet!
+                    Session.AddCommitAction(new DeleteAllDailyCountsCommitAction(issue.Id));
+                    Session.Raven.Load<IssueHourlyCount>("IssueHourlyCount/{0}".FormatWith(issue.FriendlyId)).Initialise();
+                    issue.ErrorCount = 0;
+                    issue.LimitStatus = ErrorLimitStatus.Ok;
                 }
 
                 Session.SynchroniseIndexes<Issues_Search, Errors_Search>();
