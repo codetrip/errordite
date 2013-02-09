@@ -273,18 +273,6 @@ table {
     }
 }
 
-.confirmation-container {
-    width: 100%;
-    float:left;
-    background-color: $green;
-}
-
-.error-container {
-    width: 100%;
-    float:left;
-    background-color: $red;
-}
-
 .welcome-bar-container {
   width: 100%;
   background: $verydarkbrown;
@@ -1499,17 +1487,20 @@ section {
     }
 }
 
-.notification {
-	height:32px;
+.notification-container {
+	font-size: 13px;
+		margin: 3px 3px;
 	section {
 		margin-top:4px;
 	}
-    span {
-        font-size:13px;
-        vertical-align: middle;
-    }
+	.notification {
+		float:left;
+		width:91%;
+		margin: 2px 0;
+	}
     i {
         margin-top:3px;
+		float:left;
     }
 	a.hide-notification {
 		float:right;
@@ -1519,6 +1510,21 @@ section {
 		color: inherit;
 	}
 }
+
+#notifications {
+	width: 100%;
+    float:left;
+	min-height: 32px;
+}
+
+.confirmation-container {
+    background-color: $green;
+}
+
+.error-container {
+    background-color: $red;
+}
+
 
 .video-panel {
 	height:135px;
