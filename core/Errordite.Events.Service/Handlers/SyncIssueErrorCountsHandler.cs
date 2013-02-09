@@ -39,7 +39,8 @@ namespace Errordite.Events.Service.Handlers
 
             _resetIssueErrorCountsCommand.Invoke(new ResetIssueErrorCountsRequest
             {
-                IssueId = message.IssueId
+                IssueId = message.IssueId,
+                TriggerEventUtc = message.SentAtUtc,
             });
         }
     }
