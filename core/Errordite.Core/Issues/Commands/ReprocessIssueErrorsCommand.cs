@@ -25,19 +25,19 @@ namespace Errordite.Core.Issues.Commands
         private readonly IGetApplicationErrorsQuery _getApplicationErrorsQuery;
         private readonly ErrorditeConfiguration _configuration;
         private readonly IReceiveErrorCommand _receiveErrorCommand;
-        private readonly IResetIssueErrorCountsCommand _resetIssueErrorCountsCommand;
+        private readonly IPurgeIssueCommand _purgeIssueCommand;
 
         public ReprocessIssueErrorsCommand(IAuthorisationManager authorisationManager, 
             IGetApplicationErrorsQuery getApplicationErrorsQuery, 
             ErrorditeConfiguration configuration,
             IReceiveErrorCommand receiveErrorCommand, 
-            IResetIssueErrorCountsCommand resetIssueErrorCountsCommand)
+            IPurgeIssueCommand purgeIssueCommand)
         {
             _authorisationManager = authorisationManager;
             _getApplicationErrorsQuery = getApplicationErrorsQuery;
             _configuration = configuration;
             _receiveErrorCommand = receiveErrorCommand;
-            _resetIssueErrorCountsCommand = resetIssueErrorCountsCommand;
+            _purgeIssueCommand = purgeIssueCommand;
         }
 
         public ReprocessIssueErrorsResponse Invoke(ReprocessIssueErrorsRequest request)
@@ -108,13 +108,14 @@ namespace Errordite.Core.Issues.Commands
                 }
                 else
                 {
-                    //if no errors remain attached to the current issue, then reset the counts for this issue
-                    //TODO: is this actually necessary?  I changed it from Purge but don't really get why we need to do this
-                    _resetIssueErrorCountsCommand.Invoke(new ResetIssueErrorCountsRequest()
-                    {
-                        CurrentUser = request.CurrentUser,
-                        IssueId = issue.Id,
-                    });
+                    //if no errors remain attached to the current issue, then call purge, to short-circuit the zeroing of counts
+                    _purgeIssueCommand.Invoke(new PurgeIssueRequest()
+                        {
+                            CurrentUser = request.CurrentUser,
+                            IssueId = issue.Id,
+                            SkipHistoryEntry = true,
+                        });
+
                 }
 
                 Session.SynchroniseIndexes<Issues_Search, Errors_Search>();

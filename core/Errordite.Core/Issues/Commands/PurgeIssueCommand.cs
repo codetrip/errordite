@@ -36,14 +36,17 @@ namespace Errordite.Core.Issues.Commands
 
 			Session.Raven.Load<IssueHourlyCount>("IssueHourlyCount/{0}".FormatWith(issue.FriendlyId)).Initialise();
 
-			issue.History.Add(new IssueHistory
-			{
-				DateAddedUtc = DateTime.UtcNow,
-				UserId = request.CurrentUser.Id,
-				Type = HistoryItemType.ErrorsPurged,
-			});
+            if (!request.SkipHistoryEntry)
+            {
+                issue.History.Add(new IssueHistory
+                    {
+                        DateAddedUtc = DateTime.UtcNow,
+                        UserId = request.CurrentUser.Id,
+                        Type = HistoryItemType.ErrorsPurged,
+                    });
+            }
 
-			issue.ErrorCount = 0;
+            issue.ErrorCount = 0;
 			issue.LimitStatus = ErrorLimitStatus.Ok;
 
 			return new PurgeIssueResponse();
@@ -59,5 +62,7 @@ namespace Errordite.Core.Issues.Commands
     public class PurgeIssueRequest : OrganisationRequestBase
     {
         public string IssueId { get; set; }
+
+        public bool SkipHistoryEntry { get; set; }
     }
 }
