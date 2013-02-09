@@ -4,9 +4,11 @@
 {
 	var notification = ViewData.GetNotification();
 
-	<div id="notifications" class="notification @notification.Type.ToString().ToLowerInvariant()-container">
-		<section class="centered">
-			<i class="icon-@notification.Type.ToString().ToLowerInvariant()"></i><span>@Html.Raw(notification.Message.ToString())</span><a class="hide-notification" href="#"><i class="icon-close"></i></a>
+	<div id="notifications" class="@notification.Type.ToString().ToLowerInvariant()-container">
+	    <section class="centered"><div class="notification-container">
+	                                  <i class="icon-@notification.Type.ToString().ToLowerInvariant()"></i>
+                                      <span class="notification">@Html.Raw(notification.Message.ToString())</span><a class="hide-notification" href="#"><i class="icon-close"></i></a>
+                                  </div>
 		</section> 
 	</div>
 }

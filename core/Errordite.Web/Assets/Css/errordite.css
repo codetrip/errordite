@@ -197,16 +197,6 @@ table {
   .white-container .centered {
     background-color: #fff; }
 
-.confirmation-container {
-  width: 100%;
-  float: left;
-  background-color: #5aa567; }
-
-.error-container {
-  width: 100%;
-  float: left;
-  background-color: #ecacac; }
-
 .welcome-bar-container {
   width: 100%;
   background: #292c31;
@@ -1192,19 +1182,33 @@ section {
     .boxed-item .item-info.short {
       width: 14%; }
 
-.notification {
-  height: 32px; }
-  .notification section {
+.notification-container {
+  font-size: 13px;
+  margin: 3px 3px; }
+  .notification-container section {
     margin-top: 4px; }
-  .notification span {
-    font-size: 13px;
-    vertical-align: middle; }
-  .notification i {
-    margin-top: 3px; }
-  .notification a.hide-notification {
+  .notification-container .notification {
+    float: left;
+    width: 91%;
+    margin: 2px 0; }
+  .notification-container i {
+    margin-top: 3px;
+    float: left; }
+  .notification-container a.hide-notification {
     float: right; }
-  .notification a {
+  .notification-container a {
     color: inherit; }
+
+#notifications {
+  width: 100%;
+  float: left;
+  min-height: 32px; }
+
+.confirmation-container {
+  background-color: #5aa567; }
+
+.error-container {
+  background-color: #ecacac; }
 
 .video-panel {
   height: 135px;
