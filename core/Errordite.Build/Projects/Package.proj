@@ -21,7 +21,8 @@
           ResetAssemblyVersion;
           PackageErrordite;
           PackageInstall;
-          ZipOutput;">
+          ZipOutput;
+          CopyZip;">
 
     <OnError ExecuteTargets="ResetAssemblyVersion"></OnError>
   </Target>

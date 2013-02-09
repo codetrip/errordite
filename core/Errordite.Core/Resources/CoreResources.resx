@@ -188,6 +188,6 @@
     <value>The errors from Issue {0} ({1}) were merged into this issue as a result of a rules adjustment.</value>
   </data>
   <data name="HistoryIssueErrorsReceivedAgain" xml:space="preserve">
-    <value>All errors associated with this issue were re-processed by {0}.&lt;br /&gt;{2}</value>
+    <value>All errors associated with this issue were re-processed by {0}.&lt;br /&gt;{1}</value>
   </data>
 </root>

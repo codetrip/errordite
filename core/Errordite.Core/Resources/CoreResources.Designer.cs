@@ -142,7 +142,7 @@ namespace Errordite.Core.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to All errors associated with this issue were re-processed by {0}.&lt;br /&gt;{2}.
+        ///   Looks up a localized string similar to All errors associated with this issue were re-processed by {0}.&lt;br /&gt;{1}.
         /// </summary>
         public static string HistoryIssueErrorsReceivedAgain {
             get {

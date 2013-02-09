@@ -50,6 +50,10 @@
 
   </Target>
 
+  <Target Name="CopyZip" Condition="'$(ErrorditeBuildDestination)'!=''">
+    <Copy  SourceFiles="$(OutputRoot)\$(BuildNumber)\$(BuildNumber).7z" DestinationFolder="$(ErrorditeBuildDestination)"/>
+  </Target>
+
   <Target Name="CleanOutput">
 
     <RemoveDir Directories="$(SourcePath)\core\Errordite.Web\obj\" ContinueOnError="true" />
