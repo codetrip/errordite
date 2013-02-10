@@ -8,16 +8,16 @@ using Errordite.Core.Session;
 
 namespace Errordite.Core.Issues.Commands
 {
-    public class PurgeIssueCommand : SessionAccessBase, IPurgeIssueCommand
+    public class DeleteIssueErrorsCommand : SessionAccessBase, IDeleteIssueErrorsCommand
     {
         private readonly IAuthorisationManager _authorisationManager;
 
-        public PurgeIssueCommand(IAuthorisationManager authorisationManager)
+        public DeleteIssueErrorsCommand(IAuthorisationManager authorisationManager)
         {
             _authorisationManager = authorisationManager;
         }
 
-        public PurgeIssueResponse Invoke(PurgeIssueRequest request)
+        public DeleteIssueErrorsResponse Invoke(DeleteIssueErrorsRequest request)
         {
 			Trace("Starting...");
 			TraceObject(request);
@@ -25,7 +25,7 @@ namespace Errordite.Core.Issues.Commands
 			var issue = Load<Issue>(Issue.GetId(request.IssueId));
 
 			if (issue == null)
-				return new PurgeIssueResponse();
+				return new DeleteIssueErrorsResponse();
 
 			_authorisationManager.Authorise(issue, request.CurrentUser);
 
@@ -34,6 +34,28 @@ namespace Errordite.Core.Issues.Commands
             Session.AddCommitAction(new DeleteAllDailyCountsCommitAction(issue.Id));
 
 			Session.Raven.Load<IssueHourlyCount>("IssueHourlyCount/{0}".FormatWith(issue.FriendlyId)).Initialise();
+
+            //create or update the historical count of errors for this issue
+            var historicalCount = Load<IssueDailyCount>("IssueDailyCount/{0}-Historical".FormatWith(issue.FriendlyId));
+
+            if (historicalCount == null)
+            {
+                historicalCount = new IssueDailyCount
+                {
+                    IssueId = issue.Id,
+                    ApplicationId = issue.ApplicationId,
+                    Count = issue.ErrorCount,
+                    Date = DateTime.MinValue.Date,
+                    Historical = true,
+                    Id = "IssueDailyCount/{0}-Historical".FormatWith(issue.FriendlyId)
+                };
+
+                Store(historicalCount);
+            }
+            else
+            {
+                historicalCount.Count += issue.ErrorCount;
+            }
 
             issue.History.Add(new IssueHistory
                 {
@@ -45,17 +67,17 @@ namespace Errordite.Core.Issues.Commands
             issue.ErrorCount = 0;
 			issue.LimitStatus = ErrorLimitStatus.Ok;
 
-			return new PurgeIssueResponse();
+			return new DeleteIssueErrorsResponse();
 		}
 	}
 
-    public interface IPurgeIssueCommand : ICommand<PurgeIssueRequest, PurgeIssueResponse>
+    public interface IDeleteIssueErrorsCommand : ICommand<DeleteIssueErrorsRequest, DeleteIssueErrorsResponse>
     { }
 
-    public class PurgeIssueResponse
+    public class DeleteIssueErrorsResponse
     {}
 
-    public class PurgeIssueRequest : OrganisationRequestBase
+    public class DeleteIssueErrorsRequest : OrganisationRequestBase
     {
         public string IssueId { get; set; }
     }

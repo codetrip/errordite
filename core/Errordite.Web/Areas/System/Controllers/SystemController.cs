@@ -50,6 +50,7 @@ namespace Errordite.Web.Areas.System.Controllers
         [HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.SysAdmin)]
         public ActionResult Index()
         {
+            ConfirmationNotification("This is a test");
             return View();
         }
 
