@@ -40,7 +40,7 @@ namespace Errordite.Web.Controllers
         private readonly IPagingViewModelGenerator _pagingViewModelGenerator;
         private readonly IUpdateIssueDetailsCommand _updateIssueDetailsCommand;
         private readonly ErrorditeConfiguration _configuration;
-        private readonly IPurgeIssueCommand _purgeIssueCommand;
+        private readonly IDeleteIssueErrorsCommand _deleteIssueErrorsCommand;
         private readonly IDeleteIssueCommand _deleteIssueCommand;
         private readonly IGetUserQuery _getUserQuery;
         private readonly IGetIssueReportDataQuery _getIssueReportDataQuery;
@@ -52,7 +52,7 @@ namespace Errordite.Web.Controllers
             IPagingViewModelGenerator pagingViewModelGenerator, 
             IUpdateIssueDetailsCommand updateIssueDetailsCommand, 
             ErrorditeConfiguration configuration, 
-            IPurgeIssueCommand purgeIssueCommand, 
+            IDeleteIssueErrorsCommand deleteIssueErrorsCommand, 
             IDeleteIssueCommand deleteIssueCommand,
 			IGetUserQuery getUserQuery, 
             IGetIssueReportDataQuery getIssueReportDataQuery, 
@@ -64,7 +64,7 @@ namespace Errordite.Web.Controllers
             _pagingViewModelGenerator = pagingViewModelGenerator;
             _updateIssueDetailsCommand = updateIssueDetailsCommand;
             _configuration = configuration;
-            _purgeIssueCommand = purgeIssueCommand;
+            _deleteIssueErrorsCommand = deleteIssueErrorsCommand;
             _deleteIssueCommand = deleteIssueCommand;
             _getUserQuery = getUserQuery;
             _getIssueReportDataQuery = getIssueReportDataQuery;
@@ -571,7 +571,7 @@ namespace Errordite.Web.Controllers
         {
             try
             {
-                _purgeIssueCommand.Invoke(new PurgeIssueRequest
+                _deleteIssueErrorsCommand.Invoke(new DeleteIssueErrorsRequest
                 {
                     IssueId = issueId,
                     CurrentUser = Core.AppContext.CurrentUser
@@ -604,7 +604,7 @@ namespace Errordite.Web.Controllers
 
             if (!httpTask.Result.IsSuccessStatusCode)
             {
-                ErrorNotification("An error has occured while attempting to reprocess errors, please try again.");
+                ErrorNotification("An error has occured while attempting to reprocess errors, its likely this is a concurrency problem so please try again.");
             }
             else
             {
