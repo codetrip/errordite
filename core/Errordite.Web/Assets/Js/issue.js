@@ -120,13 +120,8 @@
       });
       return $issue.delegate('#apply-rules-confirmation input[name="WhatIf"]', 'click', function(e) {
         e.preventDefault();
-        return $(this).closest('form').ajaxSubmit({
-          data: {
-            WhatIf: true
-          },
-          success: function(response) {
-            return alert(response.message);
-          }
+        return Errordite.ruleManager.whatIf(function(response) {
+          return alert(response.message);
         });
       });
     }

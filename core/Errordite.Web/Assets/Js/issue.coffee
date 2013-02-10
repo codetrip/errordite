@@ -106,11 +106,8 @@ jQuery ->
 
 		$issue.delegate '#apply-rules-confirmation input[name="WhatIf"]', 'click', (e) -> 
 			e.preventDefault()
-			$(this).closest('form').ajaxSubmit
-				data:
-					WhatIf: true
-				success: (response) ->
-					alert response.message
+			Errordite.ruleManager.whatIf (response) -> alert response.message
+			
 				
 			
 

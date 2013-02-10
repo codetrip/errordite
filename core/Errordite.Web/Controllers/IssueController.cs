@@ -452,7 +452,12 @@ namespace Errordite.Web.Controllers
                     break;
             }
 
-            return new JsonSuccessResult(message: whatWouldHappen);
+            return new JsonSuccessResult(message: whatWouldHappen, data:
+                new {
+                    total = result.ErrorsMatched + result.ErrorsNotMatched,
+                    matched = result.ErrorsMatched,
+                    notmatched = result.ErrorsNotMatched,
+                });
         }
 
         [HttpPost, ExportViewData, ValidateInput(false), IfButtonClicked("AdjustRules")]
