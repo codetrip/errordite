@@ -1,0 +1,29 @@
+<Project
+	xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
+	ToolsVersion="4.0"
+	DefaultTargets="Package">
+
+  <Import Project="$(MSBuildProjectDirectory)\..\Imports\Global.imports" />
+  <Import Project="$(MSBuildProjectDirectory)\..\Targets\PackageErrordite.target" />
+  <Import Project="$(MSBuildProjectDirectory)\..\Targets\PackageInstall.target" />
+  <Import Project="$(MSBuildProjectDirectory)\..\Targets\Common.target" />
+  <Import Project="$(MSBuildProjectDirectory)\..\Targets\Versioning.target" />
+
+
+  <Target Name="Package" DependsOnTargets="
+          UpdateVersionInfo;
+          TagTrunk;
+          TagRelease;
+          SetAssemblyVersion;
+          SetOutputPath;
+          CleanOutput;
+          BuildErrordite;
+          ResetAssemblyVersion;
+          PackageErrordite;
+          PackageInstall;
+          ZipOutput;
+          CopyZip;">
+
+    <OnError ExecuteTargets="ResetAssemblyVersion"></OnError>
+  </Target>
+</Project>

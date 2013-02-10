@@ -1,0 +1,54 @@
+﻿
+@using CodeTrip.Core.Extensions
+@model Errordite.Web.Models.Errors.ExceptionViewModel
+           
+<div class="info" @(Model.DisplayInfoTable() ? string.Empty : "style=display:none")>
+	<table class="table table-bordered table-condensed">
+		@if(Model.Info.MethodName.IsNotNullOrEmpty())
+		{
+			<tr>
+				<td>Method</td>
+				<td class="word-break" data-error-attr="MethodName">@Html.Raw(Model.Info.MethodName)</td>
+			</tr>
+		}
+		@if (Model.Info.Module.IsNotNullOrEmpty())
+		{
+			<tr>
+				<td>Module</td>
+				<td class="word-break" data-error-attr="Module">@Html.Raw(Model.Info.Module)</td>
+			</tr>
+		}
+        
+		@if (!Model.InnerException)
+		{
+			if (Model.Url.IsNotNullOrEmpty())
+			{
+				<tr>
+					<td>Url</td>
+					<td class="word-break" data-error-attr="Url">@Html.Raw(Model.Url)</td>
+				</tr>
+			}
+			if (Model.UserAgent.IsNotNullOrEmpty())
+			{
+				<tr>
+					<td>User Agent</td>
+					<td class="word-break" data-error-attr="UserAgent">@Html.Raw(Model.UserAgent)</td>
+				</tr>
+			}
+		}
+        
+		@if (Model.Info.ExtraData != null)
+		{
+			foreach (var kvp in Model.Info.ExtraData)
+			{
+				<tr>
+					<td class="nobreak">@Html.Raw(kvp.Key.Replace("_", "."))</td>
+					<td class="word-break">@Html.Raw(kvp.Value)</td>
+				</tr>
+			}
+		}
+	</table>
+</div>
+<div class="stacktrace">
+    <pre><span class="st-type" data-error-attr="Type">@Html.Raw(Model.Info.Type)</span>: <span data-error-attr="Message" class="st-message">@Html.Raw(Model.Info.Message)</span><div data-error-attr="StackTrace">@Html.Raw(Model.Info.StackTrace)</div></pre>
+</div> 

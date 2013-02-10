@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <TasksPath Condition="'$(Install)' == ''">$(MSBuildProjectDirectory)\..\Tasks\</TasksPath>
+    <TasksPath Condition="'$(Install)' == 'true'">$(MSBuildProjectDirectory)\</TasksPath>
+    <TaskLocation Condition="$(Install)==''">$(MSBuildProjectDirectory)\..\Tasks\Asos.Build.Tasks.dll</TaskLocation>
+    <TaskLocation Condition="$(Install)=='true'">$(MSBuildProjectDirectory)\</TaskLocation>
+    <ConfigurationLocation Condition="$(Install)==''">$(MSBuildProjectDirectory)\..\Configuration</ConfigurationLocation>
+    <ConfigurationLocation Condition="$(Install)=='true'">$(MSBuildProjectDirectory)</ConfigurationLocation>
+  </PropertyGroup>
+
+  <!-- ============== Import Global Tasks ============== -->
+  <Import Project="$(TasksPath)MSBuild.ExtensionPack.tasks"/>
+  <Import Project="$(TasksPath)Microsoft.Sdc.Common.tasks" />
+  <Import Project="$(TasksPath)MSBuild.Mercurial.tasks" />
+  <Import Project="$(TasksPath)MSBuild.Community.Tasks.Targets" />
+
+  
+  <!-- ============== Properties ============== -->
+  <Import Project="$(ConfigurationLocation)\Global.properties" />
+</Project>
