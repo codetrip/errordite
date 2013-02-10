@@ -1187,17 +1187,24 @@ section {
   margin: 3px 3px; }
   .notification-container section {
     margin-top: 4px; }
-  .notification-container .notification {
+  .notification-container .notification-icon {
     float: left;
-    width: 91%;
+    width: 30px;
     margin: 2px 0; }
-  .notification-container i {
-    margin-top: 3px;
-    float: left; }
-  .notification-container a.hide-notification {
-    float: right; }
+  .notification-container .notification-text {
+    float: left;
+    width: 900px;
+    margin: 3px 0 4px 0; }
+  .notification-container .notification-close {
+    float: right;
+    width: 25px;
+    margin-top: 2px; }
   .notification-container a {
-    color: inherit; }
+    font-size: 13px;
+    color: #efefef;
+    font-weight: 600; }
+  .notification-container a:hover {
+    text-decoration: underline; }
 
 #notifications {
   width: 100%;

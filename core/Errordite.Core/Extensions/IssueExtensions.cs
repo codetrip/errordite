@@ -7,11 +7,12 @@ namespace Errordite.Core.Extensions
 {
     public static class IssueExtensions
     {
-        public static IssueEmailInfoBase ToEmailInfo(this Issue issue, NotificationType notificationType, Error instance, Application application)
+        public static IssueEmailInfoBase ToEmailInfo(this Issue issue, NotificationType notificationType, Error instance,
+                                                     Application application)
         {
             var emailInfo =
                 notificationType == NotificationType.NotifyOnNewClassCreated
-                    ? (IssueEmailInfoBase)new NewIssueReceivedEmailInfo()
+                    ? (IssueEmailInfoBase) new NewIssueReceivedEmailInfo()
                     : new NewInstanceOfSolvedIssueEmailInfo();
 
             emailInfo.ApplicationName = application.Name;
