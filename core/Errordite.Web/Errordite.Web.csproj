@@ -366,12 +366,6 @@
     <Content Include="Assets\Images\people.png" />
     <Content Include="Assets\Images\settings.png" />
     <Content Include="Assets\Images\waiterrors.png" />
-    <Content Include="Assets\Js\api.js">
-      <DependentUpon>api.coffee</DependentUpon>
-    </Content>
-    <Content Include="Assets\Js\api.min.js">
-      <DependentUpon>api.coffee</DependentUpon>
-    </Content>
     <Content Include="Assets\Js\applications.js">
       <DependentUpon>applications.coffee</DependentUpon>
     </Content>
@@ -861,9 +855,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Js\search.coffee" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Assets\Js\api.coffee" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

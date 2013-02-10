@@ -1507,25 +1507,32 @@ section {
 
 .notification-container {
 	font-size: 13px;
-		margin: 3px 3px;
+	margin: 3px 3px;
 	section {
 		margin-top:4px;
 	}
-	.notification {
+	.notification-icon {
 		float:left;
-		width:91%;
+		width:30px;
 		margin: 2px 0;
 	}
-    i {
-        margin-top:3px;
+	.notification-text {
 		float:left;
-    }
-	a.hide-notification {
-		float:right;
+		width:900px;
+		margin:3px 0 4px 0;
 	}
-
+	.notification-close {
+		float:right;
+		width:25px;
+		margin-top:2px;
+	}
 	a {
-		color: inherit;
+		font-size:13px;
+		color:#efefef;
+		font-weight: $boldfontweight;
+	}
+	a:hover{
+		text-decoration:underline;
 	}
 }
 
@@ -1542,7 +1549,6 @@ section {
 .error-container {
     background-color: $red;
 }
-
 
 .video-panel {
 	height:135px;
