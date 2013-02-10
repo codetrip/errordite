@@ -264,6 +264,24 @@ table {
     }
 }
 
+#rules-adjusted {
+	.what-if-message {
+		font-size: 12px;
+		margin-right: 5px;
+		margin-top: 2px;
+		text-align: center;
+		.matched {
+			background: $green;
+			padding: 0 10%;
+		}
+		.notmatched {
+			font-style: italic;
+			background: $red;
+			padding: 0 10%;
+		}
+	}
+}
+
 .white-container {
     width: 100%;
     float:left;

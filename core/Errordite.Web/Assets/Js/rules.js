@@ -156,11 +156,31 @@
         };
 
         RuleManager.prototype.showRuleUpdatesPanel = function() {
-          return $('#rules-adjusted').show();
+          var messageHolder;
+          $('#rules-adjusted').show();
+          messageHolder = $('#rules-adjusted .what-if-message');
+          messageHolder.css({
+            visibility: 'hidden'
+          });
+          return this.whatIf(function(response) {
+            messageHolder.html((response.data.notmatched > 0 ? "<div class='notmatched'>\n" + response.data.notmatched + " of " + response.data.total + " do not match\n</div>" : "<div class='matched'>\nAll errors match\n</div>"));
+            return messageHolder.css({
+              visibility: 'visible'
+            });
+          });
         };
 
         RuleManager.prototype.hideRuleUpdatesPanel = function() {
           return $('#rules-adjusted').hide();
+        };
+
+        RuleManager.prototype.whatIf = function(successCallback) {
+          return $('#rulesForm').ajaxSubmit({
+            data: {
+              WhatIf: true
+            },
+            success: successCallback
+          });
         };
 
         return RuleManager;

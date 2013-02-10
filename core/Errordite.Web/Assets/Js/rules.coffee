@@ -112,9 +112,36 @@ jQuery ->
 			
 			showRuleUpdatesPanel: () ->
 				$('#rules-adjusted').show()
+				messageHolder = $ '#rules-adjusted .what-if-message'
+				messageHolder.css
+					visibility: 'hidden'
+				this.whatIf (response) -> 
+					messageHolder.html (
+						if response.data.notmatched > 0 
+							"""
+							<div class='notmatched'>
+							#{response.data.notmatched} of #{response.data.total} do not match
+							</div>
+							"""
+						else
+							"""
+							<div class='matched'>
+							All errors match
+							</div>
+							"""
+						)
+					messageHolder.css
+						visibility: 'visible'
+
 			
 			hideRuleUpdatesPanel: () -> 
 				$('#rules-adjusted').hide()
+
+			whatIf: (successCallback) ->
+				$('#rulesForm').ajaxSubmit
+					data:
+						WhatIf: true
+					success: successCallback
 
 		Errordite.ruleManager = new Errordite.RuleManager()		
 
