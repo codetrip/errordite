@@ -88,9 +88,9 @@ namespace Errordite.Core.Issues
 
         private static void OrderIssues(ListHolder<IssueBase> appIssues)
         {
+            //PLEASE DO NOT CHANGE THIS WITHOUT DISCUSSIONss
             appIssues.List = appIssues.List
-                .OrderByDescending(i => i.Rules.Count)
-                .ThenByDescending(i => i.LastRuleAdjustmentUtc ?? DateTime.MinValue)
+                .OrderByDescending(i => i.LastRuleAdjustmentUtc ?? DateTime.MinValue)
                 .ToList();
         }
 
