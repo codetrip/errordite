@@ -8,6 +8,7 @@ using Errordite.Core.Issues.Queries;
 using Errordite.Web.Models.Errors;
 using Errordite.Web.Models.Issues;
 using Errordite.Web.Models.Search;
+using Errordite.Web.Extensions;
 
 namespace Errordite.Web.Controllers
 {
@@ -15,19 +16,21 @@ namespace Errordite.Web.Controllers
     {
 		private readonly IGetApplicationIssuesQuery _getApplicationIssuesQuery;
 		private readonly IGetApplicationErrorsQuery _getApplicationErrorsQuery;
+        private readonly IGetIssueQuery _getIssueQuery;
 
-	    public SearchController(IGetApplicationIssuesQuery getApplicationIssuesQuery, IGetApplicationErrorsQuery getApplicationErrorsQuery)
+	    public SearchController(IGetApplicationIssuesQuery getApplicationIssuesQuery, IGetApplicationErrorsQuery getApplicationErrorsQuery, IGetIssueQuery getIssueQuery)
 	    {
 		    _getApplicationIssuesQuery = getApplicationIssuesQuery;
 		    _getApplicationErrorsQuery = getApplicationErrorsQuery;
+	        _getIssueQuery = getIssueQuery;
 	    }
 
 	    public ActionResult Index(string q)
-        {
-			var viewModel = new SearchViewModel
-			{
-				Query = q
-			};
+	    {
+	        var viewModel = new SearchViewModel
+	            {
+	                Query = q
+	            };
 
 			var applications = Core.GetApplications();
 
@@ -55,6 +58,20 @@ namespace Errordite.Web.Controllers
 					Error = e,
 					ApplicationName = GetApplicationName(applications.Items, e.ApplicationId)
 				}).ToList();
+
+			    int issueId;
+			    if (int.TryParse(q, out issueId))
+			    {
+			        var issue =
+			            _getIssueQuery.Invoke(new GetIssueRequest() {CurrentUser = Core.AppContext.CurrentUser, IssueId = issueId.ToString()}).Issue;
+			        if (issue != null && viewModel.IssueTotal == 0 && viewModel.ErrorTotal == 0)
+			            return Redirect(Url.Issue(issueId.ToString()));
+
+                    //as currently setup, the issues / errors are indexed with the SimpleAnalyzer, which just drops terms
+                    //with all non-alpha (e.g. all numeric) characters.  This is probably not a good thing but this
+                    //"click to go to issue" thing will never happen as currently set up
+			        viewModel.IssueWithMatchingId = issue;
+			    }
 			}
 
 			return View(viewModel);
