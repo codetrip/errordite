@@ -47,7 +47,7 @@ class Initialisation
 			confirm $(this).data('confirm')
 
 		$('body').on 'click', 'a.hide-notification', ->
-			$(this).closest('div').hide('fast');
+			$(this).closest('#notifications').hide('fast');
 
 	datepicker: ($root) ->
 		$root.find('div#daterange').daterangepicker

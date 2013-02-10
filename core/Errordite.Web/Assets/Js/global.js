@@ -47,7 +47,7 @@
         return confirm($(this).data('confirm'));
       });
       return $('body').on('click', 'a.hide-notification', function() {
-        return $(this).closest('div').hide('fast');
+        return $(this).closest('#notifications').hide('fast');
       });
     };
 
