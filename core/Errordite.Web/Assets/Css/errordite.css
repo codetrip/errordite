@@ -1446,6 +1446,7 @@ nav {
   .howitworks p {
     margin: 0;
     padding: 25px 100px;
+    width: 775px;
     font-weight: 300; }
     .howitworks p span {
       font-weight: 600;
@@ -1455,7 +1456,8 @@ nav {
       font-size: 35px;
       color: #95c0df;
       font-weight: 300;
-      padding: 10px 0; }
+      padding: 10px 0;
+      width: 100%; }
   .howitworks .two-col {
     height: 230px;
     text-align: center; }

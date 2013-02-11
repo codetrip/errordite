@@ -11,6 +11,7 @@ using Errordite.Core.Domain.Error;
 using Errordite.Core.Domain.Exceptions;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Errors.Queries;
+using Errordite.Core.Indexing;
 using Errordite.Core.Issues.Commands;
 using Errordite.Core.Issues.Queries;
 using Errordite.Core.Matching;
@@ -26,6 +27,7 @@ using Errordite.Web.Models.Issues;
 using Errordite.Web.Models.Navigation;
 using Newtonsoft.Json;
 using Raven.Abstractions.Exceptions;
+using Raven.Client;
 using Resources;
 using CoreConstants = Errordite.Core.CoreConstants;
 
@@ -198,6 +200,40 @@ namespace Errordite.Web.Controllers
             return PartialView("Errors/ErrorItems", model);
         }
 
+        public ActionResult History(string issueId)
+        {
+            var userMemoizer = new LocalMemoizer<string, User>(
+                    id =>
+                    _getUserQuery.Invoke(new GetUserRequest {OrganisationId = Core.AppContext.CurrentUser.OrganisationId, UserId = id}).User);
+
+            var issueMemoizer = new LocalMemoizer<string, Issue>(id =>
+                    _getIssueQuery.Invoke(new GetIssueRequest { CurrentUser = Core.AppContext.CurrentUser, IssueId = id }).Issue);
+
+            var history = Core.Session.Raven.Query<HistoryDocument, History_Search>()
+                .Where(h => h.IssueId == issueId)
+                .As<IssueHistory>()
+                .ToList();
+
+            var users = Core.GetUsers();
+            var issue = _getIssueQuery.Invoke(new GetIssueRequest { IssueId = issueId, CurrentUser = Core.AppContext.CurrentUser }).Issue;
+
+            var results = history.OrderByDescending(h => h.DateAddedUtc).Select(h =>
+                {
+                    var user = users.Items.FirstOrDefault(u => u.Id == h.UserId);
+                    return RenderPartial("Issue/HistoryItem", new IssueHistoryItemViewModel
+                    {
+                        Message = GetMessage(h, userMemoizer, issueMemoizer, issue),
+                        DateAddedUtc = h.DateAddedUtc,
+                        UserEmail = user != null ? user.Email : string.Empty,
+                        Username = user != null ? user.FullName : string.Empty,
+                        SystemMessage = h.SystemMessage,
+                        Reference = h.Reference
+                    });
+                });
+
+            return new JsonSuccessResult(results);
+        }
+
         private IssueViewModel GetViewModel(ErrorCriteriaPostModel postModel, IssueTab tab)
         {
             var issue = _getIssueQuery.Invoke(new GetIssueRequest { IssueId = postModel.IssueId, CurrentUser = Core.AppContext.CurrentUser }).Issue;
@@ -219,8 +255,6 @@ namespace Errordite.Web.Controllers
                 Properties = _configuration.GetRuleProperties(r.ErrorProperty)
             }).ToList();
 
-            //var priorities = issue.MatchPriority.ToSelectedList(Issue.ResourceManager, false, issue.MatchPriority.ToString());
-
             var rulesViewModel = new IssueRulesPostModel
             {
                 Id = issue.Id,
@@ -229,13 +263,6 @@ namespace Errordite.Web.Controllers
                 IssueNameAfterUpdate = issue.Name,
                 UnmatchedIssueName = GetAdjustmentRejectsName(issue.Name),
             };
-
-            var userMemoizer =
-                new LocalMemoizer<string, User>(
-                    id =>
-                    _getUserQuery.Invoke(new GetUserRequest {OrganisationId = issue.OrganisationId, UserId = id}).User);
-            var issueMemoizer = new LocalMemoizer<string, Issue>(id =>
-                    _getIssueQuery.Invoke(new GetIssueRequest { CurrentUser = Core.AppContext.CurrentUser, IssueId = id }).Issue);
 
             var viewModel = new IssueViewModel
             {
@@ -262,19 +289,6 @@ namespace Errordite.Web.Controllers
                     ErrorLimitStatus = IssueResources.ResourceManager.GetString("ErrorLimitStatus_{0}".FormatWith(issue.LimitStatus)),
                     AlwaysNotify = issue.AlwaysNotify,
                     Reference = issue.Reference,
-                    History = issue.History.OrderByDescending(h => h.DateAddedUtc).Select(h => 
-                    {
-                        var user = users.Items.FirstOrDefault(u => u.Id == h.UserId);
-                        return new IssueHistoryItemViewModel
-                        {
-                            Message = GetMessage(h, userMemoizer, issueMemoizer, issue),
-                            DateAddedUtc = h.DateAddedUtc,
-                            UserEmail = user != null ? user.Email : string.Empty,
-                            Username = user != null ? user.FullName : string.Empty,
-                            SystemMessage = h.SystemMessage,
-                            Reference = h.Reference
-                        };
-                    }).ToList(),
                     TestIssue = issue.TestIssue,
                     DateRange = "{0} - {1}".FormatWith(DateTime.UtcNow.AddDays(-30).ToString("MMMM d, yyyy"), DateTime.UtcNow.ToString("MMMM d, yyyy"))
                 },
@@ -302,8 +316,8 @@ namespace Errordite.Web.Controllers
 
         private class LocalMemoizer<TKey, TValue>
         {
-            private Dictionary<TKey, TValue> _store = new Dictionary<TKey, TValue>();
-            private Func<TKey, TValue> _func;
+            private readonly Dictionary<TKey, TValue> _store = new Dictionary<TKey, TValue>();
+            private readonly Func<TKey, TValue> _func;
 
             public LocalMemoizer(Func<TKey, TValue> func)
             {

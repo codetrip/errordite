@@ -3,6 +3,8 @@ jQuery ->
 
 	if $issue.length > 0
 
+		window.Errordite.Spinner.enable();
+
 		setReferenceLink = ->
 			input = $(':input[name=Reference]')
 			reference = input.val()
@@ -18,6 +20,8 @@ jQuery ->
 					renderReports()
 				else if $tab.data("val") == "errors"
 					renderErrors()
+				else if $tab.data("val") == "history"
+					renderHistory()
 				$tab.data 'loaded', true	
 
 		renderReports = () -> 
@@ -58,7 +62,18 @@ jQuery ->
 					$node.html(data)
 					$('div.content').animate 
 						scrollTop : 0,
-						'slow'		
+						'slow'	
+						
+		renderHistory = () -> 
+			$node = $issue.find('#history-items')
+			url = '/issue/history?IssueId=' + $issue.find('#IssueId').val()
+			
+			$.get url,
+				(data) -> 
+					$node.html(data)
+					$('div.content').animate 
+						scrollTop : 0,
+						'slow'			
 		
 		loadTabData($ 'ul#issue-tabs li.active a.tablink')
 			

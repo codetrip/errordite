@@ -25,7 +25,6 @@ namespace Errordite.Web.Models.Issues
         public string ErrorLimitStatus { get; set; }
         public IEnumerable<SelectListItem> Users { get; set; }
         public IEnumerable<SelectListItem> Statuses { get; set; }
-        public IList<IssueHistoryItemViewModel> History { get; set; }
         public bool TestIssue { get; set; }
 		public Error SampleError { get; set; }
     }

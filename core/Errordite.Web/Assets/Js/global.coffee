@@ -64,9 +64,11 @@ class Initialisation
 class Spinner
 
 	disable: () -> 
-		$('.spinner').ajaxStart(() -> $(this).hide()).ajaxStop(() -> $(this).hide())
+		$('.spinner').unbind('ajaxStart')
+		$('.spinner').unbind('ajaxStop')
 	enable: () ->
-		$('.spinner').ajaxStart(() -> $(this).show()).ajaxStop(() -> $(this).hide())
+		$('.spinner').ajaxStart(() -> $(this).show())
+		$('.spinner').ajaxStop(() -> $(this).hide())
 
 ###
 The idea with Tabs is as follows:

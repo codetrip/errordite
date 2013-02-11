@@ -57,12 +57,13 @@ namespace Errordite.Core.Issues.Commands
                 historicalCount.Count += issue.ErrorCount;
             }
 
-            issue.History.Add(new IssueHistory
-                {
-                    DateAddedUtc = DateTime.UtcNow,
-                    UserId = request.CurrentUser.Id,
-                    Type = HistoryItemType.ErrorsPurged,
-                });
+            Store(new IssueHistory
+            {
+                DateAddedUtc = DateTime.UtcNow,
+                UserId = request.CurrentUser.Id,
+                Type = HistoryItemType.ErrorsPurged,
+                IssueId = issue.Id,
+            });
             
             issue.ErrorCount = 0;
 			issue.LimitStatus = ErrorLimitStatus.Ok;

@@ -13,7 +13,6 @@ using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Errors.Queries;
 using Errordite.Core.Indexing;
 using Errordite.Core.Messages;
-using Errordite.Core.Organisations.Queries;
 using Errordite.Core.Session;
 using Errordite.Web.ActionFilters;
 using Errordite.Web.Models.Navigation;
@@ -28,21 +27,18 @@ namespace Errordite.Web.Areas.System.Controllers
         private readonly IAppSession _session;
         private readonly IDeleteApplicationCommand _deleteApplicationCommand;
         private readonly IEncryptor _encryptor;
-        private readonly IGetOrganisationsQuery _getOrganisationsQuery;
         private readonly ErrorditeConfiguration _configuration;
         private readonly IGetApplicationErrorsQuery _getApplicationErrorsQuery;
 
         public SystemController(IAppSession session, 
             IDeleteApplicationCommand deleteApplicationCommand, 
             IEncryptor encryptor, 
-            IGetOrganisationsQuery getOrganisationsQuery, 
             ErrorditeConfiguration configuration, 
             IGetApplicationErrorsQuery getApplicationErrorsQuery)
         {
             _session = session;
             _deleteApplicationCommand = deleteApplicationCommand;
             _encryptor = encryptor;
-            _getOrganisationsQuery = getOrganisationsQuery;
             _configuration = configuration;
             _getApplicationErrorsQuery = getApplicationErrorsQuery;
         }
@@ -144,8 +140,7 @@ namespace Errordite.Web.Areas.System.Controllers
             return new EmptyResult();
         }
 
-
-        public ActionResult UpdateIssueCounts(string organisationId)
+        public ActionResult UpdateHistory(string organisationId)
         {
             Core.Session.SetOrganisation(new Organisation
             {
@@ -168,19 +163,68 @@ namespace Errordite.Web.Areas.System.Controllers
                 for (int i = 1; i < pageNumber; i++)
                 {
                     issues.AddRange(Core.Session.Raven.Query<IssueDocument, Issues_Search>()
-                        .Skip(pageNumber * _configuration.MaxPageSize)
+                        .Skip(i * _configuration.MaxPageSize)
                         .Take(_configuration.MaxPageSize)
                         .As<Issue>());
                 }
             }
 
-            foreach (var issue in issues)
+            foreach (var partition in issues.Partition(50))
             {
-                Core.Session.Bus.Send(_configuration.EventsQueueName, new SyncIssueErrorCountsMessage
+                foreach (var issue in partition.Where(i => i.History != null))
                 {
-                    IssueId = issue.Id,
-                    OrganisationId = issue.OrganisationId
-                });
+                    foreach (var historyRecord in issue.History)
+                    {
+                        historyRecord.IssueId = issue.Id;
+                        Core.Session.Raven.Store(historyRecord);
+                    }
+                }
+
+                Core.Session.Commit();
+                Core.Session.Close();
+            }
+
+            return new EmptyResult();
+        }
+
+        public ActionResult RemoveHistory(string organisationId)
+        {
+            Core.Session.SetOrganisation(new Organisation
+            {
+                Id = Organisation.GetId(organisationId)
+            });
+
+            RavenQueryStatistics stats;
+
+            var issues = Core.Session.Raven.Query<IssueDocument, Issues_Search>().Statistics(out stats)
+                .Skip(0)
+                .Take(_configuration.MaxPageSize)
+                .As<Issue>()
+                .ToList();
+
+            if (stats.TotalResults > _configuration.MaxPageSize)
+            {
+                Trace("Total issues is greater than default page size, iterating to get all issues");
+                int pageNumber = stats.TotalResults / _configuration.MaxPageSize;
+
+                for (int i = 1; i < pageNumber; i++)
+                {
+                    issues.AddRange(Core.Session.Raven.Query<IssueDocument, Issues_Search>()
+                        .Skip(i * _configuration.MaxPageSize)
+                        .Take(_configuration.MaxPageSize)
+                        .As<Issue>());
+                }
+            }
+
+            foreach (var partition in issues.Partition(50))
+            {
+                foreach (var issue in partition)
+                {
+                    issue.History = null;
+                }
+
+                Core.Session.Commit();
+                Core.Session.Close();
             }
 
             return new EmptyResult();

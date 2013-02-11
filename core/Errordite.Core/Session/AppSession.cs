@@ -68,11 +68,13 @@ namespace Errordite.Core.Session
         /// Http interface for the reception services
         /// </summary>
         HttpClient ReceptionServiceHttpClient { get; }
+
         /// <summary>
         /// Sets the organisationId for this session
         /// </summary>
         /// <param name="organisation"></param>
-        void SetOrganisation(Organisation organisation);
+        /// <param name="allowReset"></param>
+        void SetOrganisation(Organisation organisation, bool allowReset = false);
         /// <summary>
         /// Gets the organisationId for this session
         /// </summary>
@@ -264,9 +266,9 @@ namespace Errordite.Core.Session
 
         private class SwitchOrgBack : IDisposable
         {
-            private IDocumentSession _oldSession;
-            private string _oldDbId;
-            private AppSession _appSession;
+            private readonly IDocumentSession _oldSession;
+            private readonly string _oldDbId;
+            private readonly AppSession _appSession;
 
             public SwitchOrgBack(AppSession appSession, Organisation tempOrg)
             {
@@ -290,14 +292,11 @@ namespace Errordite.Core.Session
                 _appSession._organisationDatabaseId = _oldDbId;
             }
         }
-
-        public void SetOrganisation(Organisation organisation)
+       
+        public void SetOrganisation(Organisation organisation, bool allowReset = false /*some system tasks require us to do this*/)
         {
-            if (_organisationDatabaseId != null && _organisationDatabaseId != IdHelper.GetFriendlyId(organisation.OrganisationId))
-            {
+            if (!allowReset && _organisationDatabaseId != null && _organisationDatabaseId != IdHelper.GetFriendlyId(organisation.OrganisationId))
                 throw new InvalidOperationException("Cannot set Organisation twice in one session.");
-                //return;
-            }
 
             SetDbId(organisation);
 

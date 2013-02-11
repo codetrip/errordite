@@ -161,6 +161,7 @@
     <Compile Include="Extensions\IssueExtensions.cs" />
     <Compile Include="Identity\IImpersonationManager.cs" />
     <Compile Include="Indexing\Applications_Search.cs" />
+    <Compile Include="Indexing\History_Search.cs" />
     <Compile Include="Indexing\OrganisationDailyCount_Search.cs" />
     <Compile Include="Indexing\Organisations_Search.cs" />
     <Compile Include="Indexing\Groups_Search.cs" />

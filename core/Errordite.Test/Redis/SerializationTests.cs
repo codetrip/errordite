@@ -25,15 +25,6 @@ namespace Errordite.Test.Redis
                 Name = "Test",
                 Id = "we",
                 ErrorCount = 212,
-                History = new List<IssueHistory>
-                {
-                    new IssueHistory
-                        {
-                            UserId = "Nick",
-                            Message = "Test",
-                            DateAddedUtc = DateTime.Now
-                        }
-                },
                 Rules = new List<IMatchRule>
                 {
                     new PropertyMatchRule("StackTrace", StringOperator.Equals, "test")
@@ -59,15 +50,6 @@ namespace Errordite.Test.Redis
                 Name = "Test",
                 Id = "we",
                 ErrorCount = 212,
-                History = new List<IssueHistory>
-                {
-                    new IssueHistory
-                        {
-                            UserId = "Nick",
-                            Message = "Test",
-                            DateAddedUtc = DateTime.Now
-                        }
-                },
                 Rules = new List<IMatchRule>(),
                 Status = IssueStatus.Acknowledged
             };

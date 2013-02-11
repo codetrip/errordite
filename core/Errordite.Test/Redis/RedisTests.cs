@@ -149,15 +149,6 @@ namespace Errordite.Test.Redis
                     Name = "Test",
                     Id = Guid.NewGuid().ToString(),
                     ErrorCount = 212,
-                    History = new List<IssueHistory>
-                    {
-                        new IssueHistory
-                        {
-                            UserId = "Nick",
-                            Message = "Test",
-                            DateAddedUtc = DateTime.Now
-                        }
-                    },
                     Rules = new List<IMatchRule>(),
                     Status = IssueStatus.Acknowledged
                 };

@@ -80,12 +80,13 @@ namespace Errordite.Core.Issues.Commands
                     Status = ReprocessIssueErrorsStatus.Ok
                 };
 
-                issue.History.Add(new IssueHistory
+                Store(new IssueHistory
                 {
                     DateAddedUtc = DateTime.UtcNow,
                     UserId = request.CurrentUser.Id,
                     Type = HistoryItemType.ErrorsReprocessed,
                     ReprocessingResult = response.AttachedIssueIds,
+                    IssueId = issue.Id,
                 });
 
                 if (response.AttachedIssueIds.Any(i => i.Key == issue.Id))
