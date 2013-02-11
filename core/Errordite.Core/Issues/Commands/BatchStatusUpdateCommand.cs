@@ -53,7 +53,7 @@ namespace Errordite.Core.Issues.Commands
                         issue.UserId = request.AssignToUserId;
                     }
 
-                    issue.History.Add(new IssueHistory
+                    Store(new IssueHistory
                     {
                         DateAddedUtc = DateTime.UtcNow,
                         UserId = request.CurrentUser.Id,
@@ -62,6 +62,7 @@ namespace Errordite.Core.Issues.Commands
                         PreviousStatus = issue.Status,
                         NewStatus = request.Status,
                         Type = HistoryItemType.BatchStatusUpdate,
+                        IssueId = issue.Id
                     });
 
                     issue.Status = request.Status;

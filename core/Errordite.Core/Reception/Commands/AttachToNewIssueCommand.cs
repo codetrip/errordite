@@ -49,23 +49,21 @@ namespace Errordite.Core.Reception.Commands
 				ErrorCount = 1,
 				LastErrorUtc = error.TimestampUtc,
 				OrganisationId = application.OrganisationId,
-				History = new List<IssueHistory>
-                {
-                    new IssueHistory
-                    {
-                        DateAddedUtc = DateTime.UtcNow,
-                        Type = HistoryItemType.AutoCreated,
-                        ExceptionType = error.ExceptionInfos.First().Type,
-                        ExceptionMethod = error.ExceptionInfos.First().MethodName,
-                        ExceptionModule = error.ExceptionInfos.First().Module,
-                        ExceptionMachine = error.MachineName,
-                        SystemMessage = true,
-                    }
-                },
 				TestIssue = error.TestError
 			};
 
 			Store(issue);
+            Store(new IssueHistory
+            {
+                DateAddedUtc = DateTime.UtcNow,
+                Type = HistoryItemType.AutoCreated,
+                ExceptionType = error.ExceptionInfos.First().Type,
+                ExceptionMethod = error.ExceptionInfos.First().MethodName,
+                ExceptionModule = error.ExceptionInfos.First().Module,
+                ExceptionMachine = error.MachineName,
+                SystemMessage = true,
+                IssueId = issue.Id,
+            });
 
 			var issueHourlyCount = new IssueHourlyCount
 			{

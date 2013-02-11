@@ -1,9 +1,10 @@
 (function() {
 
   jQuery(function() {
-    var $issue, loadTabData, renderErrors, renderReports, setReferenceLink;
+    var $issue, loadTabData, renderErrors, renderHistory, renderReports, setReferenceLink;
     $issue = $('section#issue');
     if ($issue.length > 0) {
+      window.Errordite.Spinner.enable();
       setReferenceLink = function() {
         var input, reference;
         input = $(':input[name=Reference]');
@@ -19,6 +20,8 @@
             renderReports();
           } else if ($tab.data("val") === "errors") {
             renderErrors();
+          } else if ($tab.data("val") === "history") {
+            renderHistory();
           }
           return $tab.data('loaded', true);
         }
@@ -64,6 +67,17 @@
         var $node, url;
         $node = $issue.find('#error-items');
         url = '/issue/errors?IssueId=' + $issue.find('#IssueId').val();
+        return $.get(url, function(data) {
+          $node.html(data);
+          return $('div.content').animate({
+            scrollTop: 0
+          }, 'slow');
+        });
+      };
+      renderHistory = function() {
+        var $node, url;
+        $node = $issue.find('#history-items');
+        url = '/issue/history?IssueId=' + $issue.find('#IssueId').val();
         return $.get(url, function(data) {
           $node.html(data);
           return $('div.content').animate({

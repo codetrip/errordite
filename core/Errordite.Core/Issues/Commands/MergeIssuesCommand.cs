@@ -58,12 +58,13 @@ namespace Errordite.Core.Issues.Commands
                     }
             }, true));
 
-            mergeToIssue.History.Add(new IssueHistory
+            Store(new IssueHistory
             {
                 DateAddedUtc = DateTime.UtcNow,
                 SpawningIssueId = mergeFromIssue.Id,
                 SystemMessage = true,
                 Type = HistoryItemType.MergedTo,
+                IssueId = mergeToIssue.Id,
             });
 
             Delete(mergeFromIssue);

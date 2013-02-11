@@ -41,15 +41,6 @@ namespace Errordite.Core.Issues.Commands
                 ErrorCount = 0,
                 LastErrorUtc = DateTime.UtcNow,
                 OrganisationId = Organisation.GetId(request.CurrentUser.OrganisationId),
-                History = new List<IssueHistory>
-                {
-                    new IssueHistory
-                    {
-                        DateAddedUtc = DateTime.UtcNow,
-                        UserId = request.CurrentUser.Id,
-                        Type = HistoryItemType.ManuallyCreated,
-                    }
-                }
             };
 
             var issuesWithSameRules = _getIssueWithMatchingRulesQuery.Invoke(new GetIssueWithMatchingRulesRequest
@@ -67,6 +58,13 @@ namespace Errordite.Core.Issues.Commands
             }
 
             Store(issue);
+            Store(new IssueHistory
+            {
+                DateAddedUtc = DateTime.UtcNow,
+                UserId = request.CurrentUser.Id,
+                Type = HistoryItemType.ManuallyCreated,
+                IssueId = issue.Id,
+            });
 
             var issueHourlyCount = new IssueHourlyCount
             {

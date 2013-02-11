@@ -1821,6 +1821,7 @@ nav {
     p {
         margin:0;
         padding:25px 100px;
+		width:775px;
         font-weight: $lightfontweight;
         span {
             font-weight:$boldfontweight;
@@ -1832,6 +1833,7 @@ nav {
             color:$darkblue;
             font-weight:$lightfontweight;
             padding:10px 0;
+			width:100%;
         }
     }
     .two-col {

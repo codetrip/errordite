@@ -83,17 +83,15 @@
     function Spinner() {}
 
     Spinner.prototype.disable = function() {
-      return $('.spinner').ajaxStart(function() {
-        return $(this).hide();
-      }).ajaxStop(function() {
-        return $(this).hide();
-      });
+      $('.spinner').unbind('ajaxStart');
+      return $('.spinner').unbind('ajaxStop');
     };
 
     Spinner.prototype.enable = function() {
-      return $('.spinner').ajaxStart(function() {
+      $('.spinner').ajaxStart(function() {
         return $(this).show();
-      }).ajaxStop(function() {
+      });
+      return $('.spinner').ajaxStop(function() {
         return $(this).hide();
       });
     };

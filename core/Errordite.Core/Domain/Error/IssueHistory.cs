@@ -9,8 +9,7 @@ namespace Errordite.Core.Domain.Error
     public class IssueHistory
     {
         [ProtoMember(1)]
-        [Obsolete("Only kept for existing issues where this is set but not the other properties.  Now we just store ids and build up the message at view-time")]
-        public string Message { get; set; }
+        public string IssueId { get; set; }
         [ProtoMember(2)]
         public string UserId { get; set; }
         [ProtoMember(3)]
