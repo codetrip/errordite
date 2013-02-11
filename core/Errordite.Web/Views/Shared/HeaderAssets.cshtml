@@ -1,0 +1,19 @@
+﻿@using CodeTrip.Core.Extensions
+@using Errordite.Core.Configuration
+
+@if (ErrorditeConfiguration.Current.RenderMinifiedContent)
+{
+	<link rel="stylesheet" type="text/css" href='@Url.Content("~/assets/css/{0}.css".FormatWith(ErrorditeConfiguration.CurrentBuildNumber))' />
+	<script type="text/javascript" src="@Url.Content("~/assets/js/lib/modernizr-2.6.2.min.js")"></script>
+}
+else
+{
+    <link rel="stylesheet" type="text/css" href='@Url.Content("~/assets/css/lib/normalize.css")' />
+    <link rel="stylesheet" type="text/css" href='@Url.Content("~/assets/css/lib/html5-boilerplate.css")' />
+    <link rel="stylesheet" type="text/css" href='@Url.Content("~/assets/css/lib/prettify.css")' />
+    <link rel="stylesheet" type="text/css" href='@Url.Content("~/assets/css/lib/jquery.jqplot.css")' />
+    <link rel="stylesheet" type="text/css" href='@Url.Content("~/assets/css/lib/daterangepicker.css")' />
+    <link rel="stylesheet" type="text/css" href='@Url.Content("~/assets/css/fonts.css")' />
+	<link rel="stylesheet" type="text/css" href='@Url.Content("~/assets/css/errordite.css")' />
+	<script type="text/javascript" src="@Url.Content("~/assets/js/lib/modernizr-2.6.2.min.js")"></script>
+}

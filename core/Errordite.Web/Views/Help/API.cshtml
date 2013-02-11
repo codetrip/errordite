@@ -1,0 +1,161 @@
+﻿@using Errordite.Web.Models.Help
+@using Errordite.Web.Extensions
+@{
+    ViewBag.Title = "Errordite API";
+}
+
+@section header
+{
+    @Html.Partial("Help/Tabs", HelpTab.Api) 
+}
+
+<section class="centered" id="api">
+    <div class="content help">
+        <h1>The Errordite API</h1>
+        <p>
+            The Errordite API is a RESTful API which allows you to perform a few basic operations such as retrieving issues, updating issues and updating application version numbers.
+        </p>
+        <p> 
+            Authorisation is via your organisations API key which can be found within your account settings page <a href="@Url.Settings()">here</a>. 
+            This key must be included in querystring of each request.
+        </p>
+        <p>
+            Each available operation is documented below, if there are any additional operations you would like exposed through our API, please <a href="@Url.Contact()">contact us</a>.
+        </p>
+        <h2>Issue Operations</h2>
+        <p>The following issue operations are supported</p>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Operation</th>
+                    <th>HTTP Method</th>
+                    <th>URI</th>
+                    <th>JSON In</th> 
+                    <th>JSON Out</th> 
+                </tr>  
+            </thead>   
+            <tbody>
+                <tr>
+                    <td>Get an issue</td>
+                    <td>GET</td>
+                    <td>https://www.errordite.com/api/issues/[ISSUE ID]?apikey=[YOUR API KEY]</td>
+                    <td></td>
+                    <td><a href="#" class="show-modal" data-val="issue-get">Show</a></td>
+                </tr>
+                <tr>
+                    <td>Update an issue</td>
+                    <td>PUT</td>
+                    <td>https://www.errordite.com/api/issues/[ISSUE ID]?apikey=[YOUR API KEY]</td>
+                    <td><a href="#" class="show-modal" data-val="issue-update">Show</a></td>
+                    <td></td>
+                </tr>
+            </tbody>  
+        </table>
+        <h2>Application Operations</h2>
+        <p>The following application operations are supported</p>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Operation</th>
+                    <th>HTTP Method</th>
+                    <th>URI</th>
+                    <th>JSON In</th> 
+                    <th>JSON Out</th> 
+                </tr>  
+            </thead>   
+            <tbody>
+                <tr>
+                    <td>Get an application</td>
+                    <td>GET</td>
+                    <td>https://www.errordite.com/api/applications/[APPLICATION ID]?apikey=[YOUR API KEY]</td>
+                    <td></td>
+                    <td><a href="#" class="show-modal" data-val="application-get">Show</a></td>
+                </tr>
+                <tr>
+                    <td>Update an application</td>
+                    <td>PUT</td>
+                    <td>https://www.errordite.com/api/applications/[APPLICATION ID]?apikey=[YOUR API KEY]</td>
+                    <td><a href="#" class="show-modal" data-val="issue-update">Show</a></td>
+                    <td></td>
+                </tr>
+            </tbody>  
+        </table>
+    </div>
+    <div class="modal hide" id="issue-get">
+        <div class="modal-header">
+            <a href="#" class="close" data-dismiss="modal">x</a>
+            <h4 class="formodal">Issue JSON Representation</h4>
+        </div>
+        <div class="modal-body">
+            <pre class="prettyprint">
+{
+    "Token" : &lt;string>,              //your application token, taken from Errordite
+    "MachineName" : &lt;string>,        //the machine that generated the error
+    "Url" : &lt;string>,                //the url of the request that caused the error if a webapp (null otherwise)
+    "UserAgent" : &lt;string>,          //the user-agent from the request that caused the error if a web app (null otherwise)
+    "TimestampUtc" : &lt;datetime>,     //the timestamp of the error (in UTC).  Use an ISO format like yyyy-MM-dd hh:mm:ss
+    "Version" : &lt;string>,            //the version of your application when the error was raised
+    "ExceptionInfo" : {
+        "Message" : &lt;string>,        //the message of the exception
+        "Source" : &lt;string>,         //the programmatic module that threw the exception 
+                                        //(exact definition depends on technology stack)
+        "ExceptionType" : &lt;string>,  //the type of the exception
+        "StackTrace" : &lt;string>,     //the stack trace - formatting already done (i.e. indents & newlines)
+        "MethodName" : &lt;string>,     //the name of the method / function that threw the error
+        "Data" : {                      //bag of extra information
+            "PropertyName1" : &lt;string>,
+            ...
+            "PropertyName2" : &lt;string>
+        },
+        "InnerExceptionInfo" : {        //recursive definition - same as ExceptionInfo above
+            "Message" : &lt;string>
+            ...
+        }
+    }
+}
+            </pre>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-small btn-blue" data-dismiss="modal">OK</button>
+        </div>
+    </div>
+    
+    <div class="modal hide" id="application-get">
+        <div class="modal-header">
+            <a href="#" class="close" data-dismiss="modal">x</a>
+            <h4 class="formodal">Application JSON Representation</h4>
+        </div>
+        <div class="modal-body">
+            <pre class="prettyprint">
+{
+    "Token" : &lt;string>,              //your application token, taken from Errordite
+    "MachineName" : &lt;string>,        //the machine that generated the error
+    "Url" : &lt;string>,                //the url of the request that caused the error if a webapp (null otherwise)
+    "UserAgent" : &lt;string>,          //the user-agent from the request that caused the error if a web app (null otherwise)
+    "TimestampUtc" : &lt;datetime>,     //the timestamp of the error (in UTC).  Use an ISO format like yyyy-MM-dd hh:mm:ss
+    "Version" : &lt;string>,            //the version of your application when the error was raised
+    "ExceptionInfo" : {
+        "Message" : &lt;string>,        //the message of the exception
+        "Source" : &lt;string>,         //the programmatic module that threw the exception 
+                                        //(exact definition depends on technology stack)
+        "ExceptionType" : &lt;string>,  //the type of the exception
+        "StackTrace" : &lt;string>,     //the stack trace - formatting already done (i.e. indents & newlines)
+        "MethodName" : &lt;string>,     //the name of the method / function that threw the error
+        "Data" : {                      //bag of extra information
+            "PropertyName1" : &lt;string>,
+            ...
+            "PropertyName2" : &lt;string>
+        },
+        "InnerExceptionInfo" : {        //recursive definition - same as ExceptionInfo above
+            "Message" : &lt;string>
+            ...
+        }
+    }
+}
+            </pre>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-small btn-blue" data-dismiss="modal">OK</button>
+        </div>
+    </div>
+</section>

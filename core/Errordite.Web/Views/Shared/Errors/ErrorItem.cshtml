@@ -1,0 +1,73 @@
+﻿@using CodeTrip.Core.Extensions
+@using Errordite.Core.Extensions
+@using Errordite.Web.Extensions
+@using Errordite.Web.Models.Errors
+@model ErrorInstanceViewModel
+           
+<tr id="@Model.Error.FriendlyId"> 
+	<td class="toggle collapsed"></td>
+	@if (!Model.HideIssues)
+    {
+        <td><a href="@Url.Issue(Model.Error.IssueId.GetFriendlyId())">@Model.Error.IssueId.GetFriendlyId()</a> </td>
+    } 
+	
+	<td style="max-width:350px">
+        <span class="table-info-header">
+            @Html.Raw(Model.Error.ExceptionInfos.First().Type)
+        </span><br />
+        <span class="table-info">@Html.Raw(Model.Error.MachineName)</span>
+    </td>
+    <td class="word-break">@(Model.Error.ExceptionInfos.First().Message.IfPoss(m => m.Length) > 200 ? Html.Raw(Model.Error.ExceptionInfos.First().Message.Substring(0, 200) + "...") : Html.Raw(Model.Error.ExceptionInfos.First().Message)) </td>
+    <td class="word-break">@(Model.Error.Version.IsNullOrEmpty() ? new HtmlString("Unknown") : Html.Raw(Model.Error.Version))</td>
+    <td class="word-break">@Model.Error.TimestampUtc.ToLocalTimeFormatted()</td>
+    
+</tr>
+<tr style="display:none;">
+	<td colspan="6" style="padding:0;margin:0">
+		<div class="error-content">
+			<ul class="tabs inner" style="margin-left:0;">
+				<li class="active">
+					<a href="#" data-val="exception" data-title="@Model.Error.ExceptionInfos.First().Type">
+						@(Model.Error.ExceptionInfos.Length == 1 ? "" :  "Outer: ")@Model.Error.ExceptionInfos.First().Type.LastElement('.')
+					</a>
+				</li>
+				@{
+					int count = 0;
+					foreach (var inner in Model.Error.ExceptionInfos.Skip(1))
+					{
+						count++;
+						<li>
+							<a href="#" data-val="inner-@count" data-title="@inner.Type">Inner @count: @inner.Type.LastElement('.')</a>
+						</li>
+					}
+					if (Model.Error.Messages != null)
+					{
+						<li>
+							<a href="#" data-val="messages" data-title="Messages">Log Messages</a>
+						</li>
+					}
+				}
+			</ul>
+			<div class="tab-content exception">
+				@Html.Partial("Errors/ErrorInfo", new ExceptionViewModel(Model.Error.ExceptionInfos.First(), Model.Error.Url, Model.Error.UserAgent))
+			</div>
+			@{
+				count = 0;
+				foreach (var inner in Model.Error.ExceptionInfos.Skip(1))
+				{
+					count++;
+					<div class="tab-content hidden inner-@count">
+						@Html.Partial("Errors/ErrorInfo", new ExceptionViewModel(inner, null, Model.Error.UserAgent, true))
+					</div>
+				}
+			}
+			@if (Model.Error.Messages != null)
+			{
+				<div class="tab-content hidden messages">
+					@Html.Partial("Errors/TraceMessages", Model.Error.Messages)
+				</div>
+			}
+		</div>
+	</td>
+</tr>
+

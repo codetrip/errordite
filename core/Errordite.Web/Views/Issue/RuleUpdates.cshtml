@@ -1,0 +1,35 @@
+﻿@model Errordite.Web.Models.Issues.IssueRulesPostModel
+
+<div id="apply-rules-confirmation" class="modal hide">
+    <div class="modal-header">
+        <h4 class="formodal">Apply Rule Updates</h4>
+    </div>
+    <div class="modal-body">
+        <div class="form">
+            <h2>This issue:</h2>
+            <span>Please enter the name you would like this issue to have after adjusting its rules.</span>
+            <ul>
+                <li>
+                    @Html.TextBoxFor(m => m.IssueNameAfterUpdate, new { @class = "issue-name", style="width:500px" })
+                    @Html.ValidationMessageFor(m => m.IssueNameAfterUpdate)
+                </li>
+            </ul>    
+            
+            <h2>Overflow issue: <i data-title="Any errors that do not match the new rules will be added to a new issue.  You can name this issue here." class="icon-info"></i></h2>
+            <span>Please enter the name of the issue that any errors not matching the new rules will be attached to after the rules of this issue have been adjusted.</span>
+            <ul>
+                <li>
+                    @Html.TextBoxFor(m => m.UnmatchedIssueName, new { @class = "issue-name", style="width:500px" })
+                    @Html.ValidationMessageFor(m => m.UnmatchedIssueName)
+                </li>
+            </ul>    
+        </div>
+     </div>             
+
+    <div class="modal-footer">
+        <input type="submit" class="btn btn-small btn-blue" value="Apply Updates" name="AdjustRules" />
+        <input type="submit" class="btn btn-small btn-blue" value="What If?" name="WhatIf"/>
+        <button class="btn btn-small btn-grey" data-dismiss="modal">Cancel</button>
+    </div>
+
+</div>
