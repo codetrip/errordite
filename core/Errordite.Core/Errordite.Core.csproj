@@ -190,6 +190,7 @@
     <Compile Include="Identity\NoAuthenticationManager.cs" />
     <Compile Include="IoC\ErrorditeNServiceBusClientInstaller.cs" />
     <Compile Include="Issues\Commands\UpdateIssueDetailsCommand.cs" />
+    <Compile Include="Issues\Queries\GetActivityFeedQuery.cs" />
     <Compile Include="Issues\Queries\GetDashboardReportQuery.cs" />
     <Compile Include="Issues\Queries\GetIssueReportDataQuery.cs" />
     <Compile Include="Issues\Queries\GetIssueWithMatchingRulesQuery.cs" />

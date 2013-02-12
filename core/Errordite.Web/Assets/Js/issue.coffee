@@ -70,7 +70,7 @@ jQuery ->
 			
 			$.get url,
 				(data) -> 
-					$node.html(data)
+					$node.html(data.data)
 					$('div.content').animate 
 						scrollTop : 0,
 						'slow'			

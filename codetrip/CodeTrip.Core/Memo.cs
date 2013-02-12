@@ -41,4 +41,27 @@ namespace CodeTrip.Core
             }
         }
     }
+
+    public class LocalMemoizer<TKey, TValue>
+    {
+        private readonly Dictionary<TKey, TValue> _store = new Dictionary<TKey, TValue>();
+        private readonly Func<TKey, TValue> _func;
+
+        public LocalMemoizer(Func<TKey, TValue> func)
+        {
+            _func = func;
+        }
+
+        public TValue Get(TKey key)
+        {
+            TValue ret;
+            if (!_store.TryGetValue(key, out ret))
+            {
+                ret = _func(key);
+                _store[key] = ret;
+            }
+
+            return ret;
+        }
+    }
 }

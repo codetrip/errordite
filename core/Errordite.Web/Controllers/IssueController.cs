@@ -1,21 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
+using CodeTrip.Core;
 using CodeTrip.Core.Extensions;
 using CodeTrip.Core.Paging;
 using Errordite.Core.Configuration;
 using Errordite.Core.Domain;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Domain.Exceptions;
-using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Errors.Queries;
 using Errordite.Core.Indexing;
 using Errordite.Core.Issues.Commands;
 using Errordite.Core.Issues.Queries;
 using Errordite.Core.Matching;
-using Errordite.Core.Resources;
 using Errordite.Core.Users.Queries;
 using Errordite.Core.WebApi;
 using Errordite.Web.ActionFilters;
@@ -44,7 +42,6 @@ namespace Errordite.Web.Controllers
         private readonly ErrorditeConfiguration _configuration;
         private readonly IDeleteIssueErrorsCommand _deleteIssueErrorsCommand;
         private readonly IDeleteIssueCommand _deleteIssueCommand;
-        private readonly IGetUserQuery _getUserQuery;
         private readonly IGetIssueReportDataQuery _getIssueReportDataQuery;
         private readonly IAddCommentCommand _addCommentCommand;
 
@@ -56,7 +53,6 @@ namespace Errordite.Web.Controllers
             ErrorditeConfiguration configuration, 
             IDeleteIssueErrorsCommand deleteIssueErrorsCommand, 
             IDeleteIssueCommand deleteIssueCommand,
-			IGetUserQuery getUserQuery, 
             IGetIssueReportDataQuery getIssueReportDataQuery, 
             IAddCommentCommand addCommentCommand)
         {
@@ -68,7 +64,6 @@ namespace Errordite.Web.Controllers
             _configuration = configuration;
             _deleteIssueErrorsCommand = deleteIssueErrorsCommand;
             _deleteIssueCommand = deleteIssueCommand;
-            _getUserQuery = getUserQuery;
             _getIssueReportDataQuery = getIssueReportDataQuery;
             _addCommentCommand = addCommentCommand;
         }
@@ -202,27 +197,22 @@ namespace Errordite.Web.Controllers
 
         public ActionResult History(string issueId)
         {
-            var userMemoizer = new LocalMemoizer<string, User>(
-                    id =>
-                    _getUserQuery.Invoke(new GetUserRequest {OrganisationId = Core.AppContext.CurrentUser.OrganisationId, UserId = id}).User);
-
             var issueMemoizer = new LocalMemoizer<string, Issue>(id =>
                     _getIssueQuery.Invoke(new GetIssueRequest { CurrentUser = Core.AppContext.CurrentUser, IssueId = id }).Issue);
 
             var history = Core.Session.Raven.Query<HistoryDocument, History_Search>()
-                .Where(h => h.IssueId == issueId)
+                .Where(h => h.IssueId == Issue.GetId(issueId))
                 .As<IssueHistory>()
                 .ToList();
 
             var users = Core.GetUsers();
-            var issue = _getIssueQuery.Invoke(new GetIssueRequest { IssueId = issueId, CurrentUser = Core.AppContext.CurrentUser }).Issue;
 
             var results = history.OrderByDescending(h => h.DateAddedUtc).Select(h =>
                 {
                     var user = users.Items.FirstOrDefault(u => u.Id == h.UserId);
                     return RenderPartial("Issue/HistoryItem", new IssueHistoryItemViewModel
                     {
-                        Message = GetMessage(h, userMemoizer, issueMemoizer, issue),
+                        Message = h.GetMessage(users.Items, issueMemoizer, GetIssueLink),
                         DateAddedUtc = h.DateAddedUtc,
                         UserEmail = user != null ? user.Email : string.Empty,
                         Username = user != null ? user.FullName : string.Empty,
@@ -232,6 +222,11 @@ namespace Errordite.Web.Controllers
                 });
 
             return new JsonSuccessResult(results, allowGet:true);
+        }
+
+        private string GetIssueLink(string issueId)
+        {
+            return "<a href='{0}'>Issue {1}</a>".FormatWith(Url.Issue(issueId ?? "0"), IdHelper.GetFriendlyId(issueId ?? "0"));
         }
 
         private IssueViewModel GetViewModel(ErrorCriteriaPostModel postModel, IssueTab tab)
@@ -312,75 +307,6 @@ namespace Errordite.Web.Controllers
             }
 
             return viewModel;
-        }
-
-        private class LocalMemoizer<TKey, TValue>
-        {
-            private readonly Dictionary<TKey, TValue> _store = new Dictionary<TKey, TValue>();
-            private readonly Func<TKey, TValue> _func;
-
-            public LocalMemoizer(Func<TKey, TValue> func)
-            {
-                _func = func;
-            }
-
-            public TValue Get(TKey key)
-            {
-                TValue ret;
-                if (!_store.TryGetValue(key, out ret))
-                {
-                    ret = _func(key);
-                    _store[key] = ret;
-                }
-
-                return ret;
-            }
-        }
-
-        private string GetMessage(IssueHistory h, LocalMemoizer<string, User> userMemoizer, LocalMemoizer<string, Issue> issueMemoizer, Issue issue)
-        {
-            var user = h.UserId.IfPoss(id => userMemoizer.Get(h.UserId));
-
-            switch (h.Type)
-            {
-                case HistoryItemType.CreatedByRuleAdjustment:
-                    return "Issue was created by adjustment of rules of {0} by {1}.".FormatWith(GetIssueLink(h.SpawningIssueId), GetUserString(user));
-                case HistoryItemType.ManuallyCreated:
-                    return "Issue was created by {0} with status {1}".FormatWith(GetUserString(user));
-                case HistoryItemType.AssignedUserChanged:
-                    return "Status was updated from {0} to {1} by {2}.".FormatWith(h.PreviousStatus, h.NewStatus, GetUserString(user));
-                case HistoryItemType.MergedTo:
-                    return "Issue was created by adjustment of rules of {0} by {1}.".FormatWith(GetIssueLink(h.SpawnedIssueId), issueMemoizer.Get(h.SpawningIssueId).IfPoss(i => i.Name, "DELETED"));
-                case HistoryItemType.ErrorsPurged:
-                    return "All errors attached to this issue were deleted by {0}.".FormatWith(GetUserString(user));
-                case HistoryItemType.ErrorsReprocessed:
-                    return "All errors associated with this issue were re-processed by {0}.<br />{1}".FormatWith(
-                        GetUserString(user),
-                        new ReprocessIssueErrorsResponse { AttachedIssueIds = h.ReprocessingResult, Status = ReprocessIssueErrorsStatus.Ok }.GetMessage(issue.Id));
-                case HistoryItemType.Comment:
-                    return h.Comment; 
-                case HistoryItemType.RulesAdjustedCreatedNewIssue:
-                    return "Issue rules were adjusted by {0}. Errors that no longer match this issue got attached to issue {1}.".FormatWith(GetUserString(user), GetIssueLink(h.SpawnedIssueId));
-                case HistoryItemType.RulesAdjustedNoNewIssue:
-                    return"Issue rules were adjusted by {0}. All errors stayed attached to this issue.".FormatWith(GetUserString(user));
-				case HistoryItemType.AutoCreated:
-                    return "Issue created by new error of type <strong>{0}</strong> in method <strong>{1}</strong> on machine <strong>{2}</strong>".FormatWith(h.ExceptionType, h.ExceptionMethod, h.ExceptionMachine);
-                default:
-                    return h.Type + " " + h.Comment;
-            }
-        }
-
-        private string GetUserString(User user)
-        {
-            if (user == null)
-                return "DELETED USER";
-
-            return "{0} ({1})".FormatWith(user.FullName, user.Email);
-        }
-
-        private string GetIssueLink(string issueId)
-        {
-            return "<a href='{0}'>Issue {1}</a>".FormatWith(Url.Issue(issueId ?? "0"), IdHelper.GetFriendlyId(issueId ?? "0"));
         }
 
         private const string RejectPrefix = "Adjustment Rejects";

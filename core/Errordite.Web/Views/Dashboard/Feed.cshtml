@@ -1,0 +1,36 @@
+﻿
+@using Errordite.Web.Models.Dashboard
+@model ActivityFeedViewModel
+           
+@{
+    ViewBag.Title = "Activity Feed";
+}
+
+<div class="dark-container">
+    <section class="centered">
+        @Html.Partial("Dashboard/Links", Model)
+    </section> 
+</div>
+<section id="feed" class="centered">
+    <div class="content">
+        <div>
+            @foreach (var item in Model.Feed)
+            {
+                Html.RenderPartial("Issue/HistoryItem", item);
+            }
+        </div>
+        <div>
+            <table class="table table-bordered">
+                <tfoot>
+                    <tr>
+                        <td>
+                            @Html.Partial("Pagination", Model.Paging)
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</section>
+
+
