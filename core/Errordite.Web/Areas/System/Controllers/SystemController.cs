@@ -46,7 +46,6 @@ namespace Errordite.Web.Areas.System.Controllers
         [HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.SysAdmin)]
         public ActionResult Index()
         {
-            ConfirmationNotification("This is a test");
             return View();
         }
 
@@ -163,7 +162,7 @@ namespace Errordite.Web.Areas.System.Controllers
                 for (int i = 1; i < pageNumber; i++)
                 {
                     issues.AddRange(Core.Session.Raven.Query<IssueDocument, Issues_Search>()
-                        .Skip(i * _configuration.MaxPageSize)
+                        .Skip(i * _configuration.MaxPageSize)   
                         .Take(_configuration.MaxPageSize)
                         .As<Issue>());
                 }

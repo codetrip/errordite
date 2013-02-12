@@ -231,7 +231,7 @@ namespace Errordite.Web.Controllers
                     });
                 });
 
-            return new JsonSuccessResult(results);
+            return new JsonSuccessResult(results, allowGet:true);
         }
 
         private IssueViewModel GetViewModel(ErrorCriteriaPostModel postModel, IssueTab tab)
@@ -344,34 +344,27 @@ namespace Errordite.Web.Controllers
             switch (h.Type)
             {
                 case HistoryItemType.CreatedByRuleAdjustment:
-                    return CoreResources.HistoryCreatedByRulesAdjustment.FormatWith(GetIssueLink(h.SpawningIssueId),
-                                                                                    GetUserString(user));
+                    return "Issue was created by adjustment of rules of {0} by {1}.".FormatWith(GetIssueLink(h.SpawningIssueId), GetUserString(user));
                 case HistoryItemType.ManuallyCreated:
-                    return CoreResources.HistoryIssueCreatedBy.FormatWith(GetUserString(user));
-                case HistoryItemType.BatchStatusUpdate:
-                    return "{0}{1}{2}".FormatWith(
-                        CoreResources.HistoryIssueStatusUpdated.FormatWith(h.PreviousStatus, h.NewStatus, GetUserString(user)),
-                        h.AssignedToUserId == null ? "" : "{0}Assigned to {1}".FormatWith(
-                                Environment.NewLine,
-                                GetUserString(
-                                userMemoizer.Get(h.AssignedToUserId))),
-                        h.Comment == null ? "" : Environment.NewLine + h.Comment);
+                    return "Issue was created by {0} with status {1}".FormatWith(GetUserString(user));
+                case HistoryItemType.AssignedUserChanged:
+                    return "Status was updated from {0} to {1} by {2}.".FormatWith(h.PreviousStatus, h.NewStatus, GetUserString(user));
                 case HistoryItemType.MergedTo:
-                    return CoreResources.HistoryIssueMerged.FormatWith(IdHelper.GetFriendlyId(h.SpawningIssueId), issueMemoizer.Get(h.SpawningIssueId).IfPoss(i => i.Name, "DELETED"));
+                    return "Issue was created by adjustment of rules of {0} by {1}.".FormatWith(GetIssueLink(h.SpawnedIssueId), issueMemoizer.Get(h.SpawningIssueId).IfPoss(i => i.Name, "DELETED"));
                 case HistoryItemType.ErrorsPurged:
-                    return CoreResources.HistoryIssuePurged.FormatWith(GetUserString(user));
+                    return "All errors attached to this issue were deleted by {0}.".FormatWith(GetUserString(user));
                 case HistoryItemType.ErrorsReprocessed:
-                    return CoreResources.HistoryIssueErrorsReceivedAgain.FormatWith(GetUserString(user),
-                        new ReprocessIssueErrorsResponse() { AttachedIssueIds = h.ReprocessingResult, Status = ReprocessIssueErrorsStatus.Ok }.GetMessage
-                            (issue.Id));
+                    return "All errors associated with this issue were re-processed by {0}.<br />{1}".FormatWith(
+                        GetUserString(user),
+                        new ReprocessIssueErrorsResponse { AttachedIssueIds = h.ReprocessingResult, Status = ReprocessIssueErrorsStatus.Ok }.GetMessage(issue.Id));
                 case HistoryItemType.Comment:
-                    return h.Comment; //TODO - record more - like, what got updated
+                    return h.Comment; 
                 case HistoryItemType.RulesAdjustedCreatedNewIssue:
-                    return CoreResources.HistoryRulesAdjusted.FormatWith(GetUserString(user), GetIssueLink(h.SpawnedIssueId));
+                    return "Issue rules were adjusted by {0}. Errors that no longer match this issue got attached to issue {1}.".FormatWith(GetUserString(user), GetIssueLink(h.SpawnedIssueId));
                 case HistoryItemType.RulesAdjustedNoNewIssue:
-                    return CoreResources.HistoryRulesAdjustedNoNewIssue.FormatWith(GetUserString(user));
+                    return"Issue rules were adjusted by {0}. All errors stayed attached to this issue.".FormatWith(GetUserString(user));
 				case HistoryItemType.AutoCreated:
-		            return "Issue created by new error";
+                    return "Issue created by new error of type <strong>{0}</strong> in method <strong>{1}</strong> on machine <strong>{2}</strong>".FormatWith(h.ExceptionType, h.ExceptionMethod, h.ExceptionMachine);
                 default:
                     return h.Type + " " + h.Comment;
             }

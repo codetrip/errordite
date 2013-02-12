@@ -157,10 +157,10 @@ namespace Errordite.Web.Controllers
             {
                 ApplicationId = postModel.ApplicationId,
                 Rules = postModel.Rules.Select(r => (IMatchRule)new PropertyMatchRule(r.ErrorProperty, r.StringOperator, r.Value)).ToList(),
-                UserId = postModel.UserId,
+                AssignedUserId = postModel.UserId,
                 CurrentUser = Core.AppContext.CurrentUser,
                 Name = postModel.Name,
-                Status = postModel.Status
+                Status = postModel.Status,
             });
 
             if (result.Status == AddIssueStatus.SameRulesExist)
@@ -222,7 +222,6 @@ namespace Errordite.Web.Controllers
                             CurrentUser = AppContext.CurrentUser,
                             IssueIds = actionForm.IssueIds,
                             Status = actionForm.Status,
-                            Comment = actionForm.Comment,
                             AssignToUserId = actionForm.AssignToUser.IsNullOrEmpty() ? null : Errordite.Core.Domain.Organisation.User.GetId(actionForm.AssignToUser),
                         });
 

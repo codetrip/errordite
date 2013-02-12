@@ -62,10 +62,6 @@
                             <label for="AssignToUser">Assign to user:</label>
                             @Html.DropDownList("AssignToUser", new[] { new SelectListItem { Selected = true, Text = "Currently assigned user", Value = "" } }.Union(Model.Users), new { style = "width:300px" })
                         </li>
-						<li>
-							<label>Enter a comment</label>
-							<textarea name="Comment" style="width:290px; height:65px;" placeholder="Enter a comment (optional)..."></textarea>
-						</li>
                     </ul>
                 </div>
             </div>

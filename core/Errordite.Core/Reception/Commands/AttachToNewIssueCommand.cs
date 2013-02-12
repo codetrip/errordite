@@ -59,7 +59,6 @@ namespace Errordite.Core.Reception.Commands
                 Type = HistoryItemType.AutoCreated,
                 ExceptionType = error.ExceptionInfos.First().Type,
                 ExceptionMethod = error.ExceptionInfos.First().MethodName,
-                ExceptionModule = error.ExceptionInfos.First().Module,
                 ExceptionMachine = error.MachineName,
                 SystemMessage = true,
                 IssueId = issue.Id,

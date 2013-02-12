@@ -1,4 +1,5 @@
-﻿using CodeTrip.Core.Interfaces;
+﻿using System;
+using CodeTrip.Core.Interfaces;
 using Errordite.Core.Authorisation;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Notifications.Commands;
@@ -60,6 +61,33 @@ namespace Errordite.Core.Issues.Commands
 					OrganisationId = issue.OrganisationId,
 				});
 			}
+
+            if (issue.Status != request.Status)
+            {
+                Store(new IssueHistory
+                {
+                    DateAddedUtc = DateTime.UtcNow,
+                    IssueId = issue.Id,
+                    NewStatus = request.Status,
+                    PreviousStatus = issue.Status,
+                    SystemMessage = true,
+                    UserId = request.CurrentUser.Id,
+                    Type = HistoryItemType.StatusUpdated
+                });
+            }
+
+            if (issue.UserId != request.AssignedUserId)
+            {
+                Store(new IssueHistory
+                {
+                    DateAddedUtc = DateTime.UtcNow,
+                    IssueId = issue.Id,
+                    SystemMessage = true,
+                    UserId = request.CurrentUser.Id,
+                    AssignedToUserId = request.AssignedUserId,
+                    Type = HistoryItemType.AssignedUserChanged
+                });
+            }
 
 			issue.Status = request.Status;
 			issue.UserId = request.AssignedUserId;
