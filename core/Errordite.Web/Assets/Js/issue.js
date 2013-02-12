@@ -79,7 +79,7 @@
         $node = $issue.find('#history-items');
         url = '/issue/history?IssueId=' + $issue.find('#IssueId').val();
         return $.get(url, function(data) {
-          $node.html(data);
+          $node.html(data.data);
           return $('div.content').animate({
             scrollTop: 0
           }, 'slow');

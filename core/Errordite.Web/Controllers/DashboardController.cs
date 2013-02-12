@@ -1,14 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using CodeTrip.Core;
 using CodeTrip.Core.Paging;
+using Errordite.Core.Domain;
+using Errordite.Core.Domain.Error;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Errors.Queries;
 using Errordite.Core.Issues.Queries;
 using Errordite.Core.Organisations.Queries;
 using Errordite.Web.ActionFilters;
 using Errordite.Web.ActionResults;
+using Errordite.Web.Extensions;
 using Errordite.Web.Models.Dashboard;
 using Errordite.Web.Models.Errors;
 using Errordite.Web.Models.Issues;
@@ -23,16 +26,21 @@ namespace Errordite.Web.Controllers
         private readonly IGetApplicationErrorsQuery _getApplicationErrorsQuery;
         private readonly IGetOrganisationStatisticsQuery _getOrganisationStatisticsQuery;
         private readonly IGetDashboardReportQuery _getDashboardReportQuery;
+        private readonly IGetIssueQuery _getIssueQuery;
+        private readonly IGetActivityFeedQuery _getActivityFeedQuery;
 
         public DashboardController(IGetOrganisationStatisticsQuery getOrganisationStatisticsQuery, 
             IGetApplicationIssuesQuery getApplicationIssuesQuery, 
             IGetApplicationErrorsQuery getApplicationErrorsQuery, 
-            IGetDashboardReportQuery getDashboardReportQuery)
+            IGetDashboardReportQuery getDashboardReportQuery, 
+            IGetIssueQuery getIssueQuery, IGetActivityFeedQuery getActivityFeedQuery)
         {
             _getOrganisationStatisticsQuery = getOrganisationStatisticsQuery;
             _getApplicationIssuesQuery = getApplicationIssuesQuery;
             _getApplicationErrorsQuery = getApplicationErrorsQuery;
             _getDashboardReportQuery = getDashboardReportQuery;
+            _getIssueQuery = getIssueQuery;
+            _getActivityFeedQuery = getActivityFeedQuery;
         }
 
         [ImportViewData]
@@ -149,6 +157,39 @@ namespace Errordite.Web.Controllers
 
 			return new JsonSuccessResult(result, allowGet: true);
 		}
+
+        [PagingView]
+        public ActionResult Feed()
+        {
+            var paging = GetSinglePagingRequest();
+            var issueMemoizer = new LocalMemoizer<string, Issue>(id => _getIssueQuery.Invoke(new GetIssueRequest { CurrentUser = Core.AppContext.CurrentUser, IssueId = id }).Issue);
+            var users = Core.GetUsers();
+            var history = _getActivityFeedQuery.Invoke(new GetActivityFeedRequest
+                {
+                    Paging = paging
+                }).Feed.Items;
+
+            var results = history.OrderByDescending(h => h.DateAddedUtc).Select(h =>
+            {
+                var user = users.Items.FirstOrDefault(u => u.Id == h.UserId);
+                return RenderPartial("Issue/HistoryItem", new IssueHistoryItemViewModel
+                {
+                    Message = h.GetMessage(users.Items, issueMemoizer, GetIssueLink),
+                    DateAddedUtc = h.DateAddedUtc,
+                    UserEmail = user != null ? user.Email : string.Empty,
+                    Username = user != null ? user.FullName : string.Empty,
+                    SystemMessage = h.SystemMessage,
+                    Reference = h.Reference
+                });
+            });
+
+            return new JsonSuccessResult(results, allowGet: true);
+        }
+
+        private string GetIssueLink(string issueId)
+        {
+            return "<a href='{0}'>Issue {1}</a>".FormatWith(Url.Issue(issueId ?? "0"), IdHelper.GetFriendlyId(issueId ?? "0"));
+        }
 
 		private string GetApplicationName(IEnumerable<Application> applications, string applicationId)
 		{

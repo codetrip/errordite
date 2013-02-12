@@ -282,6 +282,7 @@
     <Compile Include="Models\Authentication\ResetPasswordViewModel.cs" />
     <Compile Include="Models\Authentication\PasswordViewModel.cs" />
     <Compile Include="Models\Common\IWizardViewModel.cs" />
+    <Compile Include="Models\Dashboard\ActivityFeedViewModel.cs" />
     <Compile Include="Models\Issues\MergeIssuesViewModel.cs" />
     <Compile Include="Areas\System\Models\Cache\CacheViewModel.cs" />
     <Compile Include="Models\Errors\ExceptionViewModel.cs" />
@@ -857,7 +858,10 @@
     <Content Include="Assets\Js\search.coffee" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Issue\HistoryItem.cshtml" />
+    <Content Include="Views\Shared\Issue\HistoryItem.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Dashboard\Feed.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
