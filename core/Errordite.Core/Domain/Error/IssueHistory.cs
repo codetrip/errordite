@@ -39,8 +39,6 @@ namespace Errordite.Core.Domain.Error
         [ProtoMember(15)]
         public string ExceptionMethod { get; set; }
         [ProtoMember(16)]
-        public string ExceptionModule { get; set; }
-        [ProtoMember(17)]
         public string ExceptionMachine { get; set; }
     }
 
@@ -53,9 +51,13 @@ namespace Errordite.Core.Domain.Error
         ErrorsReprocessed,
         RulesAdjustedCreatedNewIssue,
         AutoCreated,
+        [Obsolete("Replaced by AssignedUserChanged and StatusUpdated")]
         BatchStatusUpdate,
         Comment,
+        [Obsolete("Replaced by AssignedUserChanged and StatusUpdated")]
 		DetailsUpdated,
-        RulesAdjustedNoNewIssue
+        RulesAdjustedNoNewIssue,
+        AssignedUserChanged,
+        StatusUpdated
     }
 }

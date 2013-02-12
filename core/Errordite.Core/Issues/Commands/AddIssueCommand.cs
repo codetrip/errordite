@@ -37,7 +37,7 @@ namespace Errordite.Core.Issues.Commands
                 CreatedOnUtc = DateTime.UtcNow,
                 LastModifiedUtc = DateTime.UtcNow,
                 LastRuleAdjustmentUtc = DateTime.UtcNow,
-                UserId = User.GetId(request.UserId),
+                UserId = User.GetId(request.AssignedUserId),
                 ErrorCount = 0,
                 LastErrorUtc = DateTime.UtcNow,
                 OrganisationId = Organisation.GetId(request.CurrentUser.OrganisationId),
@@ -64,6 +64,8 @@ namespace Errordite.Core.Issues.Commands
                 UserId = request.CurrentUser.Id,
                 Type = HistoryItemType.ManuallyCreated,
                 IssueId = issue.Id,
+                AssignedToUserId = request.AssignedUserId,
+                PreviousStatus = request.Status
             });
 
             var issueHourlyCount = new IssueHourlyCount
@@ -97,7 +99,7 @@ namespace Errordite.Core.Issues.Commands
     public class AddIssueRequest : OrganisationRequestBase
     {
         public string Name { get; set; }
-        public string UserId { get; set; }
+        public string AssignedUserId { get; set; }
         public string ApplicationId { get; set; }
         public IssueStatus Status { get; set; }
         public List<IMatchRule> Rules { get; set; }
