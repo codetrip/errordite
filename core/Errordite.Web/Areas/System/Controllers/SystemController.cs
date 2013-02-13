@@ -175,6 +175,7 @@ namespace Errordite.Web.Areas.System.Controllers
                     foreach (var historyRecord in issue.History)
                     {
                         historyRecord.IssueId = issue.Id;
+                        historyRecord.ApplicationId = issue.ApplicationId;
                         Core.Session.Raven.Store(historyRecord);
                     }
                 }

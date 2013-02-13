@@ -120,6 +120,10 @@ p {
     color: #486c81;
     font-weight: 700;
     font-size: 14px; }
+  p.highlight-center {
+    text-align: center;
+    width: 100%;
+    margin-top: 25px; }
 
 pre.prettyprint {
   font-size: 12px;
@@ -550,7 +554,8 @@ section {
     border: 1px solid #ddd;
     border-left-width: 0;
     font-size: 11px;
-    text-transform: uppercase; }
+    text-transform: uppercase;
+    background-color: #fff; }
     .paging .pagination a:hover {
       background-color: #e7f0f5; }
   .paging .pagination .active a {
@@ -1146,6 +1151,7 @@ section {
     .boxed-item.error .item-bar {
       background-color: #ecacac; }
   .boxed-item.history {
+    width: 99.7%;
     border: 1px solid green;
     -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 2px rgba(90, 165, 103, 0.6);
     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 2px rgba(90, 165, 103, 0.6);
@@ -1153,7 +1159,9 @@ section {
     .boxed-item.history .item-bar {
       background-color: #5aa567; }
     .boxed-item.history .item-content {
-      width: 918px; }
+      width: 933px; }
+    .boxed-item.history span.bold {
+      color: #5aa567; }
   .boxed-item.issue {
     border: 1px solid #95c0df;
     -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 2px rgba(82, 168, 236, 0.6);

@@ -217,7 +217,6 @@ namespace Errordite.Web.Controllers
                         UserEmail = user != null ? user.Email : string.Empty,
                         Username = user != null ? user.FullName : string.Empty,
                         SystemMessage = h.SystemMessage,
-                        Reference = h.Reference
                     });
                 });
 

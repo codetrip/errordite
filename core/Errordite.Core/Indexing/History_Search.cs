@@ -10,6 +10,7 @@ namespace Errordite.Core.Indexing
     {
         public string UserId { get; set; }
         public string IssueId { get; set; }
+        public string ApplicationId { get; set; }
         public DateTime DateAddedUtc { get; set; }
     }
 
@@ -21,6 +22,7 @@ namespace Errordite.Core.Indexing
                             select new
                             {
                                 doc.IssueId,
+                                doc.ApplicationId,
                                 doc.UserId,
                                 doc.DateAddedUtc
                             };
