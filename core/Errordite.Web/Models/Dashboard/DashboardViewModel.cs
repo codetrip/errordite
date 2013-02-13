@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Web.Mvc;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Web.Models.Errors;
 using Errordite.Web.Models.Issues;
@@ -19,6 +21,7 @@ namespace Errordite.Web.Models.Dashboard
 
     public class DashboardLinksViewModel
     {
+        public Func<UrlHelper, string, string> UrlGetter { get; set; }
         public Statistics Stats { get; set; }
         public string SelectedApplicationName { get; set; }
         public string SelectedApplicationId { get; set; }

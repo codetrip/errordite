@@ -28,12 +28,14 @@ namespace Errordite.Web.Controllers
         private readonly IGetDashboardReportQuery _getDashboardReportQuery;
         private readonly IGetIssueQuery _getIssueQuery;
         private readonly IGetActivityFeedQuery _getActivityFeedQuery;
+        private readonly IPagingViewModelGenerator _pagingViewModelGenerator;
 
         public DashboardController(IGetOrganisationStatisticsQuery getOrganisationStatisticsQuery, 
             IGetApplicationIssuesQuery getApplicationIssuesQuery, 
             IGetApplicationErrorsQuery getApplicationErrorsQuery, 
             IGetDashboardReportQuery getDashboardReportQuery, 
-            IGetIssueQuery getIssueQuery, IGetActivityFeedQuery getActivityFeedQuery)
+            IGetIssueQuery getIssueQuery, IGetActivityFeedQuery getActivityFeedQuery, 
+            IPagingViewModelGenerator pagingViewModelGenerator)
         {
             _getOrganisationStatisticsQuery = getOrganisationStatisticsQuery;
             _getApplicationIssuesQuery = getApplicationIssuesQuery;
@@ -41,6 +43,7 @@ namespace Errordite.Web.Controllers
             _getDashboardReportQuery = getDashboardReportQuery;
             _getIssueQuery = getIssueQuery;
             _getActivityFeedQuery = getActivityFeedQuery;
+            _pagingViewModelGenerator = pagingViewModelGenerator;
         }
 
         [ImportViewData]
@@ -112,6 +115,7 @@ namespace Errordite.Web.Controllers
 		            Error = e,
 					ApplicationName = GetApplicationName(applications.Items, e.ApplicationId)
 	            }).ToList();
+                viewModel.UrlGetter = GetDashboardUrl;
             }
             else
             {
@@ -159,36 +163,63 @@ namespace Errordite.Web.Controllers
 		}
 
         [PagingView]
-        public ActionResult Feed()
+        public ActionResult Feed(string applicationId)
         {
             var paging = GetSinglePagingRequest();
             var issueMemoizer = new LocalMemoizer<string, Issue>(id => _getIssueQuery.Invoke(new GetIssueRequest { CurrentUser = Core.AppContext.CurrentUser, IssueId = id }).Issue);
             var users = Core.GetUsers();
+            var applications = Core.GetApplications();
             var history = _getActivityFeedQuery.Invoke(new GetActivityFeedRequest
                 {
-                    Paging = paging
-                }).Feed.Items;
+                    Paging = paging,
+                    ApplicationId = applicationId
+                }).Feed;
 
-            var results = history.OrderByDescending(h => h.DateAddedUtc).Select(h =>
+            var selectedApplication = applicationId.IsNotNullOrEmpty()
+                    ? applications.Items.FirstOrDefault(a => a.FriendlyId == applicationId.GetFriendlyId())
+                    : null;
+
+            var items = history.Items.Select(h =>
             {
                 var user = users.Items.FirstOrDefault(u => u.Id == h.UserId);
-                return RenderPartial("Issue/HistoryItem", new IssueHistoryItemViewModel
+                return new IssueHistoryItemViewModel
                 {
                     Message = h.GetMessage(users.Items, issueMemoizer, GetIssueLink),
                     DateAddedUtc = h.DateAddedUtc,
                     UserEmail = user != null ? user.Email : string.Empty,
                     Username = user != null ? user.FullName : string.Empty,
                     SystemMessage = h.SystemMessage,
-                    Reference = h.Reference
-                });
+                    IssueLink = issueMemoizer.Get(h.IssueId).IfPoss(i => "<a href=\"{0}\">{1}</a>".FormatWith(Url.Issue(i.Id), i.Name), "DELETED")
+                };
             });
 
-            return new JsonSuccessResult(results, allowGet: true);
+            var model = new ActivityFeedViewModel
+            {
+                Paging = _pagingViewModelGenerator.Generate(PagingConstants.DefaultPagingId, history.PagingStatus, paging),
+                Feed = items,
+                Stats = _getOrganisationStatisticsQuery.Invoke(new GetOrganisationStatisticsRequest { ApplicationId = applicationId }).Statistics ?? new Statistics(),
+                Applications = applications.Items,
+                SelectedApplicationId = selectedApplication == null ? null : selectedApplication.FriendlyId,
+                SelectedApplicationName = selectedApplication == null ? null : selectedApplication.Name,
+                UrlGetter = GetFeedUrl
+            };
+
+            return View(model);
+        }
+
+        private string GetFeedUrl(UrlHelper url, string applicationId)
+        {
+            return url.Feed(applicationId);
+        }
+
+        private string GetDashboardUrl(UrlHelper url, string applicationId)
+        {
+            return url.Dashboard(applicationId);
         }
 
         private string GetIssueLink(string issueId)
         {
-            return "<a href='{0}'>Issue {1}</a>".FormatWith(Url.Issue(issueId ?? "0"), IdHelper.GetFriendlyId(issueId ?? "0"));
+            return "<a href='{0}'>#{1}</a>".FormatWith(Url.Issue(issueId ?? "0"), IdHelper.GetFriendlyId(issueId ?? "0"));
         }
 
 		private string GetApplicationName(IEnumerable<Application> applications, string applicationId)

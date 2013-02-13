@@ -42,12 +42,12 @@
                 {
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="@Url.Dashboard()">All Applications (@Model.Applications.Count())</a>
+                            <a href="@Model.UrlGetter(Url, null)">All Applications (@Model.Applications.Count())</a>
                         </li>
                         @foreach (var application in Model.Applications)
                         {
                             <li>
-                                <a href="@Url.Dashboard(application.FriendlyId)">@application.Name</a>
+                                <a href="@Model.UrlGetter(Url, application.FriendlyId)">@application.Name</a>
                             </li>
                         }
                     </ul>

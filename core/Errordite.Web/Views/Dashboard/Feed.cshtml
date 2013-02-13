@@ -1,4 +1,5 @@
 ﻿
+@using CodeTrip.Core.Extensions
 @using Errordite.Web.Models.Dashboard
 @model ActivityFeedViewModel
            
@@ -12,25 +13,39 @@
     </section> 
 </div>
 <section id="feed" class="centered">
-    <div class="content">
-        <div>
-            @foreach (var item in Model.Feed)
-            {
-                Html.RenderPartial("Issue/HistoryItem", item);
-            }
+    @if (Model.Paging.TotalItems > 0)
+    {
+        <div class="content">
+            <div>
+                @foreach (var item in Model.Feed)
+                {
+                    Html.RenderPartial("Issue/HistoryItem", item);
+                }
+            </div>
+            <div>
+                <table class="table table-bordered">
+                    <tfoot>
+                        <tr>
+                            <td>
+                                @Html.Partial("Pagination", Model.Paging)
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
         </div>
-        <div>
-            <table class="table table-bordered">
-                <tfoot>
-                    <tr>
-                        <td>
-                            @Html.Partial("Pagination", Model.Paging)
-                        </td>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
-    </div>
+    }
+    else
+    {
+        if (Model.SelectedApplicationId.IsNotNullOrEmpty())
+        {
+            <p class="highlight-center">There has been no activity for the "@Model.SelectedApplicationName" application</p>
+        } 
+        else
+        {
+            <p class="highlight-center">There has been no activity for any of your organisations applications</p>
+        }  
+    }
 </section>
 
 

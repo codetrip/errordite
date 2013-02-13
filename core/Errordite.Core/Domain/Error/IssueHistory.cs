@@ -22,29 +22,29 @@ namespace Errordite.Core.Domain.Error
         [ProtoMember(4)]
         public bool SystemMessage { get; set; }
         [ProtoMember(5)]
-        public string Reference { get; set; }
-        [ProtoMember(6)]
         public HistoryItemType Type { get; set; }
-        [ProtoMember(7)]
+        [ProtoMember(6)]
         public string SpawningIssueId { get; set; }
-        [ProtoMember(8)]
+        [ProtoMember(7)]
         public string AssignedToUserId { get; set; }
-        [ProtoMember(9)]
+        [ProtoMember(8)]
         public IssueStatus NewStatus { get; set; }
-        [ProtoMember(10)]
+        [ProtoMember(8)]
         public IssueStatus PreviousStatus { get; set; }
-        [ProtoMember(11)]
+        [ProtoMember(10)]
         public IDictionary<string, int> ReprocessingResult { get; set; }
-        [ProtoMember(12)]
+        [ProtoMember(11)]
         public string Comment { get; set; }
-        [ProtoMember(13)]
+        [ProtoMember(12)]
         public string SpawnedIssueId { get; set; }
-        [ProtoMember(14)]
+        [ProtoMember(13)]
         public string ExceptionType { get; set; }
-        [ProtoMember(15)]
+        [ProtoMember(14)]
         public string ExceptionMethod { get; set; }
-        [ProtoMember(16)]
+        [ProtoMember(15)]
         public string ExceptionMachine { get; set; }
+        [ProtoMember(16)]
+        public string ApplicationId { get; set; }
 
         public string GetMessage(IEnumerable<User> users, LocalMemoizer<string, Issue> issueMemoizer, Func<string, string> issueUrlGetter)
         {
@@ -55,27 +55,27 @@ namespace Errordite.Core.Domain.Error
                 case HistoryItemType.CreatedByRuleAdjustment:
                     return "Issue was created by adjustment of rules of {0} by {1}.".FormatWith(issueUrlGetter(SpawningIssueId), GetUserString(user));
                 case HistoryItemType.ManuallyCreated:
-                    return "Issue was created manually by {0} with status {1}, assigned to {2}".FormatWith(GetUserString(user), PreviousStatus, AssignedToUserId);
+                    return "Issue was created manually by <span class=\"bold\">{0}</span> with status <span class=\"bold\">{1}</span>, assigned to <span class=\"bold\">{2}</span>".FormatWith(GetUserString(user), PreviousStatus, AssignedToUserId);
                 case HistoryItemType.AssignedUserChanged:
                     return "Status was updated from {0} to {1} by {2}.".FormatWith(PreviousStatus, NewStatus, GetUserString(user));
                 case HistoryItemType.MergedTo:
-                    return "Issue was created by adjustment of rules of {0} by {1}.".FormatWith(issueUrlGetter(SpawnedIssueId), issueMemoizer.Get(SpawningIssueId).IfPoss(i => i.Name, "DELETED"));
+                    return "Issue was created by adjustment of rules of issue {0} by <span class=\"bold\">{1}</span>.".FormatWith(issueUrlGetter(SpawningIssueId), GetUserString(user));
                 case HistoryItemType.ErrorsPurged:
-                    return "All errors attached to this issue were deleted by {0}.".FormatWith(GetUserString(user));
+                    return "All errors attached to this issue were deleted by <span class=\"bold\">{0}</span>.".FormatWith(GetUserString(user));
                 case HistoryItemType.ErrorsReprocessed:
-                    return "All errors associated with this issue were re-processed by {0}.<br />{1}".FormatWith(
+                    return "All errors associated with this issue were re-processed by <span class=\"bold\">{0}</span>.<br />{1}".FormatWith(
                         GetUserString(user),
                         new ReprocessIssueErrorsResponse { AttachedIssueIds = ReprocessingResult, Status = ReprocessIssueErrorsStatus.Ok }.GetMessage(IssueId));
                 case HistoryItemType.Comment:
                     return Comment;
                 case HistoryItemType.RulesAdjustedCreatedNewIssue:
-                    return "Issue rules were adjusted by {0}. Errors that no longer match this issue got attached to issue {1}.".FormatWith(GetUserString(user), issueUrlGetter(SpawnedIssueId));
+                    return "Issue rules were adjusted by <span class=\"bold\">{0}</span>. Errors that no longer match this issue got attached to issue {1}.".FormatWith(GetUserString(user), issueUrlGetter(SpawnedIssueId));
                 case HistoryItemType.RulesAdjustedNoNewIssue:
-                    return "Issue rules were adjusted by {0}. All errors stayed attached to this issue.".FormatWith(GetUserString(user));
+                    return "Issue rules were adjusted by <span class=\"bold\">{0}</span>. All errors stayed attached to this issue.".FormatWith(GetUserString(user));
                 case HistoryItemType.AutoCreated:
-                    return "Issue created by new error of type <strong>{0}</strong> in method <strong>{1}</strong> on machine <strong>{2}</strong>".FormatWith(ExceptionType, ExceptionMethod, ExceptionMachine);
+                    return "Issue created by new error of type <span class=\"bold\">{0}</span> in method <span class=\"bold\">{1}</span> on machine <span class=\"bold\">{2}</span>".FormatWith(ExceptionType, ExceptionMethod, ExceptionMachine);
                 case HistoryItemType.StatusUpdated:
-                    return "Status was updated from {0} to {1} by {2}.".FormatWith(PreviousStatus, NewStatus, GetUserString(user));
+                    return "Status was updated from <span class=\"bold\">{0}</span> to <span class=\"bold\">{1}</span> by <span class=\"bold\">{2}</span>.".FormatWith(PreviousStatus, NewStatus, GetUserString(user));
                 default:
                     return "No message";
             }

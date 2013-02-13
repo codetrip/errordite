@@ -57,6 +57,7 @@ namespace Errordite.Web.Models.Issues
         public DateTime DateAddedUtc { get; set; }
         public bool SystemMessage { get; set; }
         public string Reference { get; set; }
+        public string IssueLink { get; set; }
     }
 
     public class IssueHistoryPostModel

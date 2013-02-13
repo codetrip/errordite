@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using CodeTrip.Core;
+﻿using System.Linq;
 using CodeTrip.Core.Extensions;
 using CodeTrip.Core.Interfaces;
 using CodeTrip.Core.Paging;
@@ -10,6 +8,7 @@ using Errordite.Core.Indexing;
 using Errordite.Core.Organisations;
 using Errordite.Core.Session;
 using Raven.Client;
+using Errordite.Core.Extensions;
 
 namespace Errordite.Core.Issues.Queries
 {
@@ -22,6 +21,7 @@ namespace Errordite.Core.Issues.Queries
             RavenQueryStatistics stats;
 
             var history = Query<HistoryDocument, History_Search>().Statistics(out stats)
+                .ConditionalWhere(h => h.ApplicationId == Application.GetId(request.ApplicationId), request.ApplicationId.IsNotNullOrEmpty)
                 .Skip((request.Paging.PageNumber - 1) * request.Paging.PageSize)
                 .Take(request.Paging.PageSize)
                 .OrderByDescending(e => e.DateAddedUtc);
@@ -46,5 +46,6 @@ namespace Errordite.Core.Issues.Queries
     public class GetActivityFeedRequest : OrganisationRequestBase
     {
         public PageRequestWithSort Paging { get; set; }
+        public string ApplicationId { get; set; }
     }
 }
