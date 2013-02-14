@@ -1,0 +1,45 @@
+﻿
+@model Errordite.Web.Models.Account.OrganisationSettingsViewModel
+           
+@{
+    ViewBag.Title = "Settings";
+}
+
+@section header
+{
+    @Html.Partial("Account/Tabs") 
+}
+
+<section class="centered">
+    <div class="content">
+        <div class="form">
+            <h2 class="section-header border">Errordite API</h2>
+            <div class="small-padding right">
+                <p>
+                    Use the key below to authenticate against the Errordite API.
+                </p>
+                <div class="clear"></div>
+                <div class="textbox">
+                    Your API key is <b>@Model.ApiKey</b>
+                </div>
+            </div>
+            <div class="clear" style="margin-top:20px"></div>
+            <h2 class="section-header border">Organisation Settings</h2>
+            @using (Html.BeginForm("settimezone", "account"))
+            {
+                <ul>
+                    <li>
+                        @Html.LabelFor(m => m.TimezoneId, "Timezone")
+                        @Html.DropDownListFor(m => m.TimezoneId, TimeZoneInfo.GetSystemTimeZones().Select(t => new SelectListItem {Selected = Model.TimezoneId == t.Id || (Model.TimezoneId == null && t.Id == "UTC"), Value = t.Id, Text = t.DisplayName}))
+                        <i data-title="The default timezone for your application. Users can set their own timezone in their personal settings." class="icon-info"></i>
+                    </li>
+                    <li class="buttons">
+                        <input type="submit" value="Save Changes" class="btn btn-medium btn-blue"/>
+                    </li>
+                </ul>
+            }
+        </div>
+    </div>
+</section>
+
+

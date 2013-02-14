@@ -1,0 +1,39 @@
+﻿        
+@{
+    ViewBag.Title = "Admin";
+}
+
+<section class="centered">
+    <div class="content">
+        <h3>Delete Application Errors</h3>
+        <div class="form"> 
+            @using (Html.BeginForm("deleteapplicationerrors", "system", FormMethod.Post, new { id = "delAppErrorsForm" }))
+            {
+                <ul>
+                    <li>
+                        @Html.Label("Application Id")
+                        @Html.TextBox("applicationId")
+                    </li>
+                    <li>
+                        <input type="submit" class="btn btn-medium btn-blue" value="Delete" />
+                    </li>
+                </ul>
+            }
+        </div>
+        <h3>Rebuild Indexes</h3>
+        <div class="form"> 
+            @using (Html.BeginForm("rebuildindex", "system", FormMethod.Post, new { id = "rebuidIndexForm" }))
+            {
+                <ul>
+                    <li>
+                        @Html.Label("Index Name")
+                        @Html.TextBox("indexName")
+                    </li>
+                    <li>
+                        <input type="submit" class="btn btn-medium btn-blue" value="Rebuild" />
+                    </li>
+                </ul>
+            }
+        </div>
+    </div>
+</section>  

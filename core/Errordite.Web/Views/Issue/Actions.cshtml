@@ -1,0 +1,29 @@
+﻿@using Errordite.Web.Models.Issues
+@model IssueDetailsViewModel
+
+<h2 class="section-header border"><i class="icon-cog"></i>Delete Issue</h2>
+<p>Permenently delete this issue and all its errors from the system, this action cannot be undone.</p>
+@using (Html.BeginForm("delete", "issue", FormMethod.Post))
+{
+    @Html.HiddenFor(m => m.IssueId)
+    <input type="submit" class="btn btn-medium btn-blue" data-confirm="Are you sure you wish to delete this issue?" value="Delete Issue" />                                                                                                              
+}
+
+
+<h2 class="section-header border" style="margin-top:35px;"><i class="icon-cog"></i>Purge Issue Errors</h2>
+<p>Delete all the errors associated with this issue.</p>
+@using (Html.BeginForm("purge", "issue", FormMethod.Post))
+{
+    @Html.HiddenFor(m => m.IssueId)
+    <input type="submit" class="btn btn-medium btn-blue" data-confirm="Are you sure you wish to delete all the errors associated with this issue?" value="Delete Errors" />
+}
+
+
+<h2 class="section-header border" style="margin-top:35px;"><i class="icon-cog"></i>Reprocess Errors</h2>
+<p>You can re-queue all the errors attached to this issue and they will be processed again as if they were new errors, however no new issues will be created, if the errors do not match any other issues they will be re-attached to this issue.</p>
+@using (Html.BeginForm("import", "issue", FormMethod.Post))
+{
+    @Html.HiddenFor(m => m.IssueId)
+    <input type="submit" class="btn btn-medium btn-blue" data-confirm="Are you sure you wish to re-process this issue's errors?" value="Re-process Errors" />
+}
+

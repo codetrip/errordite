@@ -1,0 +1,30 @@
+﻿
+@using Errordite.Web.Extensions
+@using Errordite.Web.Models.Users
+@model UsersViewModel
+           
+@{
+    ViewBag.Title = "Users";
+}
+
+@section header
+{
+    @Html.Partial("Account/Tabs") 
+}
+
+<section id="users" class="centered">
+    <div class="content">
+        <p class="pull-right">
+            <a href="@Url.AddUser()" class="btn btn-medium btn-blue pull-right">Add User</a>
+        </p>
+
+        @if (Model.Users != null && Model.Users.Any())
+        {
+            @Html.Partial("Users/List", Model)
+        }
+        else
+        {
+            <p>No users were found.</p>
+        }
+    </div>
+</section>
