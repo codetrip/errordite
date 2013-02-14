@@ -10,9 +10,30 @@ namespace Errordite.Web.Models.Issues
     public class IssueViewModel
     {
         public IssueTab Tab { get; set; }
-        public IssueRulesPostModel Rules { get; set; }
+        public UpdateIssueViewModel Update { get; set; }
         public IssueDetailsViewModel Details { get; set; }
         public ErrorCriteriaViewModel Errors { get; set; }
+    }
+
+    public class UpdateIssueViewModel : UpdateIssuePostModel
+    {
+        public IEnumerable<SelectListItem> Users { get; set; }
+        public IEnumerable<SelectListItem> Statuses { get; set; }
+    }
+
+    public class UpdateIssuePostModel
+    {
+        public IList<RuleViewModel> Rules { get; set; }
+        public string ApplicationId { get; set; }
+        public string Reference { get; set; }
+        public string IssueId { get; set; }
+        [Required(ErrorMessage = "Please enter a name")]
+        public string Name { get; set; }
+        [Required(ErrorMessage = "Please enter a name for the new issue that will be created")]
+        public string AdjustmentName { get; set; }
+        public string UserId { get; set; }
+        public IssueStatus Status { get; set; }
+        public bool AlwaysNotify { get; set; }
     }
 
     public class IssueDetailsViewModel : IssueDetailsPostModel
@@ -23,23 +44,13 @@ namespace Errordite.Web.Models.Issues
         public string UserName { get; set; }
         public string ApplicationName { get; set; }
         public string ErrorLimitStatus { get; set; }
-        public IEnumerable<SelectListItem> Users { get; set; }
-        public IEnumerable<SelectListItem> Statuses { get; set; }
         public bool TestIssue { get; set; }
-		public Error SampleError { get; set; }
     }
 
     public class IssueDetailsPostModel
     {
-        public string Comment { get; set; }
-        public string Reference { get; set; }
-        public string IssueId { get; set; }
-        [Required(ErrorMessage = "Please enter a name")]
-        public string Name { get; set; }
-        public string UserId { get; set; }
-        public IssueStatus Status { get; set; }
-        public bool AlwaysNotify { get; set; }
         public string DateRange { get; set; }
+        public string IssueId { get; set; }
     }
 
 	public class AddCommentViewModel
@@ -67,6 +78,17 @@ namespace Errordite.Web.Models.Issues
         [StringLength(500, MinimumLength = 5, ErrorMessageResourceType = typeof(Resources.History), ErrorMessageResourceName = "Message_Invalid_Length")]
         public string HistoryMessage { get; set; }
         public string Changeset { get; set; }
+    }
+
+    public class IssueErrorsPostModel : ErrorCriteriaPostModel
+    {
+        public string Id { get; set; }
+        public IssueTab Tab { get; set; }
+
+        public IssueErrorsPostModel()
+        {
+            Tab = IssueTab.Details;
+        }
     }
 
     public enum IssueTab

@@ -91,20 +91,16 @@ namespace Errordite.Core.Reception.Commands
 			Trace("Assigning issue Id to error with Id:={0}, Existing Error IssueId:={1}, New IssueId:={2}", request.Error.Id, request.Error.IssueId, issue.Id);
 			request.Error.IssueId = issue.Id;
 
-            //if the issue is set to ignored, keep the issue up to date with error count etc, but dont store errors
-            if (issue.Status != IssueStatus.Ignored)
+            //only store the error is it is a new error, not the result of reprocessing
+            if (request.Error.Id.IsNullOrEmpty())
             {
-                //only store the error is it is a new error, not the result of reprocessing
-                if (request.Error.Id.IsNullOrEmpty())
-                {
-                    Trace("It's a new error, so Store it");
-                    Store(request.Error);
-                }
+                Trace("It's a new error, so Store it");
+                Store(request.Error);
+            }
 
-                if (issue.LimitStatus == ErrorLimitStatus.Exceeded)
-                {
-                    _makeExceededErrorsUnloggedCommand.Invoke(new MakeExceededErrorsUnloggedRequest { IssueId = issue.Id });
-                }
+            if (issue.LimitStatus == ErrorLimitStatus.Exceeded)
+            {
+                _makeExceededErrorsUnloggedCommand.Invoke(new MakeExceededErrorsUnloggedRequest { IssueId = issue.Id });
             }
 
 			return new AttachToExistingIssueResponse

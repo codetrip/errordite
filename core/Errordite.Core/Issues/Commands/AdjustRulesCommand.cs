@@ -227,9 +227,7 @@ namespace Errordite.Core.Issues.Commands
     public enum AdjustRulesStatus
     {
         Ok,
-        RulesMatchedOtherIssue,
         IssueNotFound,
         RulesNotChanged,
-        AutoMergedWithOtherIssue
     }
 }

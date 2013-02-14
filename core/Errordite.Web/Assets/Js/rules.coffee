@@ -113,7 +113,7 @@ jQuery ->
 			showRuleUpdatesPanel: () ->
 				$('#rules-adjusted').show()
 				messageHolder = $ '#rules-adjusted .what-if-message'
-				messageHolder.css
+				messageHolder.css	
 					visibility: 'hidden'
 				this.whatIf (response) -> 
 					messageHolder.html (

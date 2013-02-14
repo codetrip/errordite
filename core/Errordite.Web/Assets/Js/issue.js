@@ -1,7 +1,7 @@
 (function() {
 
   jQuery(function() {
-    var $issue, loadTabData, renderErrors, renderHistory, renderReports, setReferenceLink;
+    var $issue, loadTabData, renderHistory, renderReports, setReferenceLink;
     $issue = $('section#issue');
     if ($issue.length > 0) {
       window.Errordite.Spinner.enable();
@@ -18,8 +18,6 @@
         if (!$tab.data('loaded')) {
           if ($tab.data("val") === "reports") {
             renderReports();
-          } else if ($tab.data("val") === "errors") {
-            renderErrors();
           } else if ($tab.data("val") === "history") {
             renderHistory();
           }
@@ -63,17 +61,6 @@
           });
         });
       };
-      renderErrors = function() {
-        var $node, url;
-        $node = $issue.find('#error-items');
-        url = '/issue/errors?IssueId=' + $issue.find('#IssueId').val();
-        return $.get(url, function(data) {
-          $node.html(data);
-          return $('div.content').animate({
-            scrollTop: 0
-          }, 'slow');
-        });
-      };
       renderHistory = function() {
         var $node, url;
         $node = $issue.find('#history-items');
@@ -102,12 +89,6 @@
           });
         }
       });
-      $issue.delegate('form#errorsForm', 'submit', function(e) {
-        var $this;
-        e.preventDefault();
-        $this = $(this);
-        return renderErrors();
-      });
       $issue.delegate('select#Status', 'change', function() {
         var $this;
         $this = $(this);
@@ -120,23 +101,8 @@
       if ($issue.find('select#Status').val() === 'Ignorable') {
         $issue.find('li.checkbox').removeClass('hidden');
       }
-      $('#issue-tabs .tablink').bind('shown', function(e) {
+      return $('#issue-tabs .tablink').bind('shown', function(e) {
         return loadTabData($(e.currentTarget));
-      });
-      $issue.delegate('.sort a[data-pgst]', 'click', function(e) {
-        var $this;
-        e.preventDefault();
-        $this = $(this);
-        $('#pgst').val($this.data('pgst'));
-        $('#pgsd').val($this.data('pgsd'));
-        renderErrors();
-        return false;
-      });
-      return $issue.delegate('#apply-rules-confirmation input[name="WhatIf"]', 'click', function(e) {
-        e.preventDefault();
-        return Errordite.ruleManager.whatIf(function(response) {
-          return alert(response.message);
-        });
       });
     }
   });

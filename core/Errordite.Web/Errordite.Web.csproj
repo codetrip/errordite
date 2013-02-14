@@ -793,7 +793,7 @@
     </Content>
     <Content Include="Assets\Fonts\normal-800.woff" />
     <Content Include="Assets\icons.xcf" />
-    <Content Include="Views\Issue\RuleUpdates.cshtml" />
+    <Content Include="Views\Issue\UpdateIssue.cshtml" />
     <Content Include="Areas\System\Views\Cache\Item.cshtml" />
     <Content Include="Views\Shared\NotAuthorised.cshtml" />
     <Content Include="Views\Shared\NotFound.cshtml" />

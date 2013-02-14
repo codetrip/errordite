@@ -18,8 +18,8 @@ jQuery ->
 			if not $tab.data 'loaded'
 				if $tab.data("val") == "reports"				
 					renderReports()
-				else if $tab.data("val") == "errors"
-					renderErrors()
+#				else if $tab.data("val") == "errors"
+#					renderErrors()
 				else if $tab.data("val") == "history"
 					renderHistory()
 				$tab.data 'loaded', true	
@@ -53,16 +53,16 @@ jQuery ->
 							show: true
 							sizeAdjust: 7.5
 
-		renderErrors = () -> 
-			$node = $issue.find('#error-items')
-			url = '/issue/errors?IssueId=' + $issue.find('#IssueId').val()
-			
-			$.get url,
-				(data) -> 
-					$node.html(data)
-					$('div.content').animate 
-						scrollTop : 0,
-						'slow'	
+#		renderErrors = () -> 
+#			$node = $issue.find('#error-items')
+#			url = '/issue/errors?IssueId=' + $issue.find('#IssueId').val()
+#			
+#			$.get url,
+#				(data) -> 
+#					$node.html(data)
+#					$('div.content').animate 
+#						scrollTop : 0,
+#						'slow'	
 						
 		renderHistory = () -> 
 			$node = $issue.find('#history-items')
@@ -92,10 +92,10 @@ jQuery ->
 					renderErrors()
 					$('span#instance-count').text "0"
 
-		$issue.delegate 'form#errorsForm', 'submit', (e) ->
-			e.preventDefault()
-			$this = $ this
-			renderErrors()
+#		$issue.delegate 'form#errorsForm', 'submit', (e) ->
+#			e.preventDefault()
+#			$this = $ this
+#			renderErrors()
 
 		$issue.delegate 'select#Status', 'change', () -> 
 			$this = $ this
@@ -111,17 +111,17 @@ jQuery ->
 		$('#issue-tabs .tablink').bind 'shown', (e) -> 
 			loadTabData $ e.currentTarget		
 
-		$issue.delegate '.sort a[data-pgst]', 'click', (e) -> 
-			e.preventDefault()
-			$this = $ this
-			$('#pgst').val $this.data('pgst')
-			$('#pgsd').val $this.data('pgsd')
-			renderErrors()
-			false
+#		$issue.delegate '.sort a[data-pgst]', 'click', (e) -> 
+#			e.preventDefault()
+#			$this = $ this
+#			$('#pgst').val $this.data('pgst')
+#			$('#pgsd').val $this.data('pgsd')
+#			renderErrors()
+#			false
 
-		$issue.delegate '#apply-rules-confirmation input[name="WhatIf"]', 'click', (e) -> 
-			e.preventDefault()
-			Errordite.ruleManager.whatIf (response) -> alert response.message
+#		$issue.delegate '#apply-rules-confirmation input[name="WhatIf"]', 'click', (e) -> 
+#			e.preventDefault()
+#			Errordite.ruleManager.whatIf (response) -> alert response.message
 			
 				
 			
