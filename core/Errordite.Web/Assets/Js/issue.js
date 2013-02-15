@@ -1,19 +1,10 @@
 (function() {
 
   jQuery(function() {
-    var $issue, loadTabData, renderHistory, renderReports, setReferenceLink;
+    var $issue, loadTabData, renderErrors, renderHistory, renderReports;
     $issue = $('section#issue');
     if ($issue.length > 0) {
       window.Errordite.Spinner.enable();
-      setReferenceLink = function() {
-        var input, reference;
-        input = $(':input[name=Reference]');
-        reference = input.val();
-        $('#reference-link').empty();
-        if (/^https?:\/\//.test(reference)) {
-          return $('#reference-link').html($('<a>').attr('href', reference).attr('target', '_blank').text('link'));
-        }
-      };
       loadTabData = function($tab) {
         if (!$tab.data('loaded')) {
           if ($tab.data("val") === "reports") {
@@ -61,6 +52,17 @@
           });
         });
       };
+      renderErrors = function() {
+        var $node, url;
+        $node = $issue.find('#error-items');
+        url = '/issue/errors?Id=' + $issue.find('#IssueId').val();
+        return $.get(url, function(data) {
+          $node.html(data);
+          return $('div.content').animate({
+            scrollTop: 0
+          }, 'slow');
+        });
+      };
       renderHistory = function() {
         var $node, url;
         $node = $issue.find('#history-items');
@@ -73,12 +75,10 @@
         });
       };
       loadTabData($('ul#issue-tabs li.active a.tablink'));
-      setReferenceLink();
       $issue.delegate('form#reportform', 'submit', function(e) {
         e.preventDefault();
         return renderReports();
       });
-      $issue.delegate(':input[name=Reference]', 'change', setReferenceLink);
       $issue.delegate('input[type="button"].confirm', 'click', function() {
         var $this;
         $this = $(this);
@@ -101,8 +101,17 @@
       if ($issue.find('select#Status').val() === 'Ignorable') {
         $issue.find('li.checkbox').removeClass('hidden');
       }
-      return $('#issue-tabs .tablink').bind('shown', function(e) {
+      $('#issue-tabs .tablink').bind('shown', function(e) {
         return loadTabData($(e.currentTarget));
+      });
+      return $issue.delegate('.sort a[data-pgst]', 'click', function(e) {
+        var $this;
+        e.preventDefault();
+        $this = $(this);
+        $('#pgst').val($this.data('pgst'));
+        $('#pgsd').val($this.data('pgsd'));
+        renderErrors();
+        return false;
       });
     }
   });

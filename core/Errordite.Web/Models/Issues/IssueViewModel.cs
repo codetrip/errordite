@@ -21,12 +21,11 @@ namespace Errordite.Web.Models.Issues
         public IEnumerable<SelectListItem> Statuses { get; set; }
     }
 
-    public class UpdateIssuePostModel
+    public class UpdateIssuePostModel : IssueDetailsPostModel
     {
         public IList<RuleViewModel> Rules { get; set; }
         public string ApplicationId { get; set; }
         public string Reference { get; set; }
-        public string IssueId { get; set; }
         [Required(ErrorMessage = "Please enter a name")]
         public string Name { get; set; }
         [Required(ErrorMessage = "Please enter a name for the new issue that will be created")]
@@ -36,7 +35,7 @@ namespace Errordite.Web.Models.Issues
         public bool AlwaysNotify { get; set; }
     }
 
-    public class IssueDetailsViewModel : IssueDetailsPostModel
+    public class IssueDetailsViewModel : UpdateIssuePostModel
     {
         public DateTime LastErrorUtc { get; set; }
         public DateTime FirstErrorUtc { get; set; }
@@ -82,7 +81,6 @@ namespace Errordite.Web.Models.Issues
 
     public class IssueErrorsPostModel : ErrorCriteriaPostModel
     {
-        public string Id { get; set; }
         public IssueTab Tab { get; set; }
 
         public IssueErrorsPostModel()

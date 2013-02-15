@@ -145,14 +145,14 @@ jQuery ->
 
 		Errordite.ruleManager = new Errordite.RuleManager()		
 
-		$body.delegate 'button#apply-rule-updates', 'click', (e) ->
+		$body.delegate 'button#apply-rule-updates, button#update-details', 'click', (e) ->
 			$form = $('form#rulesForm')
 			$form.validate()
 
 			if $form.valid()
 				$('#apply-rules-confirmation').modal()
-
-			(Tabs.get $ '#issue-tabs').show 'rules'
+			else
+				(Tabs.get $ '#issue-tabs').show 'rules'
 
 		$body.delegate 'div#rules a.add', 'click', (e) -> 			
 			Errordite.ruleManager.addRule()

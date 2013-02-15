@@ -262,7 +262,7 @@ table {
         }
     }
     span.title {
-        font-size:16px;
+        font-size:14px;
         font-weight: $boldfontweight;
         display:block;
         width:100%;
@@ -1008,6 +1008,10 @@ section {
             }
         }
     }
+	&.wide {
+		input[type="text"] {width:485px;}
+		select{width:495px}
+	}
 }
 
 .tooltip {
@@ -1472,6 +1476,23 @@ section {
             background-color:$darkblue;
         }
     }
+	&.issue-details {
+		border:0;
+		width:100%;
+		margin:0 0 20px 0;
+		.item-content {
+			width:800px;
+			float:left;
+		}
+		.update-details {
+			float:right;
+			width:155px;
+			.btn {
+				float:right;
+				margin:3px 0 0 0;
+			}
+		}
+	}
     a {
         font-size:13px;
     }
