@@ -187,14 +187,15 @@
 
       })();
       Errordite.ruleManager = new Errordite.RuleManager();
-      $body.delegate('button#apply-rule-updates', 'click', function(e) {
+      $body.delegate('button#apply-rule-updates, button#update-details', 'click', function(e) {
         var $form;
         $form = $('form#rulesForm');
         $form.validate();
         if ($form.valid()) {
-          $('#apply-rules-confirmation').modal();
+          return $('#apply-rules-confirmation').modal();
+        } else {
+          return (Tabs.get($('#issue-tabs'))).show('rules');
         }
-        return (Tabs.get($('#issue-tabs'))).show('rules');
       });
       $body.delegate('div#rules a.add', 'click', function(e) {
         Errordite.ruleManager.addRule();

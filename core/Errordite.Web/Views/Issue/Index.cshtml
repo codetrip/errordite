@@ -35,21 +35,18 @@
             <li @(Model.Tab == IssueTab.Details ? " class=active" : " class=inactive") >
                 <a href="@Url.Issue(Model.Update.IssueId, IssueTab.Details)" class="tablink" data-val="details"><span>Details</span></a> 
             </li>
-            <li @(Model.Tab == IssueTab.Actions ? " class=active" : " class=inactive") >
-                <a href="@Url.Issue(Model.Update.IssueId, IssueTab.Actions)" class="tablink" data-val="actions"><span>Actions</span></a>
-            </li>
-            <li @(Model.Tab == IssueTab.History ? " class=active" : " class=inactive") >
-                <a href="@Url.Issue(Model.Update.IssueId, IssueTab.History)" class="tablink" data-val="history"><span>History</span></a>
-            </li>
             <li @(Model.Tab == IssueTab.Rules ? " class=active" : " class=inactive") >
                 <a href="@Url.Issue(Model.Update.IssueId, IssueTab.Rules)" class="tablink" data-val="rules"><span>Rules</span></a>
             </li>
             <li @(Model.Tab == IssueTab.Reports ? " class=active" : " class=inactive") >
                 <a href="@Url.Issue(Model.Update.IssueId, IssueTab.Reports)" class="tablink" data-val="reports"><span>Reports</span></a> 
             </li>
-            @*<li @(Model.Tab == IssueTab.Errors ? " class=active" : " class=inactive") >
-                <a href="@Url.Issue(Model.Update.IssueId, IssueTab.Errors)" class="tablink" data-val="errors"><span>Errors</span></a>
-            </li>*@
+            <li @(Model.Tab == IssueTab.Actions ? " class=active" : " class=inactive") >
+                <a href="@Url.Issue(Model.Update.IssueId, IssueTab.Actions)" class="tablink" data-val="actions"><span>Actions</span></a>
+            </li>
+            <li @(Model.Tab == IssueTab.History ? " class=active" : " class=inactive") >
+                <a href="@Url.Issue(Model.Update.IssueId, IssueTab.History)" class="tablink" data-val="history"><span>History</span></a>
+            </li>
             <li class="button">
                 <div id="rules-adjusted" style="display:none;">
                     <button id="apply-rule-updates" class="btn btn-small btn-blue tool-tip" data-title="You have made rule changes but not yet saved them. Click here to save.">Apply Rule Updates</button>
@@ -62,14 +59,8 @@
            
 <section id="issue" class="centered">
     <div class="content">
-        <div id="details" class="tab @(Model.Tab == IssueTab.Details ? "" : "hidden")">
+        <div id="details" class="tab @(Model.Tab == IssueTab.Details ? "" : "hidden") ajax-container">
             @Html.Partial("Details", Model)
-        </div>
-        <div id="actions" class="tab @(Model.Tab == IssueTab.Actions ? "" : "hidden")">
-            @Html.Partial("Actions", Model.Details)
-        </div>
-        <div id="history" class="tab @(Model.Tab == IssueTab.History ? "" : "hidden")">
-            @Html.Partial("History", new AddCommentViewModel{IssueId = Model.Details.IssueId})
         </div>
         @using (Html.BeginForm("update", "issue", FormMethod.Post, new { id = "rulesForm" }))
         {
@@ -81,11 +72,12 @@
         <div id="reports" class="tab @(Model.Tab == IssueTab.Reports ? "" : "hidden")">
             @Html.Partial("Reports", Model.Details)
         </div>
-        @*<div id="errors" class="tab @(Model.Tab == IssueTab.Errors ? "" : "hidden") ajax-container">
-            <div id="error-items" data-val="@Model.Update.IssueId">
-                @Html.Partial("Errors/ErrorItems", Model.Errors)
-            </div>
-        </div>*@
+        <div id="actions" class="tab @(Model.Tab == IssueTab.Actions ? "" : "hidden")">
+            @Html.Partial("Actions", Model.Details)
+        </div>
+        <div id="history" class="tab @(Model.Tab == IssueTab.History ? "" : "hidden")">
+            @Html.Partial("History", new AddCommentViewModel{IssueId = Model.Details.IssueId})
+        </div>
     </div>
 </section>
 

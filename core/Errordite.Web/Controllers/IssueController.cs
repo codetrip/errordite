@@ -132,7 +132,10 @@ namespace Errordite.Web.Controllers
                     ApplicationName = applications.Items.First(a => a.Id == issue.ApplicationId).Name,
                     ErrorLimitStatus = IssueResources.ResourceManager.GetString("ErrorLimitStatus_{0}".FormatWith(issue.LimitStatus)),
                     TestIssue = issue.TestIssue,
-                    IssueId = issue.Id
+                    IssueId = issue.Id,
+                    Status = issue.Status,
+                    AlwaysNotify = issue.AlwaysNotify,
+                    Reference = issue.Reference
                 },
                 Errors = GetErrorsViewModel(postModel, paging),
                 Update = rulesViewModel,
@@ -199,7 +202,7 @@ namespace Errordite.Web.Controllers
             var request = new GetApplicationErrorsRequest
             {
                 OrganisationId = Core.AppContext.CurrentUser.OrganisationId,
-                IssueId = postModel.IssueId,
+                IssueId = postModel.Id,
                 Paging = paging,
                 UserTimezoneId = AppContext.CurrentUser.EffectiveTimezoneId(),
             };
@@ -229,7 +232,7 @@ namespace Errordite.Web.Controllers
                 Errors = errors.Items.Select(e => new ErrorInstanceViewModel { Error = e, HideIssues = true }).ToList(),
                 ApplicationId = postModel.ApplicationId,
                 HideIssues = true,
-                IssueId = postModel.IssueId,
+                Id = postModel.Id,
                 Applications = Core.GetApplications().Items.ToSelectList(a => a.FriendlyId, a => a.Name, u => u.FriendlyId == postModel.ApplicationId, Resources.Shared.Application, string.Empty, SortSelectListBy.Text),
                 Sort = paging.Sort,
                 SortDescending = paging.SortDescending,

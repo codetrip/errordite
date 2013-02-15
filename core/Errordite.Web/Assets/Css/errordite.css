@@ -189,7 +189,7 @@ table {
     .issue-title-container span.details span.bold {
       font-weight: 600; }
   .issue-title-container span.title {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 600;
     display: block;
     width: 100%; }
@@ -798,6 +798,10 @@ section {
       padding: 0; }
       .form.form-inline > ul > li.break {
         padding-right: 150px; }
+  .form.wide input[type="text"] {
+    width: 485px; }
+  .form.wide select {
+    width: 495px; }
 
 .tooltip {
   position: absolute;
@@ -1169,6 +1173,19 @@ section {
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 2px rgba(82, 168, 236, 0.6); }
     .boxed-item.issue .item-bar {
       background-color: #95c0df; }
+  .boxed-item.issue-details {
+    border: 0;
+    width: 100%;
+    margin: 0 0 20px 0; }
+    .boxed-item.issue-details .item-content {
+      width: 800px;
+      float: left; }
+    .boxed-item.issue-details .update-details {
+      float: right;
+      width: 155px; }
+      .boxed-item.issue-details .update-details .btn {
+        float: right;
+        margin: 3px 0 0 0; }
   .boxed-item a {
     font-size: 13px; }
   .boxed-item .item-bar {
