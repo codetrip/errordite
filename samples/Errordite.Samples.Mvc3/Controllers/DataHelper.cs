@@ -2,15 +2,43 @@ using System.Collections.Generic;
 using System.IO;
 using System.Web;
 using System.Linq;
+using Massive;
 
 namespace Errordite.Samples.Mvc3.Controllers
 {
+    public class Products : DynamicModel
+    {
+        public Products() 
+            : base("ErrorditeTest", "Products", "Id")
+        {
+        }
+    }
+
+
     public static class DataHelper
     {
         public static Product Get(string id)
         {
-            Product product;
-            return All().TryGetValue(id, out product) ? product : null;
+            dynamic table = new Products();
+            dynamic products = table.Find(Id: id);
+
+            foreach(var p in products)
+            return GetProduct(p);
+
+            return null;
+            //return All().TryGetValue(id, out product) ? product : null;
+        }
+
+        private static Product GetProduct(dynamic p)
+        {
+            return new Product()
+                {
+                    Description = p.Description,
+                    Id = p.Id,
+                    ImageUrl = p.ImageUrl,
+                    Name = p.Name,
+                    Price = p.Price,
+                };
         }
 
         private static string Clean(string s)
@@ -20,8 +48,19 @@ namespace Errordite.Samples.Mvc3.Controllers
 
         public static IEnumerable<Product> MoreLike(string id)
         {
-            return All().Where(p => p.Key != id).Select(p => p.Value);
+            dynamic table = new Products();
+
+            var products = table.All(where: "WHERE id != @0", args: id);
+
+            foreach (var p in products)
+            {
+                yield return GetProduct(p);
+            }
+
+            //return All().Where(p => p.Key != id).Select(p => p.Value);
         }
+
+        
 
         private static Dictionary<string, Product> All()
         {

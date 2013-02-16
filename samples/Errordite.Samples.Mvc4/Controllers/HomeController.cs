@@ -2,6 +2,7 @@
 using System;
 using System.Configuration;
 using System.Diagnostics.Eventing.Reader;
+using System.IO;
 using System.Threading;
 using System.Web.Mvc;
 using Mindscape.Raygun4Net;
