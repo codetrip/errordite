@@ -20,9 +20,8 @@ namespace Errordite.Samples.Mvc3.Controllers
         public static Product Get(string id)
         {
             dynamic table = new Products();
-            dynamic products = table.Find(Id: id);
+            var p = table.Get(Id: id);
 
-            foreach(var p in products)
             return GetProduct(p);
 
             return null;
@@ -31,6 +30,9 @@ namespace Errordite.Samples.Mvc3.Controllers
 
         private static Product GetProduct(dynamic p)
         {
+            if (p == null)
+                return null;
+
             return new Product()
                 {
                     Description = p.Description,
