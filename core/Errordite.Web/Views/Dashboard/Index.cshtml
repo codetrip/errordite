@@ -7,11 +7,15 @@
     ViewBag.Title = "Dashboard";
 }
 
-<div class="dark-container">
-    <section class="centered">
-        @Html.Partial("Dashboard/Links", Model)
-    </section> 
-</div>
+@section topheader
+{
+    <div class="dark-container">
+        <section class="centered">
+            @Html.Partial("Dashboard/Links", Model)
+        </section> 
+    </div>
+}
+
 <section id="dashboard" class="centered">
     <div class="content">
         @Html.HiddenFor(m => m.LastErrorDisplayed)
