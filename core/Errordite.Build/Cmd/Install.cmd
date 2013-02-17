@@ -1,6 +1,11 @@
 @ECHO OFF
 setlocal
 
+set TARGETENVIRONMENT=%1
+set MSBUILDTARGET=%2
+
+if "%TARGETENVIRONMENT%" neq "" goto DEPLOYMENTMENU
+
 :ENVIRONMENTMENU
 SET TARGETENVIRONMENT="**UNDEFINED**"
 cls
@@ -30,6 +35,8 @@ goto DEPLOYMENTMENU
 
 
 :DEPLOYMENTMENU
+if "%MSBUILDTARGET%" neq "" goto STARTDEPLOY
+
 cls
 echo.
 echo Errordite Install Menu
@@ -86,7 +93,9 @@ pushd %MSBUILDPROJDIR%
 echo.
 echo Deploying '%DEPLOYDISPLAYNAME%'...
 choice /C YN /M "Are you sure?"
-if "%ERRORLEVEL%" neq "1" goto DEPLOYMENTMENU
+if "%ERRORLEVEL%" neq "1" goto DEPLOYMENTMENU else set AUTO=true
+
+:STARTDEPLOY
 
 if "%MSBUILDTARGET%" == "ALLWEB" (
 
@@ -125,6 +134,7 @@ if "%ERRORLEVEL%" == "0" (
 	echo ****************************
 	pause
 	popd
+	if "%AUTO%"=="true" exit /b 0
 	goto DEPLOYMENTMENU
 ) else (
 	echo.
