@@ -129,7 +129,7 @@ namespace Errordite.Web.Controllers
 		{
 			var applications = Core.GetApplications();
 
-            var issues = lastIssueDisplayed == -1 ? null : _getApplicationIssuesQuery.Invoke(new GetApplicationIssuesRequest
+            var issues = _getApplicationIssuesQuery.Invoke(new GetApplicationIssuesRequest
 			{
 				Paging = new PageRequestWithSort(1, 50, "FriendlyId", true),
 				OrganisationId = Core.AppContext.CurrentUser.OrganisationId,
@@ -138,7 +138,7 @@ namespace Errordite.Web.Controllers
                 ApplicationId = applicationId
 			}).Issues;
 
-			var errors = lastErrorDisplayed == -1 ? null : _getApplicationErrorsQuery.Invoke(new GetApplicationErrorsRequest
+			var errors = _getApplicationErrorsQuery.Invoke(new GetApplicationErrorsRequest
 			{
                 Paging = new PageRequestWithSort(1, 50, "FriendlyId", true),
 				OrganisationId = Core.AppContext.CurrentUser.OrganisationId,
