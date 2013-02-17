@@ -23,6 +23,7 @@
         <div class="wrapper">
             <header>
                 @Html.Partial("header")
+                @RenderSection("topheader", required: false)
                 @Html.Partial("notifications")
                 @Html.Partial("breadcrumbs")
                 @RenderSection("header", required: false) 
