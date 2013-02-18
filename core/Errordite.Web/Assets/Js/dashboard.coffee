@@ -42,6 +42,8 @@ jQuery ->
 										formatString:'%a %#d %b'
 								yaxis:
 									min: 0
+									tickInterval: if (_.max data.y > 3) then null else 1									
+										
 							highlighter:
 								show: true
 								sizeAdjust: 7.5
