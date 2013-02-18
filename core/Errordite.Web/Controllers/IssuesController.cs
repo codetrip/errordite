@@ -85,7 +85,7 @@ namespace Errordite.Web.Controllers
                     Paging = pagingRequest,
                     AssignedTo = postModel.AssignedTo,
                     Status = postModel.Status,
-                    Name = postModel.Name,
+                    Query = postModel.Name,
                     OrganisationId = Core.AppContext.CurrentUser.OrganisationId,
                     UserTimezoneId = AppContext.CurrentUser.EffectiveTimezoneId(),
                 };

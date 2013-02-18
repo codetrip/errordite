@@ -44,9 +44,9 @@ namespace Errordite.Core.Issues.Queries
                 query = query.Where(i => i.LastErrorUtc < TimeZoneInfo.ConvertTimeBySystemTimeZoneId(request.EndDate.Value.RangeEnd(), request.UserTimezoneId, "UTC"));
             }
 
-            if (!request.Name.IsNullOrEmpty())
+            if (!request.Query.IsNullOrEmpty())
             {
-                query = query.Where(i => i.Name == request.Name);
+                query = query.Where(i => i.Query == request.Query);
             }
 
             if (!request.AssignedTo.IsNullOrEmpty())
@@ -100,7 +100,7 @@ namespace Errordite.Core.Issues.Queries
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public string AssignedTo { get; set; }
-        public string Name { get; set; }
+        public string Query { get; set; }
         public string[] Status { get; set; }
         public PageRequestWithSort Paging { get; set; }
         public string UserTimezoneId { get; set; }
