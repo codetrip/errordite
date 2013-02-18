@@ -30,7 +30,7 @@ namespace Errordite.Core.Issues.Queries
                 .Where(i => i.ApplicationId == Application.GetId(request.ApplicationId))
                 .Take(_configuration.MaxPageSize)
                 .As<Issue>()
-                .OrderBy(i => i.CreatedOnUtc)
+                .OrderBy(i => i.FriendlyId)
                 .Select(issue => new IssueBase
                     {
                         Id = issue.Id,
@@ -47,7 +47,7 @@ namespace Errordite.Core.Issues.Queries
                     .Skip(issues.Count)
                     .Take(_configuration.MaxPageSize)
                     .As<Issue>()
-                    .OrderBy(i => i.CreatedOnUtc)
+                    .OrderBy(i => i.FriendlyId)
                     .Select(issue => new IssueBase
                     {
                         Id = issue.Id,
