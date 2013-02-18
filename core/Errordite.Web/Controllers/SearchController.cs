@@ -40,7 +40,7 @@ namespace Errordite.Web.Controllers
 				{
 					Paging = new PageRequestWithSort(1, 10),
 					OrganisationId = Core.AppContext.CurrentUser.OrganisationId,
-					Name = q
+					Query = q
 				}).Issues;
 
 				var errors = _getApplicationErrorsQuery.Invoke(new GetApplicationErrorsRequest

@@ -8,6 +8,7 @@ namespace Errordite.Core.Matching
     {
         bool IsMatch(Error error);
         string GetDescription();
+        string SearchString { get; }
     }
 
     [ProtoContract]
@@ -15,5 +16,6 @@ namespace Errordite.Core.Matching
     {
         public abstract bool IsMatch(Error error);
         public abstract string GetDescription();
+        public abstract string SearchString { get; }
     }
 }
