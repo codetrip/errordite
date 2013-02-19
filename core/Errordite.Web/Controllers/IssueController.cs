@@ -333,7 +333,7 @@ namespace Errordite.Web.Controllers
         }
 
         [HttpPost, ExportViewData, ValidateInput(false), IfButtonClicked("AdjustRules")]
-        public ActionResult Update(UpdateIssuePostModel postModel)
+        public ActionResult AdjustRules(UpdateIssuePostModel postModel)
         {
             if (!ModelState.IsValid)
             {
