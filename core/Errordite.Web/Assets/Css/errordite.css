@@ -375,7 +375,7 @@ section {
         background-color: #ffffff; }
     .tabs li.button {
       float: right;
-      margin: -25px 5px 0 0; }
+      margin: -35px 5px 0 0; }
   .tabs .active > a {
     border-bottom-color: transparent;
     background-color: #ffffff; }
@@ -531,7 +531,7 @@ section {
     height: 24px;
     line-height: 24px; }
   .paging div.pages i {
-    margin-left: 8px; }
+    margin: 0px 0 0 8px; }
   .paging .pagination ul {
     display: inline-block;
     *display: inline;

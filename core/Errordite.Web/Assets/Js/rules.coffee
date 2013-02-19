@@ -36,7 +36,8 @@ jQuery ->
 			constructor: () ->				
 				this.counter = 0
 				this.rules = for ruleEl in $ '#rules-table tr.rule'
-					new Errordite.Rule $ ruleEl								
+					new Errordite.Rule $ ruleEl		
+				this.whatIfResult = null						
 
 			addRule: (name, op, val) ->
 				
@@ -130,6 +131,8 @@ jQuery ->
 							</div>
 							"""
 						)
+
+					this.whatIfResult = response.data
 					messageHolder.css
 						visibility: 'visible'
 
@@ -151,6 +154,7 @@ jQuery ->
 
 			if $form.valid()
 				$('#apply-rules-confirmation').modal()
+				console.log 'what if:' + Errordite.ruleManager.whatIfResult
 			else
 				(Tabs.get $ '#issue-tabs').show 'rules'
 

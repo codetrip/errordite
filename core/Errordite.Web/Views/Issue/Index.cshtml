@@ -59,7 +59,7 @@
            
 <section id="issue" class="centered">
     <div class="content">
-        <div id="details" class="tab @(Model.Tab == IssueTab.Details ? "" : "hidden") ajax-container">
+        <div id="details" class="tab @(Model.Tab == IssueTab.Details ? "" : "hidden")">
             @Html.Partial("Details", Model)
         </div>
         @using (Html.BeginForm("update", "issue", FormMethod.Post, new { id = "rulesForm" }))

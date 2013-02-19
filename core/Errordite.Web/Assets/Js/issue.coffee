@@ -3,7 +3,8 @@ jQuery ->
 
 	if $issue.length > 0
 
-		window.Errordite.Spinner.enable();			
+		paging = new window.Paging('/issue/errors?Id=' + $issue.find('#IssueId').val() + '&')
+		paging.init()
 		
 		loadTabData = ($tab) ->
 			if not $tab.data 'loaded'
@@ -42,16 +43,8 @@ jQuery ->
 							show: true
 							sizeAdjust: 7.5
 
-		renderErrors = () -> 
-			$node = $issue.find('#error-items')
-			url = '/issue/errors?Id=' + $issue.find('#IssueId').val()
-			
-			$.get url,
-				(data) -> 
-					$node.html(data)
-					$('div.content').animate 
-						scrollTop : 0,
-						'slow'	
+		clearErrors = () ->
+			$('div#error-items').clear();
 						
 		renderHistory = () -> 
 			$node = $issue.find('#history-items')
@@ -74,7 +67,7 @@ jQuery ->
 			$this = $ this
 			if confirm "Are you sure you want to delete all errors associated with this issue?" 
 				$.post '/issue/purge', 'issueId=' + $this.attr('data-val'), (data) -> 
-					renderErrors()
+					clearErrors()
 					$('span#instance-count').text "0"
 
 		$issue.delegate 'select#Status', 'change', () -> 
@@ -89,15 +82,7 @@ jQuery ->
 			$issue.find('li.checkbox').removeClass('hidden')
 
 		$('#issue-tabs .tablink').bind 'shown', (e) -> 
-			loadTabData $ e.currentTarget		
-
-		$issue.delegate '.sort a[data-pgst]', 'click', (e) -> 
-			e.preventDefault()
-			$this = $ this
-			$('#pgst').val $this.data('pgst')
-			$('#pgsd').val $this.data('pgsd')
-			renderErrors()
-			false
+			loadTabData $ e.currentTarget
 			
 				
 			
