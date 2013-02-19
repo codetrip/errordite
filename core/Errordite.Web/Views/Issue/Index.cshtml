@@ -62,7 +62,7 @@
         <div id="details" class="tab @(Model.Tab == IssueTab.Details ? "" : "hidden")">
             @Html.Partial("Details", Model)
         </div>
-        @using (Html.BeginForm("update", "issue", FormMethod.Post, new { id = "rulesForm" }))
+        @using (Html.BeginForm("AdjustRules", "issue", FormMethod.Post, new { id = "rulesForm" }))
         {
             <div id="rules" class="tab @(Model.Tab == IssueTab.Rules ? "" : "hidden")">
                 @Html.Partial("Rules", Model.Update)

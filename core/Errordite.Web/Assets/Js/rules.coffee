@@ -3,7 +3,8 @@ ruleCounter = 0
 jQuery -> 
 
 	if $('section#issue, section#addissue').length > 0
-		$body = $ 'body'		
+		$body = $ 'body'	
+		whatifresult = null;	
 
 		class Errordite.Rule			
 
@@ -132,7 +133,7 @@ jQuery ->
 							"""
 						)
 
-					this.whatIfResult = response.data
+					whatifresult = response.data
 					messageHolder.css
 						visibility: 'visible'
 
@@ -153,8 +154,22 @@ jQuery ->
 			$form.validate()
 
 			if $form.valid()
+
+				if whatifresult != null
+					$errormessage = $('span#error-message')
+					$message = $('p#rules-message')
+					$name = $('li#rule-name')
+
+					if whatifresult.notmatched > 0 
+						$errormessage.text(whatifresult.notmatched + ' of ' + whatifresult.total + ' errors do not match the new rules')
+						$name.show()
+					else
+						$errormessage.text('All errors match the new rules')
+						$name.hide()
+
+					$message.show()
+
 				$('#apply-rules-confirmation').modal()
-				console.log 'what if:' + Errordite.ruleManager.whatIfResult
 			else
 				(Tabs.get $ '#issue-tabs').show 'rules'
 

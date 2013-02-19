@@ -5,48 +5,51 @@
         <h4 class="formodal">Apply Issue Updates</h4>
     </div>
     <div class="modal-body">
+        <p id="rules-message" style="display:none">
+            You have specified rules updates, <span id="error-message"></span>
+        </p>
         <div class="form wide">
-		    @Html.HiddenFor(m => m.IssueId)
-		    <ul>
-			    <li>
-				    @Html.LabelFor(m => m.Name, "Issue Name")
-				    @Html.TextBoxFor(m => m.Name)
-				    <i data-title="Give this issue a more meaningful name to help identify and search for it." class="icon-info"></i>
-				    @Html.ValidationMessageFor(m => m.Name)
-			    </li>
-			    <li>
-				    @Html.LabelFor(m => m.AdjustmentName, "New Issue Name")
-				    @Html.TextBoxFor(m => m.AdjustmentName)
-				    <i data-title="The rules adjustment you are making will result in a new issue being created, please give it a name here." class="icon-info"></i>
-				    @Html.ValidationMessageFor(m => m.AdjustmentName)
-			    </li>
-			    <li>
-				    @Html.LabelFor(m => m.UserId, "Assigned To")
-				    @Html.DropDownListFor(m => m.UserId, Model.Users)
-				    <i data-title="Optionally assign a user to this issue." class="icon-info"></i>
-				    @Html.ValidationMessageFor(m => m.UserId)
-			    </li>
-			    <li>
-				    @Html.LabelFor(m => m.Status, "Status")
-				    @Html.DropDownListFor(m => m.Status, Model.Statuses)
-				    <i data-title="Optionally assign a new status to the issue." class="icon-info"></i>
-				    @Html.ValidationMessageFor(m => m.Status)   
-			    </li>
-			    <li>
-				    <div>
-					    @Html.LabelFor(m => m.Reference, "External Reference (bug tracker etc)")
-					    <span id="reference-link"></span>
-				    </div>
-				    @Html.TextBoxFor(m => m.Reference)
-				    <i data-title="Add a reference to your bug tracking software or source control system, if appropriate" class="icon-info"></i>
-			    </li>
-			    <li class="inline">
-				    @Html.CheckBoxFor(m => m.AlwaysNotify)
-				    @Html.LabelFor(m => m.AlwaysNotify, "Always notify when errors occur")
-				    <i data-title="Check this box if you want to be notified whenever an instance of this issue is received (we will only notify you the first time this happens within any 12 hour period)." class="icon-info"></i>
-				    @Html.ValidationMessageFor(m => m.AlwaysNotify)
-			    </li>
-		    </ul>
+            @Html.HiddenFor(m => m.IssueId)
+            <ul>
+                <li>
+                    @Html.LabelFor(m => m.Name, "Issue Name")
+                    @Html.TextBoxFor(m => m.Name)
+                    <i data-title="Give this issue a more meaningful name to help identify and search for it." class="icon-info"></i>
+                    @Html.ValidationMessageFor(m => m.Name)
+                </li>
+                <li id="rule-name" style="display:none">
+                    @Html.LabelFor(m => m.AdjustmentName, "Name of issue to be created by rules adjustment")
+                    @Html.TextBoxFor(m => m.AdjustmentName)
+                    <i data-title="The rules adjustment you are making will result in a new issue being created, please give it a name here." class="icon-info"></i>
+                    @Html.ValidationMessageFor(m => m.AdjustmentName)
+                </li>
+                <li>
+                    @Html.LabelFor(m => m.UserId, "Assigned To")
+                    @Html.DropDownListFor(m => m.UserId, Model.Users)
+                    <i data-title="Optionally assign a user to this issue." class="icon-info"></i>
+                    @Html.ValidationMessageFor(m => m.UserId)
+                </li>
+                <li>
+                    @Html.LabelFor(m => m.Status, "Status")
+                    @Html.DropDownListFor(m => m.Status, Model.Statuses)
+                    <i data-title="Optionally assign a new status to the issue." class="icon-info"></i>
+                    @Html.ValidationMessageFor(m => m.Status)   
+                </li>
+                <li>
+                    <div>
+                        @Html.LabelFor(m => m.Reference, "External Reference (bug tracker etc)")
+                        <span id="reference-link"></span>
+                    </div>
+                    @Html.TextBoxFor(m => m.Reference)
+                    <i data-title="Add a reference to your bug tracking software or source control system, if appropriate" class="icon-info"></i>
+                </li>
+                <li class="inline">
+                    @Html.CheckBoxFor(m => m.AlwaysNotify)
+                    @Html.LabelFor(m => m.AlwaysNotify, "Always notify when errors occur")
+                    <i data-title="Check this box if you want to be notified whenever an instance of this issue is received (we will only notify you the first time this happens within any 12 hour period)." class="icon-info"></i>
+                    @Html.ValidationMessageFor(m => m.AlwaysNotify)
+                </li>
+            </ul>
         </div>
     </div>             
 

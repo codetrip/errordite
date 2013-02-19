@@ -4,9 +4,10 @@
   ruleCounter = 0;
 
   jQuery(function() {
-    var $body, ruleValTimeout;
+    var $body, ruleValTimeout, whatifresult;
     if ($('section#issue, section#addissue').length > 0) {
       $body = $('body');
+      whatifresult = null;
       Errordite.Rule = (function() {
 
         function Rule($rule) {
@@ -165,7 +166,7 @@
           });
           return this.whatIf(function(response) {
             messageHolder.html((response.data.notmatched > 0 ? "<div class='notmatched'>\n" + response.data.notmatched + " of " + response.data.total + " do not match\n</div>" : "<div class='matched'>\nAll errors match\n</div>"));
-            this.whatIfResult = response.data;
+            whatifresult = response.data;
             return messageHolder.css({
               visibility: 'visible'
             });
@@ -190,12 +191,24 @@
       })();
       Errordite.ruleManager = new Errordite.RuleManager();
       $body.delegate('button#apply-rule-updates, button#update-details', 'click', function(e) {
-        var $form;
+        var $errormessage, $form, $message, $name;
         $form = $('form#rulesForm');
         $form.validate();
         if ($form.valid()) {
-          $('#apply-rules-confirmation').modal();
-          return console.log('what if:' + Errordite.ruleManager.whatIfResult);
+          if (whatifresult !== null) {
+            $errormessage = $('span#error-message');
+            $message = $('p#rules-message');
+            $name = $('li#rule-name');
+            if (whatifresult.notmatched > 0) {
+              $errormessage.text(whatifresult.notmatched + ' of ' + whatifresult.total + ' errors do not match the new rules');
+              $name.show();
+            } else {
+              $errormessage.text('All errors match the new rules');
+              $name.hide();
+            }
+            $message.show();
+          }
+          return $('#apply-rules-confirmation').modal();
         } else {
           return (Tabs.get($('#issue-tabs'))).show('rules');
         }
