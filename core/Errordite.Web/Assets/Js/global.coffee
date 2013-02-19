@@ -8,16 +8,12 @@
 
 class Initialisation
 
-	init: (ajax, pagingFunc) -> 		
+	init: (ajax) -> 		
 		#todo - need to distinguish between things to be initialised after an ajax call and those to be globally initialised for the page
 		$('.icon-info').tooltip()
 		$('.tool-tip').tooltip()
 		$('div.search-box').tooltip()
 		$('.dropdown-toggle').dropdown()
-		$paging = $('div.paging')	
-		#if $paging.length > 0
-		paging = new Paging(pagingFunc) 
-		paging.init ajax
 
 		$tabHolders = $('.tabs')
 
@@ -43,6 +39,7 @@ class Initialisation
 					alert data
 				failure: ->
 					'failed'
+
 		$('body').on 'click', '[data-confirm]', ->
 			confirm $(this).data('confirm')
 
@@ -159,15 +156,14 @@ to instantiate a Paging class each time you do something, telling it at this tim
 ###
 class Paging
 
-	constructor: (changeFunc) -> 
+	constructor: (baseUrl) -> 
 		paging = this
 		this.currentPage = 0
 		this.currentSize = 0
-		this.changeFunc = changeFunc
 		this.pushState	 = false
 		this.rootNode = $('body')
-		this.baseUrl = this.rootNode.find('input#page-link').val();
 		this.contentNode = $('div.content')
+		this.baseUrl = baseUrl
 
 		###
 		Once we've worked out what url we want to navigte to we call navigate.  $paging is the .paging div
@@ -177,13 +173,19 @@ class Paging
 			
 			$ajaxContainer = $paging.closest '.ajax-container'
 			if $ajaxContainer.length
+				if paging.baseUrl != undefined
+					url = paging.baseUrl + url.split('?')[1]
+
 				$.get url, {}, (data) ->
 					$ajaxContainer.html data
+					$('div.wrapper').animate 
+						scrollTop : 0,
+						'slow'	
 			else
 				window.location.href = url	
 		
 		this.getBaseUrl = ($paging) ->
-			$paging.find('input#page-link').val()			 
+			$paging.find('input#page-link').val()
 
 		this.init = -> 
 

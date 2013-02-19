@@ -53,6 +53,7 @@
             }
             return _results;
           })();
+          this.whatIfResult = null;
         }
 
         RuleManager.prototype.addRule = function(name, op, val) {
@@ -164,6 +165,7 @@
           });
           return this.whatIf(function(response) {
             messageHolder.html((response.data.notmatched > 0 ? "<div class='notmatched'>\n" + response.data.notmatched + " of " + response.data.total + " do not match\n</div>" : "<div class='matched'>\nAll errors match\n</div>"));
+            this.whatIfResult = response.data;
             return messageHolder.css({
               visibility: 'visible'
             });
@@ -192,7 +194,8 @@
         $form = $('form#rulesForm');
         $form.validate();
         if ($form.valid()) {
-          return $('#apply-rules-confirmation').modal();
+          $('#apply-rules-confirmation').modal();
+          return console.log('what if:' + Errordite.ruleManager.whatIfResult);
         } else {
           return (Tabs.get($('#issue-tabs'))).show('rules');
         }
