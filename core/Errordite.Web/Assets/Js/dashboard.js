@@ -52,7 +52,8 @@
                     }
                   },
                   yaxis: {
-                    min: 0
+                    min: 0,
+                    tickInterval: _.max(data.y > 3) ? null : 1
                   }
                 },
                 highlighter: {

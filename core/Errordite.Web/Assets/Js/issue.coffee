@@ -27,6 +27,9 @@ jQuery ->
 							xaxis: 
 								renderer: $.jqplot.CategoryAxisRenderer
 								ticks: d.ByHour.x							
+							yaxis:
+								min: 0
+								tickInterval: if (_.max d.ByHour.y) > 3 then null else 1
 									
 					$.jqplot 'date-graph', 
 						[_.zip d.ByDate.x, d.ByDate.y],
@@ -39,6 +42,8 @@ jQuery ->
 									formatString:'%a %#d %b'
 							yaxis:
 								min: 0
+								tickInterval: if (_.max d.ByDate.y) > 3 then null else 1
+
 						highlighter:
 							show: true
 							sizeAdjust: 7.5
