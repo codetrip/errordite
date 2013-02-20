@@ -61,42 +61,6 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A background job has been scheduled to adjust these rules, you will be notified when it completes..
-        /// </summary>
-        internal static string AdjustRulesQueued {
-            get {
-                return ResourceManager.GetString("AdjustRulesQueued", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Rules adjustment for this issue has been queued to run offline due to the large number of errors in this application, you will be notified when the job completes..
-        /// </summary>
-        internal static string AdjustRulesStatus_AsyncJobTriggered {
-            get {
-                return ResourceManager.GetString("AdjustRulesStatus_AsyncJobTriggered", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The rules for this issue were not changed, no action was taken..
-        /// </summary>
-        internal static string AdjustRulesStatus_RulesNotChanged {
-            get {
-                return ResourceManager.GetString("AdjustRulesStatus_RulesNotChanged", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The issue has been merged with the displayed issue as they had the same rule set..
-        /// </summary>
-        internal static string AutoMergedWithOtherIssue {
-            get {
-                return ResourceManager.GetString("AutoMergedWithOtherIssue", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Machine Name.
         /// </summary>
         internal static string ErrorProperty_MachineName {

@@ -78,7 +78,7 @@ namespace Errordite.Web.Controllers
             if(viewModel == null)
             {
                 Response.StatusCode = 404;
-                return View("NotFound", new IssueNotFoundViewModel { Id = postModel.Id });
+                return View("NotFound", new IssueNotFoundViewModel { Id = postModel.Id.GetFriendlyId() });
             }
 
             return View(viewModel);
@@ -337,7 +337,7 @@ namespace Errordite.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return RedirectWithViewModel(postModel, "index", routeValues: new { id = postModel.IssueId, tab = IssueTab.Rules.ToString() }); 
+                return RedirectWithViewModel(postModel, "index", routeValues: new { id = postModel.IssueId.GetFriendlyId(), tab = IssueTab.Rules.ToString() }); 
             }
 
             try
@@ -373,7 +373,7 @@ namespace Errordite.Web.Controllers
                     case AdjustRulesStatus.IssueNotFound:
                         return RedirectToAction("notfound", new { FriendlyId = postModel.IssueId.GetFriendlyId() });
                     case AdjustRulesStatus.Ok:
-                        ConfirmationNotification(new MvcHtmlString("Rules adjusted successfully. Of {0} error{1}, {2} still match{3} and remain{4} attached to the issue.{5}".FormatWith(
+                        ConfirmationNotification(new MvcHtmlString("Issue details updated successfully, of {0} error{1}, {2} still match{3} and remain{4} attached to the issue.{5}".FormatWith(
                             result.ErrorsMatched + result.ErrorsNotMatched,
                             result.ErrorsNotMatched + result.ErrorsNotMatched == 1 ? "" : "s",
                             result.ErrorsNotMatched == 0 ? "all" : result.ErrorsMatched.ToString(),
@@ -389,15 +389,15 @@ namespace Errordite.Web.Controllers
                             )));
                         break;
                     default:
-                        return RedirectWithViewModel(postModel, "index", result.Status.MapToResource(Rules.ResourceManager), false, new { id = postModel.IssueId, tab = IssueTab.Rules.ToString() });
+                        return RedirectWithViewModel(postModel, "index", "Issue details were updated successfully, the rules for this issue were not changed.", false, new { id = postModel.IssueId.GetFriendlyId(), tab = IssueTab.Rules.ToString() });
                 }
 
-                return RedirectToAction("index", new { id = result.IssueId, tab = IssueTab.Rules.ToString() });
+                return RedirectToAction("index", new { id = result.IssueId.GetFriendlyId(), tab = IssueTab.Rules.ToString() });
             }
             catch (ConcurrencyException e)
             {
                 ErrorNotification("A background process modified this issues data at the same time as you requested to adjust the rules, please try again.");
-                return RedirectToAction("index", new { id = postModel.IssueId, tab = IssueTab.Rules.ToString() });
+                return RedirectToAction("index", new { id = postModel.IssueId.GetFriendlyId(), tab = IssueTab.Rules.ToString() });
             }
         }
 
@@ -406,7 +406,7 @@ namespace Errordite.Web.Controllers
 		{
             if (!ModelState.IsValid)
             {
-                return RedirectWithViewModel(postModel, "index", routeValues: new { id = postModel.IssueId, tab = IssueTab.History.ToString() });
+                return RedirectWithViewModel(postModel, "index", routeValues: new { id = postModel.IssueId.GetFriendlyId(), tab = IssueTab.History.ToString() });
             }
 
             var result = _addCommentCommand.Invoke(new AddCommentRequest
@@ -422,7 +422,7 @@ namespace Errordite.Web.Controllers
 			}
 
 			ConfirmationNotification("Comment was added to the history successfully");
-			return RedirectToAction("index", new { id = postModel.IssueId, tab = IssueTab.History.ToString() });
+            return RedirectToAction("index", new { id = postModel.IssueId.GetFriendlyId(), tab = IssueTab.History.ToString() });
 		}
 
         [HttpPost, ExportViewData]
@@ -446,7 +446,7 @@ namespace Errordite.Web.Controllers
             if (Request.IsAjaxRequest())
                 return new JsonSuccessResult();
 
-            return RedirectToAction("index", new { id = issueId, tab = IssueTab.History.ToString() });
+            return RedirectToAction("index", new { id = issueId.GetFriendlyId(), tab = IssueTab.History.ToString() });
         }
 
         [HttpPost, ExportViewData]
@@ -474,13 +474,13 @@ namespace Errordite.Web.Controllers
 
                 if (response.Status == ReprocessIssueErrorsStatus.NotAuthorised)
                 {
-                    throw new ErrorditeAuthorisationException(new Core.Domain.Error.Issue { Id = issueId }, Core.AppContext.CurrentUser);
+                    throw new ErrorditeAuthorisationException(new Issue { Id = issueId }, Core.AppContext.CurrentUser);
                 }
 
                 ConfirmationNotification(response.GetMessage(Errordite.Core.Domain.Error.Issue.GetId(issueId)));
             }
 
-            return RedirectToAction("index", new { id = issueId, tab = IssueTab.Details.ToString() });
+            return RedirectToAction("index", new { id = issueId.GetFriendlyId(), tab = IssueTab.Details.ToString() });
         }
 
         [HttpPost, ExportViewData]

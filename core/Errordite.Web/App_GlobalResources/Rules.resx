@@ -117,18 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AdjustRulesQueued" xml:space="preserve">
-    <value>A background job has been scheduled to adjust these rules, you will be notified when it completes.</value>
-  </data>
-  <data name="AdjustRulesStatus_AsyncJobTriggered" xml:space="preserve">
-    <value>Rules adjustment for this issue has been queued to run offline due to the large number of errors in this application, you will be notified when the job completes.</value>
-  </data>
-  <data name="AdjustRulesStatus_RulesNotChanged" xml:space="preserve">
-    <value>The rules for this issue were not changed, no action was taken.</value>
-  </data>
-  <data name="AutoMergedWithOtherIssue" xml:space="preserve">
-    <value>The issue has been merged with the displayed issue as they had the same rule set.</value>
-  </data>
   <data name="ErrorProperty_MachineName" xml:space="preserve">
     <value>Machine Name</value>
   </data>
