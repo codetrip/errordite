@@ -7,11 +7,15 @@
     ViewBag.Title = "Dashboard";
 }
 
-<div class="dark-container">
-    <section class="centered">
-        @Html.Partial("Dashboard/Links", Model)
-    </section> 
-</div>
+@section topheader
+{
+    <div class="dark-container">
+        <section class="centered">
+            @Html.Partial("Dashboard/Links", Model)
+        </section> 
+    </div>
+}
+
 <section id="dashboard" class="centered">
     <div class="content">
         @Html.HiddenFor(m => m.LastErrorDisplayed)
@@ -31,16 +35,18 @@
             </div>
             <div class="two-col">
                 <div class="small-padding right">
-                    <p>
-                        To get started for real download the client and configure it into your application - details @Html.ActionLink("here", "client", "help").  
-                    </p>
+                    
             
                     @if (Model.SingleApplicationId != null)
                     {
-                        <div class="textbox">
+                        <p class="textbox">
                             Your token is <b>@Model.SingleApplicationToken</b>
-                        </div>
+                        </p>
                     }
+                    
+                    <p>
+                        To get started for real download the client and configure it into your application - details @Html.ActionLink("here", "client", "help").  
+                    </p>
 
                     @if (Model.TestIssueId != null)
                     {

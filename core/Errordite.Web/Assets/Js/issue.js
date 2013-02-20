@@ -28,6 +28,10 @@
               xaxis: {
                 renderer: $.jqplot.CategoryAxisRenderer,
                 ticks: d.ByHour.x
+              },
+              yaxis: {
+                min: 0,
+                tickInterval: (_.max(d.ByHour.y)) > 3 ? null : 1
               }
             }
           });
@@ -43,7 +47,8 @@
                 }
               },
               yaxis: {
-                min: 0
+                min: 0,
+                tickInterval: (_.max(d.ByDate.y)) > 3 ? null : 1
               }
             },
             highlighter: {

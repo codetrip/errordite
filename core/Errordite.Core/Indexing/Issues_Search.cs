@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using Castle.MicroKernel.Registration;
 using Errordite.Core.Domain.Error;
+using Errordite.Core.Matching;
 using Lucene.Net.Analysis;
 using Raven.Abstractions.Indexing;
 using Raven.Client.Indexes;
@@ -21,6 +23,7 @@ namespace Errordite.Core.Indexing
         public int FriendlyId { get; set; }
         public int MatchPriority { get; set; }
         public DateTime LastErrorUtc { get; set; }
+        public string Query { get; set; }
     }
 
     public class Issues_Search : AbstractIndexCreationTask<Issue, IssueDocument>
@@ -38,7 +41,8 @@ namespace Errordite.Core.Indexing
                                 doc.Name,
                                 doc.ErrorCount,
                                 doc.RulesHash,
-                                FriendlyId = int.Parse(doc.Id.Split('/')[1])
+                                FriendlyId = int.Parse(doc.Id.Split('/')[1]),
+                                Query = new[] { doc.Name }.Union(doc.Rules.Select(r => r.SearchString)),   
                             };
 
             Indexes = new Dictionary<Expression<Func<IssueDocument, object>>, FieldIndexing>
@@ -49,6 +53,7 @@ namespace Errordite.Core.Indexing
             Analyzers = new Dictionary<Expression<Func<IssueDocument, object>>, string>
                 {
                     {e => e.Name, typeof(SimpleAnalyzer).FullName}, //SimpleAnalyzer tokenizes on all non-alphanumeric characters
+                    {e => e.Query, typeof(SimpleAnalyzer).FullName}, //SimpleAnalyzer tokenizes on all non-alphanumeric characters
                 };
             
             Sort(e => e.LastErrorUtc, SortOptions.String);

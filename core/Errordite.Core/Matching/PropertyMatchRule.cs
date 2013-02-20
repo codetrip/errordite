@@ -98,6 +98,11 @@ namespace Errordite.Core.Matching
         {
             return "{0} {1} {2}".FormatWith(ErrorProperty, StringOperator, Value);
         }
+
+        public override string SearchString
+        {
+            get { return Value; }
+        }
     }
 
     public enum StringOperator

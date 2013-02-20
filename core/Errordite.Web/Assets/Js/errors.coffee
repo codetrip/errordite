@@ -236,7 +236,7 @@ jQuery ->
 									$buttons.removeClass 'hide'
 									$buttons.addClass 'floating'
 									$buttons.css 
-										top: e.offsetY
+										top: e.offsetY - 1 #we need at least -1 or we get strange behaviour where the whole text gets selected on double click
 										left: e.offsetX - 48		
 							
 							#firefox doesn't have offset coords on the event so we use this to put them in 

@@ -55,14 +55,6 @@ namespace Errordite.Core.Issues.Commands
             {
                 //storing at this point makes sure we get an Id for the isssue
                 Store(tempIssue);
-                Store(new IssueHistory
-                {
-                    DateAddedUtc = DateTime.UtcNow,
-                    Type = HistoryItemType.CreatedByRuleAdjustment,
-                    SpawningIssueId = currentIssue.Id,
-                    UserId = request.CurrentUser.Id,
-                    IssueId = tempIssue.Id,
-                });
             }
             else
             {
@@ -114,6 +106,14 @@ namespace Errordite.Core.Issues.Commands
                         SpawnedIssueId = tempIssue.Id,
                         UserId = request.CurrentUser.Id,
                         IssueId = currentIssue.Id,
+                    });
+                    Store(new IssueHistory
+                    {
+                        DateAddedUtc = DateTime.UtcNow,
+                        Type = HistoryItemType.CreatedByRuleAdjustment,
+                        SpawningIssueId = currentIssue.Id,
+                        UserId = request.CurrentUser.Id,
+                        IssueId = tempIssue.Id,
                     });
                 }
                 else
