@@ -1,12 +1,15 @@
 ﻿
 using System;
 using System.IO;
+using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Xml.Linq;
 using CodeTrip.Core.Misc;
 using Errordite.Client;
+using Errordite.Client.Abstractions;
 using Errordite.Client.Configuration;
+using Errordite.Client.DataCollectors;
 using Errordite.Client.Interfaces;
 using CodeTrip.Core.Extensions;
 
@@ -61,6 +64,11 @@ namespace Errordite.Samples.Mvc3
             AreaRegistration.RegisterAllAreas();
 
             ErrorditeClient.ConfigurationAugmenter = ErrorditeClientOverrideHelper.Augment;
+            ErrorditeClient.ConfigurationAugmenter = c =>
+                {
+                    ErrorditeClientOverrideHelper.Augment(c);
+                    c.DataCollectors.Insert(0, new AcmeDataCollectorFactory());
+                };
             ErrorditeClient.SetLogger(new Logger());
 			Errordite.Client.Log4net.ErrorditeLogger.Initialise(true, "Errordite.Samples");
 
@@ -70,5 +78,25 @@ namespace Errordite.Samples.Mvc3
 
 
     }
+
+    public class AcmeDataCollectorFactory : IDataCollectorFactory, IDataCollector
+    {
+        public IDataCollector Create()
+        {
+            return this;
+        }
+
+        public string Prefix { get { return "ACME"; } }
+        public ErrorData Collect(Exception e, IErrorditeConfiguration configuration)
+        {
+            var loginCookie = HttpContext.Current.Request.Cookies["login"];
+            
+            return new ErrorData()
+                {
+                    {"Username", loginCookie != null && loginCookie.Value != "" ? loginCookie.Value : "ANONYMOUS"}
+                };
+        }
+    }
+
 
 }
