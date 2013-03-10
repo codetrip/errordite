@@ -156,15 +156,15 @@ jQuery ->
 			if $form.valid()
 
 				if whatifresult != null
-					$errormessage = $('span#error-message')
-					$message = $('p#rules-message')
-					$name = $('li#rule-name')
+					$errormessage = $('#rules-update-info')
+					$message = $('#rules-message')
+					$name = $('#rule-name')
 
 					if whatifresult.notmatched > 0 
-						$errormessage.text(whatifresult.notmatched + ' of ' + whatifresult.total + ' errors do not match the new rules')
+						$errormessage.text("#{whatifresult.notmatched} of #{whatifresult.total} errors do not match the changes and will be attached to a new issue.")
 						$name.show()
 					else
-						$errormessage.text('All errors match the new rules')
+						$errormessage.text('All errors match the new rules.')
 						$name.hide()
 
 					$message.show()
