@@ -1,12 +1,13 @@
 ﻿@using CodeTrip.Core.Extensions
+@using Errordite.Core.Domain
 @using Errordite.Core.Extensions
 @using Errordite.Web.Models.Issues
 @using Errordite.Web.Extensions
 @model IssueViewModel
 
 @{
-    ViewBag.Title = "Issue {0} ({1}) | {2}".FormatWith(Model.Update.IssueId, Model.Tab, Model.Update.Name);
-    ViewBag.FinalBreadcrumb = "Issue {0}".FormatWith(Model.Update.IssueId);
+    ViewBag.Title = "Issue {0} ({1}) | {2}".FormatWith(IdHelper.GetFriendlyId( Model.Update.IssueId), Model.Tab, Model.Update.Name);
+    ViewBag.FinalBreadcrumb = "Issue {0}".FormatWith(IdHelper.GetFriendlyId(Model.Update.IssueId));
 }
 
 @section header
