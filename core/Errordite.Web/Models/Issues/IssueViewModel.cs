@@ -94,7 +94,6 @@ namespace Errordite.Web.Models.Issues
         Details,
         Reports,
         Rules,
-        Errors,
         Debug,
         History,
 		Actions

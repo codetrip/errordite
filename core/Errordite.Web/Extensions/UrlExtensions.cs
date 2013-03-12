@@ -56,15 +56,6 @@ namespace Errordite.Web.Extensions
 			return helper.Action("index", "errors", new { Area = string.Empty, query});
 		}
 
-        public static string ClearErrors(this UrlHelper helper, string applicationId, string issueId)
-        {
-            if(issueId.IsNullOrEmpty())
-            {
-                return applicationId.IsNotNullOrEmpty() ? helper.Action("index", "errors", new { applicationId, Area = string.Empty }) : helper.Action("index", "errors", new { Area = string.Empty });
-            }
-
-            return helper.Action("index", "issue", new { Id = issueId.GetFriendlyId(), Tab = IssueTab.Errors.ToString(), Area = string.Empty });
-        }
 
         public static string AllIssues(this UrlHelper helper)
         {
