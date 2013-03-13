@@ -44,21 +44,27 @@ namespace Errordite.Core.Issues.Commands
 
             var issue = Load<Issue>(Issue.GetId(request.IssueId));
 
-            if(issue != null)
-            {
-                try
-                {
-                    _authorisationManager.Authorise(issue, request.CurrentUser);
-                }
-                catch (ErrorditeAuthorisationException)
-                {
-                    return new ReprocessIssueErrorsResponse
+            if (issue == null)
+                return new ReprocessIssueErrorsResponse
                     {
-                        Status = ReprocessIssueErrorsStatus.NotAuthorised
+                        Status = ReprocessIssueErrorsStatus.IssueNotFound,
+                        WhatIf = request.WhatIf,
                     };
-                }
 
-                var errors = _getApplicationErrorsQuery.Invoke(new GetApplicationErrorsRequest
+            try
+            {
+                _authorisationManager.Authorise(issue, request.CurrentUser);
+            }
+            catch (ErrorditeAuthorisationException)
+            {
+                return new ReprocessIssueErrorsResponse
+                    {
+                        Status = ReprocessIssueErrorsStatus.NotAuthorised,
+                        WhatIf = request.WhatIf,
+                    };
+            }
+
+            var errors = _getApplicationErrorsQuery.Invoke(new GetApplicationErrorsRequest
                 {
                     ApplicationId = issue.ApplicationId,
                     IssueId = issue.Id,
@@ -66,21 +72,26 @@ namespace Errordite.Core.Issues.Commands
                     Paging = new PageRequestWithSort(1, _configuration.MaxPageSize)
                 }).Errors;
 
-                var responses = errors.Items.Select(error => _receiveErrorCommand.Invoke(new ReceiveErrorRequest
+            var responses = errors.Items.Select(error => _receiveErrorCommand.Invoke(new ReceiveErrorRequest
                 {
-                    ApplicationId = issue.ApplicationId, 
-                    Error = error, 
-                    ExistingIssueId = issue.Id, 
-                    OrganisationId = issue.OrganisationId
+                    ApplicationId = issue.ApplicationId,
+                    Error = error,
+                    ExistingIssueId = issue.Id,
+                    OrganisationId = issue.OrganisationId,
+                    WhatIf = request.WhatIf,
                 })).ToList();
 
-                var response = new ReprocessIssueErrorsResponse
+            var response = new ReprocessIssueErrorsResponse
                 {
                     AttachedIssueIds = responses.GroupBy(r => r.IssueId).ToDictionary(g => g.Key, g => g.Count()),
-                    Status = ReprocessIssueErrorsStatus.Ok
+                    Status = ReprocessIssueErrorsStatus.Ok,
+                    WhatIf = request.WhatIf,
                 };
 
-                Store(new IssueHistory
+            if (request.WhatIf)
+                return response;
+
+            Store(new IssueHistory
                 {
                     DateAddedUtc = DateTime.UtcNow,
                     UserId = request.CurrentUser.Id,
@@ -89,42 +100,39 @@ namespace Errordite.Core.Issues.Commands
                     IssueId = issue.Id,
                 });
 
-                if (response.AttachedIssueIds.Any(i => i.Key == issue.Id))
+            if (response.AttachedIssueIds.Any(i => i.Key == issue.Id))
+            {
+                //if some errors were moved from this issue, then we need to reset the counters
+                //as we have lost the ability to know which counts refer to this issue
+                if (response.AttachedIssueIds.Count > 1)
                 {
-                    //if some errors were moved from this issue, then we need to reset the counters
-                    //as we have lost the ability to know which counts refer to this issue
-                    if (response.AttachedIssueIds.Count > 1)
-                    {
-                        //re-sync the error counts
-                        Session.AddCommitAction(new SendNServiceBusMessage("Sync Issue Error Counts", new SyncIssueErrorCountsMessage
-                        {
-                            CurrentUser = request.CurrentUser,
-                            IssueId = issue.Id,
-                            OrganisationId = request.CurrentUser.OrganisationId
-                        }, _configuration.EventsQueueName));
-                    }
+                    //re-sync the error counts
+                    Session.AddCommitAction(new SendNServiceBusMessage("Sync Issue Error Counts",
+                                                                       new SyncIssueErrorCountsMessage
+                                                                           {
+                                                                               CurrentUser = request.CurrentUser,
+                                                                               IssueId = issue.Id,
+                                                                               OrganisationId =
+                                                                                   request.CurrentUser.OrganisationId
+                                                                           }, _configuration.EventsQueueName));
                 }
-                else
-                {
-                    //if no errors remain attached to the current issue, then short-circuit the zeroing of the
-                    //counts.  Note we do NOT want to call purge as this may delete all the errors previously-owned
-                    //errors if the index has not caught up yet!
-                    Session.AddCommitAction(new DeleteAllDailyCountsCommitAction(issue.Id));
-                    var hourlyCount = Session.Raven.Load<IssueHourlyCount>("IssueHourlyCount/{0}".FormatWith(issue.FriendlyId));
-                     if (hourlyCount != null)
-                        hourlyCount.Initialise();
-                    issue.ErrorCount = 0;
-                    issue.LimitStatus = ErrorLimitStatus.Ok;
-                }
-
-                Session.SynchroniseIndexes<Issues_Search, Errors_Search>();
-                return response;
+            }
+            else
+            {
+                //if no errors remain attached to the current issue, then short-circuit the zeroing of the
+                //counts.  Note we do NOT want to call purge as this may delete all the errors previously-owned
+                //errors if the index has not caught up yet!
+                Session.AddCommitAction(new DeleteAllDailyCountsCommitAction(issue.Id));
+                var hourlyCount =
+                    Session.Raven.Load<IssueHourlyCount>("IssueHourlyCount/{0}".FormatWith(issue.FriendlyId));
+                if (hourlyCount != null)
+                    hourlyCount.Initialise();
+                issue.ErrorCount = 0;
+                issue.LimitStatus = ErrorLimitStatus.Ok;
             }
 
-            return new ReprocessIssueErrorsResponse
-            {
-                Status = ReprocessIssueErrorsStatus.IssueNotFound
-            };
+            Session.SynchroniseIndexes<Issues_Search, Errors_Search>();
+            return response;
         }
     }
 
@@ -135,6 +143,8 @@ namespace Errordite.Core.Issues.Commands
     {
         public ReprocessIssueErrorsStatus Status { get; set; }
         public IDictionary<string, int> AttachedIssueIds { get; set; }
+        public bool WhatIf { get; set; }
+
 
         public MvcHtmlString GetMessage(string issueId)
         {
@@ -147,7 +157,7 @@ namespace Errordite.Core.Issues.Commands
             {
                 if (AttachedIssueIds.Count == 1)
                 {
-                    message = "All errors remained attached to this issue.";
+                    message = "All errors {0} attached to this issue.".FormatWith(RemainInflected);
                 }
                 else
                 {
@@ -160,14 +170,26 @@ namespace Errordite.Core.Issues.Commands
             }
             else if (AttachedIssueIds.Count == 1)
             {
-                message = "All errors became attached to issue {0}".FormatWith(GetIssueLink(AttachedIssueIds.First().Key));
+                message = "All errors {0} attached to issue {1}".FormatWith(BecomeInflected, GetIssueLink(AttachedIssueIds.First().Key));
             }
             else
             {
-                message = "All errors became attached to other issues: {0}".FormatWith(AttachedIssueIds.StringConcat(k => " {0}:{1}".FormatWith(GetIssueLink(k.Key), k.Value)));
+                message = "All errors {0} attached to other issues: {1}".FormatWith(
+                    BecomeInflected,
+                    AttachedIssueIds.StringConcat(k => " {0}:{1}".FormatWith(GetIssueLink(k.Key), k.Value)));
             }
 
-            return new MvcHtmlString("Errors re-processed successfully. " + message);
+            return new MvcHtmlString((WhatIf ? "If you were to reprocess this issue: " : "Errors re-processed successfully. ") + message);
+        }
+
+        private string BecomeInflected
+        {
+            get { return WhatIf ? "would become" : "became"; }
+        }
+
+        private string RemainInflected
+        {
+            get { return WhatIf ? "would remain" : "remained"; }
         }
 
         private string GetIssueLink(string issueId)
@@ -187,5 +209,6 @@ namespace Errordite.Core.Issues.Commands
     {
         public string IssueId { get; set; }
         public string OrganisationId { get; set; }
+        public bool WhatIf { get; set; }
     }
 }

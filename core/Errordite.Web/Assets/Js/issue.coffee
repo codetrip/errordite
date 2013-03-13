@@ -75,6 +75,22 @@ jQuery ->
 					clearErrors()
 					$('span#instance-count').text "0"
 
+		$issue.delegate '.what-if-reprocess', 'click', (e) ->
+			e.preventDefault()
+			$(this).closest('form').ajaxSubmit
+				data:
+					WhatIf: true
+				success: (data) ->
+					$('.reprocess-what-if-msg').remove()
+					msg = $('<span/>').addClass('reprocess-what-if-msg').html(data)
+					$(e.currentTarget).after msg
+#					setTimeout -> msg.fadeOut(500), 
+#					5000 
+				error: ->
+					alert 'Error. Please try again.'
+		
+
+
 		$issue.delegate 'select#Status', 'change', () -> 
 			$this = $ this
 

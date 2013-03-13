@@ -449,8 +449,44 @@ namespace Errordite.Web.Controllers
             return RedirectToAction("index", new { id = issueId.GetFriendlyId(), tab = IssueTab.History.ToString() });
         }
 
+        [ActionName("Reprocess"), IfButtonClicked("WhatIf"), HttpPost]
+        public ActionResult WhatIfReprocess(string issueId)
+        {
+            var request = new ReprocessIssueErrorsRequest
+            {
+                IssueId = issueId,
+                CurrentUser = Core.AppContext.CurrentUser,
+                WhatIf = true,
+            };
+
+            var httpTask = Core.Session.ReceptionServiceHttpClient.PostJsonAsync("ReprocessIssueErrors", request);
+            httpTask.Wait();
+
+            if (!httpTask.Result.IsSuccessStatusCode)
+            {
+                Response.StatusCode = 500;
+                return Content("error");
+            }
+            else
+            {
+                var contentTask = httpTask.Result.Content.ReadAsStringAsync();
+                contentTask.Wait();
+
+                var response = JsonConvert.DeserializeObject<ReprocessIssueErrorsResponse>(contentTask.Result);
+
+                if (response.Status == ReprocessIssueErrorsStatus.NotAuthorised)
+                {
+                    throw new ErrorditeAuthorisationException(new Issue { Id = issueId }, Core.AppContext.CurrentUser);
+                }
+                
+                return Content(response.GetMessage(Issue.GetId(issueId)).ToString());
+            }
+
+        }
+
         [HttpPost, ExportViewData]
-        public ActionResult Import(string issueId)
+        [ActionName("Reprocess"), IfButtonClicked("Reprocess")]
+        public ActionResult Reprocess(string issueId)
         {
             var request = new ReprocessIssueErrorsRequest
             {
