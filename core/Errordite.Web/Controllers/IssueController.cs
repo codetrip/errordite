@@ -528,7 +528,7 @@ namespace Errordite.Web.Controllers
                 CurrentUser = Core.AppContext.CurrentUser
             });
 
-            ConfirmationNotification(IssueResources.DeleteIssueStatus_Ok.FormatWith(issueId));
+            ConfirmationNotification(IssueResources.DeleteIssueStatus_Ok.FormatWith(IdHelper.GetFriendlyId(issueId)));
 
             return RedirectToAction("index", "issues");
         }
