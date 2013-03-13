@@ -87,6 +87,23 @@
           });
         }
       });
+      $issue.delegate('.what-if-reprocess', 'click', function(e) {
+        e.preventDefault();
+        return $(this).closest('form').ajaxSubmit({
+          data: {
+            WhatIf: true
+          },
+          success: function(data) {
+            var msg;
+            $('.reprocess-what-if-msg').remove();
+            msg = $('<span/>').addClass('reprocess-what-if-msg').html(data);
+            return $(e.currentTarget).after(msg);
+          },
+          error: function() {
+            return alert('Error. Please try again.');
+          }
+        });
+      });
       $issue.delegate('select#Status', 'change', function() {
         var $this;
         $this = $(this);
