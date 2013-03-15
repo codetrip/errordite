@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -29,18 +28,28 @@ namespace Errordite.Web.Areas.System.Controllers
         private readonly IEncryptor _encryptor;
         private readonly ErrorditeConfiguration _configuration;
         private readonly IGetApplicationErrorsQuery _getApplicationErrorsQuery;
+        private readonly IDocumentStore _store;
 
         public SystemController(IAppSession session, 
             IDeleteApplicationCommand deleteApplicationCommand, 
             IEncryptor encryptor, 
             ErrorditeConfiguration configuration, 
-            IGetApplicationErrorsQuery getApplicationErrorsQuery)
+            IGetApplicationErrorsQuery getApplicationErrorsQuery,
+            IDocumentStore store)
         {
             _session = session;
             _deleteApplicationCommand = deleteApplicationCommand;
             _encryptor = encryptor;
             _configuration = configuration;
             _getApplicationErrorsQuery = getApplicationErrorsQuery;
+            _store = store;
+        }
+
+        [HttpGet]
+        public ActionResult Bootstrap()
+        {
+            ErrorditeApplication.BootstrapRaven(_store);
+            return Content("Ok");
         }
 
         [HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.SysAdmin)]

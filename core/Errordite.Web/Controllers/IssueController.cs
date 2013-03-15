@@ -438,7 +438,7 @@ namespace Errordite.Web.Controllers
 
                 ConfirmationNotification(IssueResources.IssuePurged);
             }
-            catch (ConcurrencyException e)
+            catch (ConcurrencyException)
             {
                 ErrorNotification("A background process modified this issues data at the same time as you requested to delete the errors, please try again.");
             }
@@ -467,21 +467,18 @@ namespace Errordite.Web.Controllers
                 Response.StatusCode = 500;
                 return Content("error");
             }
-            else
+
+            var contentTask = httpTask.Result.Content.ReadAsStringAsync();
+            contentTask.Wait();
+
+            var response = JsonConvert.DeserializeObject<ReprocessIssueErrorsResponse>(contentTask.Result);
+
+            if (response.Status == ReprocessIssueErrorsStatus.NotAuthorised)
             {
-                var contentTask = httpTask.Result.Content.ReadAsStringAsync();
-                contentTask.Wait();
-
-                var response = JsonConvert.DeserializeObject<ReprocessIssueErrorsResponse>(contentTask.Result);
-
-                if (response.Status == ReprocessIssueErrorsStatus.NotAuthorised)
-                {
-                    throw new ErrorditeAuthorisationException(new Issue { Id = issueId }, Core.AppContext.CurrentUser);
-                }
-                
-                return Content(response.GetMessage(Issue.GetId(issueId)).ToString());
+                throw new ErrorditeAuthorisationException(new Issue { Id = issueId }, Core.AppContext.CurrentUser);
             }
-
+                
+            return Content(response.GetMessage(Issue.GetId(issueId)).ToString());
         }
 
         [HttpPost, ExportViewData]

@@ -34,7 +34,7 @@ using Raven.Client.Indexes;
 
 namespace Errordite.Web
 {
-    public class MvcApplication : HttpApplication
+    public class ErrorditeApplication : HttpApplication
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
@@ -148,7 +148,10 @@ namespace Errordite.Web
             GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings = WebApiSettings.JsonSerializerSettings;
 
             ErrorditeClient.ConfigurationAugmenter = ErrorditeClientOverrideHelper.Augment;
-            BootstrapRaven();
+
+#if !(DEBUG)
+            BootstrapRaven(ObjectFactory.Container.Resolve<IDocumentStore>());
+#endif
         }
         
         protected void Application_Error(object sender, EventArgs e)
@@ -208,9 +211,8 @@ namespace Errordite.Web
 
         #region Bootstrap Raven
 
-        private void BootstrapRaven()
+        public static void BootstrapRaven(IDocumentStore documentStore)
         {
-            var documentStore = ObjectFactory.GetObject<IDocumentStore>();
             documentStore.DatabaseCommands.EnsureDatabaseExists(CoreConstants.ErrorditeMasterDatabaseName);
 
             var session = documentStore.OpenSession(CoreConstants.ErrorditeMasterDatabaseName);
