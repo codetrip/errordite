@@ -49,7 +49,7 @@ namespace Errordite.Web.Areas.System.Controllers
         public ActionResult Bootstrap()
         {
             ErrorditeApplication.BootstrapRaven(_store);
-            return Content("Ok");
+            return Content("Bootstrapped Raven");
         }
 
         [HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.SysAdmin)]

@@ -149,9 +149,7 @@ namespace Errordite.Web
 
             ErrorditeClient.ConfigurationAugmenter = ErrorditeClientOverrideHelper.Augment;
 
-#if !(DEBUG)
             BootstrapRaven(ObjectFactory.Container.Resolve<IDocumentStore>());
-#endif
         }
         
         protected void Application_Error(object sender, EventArgs e)
