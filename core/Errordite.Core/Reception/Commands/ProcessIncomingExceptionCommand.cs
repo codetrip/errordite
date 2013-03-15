@@ -49,10 +49,30 @@ namespace Errordite.Core.Reception.Commands
             switch(status)
             {
                 case ApplicationStatus.Inactive:
+                    return new ProcessIncomingExceptionResponse
+                    {
+                        ResponseMessage = "The application specified in the token is not currently active"
+                    };
                 case ApplicationStatus.NotFound:
+                    return new ProcessIncomingExceptionResponse
+                    {
+                        ResponseMessage = "The application specified in the token could not be found"
+                    };
                 case ApplicationStatus.Error:
-                    Trace("Application not found.");
-                    return new ProcessIncomingExceptionResponse();
+                    return new ProcessIncomingExceptionResponse
+                    {
+                        ResponseMessage = "An unhandled error occured while attempting to store this error"
+                    };
+                case ApplicationStatus.InvalidOrganisation:
+                    return new ProcessIncomingExceptionResponse
+                    {
+                        ResponseMessage = "Failed to locate the organisation specified in your token"
+                    };
+                case ApplicationStatus.InvalidToken:
+                    return new ProcessIncomingExceptionResponse
+                    {
+                        ResponseMessage = "The token supplied is invalid, please check your token in the applications page in Errordite"
+                    };
                 case ApplicationStatus.Ok:
                     {
                         applicationId = application.Id;
@@ -65,8 +85,12 @@ namespace Errordite.Core.Reception.Commands
             if ((failedRule = _exceptionRateLimiter.Accept(applicationId)) != null)
             {
                 Trace("Failed rate limiter rule named {0}", failedRule.Name);
-                return new ProcessIncomingExceptionResponse();
+                return new ProcessIncomingExceptionResponse
+                {
+                    ResponseMessage = "The error was not stored due to limits on the number of errors we can receive for you in a given time frame"
+                };
             }
+
             var error = GetError(request.Error, application);
 
             if (_configuration.ServiceBusEnabled)
@@ -99,13 +123,18 @@ namespace Errordite.Core.Reception.Commands
         {
             try
             {
-                application = _getApplicationByToken.Invoke(new GetApplicationByTokenRequest
+                var response = _getApplicationByToken.Invoke(new GetApplicationByTokenRequest
                 {
                     Token = token,
                     CurrentUser = User.System()
-                }).Application;
+                });
 
-                return application == null ? ApplicationStatus.NotFound : application.IsActive ? ApplicationStatus.Ok : ApplicationStatus.Inactive;
+                application = response.Application;
+
+                if(application != null && !application.IsActive)
+                    return ApplicationStatus.Inactive;
+
+                return response.Status;
             }
             catch (Exception e)
             {
@@ -204,7 +233,9 @@ namespace Errordite.Core.Reception.Commands
         Ok,
         NotFound,
         Inactive,
-        Error
+        Error,
+        InvalidToken,
+        InvalidOrganisation
     }
 
     public interface IProcessIncomingExceptionCommand : ICommand<ProcessIncomingExceptionRequest, ProcessIncomingExceptionResponse>
@@ -216,5 +247,7 @@ namespace Errordite.Core.Reception.Commands
     }
 
     public class ProcessIncomingExceptionResponse
-    {}
+    {
+        public string ResponseMessage { get; set; }
+    }
 }
