@@ -13,7 +13,7 @@
         <MakeDir Directories="$(OutputPath)\Errordite.Notifications.Service" Condition="!Exists('$(OutputPath)\Errordite.Notifications.Service')" />
         <MakeDir Directories="$(OutputPath)\Errordite.Events.Service" Condition="!Exists('$(OutputPath)\Errordite.Events.Service')" />
         <MakeDir Directories="$(OutputPath)\Errordite.ScheduledTasks" Condition="!Exists('$(OutputPath)\Errordite.ScheduledTasks')" />
-        <MakeDir Directories="$(OutputPath)\Errordite.Raven" Condition="!Exists('$(OutputPath)\Errordite.Raven')" />
+        <!--<MakeDir Directories="$(OutputPath)\Errordite.Raven" Condition="!Exists('$(OutputPath)\Errordite.Raven')" />-->
 
         <ItemGroup>
             <WebDeploymentFiles
@@ -101,7 +101,7 @@
                                          $(SourcePath)\core\Errordite.Raven\Logs\**;" />
         </ItemGroup>
 
-        <Copy SourceFiles="@(RavenDeploymentFiles)" DestinationFolder="$(OutputPath)\Errordite.Raven\%(RecursiveDir)" />
+        <!--<Copy SourceFiles="@(RavenDeploymentFiles)" DestinationFolder="$(OutputPath)\Errordite.Raven\%(RecursiveDir)" />-->
 
         <ItemGroup>
             <NotificationsServiceDeploymentFiles
