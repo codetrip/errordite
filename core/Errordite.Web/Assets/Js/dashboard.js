@@ -20,7 +20,8 @@
             success: function(result) {
               console.log("success");
               if (result.success) {
-                return dashboard.bind(result.data);
+                dashboard.bind(result.data);
+                return dashboard.rendergraph();
               } else {
                 return dashboard.error();
               }
@@ -40,7 +41,10 @@
           $.ajax({
             url: "/dashboard/getgraphdata?applicationId=" + $('input#ApplicationId').val(),
             success: function(data) {
-              return $.jqplot('date-graph', [_.zip(data.x, data.y)], {
+              if (dashboard.plot != null) {
+                dashboard.plot.destroy();
+              }
+              return dashboard.plot = $.jqplot('date-graph', [_.zip(data.x, data.y)], {
                 seriesDefaults: {
                   renderer: $.jqplot.LineRenderer
                 },
@@ -53,7 +57,7 @@
                   },
                   yaxis: {
                     min: 0,
-                    tickInterval: _.max(data.y > 3) ? null : 1
+                    tickInterval: (_.max(data.y)) > 3 ? null : 1
                   }
                 },
                 highlighter: {
