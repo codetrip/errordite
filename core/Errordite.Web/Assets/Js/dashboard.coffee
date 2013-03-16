@@ -19,6 +19,7 @@ jQuery ->
 						console.log "success"
 						if result.success
 							dashboard.bind(result.data)
+							dashboard.rendergraph()
 						else
 							dashboard.error()
 					error: ->
@@ -31,7 +32,8 @@ jQuery ->
 				$.ajax
 					url: "/dashboard/getgraphdata?applicationId=" + $('input#ApplicationId').val()
 					success: (data) ->
-						$.jqplot 'date-graph', 
+						if dashboard.plot? then dashboard.plot.destroy()
+						dashboard.plot = $.jqplot 'date-graph', 
 							[_.zip data.x, data.y],
 							seriesDefaults:
 								renderer:$.jqplot.LineRenderer
@@ -42,7 +44,7 @@ jQuery ->
 										formatString:'%a %#d %b'
 								yaxis:
 									min: 0
-									tickInterval: if (_.max data.y > 3) then null else 1									
+									tickInterval: if (_.max data.y) > 3 then null else 1									
 										
 							highlighter:
 								show: true
