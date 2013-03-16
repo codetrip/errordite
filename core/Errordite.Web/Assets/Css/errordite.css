@@ -1365,6 +1365,8 @@ section {
 
 nav {
   float: left; }
+  nav.main-nav {
+    float: right; }
   nav .nav-container {
     padding-left: 123px; }
   nav .nav-container-system {

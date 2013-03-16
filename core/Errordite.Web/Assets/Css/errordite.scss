@@ -1714,6 +1714,9 @@ section {
 
 nav {
   float: left;
+  &.main-nav{
+	float:right;
+  }
   .nav-container {
     padding-left: 123px;
   }
