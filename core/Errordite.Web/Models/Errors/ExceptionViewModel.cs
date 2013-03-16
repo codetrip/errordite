@@ -10,16 +10,19 @@ namespace Errordite.Web.Models.Errors
         public string Url { get; set; }
         public string UserAgent { get; set; }
         public bool InnerException { get; set; }
+        public string MachineName { get; set; }
 
-        public ExceptionViewModel(ExceptionInfo info, string url, string userAgent, bool innerException = false)
+        public ExceptionViewModel(ExceptionInfo info, string url, string userAgent, string machineName, bool innerException = false)
         {
             Info = info;
             Url = url;
             UserAgent = userAgent;
             InnerException = innerException;
+            MachineName = machineName;
         }
 
-		public bool DisplayInfoTable()
+        
+        public bool DisplayInfoTable()
 		{
 			if(InnerException)
 			{

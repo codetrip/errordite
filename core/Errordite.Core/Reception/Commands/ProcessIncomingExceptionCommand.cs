@@ -183,6 +183,7 @@ namespace Errordite.Core.Reception.Commands
                 ExtraData = clientExceptionInfo.Data == null ? null : clientExceptionInfo.Data.ToDictionary(kvp => kvp.Key.Replace('.', '_'), kvp => kvp.Value),
                 Module = clientExceptionInfo.Source,
                 MethodName = clientExceptionInfo.MethodName
+                
             };
 
             yield return exceptionInfo;
