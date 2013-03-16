@@ -391,8 +391,11 @@ table {
 }
 
 footer {
-  float:left;
+  /*sticky footer, as described at http://www.lwis.net/profile/CSS/sticky-footer.html*/
+  clear: both;
+  position: relative;
   width: 100%;
+  margin-top :-80px;
   height:80px;
   background: $verydarkbrown;
   .footer {
