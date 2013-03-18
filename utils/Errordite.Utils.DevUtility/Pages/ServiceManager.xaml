@@ -1,0 +1,40 @@
+﻿<Page x:Class="Errordite.Utils.DevUtility.Pages.ServiceManager"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Harmony Utils: Service Manager" Width="1000" Height="700" Background="#D6D3CE" FontSize="12">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="700" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1000" />
+        </Grid.ColumnDefinitions>
+        <GroupBox Header="Harmony Dev Utils: Service Management" Margin="6,9,4,10" Name="JobDetails"></GroupBox>
+        <Grid Margin="16,34,12,8" Height="658">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="310" />
+                <RowDefinition Height="348*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="500" />
+                <ColumnDefinition Width="500" />
+            </Grid.ColumnDefinitions>
+            <Label Margin="6,0,374,266" Width="120">Installed Services</Label>
+            <DataGrid Name="RunningServices" Margin="9,22,38,0" Grid.ColumnSpan="2" SelectionMode="Extended"  BorderThickness="2" BorderBrush="Teal" VerticalAlignment="Top" RowHeight="22" IsReadOnly="True" Height="248"></DataGrid>
+            <Label Margin="9,10,256,308" Grid.Row="1">Select Repository To Install From</Label>
+            <ComboBox VerticalAlignment="Top" Grid.Row="1" SelectedValuePath="Tag" ItemsSource="{Binding}" Name="RepositoryList" Margin="13,35,37,0"></ComboBox>
+            <Label Grid.Row="1" Margin="9,64,330,254">Select Services To Install</Label>
+            <ListBox VerticalAlignment="Top" Height="168" Grid.Row="1" SelectedValuePath="Tag" SelectionMode="Multiple" ItemsSource="{Binding}" Name="ServiceList" Margin="13,89,37,0"></ListBox>
+            <Button Margin="388,283,0,0" Grid.Row="1" Width="75" Height="23" HorizontalAlignment="Left" VerticalAlignment="Top" Name="BtnInstall" Click="BtnInstallClick">Install</Button>
+            <TextBox Grid.Row="1" Height="23" HorizontalAlignment="Left" Margin="13,284,0,0" Name="Password" VerticalAlignment="Top" Width="369" />
+            <Label Grid.Row="1" Height="28" Content="Enter your password" HorizontalAlignment="Left" Margin="8,261,0,0" Name="label1" VerticalAlignment="Top" Width="220" />
+            <Button Content="Start" Height="23" HorizontalAlignment="Left" Margin="9,278,0,0" Name="BtnStart" VerticalAlignment="Top" Width="75" Click="BtnStartClick" />
+            <Button Content="Stop" Height="23" HorizontalAlignment="Left" Margin="170,278,0,0" Name="BtnStop" VerticalAlignment="Top" Width="75" Click="BtnStopClick" />
+            <Button Content="Refresh" Height="23" HorizontalAlignment="Right" Margin="0,278,37,0" Name="Refresh" VerticalAlignment="Top" Width="69" Click="RefreshClick" Grid.Column="1" />
+            <Button Content="Uninstall" Height="23" HorizontalAlignment="Left" Margin="332,278,0,0" Name="BtnUninstall" VerticalAlignment="Top" Width="75" Click="BtnUninstallClick" />
+            <Button Content="Start All" Height="23" HorizontalAlignment="Left" Margin="90,278,0,0" Name="StartAll" VerticalAlignment="Top" Width="75" Click="BtnStartAllClick" />
+            <Button Content="Stop All" Height="23" HorizontalAlignment="Left" Margin="250,278,0,0" Name="StopAll" VerticalAlignment="Top" Width="75" Click="BtnStopAllClick" />
+            <Button Content="Uninstall All" Height="23" HorizontalAlignment="Left" Margin="413,278,0,0" Name="UninstallAll" VerticalAlignment="Top" Width="87" Click="UninstallAllClick" />
+        </Grid>
+    </Grid>
+</Page>

@@ -1,0 +1,117 @@
+﻿@using CodeTrip.Core.Caching.Entities
+@using Errordite.Core.Domain.Organisation
+@using Errordite.Core.Identity
+@using Errordite.Web.Extensions
+@using Errordite.Web.Models.Navigation
+
+@{
+   var appContext = ViewData.GetAppContext();
+}
+
+<div class="welcome-bar-container">
+    <div class="welcome-bar">
+        <nav class="links">
+            @if (appContext.AuthenticationStatus == AuthenticationStatus.Anonymous)
+            {
+                @: Welcome to Errordite &nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.SignIn()">Sign In</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.SignUp()">Sign Up</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.Contact()">Contact Us</a>
+            }
+            else if (appContext.AuthenticationStatus == AuthenticationStatus.NotAuthenticated)
+            {
+                @: Welcome back <strong>@appContext.CurrentUser.FirstName</strong> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.SignIn()">Sign In</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.SignOut()">Not @appContext.CurrentUser.FirstName?</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.Contact()">Contact Us</a>
+            }
+            else
+            {
+                <text>
+                    Welcome back <strong>@appContext.CurrentUser.FirstName
+                                             @if (appContext.Impersonated)
+                                             {
+												<a href="@Url.Impersonate()">(IMPERSONATED)</a>
+                                             }
+                                         </strong>&nbsp;&nbsp;|&nbsp;&nbsp; 
+                    <a href="@Url.YourDetails()">Your Details</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.SignOut()">Sign Out</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.Contact()">Contact Us</a>
+                </text> 
+            }
+        </nav>
+    </div>
+</div>
+<div class="header-container">
+    <div class="header">
+        <div class="logo">
+            <a href="@Url.Home(ViewData.GetAppContext())"><img alt="Errordite: Home" src="@Url.Content("~/Assets/Images/header-logo.png")"/></a>
+        </div>
+        <div class="search">
+            @using (Html.BeginForm("index", "search", FormMethod.Get))
+            {
+                <div class="search-box" data-title="@(appContext.AuthenticationStatus != AuthenticationStatus.Authenticated ? "Please sign in to enable search" : string.Empty)">
+                    <i class="icon-search"></i>
+                    <input autocomplete="off" class="search-input" id="q" name="q" placeholder="Search your errors & issues..." type="text"  @(appContext.AuthenticationStatus != AuthenticationStatus.Authenticated ? "disabled=disabled" : string.Empty) />
+                    <input type="submit" class="search-btn" value="Go" @(appContext.AuthenticationStatus != AuthenticationStatus.Authenticated ? "disabled=disabled" : string.Empty) />
+                </div>
+            }
+        </div>
+        <nav>
+            <div class="@(appContext.CurrentUser.Role == UserRole.SuperUser || appContext.Impersonated ? "nav-container-system" : "nav-container")">
+                <ul class="nav">
+                    @if (appContext.AuthenticationStatus == AuthenticationStatus.Authenticated && (appContext.CurrentUser.Role == UserRole.SuperUser || appContext.Impersonated))
+                    {
+                        <li class="nav-item sysadmin">
+                            <a href="@Url.SysAdmin()">System <span class="rotate">›</span></a>
+                            <div class="pointer">
+                                <ul>
+                                    <li><a href="@Url.Organisations()">Organisations ›</a></li> 
+                                    <li><a href="@Url.Impersonate()">Impersonate ›</a></li> 
+                                    <li><a href="@Url.FlushAllCaches()">Flush Caches ›</a></li> 
+                                    @foreach (var cache in Enum.GetNames(typeof (CacheProfiles)))
+                                    {
+                                        <li><a href="@Url.Cache(cache)">@cache Cache ›</a></li>
+                                    }
+                                </ul>
+                            </div>
+                        </li>
+                    }
+                    <li class="nav-item dashboard">
+                        <a href="@Url.Dashboard()">Dashboard <span class="rotate">›</span></a>
+                        @if (appContext.AuthenticationStatus == AuthenticationStatus.Authenticated)
+                        {
+                            <div class="pointer">
+                                <ul>
+                                    <li><a href="@ViewData.GetIssuesUrl(Url.Issues())">Issues ›</a></li>
+                                    <li><a href="@ViewData.GetErrorsUrl(Url.Errors())">Errors ›</a></li>
+                                    <li><a href="@Url.Feed()">Activity Feed ›</a></li>
+                                    <li><a href="@Url.AddIssue()">Add an Issue ›</a></li>
+                                </ul>
+                            </div>
+                        }
+                    </li>
+                    <li class="nav-item admin">
+                        <a href="@Url.Applications()">Account <span class="rotate">›</span></a>
+                        @if (appContext.AuthenticationStatus == AuthenticationStatus.Authenticated)
+                        {
+                            <div class="pointer">
+                                <ul>
+                                    @foreach (var adminPage in Breadcrumbs.GetById(BreadcrumbId.Admin, Url).Children)
+                                    {
+                                        <li><a href="@adminPage.Link">@adminPage.Title ›</a></li>
+                                    }
+                                </ul>
+                            </div>
+                        }
+                    </li>
+                    <li class="nav-item docs">
+                        <a href="@Url.GettingStarted()">Docs <span class="rotate">›</span></a>
+                        <div class="pointer">
+                            <ul>
+                                <li><a href="@Url.GettingStarted()">Getting Started ›</a></li>
+                                <li><a href="@Url.Pricing()">Pricing & Plans ›</a></li>
+                                <li><a href="@Url.Client()">.NET Client ›</a></li>
+                                <li><a href="@Url.PythonClient()">Python Client ›</a></li>
+                                @*<li><a href="@Url.Api()">Errordite API ›</a></li>*@
+                                <li><a href="@Url.JsonFormat()">Sending JSON ›</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</div>

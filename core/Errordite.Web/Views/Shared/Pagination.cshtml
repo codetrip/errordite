@@ -1,0 +1,57 @@
+﻿@using CodeTrip.Core.Paging
+@model PagingViewModel
+
+@if (Model.TotalItems > 0)
+{
+    <div class="paging">
+        <input type="hidden" id="page-link" value="@Html.ReplacementPageLink(Model.PagingId, Model.Tab)" /> 
+
+        <div class="pages">
+            Page @Html.TextBox("pgno", Model.CurrentPage, Model.LastPage == 1 ? new {disabled="disabled"} : null) of <b>@Model.LastPage</b><i data-title="Enter the page number you want to go to and click anywhere on the page to trigger the page transition" class="icon-info"></i>
+        </div>
+        
+        <div class="pagination">
+            <ul>
+                @if (Model.CurrentPage > 1)
+                {
+                    <li>@Html.PageLink("Previous", Model.PagingId, Model.CurrentPage - 1, Model.Tab)</li>
+                }
+                else
+                {
+                    <li class="disabled"><a href="#">Previous</a></li>
+                }
+
+                @if (Model != null && Model.PageSelectors != null && Model.PageSelectors.Count() > 1)
+                {
+                    foreach (var pageSelector in Model.PageSelectors)
+                    {
+                        if (pageSelector.Current)
+                        {
+                            <li @(pageSelector.Current ? "class=active" : "")><a href="#">@pageSelector.PageId</a></li>
+                        }
+                        else
+                        {
+                            if (pageSelector.PrependEllipsis)
+                            {
+                                <li class="disabled"><a href="#">...</a></li>
+                            }
+                            <li>@Html.PageLink(pageSelector.PageId.ToString(), Model.PagingId, pageSelector.PageId, Model.Tab)</li>                            
+                        }
+                    }
+                }
+                
+                @if (Model.LastPage > Model.CurrentPage)
+                {
+                    <li>@Html.PageLink("Next", Model.PagingId, Model.CurrentPage + 1, Model.Tab)</li>
+                }
+                else
+                {
+                    <li class="disabled"><a href="#">Next</a></li>
+                }
+            </ul>
+           
+        </div>
+
+        <div class="items"><b>@Model.FirstItem - @Model.LastItem</b> of <b>@Model.TotalItems</b> @Html.DropDownList("pgsz", Model.PageSizes, new {data_current = Model.PageSize}) Per page</div>
+    </div>
+}
