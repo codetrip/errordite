@@ -31,6 +31,7 @@ namespace Errordite.Web.Models.Issues
         [Required(ErrorMessage = "Please enter a name for the new issue that will be created")]
         public string AdjustmentName { get; set; }
         public string UserId { get; set; }
+        public string Comment { get; set; }
         public IssueStatus Status { get; set; }
         public bool AlwaysNotify { get; set; }
     }

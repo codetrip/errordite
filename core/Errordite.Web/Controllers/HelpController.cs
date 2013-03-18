@@ -48,6 +48,12 @@ namespace Errordite.Web.Controllers
             return View();
         }
 
+        [GenerateBreadcrumbs(BreadcrumbId.Client)]
+        public ActionResult PythonClient()
+        {
+            return View();
+        }
+
         [GenerateBreadcrumbs(BreadcrumbId.Privacy)]
         public ActionResult Privacy()
         {

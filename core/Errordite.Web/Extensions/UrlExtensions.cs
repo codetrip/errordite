@@ -172,6 +172,11 @@ namespace Errordite.Web.Extensions
             return helper.Action("pricing", "help", new { Area = string.Empty });
         }
 
+        public static string PythonClient(this UrlHelper helper)
+        {
+            return helper.Action("pythonclient", "help", new { Area = string.Empty });
+        }
+
         public static string Privacy(this UrlHelper helper)
         {
             return helper.Action("privacy", "help", new { Area = string.Empty });

@@ -71,25 +71,31 @@
                     }
                     <li class="nav-item dashboard">
                         <a href="@Url.Dashboard()">Dashboard <span class="rotate">›</span></a>
-                        <div class="pointer">
-                            <ul>
-                                <li><a href="@ViewData.GetIssuesUrl(Url.Issues())">Issues ›</a></li>
-                                <li><a href="@ViewData.GetErrorsUrl(Url.Errors())">Errors ›</a></li>
-                                <li><a href="@Url.Feed()">Activity Feed ›</a></li>
-                                <li><a href="@Url.AddIssue()">Add an Issue ›</a></li>
-                            </ul>
-                        </div>
+                        @if (appContext.AuthenticationStatus == AuthenticationStatus.Authenticated)
+                        {
+                            <div class="pointer">
+                                <ul>
+                                    <li><a href="@ViewData.GetIssuesUrl(Url.Issues())">Issues ›</a></li>
+                                    <li><a href="@ViewData.GetErrorsUrl(Url.Errors())">Errors ›</a></li>
+                                    <li><a href="@Url.Feed()">Activity Feed ›</a></li>
+                                    <li><a href="@Url.AddIssue()">Add an Issue ›</a></li>
+                                </ul>
+                            </div>
+                        }
                     </li>
                     <li class="nav-item admin">
                         <a href="@Url.Applications()">Account <span class="rotate">›</span></a>
-                        <div class="pointer">
-                            <ul>
-                                @foreach (var adminPage in Breadcrumbs.GetById(BreadcrumbId.Admin, Url).Children)
-                                {
-                                    <li><a href="@adminPage.Link">@adminPage.Title ›</a></li>
-                                }
-                            </ul>
-                        </div>
+                        @if (appContext.AuthenticationStatus == AuthenticationStatus.Authenticated)
+                        {
+                            <div class="pointer">
+                                <ul>
+                                    @foreach (var adminPage in Breadcrumbs.GetById(BreadcrumbId.Admin, Url).Children)
+                                    {
+                                        <li><a href="@adminPage.Link">@adminPage.Title ›</a></li>
+                                    }
+                                </ul>
+                            </div>
+                        }
                     </li>
                     <li class="nav-item docs">
                         <a href="@Url.GettingStarted()">Docs <span class="rotate">›</span></a>
@@ -97,7 +103,8 @@
                             <ul>
                                 <li><a href="@Url.GettingStarted()">Getting Started ›</a></li>
                                 <li><a href="@Url.Pricing()">Pricing & Plans ›</a></li>
-                                <li><a href="@Url.Client()">The .NET Client ›</a></li>
+                                <li><a href="@Url.Client()">.NET Client ›</a></li>
+                                <li><a href="@Url.PythonClient()">Python Client ›</a></li>
                                 @*<li><a href="@Url.Api()">Errordite API ›</a></li>*@
                                 <li><a href="@Url.JsonFormat()">Sending JSON ›</a></li>
                             </ul>

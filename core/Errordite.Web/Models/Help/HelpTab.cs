@@ -7,6 +7,7 @@ namespace Errordite.Web.Models.Help
         Pricing,
         Api,
         Client,
+        PythonClient,
         SendErrorWithJson
     }
 }

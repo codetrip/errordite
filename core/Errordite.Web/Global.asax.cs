@@ -23,7 +23,7 @@ using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Indexing;
 using Errordite.Core.IoC;
 using Errordite.Core.Session;
-using Errordite.Core.WebApi;
+using Errordite.Core.WebApi;    
 using Errordite.Web.ActionFilters;
 using Errordite.Web.Controllers;
 using Errordite.Web.IoC;
@@ -149,7 +149,9 @@ namespace Errordite.Web
 
             ErrorditeClient.ConfigurationAugmenter = ErrorditeClientOverrideHelper.Augment;
 
+#if !(DEBUG)
             BootstrapRaven(ObjectFactory.Container.Resolve<IDocumentStore>());
+#endif
         }
         
         protected void Application_Error(object sender, EventArgs e)
@@ -264,7 +266,7 @@ namespace Errordite.Web
                     MaximumIssues = 5000,
                     Name = PaymentPlanNames.Large,
                     Rank = 300,
-                    Price = 199.00m,
+                    Price = 299.00m,
                     IsAvailable = true,
                 });
 

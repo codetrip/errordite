@@ -27,6 +27,7 @@ $superboldfontweight: 800;
 $borderradius: 3px;
 $bordercolor: #ccc;
 $tabbordercolor:#DEE7EE;
+$buttonblue:#1570a6;
 
 /*-----------------------------------------------------------------------------------*/
 /*	ELEMENT DEFAULTS
@@ -312,7 +313,7 @@ table {
 	  height: 24px;
       float: right;
       width: $minwidth;
-      margin:4px 10px 0 0;
+      margin:4px 0 0 0;
 	  border-bottom:2px solid $darkestbrown;
 	  margin-top: 8px;
     }
@@ -453,8 +454,8 @@ section {
 }
 
 .content {
-    width: 99%;
-    padding: 10px 5px;
+    width: 974px;
+    padding: 10px 0px;
     float:left;
 }
 
@@ -643,7 +644,7 @@ section {
   }
   &.btn-blue {
     color:#fff;
-    background-color:#1570a6;
+    background-color:$buttonblue;
     &:hover {
         background-color:#1A87C8;
     }
@@ -807,7 +808,7 @@ section {
 }
 
 .rotate {
-    margin-left:3px;
+    margin-left:4px;
     display:inline-block;
     -webkit-transform: rotate(-270deg);
     -moz-transform: rotate(-270deg);
@@ -986,7 +987,7 @@ section {
     }
     &.double {
       display:inline;
-      width:50%;
+      width:46%;
       float:left;
       .field-validation-error {
         display:block;
@@ -1782,7 +1783,7 @@ nav {
       left: -80px;
     }
     &.docs:hover ul {
-      left: -145px;
+      left: -137px;
     }
     &.dashboard:hover div.pointer::before {
       left: 35px;
