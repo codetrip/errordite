@@ -17,6 +17,7 @@ jQuery ->
 			, 500, ->
 				$player.find('iframe').show()
 				$player.find('div.hide-button').show()
+				homepageVideoPlayer.playVideo() if homepageVideoPlayer?
 
 			false
 

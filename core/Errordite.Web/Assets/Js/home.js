@@ -16,7 +16,10 @@
           height: "635px"
         }, 500, function() {
           $player.find('iframe').show();
-          return $player.find('div.hide-button').show();
+          $player.find('div.hide-button').show();
+          if (typeof homepageVideoPlayer !== "undefined" && homepageVideoPlayer !== null) {
+            return homepageVideoPlayer.playVideo();
+          }
         });
         return false;
       });
