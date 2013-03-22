@@ -7,5 +7,7 @@ namespace Errordite.Web.Models.Authentication
     {
         [Required(ErrorMessageResourceType = typeof(Resources.Account), ErrorMessageResourceName = "Organisation_Required")]
         public string OrganisationName { get; set; }
+
+        public string TimezoneId { get; set; }
     }
 }

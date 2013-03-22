@@ -18,7 +18,7 @@ namespace Errordite.Core.Domain.Error
         [ProtoMember(2)]
         public string UserId { get; set; }
         [ProtoMember(3)]
-        public DateTime DateAddedUtc { get; set; }
+        public DateTimeOffset DateAddedUtc { get; set; }
         [ProtoMember(4)]
         public bool SystemMessage { get; set; }
         [ProtoMember(5)]

@@ -87,7 +87,6 @@ namespace Errordite.Web.Controllers
                     Status = postModel.Status,
                     Query = postModel.Name,
                     OrganisationId = Core.AppContext.CurrentUser.OrganisationId,
-                    UserTimezoneId = AppContext.CurrentUser.EffectiveTimezoneId(),
                 };
 
                 var issues = _getApplicationIssuesQuery.Invoke(request).Issues;

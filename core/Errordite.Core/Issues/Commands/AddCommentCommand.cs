@@ -4,6 +4,7 @@ using CodeTrip.Core.Interfaces;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Organisations;
 using Errordite.Core.Session;
+using Errordite.Core.Extensions;
 
 namespace Errordite.Core.Issues.Commands
 {
@@ -17,7 +18,7 @@ namespace Errordite.Core.Issues.Commands
 			{
                 Store(new IssueHistory
                 {
-                    DateAddedUtc = DateTime.UtcNow,
+                    DateAddedUtc = DateTime.UtcNow.ToDateTimeOffset(request.CurrentUser.Organisation.TimezoneId),
                     Comment = request.Comment,
                     UserId = request.CurrentUser.Id,
                     Type = HistoryItemType.Comment,

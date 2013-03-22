@@ -16,7 +16,7 @@ namespace Errordite.Reception.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(Client.Abstractions.ClientError clientError)
+        public ActionResult Index(Client.ClientError clientError)
         {
             var response = _processIncomingException.Invoke(new ProcessIncomingExceptionRequest
             {

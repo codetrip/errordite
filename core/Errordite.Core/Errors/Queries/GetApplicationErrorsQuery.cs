@@ -43,14 +43,12 @@ namespace Errordite.Core.Errors.Queries
 
             if (request.StartDate.HasValue)
             {
-                var startDate = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(request.StartDate.Value.ToUniversalTime(), request.UserTimezoneId, "UTC");
-                query = query.Where(e => e.TimestampUtc >= startDate);
+                query = query.Where(e => e.TimestampUtc >= request.StartDate.Value);
             }
 
             if (request.EndDate.HasValue)
             {
-                var endDate = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(request.EndDate.Value.ToUniversalTime().RangeEnd(), request.UserTimezoneId, "UTC");
-                query = query.Where(e => e.TimestampUtc < endDate);
+                query = query.Where(e => e.TimestampUtc < request.EndDate.Value.RangeEnd());
             }
 
             if (!request.IssueId.IsNullOrEmpty())
@@ -100,7 +98,6 @@ namespace Errordite.Core.Errors.Queries
         public DateTime? EndDate { get; set; }
 		public string IssueId { get; set; }
         public PageRequestWithSort Paging { get; set; }
-        public string UserTimezoneId { get; set; }
         public int? LastFriendlyId { get; set; }
 
         public DateTime? WaitForIndexStaleAtUtc { get; set; }

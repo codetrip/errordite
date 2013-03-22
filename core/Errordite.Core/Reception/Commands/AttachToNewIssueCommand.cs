@@ -55,7 +55,7 @@ namespace Errordite.Core.Reception.Commands
 			Store(issue);
             Store(new IssueHistory
             {
-                DateAddedUtc = DateTime.UtcNow,
+                DateAddedUtc = DateTime.UtcNow.ToDateTimeOffset(application.TimezoneId),
                 Type = HistoryItemType.AutoCreated,
                 ExceptionType = error.ExceptionInfos.First().Type,
                 ExceptionMethod = error.ExceptionInfos.First().MethodName,

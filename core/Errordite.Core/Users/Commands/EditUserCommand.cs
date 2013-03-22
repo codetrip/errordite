@@ -9,7 +9,7 @@ using Errordite.Core.Domain.Organisation;
 using System.Linq;
 using Errordite.Core.Indexing;
 using Errordite.Core.Organisations;
-using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
+using Errordite.Core.Session;
 
 namespace Errordite.Core.Users.Commands
 {
@@ -61,7 +61,6 @@ namespace Errordite.Core.Users.Commands
             existingUser.FirstName = request.FirstName;
             existingUser.LastName = request.LastName;
             existingUser.Email = request.Email; 
-            existingUser.TimezoneId = request.TimezoneId;
 
             if (request.Administrator.HasValue && existingUser.Role != UserRole.SuperUser)
                 existingUser.Role = request.Administrator.Value ? UserRole.Administrator : UserRole.User;
@@ -112,7 +111,6 @@ namespace Errordite.Core.Users.Commands
         public string Email { get; set; }
         public bool? Administrator { get; set; }
         public IList<string> GroupIds { get; set; }
-        public string TimezoneId { get; set; }
     }
 
     public enum EditUserStatus

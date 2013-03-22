@@ -5,7 +5,7 @@ using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using System.Threading;
 using System.Web.Mvc;
-using Mindscape.Raygun4Net;
+//using Mindscape.Raygun4Net;
 
 namespace Errordite.Samples.Mvc4.Controllers
 {
@@ -19,7 +19,7 @@ namespace Errordite.Samples.Mvc4.Controllers
             }
             catch (Exception ex)
             {
-                new RaygunClient().Send(ex);
+                //new RaygunClient().Send(ex);
                 throw;
             }
         }

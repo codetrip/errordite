@@ -9,6 +9,7 @@ using Errordite.Core.Domain;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Domain.Exceptions;
 using Errordite.Core.Errors.Queries;
+using Errordite.Core.Extensions;
 using Errordite.Core.Indexing;
 using Errordite.Core.Messages;
 using Errordite.Core.Organisations;
@@ -92,13 +93,13 @@ namespace Errordite.Core.Issues.Commands
                 return response;
 
             Store(new IssueHistory
-                {
-                    DateAddedUtc = DateTime.UtcNow,
-                    UserId = request.CurrentUser.Id,
-                    Type = HistoryItemType.ErrorsReprocessed,
-                    ReprocessingResult = response.AttachedIssueIds,
-                    IssueId = issue.Id,
-                });
+            {
+                DateAddedUtc = DateTime.UtcNow.ToDateTimeOffset(request.CurrentUser.Organisation.TimezoneId),
+                UserId = request.CurrentUser.Id,
+                Type = HistoryItemType.ErrorsReprocessed,
+                ReprocessingResult = response.AttachedIssueIds,
+                IssueId = issue.Id,
+            });
 
             if (response.AttachedIssueIds.Any(i => i.Key == issue.Id))
             {
@@ -108,13 +109,13 @@ namespace Errordite.Core.Issues.Commands
                 {
                     //re-sync the error counts
                     Session.AddCommitAction(new SendNServiceBusMessage("Sync Issue Error Counts",
-                                                                       new SyncIssueErrorCountsMessage
-                                                                           {
-                                                                               CurrentUser = request.CurrentUser,
-                                                                               IssueId = issue.Id,
-                                                                               OrganisationId =
-                                                                                   request.CurrentUser.OrganisationId
-                                                                           }, _configuration.EventsQueueName));
+                        new SyncIssueErrorCountsMessage
+                            {
+                                CurrentUser = request.CurrentUser,
+                                IssueId = issue.Id,
+                                OrganisationId =
+                                    request.CurrentUser.OrganisationId
+                            }, _configuration.EventsQueueName));
                 }
             }
             else

@@ -35,7 +35,6 @@ namespace Errordite.Core.Indexing
                                     error.MachineName,
                                     error.IssueId,
                                     error.Version,
-                                    error.Tags,
                                     //as a further "woo", it is recursive, so we can search on properties of any of the ExceptionInfos (i.e the inner ones)
                                     error.ExceptionInfos.Select(i => new object[]
                                     { 

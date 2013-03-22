@@ -28,6 +28,15 @@
                         @Html.ValidationMessageFor(m => m.OrganisationName)
                     </li>
                     <li>
+                        @Html.LabelFor(m => m.TimezoneId, "Organisation Timezone")
+                        @Html.DropDownListFor(m => m.TimezoneId, TimeZoneInfo.GetSystemTimeZones().Select(t => new SelectListItem
+                        {
+                            Value = t.Id, 
+                            Text = t.DisplayName,
+                            Selected = t.Id == "UTC"
+                        }))
+                    </li>
+                    <li>
                         @Html.LabelFor(m => m.Email, "Email")
                         @Html.TextBoxFor(m => m.Email)
                         @Html.ValidationMessageFor(m => m.Email)
