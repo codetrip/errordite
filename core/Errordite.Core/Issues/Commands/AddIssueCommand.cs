@@ -8,6 +8,7 @@ using Errordite.Core.Issues.Queries;
 using Errordite.Core.Matching;
 using Errordite.Core.Organisations;
 using Errordite.Core.Session;
+using Errordite.Core.Extensions;
 
 namespace Errordite.Core.Issues.Commands
 {
@@ -28,18 +29,18 @@ namespace Errordite.Core.Issues.Commands
             Trace("Starting...");
 
             var applicationId = Application.GetId(request.ApplicationId);
+            var dateTimeOffset = DateTime.UtcNow.ToDateTimeOffset(request.CurrentUser.Organisation.TimezoneId);
 
             var issue = new Issue
             {
                 Name = request.Name,
                 Rules = request.Rules,
                 ApplicationId = applicationId,
-                CreatedOnUtc = DateTime.UtcNow,
-                LastModifiedUtc = DateTime.UtcNow,
-                LastRuleAdjustmentUtc = DateTime.UtcNow,
+                CreatedOnUtc = dateTimeOffset,
+                LastModifiedUtc = dateTimeOffset,
                 UserId = User.GetId(request.AssignedUserId),
                 ErrorCount = 0,
-                LastErrorUtc = DateTime.UtcNow,
+                LastErrorUtc = dateTimeOffset,
                 OrganisationId = Organisation.GetId(request.CurrentUser.OrganisationId),
             };
 
@@ -60,7 +61,7 @@ namespace Errordite.Core.Issues.Commands
             Store(issue);
             Store(new IssueHistory
             {
-                DateAddedUtc = DateTime.UtcNow,
+                DateAddedUtc = dateTimeOffset,
                 UserId = request.CurrentUser.Id,
                 Type = HistoryItemType.ManuallyCreated,
                 IssueId = issue.Id,

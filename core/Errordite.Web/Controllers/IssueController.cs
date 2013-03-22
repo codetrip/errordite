@@ -126,8 +126,8 @@ namespace Errordite.Web.Controllers
                 {
 
                     ErrorCount = issue.ErrorCount,
-                    LastErrorUtc = issue.LastErrorUtc,
-                    FirstErrorUtc = issue.CreatedOnUtc,
+                    LastErrorUtc = issue.LastErrorUtc.ToLocalTime(),
+                    FirstErrorUtc = issue.CreatedOnUtc.ToLocalTime(),
                     UserName = assignedUser == null ? string.Empty : assignedUser.FullName,
                     ApplicationName = applications.Items.First(a => a.Id == issue.ApplicationId).Name,
                     ErrorLimitStatus = IssueResources.ResourceManager.GetString("ErrorLimitStatus_{0}".FormatWith(issue.LimitStatus)),
@@ -204,7 +204,6 @@ namespace Errordite.Web.Controllers
                 OrganisationId = Core.AppContext.CurrentUser.OrganisationId,
                 IssueId = postModel.Id,
                 Paging = paging,
-                UserTimezoneId = AppContext.CurrentUser.EffectiveTimezoneId(),
             };
 
             if (postModel.DateRange.IsNotNullOrEmpty())
@@ -260,7 +259,7 @@ namespace Errordite.Web.Controllers
                     return RenderPartial("Issue/HistoryItem", new IssueHistoryItemViewModel
                     {
                         Message = h.GetMessage(users.Items, issueMemoizer, GetIssueLink),
-                        DateAddedUtc = h.DateAddedUtc,
+                        DateAddedUtc = h.DateAddedUtc.ToLocalTime(),
                         UserEmail = user != null ? user.Email : string.Empty,
                         Username = user != null ? user.FullName : string.Empty,
                         SystemMessage = h.SystemMessage,

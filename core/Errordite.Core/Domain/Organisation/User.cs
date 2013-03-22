@@ -34,8 +34,6 @@ namespace Errordite.Core.Domain.Organisation
         public UserRole Role { get; set; }
         [ProtoMember(10)]
         public UserStatus Status { get; set; }
-        [ProtoMember(13)]
-        public string TimezoneId { get; set; }
 
         [Raven.Imports.Newtonsoft.Json.JsonIgnore]
         public string FriendlyId { get { return Id == null ? string.Empty : Id.Split('/')[1]; } }
@@ -64,11 +62,6 @@ namespace Errordite.Core.Domain.Organisation
         public static User System()
         {
             return _systemUser;
-        }
-
-        public string EffectiveTimezoneId()
-        {
-            return TimezoneId ?? Organisation.TimezoneId ?? "UTC";
         }
     }
 

@@ -19,15 +19,20 @@ namespace Errordite.Core.Extensions
         {
             var appContext = AppContext.GetFromHttpContext();
             string timezoneId;
-            if (appContext != null && (timezoneId = appContext.CurrentUser.EffectiveTimezoneId()) != null)
+            if (appContext != null && (timezoneId = appContext.CurrentUser.Organisation.TimezoneId) != null)
             {
-                return 
-                    TimeZoneInfo.ConvertTimeBySystemTimeZoneId(datetimeUtc, timezoneId);
+                return TimeZoneInfo.ConvertTimeBySystemTimeZoneId(datetimeUtc, timezoneId);
             }
-            else
-            {
-                return datetimeUtc.ToLocalTime();
-            }
+
+            return datetimeUtc.ToLocalTime();
+        }
+
+        public static DateTimeOffset ToDateTimeOffset(this DateTime datetimeUtc, string timeZoneId)
+        {
+            var timeZone = TimeZoneInfo.FindSystemTimeZoneById(timeZoneId ?? "UTC");
+            var localDate = TimeZoneInfo.ConvertTimeFromUtc(datetimeUtc, timeZone);
+            var utcOffset = timeZone.GetUtcOffset(datetimeUtc);
+            return new DateTimeOffset(localDate, utcOffset);
         }
     }
 }

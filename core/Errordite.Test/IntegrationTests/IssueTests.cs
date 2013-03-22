@@ -51,7 +51,7 @@ namespace Errordite.Test.IntegrationTests
         {
             var ravenSession = Get<IAppSession>().Raven;
 
-            var issue = new Issue() {Name = "Test"};
+            var issue = new Issue {Name = "Test"};
 
             IndexCreation.CreateIndexes(Assembly.GetAssembly(GetType()), ravenSession.Advanced.DocumentStore);
 

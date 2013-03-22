@@ -3,7 +3,7 @@ using System.IO;
 using System.Web.Mvc;
 using System.Xml;
 using System.Xml.Serialization;
-using Errordite.Client.Abstractions;
+using Errordite.Client;
 using Newtonsoft.Json;
 
 namespace Errordite.Reception.Web.Binders

@@ -3,6 +3,7 @@ using CodeTrip.Core.Interfaces;
 using Errordite.Core.Authorisation;
 using Errordite.Core.Configuration;
 using Errordite.Core.Domain.Error;
+using Errordite.Core.Extensions;
 using Errordite.Core.Indexing;
 using Errordite.Core.Messages;
 using Errordite.Core.Organisations;
@@ -60,7 +61,7 @@ namespace Errordite.Core.Issues.Commands
 
             Store(new IssueHistory
             {
-                DateAddedUtc = DateTime.UtcNow,
+                DateAddedUtc = DateTime.UtcNow.ToDateTimeOffset(request.CurrentUser.Organisation.TimezoneId),
                 SpawningIssueId = mergeFromIssue.Id,
                 SystemMessage = true,
                 Type = HistoryItemType.MergedTo,

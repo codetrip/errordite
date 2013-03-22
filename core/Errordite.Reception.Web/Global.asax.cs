@@ -7,7 +7,6 @@ using CodeTrip.Core.Auditing.Entities;
 using CodeTrip.Core.IoC;
 using CodeTrip.Core.Misc;
 using Errordite.Client;
-using Errordite.Client.Abstractions;
 using Errordite.Client.Mvc;
 using Errordite.Core.IoC;
 using Errordite.Core.Session;

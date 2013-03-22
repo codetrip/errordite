@@ -19,7 +19,7 @@ namespace Errordite.Core.Domain.Error
         [ProtoMember(2)]
         public List<IMatchRule> Rules { get; set; }
         [ProtoMember(3)]
-        public DateTime? LastRuleAdjustmentUtc { get; set; }
+        public DateTimeOffset? LastRuleAdjustmentUtc { get; set; }
         [ProtoMember(4)]
         public string ApplicationId { get; set; }
         [ProtoMember(5)]
@@ -66,9 +66,9 @@ namespace Errordite.Core.Domain.Error
         [ProtoMember(11)]
         public int ErrorCount { get; set; }
         [ProtoMember(12)]
-        public DateTime CreatedOnUtc { get; set; }
+        public DateTimeOffset CreatedOnUtc { get; set; }
         [ProtoMember(13)]
-        public DateTime LastModifiedUtc { get; set; }
+        public DateTimeOffset LastModifiedUtc { get; set; }
         [ProtoMember(14)]
         public bool TestIssue { get; set; }
         [ProtoMember(15)]
@@ -76,7 +76,7 @@ namespace Errordite.Core.Domain.Error
         [ProtoMember(16)]
         public string Reference { get; set; }
         [ProtoMember(17)]
-        public DateTime LastErrorUtc { get; set; }
+        public DateTimeOffset LastErrorUtc { get; set; }
 
         [Raven.Imports.Newtonsoft.Json.JsonIgnore]
         public string FriendlyId { get { return Id == null ? string.Empty : Id.Split('/')[1]; } }

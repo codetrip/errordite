@@ -38,8 +38,8 @@ namespace Errordite.Web.Models.Issues
 
     public class IssueDetailsViewModel : UpdateIssuePostModel
     {
-        public DateTime LastErrorUtc { get; set; }
-        public DateTime FirstErrorUtc { get; set; }
+        public DateTimeOffset LastErrorUtc { get; set; }
+        public DateTimeOffset FirstErrorUtc { get; set; }
         public int ErrorCount { get; set; }
         public string UserName { get; set; }
         public string ApplicationName { get; set; }
@@ -65,7 +65,7 @@ namespace Errordite.Web.Models.Issues
         public string Message { get; set; }
         public string Username { get; set; }
         public string UserEmail { get; set; }
-        public DateTime DateAddedUtc { get; set; }
+        public DateTimeOffset DateAddedUtc { get; set; }
         public bool SystemMessage { get; set; }
         public string Reference { get; set; }
         public string IssueLink { get; set; }

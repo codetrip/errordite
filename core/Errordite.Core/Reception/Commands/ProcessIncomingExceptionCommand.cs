@@ -5,7 +5,7 @@ using System.Linq;
 using CodeTrip.Core;
 using CodeTrip.Core.Extensions;
 using CodeTrip.Core.Interfaces;
-using Errordite.Client.Abstractions;
+using Errordite.Client;
 using Errordite.Core.Applications.Queries;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Domain.Organisation;
@@ -13,6 +13,7 @@ using Errordite.Core.Messages;
 using NServiceBus;
 using EC = Errordite.Core.Configuration;
 using ErrorditeConfiguration = Errordite.Core.Configuration.ErrorditeConfiguration;
+using Errordite.Core.Extensions;
 
 namespace Errordite.Core.Reception.Commands
 {
@@ -148,28 +149,25 @@ namespace Errordite.Core.Reception.Commands
         {
             var instance = new Error
             {
-                ApplicationId = application == null ? null : application.Id,
-                TimestampUtc = clientError.TimestampUtc,
+                ApplicationId = application.Id,
+                TimestampUtc = clientError.TimestampUtc.ToDateTimeOffset(application.TimezoneId),
                 MachineName = clientError.MachineName,
                 Url = GetUrl(clientError),
                 UserAgent = GetUserAgent(clientError),
                 Version = clientError.Version,
-                Tags = clientError.Tags,
-                OrganisationId = application == null ? null : application.OrganisationId,
+                OrganisationId = application.OrganisationId,
                 ExceptionInfos = GetErrorInfo(clientError.ExceptionInfo).ToArray(),
                 Messages = clientError.Messages == null ? null : clientError.Messages.Select(m => new TraceMessage
                 {
-                    Level = m.Level,
-                    Logger = m.Logger,
                     Message = m.Message,
-                    Milliseconds = m.Milliseconds
+                    Timestamp = m.TimestampUtc
                 }).ToList()
             };
 
             return instance;
         }
 
-        private IEnumerable<Domain.Error.ExceptionInfo> GetErrorInfo(Client.Abstractions.ExceptionInfo clientExceptionInfo)
+        private IEnumerable<Domain.Error.ExceptionInfo> GetErrorInfo(Client.ExceptionInfo clientExceptionInfo)
         {
             var exceptionInfo = new Domain.Error.ExceptionInfo
             {

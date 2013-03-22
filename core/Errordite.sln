@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2010
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Errordite.Web", "Errordite.Web\Errordite.Web.csproj", "{CEF8FB25-38DC-403F-A783-2AF2B8717193}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Errordite.Core", "Errordite.Core\Errordite.Core.csproj", "{418F4BC8-7042-49B1-9F69-95189A2A5837}"
@@ -35,6 +35,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		..\generate-package.cmd = ..\generate-package.cmd
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{18D27B41-FE26-4EC5-8178-A0918298E426}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Raven", "Raven", "{8AF64A7C-9E7D-4091-8854-653093EF1F67}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{D27C3FF8-71A3-48FC-B24A-848023D99162}"
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
@@ -122,5 +128,12 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0B58036D-D72A-48D2-8E3E-EC046AAB3ED1} = {18D27B41-FE26-4EC5-8178-A0918298E426}
+		{1D458F67-570B-40D8-8985-74988C44EF18} = {18D27B41-FE26-4EC5-8178-A0918298E426}
+		{E4804C8C-8237-4243-A86A-6BCD06273870} = {8AF64A7C-9E7D-4091-8854-653093EF1F67}
+		{0B57E1B2-4A92-4506-BFD8-5DCAEACC9EDA} = {D27C3FF8-71A3-48FC-B24A-848023D99162}
+		{24344728-3CE7-4ACE-B1F1-83A1DFA3F3C0} = {D27C3FF8-71A3-48FC-B24A-848023D99162}
 	EndGlobalSection
 EndGlobal

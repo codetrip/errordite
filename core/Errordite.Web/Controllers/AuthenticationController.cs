@@ -146,7 +146,8 @@ namespace Errordite.Web.Controllers
                 LastName = viewModel.LastName,
                 Email = viewModel.Email,
                 OrganisationName = viewModel.OrganisationName,
-                Password = viewModel.Password
+                Password = viewModel.Password,
+                TimezoneId = viewModel.TimezoneId
             });
 
             if (response.Status != CreateOrganisationStatus.Ok)

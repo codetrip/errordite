@@ -134,7 +134,6 @@ namespace Errordite.Web.Controllers
 				Paging = new PageRequestWithSort(1, 50, "FriendlyId", true),
 				OrganisationId = Core.AppContext.CurrentUser.OrganisationId,
                 LastFriendlyId = lastIssueDisplayed,
-                UserTimezoneId = AppContext.CurrentUser.EffectiveTimezoneId(),
                 ApplicationId = applicationId
 			}).Issues;
 
@@ -143,7 +142,6 @@ namespace Errordite.Web.Controllers
                 Paging = new PageRequestWithSort(1, 50, "FriendlyId", true),
 				OrganisationId = Core.AppContext.CurrentUser.OrganisationId,
                 LastFriendlyId = lastErrorDisplayed,
-				UserTimezoneId = AppContext.CurrentUser.EffectiveTimezoneId(),
                 ApplicationId = applicationId
 			}).Errors;
 
@@ -185,7 +183,7 @@ namespace Errordite.Web.Controllers
                 return new IssueHistoryItemViewModel
                 {
                     Message = h.GetMessage(users.Items, issueMemoizer, GetIssueLink),
-                    DateAddedUtc = h.DateAddedUtc,
+                    DateAddedUtc = h.DateAddedUtc.ToLocalTime(),
                     UserEmail = user != null ? user.Email : string.Empty,
                     Username = user != null ? user.FullName : string.Empty,
                     SystemMessage = h.SystemMessage,

@@ -127,7 +127,6 @@ namespace Errordite.Web.Controllers
                 Organisation = Core.AppContext.CurrentUser.Organisation,
                 Email = viewModel.Email,
                 GroupIds = viewModel.Groups.Where(g => g.Selected).Select(g => g.Id.GetFriendlyId()).ToList(),
-                TimezoneId = viewModel.TimezoneId.IsNullOrEmpty() ? null : viewModel.TimezoneId,
             });
 
             if (result.Status != AddUserStatus.Ok)
@@ -158,7 +157,6 @@ namespace Errordite.Web.Controllers
                 CurrentUser = Core.AppContext.CurrentUser,
                 GroupIds = viewModel.CurrentUser ? null : viewModel.Groups.Where(g => g.Selected).Select(g => g.Id.GetFriendlyId()).ToList(),
                 Administrator = (!AppContext.CurrentUser.IsAdministrator() || viewModel.CurrentUser) ? null : (bool?)viewModel.IsAdministrator,
-                TimezoneId = viewModel.TimezoneId.IsNullOrEmpty() ? null : viewModel.TimezoneId,
             });
 
             if (viewModel.CurrentUser)
@@ -202,7 +200,6 @@ namespace Errordite.Web.Controllers
                     Disabled = currentUser && !userProfile.IsAdministrator()
                 })).ToList(),
                 CurrentUser = currentUser,
-                TimezoneId = userProfile.TimezoneId,
                 IsAdministrator = userProfile.IsAdministrator()
             };
 

@@ -11,6 +11,7 @@ using Errordite.Core.Matching;
 using Errordite.Core.Messages;
 using Errordite.Core.Organisations;
 using Errordite.Core.Session;
+using Errordite.Core.Extensions;
 
 namespace Errordite.Core.Issues.Commands
 {
@@ -80,6 +81,8 @@ namespace Errordite.Core.Issues.Commands
             {
                 if (nonMatchingErrorsResponse.NonMatches.Count > 0)
                 {
+                    var dateTimeOffset = DateTime.UtcNow.ToDateTimeOffset(request.CurrentUser.Organisation.TimezoneId);
+
                     //if errors on the original issue did not match the new rules, store the temp issue and move the non matching errors to it
                     Session.AddCommitAction(new RaiseIssueCreatedEvent(tempIssue));
 
@@ -101,7 +104,7 @@ namespace Errordite.Core.Issues.Commands
 
                     Store(new IssueHistory
                     {
-                        DateAddedUtc = DateTime.UtcNow,
+                        DateAddedUtc = dateTimeOffset,
                         Type = HistoryItemType.RulesAdjustedCreatedNewIssue,
                         SpawnedIssueId = tempIssue.Id,
                         UserId = request.CurrentUser.Id,
@@ -109,7 +112,7 @@ namespace Errordite.Core.Issues.Commands
                     });
                     Store(new IssueHistory
                     {
-                        DateAddedUtc = DateTime.UtcNow,
+                        DateAddedUtc = dateTimeOffset,
                         Type = HistoryItemType.CreatedByRuleAdjustment,
                         SpawningIssueId = currentIssue.Id,
                         UserId = request.CurrentUser.Id,
@@ -120,7 +123,7 @@ namespace Errordite.Core.Issues.Commands
                 {
                     Store(new IssueHistory
                     {
-                        DateAddedUtc = DateTime.UtcNow,
+                        DateAddedUtc = DateTime.UtcNow.ToDateTimeOffset(request.CurrentUser.Organisation.TimezoneId),
                         Type = HistoryItemType.RulesAdjustedNoNewIssue,
                         UserId = request.CurrentUser.Id,
                         IssueId = currentIssue.Id,
@@ -156,13 +159,15 @@ namespace Errordite.Core.Issues.Commands
         
         private Issue CreateTempIssue(Issue currentIssue, AdjustRulesRequest request)
         {
+            var dateTimeOffset = DateTime.UtcNow.ToDateTimeOffset(request.CurrentUser.Organisation.TimezoneId);
+
             return new Issue
             {
                 ApplicationId = currentIssue.ApplicationId,
-                CreatedOnUtc = DateTime.UtcNow,
+                CreatedOnUtc = dateTimeOffset,
                 ErrorCount = 0,
                 LastErrorUtc = currentIssue.LastErrorUtc,
-                LastModifiedUtc = DateTime.UtcNow,
+                LastModifiedUtc = dateTimeOffset,
                 Name = request.NewIssueName,
                 Status = IssueStatus.Unacknowledged, //GT: this used to be dependent on state of existing issue, but I think that's wrong.  The idea is that this issue contains errors we have not yet thought about hence it needs to start at the beginning.
                 Rules = currentIssue.Rules,
