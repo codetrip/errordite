@@ -1590,15 +1590,17 @@ section {
 }
 
 .video-panel {
-	height:135px;
+	height:76px;
+	width: 756px;
+	margin-left: 100px;
 	background-color:#91C6E5;
 	float:left;
-	width:$minwidth;
+	
 	.btn-black {
 		padding: 15px 50px;
 	}
 	.preview {
-		line-height: 225px;
+		line-height: 77px;
 		text-align:center;
 	}
 	.player {
