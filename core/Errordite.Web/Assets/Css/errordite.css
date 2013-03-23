@@ -128,9 +128,9 @@ p {
 pre.prettyprint {
   font-size: 12px;
   font-family: Consolas, Menlo, Monaco, Lucida Console;
-  padding: 12px 0 0 15px!important;
+  padding: 12px 0 0 15px !important;
   line-height: 14px;
-  border: 1px solid #D8DEE2!important;
+  border: 1px solid #d8dee2 !important;
   border-radius: 0;
   float: left;
   width: 100%; }
@@ -712,7 +712,7 @@ section {
   background-position: -108px -18px; }
 
 .icon-arrow-left {
-  background-position: 0 -36px; }
+  background-position: -0 -36px; }
 
 .icon-arrow-right {
   background-position: -165px -18px; }
@@ -1264,14 +1264,15 @@ section {
   background-color: #ecacac; }
 
 .video-panel {
-  height: 135px;
+  height: 76px;
+  width: 756px;
+  margin-left: 100px;
   background-color: #91C6E5;
-  float: left;
-  width: 974px; }
+  float: left; }
   .video-panel .btn-black {
     padding: 15px 50px; }
   .video-panel .preview {
-    line-height: 225px;
+    line-height: 77px;
     text-align: center; }
   .video-panel .player {
     text-align: center;
