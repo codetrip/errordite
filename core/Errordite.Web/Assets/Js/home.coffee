@@ -1,6 +1,8 @@
 
 jQuery -> 
-	$body = $('section#home');
+	$body = $ 'section#home'
+
+	hiddenPanelCss = null
 
 	if $body.length > 0
 		$body.delegate 'a#showplayer', 'click', () -> 
@@ -12,11 +14,19 @@ jQuery ->
 			$preview.hide()
 			$player.show()
 
+			hiddenPanelCss = 
+				height: $panel.css 'height'
+				width: $panel.css 'width'
+				'margin-left': $panel.css 'margin-left'
+
 			$panel.animate
-				height: "635px"
+				height: "635px",
+				width: "974px",
+				"margin-left": "0"
 			, 500, ->
 				$player.find('iframe').show()
 				$player.find('div.hide-button').show()
+				homepageVideoPlayer.playVideo() if homepageVideoPlayer?
 
 			false
 
@@ -30,8 +40,7 @@ jQuery ->
 			$player.find('div.hide-button').hide()
 			$player.hide()
 
-			$panel.animate
-				height: "135px"
+			$panel.animate hiddenPanelCss
 			, 500, ->
 				$preview.show()
 

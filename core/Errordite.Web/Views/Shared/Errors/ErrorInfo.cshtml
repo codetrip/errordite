@@ -18,8 +18,15 @@
 				<td class="word-break" data-error-attr="Module">@Html.Raw(Model.Info.Module)</td>
 			</tr>
 		}
-        
-		@if (!Model.InnerException)
+        @if (Model.MachineName.IsNotNullOrEmpty())
+        {
+            <tr>
+                <td>Machine Name</td>
+                <td class="word-break">@Model.MachineName</td>
+            </tr>   
+        }        
+
+	    @if (!Model.InnerException)
 		{
 			if (Model.Url.IsNotNullOrEmpty())
 			{

@@ -49,7 +49,7 @@
                 </div>
             }
         </div>
-        <nav>
+        <nav class="main-nav">
             <div class="@(appContext.CurrentUser.Role == UserRole.SuperUser || appContext.Impersonated ? "nav-container-system" : "nav-container")">
                 <ul class="nav">
                     @if (appContext.AuthenticationStatus == AuthenticationStatus.Authenticated && (appContext.CurrentUser.Role == UserRole.SuperUser || appContext.Impersonated))

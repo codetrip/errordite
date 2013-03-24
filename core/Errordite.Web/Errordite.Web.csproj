@@ -264,7 +264,7 @@
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Areas\System\Controllers\ImpersonationController.cs" />
     <Compile Include="Controllers\IssueController.cs" />
-    <Compile Include="Controllers\HelpController.cs" />
+    <Compile Include="Controllers\DocsController.cs" />
     <Compile Include="Controllers\GroupsController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
@@ -299,7 +299,7 @@
     <Compile Include="Models\Groups\AddGroupViewModel.cs" />
     <Compile Include="Models\Groups\EditGroupViewModel.cs" />
     <Compile Include="Models\Groups\GroupViewModel.cs" />
-    <Compile Include="Models\Help\HelpTab.cs" />
+    <Compile Include="Models\Docs\DocsTab.cs" />
     <Compile Include="Models\Home\ContactUsViewModel.cs" />
     <Compile Include="Models\Issues\IssueNotFoundViewModel.cs" />
     <Compile Include="Models\Issues\IssueCriteriaViewModel.cs" />
@@ -469,6 +469,7 @@
     </Content>
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="google06c34901e78e12bd.html" />
     <Content Include="robots.txt" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -605,7 +606,7 @@
     <Content Include="Views\Shared\Errors\ErrorItem.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Help\API.cshtml" />
+    <Content Include="Views\Docs\API.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_GlobalResources\History.resx">
@@ -692,13 +693,13 @@
     <Content Include="Views\Shared\Account\Tabs.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\Help\Tabs.cshtml" />
+    <Content Include="Views\Shared\Docs\Tabs.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Help\GettingStarted.cshtml" />
+    <Content Include="Views\Docs\GettingStarted.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Help\Pricing.cshtml" />
+    <Content Include="Views\Docs\Pricing.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\Issues\IssuesCriteria.cshtml" />
@@ -804,13 +805,13 @@
     <Content Include="Views\Shared\NotAuthorised.cshtml" />
     <Content Include="Views\Shared\NotFound.cshtml" />
     <Content Include="Views\Account\Upgrade.cshtml" />
-    <Content Include="Views\Shared\Help\PaymentPlan.cshtml" />
+    <Content Include="Views\Shared\Docs\PaymentPlan.cshtml" />
     <Content Include="Views\Account\Billing.cshtml" />
     <Content Include="Views\Account\Downgrade.cshtml" />
     <Content Include="Views\EmailTest\List.cshtml" />
     <Content Include="Views\EmailTest\Index.cshtml" />
     <Content Include="Views\Account\Settings.cshtml" />
-    <Content Include="Views\Help\Client.cshtml" />
+    <Content Include="Views\Docs\Client.cshtml" />
     <Content Include="Views\Shared\Users\List.cshtml" />
     <Content Include="Areas\System\Views\Organisations\Users.cshtml" />
     <Content Include="Areas\System\Views\Organisations\Index.cshtml" />
@@ -818,13 +819,13 @@
     <Content Include="Views\Shared\Applications\List.cshtml" />
     <Content Include="Views\Issue\History.cshtml" />
     <Content Include="Views\Shared\Errors\TraceMessages.cshtml" />
-    <Content Include="Views\Help\SendErrorWithJson.cshtml" />
+    <Content Include="Views\Docs\SendErrorWithJson.cshtml" />
     <Content Include="packages.config" />
     <Content Include="Views\Shared\Master.cshtml" />
     <Content Include="Views\Shared\HeaderAssets.cshtml" />
     <Content Include="Views\Shared\FooterAssets.cshtml" />
     <Content Include="Views\Shared\Header.cshtml" />
-    <Content Include="Views\Help\Privacy.cshtml" />
+    <Content Include="Views\Docs\Privacy.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\Breadcrumbs.cshtml">
@@ -870,7 +871,7 @@
     <Content Include="Views\Dashboard\Feed.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Help\PythonClient.cshtml" />
+    <Content Include="Views\Docs\PythonClient.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

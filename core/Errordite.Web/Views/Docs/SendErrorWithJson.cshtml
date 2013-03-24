@@ -1,4 +1,4 @@
-﻿@using Errordite.Web.Models.Help
+﻿@using Errordite.Web.Models.Docs
 @using Errordite.Web.Extensions
 @{
     ViewBag.Title = "Send error with JSON";
@@ -6,7 +6,7 @@
 
 @section header
 {
-    @Html.Partial("Help/Tabs", HelpTab.SendErrorWithJson) 
+    @Html.Partial("Docs/Tabs", DocsTab.SendErrorWithJson) 
 }
 
 <section class="centered">
@@ -14,7 +14,7 @@
         <h1>Send error with JSON</h1>
         
         <p>
-            Errordite can work with any language or technology.  Simply post the JSON below to https://www.errordite.com/receiveerror.  
+            Errordite can work with any language or technology.  Simply post the JSON below to <span style="color:#729db7">https://www.errordite.com/receiveerror</span>.  
             If you would like to create a client plug-in for your favoured technology, we'd love to <a href="@Url.Contact()">hear from you</a>.
         </p>
 

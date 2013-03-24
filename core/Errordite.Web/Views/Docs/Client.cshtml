@@ -1,4 +1,4 @@
-﻿@using Errordite.Web.Models.Help
+﻿@using Errordite.Web.Models.Docs
 @using Errordite.Web.Extensions
 
 @{
@@ -7,7 +7,7 @@
 
 @section header
 {
-    @Html.Partial("Help/Tabs", HelpTab.Client) 
+    @Html.Partial("Docs/Tabs", DocsTab.Client) 
 }
 
 <section class="centered">
@@ -42,7 +42,7 @@
         &lt;section name="errordite" type="Errordite.Client.Configuration.ClientConfiguration, Errordite.Client" />
     &lt;configSections>
 
-    &lt;errordite token="**YOUR TOKEN HERE**" enabled="true" endpoint="https://www.errordite.com/receiveerror"> 
+    &lt;errordite token="**YOUR TOKEN HERE**" enabled="true"> 
         &lt;dataCollectors> &lt;!-- optional -->
             &lt;dataCollector prefix="HttpContext" type="Errordite.Client.DataCollectors.HttpContextDataCollector, Errordite.Client" />
         &lt;/dataCollectors>
@@ -62,7 +62,6 @@
         </p>
 
         <ul>
-            <li><span class="heading">Endpoint</span><br />Where the errors get sent - this will always be <a href="">https://www.errordite.com/receiveerror</a></li>
             <li><span class="heading">Token</span><br />The token for the application. Take this from the <a href="@Url.Applications()">Applications page</a>.</li>
             <li><span class="heading">Enabled</span><br />This should normally be true; set to false to stop sending to Errordite.</li>
             <li><span class="heading">Data Collectors (optional)</span><br />

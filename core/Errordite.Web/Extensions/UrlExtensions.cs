@@ -149,27 +149,27 @@ namespace Errordite.Web.Extensions
 
         public static string Client(this UrlHelper helper)
         {
-            return helper.Action("client", "help", new { Area = string.Empty });
+            return helper.Action("client", "docs", new { Area = string.Empty });
         }
 
         public static string Api(this UrlHelper helper)
         {
-            return helper.Action("api", "help", new { Area = string.Empty });
+            return helper.Action("api", "docs", new { Area = string.Empty });
         }
 
         public static string JsonFormat(this UrlHelper helper)
         {
-            return helper.Action("senderrorwithjson", "help", new { Area = string.Empty });
+            return helper.Action("senderrorwithjson", "docs", new { Area = string.Empty });
         }
         
         public static string GettingStarted(this UrlHelper helper)
         {
-            return helper.Action("gettingstarted", "help", new { Area = string.Empty });
+            return helper.Action("gettingstarted", "docs", new { Area = string.Empty });
         }
 
         public static string Pricing(this UrlHelper helper)
         {
-            return helper.Action("pricing", "help", new { Area = string.Empty });
+            return helper.Action("pricing", "docs", new { Area = string.Empty });
         }
 
         public static string PythonClient(this UrlHelper helper)
@@ -179,7 +179,7 @@ namespace Errordite.Web.Extensions
 
         public static string Privacy(this UrlHelper helper)
         {
-            return helper.Action("privacy", "help", new { Area = string.Empty });
+            return helper.Action("privacy", "docs", new { Area = string.Empty });
         }
 
         #endregion

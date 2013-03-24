@@ -87,7 +87,7 @@ namespace Errordite.Core.Reception.Commands
 
 			Trace("AttachTod issue: Id:={0}, Name:={1}", issue.Id, issue.Name);
 			error.IssueId = issue.Id;
-			MaybeSendNotification(issue, application, NotificationType.NotifyOnNewClassCreated, error);
+			MaybeSendNotification(issue, application, NotificationType.NotifyOnNewIssueCreated, error);
 
 			//tell the issue cache we have a new issue
 			_receptionServiceIssueCache.Add(issue);

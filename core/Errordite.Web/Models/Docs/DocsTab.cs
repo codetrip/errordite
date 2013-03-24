@@ -1,7 +1,7 @@
 ﻿
-namespace Errordite.Web.Models.Help
+namespace Errordite.Web.Models.Docs
 {
-    public enum HelpTab
+    public enum DocsTab
     {
         GettingStarted,
         Pricing,

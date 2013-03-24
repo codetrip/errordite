@@ -16,7 +16,8 @@ using Raven.Client.Linq;
 
 namespace Errordite.Core.Users.Queries
 {
-    [Interceptor(CacheInterceptor.IoCName)]
+    //GT: activating a user did not flush cache and it really seems not worthwhile to do so anyway - how often do we make this query?
+    //[Interceptor(CacheInterceptor.IoCName)]
     public class GetUsersQuery : SessionAccessBase, IGetUsersQuery
     {
         private readonly IGetGroupsQuery _getGroupsQuery;
