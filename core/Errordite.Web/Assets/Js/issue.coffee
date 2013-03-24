@@ -94,13 +94,13 @@ jQuery ->
 		$issue.delegate 'select#Status', 'change', () -> 
 			$this = $ this
 
-			if $this.val() == 'Ignorable'
-				$issue.find('li.checkbox').removeClass('hidden');
+			if $this.val() == 'Ignored'
+				$issue.find('li.inline').removeClass('hidden');
 			else
-				$issue.find('li.checkbox').addClass('hidden');		
+				$issue.find('li.inline').addClass('hidden');		
 
-		if $issue.find('select#Status').val() == 'Ignorable'
-			$issue.find('li.checkbox').removeClass('hidden')
+		if $issue.find('select#Status').val() == 'Ignored'
+			$issue.find('li.inline').removeClass('hidden')
 
 		$('#issue-tabs .tablink').bind 'shown', (e) -> 
 			loadTabData $ e.currentTarget

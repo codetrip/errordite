@@ -7,16 +7,14 @@ using CodeTrip.Core.Extensions;
 using CodeTrip.Core.Paging;
 using Errordite.Core.Applications.Commands;
 using Errordite.Core.Configuration;
-using Errordite.Core.Domain.Error;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Errors.Queries;
 using Errordite.Core.Indexing;
-using Errordite.Core.Messages;
 using Errordite.Core.Session;
 using Errordite.Web.ActionFilters;
 using Errordite.Web.Models.Navigation;
-using System.Linq;
 using Raven.Client;
+using Errordite.Core.Extensions;
 
 namespace Errordite.Web.Areas.System.Controllers
 {
@@ -148,159 +146,21 @@ namespace Errordite.Web.Areas.System.Controllers
             return new EmptyResult();
         }
 
-        public ActionResult UpdateHistory(string organisationId)
+        public ActionResult UpdateTimezone(string organisationId)
         {
-            Core.Session.SetOrganisation(new Organisation
+            var org = Core.Session.MasterRaven.Load<Organisation>(Organisation.GetId(organisationId));
+
+            Core.Session.SetOrganisation(org);
+
+            var apps = Core.Session.Raven.Query<Application, Applications_Search>()
+                .GetAllItemsAsList(Core.Session, _configuration.MaxPageSize);
+
+            foreach (var app in apps)
             {
-                Id = Organisation.GetId(organisationId)
-            });
-
-            RavenQueryStatistics stats;
-
-            var issues = Core.Session.Raven.Query<IssueDocument, Issues_Search>().Statistics(out stats)
-                .Skip(0)
-                .Take(_configuration.MaxPageSize)
-                .As<Issue>()
-                .ToList();
-
-            if (stats.TotalResults > _configuration.MaxPageSize)
-            {
-                Trace("Total issues is greater than default page size, iterating to get all issues");
-                int pageNumber = stats.TotalResults / _configuration.MaxPageSize;
-
-                for (int i = 1; i < pageNumber; i++)
-                {
-                    issues.AddRange(Core.Session.Raven.Query<IssueDocument, Issues_Search>()
-                        .Skip(i * _configuration.MaxPageSize)   
-                        .Take(_configuration.MaxPageSize)
-                        .As<Issue>());
-                }
-            }
-
-            foreach (var partition in issues.Partition(50))
-            {
-                foreach (var issue in partition.Where(i => i.History != null))
-                {
-                    foreach (var historyRecord in issue.History)
-                    {
-                        historyRecord.IssueId = issue.Id;
-                        historyRecord.ApplicationId = issue.ApplicationId;
-                        Core.Session.Raven.Store(historyRecord);
-                    }
-                }
-
-                Core.Session.Commit();
-                Core.Session.Close();
+                app.TimezoneId = org.TimezoneId;
             }
 
             return new EmptyResult();
-        }
-
-        public ActionResult RemoveHistory(string organisationId)
-        {
-            Core.Session.SetOrganisation(new Organisation
-            {
-                Id = Organisation.GetId(organisationId)
-            });
-
-            RavenQueryStatistics stats;
-
-            var issues = Core.Session.Raven.Query<IssueDocument, Issues_Search>().Statistics(out stats)
-                .Skip(0)
-                .Take(_configuration.MaxPageSize)
-                .As<Issue>()
-                .ToList();
-
-            if (stats.TotalResults > _configuration.MaxPageSize)
-            {
-                Trace("Total issues is greater than default page size, iterating to get all issues");
-                int pageNumber = stats.TotalResults / _configuration.MaxPageSize;
-
-                for (int i = 1; i < pageNumber; i++)
-                {
-                    issues.AddRange(Core.Session.Raven.Query<IssueDocument, Issues_Search>()
-                        .Skip(i * _configuration.MaxPageSize)
-                        .Take(_configuration.MaxPageSize)
-                        .As<Issue>());
-                }
-            }
-
-            foreach (var partition in issues.Partition(50))
-            {
-                foreach (var issue in partition)
-                {
-                    issue.History = null;
-                }
-
-                Core.Session.Commit();
-                Core.Session.Close();
-            }
-
-            return new EmptyResult();
-        }
-
-        public ActionResult SyncIssueCount(string organisationId, string issueId)
-        {
-            Core.Session.SetOrganisation(new Organisation
-            {
-                Id = Organisation.GetId(organisationId)
-            });
-
-            Core.Session.AddCommitAction(new SendNServiceBusMessage("Sync Issue Error Counts", new SyncIssueErrorCountsMessage
-            {
-                IssueId = Issue.GetId(issueId),
-                OrganisationId = Organisation.GetId(organisationId)
-            }, _configuration.EventsQueueName));
-
-            return Content("Queued");
-        }
-
-        public ActionResult UpdateSync(string organisationId)
-        {
-            Core.Session.SetOrganisation(new Organisation
-            {
-                Id = Organisation.GetId(organisationId)
-            });
-
-            RavenQueryStatistics stats;
-            var dateResults = Core.Session.Raven.Query<IssueDailyCount>().Statistics(out stats).Skip(0)
-                .Take(50)
-                .Select(r => r.Id)
-                .ToList();
-
-            if (stats.TotalResults > 50)
-            {
-                int pageNumber = stats.TotalResults / 50;
-
-                for (int i = 1; i < pageNumber; i++)
-                {
-                    var range = Core.Session.Raven.Query<IssueDailyCount>()
-                                    .Skip(i * 50)
-                                    .Take(50)
-                                    .Select(r => r.Id)
-                                    .ToList();
-
-                    dateResults.AddRange(range);
-                }
-            }
-
-            foreach (var partition in dateResults.Partition(100))
-            {
-                foreach (var id in partition)
-                {
-                    var count = Core.Session.Raven.Load<IssueDailyCount>(id);
-                    count.Historical = false;
-                }
-
-                Core.Session.Commit();
-                Core.Session.Close();
-                Core.Session.SetOrganisation(new Organisation
-                {
-                    Id = Organisation.GetId(organisationId)
-                });
-            }
-
-            return Content("Done");
         }
 
         public ActionResult StripCss(string organisationId, string issueId)

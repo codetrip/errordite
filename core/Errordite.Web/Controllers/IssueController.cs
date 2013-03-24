@@ -113,7 +113,7 @@ namespace Errordite.Web.Controllers
                 AdjustmentName = GetAdjustmentRejectsName(issue.Name),
                 IssueId = issue.Id,
                 Users = users.Items.ToSelectList(u => u.Id, u => "{0} {1}".FormatWith(u.FirstName, u.LastName), sortListBy: SortSelectListBy.Text, selected: u => u.Id == issue.UserId),
-                Statuses = issue.Status.ToSelectedList(IssueResources.ResourceManager, false, issue.Status.ToString()),
+                Statuses = issue.Status.ToSelectedList(IssueResources.ResourceManager, false, issue.Status == IssueStatus.Unacknowledged ? IssueStatus.Acknowledged.ToString() : issue.Status.ToString()),
                 UserId = issue.UserId,
                 Status = issue.Status,
                 AlwaysNotify = issue.AlwaysNotify,
@@ -126,8 +126,8 @@ namespace Errordite.Web.Controllers
                 {
 
                     ErrorCount = issue.ErrorCount,
-                    LastErrorUtc = issue.LastErrorUtc.ToLocalTime(),
-                    FirstErrorUtc = issue.CreatedOnUtc.ToLocalTime(),
+                    LastErrorUtc = issue.LastErrorUtc,
+                    FirstErrorUtc = issue.CreatedOnUtc,
                     UserName = assignedUser == null ? string.Empty : assignedUser.FullName,
                     ApplicationName = applications.Items.First(a => a.Id == issue.ApplicationId).Name,
                     ErrorLimitStatus = IssueResources.ResourceManager.GetString("ErrorLimitStatus_{0}".FormatWith(issue.LimitStatus)),
@@ -259,7 +259,7 @@ namespace Errordite.Web.Controllers
                     return RenderPartial("Issue/HistoryItem", new IssueHistoryItemViewModel
                     {
                         Message = h.GetMessage(users.Items, issueMemoizer, GetIssueLink),
-                        DateAddedUtc = h.DateAddedUtc.ToLocalTime(),
+                        DateAddedUtc = h.DateAddedUtc,
                         UserEmail = user != null ? user.Email : string.Empty,
                         Username = user != null ? user.FullName : string.Empty,
                         SystemMessage = h.SystemMessage,

@@ -1,17 +1,12 @@
 ﻿
 using System;
-using System.IO;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using System.Xml.Linq;
 using CodeTrip.Core.Misc;
 using Errordite.Client;
-using Errordite.Client.Abstractions;
 using Errordite.Client.Configuration;
-using Errordite.Client.DataCollectors;
 using Errordite.Client.Interfaces;
-using CodeTrip.Core.Extensions;
 
 namespace Errordite.Samples.Mvc3
 {
@@ -42,19 +37,6 @@ namespace Errordite.Samples.Mvc3
 
         }
 
-        private class Logger : IErrorditeLogger
-        {
-            public void Debug(string message, params object[] args)
-            {
-                System.Diagnostics.Debug.WriteLine(message, args);
-            }
-
-            public void Error(Exception e)
-            {
-                System.Diagnostics.Debug.WriteLine(e.ToString());
-            }
-        }
-
         protected void Application_Start()
         {
 			log4net.Config.XmlConfigurator.Configure();
@@ -69,7 +51,7 @@ namespace Errordite.Samples.Mvc3
                     ErrorditeClientOverrideHelper.Augment(c);
                     c.DataCollectors.Insert(0, new AcmeDataCollectorFactory());
                 };
-            ErrorditeClient.SetLogger(new Logger());
+            ErrorditeClient.SetErrorNotificationAction(e => System.Diagnostics.Trace.Write(e));
 			Errordite.Client.Log4net.ErrorditeLogger.Initialise(true, "Errordite.Samples");
 
             RegisterGlobalFilters(GlobalFilters.Filters);

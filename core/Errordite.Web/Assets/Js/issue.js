@@ -107,14 +107,14 @@
       $issue.delegate('select#Status', 'change', function() {
         var $this;
         $this = $(this);
-        if ($this.val() === 'Ignorable') {
-          return $issue.find('li.checkbox').removeClass('hidden');
+        if ($this.val() === 'Ignored') {
+          return $issue.find('li.inline').removeClass('hidden');
         } else {
-          return $issue.find('li.checkbox').addClass('hidden');
+          return $issue.find('li.inline').addClass('hidden');
         }
       });
-      if ($issue.find('select#Status').val() === 'Ignorable') {
-        $issue.find('li.checkbox').removeClass('hidden');
+      if ($issue.find('select#Status').val() === 'Ignored') {
+        $issue.find('li.inline').removeClass('hidden');
       }
       return $('#issue-tabs .tablink').bind('shown', function(e) {
         return loadTabData($(e.currentTarget));

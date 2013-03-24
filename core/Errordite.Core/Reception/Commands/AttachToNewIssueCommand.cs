@@ -40,7 +40,7 @@ namespace Errordite.Core.Reception.Commands
 
 			var issue = new Issue
 			{
-				Name = "{0} ({1})".FormatWith(error.ExceptionInfos.First().Type, DateTime.UtcNow.ToLocalTime().ToString("yyyy.MM.ddTHH.mm.ss")),
+                Name = "{0} ({1})".FormatWith(error.ExceptionInfos.First().Type, error.TimestampUtc.ToString("yyyy.MM.ddTHH.mm.ss")),
 				Rules = rules,
 				ApplicationId = application.Id,
 				CreatedOnUtc = error.TimestampUtc,
