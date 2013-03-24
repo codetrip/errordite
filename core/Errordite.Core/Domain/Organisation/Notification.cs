@@ -6,10 +6,11 @@ namespace Errordite.Core.Domain.Organisation
     public enum NotificationType
     {
         [ProtoMember(1)]
-        NotifyOnNewClassCreated,
+        NotifyOnNewIssueCreated,
         [ProtoMember(2)]
-        NotifyOnNewInstanceOfSolvedClass,
+        NotifyOnNewInstanceOfSolvedIssue,
         [ProtoMember(3)]
-        NotifySystemWarnings
+        NotifySystemWarnings,
+        AlwaysNotifyOnInstanceOfIssue
     }
 }

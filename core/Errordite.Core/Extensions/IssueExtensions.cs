@@ -1,4 +1,5 @@
-﻿using Errordite.Core.Domain.Error;
+﻿using CodeTrip.Core.Exceptions;
+using Errordite.Core.Domain.Error;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Notifications.EmailInfo;
 using System.Linq;
@@ -10,10 +11,22 @@ namespace Errordite.Core.Extensions
         public static IssueEmailInfoBase ToEmailInfo(this Issue issue, NotificationType notificationType, Error instance,
                                                      Application application)
         {
-            var emailInfo =
-                notificationType == NotificationType.NotifyOnNewClassCreated
-                    ? (IssueEmailInfoBase) new NewIssueReceivedEmailInfo()
-                    : new NewInstanceOfSolvedIssueEmailInfo();
+            IssueEmailInfoBase emailInfo;
+
+            switch (notificationType)
+            {
+                case NotificationType.NotifyOnNewIssueCreated:
+                    emailInfo = new NewIssueReceivedEmailInfo();
+                    break;
+                case NotificationType.NotifyOnNewInstanceOfSolvedIssue:
+                    emailInfo = new NewInstanceOfSolvedIssueEmailInfo();
+                    break;
+                case NotificationType.AlwaysNotifyOnInstanceOfIssue:
+                    emailInfo = new InstanceOfAlwaysNotifyIssueEmailInfo();
+                    break;
+                default:
+                    throw new CodeTripUnexpectedValueException("NotificationType", notificationType.ToString());
+            }
 
             emailInfo.ApplicationName = application.Name;
             emailInfo.ExceptionMessage = instance.ExceptionInfos.First().Message;
