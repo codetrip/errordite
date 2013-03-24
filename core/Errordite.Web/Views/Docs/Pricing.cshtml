@@ -1,4 +1,4 @@
-﻿@using Errordite.Web.Models.Help
+﻿@using Errordite.Web.Models.Docs
 @using Errordite.Web.Extensions
 @model IEnumerable<Errordite.Core.Domain.Organisation.PaymentPlan>
 
@@ -8,7 +8,7 @@
 
 @section header
 {
-    @Html.Partial("Help/Tabs", HelpTab.Pricing) 
+    @Html.Partial("Docs/Tabs", DocsTab.Pricing) 
 }     
 
 <section class="centered">
@@ -21,7 +21,7 @@
     
         @foreach (var paymentPlan in Model)
         {
-            @Html.Partial("Help/PaymentPlan", paymentPlan)
+            @Html.Partial("Docs/PaymentPlan", paymentPlan)
         }
 		
         <div class="clear"></div>
