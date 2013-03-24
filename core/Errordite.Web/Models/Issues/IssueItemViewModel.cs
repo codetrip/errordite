@@ -35,7 +35,7 @@ namespace Errordite.Web.Models.Issues
             {
                 IssueId = issue.FriendlyId,
                 ErrorCount = issue.ErrorCount,
-                LastErrorUtc = issue.LastErrorUtc.ToLocalTime(),
+                LastErrorUtc = issue.LastErrorUtc,
                 Name = issue.Name,
                 Status = issue.Status,
                 UserName = users.FirstOrDefault(u => u.Id == issue.UserId).IfPoss(u => u.FullName, issue.UserId),

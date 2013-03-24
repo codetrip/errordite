@@ -1,4 +1,5 @@
 ﻿
+@using Errordite.Core.Extensions
 @model IEnumerable<Errordite.Core.Domain.Error.TraceMessage>
      
 <div class="messages">
@@ -15,10 +16,8 @@
 			@foreach (var msg in Model)
 			{
 				<tr> 
-					<td>@Html.Raw(msg.Logger)</td>
-					<td>@Html.Raw(msg.Level)</td>
 					<td>@Html.Raw(msg.Message)</td>
-					<td>@msg.Milliseconds<span>ms</span></td>
+					<td>@msg.Timestamp.ToLocalFormatted()<span>ms</span></td>
 				</tr>
 			}
 		</tbody>
