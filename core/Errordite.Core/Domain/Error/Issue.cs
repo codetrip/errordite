@@ -81,6 +81,8 @@ namespace Errordite.Core.Domain.Error
         [Raven.Imports.Newtonsoft.Json.JsonIgnore]
         public string FriendlyId { get { return Id == null ? string.Empty : Id.Split('/')[1]; } }
 
+        public DateTimeOffset? LastNotified { get; set; }
+
         public static string GetId(string friendlyId)
         {
             return friendlyId.Contains("/") ? friendlyId : "issues/{0}".FormatWith(friendlyId);

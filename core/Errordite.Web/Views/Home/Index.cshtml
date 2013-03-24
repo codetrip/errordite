@@ -4,10 +4,60 @@
     ViewBag.Title = "Home"; 
 }
 
+<script>
+      // 2. This code loads the IFrame Player API code asynchronously.
+      var tag = document.createElement('script');
+
+      // This is a protocol-relative URL as described here:
+      //     http://paulirish.com/2010/the-protocol-relative-url/
+      // If you're testing a local page accessed via a file:/// URL, please set tag.src to
+      //     "https://www.youtube.com/iframe_api" instead.
+      tag.src = "//www.youtube.com/iframe_api";
+      var firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+      // 3. This function creates an <iframe> (and YouTube player)
+      //    after the API code downloads.
+      var homepageVideoPlayer;
+      function onYouTubeIframeAPIReady() {
+        homepageVideoPlayer = new YT.Player('yt', {
+          height: '540',
+          width: '960',
+          videoId: '1ifeNlAwgtQ',
+          events: {
+            'onReady': onPlayerReady,
+            'onStateChange': onPlayerStateChange
+          },
+          playerVars: {
+              rel: 0
+          }
+        });
+      }
+
+      // 4. The API will call this function when the video player is ready.
+      function onPlayerReady(event) {
+        //event.target.playVideo();
+      }
+
+      // 5. The API calls this function when the player's state changes.
+      //    The function indicates that when playing a video (state=1),
+      //    the player should play for six seconds and then stop.
+      var done = false;
+      function onPlayerStateChange(event) {
+        //if (event.data == YT.PlayerState.PLAYING && !done) {
+          //setTimeout(stopVideo, 6000);
+          //done = true;
+        //}
+      }
+      function stopVideo() {
+        homepageVideoPlayer.stopVideo();
+      }
+    </script>
+
 <section id="home" class="dark-container">
     <section class="centered">
 		<h1 class="superlarge">
-			Making sense of your <br /> exception logs <a class="btn-black" href="@Url.SignUp()">Try Errordite for <span>free</span></a>
+			Making sense of <br /> your errors <a class="btn-black" href="@Url.SignUp()">Try Errordite for <span>free</span></a>
 		</h1>
 		<div class="video-panel">
 			<div class="preview">
@@ -15,9 +65,10 @@
 			</div>
 		    <div class="player">
 		        <div class="hide-button">
-			        <a id="hideplayer" class="btn-black" href="#">Hide the <span>video</span></a>
-			    </div>
-		        <iframe src="https://player.vimeo.com/video/51609452?title=0&amp;byline=0&amp;portrait=0" width="960" height="540" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+		            <a id="hideplayer" class="btn-black" href="#">Hide the <span>video</span></a>
+		        </div>
+                <div id="yt"></div>
+		        @*<iframe width="960" height="540" src="https://www.youtube.com/embed/aunCJeb5tAY?rel=0" frameborder="0" allowfullscreen></iframe>*@
 		    </div>
 		</div>
     </section> 
@@ -25,14 +76,14 @@
 <section class="blue-container">
     <section class="centered">
         <div class="howitworks">	
-            <p><span>Errordite</span> receives all your application exceptions and groups together those that are the same - automatically or with rules you define. You then decide how to progress the errors. You can fix them, ignore them, or wait and see how often the error occurs.</p>
+            <p><span>Errordite</span> receives all your application errors and groups together those that are the same - automatically or with rules you define. You then decide how to progress the errors. You can fix them, ignore them, or wait and see how often the error occurs.</p>
             <p class="heading">How it works...</p>
             <div class="two-col">
                 <img src="@Url.Content("~/assets/images/settings.png")" alt="Configure Errordite" /><br />
                 <div class="blurb">
                     <span class="item">1. </span>
                     <span class="heading">Simply configure your application to use one of the Errordite clients...</span><br />
-                    <span class="shortdesc">.NET and Python currently supported, with more to follow</span>
+                    <span class="shortdesc">Currently available for .net and Python.<br/> More technologies coming soon.</span>
                 </div>
             </div>
             <div class="two-col">
@@ -40,23 +91,23 @@
                 <div class="blurb">
                     <span class="item">2. </span>
                     <span class="heading">Wait for errors to come in - you'll be alerted online and via email...</span><br />
-                    <span class="shortdesc">But it's <span>smart</span> - you wont be swamped</span>
+                    <span class="shortdesc">But it's <span>smart</span> - you won't be swamped</span>
                 </div>
             </div>
             <div class="two-col">
                 <img src="@Url.Content("~/assets/images/counter.png")" alt="Errors are intelligently grouped" /><br />
                 <div class="blurb">
                     <span class="item">3. </span>
-                    <span class="heading">Errordite will then group the errors intelligently into seperate issues...</span><br />
-                  @*  <span class="shortdesc">Short description here</span>*@
+                    <span class="heading">Errordite intelligently groups the errors into discrete issues...</span><br />
+                    <span class="shortdesc">The grouping rules are clearly shown - you can also change them</span>
                 </div>
             </div>
             <div class="two-col">
                 <img src="@Url.Content("~/assets/images/people.png")" alt="User assignment" /><br />
                 <div class="blurb">
                     <span class="item">4. </span>
-                    <span class="heading">You can then assign the issues to your own development team...</span><br />
-                    <span class="shortdesc">eg. dan loves to fix <span>these types</span></span>
+                    <span class="heading">You assign the issues to your own development team...</span><br />
+                    @*<span class="shortdesc">eg. dan loves to fix <span>these types</span></span>*@
                 </div>
             </div>
             <div class="two-col">
@@ -64,15 +115,15 @@
                 <div class="blurb">
                     <span class="item">5. </span>
                     <span class="heading">Once you're done, mark your issues as solved...</span><br />
-                    @*<span class="shortdesc">Short description here</span>*@
+                    <span class="shortdesc">If an issue recurs we'll let you know immediately</span>
                 </div>
             </div>
             <div class="two-col">
                 <img src="@Url.Content("~/assets/images/errordite.png")" alt="Other features" /><br />
                 <div class="blurb">
                     <span class="item">6. </span>
-                    <span class="heading">Also... reports, user-defined rules and alerts, HipChat integration, fast search and much more!</span><br />
-                    @*<span class="shortdesc">Short description here</span>*@
+                    <span class="heading">Also... graphs, alerts, HipChat integration, fast search and much more!</span><br />
+                    <span class="shortdesc">Watch the video for an overview</span>
                 </div>
             </div>
         </div>
@@ -81,7 +132,7 @@
 <section class="white-container">
     <section class="centered">
         <div class="home-footer">
-            <p class="">Errordite is currently running an open beta, <br />so please jump in and start making sense of your exception logs.</p>
+            <p class="">Errordite is currently running an open beta, <br />so please jump in and start making sense of your application's errors.</p>
             <a class="btn btn-large btn-blue" href="@Url.SignUp()">Sign Up</a>
         </div>
     </section> 

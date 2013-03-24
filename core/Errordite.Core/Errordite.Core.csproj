@@ -346,6 +346,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Notifications\Templates\InstanceOfAlwaysNotifyIssueEmailTemplate.html" />
     <Content Include="Notifications\Templates\IssueAssignedToUserEmailTemplate.html" />
     <Content Include="Notifications\Templates\NewInstanceofSolvedIssueEmailTemplate.html" />
     <Content Include="Notifications\Templates\IssueErrorCountExceededEmailTemplate.html" />

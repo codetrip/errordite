@@ -392,8 +392,11 @@ table {
 }
 
 footer {
-  float:left;
+  /*sticky footer, as described at http://www.lwis.net/profile/CSS/sticky-footer.html*/
+  clear: both;
+  position: relative;
   width: 100%;
+  margin-top :-80px;
   height:80px;
   background: $verydarkbrown;
   .footer {
@@ -1588,15 +1591,17 @@ section {
 }
 
 .video-panel {
-	height:135px;
+	height:85px;
+	width: 756px;
+	margin-left: 100px;
 	background-color:#91C6E5;
 	float:left;
-	width:$minwidth;
+	
 	.btn-black {
 		padding: 15px 50px;
 	}
 	.preview {
-		line-height: 225px;
+		line-height: 85px;
 		text-align:center;
 	}
 	.player {
@@ -1712,6 +1717,9 @@ section {
 
 nav {
   float: left;
+  &.main-nav{
+	float:right;
+  }
   .nav-container {
     padding-left: 123px;
   }
