@@ -33,15 +33,6 @@ namespace Errordite.Core.Reception.Commands
 
 			var issue = Load<Issue>(request.IssueId);
 
-            //if the matching issue is solved, send an email and set it back to Acknowledged
-            if (issue.Status == IssueStatus.Solved || (issue.AlwaysNotify && issue.LastErrorUtc < DateTime.UtcNow.AddHours(-12)))
-            {
-				SendNotification(issue, request.Application, NotificationType.NotifyOnNewInstanceOfSolvedClass, request.Error);
-
-                if(issue.Status == IssueStatus.Solved)
-                    issue.Status = IssueStatus.Acknowledged;
-            }
-
             issue.ErrorCount++;
 
 			if (request.Error.TimestampUtc > issue.LastErrorUtc)
@@ -96,6 +87,22 @@ namespace Errordite.Core.Reception.Commands
             {
                 Trace("It's a new error, so Store it");
                 Store(request.Error);
+
+                //if the matching issue is solved, send an email and set it back to Acknowledged
+                if (issue.Status == IssueStatus.Solved || (issue.AlwaysNotify
+                    && issue.LastNotified.GetValueOrDefault() < DateTime.UtcNow.AddHours(-12)))
+                {
+                    SendNotification(issue, request.Application, 
+                        issue.Status == IssueStatus.Solved ?
+                        NotificationType.NotifyOnNewInstanceOfSolvedIssue :
+                        NotificationType.AlwaysNotifyOnInstanceOfIssue
+                    , request.Error);
+
+                    issue.LastNotified = DateTime.UtcNow;
+
+                    if (issue.Status == IssueStatus.Solved)
+                        issue.Status = IssueStatus.Acknowledged;
+                }
             }
 
             if (issue.LimitStatus == ErrorLimitStatus.Exceeded)
