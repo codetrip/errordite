@@ -12,14 +12,15 @@
 
 <div class="welcome-bar-container">
     <div class="welcome-bar">
-        @if (appContext.AuthenticationStatus == AuthenticationStatus.Authenticated)
-        {
-            <div class="applications">
-                @{
-                    var applications = ViewData.GetCore().GetApplications().Items;
-                    var selectedApplication = applications.FirstOrDefault(a => a.FriendlyId == ViewData.GetSelectedApplication());
-                    var selectedApplicationName = selectedApplication == null ? null : selectedApplication.Name;
-                }
+        
+        <div class="applications">
+            @if (appContext.AuthenticationStatus == AuthenticationStatus.Authenticated)
+            {
+                var applications = ViewData.GetCore().GetApplications().Items;
+                var selectedApplication = applications.FirstOrDefault(a => a.FriendlyId == ViewData.GetSelectedApplication());
+                var selectedApplicationName = selectedApplication == null ? null : selectedApplication.Name;
+            
+                <input type="hidden" value="@(selectedApplication == null ? string.Empty : selectedApplication.FriendlyId)" name="ApplicationId" id="ApplicationId" />
                 <ul class="popup popup-pills">
                     <li class="dropdown" id="applications">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#applications">
@@ -53,8 +54,8 @@
                 
                     </li>
                 </ul>
-            </div>
-        }
+            }
+        </div>
         <nav class="links">
             @if (appContext.AuthenticationStatus == AuthenticationStatus.Anonymous)
             {
