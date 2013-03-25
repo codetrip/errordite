@@ -83,7 +83,7 @@ namespace Errordite.Web.Extensions
             if (cookieManager == null)
                 return null;
 
-            return cookieManager.Get("selected-application");
+            return cookieManager.Get(WebConstants.CookieSettings.ApplicationIdCookieKey);
         }
 
         public static void SetCore(this ViewDataDictionary viewData, IErrorditeCore errorditeCore)

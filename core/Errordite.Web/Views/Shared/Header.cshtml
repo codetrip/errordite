@@ -1,6 +1,7 @@
 ﻿@using CodeTrip.Core.Caching.Entities
 @using Errordite.Core.Domain.Organisation
 @using Errordite.Core.Identity
+@using Errordite.Web
 @using Errordite.Web.Extensions
 @using Errordite.Web.Models.Navigation
 @using System.Linq
@@ -16,18 +17,19 @@
             <div class="applications">
                 @{
                     var applications = ViewData.GetCore().GetApplications().Items;
-                    var selectedApplication = ViewData.GetSelectedApplication();
+                    var selectedApplication = applications.FirstOrDefault(a => a.FriendlyId == ViewData.GetSelectedApplication());
+                    var selectedApplicationName = selectedApplication == null ? null : selectedApplication.Name;
                 }
                 <ul class="popup popup-pills">
                     <li class="dropdown" id="applications">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#applications">
-                            @if (selectedApplication.IsNullOrEmpty() && applications.Count() > 1)
+                            @if (selectedApplicationName.IsNullOrEmpty() && applications.Count() > 1)
                             {
-                                <text>Select active application</text>
+                                <text>All Applications (@applications.Count())</text>
                             }
                             else if (applications.Any())
                             {
-                                @(selectedApplication.IsNullOrEmpty() ? applications.First().Name :selectedApplication)
+                                @(selectedApplicationName.IsNullOrEmpty() ? applications.First().Name : selectedApplicationName)
                             }
                             @if (applications.Count() > 1)
                             {
@@ -38,12 +40,12 @@
                         {
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a href="@Url.CurrentRequest("setapplication=true&applicationId=")">All Applications (@applications.Count())</a>
+                                    <a href="@Url.CurrentRequest("{0}=-1".FormatWith(WebConstants.RouteValues.SetApplication))">All Applications (@applications.Count())</a>
                                 </li>
                                 @foreach (var application in applications)
                                 {
                                     <li>
-                                        <a href="@Url.CurrentRequest("setapplication=true&applicationId={0}".FormatWith(application.FriendlyId))">@application.Name</a>
+                                        <a href="@Url.CurrentRequest("{0}={1}".FormatWith(WebConstants.RouteValues.SetApplication, application.FriendlyId))">@application.Name</a>
                                     </li>
                                 }
                             </ul>
@@ -93,7 +95,7 @@
             }
         </div>
         <nav class="main-nav">
-            <div class="@(appContext.CurrentUser.Role == UserRole.SuperUser || appContext.Impersonated ? "nav-container-system" : "nav-container")">
+            <div class="nav-container">
                 <ul class="nav">
                     @if (appContext.AuthenticationStatus == AuthenticationStatus.Authenticated && (appContext.CurrentUser.Role == UserRole.SuperUser || appContext.Impersonated))
                     {
@@ -118,8 +120,8 @@
                         {
                             <div class="pointer">
                                 <ul>
-                                    <li><a href="@ViewData.GetIssuesUrl(Url.Issues())">Issues ›</a></li>
-                                    <li><a href="@ViewData.GetErrorsUrl(Url.Errors())">Errors ›</a></li>
+                                    <li><a href="@Url.Issues()">Issues ›</a></li>
+                                    <li><a href="@Url.Errors()">Errors ›</a></li>
                                     <li><a href="@Url.Feed()">Activity Feed ›</a></li>
                                     <li><a href="@Url.AddIssue()">Add an Issue ›</a></li>
                                 </ul>

@@ -17,7 +17,7 @@ namespace Errordite.Web
 
         public static class RouteValues
         {
-            public const string SetApplication = "setApplication";
+            public const string SetApplication = "setapp";
         }
     }
 }

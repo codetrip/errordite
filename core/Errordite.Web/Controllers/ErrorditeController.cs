@@ -34,9 +34,9 @@ namespace Errordite.Web.Controllers
                 var appId = CookieManager.Get(WebConstants.CookieSettings.ApplicationIdCookieKey);
 
                 if (appId.IsNotNullOrEmpty())
-                    return Core.GetApplications().Items.FirstOrDefault(a => a.FriendlyId == appId) ?? new Application();
+                    return Core.GetApplications().Items.FirstOrDefault(a => a.FriendlyId == appId);
 
-                return new Application();
+                return null;
             }
         }
 

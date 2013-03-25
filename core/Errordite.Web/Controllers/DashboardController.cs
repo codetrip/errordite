@@ -49,9 +49,10 @@ namespace Errordite.Web.Controllers
         [ImportViewData]
         public ActionResult GetGraphData()
         {
+            var curentApplication = CurrentApplication;
             var data = _getDashboardReportQuery.Invoke(new GetDashboardReportRequest
             {
-                ApplicationId = CurrentApplication.Id,
+                ApplicationId = curentApplication == null ? null : curentApplication.Id,
                 OrganisationId = Core.AppContext.CurrentUser.OrganisationId
             }).Data;
 
@@ -61,7 +62,8 @@ namespace Errordite.Web.Controllers
         [ImportViewData]
         public ActionResult Index()
         {
-            var applicationId = CurrentApplication.Id;
+            var curentApplication = CurrentApplication;
+            var applicationId = curentApplication == null ? null : curentApplication.Id;
             var viewModel = new DashboardViewModel();
             var applications = Core.GetApplications();
             
@@ -128,8 +130,9 @@ namespace Errordite.Web.Controllers
 
         public ActionResult Update(int lastErrorDisplayed, int lastIssueDisplayed)
 		{
+            var curentApplication = CurrentApplication;
 			var applications = Core.GetApplications();
-            var applicationId = CurrentApplication.Id;
+            var applicationId = curentApplication == null ? null : curentApplication.Id;
 
             var issues = _getApplicationIssuesQuery.Invoke(new GetApplicationIssuesRequest
 			{
@@ -165,7 +168,8 @@ namespace Errordite.Web.Controllers
         [PagingView]
         public ActionResult Feed()
         {
-            var applicationId = CurrentApplication.Id;
+            var curentApplication = CurrentApplication;
+            var applicationId = curentApplication == null ? null : curentApplication.Id;
             var paging = GetSinglePagingRequest();
             var issueMemoizer = new LocalMemoizer<string, Issue>(id => _getIssueQuery.Invoke(new GetIssueRequest { CurrentUser = Core.AppContext.CurrentUser, IssueId = id }).Issue);
             var users = Core.GetUsers();
