@@ -17,15 +17,19 @@ namespace Errordite.Web.Extensions
         /// Request.Url will not work as we will get the port-mapped value when in live.
         /// Instead using Url.CurrentRequest() will ensure we get the correctly mapped one.
         /// </summary>
-        public static string CurrentRequest(this UrlHelper helper)
+        public static string CurrentRequest(this UrlHelper helper, string query = null)
         {
             var uriBuilder = new UriBuilder(ErrorditeConfiguration.Current.SiteBaseUrl);
 
             var currentUri = helper.RequestContext.HttpContext.Request.Url;
 
             uriBuilder.Path = currentUri.AbsolutePath;
-            uriBuilder.Query = currentUri.Query;
-            
+
+            if(query != null)
+                uriBuilder.Query = currentUri.Query.IsNotNullOrEmpty() ? currentUri.Query + query : query;
+            else
+                uriBuilder.Query = currentUri.Query;
+
             return uriBuilder.Uri.ToString();
         }
 

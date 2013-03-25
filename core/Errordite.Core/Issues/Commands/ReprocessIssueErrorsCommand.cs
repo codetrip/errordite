@@ -99,6 +99,7 @@ namespace Errordite.Core.Issues.Commands
                 Type = HistoryItemType.ErrorsReprocessed,
                 ReprocessingResult = response.AttachedIssueIds,
                 IssueId = issue.Id,
+                ApplicationId = issue.ApplicationId,
             });
 
             if (response.AttachedIssueIds.Any(i => i.Key == issue.Id))

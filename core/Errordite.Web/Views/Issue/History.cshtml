@@ -5,6 +5,7 @@
 	@using (Html.BeginForm("addcomment", "issue", FormMethod.Post, new { id = "comment" }))
 	{
 		@Html.HiddenFor(m => m.IssueId)
+		@Html.HiddenFor(m => m.ApplicationId)
 	    <div style="float:left;width:100%">
 	        @Html.ValidationMessageFor(m => m.Comment)   
 	    </div>

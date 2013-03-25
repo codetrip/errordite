@@ -237,6 +237,7 @@
     <Compile Include="Notifications\Commands\SendHipChatMessageCommand.cs" />
     <Compile Include="Notifications\Commands\SendEmailCommand.cs" />
     <Compile Include="Notifications\Commands\SendNotificationsCommand.cs" />
+    <Compile Include="Notifications\EmailInfo\InstanceOfAlwaysNotifyIssueEmailInfo.cs" />
     <Compile Include="Notifications\EmailInfo\IssueAssignedToUserEmailInfo.cs" />
     <Compile Include="Notifications\EmailInfo\IssueEmailInfoBase.cs" />
     <Compile Include="Notifications\EmailInfo\NewInstanceofSolvedIssueEmailInfo.cs" />

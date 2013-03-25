@@ -217,7 +217,7 @@ table {
 .welcome-bar-container {
   width: 100%;
   background: #292c31;
-  height: 35px; }
+  height: 45px; }
   .welcome-bar-container .welcome-bar {
     margin: 0 auto;
     width: 974px;
@@ -225,19 +225,50 @@ table {
     color: #fff;
     font-family: "Open Sans", sans-serif;
     font-weight: 300;
-    font-size: 12px; }
+    font-size: 13px; }
     .welcome-bar-container .welcome-bar .links {
-      height: 24px;
+      height: 31px;
       float: right;
-      width: 974px;
+      width: 474px;
       margin: 4px 0 0 0;
       border-bottom: 2px solid #393a3b;
-      margin-top: 8px; }
+      margin-top: 14px; }
+    .welcome-bar-container .welcome-bar .applications {
+      height: 45px;
+      width: 500px;
+      border-bottom: 2px solid #393a3b;
+      float: left; }
     .welcome-bar-container .welcome-bar a {
       color: #fff;
-      font-size: 12px; }
+      font-size: 13px;
+      text-align: left; }
       .welcome-bar-container .welcome-bar a:hover {
         text-decoration: underline; }
+    .welcome-bar-container .welcome-bar ul.popup {
+      margin-bottom: 0;
+      padding: 0;
+      margin-top: 8px; }
+    .welcome-bar-container .welcome-bar a.dropdown-toggle {
+      background-color: #414650;
+      border: 0;
+      padding: 6px 8px;
+      width: 250px; }
+      .welcome-bar-container .welcome-bar a.dropdown-toggle:hover {
+        text-decoration: none; }
+    .welcome-bar-container .welcome-bar .caret {
+      margin: 8px 10px 0 0;
+      border-top: 4px solid #fff; }
+    .welcome-bar-container .welcome-bar ul.dropdown-menu {
+      width: 265px;
+      background-color: #92c7e7; }
+      .welcome-bar-container .welcome-bar ul.dropdown-menu a {
+        color: #fff; }
+        .welcome-bar-container .welcome-bar ul.dropdown-menu a:hover {
+          text-decoration: none; }
+      .welcome-bar-container .welcome-bar ul.dropdown-menu li:hover {
+        background-color: #c2e0f2; }
+        .welcome-bar-container .welcome-bar ul.dropdown-menu li:hover a {
+          color: #496d82; }
 
 .header-container {
   width: 100%;
@@ -1526,7 +1557,7 @@ nav {
   .quicklinks .home-links {
     font-weight: 400;
     font-size: 12px;
-    width: 225px;
+    width: 300px;
     border-right: 2px solid #393a3b;
     margin-right: 10px; }
     .quicklinks .home-links a {
@@ -1551,22 +1582,6 @@ nav {
     margin: 2px 0; }
   .quicklinks ul {
     padding-left: 0; }
-  .quicklinks a.dropdown-toggle {
-    background-color: #414650;
-    border: 0;
-    padding: 10px 8px;
-    width: 225px; }
-  .quicklinks .caret {
-    margin: 8px 10px 0 0; }
-  .quicklinks ul.dropdown-menu {
-    width: 240px;
-    background-color: #92c7e7; }
-    .quicklinks ul.dropdown-menu a {
-      color: #fff; }
-    .quicklinks ul.dropdown-menu li:hover {
-      background-color: #c2e0f2; }
-      .quicklinks ul.dropdown-menu li:hover a {
-        color: #496d82; }
 
 .rules select {
   width: 180px; }

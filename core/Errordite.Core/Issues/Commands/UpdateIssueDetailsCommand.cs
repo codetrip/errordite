@@ -72,7 +72,8 @@ namespace Errordite.Core.Issues.Commands
                     PreviousStatus = issue.Status,
                     SystemMessage = true,
                     UserId = request.CurrentUser.Id,
-                    Type = HistoryItemType.StatusUpdated
+                    Type = HistoryItemType.StatusUpdated,
+                    ApplicationId = issue.ApplicationId,
                 });
             }
 

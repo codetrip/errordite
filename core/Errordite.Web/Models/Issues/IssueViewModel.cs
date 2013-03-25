@@ -57,7 +57,8 @@ namespace Errordite.Web.Models.Issues
 	{
 		[Required(ErrorMessage = "Please enter a comment")]
 		public string Comment { get; set; }
-		public string IssueId { get; set; }
+        public string IssueId { get; set; }
+        public string ApplicationId { get; set; }
 	}
 
     public class IssueHistoryItemViewModel

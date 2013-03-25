@@ -412,7 +412,8 @@ namespace Errordite.Web.Controllers
 			{
 				IssueId = postModel.IssueId,
 				CurrentUser = Core.AppContext.CurrentUser,
-				Comment = postModel.Comment
+				Comment = postModel.Comment,
+                ApplicationId = postModel.ApplicationId
 			});
 
 			if (result.Status == AddCommentStatus.IssueNotFound)

@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using Errordite.Core.Identity;
 using Errordite.Web.Controllers;
 using Errordite.Web.Extensions;
@@ -21,7 +22,14 @@ namespace Errordite.Web.ActionFilters
             if (controller == null)
                 return;
 
-            result.ViewData.SetCoookieManager(controller.CookieManager);
+            if (filterContext.RequestContext.HttpContext.Request.QueryString.Get(WebConstants.RouteValues.SetApplication) != null)
+            {
+                var applicationId = filterContext.RequestContext.HttpContext.Request.QueryString.Get("applicationId");
+                controller.CookieManager.Set(WebConstants.CookieSettings.ApplicationIdCookieKey, applicationId, DateTime.UtcNow.AddYears(1));
+            }
+
+            result.ViewData.SetCookieManager(controller.CookieManager);
+            result.ViewData.SetCore(controller.Core);
             result.ViewData.SetAppContext(controller.Core.AppContext);
             result.ViewData.SetErrorditeConfiguration(controller.Core.Configuration);
         }

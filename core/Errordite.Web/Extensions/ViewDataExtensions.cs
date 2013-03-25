@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using CodeTrip.Core.Web;
+using Errordite.Core;
 using Errordite.Core.Configuration;
 using Errordite.Core.Identity;
 using Errordite.Web.Models.Navigation;
@@ -17,6 +18,7 @@ namespace Errordite.Web.Extensions
         private const string AppContextKey = "app_context_key";
         private const string ConfigurationKey = "configuration_key";
         private const string CookieManagerKey = "cookiemanager_key";
+        private const string ErrorditeCoreKey = "errordite_core_key";
 
         public static ErrorditeConfiguration GetConfiguration(this ViewDataDictionary viewData)
         {
@@ -58,6 +60,11 @@ namespace Errordite.Web.Extensions
             return GetQuery(viewData, baseUrl, WebConstants.CookieSettings.ErrorSearchCookieKey);
         }
 
+        public static string GetSelectedApplication(this ViewDataDictionary viewData, string baseUrl)
+        {
+            return GetQuery(viewData, baseUrl, WebConstants.CookieSettings.ErrorSearchCookieKey);
+        }
+
         private static string GetQuery(this ViewDataDictionary viewData, string baseUrl, string cookieName)
         {
             var cookieManager = viewData[CookieManagerKey] as ICookieManager;
@@ -69,7 +76,27 @@ namespace Errordite.Web.Extensions
             return query.IsNullOrEmpty() ? baseUrl : "{0}{1}".FormatWith(baseUrl, query);
         }
 
-        public static void SetCoookieManager(this ViewDataDictionary viewData, ICookieManager cookieManager)
+        public static string GetSelectedApplication(this ViewDataDictionary viewData)
+        {
+            var cookieManager = viewData[CookieManagerKey] as ICookieManager;
+
+            if (cookieManager == null)
+                return null;
+
+            return cookieManager.Get("selected-application");
+        }
+
+        public static void SetCore(this ViewDataDictionary viewData, IErrorditeCore errorditeCore)
+        {
+            viewData[ErrorditeCoreKey] = errorditeCore;
+        }
+
+        public static IErrorditeCore GetCore(this ViewDataDictionary viewData)
+        {
+            return viewData[ErrorditeCoreKey] as IErrorditeCore;
+        }
+
+        public static void SetCookieManager(this ViewDataDictionary viewData, ICookieManager cookieManager)
         {
             viewData[CookieManagerKey] = cookieManager;
         }
