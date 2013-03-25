@@ -21,7 +21,7 @@ namespace Errordite.Core.Extensions
                     emailInfo = new NewInstanceOfSolvedIssueEmailInfo();
                     break;
                 case NotificationType.AlwaysNotifyOnInstanceOfIssue:
-                    emailInfo = new NewInstanceOfSolvedIssueEmailInfo();//InstanceOfAlwaysNotifyIssueEmailInfo();
+                    emailInfo = new InstanceOfAlwaysNotifyIssueEmailInfo();
                     break;
                 default:
                     throw new CodeTripUnexpectedValueException("NotificationType", notificationType.ToString());

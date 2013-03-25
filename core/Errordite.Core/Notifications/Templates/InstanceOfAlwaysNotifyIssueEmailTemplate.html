@@ -1,0 +1,33 @@
+﻿$(Master:EmailTemplateMasterPage)
+$(Placeholder:Subject)New error matching issue - $(IssueName)
+$(Placeholder:Body)
+
+<tr>
+    <td>
+        <p>Hi,</p>
+        <p>We have received a new error on solved issue $(IssueId) - $(IssueName). This issue is marked as "always notify" 
+            and we have not notified you in at least 12 hours. 
+        </p>
+        <p><a href="$(ErrorditeUrl)issue/$(IssueId)" target="_blank">Click here to view the issue</a></p>
+    </td>
+</tr>
+<tr>
+    <td>
+        <span style="font-weight:bold">Application: </span>$(ApplicationName)
+    </td>
+</tr>
+<tr>
+    <td>
+        <span style="font-weight:bold">Exception Type: </span>$(Type)
+    </td>
+</tr>
+<tr>
+    <td>
+        <span style="font-weight:bold">Message: </span>$(ExceptionMessage)
+    </td>
+</tr>
+<tr>
+    <td>
+        <span style="font-weight:bold">Method: </span>$(Method)
+    </td>
+</tr>
