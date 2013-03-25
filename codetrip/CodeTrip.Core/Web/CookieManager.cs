@@ -62,7 +62,7 @@ namespace CodeTrip.Core.Web
 
         public void Expire(string cookieName)
         {
-            HttpCookie expiredCookie = new HttpCookie(cookieName)
+            var expiredCookie = new HttpCookie(cookieName)
             {
                 Expires = DateTime.Now.AddDays(-1)
             };

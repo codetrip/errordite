@@ -57,7 +57,7 @@ namespace Errordite.Web.Controllers
         PagingView(DefaultSort = CoreConstants.SortFields.LastErrorUtc, DefaultSortDescending = true), 
         ExportViewData, 
         ImportViewData,
-        StoreQueryInCookie(WebConstants.CookieSettings.IssueSearchCookieKey),
+        //StoreQueryInCookie(WebConstants.CookieSettings.IssueSearchCookieKey),
         GenerateBreadcrumbs(BreadcrumbId.Issues)
         ]
         public ActionResult Index(IssueCriteriaPostModel postModel)
@@ -78,6 +78,9 @@ namespace Errordite.Web.Controllers
                     //this is a fix up for when the url gets changed to contain the statuses in a single query parameter
                     postModel.Status = postModel.Status[0].Split(',');
                 }
+
+                if (postModel.ApplicationId.IsNullOrEmpty() && CurrentApplication != null)
+                    postModel.ApplicationId = CurrentApplication.FriendlyId;
 
                 var request = new GetApplicationIssuesRequest
                 {
@@ -137,9 +140,14 @@ namespace Errordite.Web.Controllers
                 viewModel.Rules = ruleViewModels;
             }
 
+            var selectedApplication = CurrentApplication;
             viewModel.Users = users.Items.ToSelectList(u => u.FriendlyId, u => "{0} {1}".FormatWith(u.FirstName, u.LastName), sortListBy: SortSelectListBy.Text);
             viewModel.Statuses = IssueStatus.Acknowledged.ToSelectedList(Resources.IssueResources.ResourceManager, false, IssueStatus.Acknowledged.ToString());
-            viewModel.Applications = applications.Items.ToSelectList(a => a.FriendlyId, a => a.Name, sortListBy: SortSelectListBy.Text);
+            viewModel.Applications = applications.Items.ToSelectList(
+                a => a.FriendlyId, 
+                a => a.Name, 
+                a => selectedApplication != null && a.Id == selectedApplication.Id, 
+            sortListBy: SortSelectListBy.Text);
             
             return View(viewModel);
         }

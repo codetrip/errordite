@@ -1,5 +1,7 @@
 ﻿
 using System;
+using System.Collections.Specialized;
+using System.Web;
 using System.Web.Mvc;
 using Errordite.Core.Configuration;
 using Errordite.Core.Domain;
@@ -8,6 +10,7 @@ using CodeTrip.Core.Extensions;
 using Errordite.Core.Identity;
 using Errordite.Web.Models.Issues;
 using System.Linq;
+using Errordite.Core.Extensions;
 
 namespace Errordite.Web.Extensions
 {
@@ -23,12 +26,19 @@ namespace Errordite.Web.Extensions
 
             var currentUri = helper.RequestContext.HttpContext.Request.Url;
 
+            if (currentUri == null)
+                return null;
+
             uriBuilder.Path = currentUri.AbsolutePath;
 
-            if(query != null)
-                uriBuilder.Query = currentUri.Query.IsNotNullOrEmpty() ? currentUri.Query + query : query;
+            if (query != null)
+            {
+                uriBuilder.Query = currentUri.Query.IsNullOrEmpty() ? query : currentUri.Query.MergeQueryStrings(query).Replace("?", "");
+            }
             else
-                uriBuilder.Query = currentUri.Query;
+            {
+                uriBuilder.Query = currentUri.Query.Replace("?", "");
+            }
 
             return uriBuilder.Uri.ToString();
         }

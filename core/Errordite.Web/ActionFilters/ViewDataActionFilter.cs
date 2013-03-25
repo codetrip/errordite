@@ -22,10 +22,10 @@ namespace Errordite.Web.ActionFilters
             if (controller == null)
                 return;
 
-            if (filterContext.RequestContext.HttpContext.Request.QueryString.Get(WebConstants.RouteValues.SetApplication) != null)
+            var appId = filterContext.RequestContext.HttpContext.Request.QueryString.Get(WebConstants.RouteValues.SetApplication);
+            if (appId != null)
             {
-                var applicationId = filterContext.RequestContext.HttpContext.Request.QueryString.Get("applicationId");
-                controller.CookieManager.Set(WebConstants.CookieSettings.ApplicationIdCookieKey, applicationId, DateTime.UtcNow.AddYears(1));
+                controller.CookieManager.Set(WebConstants.CookieSettings.ApplicationIdCookieKey, appId, DateTime.UtcNow.AddYears(1));
             }
 
             result.ViewData.SetCookieManager(controller.CookieManager);
