@@ -3,13 +3,56 @@
 @using Errordite.Core.Identity
 @using Errordite.Web.Extensions
 @using Errordite.Web.Models.Navigation
-
+@using System.Linq
+@using CodeTrip.Core.Extensions
 @{
    var appContext = ViewData.GetAppContext();
 }
 
 <div class="welcome-bar-container">
     <div class="welcome-bar">
+        @if (appContext.AuthenticationStatus == AuthenticationStatus.Authenticated)
+        {
+            <div class="applications">
+                @{
+                    var applications = ViewData.GetCore().GetApplications().Items;
+                    var selectedApplication = ViewData.GetSelectedApplication();
+                }
+                <ul class="popup popup-pills">
+                    <li class="dropdown" id="applications">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#applications">
+                            @if (selectedApplication.IsNullOrEmpty() && applications.Count() > 1)
+                            {
+                                <text>Select active application</text>
+                            }
+                            else if (applications.Any())
+                            {
+                                @(selectedApplication.IsNullOrEmpty() ? applications.First().Name :selectedApplication)
+                            }
+                            @if (applications.Count() > 1)
+                            {
+                                <b class="caret"></b>
+                            }
+                        </a>
+                        @if (applications.Count() > 1)
+                        {
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="@Url.CurrentRequest("setapplication=true&applicationId=")">All Applications (@applications.Count())</a>
+                                </li>
+                                @foreach (var application in applications)
+                                {
+                                    <li>
+                                        <a href="@Url.CurrentRequest("setapplication=true&applicationId={0}".FormatWith(application.FriendlyId))">@application.Name</a>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                
+                    </li>
+                </ul>
+            </div>
+        }
         <nav class="links">
             @if (appContext.AuthenticationStatus == AuthenticationStatus.Anonymous)
             {
@@ -23,11 +66,11 @@
             {
                 <text>
                     Welcome back <strong>@appContext.CurrentUser.FirstName
-                                             @if (appContext.Impersonated)
-                                             {
-												<a href="@Url.Impersonate()">(IMPERSONATED)</a>
-                                             }
-                                         </strong>&nbsp;&nbsp;|&nbsp;&nbsp; 
+                                     @if (appContext.Impersonated)
+                                     {
+                                         <a href="@Url.Impersonate()">(IMPERSONATED)</a>
+                                     }
+                                 </strong>&nbsp;&nbsp;|&nbsp;&nbsp; 
                     <a href="@Url.YourDetails()">Your Details</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.SignOut()">Sign Out</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.Contact()">Contact Us</a>
                 </text> 
             }
@@ -104,7 +147,7 @@
                                 <li><a href="@Url.GettingStarted()">Getting Started ›</a></li>
                                 <li><a href="@Url.Pricing()">Pricing & Plans ›</a></li>
                                 <li><a href="@Url.Client()">.NET Client ›</a></li>
-                                <li><a href="@Url.PythonClient()">Python Client ›</a></li>
+                                @*<li><a href="@Url.PythonClient()">Python Client ›</a></li>*@
                                 @*<li><a href="@Url.Api()">Errordite API ›</a></li>*@
                                 <li><a href="@Url.JsonFormat()">Sending JSON ›</a></li>
                             </ul>

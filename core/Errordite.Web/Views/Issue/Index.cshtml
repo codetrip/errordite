@@ -77,7 +77,11 @@
             @Html.Partial("Actions", Model.Details)
         </div>
         <div id="history" class="tab @(Model.Tab == IssueTab.History ? "" : "hidden")">
-            @Html.Partial("History", new AddCommentViewModel{IssueId = Model.Details.IssueId})
+            @Html.Partial("History", new AddCommentViewModel
+                {
+                    IssueId = Model.Details.IssueId,
+                    ApplicationId = Model.Details.ApplicationId
+                })
         </div>
     </div>
 </section>

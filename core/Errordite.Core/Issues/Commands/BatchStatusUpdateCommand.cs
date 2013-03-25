@@ -59,7 +59,8 @@ namespace Errordite.Core.Issues.Commands
                             UserId = request.CurrentUser.Id,
                             AssignedToUserId = request.AssignToUserId,
                             Type = HistoryItemType.AssignedUserChanged,
-                            IssueId = issue.Id
+                            IssueId = issue.Id,
+                            ApplicationId = issue.ApplicationId,
                         });
                     }
 
@@ -70,7 +71,8 @@ namespace Errordite.Core.Issues.Commands
                         PreviousStatus = issue.Status,
                         NewStatus = request.Status,
                         Type = HistoryItemType.StatusUpdated,
-                        IssueId = issue.Id
+                        IssueId = issue.Id,
+                        ApplicationId = issue.ApplicationId,
                     });
 
                     issue.Status = request.Status;

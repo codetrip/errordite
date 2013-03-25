@@ -66,6 +66,7 @@ namespace Errordite.Core.Issues.Commands
                 SystemMessage = true,
                 Type = HistoryItemType.MergedTo,
                 IssueId = mergeToIssue.Id,
+                ApplicationId = mergeToIssue.ApplicationId,
             });
 
             Delete(mergeFromIssue);

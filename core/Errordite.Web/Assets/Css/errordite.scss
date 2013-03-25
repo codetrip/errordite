@@ -300,7 +300,7 @@ table {
 .welcome-bar-container {
   width: 100%;
   background: $verydarkbrown;
-  height: 35px;
+  height: 45px;
   .welcome-bar {
     margin: 0 auto;
     width: $minwidth;
@@ -308,22 +308,63 @@ table {
     color: #fff;
     font-family: $font;
     font-weight:$lightfontweight;
-    font-size:12px;
+	font-size:13px;
     .links {
-	  height: 24px;
+	  height: 31px;
       float: right;
-      width: $minwidth;
+      width: 474px;
       margin:4px 0 0 0;
 	  border-bottom:2px solid $darkestbrown;
-	  margin-top: 8px;
+	  margin-top: 14px;
     }
+	.applications {
+		height:45px;
+		width:500px;
+		border-bottom:2px solid $darkestbrown;
+		float:left 
+	}
     a {
       color: #fff;
-      font-size:12px;
+      font-size:13px;
+	  text-align:left;
       &:hover {
         text-decoration: underline;
       }
     }
+	ul.popup {
+		margin-bottom:0;
+		padding:0;
+		margin-top: 8px;
+	}
+	a.dropdown-toggle {
+		background-color: #414650;
+		border:0;
+		padding:6px 8px;
+		width:250px;
+		&:hover {
+			text-decoration: none;
+		}
+	}
+	.caret {
+		margin: 8px 10px 0 0;
+		border-top: 4px solid #fff;
+	}
+	ul.dropdown-menu {
+		width:265px;
+		background-color: $mediumblue;
+		a {
+			color:#fff;
+			&:hover {
+				text-decoration: none;
+			}
+		}
+		li:hover {
+			background-color: $lightblue;
+			a { 
+				color:$darkbrown;
+			}
+		}
+	}
   }
 }
 
@@ -1924,7 +1965,7 @@ nav {
 	.home-links  {
 		font-weight: $normalfontweight;
 		font-size:12px;
-		width: 225px;
+		width: 300px;
 		border-right: 2px solid $darkestbrown;
 		margin-right: 10px;
 		a {
@@ -1955,28 +1996,6 @@ nav {
 	}
 	ul {
 		padding-left: 0;
-	}
-	a.dropdown-toggle {
-		background-color: #414650;
-		border:0;
-		padding:10px 8px;
-		width:225px;
-	}
-	.caret {
-		margin: 8px 10px 0 0;
-	}
-	ul.dropdown-menu {
-		width:240px;
-		background-color: $mediumblue;
-		a {
-			color:#fff;
-		}
-		li:hover {
-			background-color: $lightblue;
-			a { 
-				color:$darkbrown;
-			}
-		}
 	}
 }
 

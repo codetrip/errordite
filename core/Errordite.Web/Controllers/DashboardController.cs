@@ -47,11 +47,11 @@ namespace Errordite.Web.Controllers
         }
 
         [ImportViewData]
-        public ActionResult GetGraphData(string applicationId)
+        public ActionResult GetGraphData()
         {
             var data = _getDashboardReportQuery.Invoke(new GetDashboardReportRequest
             {
-                ApplicationId = applicationId,
+                ApplicationId = CurrentApplication.Id,
                 OrganisationId = Core.AppContext.CurrentUser.OrganisationId
             }).Data;
 
@@ -59,8 +59,9 @@ namespace Errordite.Web.Controllers
         }
 
         [ImportViewData]
-        public ActionResult Index(string applicationId)
+        public ActionResult Index()
         {
+            var applicationId = CurrentApplication.Id;
             var viewModel = new DashboardViewModel();
             var applications = Core.GetApplications();
             
@@ -125,9 +126,10 @@ namespace Errordite.Web.Controllers
             return View(viewModel);
         }
 
-        public ActionResult Update(int lastErrorDisplayed, int lastIssueDisplayed, string applicationId)
+        public ActionResult Update(int lastErrorDisplayed, int lastIssueDisplayed)
 		{
 			var applications = Core.GetApplications();
+            var applicationId = CurrentApplication.Id;
 
             var issues = _getApplicationIssuesQuery.Invoke(new GetApplicationIssuesRequest
 			{
@@ -161,8 +163,9 @@ namespace Errordite.Web.Controllers
 		}
 
         [PagingView]
-        public ActionResult Feed(string applicationId)
+        public ActionResult Feed()
         {
+            var applicationId = CurrentApplication.Id;
             var paging = GetSinglePagingRequest();
             var issueMemoizer = new LocalMemoizer<string, Issue>(id => _getIssueQuery.Invoke(new GetIssueRequest { CurrentUser = Core.AppContext.CurrentUser, IssueId = id }).Issue);
             var users = Core.GetUsers();

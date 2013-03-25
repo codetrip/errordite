@@ -79,6 +79,7 @@ namespace Errordite.Core.Issues.Commands
                 UserId = request.CurrentUser.Id,
                 Type = HistoryItemType.ErrorsPurged,
                 IssueId = issue.Id,
+                ApplicationId = issue.ApplicationId,
             });
             
             issue.ErrorCount = 0;

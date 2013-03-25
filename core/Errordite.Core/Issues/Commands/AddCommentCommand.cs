@@ -22,7 +22,8 @@ namespace Errordite.Core.Issues.Commands
                     Comment = request.Comment,
                     UserId = request.CurrentUser.Id,
                     Type = HistoryItemType.Comment,
-                    IssueId = Issue.GetId(request.IssueId)
+                    IssueId = Issue.GetId(request.IssueId),
+                    ApplicationId = request.ApplicationId
                 });
 			}
 
@@ -44,6 +45,7 @@ namespace Errordite.Core.Issues.Commands
     public class AddCommentRequest : OrganisationRequestBase
     {
         public string IssueId { get; set; }
+        public string ApplicationId { get; set; }
         public string Comment { get; set; }
     }
 

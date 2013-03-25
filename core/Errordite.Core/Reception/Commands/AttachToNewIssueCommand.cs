@@ -62,6 +62,7 @@ namespace Errordite.Core.Reception.Commands
                 ExceptionMachine = error.MachineName,
                 SystemMessage = true,
                 IssueId = issue.Id,
+                ApplicationId = issue.ApplicationId,
             });
 
 			var issueHourlyCount = new IssueHourlyCount

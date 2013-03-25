@@ -66,7 +66,8 @@ namespace Errordite.Core.Issues.Commands
                 Type = HistoryItemType.ManuallyCreated,
                 IssueId = issue.Id,
                 AssignedToUserId = request.AssignedUserId,
-                PreviousStatus = request.Status
+                PreviousStatus = request.Status,
+                ApplicationId = issue.ApplicationId
             });
 
             var issueHourlyCount = new IssueHourlyCount
