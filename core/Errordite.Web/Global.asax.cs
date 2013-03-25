@@ -240,7 +240,7 @@ namespace Errordite.Web
                 {
                     Id = "PaymentPlans/2",
                     MaximumApplications = 1,
-                    MaximumUsers = 2,
+                    MaximumUsers = 5,
                     MaximumIssues = 50,
                     Name = PaymentPlanNames.Small,
                     Rank = 100,
@@ -250,19 +250,19 @@ namespace Errordite.Web
                 session.Store(new PaymentPlan
                 {
                     Id = "PaymentPlans/3",
-                    MaximumApplications = 10,
-                    MaximumUsers = 20,
+                    MaximumApplications = 5,
+                    MaximumUsers = 25,
                     MaximumIssues = 500,
                     Name = PaymentPlanNames.Medium,
                     Rank = 200,
-                    Price = 79.00m,
+                    Price = 89.00m,
                     IsAvailable = true,
                 });
                 session.Store(new PaymentPlan
                 {
                     Id = "PaymentPlans/4",
-                    MaximumApplications = 100,
-                    MaximumUsers = 200,
+                    MaximumApplications = 25,
+                    MaximumUsers = 100,
                     MaximumIssues = 5000,
                     Name = PaymentPlanNames.Large,
                     Rank = 300,
