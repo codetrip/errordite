@@ -1,0 +1,29 @@
+﻿@using Errordite.Web.Models.Issues
+@model CommentsViewModel
+
+<div class="form" style="margin-bottom:5px">
+	@using (Html.BeginForm("addcomment", "issue", FormMethod.Post, new { id = "comment" }))
+	{
+		@Html.HiddenFor(m => m.IssueId)
+		@Html.HiddenFor(m => m.ApplicationId)
+	    <div style="float:left;width:100%">
+	        @Html.ValidationMessageFor(m => m.Comment)   
+	    </div>
+		<textarea name="Comment" style="height: 50px; width:700px" placeholder="Add a comment to this issue"></textarea>
+	    <input type="submit" class="btn btn-medium btn-blue" value="Add Comment" style="margin-top:24px" />
+	}
+</div>
+<div id="comments">
+    @if (Model.Comments != null)
+    {
+        foreach (var comment in Model.Comments)
+        {
+            Html.RenderPartial("Issue/Comment", comment);
+        }
+    }
+    else
+    {
+         <p>No comments have been added to this issue.</p>
+    }
+    
+</div>
