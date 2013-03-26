@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using CodeTrip.Core.Extensions;
 using CodeTrip.Core.Interfaces;
 using Errordite.Core.Domain.Error;
@@ -15,16 +16,21 @@ namespace Errordite.Core.Issues.Commands
             Trace("Starting...");
 
             if (request.Comment.IsNotNullOrEmpty())
-			{
-                Store(new IssueHistory
+            {
+                var issue = Load<Issue>(request.IssueId);
+
+                if (issue != null)
                 {
-                    DateAddedUtc = DateTime.UtcNow.ToDateTimeOffset(request.CurrentUser.Organisation.TimezoneId),
-                    Comment = request.Comment,
-                    UserId = request.CurrentUser.Id,
-                    Type = HistoryItemType.Comment,
-                    IssueId = Issue.GetId(request.IssueId),
-                    ApplicationId = request.ApplicationId
-                });
+                    if (issue.Comments == null)
+                        issue.Comments = new List<IssueComment>();
+
+                    issue.Comments.Add(new IssueComment
+                    {
+                        UserId = request.CurrentUser.Id,
+                        DateAdded = DateTime.UtcNow.ToDateTimeOffset(request.CurrentUser.Organisation.TimezoneId),
+                        Comment = request.Comment
+                    });
+                }
 			}
 
             return new AddCommentResponse

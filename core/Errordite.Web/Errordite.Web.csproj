@@ -817,7 +817,6 @@
     <Content Include="Areas\System\Views\Organisations\Index.cshtml" />
     <Content Include="Areas\System\Views\Impersonation\Index.cshtml" />
     <Content Include="Views\Shared\Applications\List.cshtml" />
-    <Content Include="Views\Issue\History.cshtml" />
     <Content Include="Views\Shared\Errors\TraceMessages.cshtml" />
     <Content Include="Views\Docs\SendErrorWithJson.cshtml" />
     <Content Include="packages.config" />
@@ -872,6 +871,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Docs\PythonClient.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Issue\Comments.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Issue\Comment.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

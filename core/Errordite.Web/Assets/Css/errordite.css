@@ -1197,12 +1197,12 @@ section {
       background-color: #ecacac; }
   .boxed-item.history {
     width: 99.7%;
-    border: 1px solid green;
+    border: 1px solid #95c0df;
     -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 2px rgba(90, 165, 103, 0.6);
     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 2px rgba(90, 165, 103, 0.6);
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 2px rgba(90, 165, 103, 0.6); }
     .boxed-item.history .item-bar {
-      background-color: #5aa567; }
+      background-color: #95c0df; }
     .boxed-item.history .item-content {
       width: 933px; }
     .boxed-item.history span.bold {
