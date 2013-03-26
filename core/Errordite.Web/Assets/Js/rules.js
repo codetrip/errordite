@@ -192,7 +192,7 @@
       })();
       Errordite.ruleManager = new Errordite.RuleManager();
       $body.delegate('button#apply-rule-updates, button#update-details', 'click', function(e) {
-        var $errormessage, $form, $message, $name;
+        var $errormessage, $form, $message, $modal, $name;
         $form = $('form#rulesForm');
         $form.validate();
         if ($form.valid()) {
@@ -209,7 +209,9 @@
             }
             $message.show();
           }
-          return $('#apply-rules-confirmation').modal();
+          $modal = $('#apply-rules-confirmation');
+          $modal.css("top", "35%");
+          return $modal.modal();
         } else {
           return (Tabs.get($('#issue-tabs'))).show('rules');
         }

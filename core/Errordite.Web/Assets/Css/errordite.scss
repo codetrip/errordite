@@ -128,7 +128,7 @@ h4 {
     font-size:14px;
     margin:5px 0;
     &.formodal {
-        margin:15px 0;
+        margin:10px 0;
 		font-size: 18px;
 		color: $darkbrown;
 		font-weight: $boldfontweight;
@@ -258,7 +258,7 @@ table {
     }
     span.details {
         font-size:13px;
-        color:$darkblue;
+        color:$verydarkblue;
         span.bold {
             font-weight: $boldfontweight;
         }
@@ -1055,8 +1055,9 @@ section {
         }
     }
 	&.wide {
-		input[type="text"] {width:475px;}
-		select{width:485px}
+		input[type="text"]{width:490px;}
+		select{width:500px}
+		textarea {width:490px;height:50px}
 	}
 }
 
@@ -1399,12 +1400,11 @@ section {
 
 .modal-body {
   overflow-y: auto;
-//  max-height: 400px;
-  padding: 15px;
+  padding: 0 15px;
 }
 
 .modal-footer {
-  padding: 14px 15px 15px;
+  padding: 10px 15px 15px;
   margin-bottom: 0;
   text-align: right;
   background-color: $tablealternatecolor;
@@ -1514,10 +1514,10 @@ section {
             background-color:$darkblue;
         }
         .item-content {
-            width:933px;
+            width:944px;
         }
 		span.bold {
-			color:$verydarkblue;
+			color:#3D3D99;
 		}
     }
     &.issue {

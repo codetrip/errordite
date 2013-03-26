@@ -865,7 +865,7 @@
     <Content Include="Views\Shared\Issue\HistoryItem.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Dashboard\Feed.cshtml" />
+    <Content Include="Views\Dashboard\Activity.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Docs\PythonClient.cshtml" />

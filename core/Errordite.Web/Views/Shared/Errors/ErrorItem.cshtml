@@ -13,12 +13,12 @@
 	
 	<td style="max-width:350px">
         <span class="table-info-header">
-            @Html.Raw(Model.Error.ExceptionInfos.First().Type)
+            @Model.Error.ExceptionInfos.First().Type
         </span><br />
-        <span class="table-info">@Html.Raw(Model.Error.MachineName)</span>
+        <span class="table-info">@Model.Error.MachineName</span>
     </td>
-    <td class="word-break">@(Model.Error.ExceptionInfos.First().Message.IfPoss(m => m.Length) > 200 ? Html.Raw(Model.Error.ExceptionInfos.First().Message.Substring(0, 200) + "...") : Html.Raw(Model.Error.ExceptionInfos.First().Message)) </td>
-    <td class="word-break">@(Model.Error.Version.IsNullOrEmpty() ? new HtmlString("Unknown") : Html.Raw(Model.Error.Version))</td>
+    <td class="word-break">@(Model.Error.ExceptionInfos.First().Message.IfPoss(m => m.Length) > 200 ? Model.Error.ExceptionInfos.First().Message.Substring(0, 200) + "..." : Model.Error.ExceptionInfos.First().Message) </td>
+    <td class="word-break">@(Model.Error.Version.IsNullOrEmpty() ? new HtmlString("Unknown") : new HtmlString(Model.Error.Version))</td>
     <td class="word-break">@Model.Error.TimestampUtc.ToLocalTimeFormatted()</td>
     
 </tr>

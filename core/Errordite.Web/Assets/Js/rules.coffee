@@ -169,7 +169,9 @@ jQuery ->
 
 					$message.show()
 
-				$('#apply-rules-confirmation').modal()
+				$modal = $('#apply-rules-confirmation')
+				$modal.css("top", "35%");
+				$modal.modal()
 			else
 				(Tabs.get $ '#issue-tabs').show 'rules'
 

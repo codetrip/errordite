@@ -12,9 +12,9 @@ using Errordite.Core.Extensions;
 
 namespace Errordite.Core.Issues.Queries
 {
-    public class GetActivityFeedQuery : SessionAccessBase, IGetActivityFeedQuery
+    public class GetActivityLogQuery : SessionAccessBase, IGetActivityLogQuery
     {
-        public GetActivityFeedResponse Invoke(GetActivityFeedRequest request)
+        public GetActivityLogResponse Invoke(GetActivityLogRequest request)
         {
             Trace("Starting...");
 
@@ -28,22 +28,22 @@ namespace Errordite.Core.Issues.Queries
 
             var page = new Page<IssueHistory>(history.As<IssueHistory>().ToList(), new PagingStatus(request.Paging.PageSize, request.Paging.PageNumber, stats.TotalResults));
 
-            return new GetActivityFeedResponse
+            return new GetActivityLogResponse
             {
-                Feed = page
+                Log = page
             };
         }
     }
 
-    public interface IGetActivityFeedQuery : IQuery<GetActivityFeedRequest, GetActivityFeedResponse>
+    public interface IGetActivityLogQuery : IQuery<GetActivityLogRequest, GetActivityLogResponse>
     { }
 
-    public class GetActivityFeedResponse
+    public class GetActivityLogResponse
     {
-        public Page<IssueHistory> Feed { get; set; }
+        public Page<IssueHistory> Log { get; set; }
     }
 
-    public class GetActivityFeedRequest : OrganisationRequestBase
+    public class GetActivityLogRequest : OrganisationRequestBase
     {
         public PageRequestWithSort Paging { get; set; }
         public string ApplicationId { get; set; }
