@@ -5,6 +5,7 @@ using CodeTrip.Core.Encryption;
 using CodeTrip.Core.Extensions;
 using CodeTrip.Core.Paging;
 using Errordite.Core.Domain.Organisation;
+using Errordite.Core.Identity;
 using Errordite.Core.Notifications.Commands;
 using Errordite.Core.Notifications.EmailInfo;
 using Errordite.Core.Users.Commands;
@@ -27,6 +28,7 @@ namespace Errordite.Web.Controllers
         private readonly IPagingViewModelGenerator _pagingViewModelGenerator;
 		private readonly ISendNotificationCommand _sendNotificationCommand;
 		private readonly IEncryptor _encryptor;
+        private readonly IAuthenticationManager _authenticationManager;
 
         public UsersController(IAddUserCommand addUserCommand, 
             IEditUserCommand editUserCommand, 
@@ -34,7 +36,8 @@ namespace Errordite.Web.Controllers
             IPagingViewModelGenerator pagingViewModelGenerator, 
             IGetUserQuery getUserQuery, 
 			ISendNotificationCommand sendNotificationCommand, 
-			IEncryptor encryptor)
+			IEncryptor encryptor, 
+            IAuthenticationManager authenticationManager)
         {
             _addUserCommand = addUserCommand;
             _editUserCommand = editUserCommand;
@@ -43,6 +46,7 @@ namespace Errordite.Web.Controllers
             _getUserQuery = getUserQuery;
 	        _sendNotificationCommand = sendNotificationCommand;
 	        _encryptor = encryptor;
+            _authenticationManager = authenticationManager;
         }
 
         [PagingView, HttpGet, RoleAuthorize(UserRole.Administrator), ImportViewData, GenerateBreadcrumbs(BreadcrumbId.Users)]
@@ -145,7 +149,7 @@ namespace Errordite.Web.Controllers
                 if (viewModel.CurrentUser)
                     return RedirectWithViewModel(viewModel, "edit");
 
-                return RedirectWithViewModel(viewModel, "edituser", routeValues: new { userId = viewModel .UserId});
+                return RedirectWithViewModel(viewModel, "edituser", routeValues: new { userId = viewModel.UserId});
             }
 
             var result = _editUserCommand.Invoke(new EditUserRequest
@@ -158,6 +162,13 @@ namespace Errordite.Web.Controllers
                 GroupIds = viewModel.CurrentUser ? null : viewModel.Groups.Where(g => g.Selected).Select(g => g.Id.GetFriendlyId()).ToList(),
                 Administrator = (!AppContext.CurrentUser.IsAdministrator() || viewModel.CurrentUser) ? null : (bool?)viewModel.IsAdministrator,
             });
+
+            //if user has changed email, log them in again
+            if (Core.AppContext.CurrentUser.FriendlyId == viewModel.UserId.GetFriendlyId() &&
+                Core.AppContext.CurrentUser.Email.ToLowerInvariant() != viewModel.Email.ToLowerInvariant())
+            {
+                _authenticationManager.SignIn(Core.AppContext.CurrentUser.Id, Core.AppContext.CurrentUser.OrganisationId, viewModel.Email);
+            }
 
             if (viewModel.CurrentUser)
                 return RedirectWithViewModel(viewModel, "yourdetails", result.Status.MapToResource(Resources.Account.ResourceManager), result.Status != EditUserStatus.Ok);

@@ -51,8 +51,9 @@ jQuery ->
 					$newRow = $('table#rules-table tr.rule:first')
 					$newRow.show()
 
-				$newRow.addClass 'new-rule'				
-
+				$newRow.addClass 'new-rule'	
+							
+				$body.find('a.delete').show();
 				this.reindex()
 				
 				$newRow.find(':input').val('')
@@ -79,14 +80,13 @@ jQuery ->
 				
 				this.rules = (rule for rule in this.rules when $rule.data('rule') != rule)											
 				$rule.trigger 'remove'
-				if this.rules.length > 0
+
+				if this.rules.length > 1
 					$rule.remove()
-					this.showRuleUpdatesPanel()				
-				else 
-					#if there is only one rule left, hide it rather than removing it so that there is something there to act as a template when 
-					#we add a new one in
-					$rule.hide()
-					this.hideRuleUpdatesPanel()
+					this.showRuleUpdatesPanel()		
+
+				if this.rules.length == 1
+					$body.find('a.delete').hide();
 					
 				this.reindex()
 
