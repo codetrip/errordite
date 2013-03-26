@@ -5,19 +5,17 @@
 <div class="messages">
 	<table class="table table-bordered table-condensed">
 		<thead>
-			<tr>
-				<th>Logger</th>    
-				<th>Log Level</th> 
-				<th>Message</th>
-				<th>Elapsed Milliseconds</th> 
+			<tr>   
+				<th style="width:155px">Timestamp</th>
+				<th>Message</th> 
 			</tr>
 		</thead>
 		<tbody>
 			@foreach (var msg in Model)
 			{
 				<tr> 
-					<td>@Html.Raw(msg.Message)</td>
-					<td>@msg.Timestamp.ToLocalFormatted()<span>ms</span></td>
+					<td style="width:155px">@msg.Timestamp.ToLocalTimeFormatted()</td>
+					<td>@msg.Message</td>
 				</tr>
 			}
 		</tbody>

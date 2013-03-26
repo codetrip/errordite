@@ -31,10 +31,15 @@ namespace Errordite.Web.Controllers
         {
             get
             {
+                var applications = Core.GetApplications();
+
+                if (applications.Items.Count == 1)
+                    return applications.Items.First();
+
                 var appId = CookieManager.Get(WebConstants.CookieSettings.ApplicationIdCookieKey);
 
                 if (appId.IsNotNullOrEmpty())
-                    return Core.GetApplications().Items.FirstOrDefault(a => a.FriendlyId == appId);
+                    return applications.Items.FirstOrDefault(a => a.FriendlyId == appId);
 
                 return null;
             }
