@@ -14,15 +14,4 @@ namespace Errordite.Web.Models.Issues
         public string Value { get; set; }
         public IEnumerable<SelectListItem> Properties { get; set; }
     }
-
-    public class IssueRulesPostModel
-    {
-        public string Id { get; set; }
-        public string ApplicationId { get; set; }
-        [Required(ErrorMessageResourceType = typeof(Resources.Rules), ErrorMessageResourceName = "IssueName_Required")]
-        public string UnmatchedIssueName { get; set; }
-        [Required(ErrorMessageResourceType = typeof(Resources.Rules), ErrorMessageResourceName = "IssueName_Required")]
-        public string IssueNameAfterUpdate { get; set; }
-        public IList<RuleViewModel> Rules { get; set; }
-    }
 }

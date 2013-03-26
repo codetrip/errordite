@@ -57,7 +57,7 @@ namespace Errordite.Web.Controllers
         PagingView(DefaultSort = CoreConstants.SortFields.LastErrorUtc, DefaultSortDescending = true), 
         ExportViewData, 
         ImportViewData,
-        StoreQueryInCookie(WebConstants.CookieSettings.IssueSearchCookieKey),
+        //StoreQueryInCookie(WebConstants.CookieSettings.IssueSearchCookieKey),
         GenerateBreadcrumbs(BreadcrumbId.Issues)
         ]
         public ActionResult Index(IssueCriteriaPostModel postModel)
@@ -79,15 +79,17 @@ namespace Errordite.Web.Controllers
                     postModel.Status = postModel.Status[0].Split(',');
                 }
 
+                if (postModel.ApplicationId.IsNullOrEmpty() && CurrentApplication != null)
+                    postModel.ApplicationId = CurrentApplication.FriendlyId;
+
                 var request = new GetApplicationIssuesRequest
                 {
                     ApplicationId = postModel.ApplicationId,
                     Paging = pagingRequest,
                     AssignedTo = postModel.AssignedTo,
                     Status = postModel.Status,
-                    Name = postModel.Name,
+                    Query = postModel.Name,
                     OrganisationId = Core.AppContext.CurrentUser.OrganisationId,
-                    UserTimezoneId = AppContext.CurrentUser.EffectiveTimezoneId(),
                 };
 
                 var issues = _getApplicationIssuesQuery.Invoke(request).Issues;
@@ -138,9 +140,14 @@ namespace Errordite.Web.Controllers
                 viewModel.Rules = ruleViewModels;
             }
 
+            var selectedApplication = CurrentApplication;
             viewModel.Users = users.Items.ToSelectList(u => u.FriendlyId, u => "{0} {1}".FormatWith(u.FirstName, u.LastName), sortListBy: SortSelectListBy.Text);
             viewModel.Statuses = IssueStatus.Acknowledged.ToSelectedList(Resources.IssueResources.ResourceManager, false, IssueStatus.Acknowledged.ToString());
-            viewModel.Applications = applications.Items.ToSelectList(a => a.FriendlyId, a => a.Name, sortListBy: SortSelectListBy.Text);
+            viewModel.Applications = applications.Items.ToSelectList(
+                a => a.FriendlyId, 
+                a => a.Name, 
+                a => selectedApplication != null && a.Id == selectedApplication.Id, 
+            sortListBy: SortSelectListBy.Text);
             
             return View(viewModel);
         }
@@ -157,10 +164,10 @@ namespace Errordite.Web.Controllers
             {
                 ApplicationId = postModel.ApplicationId,
                 Rules = postModel.Rules.Select(r => (IMatchRule)new PropertyMatchRule(r.ErrorProperty, r.StringOperator, r.Value)).ToList(),
-                UserId = postModel.UserId,
+                AssignedUserId = postModel.UserId,
                 CurrentUser = Core.AppContext.CurrentUser,
                 Name = postModel.Name,
-                Status = postModel.Status
+                Status = postModel.Status,
             });
 
             if (result.Status == AddIssueStatus.SameRulesExist)
@@ -222,7 +229,6 @@ namespace Errordite.Web.Controllers
                             CurrentUser = AppContext.CurrentUser,
                             IssueIds = actionForm.IssueIds,
                             Status = actionForm.Status,
-                            Comment = actionForm.Comment,
                             AssignToUserId = actionForm.AssignToUser.IsNullOrEmpty() ? null : Errordite.Core.Domain.Organisation.User.GetId(actionForm.AssignToUser),
                         });
 

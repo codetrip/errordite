@@ -1,47 +1,36 @@
 ﻿using System;
+using System.Collections.Generic;
 using CodeTrip.Core.Extensions;
 using CodeTrip.Core.Interfaces;
-using Errordite.Core.Authorisation;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Organisations;
 using Errordite.Core.Session;
+using Errordite.Core.Extensions;
 
 namespace Errordite.Core.Issues.Commands
 {
     public class AddCommentCommand : SessionAccessBase, IAddCommentCommand
     {
-        private readonly IAuthorisationManager _authorisationManager;
-
-        public AddCommentCommand(IAuthorisationManager authorisationManager)
-        {
-            _authorisationManager = authorisationManager;
-        }
-
         public AddCommentResponse Invoke(AddCommentRequest request)
         {
             Trace("Starting...");
 
-            var issue = Load<Issue>(Issue.GetId(request.IssueId));
-
-            if(issue == null)
+            if (request.Comment.IsNotNullOrEmpty())
             {
-                return new AddCommentResponse
+                var issue = Load<Issue>(request.IssueId);
+
+                if (issue != null)
                 {
-                    Status = AddCommentStatus.IssueNotFound
-                };
-            }
+                    if (issue.Comments == null)
+                        issue.Comments = new List<IssueComment>();
 
-            _authorisationManager.Authorise(issue, request.CurrentUser);
-
-			if (request.Comment.IsNotNullOrEmpty())
-			{
-				issue.History.Add(new IssueHistory
-				{
-					DateAddedUtc = DateTime.UtcNow,
-					Comment = request.Comment,
-					UserId = request.CurrentUser.Id,
-					Type = HistoryItemType.Comment
-				});
+                    issue.Comments.Add(new IssueComment
+                    {
+                        UserId = request.CurrentUser.Id,
+                        DateAdded = DateTime.UtcNow.ToDateTimeOffset(request.CurrentUser.Organisation.TimezoneId),
+                        Comment = request.Comment
+                    });
+                }
 			}
 
             return new AddCommentResponse
@@ -62,6 +51,7 @@ namespace Errordite.Core.Issues.Commands
     public class AddCommentRequest : OrganisationRequestBase
     {
         public string IssueId { get; set; }
+        public string ApplicationId { get; set; }
         public string Comment { get; set; }
     }
 

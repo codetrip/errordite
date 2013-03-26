@@ -29,7 +29,7 @@ namespace Errordite.Web.Controllers
         PagingView(DefaultSort = CoreConstants.SortFields.TimestampUtc, DefaultSortDescending = true), 
         ExportViewData,
         ImportViewData,
-        StoreQueryInCookie(WebConstants.CookieSettings.ErrorSearchCookieKey),
+        //StoreQueryInCookie(WebConstants.CookieSettings.ErrorSearchCookieKey),
 		GenerateBreadcrumbs(BreadcrumbId.Errors)
         ]
         public ActionResult Index(ErrorCriteriaPostModel postModel)
@@ -43,6 +43,9 @@ namespace Errordite.Web.Controllers
                 }
             };
 
+            if (postModel.ApplicationId.IsNullOrEmpty() && CurrentApplication != null)
+                postModel.ApplicationId = CurrentApplication.FriendlyId;
+
             var applications = Core.GetApplications();
             var pagingRequest = GetSinglePagingRequest();
 
@@ -54,8 +57,6 @@ namespace Errordite.Web.Controllers
                     Paging = pagingRequest,
                     Query = postModel.Query,
                     OrganisationId = Core.AppContext.CurrentUser.OrganisationId,
-                    UserTimezoneId = AppContext.CurrentUser.EffectiveTimezoneId(),
-					
                 };
 
                 if (postModel.DateRange.IsNotNullOrEmpty())

@@ -23,7 +23,7 @@ using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Indexing;
 using Errordite.Core.IoC;
 using Errordite.Core.Session;
-using Errordite.Core.WebApi;
+using Errordite.Core.WebApi;    
 using Errordite.Web.ActionFilters;
 using Errordite.Web.Controllers;
 using Errordite.Web.IoC;
@@ -34,7 +34,7 @@ using Raven.Client.Indexes;
 
 namespace Errordite.Web
 {
-    public class MvcApplication : HttpApplication
+    public class ErrorditeApplication : HttpApplication
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
@@ -75,7 +75,7 @@ namespace Errordite.Web
                 "IssueSpecial",
                 "{controller}/{action}",
                 null,
-                new { controller = "issue", action = "getreportdata|errors|adjustrules|adjustdetails|purge|import|delete|addcomment" });
+                new { controller = "issue", action = "getreportdata|errors|adjustrules|purge|reprocess|delete|addcomment|history|whatifreprocess" });
 
 
             routes.MapRoute(
@@ -148,7 +148,10 @@ namespace Errordite.Web
             GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings = WebApiSettings.JsonSerializerSettings;
 
             ErrorditeClient.ConfigurationAugmenter = ErrorditeClientOverrideHelper.Augment;
-            BootstrapRaven();
+
+#if !(DEBUG)
+            BootstrapRaven(ObjectFactory.Container.Resolve<IDocumentStore>());
+#endif
         }
         
         protected void Application_Error(object sender, EventArgs e)
@@ -208,9 +211,8 @@ namespace Errordite.Web
 
         #region Bootstrap Raven
 
-        private void BootstrapRaven()
+        public static void BootstrapRaven(IDocumentStore documentStore)
         {
-            var documentStore = ObjectFactory.GetObject<IDocumentStore>();
             documentStore.DatabaseCommands.EnsureDatabaseExists(CoreConstants.ErrorditeMasterDatabaseName);
 
             var session = documentStore.OpenSession(CoreConstants.ErrorditeMasterDatabaseName);
@@ -238,7 +240,7 @@ namespace Errordite.Web
                 {
                     Id = "PaymentPlans/2",
                     MaximumApplications = 1,
-                    MaximumUsers = 2,
+                    MaximumUsers = 5,
                     MaximumIssues = 50,
                     Name = PaymentPlanNames.Small,
                     Rank = 100,
@@ -248,23 +250,23 @@ namespace Errordite.Web
                 session.Store(new PaymentPlan
                 {
                     Id = "PaymentPlans/3",
-                    MaximumApplications = 10,
-                    MaximumUsers = 20,
+                    MaximumApplications = 5,
+                    MaximumUsers = 25,
                     MaximumIssues = 500,
                     Name = PaymentPlanNames.Medium,
                     Rank = 200,
-                    Price = 79.00m,
+                    Price = 89.00m,
                     IsAvailable = true,
                 });
                 session.Store(new PaymentPlan
                 {
                     Id = "PaymentPlans/4",
-                    MaximumApplications = 100,
-                    MaximumUsers = 200,
+                    MaximumApplications = 25,
+                    MaximumUsers = 100,
                     MaximumIssues = 5000,
                     Name = PaymentPlanNames.Large,
                     Rank = 300,
-                    Price = 199.00m,
+                    Price = 299.00m,
                     IsAvailable = true,
                 });
 

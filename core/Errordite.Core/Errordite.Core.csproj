@@ -49,6 +49,10 @@
     <Reference Include="Castle.Windsor">
       <HintPath>..\packages\Castle.Windsor.3.1.0\lib\net40\Castle.Windsor.dll</HintPath>
     </Reference>
+    <Reference Include="Errordite.Client, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Errordite.Client.1.3.14.0\lib\net40\Errordite.Client.dll</HintPath>
+    </Reference>
     <Reference Include="Errordite.Client.Mvc4, Version=1.3.0.0, Culture=neutral, PublicKeyToken=0c2d28c225f773ee, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Errordite.Client.Mvc4.1.3.14.0\lib\net40\Errordite.Client.Mvc4.dll</HintPath>
@@ -86,11 +90,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\protobuf\protobuf-net.dll</HintPath>
     </Reference>
-    <Reference Include="Raven.Abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <HintPath>..\packages\RavenDB.Client.2.0.2261\lib\net40\Raven.Abstractions.dll</HintPath>
+    <Reference Include="Raven.Abstractions, Version=2.0.3.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\RavenDB.Client.2.0.2330\lib\net40\Raven.Abstractions.dll</HintPath>
     </Reference>
-    <Reference Include="Raven.Client.Lightweight, Version=2.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <HintPath>..\packages\RavenDB.Client.2.0.2261\lib\net40\Raven.Client.Lightweight.dll</HintPath>
+    <Reference Include="Raven.Client.Lightweight, Version=2.0.3.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\RavenDB.Client.2.0.2330\lib\net40\Raven.Client.Lightweight.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -133,6 +139,7 @@
     <Compile Include="Caching\CacheKeys.cs" />
     <Compile Include="Configuration\HttpServerConfiguration.cs" />
     <Compile Include="Domain\Central\UserOrganisationMapping.cs" />
+    <Compile Include="Domain\Error\IssueComment.cs" />
     <Compile Include="Domain\Error\ErrorditeError.cs" />
     <Compile Include="Domain\Error\IssueDailyCount.cs" />
     <Compile Include="Domain\IdHelper.cs" />
@@ -154,13 +161,16 @@
     <Compile Include="ErrorditeCore.cs" />
     <Compile Include="Errors\Commands\MakeExceededErrorsUnloggedCommand.cs" />
     <Compile Include="Errors\Commands\MoveErrorsToNewIssueCommand.cs" />
+    <Compile Include="Extensions\NameValueCollectionExtensions.cs" />
     <Compile Include="Extensions\RavenQueryableExtensions.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\ExceptionExtensions.cs" />
     <Compile Include="Extensions\RulesExtensions.cs" />
     <Compile Include="Extensions\IssueExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Identity\IImpersonationManager.cs" />
     <Compile Include="Indexing\Applications_Search.cs" />
+    <Compile Include="Indexing\History_Search.cs" />
     <Compile Include="Indexing\OrganisationDailyCount_Search.cs" />
     <Compile Include="Indexing\Organisations_Search.cs" />
     <Compile Include="Indexing\Groups_Search.cs" />
@@ -189,6 +199,7 @@
     <Compile Include="Identity\NoAuthenticationManager.cs" />
     <Compile Include="IoC\ErrorditeNServiceBusClientInstaller.cs" />
     <Compile Include="Issues\Commands\UpdateIssueDetailsCommand.cs" />
+    <Compile Include="Issues\Queries\GetActivityFeedQuery.cs" />
     <Compile Include="Issues\Queries\GetDashboardReportQuery.cs" />
     <Compile Include="Issues\Queries\GetIssueReportDataQuery.cs" />
     <Compile Include="Issues\Queries\GetIssueWithMatchingRulesQuery.cs" />
@@ -229,6 +240,7 @@
     <Compile Include="Notifications\Commands\SendHipChatMessageCommand.cs" />
     <Compile Include="Notifications\Commands\SendEmailCommand.cs" />
     <Compile Include="Notifications\Commands\SendNotificationsCommand.cs" />
+    <Compile Include="Notifications\EmailInfo\InstanceOfAlwaysNotifyIssueEmailInfo.cs" />
     <Compile Include="Notifications\EmailInfo\IssueAssignedToUserEmailInfo.cs" />
     <Compile Include="Notifications\EmailInfo\IssueEmailInfoBase.cs" />
     <Compile Include="Notifications\EmailInfo\NewInstanceofSolvedIssueEmailInfo.cs" />
@@ -338,6 +350,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Notifications\Templates\InstanceOfAlwaysNotifyIssueEmailTemplate.html" />
     <Content Include="Notifications\Templates\IssueAssignedToUserEmailTemplate.html" />
     <Content Include="Notifications\Templates\NewInstanceofSolvedIssueEmailTemplate.html" />
     <Content Include="Notifications\Templates\IssueErrorCountExceededEmailTemplate.html" />

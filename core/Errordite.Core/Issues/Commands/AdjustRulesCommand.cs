@@ -11,6 +11,7 @@ using Errordite.Core.Matching;
 using Errordite.Core.Messages;
 using Errordite.Core.Organisations;
 using Errordite.Core.Session;
+using Errordite.Core.Extensions;
 
 namespace Errordite.Core.Issues.Commands
 {
@@ -63,7 +64,6 @@ namespace Errordite.Core.Issues.Commands
                 //so need to be careful not to change anything on them...
                 currentIssue = new Issue();
                 PropertyMapper.Map(currentDbIssue, currentIssue);
-                currentIssue.History = new List<IssueHistory>();
             }
 
             //and update the existing issue
@@ -81,48 +81,62 @@ namespace Errordite.Core.Issues.Commands
             {
                 if (nonMatchingErrorsResponse.NonMatches.Count > 0)
                 {
+                    var dateTimeOffset = DateTime.UtcNow.ToDateTimeOffset(request.CurrentUser.Organisation.TimezoneId);
+
                     //if errors on the original issue did not match the new rules, store the temp issue and move the non matching errors to it
                     Session.AddCommitAction(new RaiseIssueCreatedEvent(tempIssue));
 
                     //move all these errors to the new issue in a batch
                     _moveErrorsToNewIssueCommand.Invoke(new MoveErrorsToNewIssueRequest
-                        {
-                            Errors = nonMatchingErrorsResponse.NonMatches,
-                            IssueId = tempIssue.Id,
-                            CurrentUser = request.CurrentUser
-                        });
+                    {
+                        Errors = nonMatchingErrorsResponse.NonMatches,
+                        IssueId = tempIssue.Id,
+                        CurrentUser = request.CurrentUser
+                    });
 
                     //re-sync the error counts only if we have moved errors
-                    Session.AddCommitAction(new SendNServiceBusMessage("Sync Issue Error Counts",
-                                                                       new SyncIssueErrorCountsMessage
-                                                                           {
-                                                                               CurrentUser = request.CurrentUser,
-                                                                               IssueId = currentIssue.Id,
-                                                                               OrganisationId =
-                                                                                   request.CurrentUser.OrganisationId
-                                                                           }, _configuration.EventsQueueName));
-                    currentIssue.History.Add(new IssueHistory
+                    Session.AddCommitAction(new SendNServiceBusMessage("Sync Issue Error Counts", new SyncIssueErrorCountsMessage
                     {
-                        DateAddedUtc = DateTime.UtcNow,
+                        CurrentUser = request.CurrentUser,
+                        IssueId = currentIssue.Id,
+                        OrganisationId = request.CurrentUser.OrganisationId
+                    }, _configuration.EventsQueueName));
+
+                    Store(new IssueHistory
+                    {
+                        DateAddedUtc = dateTimeOffset,
                         Type = HistoryItemType.RulesAdjustedCreatedNewIssue,
                         SpawnedIssueId = tempIssue.Id,
                         UserId = request.CurrentUser.Id,
+                        IssueId = currentIssue.Id,
+                        ApplicationId = currentIssue.ApplicationId
+                    });
+                    Store(new IssueHistory
+                    {
+                        DateAddedUtc = dateTimeOffset,
+                        Type = HistoryItemType.CreatedByRuleAdjustment,
+                        SpawningIssueId = currentIssue.Id,
+                        UserId = request.CurrentUser.Id,
+                        IssueId = tempIssue.Id,
+                        ApplicationId = tempIssue.ApplicationId
                     });
                 }
                 else
                 {
-                    currentIssue.History.Add(new IssueHistory()
-                        {
-                            DateAddedUtc = DateTime.UtcNow,
-                            Type = HistoryItemType.RulesAdjustedNoNewIssue,
-                            UserId = request.CurrentUser.Id,
-                        });
+                    Store(new IssueHistory
+                    {
+                        DateAddedUtc = DateTime.UtcNow.ToDateTimeOffset(request.CurrentUser.Organisation.TimezoneId),
+                        Type = HistoryItemType.RulesAdjustedNoNewIssue,
+                        UserId = request.CurrentUser.Id,
+                        IssueId = currentIssue.Id,
+                        ApplicationId = currentIssue.ApplicationId
+                    });
+
                     Delete(tempIssue);
                 }
 
                 Session.AddCommitAction(new RaiseIssueModifiedEvent(currentIssue));
             }
-
 
             return new AdjustRulesResponse
             {
@@ -148,28 +162,20 @@ namespace Errordite.Core.Issues.Commands
         
         private Issue CreateTempIssue(Issue currentIssue, AdjustRulesRequest request)
         {
+            var dateTimeOffset = DateTime.UtcNow.ToDateTimeOffset(request.CurrentUser.Organisation.TimezoneId);
+
             return new Issue
             {
                 ApplicationId = currentIssue.ApplicationId,
-                CreatedOnUtc = DateTime.UtcNow,
+                CreatedOnUtc = dateTimeOffset,
                 ErrorCount = 0,
                 LastErrorUtc = currentIssue.LastErrorUtc,
-                LastModifiedUtc = DateTime.UtcNow,
+                LastModifiedUtc = dateTimeOffset,
                 Name = request.NewIssueName,
                 Status = IssueStatus.Unacknowledged, //GT: this used to be dependent on state of existing issue, but I think that's wrong.  The idea is that this issue contains errors we have not yet thought about hence it needs to start at the beginning.
                 Rules = currentIssue.Rules,
                 UserId = currentIssue.UserId, //GT: by the same token as status, not 100% sure what this should be - will have to suck it and see
                 OrganisationId = currentIssue.OrganisationId,
-                History = new List<IssueHistory>
-                {
-                    new IssueHistory
-                    {
-                        DateAddedUtc = DateTime.UtcNow,
-                        Type = HistoryItemType.CreatedByRuleAdjustment,
-                        SpawningIssueId = currentIssue.Id,
-                        UserId = request.CurrentUser.Id,
-                    }
-                }
             };
         }
 
@@ -229,9 +235,7 @@ namespace Errordite.Core.Issues.Commands
     public enum AdjustRulesStatus
     {
         Ok,
-        RulesMatchedOtherIssue,
         IssueNotFound,
         RulesNotChanged,
-        AutoMergedWithOtherIssue
     }
 }

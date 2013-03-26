@@ -40,8 +40,11 @@ namespace Errordite.Core.Issues.Commands
             Session.AddCommitAction(new DeleteAllErrorsCommitAction(issue.Id));
             Session.AddCommitAction(new DeleteAllDailyCountsCommitAction(issue.Id));
 
+            var hourlyCount = Session.Raven.Load<IssueHourlyCount>("IssueHourlyCount/{0}".FormatWith(issue.FriendlyId));
+
 			//delete the hourly count doc
-			Delete(Session.Raven.Load<IssueHourlyCount>("IssueHourlyCount/{0}".FormatWith(issue.FriendlyId)));
+            if (hourlyCount != null)
+                Delete(hourlyCount);
 
 			//and delete the issue
             Delete(issue);

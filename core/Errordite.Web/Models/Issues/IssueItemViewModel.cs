@@ -21,7 +21,7 @@ namespace Errordite.Web.Models.Issues
         public string FormKey { get; set; }
         public string IssueId { get; set; }
         public string ApplicationId { get; set; }
-        public DateTime LastErrorUtc { get; set; }
+        public DateTimeOffset LastErrorUtc { get; set; }
         public int ErrorCount { get; set; }
         public string UserName { get; set; }
         public string ApplicationName { get; set; }

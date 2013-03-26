@@ -1,14 +1,12 @@
 ﻿
 using System;
-using System.IO;
+using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using System.Xml.Linq;
 using CodeTrip.Core.Misc;
 using Errordite.Client;
 using Errordite.Client.Configuration;
 using Errordite.Client.Interfaces;
-using CodeTrip.Core.Extensions;
 
 namespace Errordite.Samples.Mvc3
 {
@@ -39,19 +37,6 @@ namespace Errordite.Samples.Mvc3
 
         }
 
-        private class Logger : IErrorditeLogger
-        {
-            public void Debug(string message, params object[] args)
-            {
-                System.Diagnostics.Debug.WriteLine(message, args);
-            }
-
-            public void Error(Exception e)
-            {
-                System.Diagnostics.Debug.WriteLine(e.ToString());
-            }
-        }
-
         protected void Application_Start()
         {
 			log4net.Config.XmlConfigurator.Configure();
@@ -61,7 +46,12 @@ namespace Errordite.Samples.Mvc3
             AreaRegistration.RegisterAllAreas();
 
             ErrorditeClient.ConfigurationAugmenter = ErrorditeClientOverrideHelper.Augment;
-            ErrorditeClient.SetLogger(new Logger());
+            ErrorditeClient.ConfigurationAugmenter = c =>
+                {
+                    ErrorditeClientOverrideHelper.Augment(c);
+                    c.DataCollectors.Insert(0, new AcmeDataCollectorFactory());
+                };
+            ErrorditeClient.SetErrorNotificationAction(e => System.Diagnostics.Trace.Write(e));
 			Errordite.Client.Log4net.ErrorditeLogger.Initialise(true, "Errordite.Samples");
 
             RegisterGlobalFilters(GlobalFilters.Filters);
@@ -70,5 +60,25 @@ namespace Errordite.Samples.Mvc3
 
 
     }
+
+    public class AcmeDataCollectorFactory : IDataCollectorFactory, IDataCollector
+    {
+        public IDataCollector Create()
+        {
+            return this;
+        }
+
+        public string Prefix { get { return "ACME"; } }
+        public ErrorData Collect(Exception e, IErrorditeConfiguration configuration)
+        {
+            var loginCookie = HttpContext.Current.Request.Cookies["login"];
+            
+            return new ErrorData()
+                {
+                    {"Username", loginCookie != null && loginCookie.Value != "" ? loginCookie.Value : "ANONYMOUS"}
+                };
+        }
+    }
+
 
 }

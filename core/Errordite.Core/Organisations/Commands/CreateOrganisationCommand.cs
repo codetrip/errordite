@@ -69,7 +69,7 @@ namespace Errordite.Core.Organisations.Commands
                 Status = OrganisationStatus.Active,
                 PaymentPlanId = freeTrialPlan.Id,
                 CreatedOnUtc = DateTime.UtcNow,
-                TimezoneId = "UTC",
+                TimezoneId = request.TimezoneId ?? "UTC",
                 PaymentPlan = freeTrialPlan,
                 ApiKeySalt = Membership.GeneratePassword(8, 1),
             };
@@ -152,6 +152,7 @@ namespace Errordite.Core.Organisations.Commands
         public string Email { get; set; }
         public string Password { get; set; }
         public string OrganisationName { get; set; }
+        public string TimezoneId { get; set; }
     }
 
     public enum CreateOrganisationStatus

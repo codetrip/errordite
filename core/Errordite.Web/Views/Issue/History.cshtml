@@ -1,13 +1,11 @@
-﻿@using CodeTrip.Core.Extensions
-@using Errordite.Core.Extensions
-@using Errordite.Web.Models.Issues
-@model IssueDetailsViewModel
-
+﻿@using Errordite.Web.Models.Issues
+@model AddCommentViewModel
 
 <div class="form" style="margin-bottom:5px">
 	@using (Html.BeginForm("addcomment", "issue", FormMethod.Post, new { id = "comment" }))
 	{
 		@Html.HiddenFor(m => m.IssueId)
+		@Html.HiddenFor(m => m.ApplicationId)
 	    <div style="float:left;width:100%">
 	        @Html.ValidationMessageFor(m => m.Comment)   
 	    </div>
@@ -16,33 +14,4 @@
 	}
 </div>
 
-@foreach (var item in Model.History)
-{
-    <div class="boxed-item history">
-		<div class="item-bar">&nbsp;</div>	
-		<div class="item-content">
-			<div class="item-info heading short">
-				Created By
-			</div>
-			<div class="item-info heading divider" style="width:75%">
-				Created At
-			</div>
-			<div class="item-info short" style="margin-bottom:5px;">
-				@(item.SystemMessage ? "System" : item.Username)
-			</div>
-			<div class="item-info divider" style="margin-bottom:5px;width:75%">
-				@item.DateAddedUtc.ToLocalTimeFormatted()
-			</div>
-			<div class="item-info heading full">
-				Message
-			</div>
-			<div class="item-info full">
-				@Html.Raw(item.Message)
-                @if (item.Reference.IsNotNullOrEmpty())
-                {
-                    <br /><i>Reference set: @item.Reference</i>
-                }
-			</div>
-		</div>
-	</div>
-}
+<div id="history-items" data-val="@Model.IssueId"></div>

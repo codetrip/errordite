@@ -4,6 +4,7 @@ using System.Linq;
 using CodeTrip.Core.Interfaces;
 using Errordite.Core.Authorisation;
 using Errordite.Core.Domain.Error;
+using Errordite.Core.Extensions;
 using Errordite.Core.Organisations;
 using Errordite.Core.Session;
 using Errordite.Core.Users.Queries;
@@ -51,17 +52,27 @@ namespace Errordite.Core.Issues.Commands
                     if (request.AssignToUserId != null)
                     {
                         issue.UserId = request.AssignToUserId;
+
+                        Store(new IssueHistory
+                        {
+                            DateAddedUtc = DateTime.UtcNow.ToDateTimeOffset(request.CurrentUser.Organisation.TimezoneId),
+                            UserId = request.CurrentUser.Id,
+                            AssignedToUserId = request.AssignToUserId,
+                            Type = HistoryItemType.AssignedUserChanged,
+                            IssueId = issue.Id,
+                            ApplicationId = issue.ApplicationId,
+                        });
                     }
 
-                    issue.History.Add(new IssueHistory
+                    Store(new IssueHistory
                     {
-                        DateAddedUtc = DateTime.UtcNow,
+                        DateAddedUtc = DateTime.UtcNow.ToDateTimeOffset(request.CurrentUser.Organisation.TimezoneId),
                         UserId = request.CurrentUser.Id,
-                        AssignedToUserId = request.AssignToUserId,
-                        Comment = request.Comment,
                         PreviousStatus = issue.Status,
                         NewStatus = request.Status,
-                        Type = HistoryItemType.BatchStatusUpdate,
+                        Type = HistoryItemType.StatusUpdated,
+                        IssueId = issue.Id,
+                        ApplicationId = issue.ApplicationId,
                     });
 
                     issue.Status = request.Status;
@@ -92,7 +103,6 @@ namespace Errordite.Core.Issues.Commands
     {
         public List<string> IssueIds { get; set; }
         public IssueStatus Status { get; set; }
-        public string Comment { get; set; }
         public string AssignToUserId { get; set; }
     }
 

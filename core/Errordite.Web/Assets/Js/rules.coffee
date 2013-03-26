@@ -3,7 +3,8 @@ ruleCounter = 0
 jQuery -> 
 
 	if $('section#issue, section#addissue').length > 0
-		$body = $ 'body'		
+		$body = $ 'body'	
+		whatifresult = null;	
 
 		class Errordite.Rule			
 
@@ -36,7 +37,8 @@ jQuery ->
 			constructor: () ->				
 				this.counter = 0
 				this.rules = for ruleEl in $ '#rules-table tr.rule'
-					new Errordite.Rule $ ruleEl								
+					new Errordite.Rule $ ruleEl		
+				this.whatIfResult = null						
 
 			addRule: (name, op, val) ->
 				
@@ -113,7 +115,7 @@ jQuery ->
 			showRuleUpdatesPanel: () ->
 				$('#rules-adjusted').show()
 				messageHolder = $ '#rules-adjusted .what-if-message'
-				messageHolder.css
+				messageHolder.css	
 					visibility: 'hidden'
 				this.whatIf (response) -> 
 					messageHolder.html (
@@ -130,6 +132,8 @@ jQuery ->
 							</div>
 							"""
 						)
+
+					whatifresult = response.data
 					messageHolder.css
 						visibility: 'visible'
 
@@ -145,14 +149,29 @@ jQuery ->
 
 		Errordite.ruleManager = new Errordite.RuleManager()		
 
-		$body.delegate 'button#apply-rule-updates', 'click', (e) ->
+		$body.delegate 'button#apply-rule-updates, button#update-details', 'click', (e) ->
 			$form = $('form#rulesForm')
 			$form.validate()
 
 			if $form.valid()
-				$('#apply-rules-confirmation').modal()
 
-			(Tabs.get $ '#issue-tabs').show 'rules'
+				if whatifresult != null
+					$errormessage = $('#rules-update-info')
+					$message = $('#rules-message')
+					$name = $('#rule-name')
+
+					if whatifresult.notmatched > 0 
+						$errormessage.text("#{whatifresult.notmatched} of #{whatifresult.total} errors do not match the changes and will be attached to a new issue.")
+						$name.show()
+					else
+						$errormessage.text('All errors match the new rules.')
+						$name.hide()
+
+					$message.show()
+
+				$('#apply-rules-confirmation').modal()
+			else
+				(Tabs.get $ '#issue-tabs').show 'rules'
 
 		$body.delegate 'div#rules a.add', 'click', (e) -> 			
 			Errordite.ruleManager.addRule()

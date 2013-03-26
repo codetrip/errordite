@@ -28,9 +28,9 @@ namespace Errordite.Core.Issues.Queries
 
             var issues = Session.Raven.Query<IssueDocument, Issues_Search>().Statistics(out stats)
                 .Where(i => i.ApplicationId == Application.GetId(request.ApplicationId))
-                .Skip(0)
                 .Take(_configuration.MaxPageSize)
                 .As<Issue>()
+                .OrderBy(i => i.FriendlyId)
                 .Select(issue => new IssueBase
                     {
                         Id = issue.Id,
@@ -39,27 +39,22 @@ namespace Errordite.Core.Issues.Queries
                         ApplicationId = issue.ApplicationId
                     })
                 .ToList();
-
-            if(stats.TotalResults > _configuration.MaxPageSize)
+            
+            while(stats.TotalResults > issues.Count)
             {
-                Trace("Total issues is greater than default page size, iterating to get all issues");
-                int pageCount = stats.TotalResults/_configuration.MaxPageSize;
-
-                for(int pageNumber=1;pageNumber<pageCount;pageNumber++)
-                {
-                    issues.AddRange(Session.Raven.Query<IssueDocument, Issues_Search>()
-                        .Where(issue => issue.ApplicationId == Application.GetId(request.ApplicationId))
-                        .Skip(pageNumber * _configuration.MaxPageSize)
-                        .Take(_configuration.MaxPageSize)
-                        .As<Issue>()
-                        .Select(issue => new IssueBase
-                        {
-                            Id = issue.Id,
-                            Rules = issue.Rules,
-                            LastRuleAdjustmentUtc = issue.LastRuleAdjustmentUtc,
-                            ApplicationId = issue.ApplicationId
-                        }));
-                }
+                issues.AddRange(Session.Raven.Query<IssueDocument, Issues_Search>().Statistics(out stats)
+                    .Where(issue => issue.ApplicationId == Application.GetId(request.ApplicationId))
+                    .Skip(issues.Count)
+                    .Take(_configuration.MaxPageSize)
+                    .As<Issue>()
+                    .OrderBy(i => i.FriendlyId)
+                    .Select(issue => new IssueBase
+                    {
+                        Id = issue.Id,
+                        Rules = issue.Rules,
+                        LastRuleAdjustmentUtc = issue.LastRuleAdjustmentUtc,
+                        ApplicationId = issue.ApplicationId
+                    }));
             }
 
             Trace("Found a total of {0} issues for application Id:={1}", issues.Count, request.ApplicationId);

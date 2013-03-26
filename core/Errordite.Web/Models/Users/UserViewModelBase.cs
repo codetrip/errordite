@@ -24,7 +24,5 @@ namespace Errordite.Web.Models.Users
         [RegularExpression(ValidationResources.Regexes.EmailAddress, ErrorMessageResourceType = typeof(Resources.Account), ErrorMessageResourceName = "Email_Invalid")]
         [Required(ErrorMessageResourceType = typeof(Resources.Account), ErrorMessageResourceName = "Email_Required")]
         public string Email { get; set; }
-
-        public string TimezoneId { get; set; }
     }
 }

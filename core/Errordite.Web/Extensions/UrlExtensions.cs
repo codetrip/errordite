@@ -1,5 +1,7 @@
 ﻿
 using System;
+using System.Collections.Specialized;
+using System.Web;
 using System.Web.Mvc;
 using Errordite.Core.Configuration;
 using Errordite.Core.Domain;
@@ -8,6 +10,7 @@ using CodeTrip.Core.Extensions;
 using Errordite.Core.Identity;
 using Errordite.Web.Models.Issues;
 using System.Linq;
+using Errordite.Core.Extensions;
 
 namespace Errordite.Web.Extensions
 {
@@ -17,15 +20,26 @@ namespace Errordite.Web.Extensions
         /// Request.Url will not work as we will get the port-mapped value when in live.
         /// Instead using Url.CurrentRequest() will ensure we get the correctly mapped one.
         /// </summary>
-        public static string CurrentRequest(this UrlHelper helper)
+        public static string CurrentRequest(this UrlHelper helper, string query = null)
         {
             var uriBuilder = new UriBuilder(ErrorditeConfiguration.Current.SiteBaseUrl);
 
             var currentUri = helper.RequestContext.HttpContext.Request.Url;
 
+            if (currentUri == null)
+                return null;
+
             uriBuilder.Path = currentUri.AbsolutePath;
-            uriBuilder.Query = currentUri.Query;
-            
+
+            if (query != null)
+            {
+                uriBuilder.Query = currentUri.Query.IsNullOrEmpty() ? query : currentUri.Query.MergeQueryStrings(query).Replace("?", "");
+            }
+            else
+            {
+                uriBuilder.Query = currentUri.Query.Replace("?", "");
+            }
+
             return uriBuilder.Uri.ToString();
         }
 
@@ -40,6 +54,11 @@ namespace Errordite.Web.Extensions
         {
             return helper.Action("index", "dashboard", new { Area = string.Empty, applicationId });
         }
+
+        public static string Feed(this UrlHelper helper, string applicationId = null)
+        {
+            return applicationId != null ? helper.Action("feed", "dashboard", new { applicationId, Area = string.Empty }) : helper.Action("feed", "dashboard", new { Area = string.Empty });
+        }
         
         public static string Errors(this UrlHelper helper, string applicationId = null)
         {
@@ -51,15 +70,6 @@ namespace Errordite.Web.Extensions
 			return helper.Action("index", "errors", new { Area = string.Empty, query});
 		}
 
-        public static string ClearErrors(this UrlHelper helper, string applicationId, string issueId)
-        {
-            if(issueId.IsNullOrEmpty())
-            {
-                return applicationId.IsNotNullOrEmpty() ? helper.Action("index", "errors", new { applicationId, Area = string.Empty }) : helper.Action("index", "errors", new { Area = string.Empty });
-            }
-
-            return helper.Action("index", "issue", new { Id = issueId.GetFriendlyId(), Tab = IssueTab.Errors.ToString(), Area = string.Empty });
-        }
 
         public static string AllIssues(this UrlHelper helper)
         {
@@ -153,32 +163,37 @@ namespace Errordite.Web.Extensions
 
         public static string Client(this UrlHelper helper)
         {
-            return helper.Action("client", "help", new { Area = string.Empty });
+            return helper.Action("client", "docs", new { Area = string.Empty });
         }
 
         public static string Api(this UrlHelper helper)
         {
-            return helper.Action("api", "help", new { Area = string.Empty });
+            return helper.Action("api", "docs", new { Area = string.Empty });
         }
 
         public static string JsonFormat(this UrlHelper helper)
         {
-            return helper.Action("senderrorwithjson", "help", new { Area = string.Empty });
+            return helper.Action("senderrorwithjson", "docs", new { Area = string.Empty });
         }
         
         public static string GettingStarted(this UrlHelper helper)
         {
-            return helper.Action("gettingstarted", "help", new { Area = string.Empty });
+            return helper.Action("gettingstarted", "docs", new { Area = string.Empty });
         }
 
         public static string Pricing(this UrlHelper helper)
         {
-            return helper.Action("pricing", "help", new { Area = string.Empty });
+            return helper.Action("pricing", "docs", new { Area = string.Empty });
+        }
+
+        public static string PythonClient(this UrlHelper helper)
+        {
+            return helper.Action("pythonclient", "help", new { Area = string.Empty });
         }
 
         public static string Privacy(this UrlHelper helper)
         {
-            return helper.Action("privacy", "help", new { Area = string.Empty });
+            return helper.Action("privacy", "docs", new { Area = string.Empty });
         }
 
         #endregion

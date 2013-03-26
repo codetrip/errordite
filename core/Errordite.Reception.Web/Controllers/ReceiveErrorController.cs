@@ -1,6 +1,8 @@
-﻿using System.Web.Mvc;
+﻿using System.Net;
+using System.Web.Mvc;
 using CodeTrip.Core.Auditing;
 using Errordite.Core.Reception.Commands;
+using CodeTrip.Core.Extensions;
 
 namespace Errordite.Reception.Web.Controllers
 {
@@ -14,19 +16,21 @@ namespace Errordite.Reception.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(Client.Abstractions.ClientError clientError)
+        public ActionResult Index(Client.ClientError clientError)
         {
-            _processIncomingException.Invoke(new ProcessIncomingExceptionRequest
+            var response = _processIncomingException.Invoke(new ProcessIncomingExceptionRequest
             {
                 Error = clientError
             });
 
-            return Content("Ok");
-        }
+            if (response.ResponseMessage.IsNotNullOrEmpty())
+            {
+                Response.StatusCode = (int)HttpStatusCode.NotAcceptable;
+                return Content(response.ResponseMessage);
+            }
 
-        public ActionResult Test()
-        {
-            return Content("Ok");
+            Response.StatusCode = (int) HttpStatusCode.Created;
+            return Content("Received error");
         }
     }
 }

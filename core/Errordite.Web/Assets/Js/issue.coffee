@@ -3,21 +3,15 @@ jQuery ->
 
 	if $issue.length > 0
 
-		setReferenceLink = ->
-			input = $(':input[name=Reference]')
-			reference = input.val()
-			$('#reference-link').empty()
-			$('#reference-link').html($('<a>')
-				.attr('href', reference)
-				.attr('target', '_blank')
-				.text('link')) if /^https?:\/\//.test(reference)			
+		paging = new window.Paging('/issue/errors?Id=' + $issue.find('#IssueId').val() + '&')
+		paging.init()
 		
 		loadTabData = ($tab) ->
 			if not $tab.data 'loaded'
 				if $tab.data("val") == "reports"				
 					renderReports()
-				else if $tab.data("val") == "errors"
-					renderErrors()
+				else if $tab.data("val") == "history"
+					renderHistory()
 				$tab.data 'loaded', true	
 
 		renderReports = () -> 
@@ -33,6 +27,9 @@ jQuery ->
 							xaxis: 
 								renderer: $.jqplot.CategoryAxisRenderer
 								ticks: d.ByHour.x							
+							yaxis:
+								min: 0
+								tickInterval: if (_.max d.ByHour.y) > 3 then null else 1
 									
 					$.jqplot 'date-graph', 
 						[_.zip d.ByDate.x, d.ByDate.y],
@@ -45,68 +42,68 @@ jQuery ->
 									formatString:'%a %#d %b'
 							yaxis:
 								min: 0
+								tickInterval: if (_.max d.ByDate.y) > 3 then null else 1
+
 						highlighter:
 							show: true
 							sizeAdjust: 7.5
 
-		renderErrors = () -> 
-			$node = $issue.find('#error-items')
-			url = '/issue/errors?IssueId=' + $issue.find('#IssueId').val()
+		clearErrors = () ->
+			$('div#error-items').clear();
+						
+		renderHistory = () -> 
+			$node = $issue.find('#history-items')
+			url = '/issue/history?IssueId=' + $issue.find('#IssueId').val()
 			
 			$.get url,
 				(data) -> 
-					$node.html(data)
+					$node.html(data.data)
 					$('div.content').animate 
 						scrollTop : 0,
-						'slow'		
+						'slow'			
 		
 		loadTabData($ 'ul#issue-tabs li.active a.tablink')
-			
-		setReferenceLink()
 
 		$issue.delegate 'form#reportform', 'submit', (e) ->
 			e.preventDefault()
 			renderReports()
 
-		$issue.delegate ':input[name=Reference]', 'change', setReferenceLink
-
 		$issue.delegate 'input[type="button"].confirm', 'click', () ->
 			$this = $ this
 			if confirm "Are you sure you want to delete all errors associated with this issue?" 
 				$.post '/issue/purge', 'issueId=' + $this.attr('data-val'), (data) -> 
-					renderErrors()
+					clearErrors()
 					$('span#instance-count').text "0"
 
-		$issue.delegate 'form#errorsForm', 'submit', (e) ->
+		$issue.delegate '.what-if-reprocess', 'click', (e) ->
 			e.preventDefault()
-			$this = $ this
-			renderErrors()
+			$(this).closest('form').ajaxSubmit
+				data:
+					WhatIf: true
+				success: (data) ->
+					$('.reprocess-what-if-msg').remove()
+					msg = $('<span/>').addClass('reprocess-what-if-msg').html(data)
+					$(e.currentTarget).after msg
+#					setTimeout -> msg.fadeOut(500), 
+#					5000 
+				error: ->
+					alert 'Error. Please try again.'
+		
+
 
 		$issue.delegate 'select#Status', 'change', () -> 
 			$this = $ this
 
-			if $this.val() == 'Ignorable'
-				$issue.find('li.checkbox').removeClass('hidden');
+			if $this.val() == 'Ignored'
+				$issue.find('li.inline').removeClass('hidden');
 			else
-				$issue.find('li.checkbox').addClass('hidden');		
+				$issue.find('li.inline').addClass('hidden');		
 
-		if $issue.find('select#Status').val() == 'Ignorable'
-			$issue.find('li.checkbox').removeClass('hidden')
+		if $issue.find('select#Status').val() == 'Ignored'
+			$issue.find('li.inline').removeClass('hidden')
 
 		$('#issue-tabs .tablink').bind 'shown', (e) -> 
-			loadTabData $ e.currentTarget		
-
-		$issue.delegate '.sort a[data-pgst]', 'click', (e) -> 
-			e.preventDefault()
-			$this = $ this
-			$('#pgst').val $this.data('pgst')
-			$('#pgsd').val $this.data('pgsd')
-			renderErrors()
-			false
-
-		$issue.delegate '#apply-rules-confirmation input[name="WhatIf"]', 'click', (e) -> 
-			e.preventDefault()
-			Errordite.ruleManager.whatIf (response) -> alert response.message
+			loadTabData $ e.currentTarget
 			
 				
 			

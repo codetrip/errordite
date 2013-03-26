@@ -1,33 +1,25 @@
 ﻿using System;
-using Errordite.Core.Identity;
 
 namespace Errordite.Core.Extensions
 {
     public static class DateTimeExtensions
     {
-        public static string ToLocalTimeFormatted(this DateTime datetimeUtc)
+        public static string ToLocalTimeFormatted(this DateTimeOffset datetimeUtc)
         {
-            return datetimeUtc.ToLocal().ToString("dd MMM yyyy HH:mm:ss");
+            return datetimeUtc.ToString("dd MMM yyyy HH:mm:ss");
         }
 
-        public static string ToLocalFormatted(this DateTime datetimeUtc)
+        public static string ToLocalFormatted(this DateTimeOffset datetimeUtc)
         {
-            return datetimeUtc.ToLocal().ToString("dd MMM yyyy");
+            return datetimeUtc.ToString("dd MMM yyyy");
         }
 
-        public static DateTime ToLocal(this DateTime datetimeUtc)
+        public static DateTimeOffset ToDateTimeOffset(this DateTime datetimeUtc, string timeZoneId)
         {
-            var appContext = AppContext.GetFromHttpContext();
-            string timezoneId;
-            if (appContext != null && (timezoneId = appContext.CurrentUser.EffectiveTimezoneId()) != null)
-            {
-                return 
-                    TimeZoneInfo.ConvertTimeBySystemTimeZoneId(datetimeUtc, timezoneId);
-            }
-            else
-            {
-                return datetimeUtc.ToLocalTime();
-            }
+            var timeZone = TimeZoneInfo.FindSystemTimeZoneById(timeZoneId ?? "UTC");
+            var localDate = TimeZoneInfo.ConvertTimeFromUtc(datetimeUtc, timeZone);
+            var utcOffset = timeZone.GetUtcOffset(datetimeUtc);
+            return new DateTimeOffset(localDate, utcOffset);
         }
     }
 }

@@ -12,15 +12,12 @@
 
     function Initialisation() {}
 
-    Initialisation.prototype.init = function(ajax, pagingFunc) {
-      var $paging, $tabHolders, controller, paging, tabHolder, _i, _len;
+    Initialisation.prototype.init = function(ajax) {
+      var $tabHolders, controller, tabHolder, _i, _len;
       $('.icon-info').tooltip();
       $('.tool-tip').tooltip();
       $('div.search-box').tooltip();
       $('.dropdown-toggle').dropdown();
-      $paging = $('div.paging');
-      paging = new Paging(pagingFunc);
-      paging.init(ajax);
       $tabHolders = $('.tabs');
       prettyPrint();
       for (_i = 0, _len = $tabHolders.length; _i < _len; _i++) {
@@ -83,17 +80,15 @@
     function Spinner() {}
 
     Spinner.prototype.disable = function() {
-      return $('.spinner').ajaxStart(function() {
-        return $(this).hide();
-      }).ajaxStop(function() {
-        return $(this).hide();
-      });
+      $('.spinner').unbind('ajaxStart');
+      return $('.spinner').unbind('ajaxStop');
     };
 
     Spinner.prototype.enable = function() {
-      return $('.spinner').ajaxStart(function() {
+      $('.spinner').ajaxStart(function() {
         return $(this).show();
-      }).ajaxStop(function() {
+      });
+      return $('.spinner').ajaxStop(function() {
         return $(this).hide();
       });
     };
@@ -202,16 +197,15 @@
 
   Paging = (function() {
 
-    function Paging(changeFunc) {
+    function Paging(baseUrl) {
       var paging;
       paging = this;
       this.currentPage = 0;
       this.currentSize = 0;
-      this.changeFunc = changeFunc;
       this.pushState = false;
       this.rootNode = $('body');
-      this.baseUrl = this.rootNode.find('input#page-link').val();
       this.contentNode = $('div.content');
+      this.baseUrl = baseUrl;
       /*
       		Once we've worked out what url we want to navigte to we call navigate.  $paging is the .paging div
       		that holds our paging controls.
@@ -221,8 +215,14 @@
         var $ajaxContainer;
         $ajaxContainer = $paging.closest('.ajax-container');
         if ($ajaxContainer.length) {
+          if (paging.baseUrl !== void 0) {
+            url = paging.baseUrl + url.split('?')[1];
+          }
           return $.get(url, {}, function(data) {
-            return $ajaxContainer.html(data);
+            $ajaxContainer.html(data);
+            return $('div.wrapper').animate({
+              scrollTop: 0
+            }, 'slow');
           });
         } else {
           return window.location.href = url;

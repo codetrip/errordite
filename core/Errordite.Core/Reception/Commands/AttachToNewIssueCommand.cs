@@ -40,7 +40,7 @@ namespace Errordite.Core.Reception.Commands
 
 			var issue = new Issue
 			{
-				Name = "{0} ({1})".FormatWith(error.ExceptionInfos.First().Type, DateTime.UtcNow.ToLocalTime().ToString("yyyy.MM.ddTHH.mm.ss")),
+                Name = "{0} ({1})".FormatWith(error.ExceptionInfos.First().Type, error.TimestampUtc.ToString("yyyy.MM.ddTHH.mm.ss")),
 				Rules = rules,
 				ApplicationId = application.Id,
 				CreatedOnUtc = error.TimestampUtc,
@@ -49,23 +49,21 @@ namespace Errordite.Core.Reception.Commands
 				ErrorCount = 1,
 				LastErrorUtc = error.TimestampUtc,
 				OrganisationId = application.OrganisationId,
-				History = new List<IssueHistory>
-                {
-                    new IssueHistory
-                    {
-                        DateAddedUtc = DateTime.UtcNow,
-                        Type = HistoryItemType.AutoCreated,
-                        ExceptionType = error.ExceptionInfos.First().Type,
-                        ExceptionMethod = error.ExceptionInfos.First().MethodName,
-                        ExceptionModule = error.ExceptionInfos.First().Module,
-                        ExceptionMachine = error.MachineName,
-                        SystemMessage = true,
-                    }
-                },
 				TestIssue = error.TestError
 			};
 
 			Store(issue);
+            Store(new IssueHistory
+            {
+                DateAddedUtc = DateTime.UtcNow.ToDateTimeOffset(application.TimezoneId),
+                Type = HistoryItemType.AutoCreated,
+                ExceptionType = error.ExceptionInfos.First().Type,
+                ExceptionMethod = error.ExceptionInfos.First().MethodName,
+                ExceptionMachine = error.MachineName,
+                SystemMessage = true,
+                IssueId = issue.Id,
+                ApplicationId = issue.ApplicationId,
+            });
 
 			var issueHourlyCount = new IssueHourlyCount
 			{
@@ -90,7 +88,7 @@ namespace Errordite.Core.Reception.Commands
 
 			Trace("AttachTod issue: Id:={0}, Name:={1}", issue.Id, issue.Name);
 			error.IssueId = issue.Id;
-			MaybeSendNotification(issue, application, NotificationType.NotifyOnNewClassCreated, error);
+			MaybeSendNotification(issue, application, NotificationType.NotifyOnNewIssueCreated, error);
 
 			//tell the issue cache we have a new issue
 			_receptionServiceIssueCache.Add(issue);

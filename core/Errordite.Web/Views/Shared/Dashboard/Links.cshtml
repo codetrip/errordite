@@ -1,59 +1,21 @@
 ﻿@using Errordite.Core.Domain.Error
 @using Errordite.Web.Extensions
-@using CodeTrip.Core.Extensions
-@model Errordite.Web.Models.Dashboard.DashboardViewModel
+@model Errordite.Web.Models.Dashboard.DashboardLinksViewModel
 
 <div class="quicklinks">
-	<div class="four-col home-links">
+	<div class="three-col home-links">
 		<a class="link" href="@Url.Issues(Model.SelectedApplicationId)">All Issues <span>(@Model.Stats.TotalIssues)</span></a>
 		<a class="link" href="@Url.Issues(IssueStatus.Unacknowledged, Model.SelectedApplicationId)">Unacknowledged Issues <span>(@Model.Stats.Unacknowledged)</span></a>
 		<a class="link" href="@Url.Issues(IssueStatus.Acknowledged, Model.SelectedApplicationId)">Acknowledged Issues <span>(@Model.Stats.Acknowledged)</span></a>
 	</div>
-	<div class="four-col home-links">
+	<div class="three-col home-links">
 		<a class="link" href="@Url.Issues(IssueStatus.Solved, Model.SelectedApplicationId)">Solved Issues <span>(@Model.Stats.Solved)</span></a>
 		<a class="link" href="@Url.Issues(IssueStatus.Ignored, Model.SelectedApplicationId)">Ignored Issues <span>(@Model.Stats.Ignored)</span></a>
 		<a class="link" href="@Url.MyIssues(ViewData.GetAppContext().CurrentUser.FriendlyId, Model.SelectedApplicationId)">Issues Assigned to me <span>(@Model.Stats.CurrentUserIssueCount)</span></a>
 	</div>
-	<div class="four-col home-links">
+	<div class="three-col home-links last">
 		<a class="link" href="@Url.Applications()">Applications <span>(@Model.Stats.Applications)</span></a>
 		<a class="link" href="@Url.Users()">Users <span>(@Model.Stats.Users)</span></a>
 		<a class="link" href="@Url.Groups()">Groups <span>(@Model.Stats.Groups)</span></a>
 	</div>
-    <div class="four-col home-links last">
-        <input type="hidden" value="@Model.SelectedApplicationId" id="ApplicationId" />
-        <h3 style="color:#efefef">Dashboard Application</h3>
-        <ul class="popup popup-pills">
-            <li class="dropdown" id="applications">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#applications">
-                    @if (Model.SelectedApplicationName.IsNullOrEmpty() && Model.Applications.Count() > 1)
-                    {
-                        <text>All Applications</text> <span>(@Model.Applications.Count())</span>
-                    }
-                    else if(Model.Applications.Any())
-                    {
-                        @(Model.SelectedApplicationName.IsNullOrEmpty() ? Model.Applications.First().Name : Model.SelectedApplicationName)
-                    }
-                    @if (Model.Applications.Count() > 1)
-                    {
-                        <b class="caret"></b>
-                    }
-                </a>
-                @if (Model.Applications.Count() > 1)
-                {
-                    <ul class="dropdown-menu">
-                        <li>
-                            <a href="@Url.Dashboard()">All Applications (@Model.Applications.Count())</a>
-                        </li>
-                        @foreach (var application in Model.Applications)
-                        {
-                            <li>
-                                <a href="@Url.Dashboard(application.FriendlyId)">@application.Name</a>
-                            </li>
-                        }
-                    </ul>
-                }
-                
-            </li>
-        </ul>
-    </div>
 </div>

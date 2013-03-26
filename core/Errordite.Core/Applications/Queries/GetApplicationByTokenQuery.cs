@@ -4,6 +4,7 @@ using CodeTrip.Core.Interfaces;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Organisations;
 using Errordite.Core.Organisations.Queries;
+using Errordite.Core.Reception.Commands;
 using Errordite.Core.Session;
 
 namespace Errordite.Core.Applications.Queries
@@ -14,7 +15,10 @@ namespace Errordite.Core.Applications.Queries
         private readonly IEncryptor _encryptor;
         private readonly IGetOrganisationQuery _getOrganisationQuery;
         private readonly IAppSession _appSession;
-        public GetApplicationByTokenQuery(IGetApplicationQuery getApplicationQuery, IEncryptor encryptor, IGetOrganisationQuery getOrganisationQuery, IAppSession appSession)
+        public GetApplicationByTokenQuery(IGetApplicationQuery getApplicationQuery, 
+            IEncryptor encryptor, 
+            IGetOrganisationQuery getOrganisationQuery,
+            IAppSession appSession)
         {
             _getApplicationQuery = getApplicationQuery;
             _encryptor = encryptor;
@@ -35,7 +39,10 @@ namespace Errordite.Core.Applications.Queries
             if (tokenParts.Length != 3)
             {
                 Trace("Token {0} decrypts to {1} which does not have 3 separated parts.", request.Token, token);
-                return new GetApplicationByTokenResponse();
+                return new GetApplicationByTokenResponse
+                {
+                    Status = ApplicationStatus.InvalidToken
+                };
             }
 
             string applicationId = Application.GetId(tokenParts[0]);
@@ -49,6 +56,10 @@ namespace Errordite.Core.Applications.Queries
             if (organisation == null)
             {
                 Trace("Organisation with id {0} not found", organisationId);
+                return new GetApplicationByTokenResponse
+                {
+                    Status = ApplicationStatus.InvalidOrganisation
+                };
             }
 
             _appSession.SetOrganisation(organisation);
@@ -60,16 +71,29 @@ namespace Errordite.Core.Applications.Queries
                 CurrentUser = request.CurrentUser,
             }).Application;
 
+            if (application == null)
+            {
+                return new GetApplicationByTokenResponse
+                {
+                    Organisation = organisation,
+                    Status = ApplicationStatus.NotFound
+                };
+            }
+
             if (application.TokenSalt != tokenParts[2])
             {
                 Trace("Application {0} salt is {1} but salt in token was {2}", application.Id, application.TokenSalt, tokenParts[2]);
-                return new GetApplicationByTokenResponse();
+                return new GetApplicationByTokenResponse
+                {
+                    Status = ApplicationStatus.InvalidToken
+                };
             }
 
             return new GetApplicationByTokenResponse
             {
                 Application = application,
                 Organisation = organisation,
+                Status = ApplicationStatus.Ok
             };
         }
     }
@@ -79,7 +103,7 @@ namespace Errordite.Core.Applications.Queries
 
     public class GetApplicationByTokenResponse : GetApplicationResponse
     {
-        
+        public ApplicationStatus Status { get; set; }
     }
 
     public class GetApplicationByTokenRequest : OrganisationRequestBase

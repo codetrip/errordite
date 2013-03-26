@@ -5,7 +5,7 @@ using System.Linq;
 using CodeTrip.Core;
 using CodeTrip.Core.Extensions;
 using CodeTrip.Core.Interfaces;
-using Errordite.Client.Abstractions;
+using Errordite.Client;
 using Errordite.Core.Applications.Queries;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Domain.Organisation;
@@ -13,6 +13,7 @@ using Errordite.Core.Messages;
 using NServiceBus;
 using EC = Errordite.Core.Configuration;
 using ErrorditeConfiguration = Errordite.Core.Configuration.ErrorditeConfiguration;
+using Errordite.Core.Extensions;
 
 namespace Errordite.Core.Reception.Commands
 {
@@ -49,10 +50,30 @@ namespace Errordite.Core.Reception.Commands
             switch(status)
             {
                 case ApplicationStatus.Inactive:
+                    return new ProcessIncomingExceptionResponse
+                    {
+                        ResponseMessage = "The application specified in the token is not currently active"
+                    };
                 case ApplicationStatus.NotFound:
+                    return new ProcessIncomingExceptionResponse
+                    {
+                        ResponseMessage = "The application specified in the token could not be found"
+                    };
                 case ApplicationStatus.Error:
-                    Trace("Application not found.");
-                    return new ProcessIncomingExceptionResponse();
+                    return new ProcessIncomingExceptionResponse
+                    {
+                        ResponseMessage = "An unhandled error occured while attempting to store this error"
+                    };
+                case ApplicationStatus.InvalidOrganisation:
+                    return new ProcessIncomingExceptionResponse
+                    {
+                        ResponseMessage = "Failed to locate the organisation specified in your token"
+                    };
+                case ApplicationStatus.InvalidToken:
+                    return new ProcessIncomingExceptionResponse
+                    {
+                        ResponseMessage = "The token supplied is invalid, please check your token in the applications page in Errordite"
+                    };
                 case ApplicationStatus.Ok:
                     {
                         applicationId = application.Id;
@@ -65,8 +86,12 @@ namespace Errordite.Core.Reception.Commands
             if ((failedRule = _exceptionRateLimiter.Accept(applicationId)) != null)
             {
                 Trace("Failed rate limiter rule named {0}", failedRule.Name);
-                return new ProcessIncomingExceptionResponse();
+                return new ProcessIncomingExceptionResponse
+                {
+                    ResponseMessage = "The error was not stored due to limits on the number of errors we can receive for you in a given time frame"
+                };
             }
+
             var error = GetError(request.Error, application);
 
             if (_configuration.ServiceBusEnabled)
@@ -99,13 +124,18 @@ namespace Errordite.Core.Reception.Commands
         {
             try
             {
-                application = _getApplicationByToken.Invoke(new GetApplicationByTokenRequest
+                var response = _getApplicationByToken.Invoke(new GetApplicationByTokenRequest
                 {
                     Token = token,
                     CurrentUser = User.System()
-                }).Application;
+                });
 
-                return application == null ? ApplicationStatus.NotFound : application.IsActive ? ApplicationStatus.Ok : ApplicationStatus.Inactive;
+                application = response.Application;
+
+                if(application != null && !application.IsActive)
+                    return ApplicationStatus.Inactive;
+
+                return response.Status;
             }
             catch (Exception e)
             {
@@ -119,28 +149,25 @@ namespace Errordite.Core.Reception.Commands
         {
             var instance = new Error
             {
-                ApplicationId = application == null ? null : application.Id,
-                TimestampUtc = clientError.TimestampUtc,
+                ApplicationId = application.Id,
+                TimestampUtc = clientError.TimestampUtc.ToDateTimeOffset(application.TimezoneId),
                 MachineName = clientError.MachineName,
                 Url = GetUrl(clientError),
                 UserAgent = GetUserAgent(clientError),
                 Version = clientError.Version,
-                Tags = clientError.Tags,
-                OrganisationId = application == null ? null : application.OrganisationId,
+                OrganisationId = application.OrganisationId,
                 ExceptionInfos = GetErrorInfo(clientError.ExceptionInfo).ToArray(),
                 Messages = clientError.Messages == null ? null : clientError.Messages.Select(m => new TraceMessage
                 {
-                    Level = m.Level,
-                    Logger = m.Logger,
                     Message = m.Message,
-                    Milliseconds = m.Milliseconds
+                    Timestamp = m.TimestampUtc
                 }).ToList()
             };
 
             return instance;
         }
 
-        private IEnumerable<Domain.Error.ExceptionInfo> GetErrorInfo(Client.Abstractions.ExceptionInfo clientExceptionInfo)
+        private IEnumerable<Domain.Error.ExceptionInfo> GetErrorInfo(Client.ExceptionInfo clientExceptionInfo)
         {
             var exceptionInfo = new Domain.Error.ExceptionInfo
             {
@@ -154,6 +181,7 @@ namespace Errordite.Core.Reception.Commands
                 ExtraData = clientExceptionInfo.Data == null ? null : clientExceptionInfo.Data.ToDictionary(kvp => kvp.Key.Replace('.', '_'), kvp => kvp.Value),
                 Module = clientExceptionInfo.Source,
                 MethodName = clientExceptionInfo.MethodName
+                
             };
 
             yield return exceptionInfo;
@@ -204,7 +232,9 @@ namespace Errordite.Core.Reception.Commands
         Ok,
         NotFound,
         Inactive,
-        Error
+        Error,
+        InvalidToken,
+        InvalidOrganisation
     }
 
     public interface IProcessIncomingExceptionCommand : ICommand<ProcessIncomingExceptionRequest, ProcessIncomingExceptionResponse>
@@ -216,5 +246,7 @@ namespace Errordite.Core.Reception.Commands
     }
 
     public class ProcessIncomingExceptionResponse
-    {}
+    {
+        public string ResponseMessage { get; set; }
+    }
 }

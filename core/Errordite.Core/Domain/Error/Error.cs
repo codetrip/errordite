@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using CodeTrip.Core.Extensions;
 using ProtoBuf;
-using System.Linq;
 
 namespace Errordite.Core.Domain.Error
 {
@@ -14,7 +13,7 @@ namespace Errordite.Core.Domain.Error
         [ProtoMember(2)]
         public string IssueId { get; set; }
         [ProtoMember(3)]
-        public DateTime TimestampUtc { get; set; }
+        public DateTimeOffset TimestampUtc { get; set; }
         [ProtoMember(4)]
         public string ApplicationId { get; set; }
         [ProtoMember(5)]
@@ -32,8 +31,6 @@ namespace Errordite.Core.Domain.Error
         [ProtoMember(11)]
         public ExceptionInfo[] ExceptionInfos { get; set; }
         [ProtoMember(12)]
-        public List<string> Tags { get; set; }
-        [ProtoMember(13)]
         public string Version { get; set; }
 
         [Raven.Imports.Newtonsoft.Json.JsonIgnore]
@@ -49,13 +46,9 @@ namespace Errordite.Core.Domain.Error
     public class TraceMessage
     {
         [ProtoMember(1)]
-        public long Milliseconds { get; set; }
+        public DateTimeOffset Timestamp { get; set; }
         [ProtoMember(2)]
         public string Message { get; set; }
-        [ProtoMember(3)]
-        public string Level { get; set; }
-        [ProtoMember(4)]
-        public string Logger { get; set; }
     }
 
     [ProtoContract]

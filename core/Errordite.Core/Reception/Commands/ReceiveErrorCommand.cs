@@ -64,15 +64,21 @@ namespace Errordite.Core.Reception.Commands
 				};
             }
 
+            if (request.WhatIf)
+            {
+                return new ReceiveErrorResponse() {IssueId = matchingIssue.Id,}; //matchingissue can't be null here
+            }
+
             var issue = matchingIssue == null
-				? _attachToNewIssueCommand.Invoke(new AttachToNewIssueRequest { Application = application, Error = error }).Issue
-				: _attachToExistingIssueCommand.Invoke(new AttachToExistingIssueRequest { Application = application, Error = error, IssueId = matchingIssue.Id }).Issue;
+                              ? _attachToNewIssueCommand.Invoke(new AttachToNewIssueRequest { Application = application, Error = error }).Issue
+                              : _attachToExistingIssueCommand.Invoke(new AttachToExistingIssueRequest { Application = application, Error = error, IssueId = matchingIssue.Id }).Issue;
             
+
             Trace("Complete");
 
             return new ReceiveErrorResponse
             {
-                IssueId = issue.Id
+                IssueId = issue.Id, 
             };
         }
 
@@ -127,6 +133,7 @@ namespace Errordite.Core.Reception.Commands
         public string OrganisationId { get; set; }
         public string Token { get; set; }
         public string ExistingIssueId { get; set; }
+        public bool WhatIf { get; set; }
     }
 
     public class ReceiveErrorResponse

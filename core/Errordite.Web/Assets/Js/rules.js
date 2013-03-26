@@ -4,9 +4,10 @@
   ruleCounter = 0;
 
   jQuery(function() {
-    var $body, ruleValTimeout;
+    var $body, ruleValTimeout, whatifresult;
     if ($('section#issue, section#addissue').length > 0) {
       $body = $('body');
+      whatifresult = null;
       Errordite.Rule = (function() {
 
         function Rule($rule) {
@@ -53,6 +54,7 @@
             }
             return _results;
           })();
+          this.whatIfResult = null;
         }
 
         RuleManager.prototype.addRule = function(name, op, val) {
@@ -164,6 +166,7 @@
           });
           return this.whatIf(function(response) {
             messageHolder.html((response.data.notmatched > 0 ? "<div class='notmatched'>\n" + response.data.notmatched + " of " + response.data.total + " do not match\n</div>" : "<div class='matched'>\nAll errors match\n</div>"));
+            whatifresult = response.data;
             return messageHolder.css({
               visibility: 'visible'
             });
@@ -187,14 +190,28 @@
 
       })();
       Errordite.ruleManager = new Errordite.RuleManager();
-      $body.delegate('button#apply-rule-updates', 'click', function(e) {
-        var $form;
+      $body.delegate('button#apply-rule-updates, button#update-details', 'click', function(e) {
+        var $errormessage, $form, $message, $name;
         $form = $('form#rulesForm');
         $form.validate();
         if ($form.valid()) {
-          $('#apply-rules-confirmation').modal();
+          if (whatifresult !== null) {
+            $errormessage = $('#rules-update-info');
+            $message = $('#rules-message');
+            $name = $('#rule-name');
+            if (whatifresult.notmatched > 0) {
+              $errormessage.text("" + whatifresult.notmatched + " of " + whatifresult.total + " errors do not match the changes and will be attached to a new issue.");
+              $name.show();
+            } else {
+              $errormessage.text('All errors match the new rules.');
+              $name.hide();
+            }
+            $message.show();
+          }
+          return $('#apply-rules-confirmation').modal();
+        } else {
+          return (Tabs.get($('#issue-tabs'))).show('rules');
         }
-        return (Tabs.get($('#issue-tabs'))).show('rules');
       });
       $body.delegate('div#rules a.add', 'click', function(e) {
         Errordite.ruleManager.addRule();

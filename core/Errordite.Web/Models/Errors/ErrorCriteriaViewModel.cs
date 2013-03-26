@@ -32,9 +32,9 @@ namespace Errordite.Web.Models.Errors
     [Serializable]
     public class ErrorCriteriaPostModel
     {
+        public string Id { get; set; }
         public string Action { get; set; }
         public string Controller { get; set; }
-		public string IssueId { get; set; }
         public string Query { get; set; }
         public string DateRange { get; set; }
         public string ApplicationId { get; set; }

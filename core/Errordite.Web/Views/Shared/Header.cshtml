@@ -1,15 +1,61 @@
 ﻿@using CodeTrip.Core.Caching.Entities
 @using Errordite.Core.Domain.Organisation
 @using Errordite.Core.Identity
+@using Errordite.Web
 @using Errordite.Web.Extensions
 @using Errordite.Web.Models.Navigation
-
+@using System.Linq
+@using CodeTrip.Core.Extensions
 @{
    var appContext = ViewData.GetAppContext();
 }
 
 <div class="welcome-bar-container">
     <div class="welcome-bar">
+        
+        <div class="applications">
+            @if (appContext.AuthenticationStatus == AuthenticationStatus.Authenticated)
+            {
+                var applications = ViewData.GetCore().GetApplications().Items;
+                var selectedApplication = applications.FirstOrDefault(a => a.FriendlyId == ViewData.GetSelectedApplication());
+                var selectedApplicationName = selectedApplication == null ? null : selectedApplication.Name;
+            
+                <input type="hidden" value="@(selectedApplication == null ? string.Empty : selectedApplication.FriendlyId)" name="ApplicationId" id="ApplicationId" />
+                <ul class="popup popup-pills">
+                    <li class="dropdown" id="applications">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#applications">
+                            @if (selectedApplicationName.IsNullOrEmpty() && applications.Count() > 1)
+                            {
+                                <text>All Applications (@applications.Count())</text>
+                            }
+                            else if (applications.Any())
+                            {
+                                @(selectedApplicationName.IsNullOrEmpty() ? applications.First().Name : selectedApplicationName)
+                            }
+                            @if (applications.Count() > 1)
+                            {
+                                <b class="caret"></b>
+                            }
+                        </a>
+                        @if (applications.Count() > 1)
+                        {
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="@Url.CurrentRequest("{0}=-1".FormatWith(WebConstants.RouteValues.SetApplication))">All Applications (@applications.Count())</a>
+                                </li>
+                                @foreach (var application in applications)
+                                {
+                                    <li>
+                                        <a href="@Url.CurrentRequest("{0}={1}".FormatWith(WebConstants.RouteValues.SetApplication, application.FriendlyId))">@application.Name</a>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                
+                    </li>
+                </ul>
+            }
+        </div>
         <nav class="links">
             @if (appContext.AuthenticationStatus == AuthenticationStatus.Anonymous)
             {
@@ -23,11 +69,11 @@
             {
                 <text>
                     Welcome back <strong>@appContext.CurrentUser.FirstName
-                                             @if (appContext.Impersonated)
-                                             {
-												<a href="@Url.Impersonate()">(IMPERSONATED)</a>
-                                             }
-                                         </strong>&nbsp;&nbsp;|&nbsp;&nbsp; 
+                                     @if (appContext.Impersonated)
+                                     {
+                                         <a href="@Url.Impersonate()">(IMPERSONATED)</a>
+                                     }
+                                 </strong>&nbsp;&nbsp;|&nbsp;&nbsp; 
                     <a href="@Url.YourDetails()">Your Details</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.SignOut()">Sign Out</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.Contact()">Contact Us</a>
                 </text> 
             }
@@ -49,8 +95,8 @@
                 </div>
             }
         </div>
-        <nav>
-            <div class="@(appContext.CurrentUser.Role == UserRole.SuperUser || appContext.Impersonated ? "nav-container-system" : "nav-container")">
+        <nav class="main-nav">
+            <div class="nav-container">
                 <ul class="nav">
                     @if (appContext.AuthenticationStatus == AuthenticationStatus.Authenticated && (appContext.CurrentUser.Role == UserRole.SuperUser || appContext.Impersonated))
                     {
@@ -71,24 +117,31 @@
                     }
                     <li class="nav-item dashboard">
                         <a href="@Url.Dashboard()">Dashboard <span class="rotate">›</span></a>
-                        <div class="pointer">
-                            <ul>
-                                <li><a href="@ViewData.GetIssuesUrl(Url.Issues())">Issues ›</a></li>
-                                <li><a href="@ViewData.GetErrorsUrl(Url.Errors())">Errors ›</a></li>
-                                <li><a href="@Url.AddIssue()">Add an Issue ›</a></li>
-                            </ul>
-                        </div>
+                        @if (appContext.AuthenticationStatus == AuthenticationStatus.Authenticated)
+                        {
+                            <div class="pointer">
+                                <ul>
+                                    <li><a href="@Url.Issues()">Issues ›</a></li>
+                                    <li><a href="@Url.Errors()">Errors ›</a></li>
+                                    <li><a href="@Url.Feed()">Activity Feed ›</a></li>
+                                    <li><a href="@Url.AddIssue()">Add an Issue ›</a></li>
+                                </ul>
+                            </div>
+                        }
                     </li>
                     <li class="nav-item admin">
                         <a href="@Url.Applications()">Account <span class="rotate">›</span></a>
-                        <div class="pointer">
-                            <ul>
-                                @foreach (var adminPage in Breadcrumbs.GetById(BreadcrumbId.Admin, Url).Children)
-                                {
-                                    <li><a href="@adminPage.Link">@adminPage.Title ›</a></li>
-                                }
-                            </ul>
-                        </div>
+                        @if (appContext.AuthenticationStatus == AuthenticationStatus.Authenticated)
+                        {
+                            <div class="pointer">
+                                <ul>
+                                    @foreach (var adminPage in Breadcrumbs.GetById(BreadcrumbId.Admin, Url).Children)
+                                    {
+                                        <li><a href="@adminPage.Link">@adminPage.Title ›</a></li>
+                                    }
+                                </ul>
+                            </div>
+                        }
                     </li>
                     <li class="nav-item docs">
                         <a href="@Url.GettingStarted()">Docs <span class="rotate">›</span></a>
@@ -96,7 +149,8 @@
                             <ul>
                                 <li><a href="@Url.GettingStarted()">Getting Started ›</a></li>
                                 <li><a href="@Url.Pricing()">Pricing & Plans ›</a></li>
-                                <li><a href="@Url.Client()">The .NET Client ›</a></li>
+                                <li><a href="@Url.Client()">.NET Client ›</a></li>
+                                @*<li><a href="@Url.PythonClient()">Python Client ›</a></li>*@
                                 @*<li><a href="@Url.Api()">Errordite API ›</a></li>*@
                                 <li><a href="@Url.JsonFormat()">Sending JSON ›</a></li>
                             </ul>

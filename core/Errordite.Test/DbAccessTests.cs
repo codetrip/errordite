@@ -5,19 +5,14 @@ using Castle.Core;
 using Castle.MicroKernel.Registration;
 using Castle.Windsor;
 using CodeTrip.Core.IoC;
-using Errordite.Client.Abstractions;
 using Errordite.Core.Domain.Error;
-using Errordite.Core.Indexing;
-using Errordite.Core.IoC;
 using Errordite.Core.Organisations.Commands;
 using Errordite.Core.Reception.Commands;
 using NServiceBus;
 using NUnit.Framework;
 using Raven.Client;
 using System.Linq;
-using Raven.Client.Indexes;
 using ExceptionInfo = Errordite.Core.Domain.Error.ExceptionInfo;
-using Raven.Client.Linq;
 
 namespace Errordite.Test
 {

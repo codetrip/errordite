@@ -95,8 +95,7 @@ namespace Errordite.Core.Users.Commands
                 Role = request.Administrator ? UserRole.Administrator : UserRole.User,
                 OrganisationId = request.Organisation.Id,
                 GroupIds = request.GroupIds.Select(Group.GetId).ToList(),
-                PasswordToken = Guid.NewGuid(),
-                TimezoneId = request.TimezoneId
+                PasswordToken = Guid.NewGuid()
             };
 
             Store(user);
@@ -150,7 +149,6 @@ namespace Errordite.Core.Users.Commands
         public Organisation Organisation { get; set; }
         public IList<string> GroupIds { get; set; }
         public bool Administrator { get; set; }
-        public string TimezoneId { get; set; }
     }
 
     public enum AddUserStatus

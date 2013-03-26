@@ -14,8 +14,8 @@ using Errordite.Core.Session;
 using Errordite.Core.Extensions;
 
 namespace Errordite.Core.Issues.Queries
-{
-    [Interceptor(CacheInterceptor.IoCName)]
+{   
+    //GT: don't cache this - Raven returns a 304 if unchanged and we want to get updates asap
     public class GetDashboardReportQuery : SessionAccessBase, IGetDashboardReportQuery
     {
         public GetDashboardReportResponse Invoke(GetDashboardReportRequest request)
@@ -71,19 +71,9 @@ namespace Errordite.Core.Issues.Queries
         public object Data { get; set; }
     }
 
-    public class GetDashboardReportRequest : CacheableRequestBase<GetDashboardReportResponse>
+    public class GetDashboardReportRequest 
     {
         public string OrganisationId { get; set; }
         public string ApplicationId { get; set; }
-
-        protected override string GetCacheKey()
-        {
-            return "dashboard-" + CacheKeys.Applications.Key(OrganisationId, ApplicationId);
-        }
-
-        protected override CacheProfiles GetCacheProfile()
-        {
-            return CacheProfiles.Dashboard;
-        }
     }
 }

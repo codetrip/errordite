@@ -1,4 +1,6 @@
-﻿using CodeTrip.Core.Interfaces;
+﻿using System;
+using System.Collections.Generic;
+using CodeTrip.Core.Interfaces;
 using Errordite.Core.Authorisation;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Notifications.Commands;
@@ -6,6 +8,8 @@ using Errordite.Core.Notifications.EmailInfo;
 using Errordite.Core.Organisations;
 using Errordite.Core.Session;
 using Errordite.Core.Users.Queries;
+using CodeTrip.Core.Extensions;
+using Errordite.Core.Extensions;
 
 namespace Errordite.Core.Issues.Commands
 {
@@ -61,11 +65,52 @@ namespace Errordite.Core.Issues.Commands
 				});
 			}
 
+            if (issue.Status != request.Status)
+            {
+                Store(new IssueHistory
+                {
+                    DateAddedUtc = DateTime.UtcNow,
+                    IssueId = issue.Id,
+                    NewStatus = request.Status,
+                    PreviousStatus = issue.Status,
+                    SystemMessage = true,
+                    UserId = request.CurrentUser.Id,
+                    Type = HistoryItemType.StatusUpdated,
+                    ApplicationId = issue.ApplicationId,
+                });
+            }
+
+            if (issue.UserId != request.AssignedUserId)
+            {
+                Store(new IssueHistory
+                {
+                    DateAddedUtc = DateTime.UtcNow,
+                    IssueId = issue.Id,
+                    SystemMessage = true,
+                    UserId = request.CurrentUser.Id,
+                    AssignedToUserId = request.AssignedUserId,
+                    Type = HistoryItemType.AssignedUserChanged
+                });
+            }
+
 			issue.Status = request.Status;
 			issue.UserId = request.AssignedUserId;
 			issue.Name = request.Name;
 			issue.AlwaysNotify = request.AlwaysNotify;
 			issue.Reference = request.Reference;
+
+            if (request.Comment.IsNotNullOrEmpty())
+            {
+                if (issue.Comments == null)
+                    issue.Comments = new List<IssueComment>();
+
+                issue.Comments.Add(new IssueComment
+                {
+                    UserId = request.CurrentUser.Id,
+                    DateAdded = DateTime.UtcNow.ToDateTimeOffset(request.CurrentUser.Organisation.TimezoneId),
+                    Comment = request.Comment
+                });
+            }
 
 			Session.AddCommitAction(new RaiseIssueModifiedEvent(issue));
 
@@ -92,6 +137,7 @@ namespace Errordite.Core.Issues.Commands
         public bool AlwaysNotify { get; set; }
         public IssueStatus Status { get; set; }
         public string Reference { get; set; }
+        public string Comment { get; set; }
     }
 
     public enum UpdateIssueDetailsStatus

@@ -35,18 +35,17 @@ namespace Errordite.Core.Issues.Queries
             if (request.StartDate.HasValue)
             {
                 //TODO: I think this should be from the First Error (we are not currently recording this...)
-                var startDate = TimeZoneInfo.ConvertTimeBySystemTimeZoneId(request.StartDate.Value, request.UserTimezoneId, "UTC");
-                query = query.Where(i => i.LastErrorUtc >= startDate);
+                query = query.Where(i => i.LastErrorUtc >= request.StartDate.Value);
             }
 
             if (request.EndDate.HasValue)
             {
-                query = query.Where(i => i.LastErrorUtc < TimeZoneInfo.ConvertTimeBySystemTimeZoneId(request.EndDate.Value.RangeEnd(), request.UserTimezoneId, "UTC"));
+                query = query.Where(i => i.LastErrorUtc < request.EndDate.Value.RangeEnd());
             }
 
-            if (!request.Name.IsNullOrEmpty())
+            if (!request.Query.IsNullOrEmpty())
             {
-                query = query.Where(i => i.Name == request.Name);
+                query = query.Where(i => i.Query == request.Query);
             }
 
             if (!request.AssignedTo.IsNullOrEmpty())
@@ -100,10 +99,9 @@ namespace Errordite.Core.Issues.Queries
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public string AssignedTo { get; set; }
-        public string Name { get; set; }
+        public string Query { get; set; }
         public string[] Status { get; set; }
         public PageRequestWithSort Paging { get; set; }
-        public string UserTimezoneId { get; set; }
         public int? LastFriendlyId { get; set; }
     }
 }

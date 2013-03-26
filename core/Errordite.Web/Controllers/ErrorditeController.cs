@@ -6,10 +6,12 @@ using CodeTrip.Core.Dynamic;
 using CodeTrip.Core.IoC;
 using CodeTrip.Core.Web;
 using Errordite.Core;
+using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Identity;
 using Errordite.Web.Extensions;
 using Errordite.Web.Models.Notifications;
 using CodeTrip.Core.Extensions;
+using System.Linq;
 
 namespace Errordite.Web.Controllers
 {
@@ -24,6 +26,19 @@ namespace Errordite.Web.Controllers
 
         public ICookieManager CookieManager { get; set; }
         public AppContext AppContext { protected get; set; }
+
+        protected Application CurrentApplication
+        {
+            get
+            {
+                var appId = CookieManager.Get(WebConstants.CookieSettings.ApplicationIdCookieKey);
+
+                if (appId.IsNotNullOrEmpty())
+                    return Core.GetApplications().Items.FirstOrDefault(a => a.FriendlyId == appId);
+
+                return null;
+            }
+        }
 
         protected ActionResult RedirectWithViewModel<TPostModel, TViewModel>(TPostModel postModel, string action, string message = null, bool error = true, object routeValues = null) where TViewModel : class, new()
         {

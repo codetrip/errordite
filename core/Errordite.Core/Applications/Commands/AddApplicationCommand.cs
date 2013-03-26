@@ -64,6 +64,7 @@ namespace Errordite.Core.Applications.Commands
                 HipChatAuthToken = request.HipChatAuthToken,
                 TokenSalt = Membership.GeneratePassword(4, 0),
                 Version = request.Version,
+                TimezoneId = request.CurrentUser.Organisation.TimezoneId
             };
 
             Store(application);

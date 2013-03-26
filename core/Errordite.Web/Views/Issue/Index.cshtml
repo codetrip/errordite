@@ -1,12 +1,13 @@
 ﻿@using CodeTrip.Core.Extensions
+@using Errordite.Core.Domain
 @using Errordite.Core.Extensions
 @using Errordite.Web.Models.Issues
 @using Errordite.Web.Extensions
 @model IssueViewModel
 
 @{
-    ViewBag.Title = "Issue {0} ({1}) | {2}".FormatWith(Model.Details.IssueId, Model.Tab, Model.Details.Name);
-    ViewBag.FinalBreadcrumb = "Issue {0}".FormatWith(Model.Details.IssueId);
+    ViewBag.Title = "Issue {0} ({1}) | {2}".FormatWith(IdHelper.GetFriendlyId( Model.Update.IssueId), Model.Tab, Model.Update.Name);
+    ViewBag.FinalBreadcrumb = "Issue {0}".FormatWith(IdHelper.GetFriendlyId(Model.Update.IssueId));
 }
 
 @section header
@@ -14,7 +15,7 @@
 	<div class="issue-title-container">
 		<div class="centered">
 			<span class="title">
-				@Model.Details.ApplicationName - @Model.Details.Name @(Model.Details.TestIssue ? "(TEST)" : string.Empty)
+				@Model.Details.ApplicationName - @Model.Update.Name @(Model.Details.TestIssue ? "(TEST)" : string.Empty)
 			</span>
 			<span class="details">
 				<span id="instance-count" class="bold">
@@ -33,22 +34,22 @@
     <div class="tabs-container">
         <ul id="issue-tabs" class="tabs">
             <li @(Model.Tab == IssueTab.Details ? " class=active" : " class=inactive") >
-                <a href="@Url.Issue(Model.Details.IssueId, IssueTab.Details)" class="tablink" data-val="details"><span>Details</span></a> 
-            </li>
-            <li @(Model.Tab == IssueTab.Actions ? " class=active" : " class=inactive") >
-                <a href="@Url.Issue(Model.Details.IssueId, IssueTab.Actions)" class="tablink" data-val="actions"><span>Actions</span></a>
-            </li>
-            <li @(Model.Tab == IssueTab.History ? " class=active" : " class=inactive") >
-                <a href="@Url.Issue(Model.Details.IssueId, IssueTab.History)" class="tablink" data-val="history"><span>History</span></a>
+                <a href="@Url.Issue(Model.Update.IssueId, IssueTab.Details)" class="tablink" data-val="details"><span>Details</span></a> 
             </li>
             <li @(Model.Tab == IssueTab.Rules ? " class=active" : " class=inactive") >
-                <a href="@Url.Issue(Model.Details.IssueId, IssueTab.Rules)" class="tablink" data-val="rules"><span>Rules</span></a>
+                <a href="@Url.Issue(Model.Update.IssueId, IssueTab.Rules)" class="tablink" data-val="rules"><span>Rules</span></a>
             </li>
             <li @(Model.Tab == IssueTab.Reports ? " class=active" : " class=inactive") >
-                <a href="@Url.Issue(Model.Details.IssueId, IssueTab.Reports)" class="tablink" data-val="reports"><span>Reports</span></a> 
+                <a href="@Url.Issue(Model.Update.IssueId, IssueTab.Reports)" class="tablink" data-val="reports"><span>Reports</span></a> 
             </li>
-            <li @(Model.Tab == IssueTab.Errors ? " class=active" : " class=inactive") >
-                <a href="@Url.Issue(Model.Details.IssueId, IssueTab.Errors)" class="tablink" data-val="errors"><span>Errors</span></a>
+            <li @(Model.Tab == IssueTab.Actions ? " class=active" : " class=inactive") >
+                <a href="@Url.Issue(Model.Update.IssueId, IssueTab.Actions)" class="tablink" data-val="actions"><span>Actions</span></a>
+            </li>
+            <li @(Model.Tab == IssueTab.Comments ? " class=active" : " class=inactive") >
+                <a href="@Url.Issue(Model.Update.IssueId, IssueTab.Comments)" class="tablink" data-val="comments"><span>Comments</span></a>
+            </li>
+            <li @(Model.Tab == IssueTab.History ? " class=active" : " class=inactive") >
+                <a href="@Url.Issue(Model.Update.IssueId, IssueTab.History)" class="tablink" data-val="history"><span>History</span></a>
             </li>
             <li class="button">
                 <div id="rules-adjusted" style="display:none;">
@@ -63,30 +64,29 @@
 <section id="issue" class="centered">
     <div class="content">
         <div id="details" class="tab @(Model.Tab == IssueTab.Details ? "" : "hidden")">
-            @Html.Partial("Details", Model.Details)
+            @Html.Partial("Details", Model)
+        </div>
+        <div id="comments" class="tab @(Model.Tab == IssueTab.Comments ? "" : "hidden")">
+            @Html.Partial("Comments", Model.Comments)
+        </div>
+        @using (Html.BeginForm("AdjustRules", "issue", FormMethod.Post, new { id = "rulesForm" }))
+        {
+            <div id="rules" class="tab @(Model.Tab == IssueTab.Rules ? "" : "hidden")">
+                @Html.Partial("Rules", Model.Update)
+            </div>
+            @Html.Partial("UpdateIssue", Model.Update)
+        }
+        <div id="reports" class="tab @(Model.Tab == IssueTab.Reports ? "" : "hidden")">
+            @Html.Partial("Reports", Model.Details)
         </div>
         <div id="actions" class="tab @(Model.Tab == IssueTab.Actions ? "" : "hidden")">
             @Html.Partial("Actions", Model.Details)
         </div>
         <div id="history" class="tab @(Model.Tab == IssueTab.History ? "" : "hidden")">
-            @Html.Partial("History", Model.Details)
-        </div>
-        @using (Html.BeginForm("adjustRules", "issue", FormMethod.Post, new { id = "rulesForm" }))
-        {
-            <div id="rules" class="tab @(Model.Tab == IssueTab.Rules ? "" : "hidden")">
-                @Html.Partial("Rules", Model.Rules)
-            </div>
-            @Html.Partial("RuleUpdates", Model.Rules)
-        }
-        <div id="reports" class="tab @(Model.Tab == IssueTab.Reports ? "" : "hidden")">
-            @Html.Partial("Reports", Model.Details)
-        </div>
-        <div id="errors" class="tab @(Model.Tab == IssueTab.Errors ? "" : "hidden") ajax-container">
-            <div id="error-items" data-val="@Model.Details.IssueId">
-                @Html.Partial("Errors/ErrorItems", Model.Errors)
-            </div>
+            <div id="history-items" data-val="@Model.Details.IssueId"></div>
         </div>
     </div>
 </section>
+
 
     

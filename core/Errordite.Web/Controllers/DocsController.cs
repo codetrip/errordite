@@ -6,11 +6,11 @@ using Errordite.Web.Models.Navigation;
 
 namespace Errordite.Web.Controllers
 {
-    public class HelpController : ErrorditeController
+    public class DocsController : ErrorditeController
     {
         private IGetAvailablePaymentPlansQuery _getAvailablePaymentPlansQuery;
 
-        public HelpController(IGetAvailablePaymentPlansQuery getAvailablePaymentPlansQuery)
+        public DocsController(IGetAvailablePaymentPlansQuery getAvailablePaymentPlansQuery)
         {
             _getAvailablePaymentPlansQuery = getAvailablePaymentPlansQuery;
         }
@@ -44,6 +44,12 @@ namespace Errordite.Web.Controllers
 
         [GenerateBreadcrumbs(BreadcrumbId.Client)]
         public ActionResult SendErrorWithJson()
+        {
+            return View();
+        }
+
+        [GenerateBreadcrumbs(BreadcrumbId.Client)]
+        public ActionResult PythonClient()
         {
             return View();
         }

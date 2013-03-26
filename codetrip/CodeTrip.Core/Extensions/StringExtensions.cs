@@ -11,6 +11,7 @@ namespace CodeTrip.Core.Extensions
     public static class StringExtensions
     {
         private static readonly Regex StripCssRegex = new Regex(@"(.*)(\<style\>.*\<\/style\>)(.*)", RegexOptions.Compiled | RegexOptions.Multiline);
+        private static readonly Regex StripCommentsRegex = new Regex(@"(.*)(\<!.*-\>)(.*)", RegexOptions.Compiled | RegexOptions.Multiline);
 
         public static int SafeParseInt(this string s)
         {
@@ -26,7 +27,8 @@ namespace CodeTrip.Core.Extensions
             if (input.IsNullOrEmpty())
                 return null;
 
-            return StripCssRegex.Replace(input, "$1$3");
+            var result = StripCssRegex.Replace(input, "$1$3");
+            return StripCommentsRegex.Replace(result, "$1$3");
         }
 
         public static Dictionary<string, T> ToDictionary<T>(this string s, Func<string, T> valueAction)

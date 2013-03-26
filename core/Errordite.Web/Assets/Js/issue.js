@@ -1,24 +1,17 @@
 (function() {
 
   jQuery(function() {
-    var $issue, loadTabData, renderErrors, renderReports, setReferenceLink;
+    var $issue, clearErrors, loadTabData, paging, renderHistory, renderReports;
     $issue = $('section#issue');
     if ($issue.length > 0) {
-      setReferenceLink = function() {
-        var input, reference;
-        input = $(':input[name=Reference]');
-        reference = input.val();
-        $('#reference-link').empty();
-        if (/^https?:\/\//.test(reference)) {
-          return $('#reference-link').html($('<a>').attr('href', reference).attr('target', '_blank').text('link'));
-        }
-      };
+      paging = new window.Paging('/issue/errors?Id=' + $issue.find('#IssueId').val() + '&');
+      paging.init();
       loadTabData = function($tab) {
         if (!$tab.data('loaded')) {
           if ($tab.data("val") === "reports") {
             renderReports();
-          } else if ($tab.data("val") === "errors") {
-            renderErrors();
+          } else if ($tab.data("val") === "history") {
+            renderHistory();
           }
           return $tab.data('loaded', true);
         }
@@ -35,6 +28,10 @@
               xaxis: {
                 renderer: $.jqplot.CategoryAxisRenderer,
                 ticks: d.ByHour.x
+              },
+              yaxis: {
+                min: 0,
+                tickInterval: (_.max(d.ByHour.y)) > 3 ? null : 1
               }
             }
           });
@@ -50,7 +47,8 @@
                 }
               },
               yaxis: {
-                min: 0
+                min: 0,
+                tickInterval: (_.max(d.ByDate.y)) > 3 ? null : 1
               }
             },
             highlighter: {
@@ -60,69 +58,66 @@
           });
         });
       };
-      renderErrors = function() {
+      clearErrors = function() {
+        return $('div#error-items').clear();
+      };
+      renderHistory = function() {
         var $node, url;
-        $node = $issue.find('#error-items');
-        url = '/issue/errors?IssueId=' + $issue.find('#IssueId').val();
+        $node = $issue.find('#history-items');
+        url = '/issue/history?IssueId=' + $issue.find('#IssueId').val();
         return $.get(url, function(data) {
-          $node.html(data);
+          $node.html(data.data);
           return $('div.content').animate({
             scrollTop: 0
           }, 'slow');
         });
       };
       loadTabData($('ul#issue-tabs li.active a.tablink'));
-      setReferenceLink();
       $issue.delegate('form#reportform', 'submit', function(e) {
         e.preventDefault();
         return renderReports();
       });
-      $issue.delegate(':input[name=Reference]', 'change', setReferenceLink);
       $issue.delegate('input[type="button"].confirm', 'click', function() {
         var $this;
         $this = $(this);
         if (confirm("Are you sure you want to delete all errors associated with this issue?")) {
           return $.post('/issue/purge', 'issueId=' + $this.attr('data-val'), function(data) {
-            renderErrors();
+            clearErrors();
             return $('span#instance-count').text("0");
           });
         }
       });
-      $issue.delegate('form#errorsForm', 'submit', function(e) {
-        var $this;
+      $issue.delegate('.what-if-reprocess', 'click', function(e) {
         e.preventDefault();
-        $this = $(this);
-        return renderErrors();
+        return $(this).closest('form').ajaxSubmit({
+          data: {
+            WhatIf: true
+          },
+          success: function(data) {
+            var msg;
+            $('.reprocess-what-if-msg').remove();
+            msg = $('<span/>').addClass('reprocess-what-if-msg').html(data);
+            return $(e.currentTarget).after(msg);
+          },
+          error: function() {
+            return alert('Error. Please try again.');
+          }
+        });
       });
       $issue.delegate('select#Status', 'change', function() {
         var $this;
         $this = $(this);
-        if ($this.val() === 'Ignorable') {
-          return $issue.find('li.checkbox').removeClass('hidden');
+        if ($this.val() === 'Ignored') {
+          return $issue.find('li.inline').removeClass('hidden');
         } else {
-          return $issue.find('li.checkbox').addClass('hidden');
+          return $issue.find('li.inline').addClass('hidden');
         }
       });
-      if ($issue.find('select#Status').val() === 'Ignorable') {
-        $issue.find('li.checkbox').removeClass('hidden');
+      if ($issue.find('select#Status').val() === 'Ignored') {
+        $issue.find('li.inline').removeClass('hidden');
       }
-      $('#issue-tabs .tablink').bind('shown', function(e) {
+      return $('#issue-tabs .tablink').bind('shown', function(e) {
         return loadTabData($(e.currentTarget));
-      });
-      $issue.delegate('.sort a[data-pgst]', 'click', function(e) {
-        var $this;
-        e.preventDefault();
-        $this = $(this);
-        $('#pgst').val($this.data('pgst'));
-        $('#pgsd').val($this.data('pgsd'));
-        renderErrors();
-        return false;
-      });
-      return $issue.delegate('#apply-rules-confirmation input[name="WhatIf"]', 'click', function(e) {
-        e.preventDefault();
-        return Errordite.ruleManager.whatIf(function(response) {
-          return alert(response.message);
-        });
       });
     }
   });

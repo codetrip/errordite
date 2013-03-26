@@ -9,7 +9,6 @@ namespace Errordite.Web.Models.Issues
     {
         public List<string> IssueIds { get; set; }
         public IssueStatus Status { get; set; }
-        public string Comment { get; set; }
         public string AssignToUser { get; set; }
         public BatchIssueAction Action { get; set; }
     }

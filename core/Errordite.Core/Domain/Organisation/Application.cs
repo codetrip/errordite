@@ -41,6 +41,8 @@ namespace Errordite.Core.Domain.Organisation
         public string TokenSalt { get; set; }
         [ProtoMember(12)]
         public string Version { get; set; }
+        [ProtoMember(13)]
+        public string TimezoneId { get; set; }
 
         public static string GetId(string friendlyId)
         {

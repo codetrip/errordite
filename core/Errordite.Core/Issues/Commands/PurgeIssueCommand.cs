@@ -2,6 +2,7 @@
 using CodeTrip.Core.Interfaces;
 using Errordite.Core.Authorisation;
 using Errordite.Core.Domain.Error;
+using Errordite.Core.Extensions;
 using Errordite.Core.Organisations;
 using CodeTrip.Core.Extensions;
 using Errordite.Core.Session;
@@ -33,7 +34,22 @@ namespace Errordite.Core.Issues.Commands
             Session.AddCommitAction(new DeleteAllErrorsCommitAction(issue.Id));
             Session.AddCommitAction(new DeleteAllDailyCountsCommitAction(issue.Id));
 
-			Session.Raven.Load<IssueHourlyCount>("IssueHourlyCount/{0}".FormatWith(issue.FriendlyId)).Initialise();
+            var hourlyCount = Session.Raven.Load<IssueHourlyCount>("IssueHourlyCount/{0}".FormatWith(issue.FriendlyId));
+
+            if (hourlyCount == null)
+            {
+                hourlyCount = new IssueHourlyCount
+                {
+                    IssueId = issue.Id,
+                    Id = "IssueHourlyCount/{0}".FormatWith(issue.FriendlyId)
+                };
+                hourlyCount.Initialise();
+                Store(hourlyCount);
+            }
+            else
+            {
+                hourlyCount.Initialise();
+            }
 
             //create or update the historical count of errors for this issue
             var historicalCount = Load<IssueDailyCount>("IssueDailyCount/{0}-Historical".FormatWith(issue.FriendlyId));
@@ -57,12 +73,14 @@ namespace Errordite.Core.Issues.Commands
                 historicalCount.Count += issue.ErrorCount;
             }
 
-            issue.History.Add(new IssueHistory
-                {
-                    DateAddedUtc = DateTime.UtcNow,
-                    UserId = request.CurrentUser.Id,
-                    Type = HistoryItemType.ErrorsPurged,
-                });
+            Store(new IssueHistory
+            {
+                DateAddedUtc = DateTime.UtcNow.ToDateTimeOffset(request.CurrentUser.Organisation.TimezoneId),
+                UserId = request.CurrentUser.Id,
+                Type = HistoryItemType.ErrorsPurged,
+                IssueId = issue.Id,
+                ApplicationId = issue.ApplicationId,
+            });
             
             issue.ErrorCount = 0;
 			issue.LimitStatus = ErrorLimitStatus.Ok;

@@ -8,6 +8,7 @@ using Errordite.Core.Issues.Queries;
 using Errordite.Core.Matching;
 using Errordite.Core.Organisations;
 using Errordite.Core.Session;
+using Errordite.Core.Extensions;
 
 namespace Errordite.Core.Issues.Commands
 {
@@ -28,28 +29,19 @@ namespace Errordite.Core.Issues.Commands
             Trace("Starting...");
 
             var applicationId = Application.GetId(request.ApplicationId);
+            var dateTimeOffset = DateTime.UtcNow.ToDateTimeOffset(request.CurrentUser.Organisation.TimezoneId);
 
             var issue = new Issue
             {
                 Name = request.Name,
                 Rules = request.Rules,
                 ApplicationId = applicationId,
-                CreatedOnUtc = DateTime.UtcNow,
-                LastModifiedUtc = DateTime.UtcNow,
-                LastRuleAdjustmentUtc = DateTime.UtcNow,
-                UserId = User.GetId(request.UserId),
+                CreatedOnUtc = dateTimeOffset,
+                LastModifiedUtc = dateTimeOffset,
+                UserId = User.GetId(request.AssignedUserId),
                 ErrorCount = 0,
-                LastErrorUtc = DateTime.UtcNow,
+                LastErrorUtc = dateTimeOffset,
                 OrganisationId = Organisation.GetId(request.CurrentUser.OrganisationId),
-                History = new List<IssueHistory>
-                {
-                    new IssueHistory
-                    {
-                        DateAddedUtc = DateTime.UtcNow,
-                        UserId = request.CurrentUser.Id,
-                        Type = HistoryItemType.ManuallyCreated,
-                    }
-                }
             };
 
             var issuesWithSameRules = _getIssueWithMatchingRulesQuery.Invoke(new GetIssueWithMatchingRulesRequest
@@ -67,6 +59,16 @@ namespace Errordite.Core.Issues.Commands
             }
 
             Store(issue);
+            Store(new IssueHistory
+            {
+                DateAddedUtc = dateTimeOffset,
+                UserId = request.CurrentUser.Id,
+                Type = HistoryItemType.ManuallyCreated,
+                IssueId = issue.Id,
+                AssignedToUserId = request.AssignedUserId,
+                PreviousStatus = request.Status,
+                ApplicationId = issue.ApplicationId
+            });
 
             var issueHourlyCount = new IssueHourlyCount
             {
@@ -99,7 +101,7 @@ namespace Errordite.Core.Issues.Commands
     public class AddIssueRequest : OrganisationRequestBase
     {
         public string Name { get; set; }
-        public string UserId { get; set; }
+        public string AssignedUserId { get; set; }
         public string ApplicationId { get; set; }
         public IssueStatus Status { get; set; }
         public List<IMatchRule> Rules { get; set; }
