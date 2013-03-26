@@ -62,26 +62,26 @@ namespace Errordite.Core.Domain.Error
         [ProtoMember(9), JsonConverter(typeof(StringEnumConverter))]
         public IssueStatus Status { get; set; }
         [ProtoMember(10)]
-        public IList<IssueHistory> History { get; set; }
-        [ProtoMember(11)]
         public int ErrorCount { get; set; }
-        [ProtoMember(12)]
+        [ProtoMember(11)]
         public DateTimeOffset CreatedOnUtc { get; set; }
-        [ProtoMember(13)]
+        [ProtoMember(12)]
         public DateTimeOffset LastModifiedUtc { get; set; }
-        [ProtoMember(14)]
+        [ProtoMember(13)]
         public bool TestIssue { get; set; }
-        [ProtoMember(15)]
+        [ProtoMember(14)]
         public bool AlwaysNotify { get; set; }
-        [ProtoMember(16)]
+        [ProtoMember(15)]
         public string Reference { get; set; }
-        [ProtoMember(17)]
+        [ProtoMember(16)]
         public DateTimeOffset LastErrorUtc { get; set; }
+        [ProtoMember(17)]
+        public IList<IssueComment> Comments { get; set; }
+        [ProtoMember(18)]
+        public DateTimeOffset? LastNotified { get; set; }
 
         [Raven.Imports.Newtonsoft.Json.JsonIgnore]
         public string FriendlyId { get { return Id == null ? string.Empty : Id.Split('/')[1]; } }
-
-        public DateTimeOffset? LastNotified { get; set; }
 
         public static string GetId(string friendlyId)
         {

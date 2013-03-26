@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
@@ -9,6 +10,7 @@ using Errordite.Core.Configuration;
 using Errordite.Core.Domain;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Domain.Exceptions;
+using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Errors.Queries;
 using Errordite.Core.Indexing;
 using Errordite.Core.Issues.Commands;
@@ -26,6 +28,7 @@ using Newtonsoft.Json;
 using Raven.Abstractions.Exceptions;
 using Raven.Client;
 using Resources;
+using Errordite.Core.Extensions;
 
 namespace Errordite.Web.Controllers
 {
@@ -139,7 +142,18 @@ namespace Errordite.Web.Controllers
                 },
                 Errors = GetErrorsViewModel(postModel, paging),
                 Update = rulesViewModel,
-                Tab = postModel.Tab
+                Tab = postModel.Tab,
+                Comments = new CommentsViewModel
+                {
+                    ApplicationId = issue.ApplicationId,
+                    IssueId = issue.Id,
+                    Comments = issue.Comments != null ? issue.Comments.OrderByDescending(c => c.DateAdded).Select(c => new CommentViewModel
+                    {
+                        Comment = c.Comment,
+                        User = GetUsername(users.Items, c.UserId),
+                        DateAdded = c.DateAdded
+                    }) : null
+                }
             };
 
             //dont let users set an issue to unacknowledged
@@ -151,6 +165,12 @@ namespace Errordite.Web.Controllers
             }
 
             return viewModel;
+        }
+
+        private string GetUsername(IEnumerable<User> users, string id)
+        {
+            var user = users.FirstOrDefault(u => u.Id == id);
+            return user == null ? "Unknown User" : user.FullName;
         }
 
         [ImportViewData]
@@ -349,7 +369,8 @@ namespace Errordite.Web.Controllers
                     CurrentUser = Core.AppContext.CurrentUser,
                     AlwaysNotify = postModel.AlwaysNotify,
                     Reference = postModel.Reference,
-                    AssignedUserId = postModel.UserId
+                    AssignedUserId = postModel.UserId,
+                    Comment = postModel.Comment,
                 });
 
                 if (updateResult.Status == UpdateIssueDetailsStatus.IssueNotFound)
@@ -401,7 +422,7 @@ namespace Errordite.Web.Controllers
         }
 
 		[HttpPost, ExportViewData]
-		public ActionResult AddComment(AddCommentViewModel postModel)
+		public ActionResult AddComment(CommentsViewModel postModel)
 		{
             if (!ModelState.IsValid)
             {
@@ -421,8 +442,8 @@ namespace Errordite.Web.Controllers
 				return RedirectToAction("notfound", new { FriendlyId = postModel.IssueId.GetFriendlyId() });
 			}
 
-			ConfirmationNotification("Comment was added to the history successfully");
-            return RedirectToAction("index", new { id = postModel.IssueId.GetFriendlyId(), tab = IssueTab.History.ToString() });
+			ConfirmationNotification("Comment was added to this issue successfully");
+            return RedirectToAction("index", new { id = postModel.IssueId.GetFriendlyId(), tab = IssueTab.Comments.ToString() });
 		}
 
         [HttpPost, ExportViewData]

@@ -146,18 +146,20 @@ namespace Errordite.Web.Areas.System.Controllers
             return new EmptyResult();
         }
 
-        public ActionResult UpdateTimezone(string organisationId)
+        public ActionResult UpdateTimezone()
         {
-            var org = Core.Session.MasterRaven.Load<Organisation>(Organisation.GetId(organisationId));
+            var organisations = Core.Session.MasterRaven.Query<Organisation>();
 
-            Core.Session.SetOrganisation(org);
-
-            var apps = Core.Session.Raven.Query<Application, Applications_Search>()
-                .GetAllItemsAsList(Core.Session, _configuration.MaxPageSize);
-
-            foreach (var app in apps)
+            foreach (var org in organisations)
             {
-                app.TimezoneId = org.TimezoneId;
+                Core.Session.SetOrganisation(org, true);
+
+                var apps = Core.Session.Raven.Query<Application, Applications_Search>().GetAllItemsAsList(Core.Session, _configuration.MaxPageSize);
+
+                foreach (var app in apps)
+                {
+                    app.TimezoneId = org.TimezoneId;
+                }
             }
 
             return new EmptyResult();
