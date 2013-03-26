@@ -67,6 +67,7 @@
             $newRow.show();
           }
           $newRow.addClass('new-rule');
+          $body.find('a.delete').show();
           this.reindex();
           $newRow.find(':input').val('');
           if (name != null) {
@@ -111,12 +112,12 @@
             return _results;
           }).call(this);
           $rule.trigger('remove');
-          if (this.rules.length > 0) {
+          if (this.rules.length > 1) {
             $rule.remove();
             this.showRuleUpdatesPanel();
-          } else {
-            $rule.hide();
-            this.hideRuleUpdatesPanel();
+          }
+          if (this.rules.length === 1) {
+            $body.find('a.delete').hide();
           }
           return this.reindex();
         };
