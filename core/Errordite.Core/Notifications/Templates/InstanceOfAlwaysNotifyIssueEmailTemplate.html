@@ -1,11 +1,11 @@
 ﻿$(Master:EmailTemplateMasterPage)
-$(Placeholder:Subject)New error matching issue - $(IssueName)
+$(Placeholder:Subject)New error matching issue $(IssueId) - $(IssueName)
 $(Placeholder:Body)
 
 <tr>
     <td>
         <p>Hi,</p>
-        <p>We have received a new error on solved issue $(IssueId) - $(IssueName). This issue is marked as "always notify" 
+        <p>We have received a new error on issue $(IssueId) - $(IssueName). We are notifying you because this issue is marked as "always notify" 
             and we have not notified you in at least 12 hours. 
         </p>
         <p><a href="$(ErrorditeUrl)issue/$(IssueId)" target="_blank">Click here to view the issue</a></p>

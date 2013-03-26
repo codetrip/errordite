@@ -1,11 +1,11 @@
 ﻿$(Master:EmailTemplateMasterPage)
-$(Placeholder:Subject)New error matching solved issue - $(IssueName)
+$(Placeholder:Subject)New error matching solved issue $(IssueId) - $(IssueName)
 $(Placeholder:Body)
 
 <tr>
     <td>
         <p>Hi,</p>
-        <p>We have received a new error matching a solved issue named $(IssueName).</p>
+        <p>We have received a new error matching solved issue $(IssueId) - $(IssueName). Consequently the status of this issue is now Acknowledged.</p>
         <p><a href="$(ErrorditeUrl)issue/$(IssueId)" target="_blank">Click here to view the issue</a></p>
     </td>
 </tr>
