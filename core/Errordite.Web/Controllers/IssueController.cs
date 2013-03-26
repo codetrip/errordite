@@ -118,7 +118,7 @@ namespace Errordite.Web.Controllers
                 Users = users.Items.ToSelectList(u => u.Id, u => "{0} {1}".FormatWith(u.FirstName, u.LastName), sortListBy: SortSelectListBy.Text, selected: u => u.Id == issue.UserId),
                 Statuses = issue.Status.ToSelectedList(IssueResources.ResourceManager, false, issue.Status == IssueStatus.Unacknowledged ? IssueStatus.Acknowledged.ToString() : issue.Status.ToString()),
                 UserId = issue.UserId,
-                Status = issue.Status,
+                Status = issue.Status == IssueStatus.Unacknowledged ? IssueStatus.Acknowledged : issue.Status,
                 AlwaysNotify = issue.AlwaysNotify,
                 Reference = issue.Reference,
             };

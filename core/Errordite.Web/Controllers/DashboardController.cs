@@ -27,14 +27,14 @@ namespace Errordite.Web.Controllers
         private readonly IGetOrganisationStatisticsQuery _getOrganisationStatisticsQuery;
         private readonly IGetDashboardReportQuery _getDashboardReportQuery;
         private readonly IGetIssueQuery _getIssueQuery;
-        private readonly IGetActivityFeedQuery _getActivityFeedQuery;
+        private readonly IGetActivityLogQuery _getActivityLogQuery;
         private readonly IPagingViewModelGenerator _pagingViewModelGenerator;
 
         public DashboardController(IGetOrganisationStatisticsQuery getOrganisationStatisticsQuery, 
             IGetApplicationIssuesQuery getApplicationIssuesQuery, 
             IGetApplicationErrorsQuery getApplicationErrorsQuery, 
             IGetDashboardReportQuery getDashboardReportQuery, 
-            IGetIssueQuery getIssueQuery, IGetActivityFeedQuery getActivityFeedQuery, 
+            IGetIssueQuery getIssueQuery, IGetActivityLogQuery getActivityLogQuery, 
             IPagingViewModelGenerator pagingViewModelGenerator)
         {
             _getOrganisationStatisticsQuery = getOrganisationStatisticsQuery;
@@ -42,7 +42,7 @@ namespace Errordite.Web.Controllers
             _getApplicationErrorsQuery = getApplicationErrorsQuery;
             _getDashboardReportQuery = getDashboardReportQuery;
             _getIssueQuery = getIssueQuery;
-            _getActivityFeedQuery = getActivityFeedQuery;
+            _getActivityLogQuery = getActivityLogQuery;
             _pagingViewModelGenerator = pagingViewModelGenerator;
         }
 
@@ -166,7 +166,7 @@ namespace Errordite.Web.Controllers
 		}
 
         [PagingView]
-        public ActionResult Feed()
+        public ActionResult Activity()
         {
             var curentApplication = CurrentApplication;
             var applicationId = curentApplication == null ? null : curentApplication.Id;
@@ -174,11 +174,11 @@ namespace Errordite.Web.Controllers
             var issueMemoizer = new LocalMemoizer<string, Issue>(id => _getIssueQuery.Invoke(new GetIssueRequest { CurrentUser = Core.AppContext.CurrentUser, IssueId = id }).Issue);
             var users = Core.GetUsers();
             var applications = Core.GetApplications();
-            var history = _getActivityFeedQuery.Invoke(new GetActivityFeedRequest
+            var history = _getActivityLogQuery.Invoke(new GetActivityLogRequest
                 {
                     Paging = paging,
                     ApplicationId = applicationId
-                }).Feed;
+                }).Log;
 
             var selectedApplication = applicationId.IsNotNullOrEmpty()
                     ? applications.Items.FirstOrDefault(a => a.FriendlyId == applicationId.GetFriendlyId())
@@ -214,7 +214,7 @@ namespace Errordite.Web.Controllers
 
         private string GetFeedUrl(UrlHelper url, string applicationId)
         {
-            return url.Feed(applicationId);
+            return url.ActivityLog(applicationId);
         }
 
         private string GetDashboardUrl(UrlHelper url, string applicationId)
