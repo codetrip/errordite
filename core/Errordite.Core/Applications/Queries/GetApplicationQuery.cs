@@ -25,12 +25,7 @@ namespace Errordite.Core.Applications.Queries
         {
             Trace("Starting...");
 
-            string applicationId = Application.GetId(request.Id);
-            string organisationId = Organisation.GetId(request.OrganisationId);
-
-            var organisation = MasterLoad<Organisation>(organisationId);
-
-            Session.SetOrganisation(organisation);
+            string applicationId = Application.GetId(request.ApplicationId);
 
             var application = Load<Application>(applicationId);
 
@@ -41,8 +36,7 @@ namespace Errordite.Core.Applications.Queries
 
             return new GetApplicationResponse
             {
-                Application = application,
-                Organisation = organisation,
+                Application = application
             };
         }
     }
@@ -55,18 +49,16 @@ namespace Errordite.Core.Applications.Queries
     {
         [ProtoMember(1)]
         public Application Application { get; set; }
-        [ProtoMember(2)]
-        public Organisation Organisation { get; set; }
     }
 
     public class GetApplicationRequest : CacheableOrganisationRequestBase<GetApplicationResponse>
     {
-        public string Id { get; set; }
+        public string ApplicationId { get; set; }
         public string OrganisationId { get; set; }
 
         protected override string GetCacheKey()
         {
-            return CacheKeys.Applications.Key(OrganisationId, Id);
+            return CacheKeys.Applications.Key(OrganisationId, ApplicationId);
         }
 
         protected override CacheProfiles GetCacheProfile()

@@ -7,13 +7,14 @@ using CodeTrip.Core.Extensions;
 using CodeTrip.Core.Paging;
 using Errordite.Core.Applications.Commands;
 using Errordite.Core.Configuration;
+using Errordite.Core.Domain.Central;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Errors.Queries;
 using Errordite.Core.Indexing;
+using Errordite.Core.Raven;
 using Errordite.Core.Session;
 using Errordite.Web.ActionFilters;
 using Errordite.Web.Models.Navigation;
-using Raven.Client;
 using Errordite.Core.Extensions;
 
 namespace Errordite.Web.Areas.System.Controllers
@@ -26,27 +27,27 @@ namespace Errordite.Web.Areas.System.Controllers
         private readonly IEncryptor _encryptor;
         private readonly ErrorditeConfiguration _configuration;
         private readonly IGetApplicationErrorsQuery _getApplicationErrorsQuery;
-        private readonly IDocumentStore _store;
+        private readonly IShardedRavenDocumentStoreFactory _storeFactory;
 
         public SystemController(IAppSession session, 
             IDeleteApplicationCommand deleteApplicationCommand, 
             IEncryptor encryptor, 
             ErrorditeConfiguration configuration, 
             IGetApplicationErrorsQuery getApplicationErrorsQuery,
-            IDocumentStore store)
+            IShardedRavenDocumentStoreFactory storeFactory)
         {
             _session = session;
             _deleteApplicationCommand = deleteApplicationCommand;
             _encryptor = encryptor;
             _configuration = configuration;
             _getApplicationErrorsQuery = getApplicationErrorsQuery;
-            _store = store;
+            _storeFactory = storeFactory;
         }
 
         [HttpGet]
         public ActionResult Bootstrap()
         {
-            ErrorditeApplication.BootstrapRaven(_store);
+            ErrorditeApplication.BootstrapRaven(_storeFactory);
             return Content("Bootstrapped Raven");
         }
 

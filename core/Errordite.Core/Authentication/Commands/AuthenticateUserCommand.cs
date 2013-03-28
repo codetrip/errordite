@@ -6,13 +6,14 @@ using CodeTrip.Core.Extensions;
 using Errordite.Core.Indexing;
 using System.Linq;
 using Errordite.Core.Organisations.Commands;
+using Errordite.Core.Organisations.Queries;
 using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
 
 namespace Errordite.Core.Authentication.Commands
 {
     public class AuthenticateUserCommand : SessionAccessBase, IAuthenticateUserCommand
     {
-        private IGetOrganisationByEmailAddressCommand _getOrganisationByEmailAddressCommand;
+        private readonly IGetOrganisationByEmailAddressCommand _getOrganisationByEmailAddressCommand;
 
         public AuthenticateUserCommand(IGetOrganisationByEmailAddressCommand getOrganisationByEmailAddressCommand)
         {

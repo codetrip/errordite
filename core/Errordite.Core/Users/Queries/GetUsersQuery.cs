@@ -13,6 +13,7 @@ using Errordite.Core.Indexing;
 using Errordite.Core.Session;
 using ProtoBuf;
 using Raven.Client.Linq;
+using Raven.Client;
 
 namespace Errordite.Core.Users.Queries
 {
@@ -33,7 +34,7 @@ namespace Errordite.Core.Users.Queries
         {
             Trace("Starting...");
 
-            Raven.Client.RavenQueryStatistics stats;
+            RavenQueryStatistics stats;
 
             var query = Session.Raven.Query<User, Users_Search>()
                 .Statistics(out stats)

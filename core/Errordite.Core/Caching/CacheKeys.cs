@@ -17,6 +17,11 @@ namespace Errordite.Core.Caching
                 return Organisation.GetId(organisationId);
             }
 
+            public static string Email(string email)
+            {
+                return "o-{0}".FormatWith(email);
+            }
+
             public static string Statistics(string organisationId)
             {
                 return "o-{0}-stats".FormatWith(Organisation.GetId(organisationId));

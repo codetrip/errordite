@@ -1,13 +1,12 @@
-﻿using System.Linq;
-using Castle.Core;
+﻿using Castle.Core;
 using CodeTrip.Core.Caching.Entities;
 using CodeTrip.Core.Caching.Interceptors;
 using CodeTrip.Core.Interfaces;
 using Errordite.Core.Caching;
+using Errordite.Core.Domain.Central;
 using Errordite.Core.Domain.Organisation;
+using Errordite.Core.Session;
 using ProtoBuf;
-using CodeTrip.Core.Extensions;
-using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
 
 namespace Errordite.Core.Organisations.Queries
 {
@@ -19,14 +18,16 @@ namespace Errordite.Core.Organisations.Queries
             Trace("Starting...");
 
             var organisationId = Organisation.GetId(request.OrganisationId);
-            var organisation = 
-                Session.MasterRaven
+
+            var organisation = Session.MasterRaven
                     .Include<Organisation>(o => o.PaymentPlanId)
+                    .Include<Organisation>(o => o.RavenInstanceId)
                     .Load<Organisation>(organisationId);
 
-            if(organisation != null)
+            if (organisation != null)
             {
                 organisation.PaymentPlan = MasterLoad<PaymentPlan>(organisation.PaymentPlanId);
+                organisation.RavenInstance = MasterLoad<RavenInstance>(organisation.RavenInstanceId);
             }
 
             return new GetOrganisationResponse

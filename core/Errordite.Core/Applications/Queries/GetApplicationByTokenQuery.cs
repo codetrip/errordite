@@ -15,6 +15,7 @@ namespace Errordite.Core.Applications.Queries
         private readonly IEncryptor _encryptor;
         private readonly IGetOrganisationQuery _getOrganisationQuery;
         private readonly IAppSession _appSession;
+
         public GetApplicationByTokenQuery(IGetApplicationQuery getApplicationQuery, 
             IEncryptor encryptor, 
             IGetOrganisationQuery getOrganisationQuery,
@@ -66,7 +67,7 @@ namespace Errordite.Core.Applications.Queries
 
             var application = _getApplicationQuery.Invoke(new GetApplicationRequest
             {
-                Id = applicationId,
+                ApplicationId = applicationId,
                 OrganisationId = organisationId,
                 CurrentUser = request.CurrentUser,
             }).Application;
@@ -104,6 +105,7 @@ namespace Errordite.Core.Applications.Queries
     public class GetApplicationByTokenResponse : GetApplicationResponse
     {
         public ApplicationStatus Status { get; set; }
+        public Organisation Organisation { get; set; }
     }
 
     public class GetApplicationByTokenRequest : OrganisationRequestBase

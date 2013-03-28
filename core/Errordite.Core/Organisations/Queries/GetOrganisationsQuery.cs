@@ -7,8 +7,8 @@ using CodeTrip.Core.Paging;
 using Errordite.Core.Caching;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Indexing;
+using Errordite.Core.Session;
 using ProtoBuf;
-using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
 
 namespace Errordite.Core.Organisations.Queries
 {

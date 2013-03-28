@@ -18,10 +18,13 @@ using CodeTrip.Core.IoC;
 using CodeTrip.Core.Misc;
 using Errordite.Client;
 using Errordite.Core;
+using Errordite.Core.Domain.Central;
 using Errordite.Core.Domain.Exceptions;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Indexing;
 using Errordite.Core.IoC;
+using Errordite.Core.Organisations.Queries;
+using Errordite.Core.Raven;
 using Errordite.Core.Session;
 using Errordite.Core.WebApi;    
 using Errordite.Web.ActionFilters;
@@ -150,7 +153,7 @@ namespace Errordite.Web
             ErrorditeClient.ConfigurationAugmenter = ErrorditeClientOverrideHelper.Augment;
 
 #if !(DEBUG)
-            BootstrapRaven(ObjectFactory.Container.Resolve<IDocumentStore>());
+            BootstrapRaven(ObjectFactory.Container.Resolve<IShardedRavenDocumentStoreFactory>());
 #endif
         }
         
@@ -211,16 +214,17 @@ namespace Errordite.Web
 
         #region Bootstrap Raven
 
-        public static void BootstrapRaven(IDocumentStore documentStore)
+        public static void BootstrapRaven(IShardedRavenDocumentStoreFactory documentStoreFactory)
         {
-            documentStore.DatabaseCommands.EnsureDatabaseExists(CoreConstants.ErrorditeMasterDatabaseName);
+            var masterDocumentStore = documentStoreFactory.Create(RavenInstance.Master());
+            masterDocumentStore.DatabaseCommands.EnsureDatabaseExists(CoreConstants.ErrorditeMasterDatabaseName);
 
-            var session = documentStore.OpenSession(CoreConstants.ErrorditeMasterDatabaseName);
+            var session = masterDocumentStore.OpenSession(CoreConstants.ErrorditeMasterDatabaseName);
 
             IndexCreation.CreateIndexes(new CompositionContainer(
                 new AssemblyCatalog(typeof(Issues_Search).Assembly), new ExportProvider[0]),
-                documentStore.DatabaseCommands.ForDatabase(CoreConstants.ErrorditeMasterDatabaseName),
-                documentStore.Conventions);
+                masterDocumentStore.DatabaseCommands.ForDatabase(CoreConstants.ErrorditeMasterDatabaseName),
+                masterDocumentStore.Conventions);
 
             if (!session.Query<PaymentPlan>().Any())
             {
@@ -274,17 +278,25 @@ namespace Errordite.Web
             }
 
             var organisations = session.Query<Organisation, Organisations_Search>();
+            var getOrganisationQuery = ObjectFactory.GetObject<IGetOrganisationQuery>();
 
-            foreach (var organisation in organisations)
+            foreach (var org in organisations)
             {
-                session.Advanced.DocumentStore.DatabaseCommands.EnsureDatabaseExists(organisation.FriendlyId);
+                var organisation = getOrganisationQuery.Invoke(new GetOrganisationRequest
+                    {
+                        OrganisationId = org.Id
+                    }).Organisation;
+
+                var docStore = documentStoreFactory.Create(organisation.RavenInstance);
+
+                docStore.DatabaseCommands.EnsureDatabaseExists(organisation.FriendlyId);
 
                 IndexCreation.CreateIndexes(
                     new CompositionContainer(new AssemblyCatalog(typeof(Issues_Search).Assembly), new ExportProvider[0]), 
-                    session.Advanced.DocumentStore.DatabaseCommands.ForDatabase(organisation.FriendlyId), 
-                    documentStore.Conventions);
+                    session.Advanced.DocumentStore.DatabaseCommands.ForDatabase(organisation.FriendlyId),
+                    docStore.Conventions);
 
-                using (var organisationSession = documentStore.OpenSession(organisation.FriendlyId))
+                using (var organisationSession = docStore.OpenSession(organisation.FriendlyId))
                 {
                     var facets = new List<Facet>
                     {

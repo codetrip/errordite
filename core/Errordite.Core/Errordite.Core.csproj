@@ -133,6 +133,7 @@
     </Compile>
     <Compile Include="Caching\CacheKeys.cs" />
     <Compile Include="Configuration\HttpServerConfiguration.cs" />
+    <Compile Include="Domain\Central\RavenInstance.cs" />
     <Compile Include="Domain\Central\UserOrganisationMapping.cs" />
     <Compile Include="Domain\Error\IssueComment.cs" />
     <Compile Include="Domain\Error\ErrorditeError.cs" />
@@ -150,7 +151,6 @@
     <Compile Include="Configuration\ErrorditeConfiguration.cs" />
     <Compile Include="Domain\Error\IssueHistory.cs" />
     <Compile Include="Domain\Exceptions\ErrorditeAuthorisationException.cs" />
-    <Compile Include="Domain\Organisation\AuditRecord.cs" />
     <Compile Include="Domain\Organisation\Notification.cs" />
     <Compile Include="Domain\Organisation\Statistics.cs" />
     <Compile Include="ErrorditeCore.cs" />
@@ -276,12 +276,15 @@
     <Compile Include="Organisations\Commands\SuspendOrganisationCommand.cs" />
     <Compile Include="Organisations\Commands\SetOrganisationTimezoneCommand.cs" />
     <Compile Include="Organisations\OrganisationRequestBase.cs" />
-    <Compile Include="Organisations\Commands\SetOrganisationByEmailAddressCommand.cs" />
+    <Compile Include="Organisations\Queries\GetErrorditeInstancesQuery.cs" />
+    <Compile Include="Organisations\Queries\GetOrganisationByEmailAddressCommand.cs" />
     <Compile Include="Organisations\Queries\GetOrganisationsQuery.cs" />
     <Compile Include="Organisations\Queries\GetAvailablePaymentPlansQuery.cs" />
     <Compile Include="Organisations\Queries\GetOrganisationStatisticsQuery.cs" />
     <Compile Include="Organisations\Queries\GetOrganisationQuery.cs" />
     <Compile Include="Issues\ReceptionServiceIssueCache.cs" />
+    <Compile Include="Raven\ShardedRavenDocumentStoreFactory.cs" />
+    <Compile Include="Raven\RavenDocumentStoreFactory.cs" />
     <Compile Include="Reception\Commands\AttachToExistingIssueCommand.cs" />
     <Compile Include="Reception\Commands\AttachToNewIssueCommand.cs" />
     <Compile Include="Reception\Commands\ProcessIncomingExceptionCommand.cs" />

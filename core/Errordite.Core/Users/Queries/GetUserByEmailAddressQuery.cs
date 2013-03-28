@@ -19,9 +19,9 @@ namespace Errordite.Core.Users.Queries
             var user = Query<User, Users_Search>().FirstOrDefault(u => u.Email == request.EmailAddress);
 
             return new GetUserByEmailAddressResponse()
-                {
-                    User = user,
-                };
+            {
+                User = user,
+            };
         }
     }
 

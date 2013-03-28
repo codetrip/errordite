@@ -36,7 +36,7 @@ namespace CodeTrip.Core.Caching.Interceptors
                 return;
             }
 
-            ICacheable cacheableRequest = (ICacheable)invocation.Arguments[0];
+            var cacheableRequest = (ICacheable)invocation.Arguments[0];
 
             if (cacheableRequest.IgnoreCache)
             {
