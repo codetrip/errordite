@@ -1,0 +1,30 @@
+﻿@using Errordite.Web.Models.Issues
+@model IssueDetailsViewModel
+
+<h2 class="section-header border"><i class="icon-cog"></i>Delete Issue</h2>
+<p>Permanently delete this issue and all its errors from the system, this action cannot be undone.</p>
+@using (Html.BeginForm("delete", "issue", FormMethod.Post))
+{
+    @Html.HiddenFor(m => m.IssueId)
+    <input type="submit" class="btn btn-medium btn-blue" data-confirm="Are you sure you wish to delete this issue?" value="Delete Issue" />                                                                                                              
+}
+
+
+<h2 class="section-header border" style="margin-top:35px;"><i class="icon-cog"></i>Purge Issue Errors</h2>
+<p>Delete all the errors associated with this issue.</p>
+@using (Html.BeginForm("purge", "issue", FormMethod.Post))
+{
+    @Html.HiddenFor(m => m.IssueId)
+    <input type="submit" class="btn btn-medium btn-blue" data-confirm="Are you sure you wish to delete all the errors associated with this issue?" value="Delete Errors" />
+}
+
+
+<h2 class="section-header border" style="margin-top:35px;"><i class="icon-cog"></i>Reprocess Errors</h2>
+<p>Reprocessing the errors attached to this issue will try to attach each to another suitable issue. Any errors for which there is no other suitable issue will remain attached to this issue.</p>
+@using (Html.BeginForm("reprocess", "issue", FormMethod.Post))
+{
+    @Html.HiddenFor(m => m.IssueId)
+    <input type="submit" class="btn btn-medium btn-blue" data-confirm="Are you sure you wish to reprocess this issue's errors?" value="Re-process Errors" name="reprocess" />
+    <input type="submit" class="btn btn-medium btn-blue what-if-reprocess tool-tip" value="What If?" data-title="Click to find out what would happen if you were to reprocess all the errors attached to this issue." name="whatif" />
+}
+

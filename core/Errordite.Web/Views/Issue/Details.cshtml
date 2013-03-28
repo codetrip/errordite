@@ -1,0 +1,50 @@
+﻿@using Errordite.Web.Models.Issues
+@using CodeTrip.Core.Extensions
+@model IssueViewModel
+
+<h2 class="section-header border"><i class="icon-files"></i>Issue Details</h2>
+<div class="boxed-item issue-details">
+    <div class="item-content">
+        <div class="item-info heading" style="width:200px">
+            Assigned To
+        </div>
+        <div class="item-info heading divider" style="width:200px">
+            Application
+        </div>
+        <div class="item-info heading divider" style="width:175px">
+            Status
+        </div>
+        <div class="item-info heading divider" style="width:175px">
+            Always Notify
+        </div>
+        <div class="item-info" style="width:200px;margin-bottom:5px;">
+            @Model.Details.UserName
+        </div>
+        <div class="item-info divider" style="width:200px;margin-bottom:5px;">
+            @Model.Details.ApplicationName
+        </div>
+        <div class="item-info divider" style="width:175px;margin-bottom:5px;">
+            @Model.Details.Status
+        </div>
+        <div class="item-info divider" style="margin-bottom:5px;width:175px">
+            @Model.Details.AlwaysNotify
+        </div>
+        @if (Model.Details.Reference.IsNotNullOrEmpty())
+        {
+            <div class="item-info heading" style="width:750px">
+                External Reference
+            </div>
+            <div class="item-info full" style="width:750px">
+                <a href="@Model.Details.Reference" style="cursor:pointer" target="_blank">@Model.Details.Reference</a>
+            </div>
+        }
+    </div>
+    <div class="update-details">
+        <button id="update-details" type="button" class="btn btn-medium btn-blue">Edit Details</button>
+    </div>
+</div>
+
+<h2 class="section-header border"><i class="icon-file"></i>Issue Errors</h2>
+<div id="error-items" data-val="@Model.Details.IssueId" class="ajax-container">
+    @Html.Partial("Errors/ErrorItems", Model.Errors)
+</div>
