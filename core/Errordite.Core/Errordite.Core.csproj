@@ -276,7 +276,7 @@
     <Compile Include="Organisations\Commands\SuspendOrganisationCommand.cs" />
     <Compile Include="Organisations\Commands\SetOrganisationTimezoneCommand.cs" />
     <Compile Include="Organisations\OrganisationRequestBase.cs" />
-    <Compile Include="Organisations\Queries\GetErrorditeInstancesQuery.cs" />
+    <Compile Include="Organisations\Queries\GetRavenInstancesQuery.cs" />
     <Compile Include="Organisations\Queries\GetOrganisationByEmailAddressCommand.cs" />
     <Compile Include="Organisations\Queries\GetOrganisationsQuery.cs" />
     <Compile Include="Organisations\Queries\GetAvailablePaymentPlansQuery.cs" />

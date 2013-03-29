@@ -18,6 +18,7 @@ using CodeTrip.Core.IoC;
 using CodeTrip.Core.Misc;
 using Errordite.Client;
 using Errordite.Core;
+using Errordite.Core.Configuration;
 using Errordite.Core.Domain.Central;
 using Errordite.Core.Domain.Exceptions;
 using Errordite.Core.Domain.Organisation;
@@ -155,6 +156,8 @@ namespace Errordite.Web
 #if !(DEBUG)
             BootstrapRaven(ObjectFactory.Container.Resolve<IShardedRavenDocumentStoreFactory>());
 #endif
+
+            BootstrapRavenInstances();
         }
         
         protected void Application_Error(object sender, EventArgs e)
@@ -213,6 +216,25 @@ namespace Errordite.Web
         }
 
         #region Bootstrap Raven
+
+        public static void BootstrapRavenInstances()
+        {
+            var masterDocumentStoreFactory = ObjectFactory.GetObject<IShardedRavenDocumentStoreFactory>();
+            var masterDocumentStore = masterDocumentStoreFactory.Create(RavenInstance.Master());
+            var session = masterDocumentStore.OpenSession(CoreConstants.ErrorditeMasterDatabaseName);
+            var instances = ObjectFactory.GetObject<IGetRavenInstancesQuery>().Invoke(new GetRavenInstancesRequest
+                {
+                    Session = session
+                }).RavenInstances;
+            var master = instances.FirstOrDefault(i => i.IsMaster);
+
+            if(master != null)
+            {
+                master.ReceptionQueueAddress = ErrorditeConfiguration.Current.ReceptionQueueName;
+                master.ReceptionHttpEndpoint = ErrorditeConfiguration.Current.ReceptionHttpEndpoint;
+                session.SaveChanges();
+            }
+        }
 
         public static void BootstrapRaven(IShardedRavenDocumentStoreFactory documentStoreFactory)
         {
