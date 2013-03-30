@@ -43,6 +43,7 @@ namespace Errordite.Core.Indexing
                                         i.MethodName,
                                         i.Module,
                                         i.StackTrace,
+                                        i.ExtraData.Select(x => x.Value),
                                     })
                                 },
                                 error.TimestampUtc,
