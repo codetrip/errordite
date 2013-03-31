@@ -128,9 +128,9 @@ p {
 pre.prettyprint {
   font-size: 12px;
   font-family: Consolas, Menlo, Monaco, Lucida Console;
-  padding: 12px 0 0 15px!important;
+  padding: 12px 0 0 15px !important;
   line-height: 14px;
-  border: 1px solid #D8DEE2!important;
+  border: 1px solid #d8dee2 !important;
   border-radius: 0;
   float: left;
   width: 100%; }
@@ -743,7 +743,7 @@ section {
   background-position: -108px -18px; }
 
 .icon-arrow-left {
-  background-position: 0 -36px; }
+  background-position: -0 -36px; }
 
 .icon-arrow-right {
   background-position: -165px -18px; }
@@ -1651,11 +1651,18 @@ nav {
   padding: 8px 0px 8px 5px;
   width: 962px;
   max-width: 962px; }
-.errors .stacktrace {
+  .errors .error-content .rule-controls.inline {
+    display: inline; }
+    .errors .error-content .rule-controls.inline button {
+      display: inline; }
+    .errors .error-content .rule-controls.inline div {
+      display: inline; }
+.errors .stacktrace-area {
   background-color: #FFFFCC;
   padding: 5px;
   margin: 10px 1px -1px 1px;
-  border: 1px solid #dee7ee;
+  border: 1px solid #dee7ee; }
+.errors .stacktrace {
   position: relative; }
 .errors pre, .errors code {
   font-family: "Courier New", Courier;
@@ -1680,21 +1687,21 @@ nav {
   padding: 1px;
   margin: -7px 0px; }
 .errors .rule-controls {
-  position: absolute;
   padding: 3px 3px 3px 6px;
   display: inline;
   margin-top: -5px; }
   .errors .rule-controls .btn-rule {
     padding: 1px;
-    margin: 2px 2px;
+    margin: 0 2px;
     background-color: #95c0df;
     font-size: 11px;
     color: #fff;
     padding: 2px 10px;
-    font-weight: 400;
-    float: left; }
+    font-weight: 400; }
+  .errors .rule-controls.floating .btn-rule {
+    margin: 2px 2px; }
 .errors .rule-controls.hide {
-  display: none; }
+  visibility: hidden; }
 .errors .error-stack .rule-controls {
   background-color: #FFC; }
 .errors .st-type, .errors .st-message {

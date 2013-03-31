@@ -1,7 +1,7 @@
 (function() {
-
   jQuery(function() {
     var $root, Error, ErrorProp, init, openedErrors;
+
     $root = $('section#errors, section#issue, section#errordite-errors').first();
     if ($root.length > 0) {
       init = new Initalisation();
@@ -9,6 +9,7 @@
       openedErrors = [];
       $root.delegate('ul.tabs li a', 'click', function(e) {
         var $this;
+
         $this = $(this);
         $this.error = new Error($this);
         $this.error.switchTab();
@@ -16,6 +17,7 @@
       });
       $root.delegate('td.toggle', 'click', function(e) {
         var $this, error;
+
         $this = $(this);
         error = new Error($this);
         error.toggle();
@@ -24,6 +26,7 @@
       if ($('section#issue').length > 0) {
         $('body').on('changedrule', function(e, rule) {
           var error, _i, _len, _results;
+
           _results = [];
           for (_i = 0, _len = openedErrors.length; _i < _len; _i++) {
             error = openedErrors[_i];
@@ -33,6 +36,7 @@
         });
         $('body').on('ruleadded', function() {
           var error, _i, _len, _results;
+
           _results = [];
           for (_i = 0, _len = openedErrors.length; _i < _len; _i++) {
             error = openedErrors[_i];
@@ -43,6 +47,7 @@
       }
       $('body').on('remove', 'tr.rule', function(e) {
         var $match, $tr, id, match, _i, _len, _ref, _results;
+
         $tr = $(this);
         id = $tr.data('counter');
         _ref = $("[data-rule-id=" + id + "]");
@@ -63,13 +68,14 @@
       */
 
       ErrorProp = (function() {
-
         function ErrorProp($propEl) {
           var _this = this;
+
           this.$propEl = $propEl;
           this.propName = $propEl.data('error-attr');
           this.$propEl.delegate('.new-rule-match, .rule-match', 'click', function(e) {
             var $ruleMatch;
+
             $('.last-selected').removeClass('last-selected');
             $('.remove-rule').hide();
             $ruleMatch = $(e.currentTarget);
@@ -80,6 +86,7 @@
 
         ErrorProp.prototype.selectRule = function(ruleId) {
           var $ruleMatches;
+
           $ruleMatches = this.$propEl.find('.new-rule-match, .rule-match').filter("[data-rule-id=" + ruleId + "]");
           $ruleMatches.addClass('last-selected');
           return this.$propEl.find('.remove-rule').show().unbind('click').bind('click', function(e) {
@@ -92,11 +99,13 @@
 
         ErrorProp.prototype.visualiseRules = function() {
           var length, matchInfo, matchInfos, prevMatchInfo, propValText, regex, rule, visualisedHtml, _i, _len;
+
           if (!this.propName) {
             return null;
           }
           matchInfos = _.flatten((function() {
             var _i, _len, _ref, _results;
+
             _ref = Errordite.ruleManager.rules;
             _results = [];
             for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -115,7 +124,7 @@
           prevMatchInfo = null;
           for (_i = 0, _len = matchInfos.length; _i < _len; _i++) {
             matchInfo = matchInfos[_i];
-            if (!(prevMatchInfo != null) || prevMatchInfo.start > matchInfo.end) {
+            if ((prevMatchInfo == null) || prevMatchInfo.start > matchInfo.end) {
               length = matchInfo.length;
             } else {
               length = prevMatchInfo.start - matchInfo.start;
@@ -129,6 +138,7 @@
 
         ErrorProp.prototype.getMatchInfos = function(rule) {
           var matchInfos, propValText, regex;
+
           switch (rule.op) {
             case 'Equals':
               regex = RegExp("(^" + (RegExp.escape(rule.val)) + "$)", "g");
@@ -170,7 +180,6 @@
       */
 
       return Error = (function() {
-
         function Error($errorEl) {
           this.$errorEl = $errorEl;
           this.$detailsEl = this.$errorEl.closest('tr').next();
@@ -178,6 +187,7 @@
 
         Error.prototype.switchTab = function() {
           var $error, $item, $tab, tabId;
+
           $error = this.$errorEl;
           $item = $error.closest('td');
           tabId = $error.data('val');
@@ -190,8 +200,10 @@
 
         Error.prototype.visualiseRules = function() {
           var errorProp, _i, _len, _ref, _results;
+
           _ref = (function() {
             var _j, _len, _ref, _results1;
+
             _ref = this.$detailsEl.find("[data-error-attr]");
             _results1 = [];
             for (_j = 0, _len = _ref.length; _j < _len; _j++) {
@@ -208,18 +220,22 @@
           return _results;
         };
 
-        Error.prototype.getControls = function() {
+        Error.prototype.getControls = function(isMultiLine) {
           /*
           				The result of this is like <div class=rule-controls><div class=buttons>buttons</div><div>&nbsp;</div></div>
           				The purpose of the div with just a space is to allow us to have some space between the cursor and the controls
           				panel but without having the mouseleave event trigger if we are at the top of the stack trace area.s
           */
 
-          var $button, $buttons, $removeButton;
+          var $button, $buttons, $removeButton, ret;
+
           $button = $('<button/>').addClass('btn').addClass('btn-rule').addClass('make-rule').text('Create Rule');
           $removeButton = $('<button/>').addClass('btn').addClass('btn-rule').addClass('remove-rule').text('Remove Rule').hide();
-          $buttons = $('<div/>').addClass('rule-controls').addClass('hide').append($('<div/>').addClass('buttons').append($button, $removeButton), $('<div/>').html('&nbsp;'));
-          return {
+          $buttons = $('<div/>').addClass('rule-controls').addClass('hide').append($('<div/>').addClass('buttons').append($button, $removeButton));
+          if (isMultiLine) {
+            $buttons.append($('<div/>').html('&nbsp;'));
+          }
+          return ret = {
             $button: $button,
             $removeButton: $removeButton,
             $buttons: $buttons
@@ -228,6 +244,7 @@
 
         Error.prototype.toggle = function() {
           var $details, $error, error;
+
           error = this;
           $error = this.$errorEl;
           $details = this.$detailsEl;
@@ -242,13 +259,14 @@
               $error.data('rules-visualised', true);
               $details.find('[data-error-attr]').each(function() {
                 var $button, $buttons, $errorAttr, $textSpan, addOffset, controls, getRule, isMultiLine, propVal;
+
                 $errorAttr = $(this);
                 isMultiLine = $errorAttr.data('error-attr') === 'StackTrace';
                 propVal = $errorAttr.text();
                 if ((propVal.trim != null) && !propVal.trim()) {
                   return;
                 }
-                controls = error.getControls();
+                controls = error.getControls(isMultiLine);
                 $button = controls.$button;
                 $buttons = controls.$buttons;
                 $errorAttr.on('mouseenter', function() {
@@ -277,13 +295,16 @@
                     $buttons.removeClass('hide');
                     $buttons.addClass('floating');
                     return $buttons.css({
-                      top: e.offsetY - 1,
+                      top: e.offsetY - 35,
                       left: e.offsetX - 48
                     });
                   });
+                } else {
+                  $buttons.addClass('inline');
                 }
                 addOffset = function(event) {
                   var element;
+
                   element = event.currentTarget;
                   if (!event.offsetX) {
                     event.offsetX = event.pageX - $(element).offset().left;
@@ -292,6 +313,7 @@
                 };
                 getRule = function() {
                   var endTextRange, propValSpan, rangeComparison, rule, selectedRange, selection, startTextRange;
+
                   rule = new Errordite.Rule();
                   rule.prop = $errorAttr.data('error-attr');
                   /*
@@ -299,7 +321,7 @@
                   								gaps but couldn't be bothered to get it to work properly. Rainy day job (or not at all).
                   */
 
-                  if (!(window.getSelection != null)) {
+                  if (window.getSelection == null) {
                     rule.op = 'Equals';
                     rule.val = propVal;
                   } else {
@@ -344,12 +366,14 @@
                 };
                 $button.on('mouseenter', function() {
                   var $this, rule;
+
                   rule = getRule();
                   $this = $(this);
                   return $this.attr('title', "Click to add rule: '" + (rule.description()) + "'");
                 });
                 return $button.on('click', function(e) {
                   var errorProp, newRule, rule;
+
                   rule = getRule();
                   newRule = Errordite.ruleManager.addRule(rule.prop, rule.op, rule.val);
                   errorProp = new ErrorProp($button.closest('[data-error-attr]'));
