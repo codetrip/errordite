@@ -166,6 +166,7 @@
     <Compile Include="Identity\IImpersonationManager.cs" />
     <Compile Include="Indexing\Applications_Search.cs" />
     <Compile Include="Indexing\History_Search.cs" />
+    <Compile Include="Indexing\Issues_ExtraDataKeys.cs" />
     <Compile Include="Indexing\OrganisationDailyCount_Search.cs" />
     <Compile Include="Indexing\Organisations_Search.cs" />
     <Compile Include="Indexing\Groups_Search.cs" />
@@ -196,6 +197,7 @@
     <Compile Include="Issues\Commands\UpdateIssueDetailsCommand.cs" />
     <Compile Include="Issues\Queries\GetActivityFeedQuery.cs" />
     <Compile Include="Issues\Queries\GetDashboardReportQuery.cs" />
+    <Compile Include="Issues\Queries\GetExtraDataKeysForIssueQuery.cs" />
     <Compile Include="Issues\Queries\GetIssueReportDataQuery.cs" />
     <Compile Include="Issues\Queries\GetIssueWithMatchingRulesQuery.cs" />
     <Compile Include="Issues\Queries\GetAllApplicationIssuesQuery.cs" />
