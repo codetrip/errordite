@@ -1,0 +1,36 @@
+﻿using System.Collections.Generic;
+using System.Linq;
+using Errordite.Core.Domain.Error;
+using Raven.Client.Indexes;
+
+namespace Errordite.Core.Indexing
+{
+    public class IssueExtraDataKeys
+    {
+        public string IssueId { get; set; }
+        public List<string> Keys { get; set; }
+    }
+
+    public class Issues_ExtraDataKeys : AbstractIndexCreationTask<Error, IssueExtraDataKeys>
+    {
+        public Issues_ExtraDataKeys()
+        {
+            Map = errors => from doc in errors
+                            select new
+                                {
+                                    doc.IssueId,
+                                    Keys =
+                                        doc.ExceptionInfos.SelectMany(i => i.ExtraData.Select(d => d.Key)).Distinct()
+                                };
+
+            Reduce = keysPerIssue => from k in keysPerIssue
+                                     group k by k.IssueId
+                                     into issueKeys
+                                     select new
+                                         {
+                                             IssueId = issueKeys.Key,
+                                             Keys = issueKeys.SelectMany(p => p.Keys).Distinct().ToList(),
+                                         };
+        }
+    }
+}

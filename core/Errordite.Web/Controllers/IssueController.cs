@@ -45,6 +45,7 @@ namespace Errordite.Web.Controllers
         private readonly IDeleteIssueCommand _deleteIssueCommand;
         private readonly IGetIssueReportDataQuery _getIssueReportDataQuery;
         private readonly IAddCommentCommand _addCommentCommand;
+        private readonly IGetExtraDataKeysForIssueQuery _getExtraDataKeysForIssueQuery;
 
         public IssueController(IGetIssueQuery getIssueQuery, 
             IAdjustRulesCommand adjustRulesCommand, 
@@ -55,7 +56,7 @@ namespace Errordite.Web.Controllers
             IDeleteIssueErrorsCommand deleteIssueErrorsCommand, 
             IDeleteIssueCommand deleteIssueCommand,
             IGetIssueReportDataQuery getIssueReportDataQuery, 
-            IAddCommentCommand addCommentCommand)
+            IAddCommentCommand addCommentCommand, IGetExtraDataKeysForIssueQuery getExtraDataKeysForIssueQuery)
         {
             _getIssueQuery = getIssueQuery;
             _adjustRulesCommand = adjustRulesCommand;
@@ -67,6 +68,7 @@ namespace Errordite.Web.Controllers
             _deleteIssueCommand = deleteIssueCommand;
             _getIssueReportDataQuery = getIssueReportDataQuery;
             _addCommentCommand = addCommentCommand;
+            _getExtraDataKeysForIssueQuery = getExtraDataKeysForIssueQuery;
         }
 
         [
@@ -99,14 +101,26 @@ namespace Errordite.Web.Controllers
             var assignedUser = users.Items.FirstOrDefault(u => u.Id == issue.UserId);
 
             int ii = 0;
+
+            var extraDataKeys = _getExtraDataKeysForIssueQuery.Invoke(new GetExtraDataKeysForIssueRequest()
+                {
+                    IssueId = issue.Id,
+                }).Keys;
+
             var ruleViewModels = issue.Rules.OfType<PropertyMatchRule>().Select(r => new RuleViewModel
-            {
-                ErrorProperty = r.ErrorProperty,
-                StringOperator = r.StringOperator,
-                Value = r.Value,
-                Index = ii++,
-                Properties = _configuration.GetRuleProperties(r.ErrorProperty)
-            }).ToList();
+                {
+                    ErrorProperty = r.ErrorProperty,
+                    StringOperator = r.StringOperator,
+                    Value = r.Value,
+                    Index = ii++,
+                    Properties = _configuration.GetRuleProperties(r.ErrorProperty)
+                                               .Union(extraDataKeys.Select(k => new SelectListItem()
+                                                   {
+                                                       Selected = r.ErrorProperty == k,
+                                                       Text = k,
+                                                       Value = k
+                                                   })),
+                }).ToList();
 
             var rulesViewModel = new UpdateIssueViewModel
             {
@@ -140,7 +154,7 @@ namespace Errordite.Web.Controllers
                     AlwaysNotify = issue.AlwaysNotify,
                     Reference = issue.Reference
                 },
-                Errors = GetErrorsViewModel(postModel, paging),
+                Errors = GetErrorsViewModel(postModel, paging, extraDataKeys),
                 Update = rulesViewModel,
                 Tab = postModel.Tab,
                 Comments = new CommentsViewModel
@@ -213,11 +227,11 @@ namespace Errordite.Web.Controllers
         public ActionResult Errors(ErrorCriteriaPostModel postModel)
         {
             var paging = GetSinglePagingRequest();
-            var model = GetErrorsViewModel(postModel, paging);
+            var model = GetErrorsViewModel(postModel, paging, null);
             return PartialView("Errors/ErrorItems", model);
         }
 
-        private ErrorCriteriaViewModel GetErrorsViewModel(ErrorCriteriaPostModel postModel, PageRequestWithSort paging)
+        private ErrorCriteriaViewModel GetErrorsViewModel(ErrorCriteriaPostModel postModel, PageRequestWithSort paging, List<string> extraDataKeys)
         {
             var request = new GetApplicationErrorsRequest
             {
@@ -248,13 +262,14 @@ namespace Errordite.Web.Controllers
                 Controller = "issue",
                 DateRange = postModel.DateRange,
                 Paging = _pagingViewModelGenerator.Generate(PagingConstants.DefaultPagingId, errors.PagingStatus, paging),
-                Errors = errors.Items.Select(e => new ErrorInstanceViewModel { Error = e, HideIssues = true }).ToList(),
+                Errors = errors.Items.Select(e => new ErrorInstanceViewModel { Error = e, HideIssues = true, PropertiesEligibleForRules = extraDataKeys}).ToList(),
                 ApplicationId = postModel.ApplicationId,
                 HideIssues = true,
                 Id = postModel.Id,
                 Applications = Core.GetApplications().Items.ToSelectList(a => a.FriendlyId, a => a.Name, u => u.FriendlyId == postModel.ApplicationId, Resources.Shared.Application, string.Empty, SortSelectListBy.Text),
                 Sort = paging.Sort,
                 SortDescending = paging.SortDescending,
+                
             };
 
             model.Paging.Tab = IssueTab.Details.ToString();
