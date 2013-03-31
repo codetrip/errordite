@@ -2091,15 +2091,27 @@ nav {
         padding: 8px 0px 8px 5px;
 		width:962px;
 		max-width:962px;
+		.rule-controls.inline {
+			display:inline;
+			button {
+				display:inline;
+			}
+			div {
+				display:inline;
+			}
+		}
     }
 
-    .stacktrace {
+    .stacktrace-area {
         background-color:#FFFFCC;
         padding:5px;
         margin:10px 1px -1px 1px;
         border:1px solid $tabbordercolor;
-        position: relative;
     }
+
+	.stacktrace {
+		position: relative;
+	}
 
     pre, code {
       font-family: "Courier New", Courier;
@@ -2143,22 +2155,23 @@ nav {
     .rule-controls {
       .btn-rule {
         padding: 1px;
-        margin: 2px 2px;
+        margin: 0 2px;
         background-color:$darkblue;
         font-size: 11px;
         color: #fff;
         padding: 2px 10px;
         font-weight: $normalfontweight;
-        float: left;
       }
-      position: absolute;
+	  &.floating .btn-rule{
+		margin: 2px 2px;
+	  }
       padding: 3px 3px 3px 6px;
       display: inline;
       margin-top:-5px;
     }
 
     .rule-controls.hide{
-        display:none;
+		visibility:hidden;		
     }
 
     .error-stack .rule-controls {
