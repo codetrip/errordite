@@ -98,7 +98,7 @@ namespace Errordite.Core.Matching
             }
 
             return error.ExceptionInfos
-                        .Where(ei => ei.ExtraData.ContainsKey(ErrorProperty))
+                        .Where(ei => ei.ExtraData.IfPoss(d => d.ContainsKey(ErrorProperty)))
                         .Select(ei => ei.ExtraData[ErrorProperty]);
         }
 
