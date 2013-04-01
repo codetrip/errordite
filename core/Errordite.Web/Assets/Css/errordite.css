@@ -238,6 +238,10 @@ table {
       width: 500px;
       border-bottom: 2px solid #393a3b;
       float: left; }
+      .welcome-bar-container .welcome-bar .applications .dropdown-menu li {
+        padding: 0; }
+        .welcome-bar-container .welcome-bar .applications .dropdown-menu li a {
+          padding: 5px 5px; }
     .welcome-bar-container .welcome-bar a {
       color: #fff;
       font-size: 13px;
