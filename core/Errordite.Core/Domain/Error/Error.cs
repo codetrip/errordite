@@ -54,6 +54,11 @@ namespace Errordite.Core.Domain.Error
     [ProtoContract]
     public class ExceptionInfo
     {
+        public ExceptionInfo()
+        {
+            ExtraData = new Dictionary<string, string>();
+        }
+
         [ProtoMember(1)]
         public string Type { get; set; }
         [ProtoMember(2)]
