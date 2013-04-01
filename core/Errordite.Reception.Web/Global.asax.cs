@@ -57,6 +57,10 @@ namespace Errordite.Reception.Web
             ObjectFactory.Container.Install(new ReceptionWebInstaller());
 
             ErrorditeClient.ConfigurationAugmenter = ErrorditeClientOverrideHelper.Augment;
+            ErrorditeClient.SetErrorNotificationAction(e =>
+                {
+                    System.Diagnostics.Trace.Write(e.ToString());
+                });
             var controllerFactory = new WindsorControllerFactory(ObjectFactory.Container.Kernel);
             ControllerBuilder.Current.SetControllerFactory(controllerFactory);
 
