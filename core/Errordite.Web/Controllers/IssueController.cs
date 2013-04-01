@@ -227,7 +227,7 @@ namespace Errordite.Web.Controllers
         public ActionResult Errors(ErrorCriteriaPostModel postModel)
         {
             var paging = GetSinglePagingRequest();
-            var model = GetErrorsViewModel(postModel, paging, null);
+            var model = GetErrorsViewModel(postModel, paging, _getExtraDataKeysForIssueQuery.Invoke(new GetExtraDataKeysForIssueRequest(){IssueId = postModel.Id}).Keys);
             return PartialView("Errors/ErrorItems", model);
         }
 
