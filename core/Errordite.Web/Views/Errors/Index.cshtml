@@ -8,7 +8,7 @@
 
 <section id="errors" class="centered">
     <div class="content">
-        @if (!Model.ErrorsViewModel.Applications.Any())
+        @if (Model.NoApplications)
         {
             <p>You do not have any applications set up, <a href="@Url.AddApplication()">click here to create an application.</a></p>    
         }

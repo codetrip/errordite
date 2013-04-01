@@ -153,7 +153,7 @@ jQuery ->
 				for errorProp in (new ErrorProp $ errorProp for errorProp in this.$detailsEl.find("[data-error-attr]"))						
 					errorProp.visualiseRules() 
 
-			getControls: ->
+			getControls: (isMultiLine) ->
 				###
 				The result of this is like <div class=rule-controls><div class=buttons>buttons</div><div>&nbsp;</div></div>
 				The purpose of the div with just a space is to allow us to have some space between the cursor and the controls
@@ -175,9 +175,11 @@ jQuery ->
 				$buttons = $('<div/>')
 					.addClass('rule-controls')
 					.addClass('hide')													
-					.append $('<div/>').addClass('buttons').append($button, $removeButton),
-						$('<div/>').html('&nbsp;')
+					.append $('<div/>').addClass('buttons').append($button, $removeButton)
 
+				$buttons.append($('<div/>').html('&nbsp;')) if isMultiLine
+
+				ret =
 					#notice indent, which returns a complex object.  CS is strange sometimes!s
 					$button: $button
 					$removeButton: $removeButton
@@ -208,7 +210,7 @@ jQuery ->
 
 							return if propVal.trim? and not propVal.trim()
 
-							controls = error.getControls()
+							controls = error.getControls isMultiLine
 							$button = controls.$button
 							$buttons = controls.$buttons
 							
@@ -236,9 +238,11 @@ jQuery ->
 									$buttons.removeClass 'hide'
 									$buttons.addClass 'floating'
 									$buttons.css 
-										top: e.offsetY - 1 #we need at least -1 or we get strange behaviour where the whole text gets selected on double click
+										top: e.offsetY - 35 #need to be careful not to be too far down here as the click on the "buffer" div causes odd behaviour reappears in top left as "offset" is much smaller.  Must be a nice way to fix this but doesn't immediately leap to mind!
 										left: e.offsetX - 48		
-							
+							else
+								$buttons.addClass 'inline'
+
 							#firefox doesn't have offset coords on the event so we use this to put them in 
 							addOffset = (event) ->
 								element = event.currentTarget

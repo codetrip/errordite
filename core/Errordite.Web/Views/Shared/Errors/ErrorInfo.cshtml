@@ -22,7 +22,7 @@
         {
             <tr>
                 <td>Machine Name</td>
-                <td class="word-break">@Model.MachineName</td>
+                <td class="word-break" data-error-attr="MachineName">@Model.MachineName</td>
             </tr>   
         }        
 
@@ -49,13 +49,14 @@
 			foreach (var kvp in Model.Info.ExtraData)
 			{
 				<tr>
-					<td class="nobreak">@kvp.Key.Replace("_", ".")</td>
-					<td class="word-break">@kvp.Value</td>
+					<td class="nobreak" >@kvp.Key</td>
+					<td class="word-break" data-error-attr="@kvp.Key">@kvp.Value</td>
 				</tr>
 			}
 		}
 	</table>
 </div>
-<div class="stacktrace">
-    <pre><span class="st-type" data-error-attr="Type">@Model.Info.Type</span>: <span data-error-attr="Message" class="st-message">@Model.Info.Message</span><div data-error-attr="StackTrace">@Model.Info.StackTrace</div></pre>
+<div class="stacktrace-area">
+    <pre><span class="st-type" data-error-attr="Type">@Model.Info.Type</span>: <span data-error-attr="Message" class="st-message">@Model.Info.Message</span>
+        <div data-error-attr="StackTrace" class="stacktrace">@Model.Info.StackTrace</div></pre>
 </div> 

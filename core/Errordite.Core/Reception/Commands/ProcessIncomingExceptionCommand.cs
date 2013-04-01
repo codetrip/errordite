@@ -177,11 +177,7 @@ namespace Errordite.Core.Reception.Commands
                 StackTrace = clientExceptionInfo.StackTrace.StripCss(),
                 Message = clientExceptionInfo.Message.StripCss(),
                 Type = clientExceptionInfo.ExceptionType,
-                //we do this because .'s in dictionary keys mean Raven querying is impossible as it is expecting a nested
-                //json object rather than a property with a . in its name..  
-                //the other problem is "some" (could be most, or all) non alphanumeric characters get replaced
-                //with an underscore in the dynamic index name, so we may need some way of encoding keys
-                ExtraData = clientExceptionInfo.Data == null ? null : clientExceptionInfo.Data.ToDictionary(kvp => kvp.Key.Replace('.', '_'), kvp => kvp.Value),
+                ExtraData = clientExceptionInfo.Data == null ? null : clientExceptionInfo.Data.ToDictionary(kvp => kvp.Key, kvp => kvp.Value),
                 Module = clientExceptionInfo.Source,
                 MethodName = clientExceptionInfo.MethodName
                 

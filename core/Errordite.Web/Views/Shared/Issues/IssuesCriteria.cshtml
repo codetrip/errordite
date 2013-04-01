@@ -7,10 +7,7 @@
     <div class="form form-inline criteria">
         <ul>
             <li>
-                @Html.TextBoxFor(m => m.Name, new { autocomplete = "off", placeholder = "Search Issue Name", style="width:230px" })
-            </li>
-            <li>
-                @Html.DropDownListFor(m => m.ApplicationId, Model.Applications)
+                @Html.TextBoxFor(m => m.Name, new { autocomplete = "off", placeholder = "Search issue name & rules", style="width:440px" })
             </li>
             <li>
                 @Html.DropDownListFor(m => m.AssignedTo, new[] { new SelectListItem { Text = Resources.IssueResources.AssignedUser, Value = Resources.Shared.DefaultSelectValue } }.Union(Model.Users))
@@ -35,7 +32,7 @@
                 </ul>
             </li>
             <li>
-                <input type="submit" class="btn btn-small btn-blue btn-inline" value="Apply" />
+                <input type="submit" class="btn btn-small btn-blue btn-inline" value="Search" />
             </li>
             <li class="pull-right">
                 <ul id="action-list" class="popup popup-pills">

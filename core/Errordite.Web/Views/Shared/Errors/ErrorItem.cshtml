@@ -49,15 +49,15 @@
 				}
 			</ul>
 			<div class="tab-content exception">
-				@Html.Partial("Errors/ErrorInfo", new ExceptionViewModel(Model.Error.ExceptionInfos.First(), Model.Error.Url, Model.Error.UserAgent, Model.Error.MachineName))
+				@Html.Partial("Errors/ErrorInfo", Model.Exceptions.First())
 			</div>
 			@{
 				count = 0;
-				foreach (var inner in Model.Error.ExceptionInfos.Skip(1))
+				foreach (var inner in Model.Exceptions.Skip(1))
 				{
 					count++;
 					<div class="tab-content hidden inner-@count">
-						@Html.Partial("Errors/ErrorInfo", new ExceptionViewModel(inner, null, null, null, true))
+						@Html.Partial("Errors/ErrorInfo", inner)
 					</div>
 				}
 			}

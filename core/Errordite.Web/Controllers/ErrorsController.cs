@@ -43,9 +43,6 @@ namespace Errordite.Web.Controllers
                 }
             };
 
-            if (postModel.ApplicationId.IsNullOrEmpty() && CurrentApplication != null)
-                postModel.ApplicationId = CurrentApplication.FriendlyId;
-
             var applications = Core.GetApplications();
             var pagingRequest = GetSinglePagingRequest();
 
@@ -53,7 +50,7 @@ namespace Errordite.Web.Controllers
             {
                 var request = new GetApplicationErrorsRequest
                 {
-                    ApplicationId = postModel.ApplicationId,
+                    ApplicationId = CurrentApplication.IfPoss(a => a.Id),
                     Paging = pagingRequest,
                     Query = postModel.Query,
                     OrganisationId = Core.AppContext.CurrentUser.OrganisationId,
@@ -78,9 +75,6 @@ namespace Errordite.Web.Controllers
                 
                 viewModel.ErrorsViewModel.Paging = _pagingViewModelGenerator.Generate(PagingConstants.DefaultPagingId, errors.Errors.PagingStatus, pagingRequest);
                 viewModel.ErrorsViewModel.Errors = errors.Errors.Items.Select(e => new ErrorInstanceViewModel { Error = e }).ToList();
-                viewModel.ErrorsViewModel.ApplicationId = postModel.ApplicationId;
-                viewModel.ApplicationName = postModel.ApplicationId.IsNullOrEmpty() ? Resources.Application.AllApplications : applications.Items.First(a => a.FriendlyId == postModel.ApplicationId).Name;
-                viewModel.ErrorsViewModel.Applications = applications.Items.ToSelectList(a => a.FriendlyId, a => a.Name, u => u.FriendlyId == postModel.ApplicationId, Resources.Shared.Application, string.Empty, SortSelectListBy.Text);
             }
             else
             {

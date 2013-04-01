@@ -8,15 +8,10 @@
     <input type="hidden" name="pgst" value="@Model.Sort" id="pgst"/>
     <input type="hidden" name="pgsd" value="@Model.SortDescending" id="pgsd"/>
 
-    if (Model.Controller == "issue")
-    {
-        @Html.HiddenFor(m => m.ApplicationId)
-    }  
-
     <div class="form form-inline criteria">
         <ul>
             <li>
-                @Html.TextBoxFor(m => m.Query, new { autocomplete = "off", placeholder = "Search your errors", style="width:340px"})
+                @Html.TextBoxFor(m => m.Query, new { autocomplete = "off", placeholder = "Search your errors", style="width:450px;"})
             </li>
             <li>
                  <div id="daterange" class="daterange" style="width:300px">
@@ -26,14 +21,8 @@
                     <b class="caret"></b>
                 </div>
             </li>
-            @if (Model.Controller != "issue")
-            {
-                <li>
-                    @Html.DropDownListFor(m => m.ApplicationId, Model.Applications)
-                </li>
-            } 
             <li>
-                <input type="submit" class="btn btn-small btn-blue btn-inline" value="Apply" />
+                <input type="submit" class="btn btn-small btn-blue btn-inline" value="Search" />
             </li>
         </ul>
     </div>

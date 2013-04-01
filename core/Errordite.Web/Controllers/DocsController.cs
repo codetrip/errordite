@@ -59,5 +59,11 @@ namespace Errordite.Web.Controllers
         {
             return View();
         }
+
+        [GenerateBreadcrumbs(BreadcrumbId.About)]
+        public ActionResult About()
+        {
+            return View();
+        }
     }
 }

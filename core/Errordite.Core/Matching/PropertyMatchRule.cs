@@ -90,8 +90,16 @@ namespace Errordite.Core.Matching
             }
 
             prop = typeof(Error).GetProperty(ErrorProperty);
-            var otherValue = prop.GetValue(error, null) as string;
-            return new[] { TreatValue(otherValue) };
+
+            if (prop != null)
+            {
+                var otherValue = prop.GetValue(error, null) as string;
+                return new[] {TreatValue(otherValue)};
+            }
+
+            return error.ExceptionInfos
+                        .Where(ei => ei.ExtraData.IfPoss(d => d.ContainsKey(ErrorProperty)))
+                        .Select(ei => ei.ExtraData[ErrorProperty]);
         }
 
         public override string GetDescription()
