@@ -11,14 +11,14 @@ namespace Errordite.Web.Models.Errors
     public class ErrorPageViewModel
     {
         public ErrorCriteriaViewModel ErrorsViewModel { get; set; }
-        public string ApplicationName { get; set; }
+
+        public bool NoApplications { get; set; }
     }
 
     public class ErrorCriteriaViewModel : ErrorCriteriaPostModel
     {
         public bool HideIssues { get; set; }
         public IList<ErrorInstanceViewModel> Errors { get; set; }
-        public IEnumerable<SelectListItem> Applications { get; set; }
         public string Sort { get; set; }
         public bool SortDescending { get; set; }
     }
@@ -63,7 +63,6 @@ namespace Errordite.Web.Models.Errors
         public string Controller { get; set; }
         public string Query { get; set; }
         public string DateRange { get; set; }
-        public string ApplicationId { get; set; }
         public PagingViewModel Paging { get; set; }
     }
 }

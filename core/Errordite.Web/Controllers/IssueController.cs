@@ -263,10 +263,8 @@ namespace Errordite.Web.Controllers
                 DateRange = postModel.DateRange,
                 Paging = _pagingViewModelGenerator.Generate(PagingConstants.DefaultPagingId, errors.PagingStatus, paging),
                 Errors = errors.Items.Select(e => new ErrorInstanceViewModel { Error = e, HideIssues = true, PropertiesEligibleForRules = extraDataKeys}).ToList(),
-                ApplicationId = postModel.ApplicationId,
                 HideIssues = true,
                 Id = postModel.Id,
-                Applications = Core.GetApplications().Items.ToSelectList(a => a.FriendlyId, a => a.Name, u => u.FriendlyId == postModel.ApplicationId, Resources.Shared.Application, string.Empty, SortSelectListBy.Text),
                 Sort = paging.Sort,
                 SortDescending = paging.SortDescending,
                 

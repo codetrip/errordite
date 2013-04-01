@@ -14,7 +14,7 @@
            
 <section class="centered" id="issues">
     <div class="content">
-        @if (!Model.Applications.Any())
+        @if (Model.NoApplications)
         {
             <p>You do not have any applications set up, <a href="@Url.AddApplication()">click here to create an application.</a></p>    
         }

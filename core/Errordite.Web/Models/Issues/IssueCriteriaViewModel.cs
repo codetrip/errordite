@@ -24,15 +24,13 @@ namespace Errordite.Web.Models.Issues
         public IEnumerable<IssueItemViewModel> Issues { get; set; }
         public IEnumerable<SelectListItem> Users { get; set; }
         public IEnumerable<SelectListItem> Statuses { get; set; }
-        public IEnumerable<SelectListItem> Applications { get; set; }
         public PagingViewModel Paging { get; set; }
-        public string ApplicationName { get; set; }
+        public bool NoApplications { get; set; }
     }
 
     public class IssueCriteriaPostModel
     {
         public string[] Status { get; set; }
-        public string ApplicationId { get; set; }
         public string AssignedTo { get; set; }
         public string Name { get; set; }
     }
