@@ -9,6 +9,7 @@ namespace Errordite.Core.Domain.Error
         Unacknowledged,
         [ProtoMember(2)]
         Acknowledged,
+        FixReady,
         [ProtoMember(3)]
         Solved,
         [ProtoMember(4)]
