@@ -3,7 +3,7 @@ using Raven.Client;
 using Raven.Client.Document;
 using Raven.Imports.Newtonsoft.Json;
 
-namespace CodeTrip.Core.RavenDb
+namespace Errordite.Core.Raven
 {
     public interface IRavenDocumentStoreFactory
     {

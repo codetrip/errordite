@@ -153,7 +153,7 @@ namespace Errordite.Web.Controllers
                 var groups = Core.GetGroups();
                 var application = _getApplicationQuery.Invoke(new GetApplicationRequest
                 {
-                    Id = applicationId,
+                    ApplicationId = applicationId,
                     CurrentUser = Core.AppContext.CurrentUser,
                     OrganisationId = Core.AppContext.CurrentUser.OrganisationId
                 }).Application;
@@ -235,7 +235,7 @@ namespace Errordite.Web.Controllers
             var application = _getApplicationQuery.Invoke(new GetApplicationRequest
             {
                 CurrentUser = AppContext.CurrentUser,
-                Id = applicationid,
+                ApplicationId = applicationid,
                 OrganisationId = AppContext.CurrentUser.OrganisationId,
             }).Application;
 
@@ -268,6 +268,7 @@ namespace Errordite.Web.Controllers
                     Version = application.Version
                 },
                 ApplicationId = application.Id,
+                OrganisationId = application.OrganisationId,
             }).ContinueWith(t =>
                                 {
                                     t.Result.EnsureSuccessStatusCode();

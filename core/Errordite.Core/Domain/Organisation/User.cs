@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using CodeTrip.Core.Extensions;
 using Errordite.Core.Authorisation;
 using ProtoBuf;
+using Raven.Imports.Newtonsoft.Json;
 
 namespace Errordite.Core.Domain.Organisation
 {
@@ -35,14 +36,14 @@ namespace Errordite.Core.Domain.Organisation
         [ProtoMember(10)]
         public UserStatus Status { get; set; }
 
-        [Raven.Imports.Newtonsoft.Json.JsonIgnore]
+        [JsonIgnore]
         public string FriendlyId { get { return Id == null ? string.Empty : Id.Split('/')[1]; } }
 
-        [Raven.Imports.Newtonsoft.Json.JsonIgnore, ProtoMember(11)]
+        [JsonIgnore, ProtoMember(11)]
         public Organisation Organisation { get; set; }
-        [Raven.Imports.Newtonsoft.Json.JsonIgnore, ProtoMember(12)]
+        [JsonIgnore, ProtoMember(12)]
         public List<Group> Groups { get; set; }
-        [Raven.Imports.Newtonsoft.Json.JsonIgnore]
+        [JsonIgnore]
         public string FullName
         {
             get { return "{0} {1}".FormatWith(FirstName, LastName); }

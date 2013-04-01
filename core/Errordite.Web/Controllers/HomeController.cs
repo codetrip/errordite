@@ -1,5 +1,7 @@
 ﻿using System.Web.Mvc;
 using Errordite.Core.Configuration;
+using Errordite.Core.Domain.Central;
+using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Identity;
 using Errordite.Core.Notifications.EmailInfo;
 using Errordite.Core.Session;
@@ -17,6 +19,28 @@ namespace Errordite.Web.Controllers
         public HomeController(ErrorditeConfiguration configuration)
         {
             _configuration = configuration;
+        }
+
+        [ImportViewData]
+        public ActionResult RavenInstances()
+        {
+            var instance = new RavenInstance
+            {
+                Active = true,
+                RavenUrl = "http://dev-raven.errordite.com",
+                IsMaster = true,
+            };
+
+            Core.Session.MasterRaven.Store(instance);
+
+            var organisations = Core.Session.MasterRaven.Query<Organisation>();
+
+            foreach (var org in organisations)
+            {
+                org.RavenInstanceId = instance.Id;
+            }
+
+            return Content("Ok");
         }
 
         [ImportViewData]

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using CodeTrip.Core.Extensions;
 using Errordite.Core.Authorisation;
 using ProtoBuf;
+using Raven.Imports.Newtonsoft.Json;
 
 namespace Errordite.Core.Domain.Organisation
 {
@@ -34,7 +35,7 @@ namespace Errordite.Core.Domain.Organisation
         [ProtoMember(10)]
         public string HipChatAuthToken { get; set; }
 
-        [Raven.Imports.Newtonsoft.Json.JsonIgnore]
+        [JsonIgnore]
         public string FriendlyId { get { return Id == null ? string.Empty : Id.Split('/')[1]; } }
 
         [ProtoMember(11)]

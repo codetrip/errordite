@@ -43,7 +43,8 @@ namespace Errordite.Core.Reception.Commands
             TraceObject(request.Error);
 
             Application application;
-            var status = TryGetApplication(request.Error.Token, out application);
+            Organisation organisation;
+            var status = TryGetApplication(request.Error.Token, out application, out organisation);
             string applicationId = null;
             string organisationId = null;
 
@@ -96,7 +97,7 @@ namespace Errordite.Core.Reception.Commands
 
             if (_configuration.ServiceBusEnabled)
             {
-                _bus.Send(_configuration.ReceptionQueueName, new ReceiveErrorMessage
+                _bus.Send(organisation.RavenInstance.ReceptionQueueAddress, new ReceiveErrorMessage
                 {
                     Error = error,
                     ApplicationId = applicationId,
@@ -120,7 +121,7 @@ namespace Errordite.Core.Reception.Commands
             return new ProcessIncomingExceptionResponse();
         }
 
-        private ApplicationStatus TryGetApplication(string token, out Application application)
+        private ApplicationStatus TryGetApplication(string token, out Application application, out Organisation organisation)
         {
             try
             {
@@ -131,6 +132,7 @@ namespace Errordite.Core.Reception.Commands
                 });
 
                 application = response.Application;
+                organisation = response.Organisation;
 
                 if(application != null && !application.IsActive)
                     return ApplicationStatus.Inactive;
@@ -141,6 +143,7 @@ namespace Errordite.Core.Reception.Commands
             {
                 Error(e);
                 application = null;
+                organisation = null;
                 return ApplicationStatus.Error;
             }
         }

@@ -4,6 +4,7 @@ using System.Web.Security;
 using CodeTrip.Core.Web;
 using CodeTrip.Core.Extensions;
 using Errordite.Core.Organisations.Commands;
+using Errordite.Core.Organisations.Queries;
 using Errordite.Core.Session;
 using Errordite.Core.Users.Queries;
 

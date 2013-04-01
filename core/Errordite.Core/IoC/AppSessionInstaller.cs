@@ -1,8 +1,7 @@
 ﻿using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
-using CodeTrip.Core.IoC;
-using CodeTrip.Core.RavenDb;
+using Errordite.Core.Raven;
 using Errordite.Core.Session;
 using ProductionProfiler.Core.Profiling;
 using ProductionProfiler.Core.Profiling.Entities;
@@ -46,8 +45,7 @@ namespace Errordite.Core.IoC
         {
             container.Register(
                 PerUnitOfWorkLifeStyleRegistration(Component.For<IAppSession>().ImplementedBy<AppSession>()),
-                Component.For<IRavenDocumentStoreFactory>().ImplementedBy<RavenDocumentStoreFactory>().LifeStyle.Singleton,
-                Component.For<IDocumentStore>().UsingFactoryMethod(k => k.Resolve<IRavenDocumentStoreFactory>().Create()).LifeStyle.Singleton);
+                Component.For<IShardedRavenDocumentStoreFactory>().ImplementedBy<ShardedRavenDocumentStoreFactory>().LifeStyle.Singleton);
 
         }
     }

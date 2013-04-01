@@ -1,8 +1,9 @@
-﻿
-using System;
+﻿using System;
 using CodeTrip.Core.Extensions;
 using Errordite.Core.Authorisation;
+using Errordite.Core.Domain.Central;
 using ProtoBuf;
+using Raven.Imports.Newtonsoft.Json;
 
 namespace Errordite.Core.Domain.Organisation
 {
@@ -19,7 +20,7 @@ namespace Errordite.Core.Domain.Organisation
         public string PaymentPlanId { get; set; }
         [ProtoMember(5)]
         public DateTime CreatedOnUtc { get; set; }
-        [Raven.Imports.Newtonsoft.Json.JsonIgnore, ProtoMember(6)]
+        [JsonIgnore, ProtoMember(6)]
         public PaymentPlan PaymentPlan { get; set; }
         [ProtoMember(7)]
         public string TimezoneId { get; set; }
@@ -31,15 +32,19 @@ namespace Errordite.Core.Domain.Organisation
         public string ApiKey { get; set; }
         [ProtoMember(11)]
         public string ApiKeySalt { get; set; }
+        [ProtoMember(12)]
+        public string RavenInstanceId { get; set; }
+        [JsonIgnore, ProtoMember(13)]
+        public RavenInstance RavenInstance { get; set; }
 
-        [Raven.Imports.Newtonsoft.Json.JsonIgnore]
+        [JsonIgnore]
         public string FriendlyId { get { return Id == null ? string.Empty : Id.Split('/')[1]; } }
         public static string GetId(string friendlyId)
         {
             return friendlyId.Contains("/") ? friendlyId : "organisations/{0}".FormatWith(friendlyId);
         }
 
-        [Raven.Imports.Newtonsoft.Json.JsonIgnore]
+        [JsonIgnore]
         public string OrganisationId
         {
             get { return Id; }

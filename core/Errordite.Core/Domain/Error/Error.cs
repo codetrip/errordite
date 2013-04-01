@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using CodeTrip.Core.Extensions;
 using ProtoBuf;
+using Raven.Imports.Newtonsoft.Json;
 
 namespace Errordite.Core.Domain.Error
 {
@@ -33,7 +34,7 @@ namespace Errordite.Core.Domain.Error
         [ProtoMember(12)]
         public string Version { get; set; }
 
-        [Raven.Imports.Newtonsoft.Json.JsonIgnore]
+        [JsonIgnore]
         public string FriendlyId { get { return Id == null ? string.Empty : Id.Split('/')[1]; } }
 
         public static string GetId(string friendlyId)

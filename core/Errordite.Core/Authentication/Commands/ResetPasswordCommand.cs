@@ -10,6 +10,7 @@ using Errordite.Core.Notifications.Commands;
 using Errordite.Core.Notifications.EmailInfo;
 using System.Linq;
 using Errordite.Core.Organisations.Commands;
+using Errordite.Core.Organisations.Queries;
 using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
 
 namespace Errordite.Core.Authentication.Commands

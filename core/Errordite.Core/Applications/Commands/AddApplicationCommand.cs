@@ -11,6 +11,7 @@ using Errordite.Core.Indexing;
 using Errordite.Core.Organisations;
 using Errordite.Core.Session;
 using CodeTrip.Core.Extensions;
+using Raven.Client;
 
 namespace Errordite.Core.Applications.Commands
 {
@@ -38,7 +39,7 @@ namespace Errordite.Core.Applications.Commands
                 };
             }
 
-            Raven.Client.RavenQueryStatistics stats;
+            RavenQueryStatistics stats;
             var applications = Session.Raven.Query<Application, Applications_Search>()
                 .Statistics(out stats)
                 .Customize(x => x.WaitForNonStaleResultsAsOfLastWrite())

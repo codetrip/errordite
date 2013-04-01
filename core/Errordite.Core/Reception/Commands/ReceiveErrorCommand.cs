@@ -5,6 +5,7 @@ using Errordite.Core.Applications.Queries;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Issues;
+using Errordite.Core.Organisations.Queries;
 using Errordite.Core.Session;
 
 namespace Errordite.Core.Reception.Commands
@@ -16,18 +17,21 @@ namespace Errordite.Core.Reception.Commands
         private readonly IGetApplicationByTokenQuery _getApplicationByTokenQuery;
 		private readonly IAttachToNewIssueCommand _attachToNewIssueCommand;
 		private readonly IAttachToExistingIssueCommand _attachToExistingIssueCommand;
+        private readonly IGetOrganisationQuery _getOrganisationQuery;
 
         public ReceiveErrorCommand(IGetApplicationQuery getApplicationQuery, 
             IReceptionServiceIssueCache receptionServiceIssueCache, 
             IGetApplicationByTokenQuery getApplicationByTokenQuery,
 			IAttachToNewIssueCommand attachToNewIssueCommand,
-			IAttachToExistingIssueCommand attachToExistingIssueCommand)
+			IAttachToExistingIssueCommand attachToExistingIssueCommand, 
+            IGetOrganisationQuery getOrganisationQuery)
         {
             _getApplicationQuery = getApplicationQuery;
             _receptionServiceIssueCache = receptionServiceIssueCache;
             _getApplicationByTokenQuery = getApplicationByTokenQuery;
 			_attachToNewIssueCommand = attachToNewIssueCommand;
 			_attachToExistingIssueCommand = attachToExistingIssueCommand;
+            _getOrganisationQuery = getOrganisationQuery;
         }
 
         public ReceiveErrorResponse Invoke(ReceiveErrorRequest request)
@@ -66,7 +70,10 @@ namespace Errordite.Core.Reception.Commands
 
             if (request.WhatIf)
             {
-                return new ReceiveErrorResponse() {IssueId = matchingIssue.Id,}; //matchingissue can't be null here
+                return new ReceiveErrorResponse
+                    {
+                        IssueId = matchingIssue.Id,
+                    }; //matchingissue can't be null here
             }
 
             var issue = matchingIssue == null
@@ -88,6 +95,7 @@ namespace Errordite.Core.Reception.Commands
 
             if (request.ApplicationId.IsNullOrEmpty())
             {
+                //if we have a token the GetApplicationByToken query gets the org and sets up the session
                 getApplicationResponse = _getApplicationByTokenQuery.Invoke(new GetApplicationByTokenRequest
                 {
                     Token = request.Token,
@@ -96,9 +104,25 @@ namespace Errordite.Core.Reception.Commands
             }
             else
             {
+                //if no token supplied get the org and set the session
+                string organisationId = Organisation.GetId(request.OrganisationId);
+
+                var organisation = _getOrganisationQuery.Invoke(new GetOrganisationRequest
+                {
+                    OrganisationId = organisationId
+                }).Organisation;
+
+                if (organisation == null)
+                {
+                    Trace("Organisation with id {0} not found", organisationId);
+                    return null;
+                }
+
+                Session.SetOrganisation(organisation);
+
                 getApplicationResponse = _getApplicationQuery.Invoke(new GetApplicationRequest
                 {
-                    Id = request.Error.ApplicationId,
+                    ApplicationId = request.Error.ApplicationId,
                     OrganisationId = request.Error.OrganisationId,
                     CurrentUser = User.System()
                 });
@@ -112,8 +136,6 @@ namespace Errordite.Core.Reception.Commands
                 Trace("Failed to locate application {0}.", application == null ? "application is null" : "application is inactive");
                 return null;
             }
-
-            Session.SetOrganisation(getApplicationResponse.Organisation);
 
             request.Error.ApplicationId = application.Id;
             request.Error.OrganisationId = application.OrganisationId;

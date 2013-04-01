@@ -1,7 +1,7 @@
 using System;
 using Raven.Client;
 
-namespace CodeTrip.Core.Extensions
+namespace Errordite.Core.Extensions
 {
     public static class DocumentQueryExtensions
     {

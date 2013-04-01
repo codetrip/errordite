@@ -6,8 +6,10 @@ using CodeTrip.Core.Auditing.Entities;
 using CodeTrip.Core.Redis;
 using Errordite.Core.Configuration;
 using Errordite.Core.Domain;
+using Errordite.Core.Domain.Central;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Indexing;
+using Errordite.Core.Raven;
 using Errordite.Core.WebApi;
 using NServiceBus;
 using Raven.Abstractions.Data;
@@ -118,7 +120,7 @@ namespace Errordite.Core.Session
     {
         private IDocumentSession _session;
         private readonly object _syncLock = new object();
-        private readonly IDocumentStore _documentStore;
+        private readonly IShardedRavenDocumentStoreFactory _documentStoreFactory;
         private readonly IBus _bus;
         private readonly IRedisSession _redisSession;
         private readonly ErrorditeConfiguration _config;
@@ -127,22 +129,33 @@ namespace Errordite.Core.Session
         private HttpClient _receptionServiceHttpClient;
         private string _organisationDatabaseId;
         private IDocumentSession _organisationSession;
-        private bool _orgSwitched;
+        private RavenInstance _organisationRavenInstance;
 
-        public AppSession(IDocumentStore documentStore, IBus bus, IRedisSession redisSession, ErrorditeConfiguration config, IComponentAuditor auditor)
+        public AppSession(IShardedRavenDocumentStoreFactory documentStoreFactory, 
+            IBus bus, 
+            IRedisSession redisSession, 
+            ErrorditeConfiguration config, 
+            IComponentAuditor auditor)
         {
             _sessionCommitActions = new List<SessionCommitAction>();
-            _documentStore = documentStore;
+            _documentStoreFactory = documentStoreFactory;
             _bus = bus;     
             _redisSession = redisSession;
             _config = config;
             _auditor = auditor;
         }
 
+        public int RequestLimit { get; set; }
+
         public HttpClient ReceptionServiceHttpClient
         {
             //TODO: think about disposing + also creating derived class (and so add more specific methods)
             get { return _receptionServiceHttpClient; }
+        }
+
+        public string OrganisationDatabaseName
+        {
+            get { return _organisationDatabaseId; }
         }
 
         public IBus Bus
@@ -157,7 +170,7 @@ namespace Errordite.Core.Session
                 if(_session != null)
                     return _session;
 
-                _session = _documentStore.OpenSession(CoreConstants.ErrorditeMasterDatabaseName);
+                _session = _documentStoreFactory.Create(RavenInstance.Master()).OpenSession(CoreConstants.ErrorditeMasterDatabaseName);
                 _session.Advanced.MaxNumberOfRequestsPerSession = RequestLimit == 0 ? 500 : RequestLimit;
                 _session.Advanced.UseOptimisticConcurrency = true;
                 return _session;
@@ -174,7 +187,7 @@ namespace Errordite.Core.Session
                 if (_organisationDatabaseId == null)
                     throw new InvalidOperationException("Can't get session till Organisation has beens set.");
 
-                _organisationSession = _documentStore.OpenSession(_organisationDatabaseId);
+                _organisationSession = _documentStoreFactory.Create(_organisationRavenInstance).OpenSession(_organisationDatabaseId);
                 _organisationSession.Advanced.MaxNumberOfRequestsPerSession = RequestLimit == 0 ? 500 : RequestLimit;
                 _organisationSession.Advanced.UseOptimisticConcurrency = true;
                 return _organisationSession;
@@ -202,51 +215,6 @@ namespace Errordite.Core.Session
 			}
         }
 
-        public void Close()
-        {
-           if(_session != null)
-           {
-               lock (_syncLock)
-               {
-                   if (_session != null)
-                   {
-                       _session.Dispose();
-                       _session = null;
-                   }
-               }
-           }
-
-           if (_organisationSession != null)
-           {
-               lock (_syncLock)
-               {
-                   if (_organisationSession != null)
-                   {
-                       _organisationSession.Dispose();
-                       _organisationSession = null;
-                   }
-               }
-           }
-        }
-
-        public void Commit()
-        {
-            lock (_syncLock)
-            {
-                if (_session != null)
-                    _session.SaveChanges();
-                if (_organisationSession != null)
-                    _organisationSession.SaveChanges();
-            
-                foreach (var sessionCommitAction in _sessionCommitActions)
-                    sessionCommitAction.Execute(this);
-
-                _sessionCommitActions.Clear();
-            }
-        }
-
-        
-
         public void AddCommitAction(SessionCommitAction sessionCommitAction)
         {
             _sessionCommitActions.Add(sessionCommitAction);
@@ -257,7 +225,99 @@ namespace Errordite.Core.Session
             _sessionCommitActions.Clear();
         }
 
-        public int RequestLimit { get; set; }
+        public void SetOrganisation(Organisation organisation, bool allowReset = false /*some system tasks require us to do this*/)
+        {
+            if (!allowReset && _organisationDatabaseId != null && _organisationDatabaseId != IdHelper.GetFriendlyId(organisation.OrganisationId))
+                throw new InvalidOperationException("Cannot set Organisation twice in one session.");
+
+            SetOrganisationContext(organisation);
+
+            var uriBuilder = new UriBuilder(organisation.RavenInstance.ReceptionHttpEndpoint);
+
+            if (!uriBuilder.Path.EndsWith("/"))
+                uriBuilder.Path += "/";
+
+            uriBuilder.Path += "{0}/".FormatWith(organisation.FriendlyId);
+
+            _receptionServiceHttpClient = new HttpClient(new LoggingHttpMessageHandler(_auditor)) { BaseAddress = uriBuilder.Uri };
+        }
+
+        public void Close()
+        {
+            if (_session != null)
+            {
+                lock (_syncLock)
+                {
+                    if (_session != null)
+                    {
+                        _session.Dispose();
+                        _session = null;
+                    }
+                }
+            }
+
+            if (_organisationSession != null)
+            {
+                lock (_syncLock)
+                {
+                    if (_organisationSession != null)
+                    {
+                        _organisationSession.Dispose();
+                        _organisationSession = null;
+                    }
+                }
+            }
+        }
+
+        public void Commit()
+        {
+            lock (_syncLock)
+            {
+                if (_session != null)
+                    _session.SaveChanges();
+
+                if (_organisationSession != null)
+                    _organisationSession.SaveChanges();
+
+                foreach (var sessionCommitAction in _sessionCommitActions)
+                    sessionCommitAction.Execute(this);
+
+                _sessionCommitActions.Clear();
+            }
+        }
+
+        private void SetOrganisationContext(Organisation organisation)
+        {
+            if (_organisationSession == null)
+            {
+                _organisationDatabaseId = IdHelper.GetFriendlyId(organisation.OrganisationId);
+                _organisationRavenInstance = organisation.RavenInstance;
+                _auditor.Trace(GetType(), "Set organisation id to {0}", _organisationDatabaseId);    
+            }
+        }
+
+        public void BootstrapOrganisation(Organisation organisation)
+        {
+            SetOrganisationContext(organisation);
+			MasterRavenDatabaseCommands.EnsureDatabaseExists(_organisationDatabaseId);
+
+            var docStore = _documentStoreFactory.Create(organisation.RavenInstance);
+
+            IndexCreation.CreateIndexes(
+                new CompositionContainer(new AssemblyCatalog(typeof(Issues_Search).Assembly), new ExportProvider[0]),
+                 RavenDatabaseCommands, docStore.Conventions);
+
+            _organisationSession = docStore.OpenSession(_organisationDatabaseId);
+            _organisationSession.Advanced.MaxNumberOfRequestsPerSession = RequestLimit == 0 ? 250 : RequestLimit;
+
+            var facets = new List<Facet>
+            {
+                new Facet {Name = "Status"},
+            };
+
+            _organisationSession.Store(new FacetSetup { Id = Core.CoreConstants.FacetDocuments.IssueStatus, Facets = facets });
+            _organisationSession.SaveChanges();
+        }
 
         public IDisposable SwitchOrg(Organisation organisation)
         {
@@ -269,17 +329,19 @@ namespace Errordite.Core.Session
             private readonly IDocumentSession _oldSession;
             private readonly string _oldDbId;
             private readonly AppSession _appSession;
+            private readonly RavenInstance _oldRavenInstance;
 
             public SwitchOrgBack(AppSession appSession, Organisation tempOrg)
             {
                 _oldSession = appSession._organisationSession;
                 _oldDbId = appSession._organisationDatabaseId;
+                _oldRavenInstance = appSession._organisationRavenInstance;
+
                 appSession._organisationSession = null;
                 appSession._organisationDatabaseId = null;
+                appSession._organisationRavenInstance = null;
 
-                appSession.SetDbId(tempOrg);
-                appSession._orgSwitched = true;
-
+                appSession.SetOrganisationContext(tempOrg);
                 _appSession = appSession;
             }
 
@@ -288,29 +350,12 @@ namespace Errordite.Core.Session
                 //temp session does not get committed - just disposed.  If / when we need r/w access we'll have to change this.
                 if (_appSession._organisationSession != null)
                     _appSession._organisationSession.Dispose();
+
                 _appSession._organisationSession = _oldSession;
                 _appSession._organisationDatabaseId = _oldDbId;
+                _appSession._organisationRavenInstance = _oldRavenInstance;
             }
         }
-       
-        public void SetOrganisation(Organisation organisation, bool allowReset = false /*some system tasks require us to do this*/)
-        {
-            if (!allowReset && _organisationDatabaseId != null && _organisationDatabaseId != IdHelper.GetFriendlyId(organisation.OrganisationId))
-                throw new InvalidOperationException("Cannot set Organisation twice in one session.");
-
-            SetDbId(organisation);
-
-            var uriBuilder = new UriBuilder(_config.ReceptionHttpEndpoint);
-
-            if (!uriBuilder.Path.EndsWith("/"))
-                uriBuilder.Path += "/";
-
-            uriBuilder.Path += "{0}/".FormatWith(organisation.FriendlyId);
-
-            _receptionServiceHttpClient = new HttpClient(new LoggingHttpMessageHandler(_auditor)) { BaseAddress = uriBuilder.Uri };
-        }
-
-        public string OrganisationDatabaseName { get { return _organisationDatabaseId; } }
 
         public void SynchroniseIndexes<T>(bool masterRaven = false)
             where T : AbstractIndexCreationTask, new()
@@ -318,7 +363,7 @@ namespace Errordite.Core.Session
             AddCommitAction(new SynchroniseIndex<T>(masterRaven));
         }
 
-        public void SynchroniseIndexes<T1, T2>() 
+        public void SynchroniseIndexes<T1, T2>()
             where T1 : AbstractIndexCreationTask, new()
             where T2 : AbstractIndexCreationTask, new()
         {
@@ -326,7 +371,7 @@ namespace Errordite.Core.Session
             SynchroniseIndexes<T2>();
         }
 
-        public void SynchroniseIndexes<T1, T2, T3>() 
+        public void SynchroniseIndexes<T1, T2, T3>()
             where T1 : AbstractIndexCreationTask, new()
             where T2 : AbstractIndexCreationTask, new()
             where T3 : AbstractIndexCreationTask, new()
@@ -334,37 +379,6 @@ namespace Errordite.Core.Session
             SynchroniseIndexes<T1>();
             SynchroniseIndexes<T2>();
             SynchroniseIndexes<T3>();
-        }
-
-        private void SetDbId(Organisation organisation)
-        {
-            if (_organisationSession == null)
-            {
-                _organisationDatabaseId = IdHelper.GetFriendlyId(organisation.OrganisationId);
-                _auditor.Trace(GetType(), "Set organisation id to {0}", _organisationDatabaseId);    
-            }
-            
-        }
-
-        public void BootstrapOrganisation(Organisation organisation)
-        {
-            SetDbId(organisation);
-			MasterRavenDatabaseCommands.EnsureDatabaseExists(_organisationDatabaseId);
-
-            IndexCreation.CreateIndexes(
-                new CompositionContainer(new AssemblyCatalog(typeof(Issues_Search).Assembly), new ExportProvider[0]),
-                 RavenDatabaseCommands, _documentStore.Conventions);
-
-            _organisationSession = _documentStore.OpenSession(_organisationDatabaseId);
-            _organisationSession.Advanced.MaxNumberOfRequestsPerSession = RequestLimit == 0 ? 250 : RequestLimit;
-
-            var facets = new List<Facet>
-            {
-                new Facet {Name = "Status"},
-            };
-
-            _organisationSession.Store(new FacetSetup { Id = Core.CoreConstants.FacetDocuments.IssueStatus, Facets = facets });
-            _organisationSession.SaveChanges();
         }
     }
 }
