@@ -168,8 +168,8 @@
   <data name="IssueStatus_Acknowledged" xml:space="preserve">
     <value>Acknowledged</value>
   </data>
-  <data name="IssueStatus_AwaitingDeployment" xml:space="preserve">
-    <value>Awaiting Deployment</value>
+  <data name="IssueStatus_FixReady" xml:space="preserve">
+    <value>Fix Ready</value>
   </data>
   <data name="IssueStatus_Ignorable" xml:space="preserve">
     <value>Ignorable</value>
