@@ -322,7 +322,13 @@ table {
 		height:48px;
 		width:500px;
 		border-bottom:2px solid $darkestbrown;
-		float:left 
+		float:left;
+		.dropdown-menu li{
+			padding: 0;
+			a {
+				padding: 5px 5px;
+			}
+		}
 	}
     a {
       color: #fff;
