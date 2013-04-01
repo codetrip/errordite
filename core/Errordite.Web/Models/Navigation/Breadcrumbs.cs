@@ -78,6 +78,7 @@ namespace Errordite.Web.Models.Navigation
                 new Breadcrumb(BreadcrumbId.Home, urlHelper.Home(), "Home", new []
                 {
                     //new Breadcrumb(BreadcrumbId.WhatIsIt, string.Empty, "What Is It"),
+                    new Breadcrumb(BreadcrumbId.About, "", "About"), 
                     new Breadcrumb(BreadcrumbId.Help, string.Empty, "Getting Started"),
                     new Breadcrumb(BreadcrumbId.Client, string.Empty, "Client"),
                     new Breadcrumb(BreadcrumbId.Faq, string.Empty, "FAQ"),
@@ -199,5 +200,6 @@ namespace Errordite.Web.Models.Navigation
         AdminFlushCaches,
         AdminCache,
         PaymentPlan,
+        About
     }
 }
