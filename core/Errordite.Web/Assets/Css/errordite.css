@@ -233,6 +233,12 @@ table {
       margin: 4px 0 0 0;
       border-bottom: 2px solid #393a3b;
       margin-top: 16px; }
+    .welcome-bar-container .welcome-bar .header-org {
+      float: left;
+      margin: 8px 0 0 0;
+      padding: 7px 8px;
+      max-width: 250px;
+      font-weight: 600; }
     .welcome-bar-container .welcome-bar .applications {
       height: 48px;
       width: 500px;
@@ -242,6 +248,8 @@ table {
         padding: 0; }
         .welcome-bar-container .welcome-bar .applications .dropdown-menu li a {
           padding: 5px 5px; }
+      .welcome-bar-container .welcome-bar .applications .popup-pills {
+        float: left; }
     .welcome-bar-container .welcome-bar a {
       color: #fff;
       font-size: 13px;
