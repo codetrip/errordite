@@ -79,12 +79,9 @@ namespace Errordite.Web.Controllers
                     postModel.Status = postModel.Status[0].Split(',');
                 }
 
-                if (postModel.ApplicationId.IsNullOrEmpty() && CurrentApplication != null)
-                    postModel.ApplicationId = CurrentApplication.FriendlyId;
-
                 var request = new GetApplicationIssuesRequest
                 {
-                    ApplicationId = postModel.ApplicationId,
+                    ApplicationId = CurrentApplication.IfPoss(a => a.Id),
                     Paging = pagingRequest,
                     AssignedTo = postModel.AssignedTo,
                     Status = postModel.Status,
@@ -102,9 +99,7 @@ namespace Errordite.Web.Controllers
                 viewModel.Users = users.Items.ToSelectList(u => u.FriendlyId, u => u.FullName, u => u.FriendlyId == postModel.AssignedTo);
                 viewModel.Statuses = Enum.GetNames(typeof(IssueStatus)).ToSelectList(s => s, s => s, s => s.IsIn(postModel.Status));
                 viewModel.Issues = IssueItemViewModel.Convert(issues.Items, applications.Items, users.Items);
-                viewModel.ApplicationName = postModel.ApplicationId.IsNullOrEmpty() ? Resources.Application.AllApplications : applications.Items.First(a => a.Id == Application.GetId(postModel.ApplicationId)).Name;
-                viewModel.ApplicationId = postModel.ApplicationId;
-                viewModel.Applications = applications.Items.ToSelectList(a => a.FriendlyId, a => a.Name, u => u.FriendlyId == postModel.ApplicationId, Resources.Shared.Application, string.Empty, SortSelectListBy.Text);
+                viewModel.NoApplications = applications.PagingStatus.TotalItems == 0;
             }
             else
             {

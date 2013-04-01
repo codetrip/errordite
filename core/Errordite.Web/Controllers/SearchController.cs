@@ -9,6 +9,7 @@ using Errordite.Web.Models.Errors;
 using Errordite.Web.Models.Issues;
 using Errordite.Web.Models.Search;
 using Errordite.Web.Extensions;
+using CodeTrip.Core.Extensions;
 
 namespace Errordite.Web.Controllers
 {
@@ -40,14 +41,16 @@ namespace Errordite.Web.Controllers
 				{
 					Paging = new PageRequestWithSort(1, 10),
 					OrganisationId = Core.AppContext.CurrentUser.OrganisationId,
-					Query = q
+					Query = q,
+                    ApplicationId = CurrentApplication.IfPoss(a => a.Id),
 				}).Issues;
 
 				var errors = _getApplicationErrorsQuery.Invoke(new GetApplicationErrorsRequest
 				{
 					Paging = new PageRequestWithSort(1, 10),
 					OrganisationId = Core.AppContext.CurrentUser.OrganisationId,
-					Query = q
+					Query = q,
+                    ApplicationId = CurrentApplication.IfPoss(a => a.Id),
 				}).Errors;
 
 				viewModel.IssueTotal = issues.PagingStatus.TotalItems;
