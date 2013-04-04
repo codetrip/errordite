@@ -12,6 +12,8 @@ using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Indexing;
 using System.Linq;
 using Errordite.Core.Session;
+using Raven.Abstractions.Data;
+using ProductionProfiler.Core.Extensions;
 
 namespace Errordite.Core.Organisations.Commands
 {
@@ -33,46 +35,21 @@ namespace Errordite.Core.Organisations.Commands
 
         public DeleteOrganisationResponse Invoke(DeleteOrganisationRequest request)
         {
-            var organisation = Load<Organisation>(request.OrganisationId);
+            Session.MasterRaven.Advanced.DocumentStore.DatabaseCommands.DeleteByIndex(
+                CoreConstants.IndexNames.OrganisationIssueDailyCount, new IndexQuery
+                    {
+                        Query = "OrganisationId:{0}".FormatWith(Organisation.GetId(request.OrganisationId))
+                    }, true);
 
-            if (organisation == null)
-            {
-                return new DeleteOrganisationResponse(string.Empty, true);
-            }
-
-            var applications = _getApplicationsQuery.Invoke(new GetApplicationsRequest
-            {
-                OrganisationId = organisation.Id,
-                Paging = new PageRequestWithSort(1, _configuration.MaxPageSize),
-            }).Applications;
-
-            foreach(var application in applications.Items)
-            {
-                _deleteApplicationCommand.Invoke(new DeleteApplicationRequest
+            Session.MasterRaven.Advanced.DocumentStore.DatabaseCommands.DeleteByIndex(
+                CoreConstants.IndexNames.Organisations, new IndexQuery
                 {
-                    ApplicationId = application.Id,
-                    CurrentUser = User.System(),
-                    JustDeleteErrors = false
-                });
-            }
+                    Query = "Id:{0}".FormatWith(Organisation.GetId(request.OrganisationId))
+                }, true);
 
-            var users = Session.Raven.Query<User, Users_Search>().Where(u => u.OrganisationId == organisation.Id).ToList();
+            Session.SynchroniseIndexes<UserOrganisationMappings, Organisations_Search>();
 
-            foreach(var user in users)
-            {
-                Delete(user);
-            }
-
-            var groups = Session.Raven.Query<Group, Groups_Search>().Where(u => u.OrganisationId == organisation.Id).ToList();
-
-            foreach(var group in groups)
-            {
-                Delete(group);
-            }
-
-            Delete(organisation);
-
-            return new DeleteOrganisationResponse(organisation.Id);
+            return new DeleteOrganisationResponse(request.OrganisationId);
         }
     }
 

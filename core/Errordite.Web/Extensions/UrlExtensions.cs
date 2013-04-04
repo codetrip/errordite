@@ -325,7 +325,7 @@ namespace Errordite.Web.Extensions
             return helper.Action("flushallcaches", "cache", new { Area = WebConstants.AreaNames.System });
         }
 
-        public static string SysAdmin(this UrlHelper helper)
+        public static string SystemAdmin(this UrlHelper helper)
         {
             return helper.Action("index", "system", new { Area = WebConstants.AreaNames.System });
         }

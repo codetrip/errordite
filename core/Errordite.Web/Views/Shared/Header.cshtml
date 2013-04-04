@@ -100,7 +100,7 @@
                     @if (appContext.AuthenticationStatus == AuthenticationStatus.Authenticated && (appContext.CurrentUser.Role == UserRole.SuperUser || appContext.Impersonated))
                     {
                         <li class="nav-item sysadmin">
-                            <a href="@Url.SysAdmin()">System <span class="rotate">›</span></a>
+                            <a href="@Url.Organisations()">System <span class="rotate">›</span></a>
                             <div class="pointer">
                                 <ul>
                                     <li><a href="@Url.Organisations()">Organisations ›</a></li> 

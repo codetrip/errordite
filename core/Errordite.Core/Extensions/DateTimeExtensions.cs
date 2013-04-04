@@ -14,6 +14,16 @@ namespace Errordite.Core.Extensions
             return datetimeUtc.ToString("dd MMM yyyy");
         }
 
+        public static string ToLocalTimeFormatted(this DateTime datetimeUtc)
+        {
+            return datetimeUtc.ToString("dd MMM yyyy HH:mm:ss");
+        }
+
+        public static string ToLocalFormatted(this DateTime datetimeUtc)
+        {
+            return datetimeUtc.ToString("dd MMM yyyy");
+        }
+
         public static DateTimeOffset ToDateTimeOffset(this DateTime datetimeUtc, string timeZoneId)
         {
             var timeZone = TimeZoneInfo.FindSystemTimeZoneById(timeZoneId ?? "UTC");

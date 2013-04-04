@@ -44,7 +44,7 @@ namespace Errordite.Web.Areas.System.Controllers
                 cacheEngine.Clear();
 
             ConfirmationNotification("Successfully flushed all caches");
-            return Redirect(Request.UrlReferrer == null ? Url.SysAdmin() : Request.UrlReferrer.AbsoluteUri);
+            return Redirect(Request.UrlReferrer == null ? Url.SystemAdmin() : Request.UrlReferrer.AbsoluteUri);
         }
 
         [ExportViewData]
