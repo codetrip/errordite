@@ -49,8 +49,8 @@
             @if (Model.ServiceStatus.ErrorQueueStatus.TotalMessages > 0)
             {
                 <text>
-                    (<a href="#" title="Purge this queue of messages" class="purge" data-servicename="@Model.Configuration.ServiceName" data-queue="@Model.ServiceStatus.ErrorQueueStatus.QueueName">purge</a> | 
-                    <a href="#" title="Send all messages back to the source queue" class="retry" data-servicename="@Model.Configuration.ServiceName" data-queue="@Model.ServiceStatus.ErrorQueueStatus.QueueName">retry</a>)
+                    (<a href="#" title="Purge this queue of messages" class="purge" data-service="@Model.Configuration.ServiceName" data-queue="@Model.ServiceStatus.ErrorQueueStatus.QueueName">purge</a> | 
+                    <a href="#" title="Send all messages back to the source queue" class="retry" data-service="@Model.Configuration.ServiceName" data-queue="@Model.ServiceStatus.ErrorQueueStatus.QueueName">retry</a>)
                 </text>
             }
         </div>

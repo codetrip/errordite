@@ -1,119 +1,83 @@
-(($) ->
-  $root = $("div#system-status")
-  Dashboard = undefined
-  dashboard = undefined
-  currentEndpoint = undefined
-  currentQueue = undefined
-  timeout = undefined
 
-  if $root.length > 0
+jQuery -> 
 
-    $root.delegate "a.purge", "click", (e) ->
-      e.preventDefault()
-      $this = $(this)
-      return false  unless confirm("Are you sure you want to delete the selected messages?")
-      dashboard.deleteMessages $this.data("queue"), null, $this.data("servicename")
+	$root = $("section#services")
 
-    $root.delegate "a.retry", "click", (e) ->
-      e.preventDefault()
-      $this = $(this)
-      return false  unless confirm("Are you sure you want to retry the selected messages?")
-      dashboard.returnToSource $this.data("queue"), null, $this.data("servicename")
-
-	$root.delegate "select#RavenInstanceId", "change", (e) ->
-      e.preventDefault()
-      $this = $(this)
-      dashboard.switchInstance $this.val()
-
-    Dashboard = (->
-      Dashboard = ->
-        @container = $("div.service-info-container")
-
-      Dashboard::bindEvents = ->
-        $("th :checkbox").on "click", ->
-          $(this).closest("table").find("td :checkbox").prop "checked", $(this).is(":checked")
-
-      Dashboard::poll = ->
-        $.ajax
-          url: "/systemadmin/styles/admin/updatesystemstatus"
-          success: (result) ->
-            console.log "success"
-            return dashboard.bind(result.Data)  if result.Success
-            false
-
-          error: ->
-            false
-
-          dataType: "json"
-
-        true
-
-      Dashboard::deleteMessages = (queueName, serviceName) ->
-        $.ajax
-          url: "/system/services/deletemessages"
-          data:
-            instanceId: $('select#RavenInstanceId').val()
-            queueName: queueName
-            serviceName: serviceName
-
-          success: (result) ->
-            if result.Success
-                return dashboard.poll()
-            else
-              alert "Failed to delete messages, please try again."
-            true
-
-          error: ->
-            alert "Failed to delete messages, please try again."
-
-          dataType: "json"
-          type: "POST"
-
-        true
-
-      Dashboard::returnToSource = (queueName, serviceName) ->
-        dashboard.pollingEnabled = false
-        $.ajax
-          url: "/system/services/returntosource"
-          data:
-            instanceId: $('select#RavenInstanceId').val()
-            queueName: queueName
-            serviceName: serviceName
-
-          success: (result) ->
-            if result.Success
-                return dashboard.poll()
-            else
-              alert "Failed to return error messages to their source queue, please try again."
-            true
-
-          error: ->
-            dashboard.pollingEnabled = true
-            alert "Failed to return error messages to their source queue, please try again."
-
-          dataType: "json"
-          type: "POST"
-
-        true
-
-      Dashboard::swapInstance = (instanceId) ->
-        window.location = "/system/services?ravenInstanceId=" + instanceId
-        true
+	if $root.length > 0	
 		
-      Dashboard::reload = () ->
-        window.location = "/system/services?ravenInstanceId=" + $('select#RavenInstanceId').val()
-        true
+		$root.delegate "a.purge", "click", (e) ->
+			e.preventDefault()
+			$this = $(this)
+			return false  unless confirm("Are you sure you want to delete all messages?")
+			serviceManager.deleteMessages $this.data("queue"), $this.data("service")
 
-      Dashboard::bind = (data) ->
-        dashboard.container.hide "drop",
-          complete: ->
-            dashboard.container.html data
-            dashboard.container.show "slow"
+		$root.delegate "a.retry", "click", (e) ->
+			e.preventDefault()
+			$this = $(this)
+			return false  unless confirm("Are you sure you want to retry all messages?")
+			serviceManager.returnToSource $this.data("queue"), $this.data("service")
 
-        true
+		$root.delegate "select#RavenInstanceId", "change", (e) ->
+			e.preventDefault()
+			$this = $(this)
+			serviceManager.switchInstance $this.val()
 
-      Dashboard
-    )()
-    dashboard = new Dashboard()
-    timeout = setTimeout(dashboard.poll, 15000)
-) jQuery
+		class ServiceManager
+
+			deleteMessages: ->
+				deleteMessages = (queueName, serviceName) ->
+				$.ajax
+					url: "/system/services/deletemessages"
+					data:
+						instanceId: $('select#RavenInstanceId').val()
+						queueName: queueName
+						serviceName: serviceName
+
+					success: (result) ->
+						if result.Success
+							location.reload()
+						else
+							alert "Failed to delete messages, please try again."
+						true
+
+					error: ->
+						alert "Failed to delete messages, please try again."
+
+					dataType: "json"
+					type: "POST"
+
+				true
+			returnToSource: (queueName, serviceName) ->
+				console.log 'instance: ' + $('select#RavenInstanceId').val()
+				console.log 'queue:' + queueName
+				console.log 'service: ' + serviceName
+				$.ajax
+					url: "/system/services/returntosource"
+					data:
+						instanceId: $('select#RavenInstanceId').val()
+						queueName: queueName
+						serviceName: serviceName
+
+					success: (result) ->
+						if result.Success
+							location.reload()
+						else
+							alert "Failed to return error messages to their source queue, please try again."
+						true
+
+					error: ->
+						alert "Failed to return error messages to their source queue, please try again."
+
+					dataType: "json"
+					type: "POST"
+
+				true
+			reload: () ->
+				window.location = "/system/services?ravenInstanceId=" + $('select#RavenInstanceId').val()
+				true
+			switchInstance: (instanceId) -> 
+				window.location = "/system/services?ravenInstanceId=" + instanceId
+				true
+
+		serviceManager = new ServiceManager();
+		true
