@@ -1,11 +1,8 @@
 ﻿using System;
 using System.ComponentModel.Composition.Hosting;
-using System.Text;
 using System.Web.Mvc;
-using System.Web.Security;
 using CodeTrip.Core.Encryption;
 using CodeTrip.Core.Extensions;
-using CodeTrip.Core.Paging;
 using Errordite.Core;
 using Errordite.Core.Configuration;
 using Errordite.Core.Domain.Central;
@@ -17,7 +14,6 @@ using Errordite.Core.Session;
 using Errordite.Web.ActionFilters;
 using Errordite.Web.Models.Navigation;
 using Errordite.Core.Extensions;
-using Raven.Client.Extensions;
 using Raven.Client.Indexes;
 
 namespace Errordite.Web.Areas.System.Controllers
@@ -76,14 +72,6 @@ namespace Errordite.Web.Areas.System.Controllers
             return RedirectToAction("index");
         }
 
-        [HttpPost, ExportViewData]
-        public ActionResult RebuildIndex(string indexName)
-        {
-			_session.RavenDatabaseCommands.ResetIndex(indexName);
-            ConfirmationNotification("Index '{0}' was successfully rebuilt.");
-            return RedirectToAction("index");
-        }
-
         public ActionResult GetToken(string applicationId)
         {
             var application = _session.Raven.Load<Application>(Application.GetId(applicationId));
@@ -117,75 +105,10 @@ namespace Errordite.Web.Areas.System.Controllers
             return Content(Environment.ProcessorCount.ToString());
         }
 
-        public ActionResult CreateIndexes(int organisationId)
-        {
-            Core.Session.BootstrapOrganisation(Core.Session.MasterRaven.Load<Organisation>(Organisation.GetId(organisationId.ToString())));
-
-            return new EmptyResult();
-        }
-
         public ActionResult DoError()
         {
             Trace("This is a test logging message");
             throw new InvalidOperationException("Something went wrong");
-        }
-
-        public ActionResult SetApiKeys()
-        {
-            foreach (var organisation in Core.Session.MasterRaven.GetPage<Organisation, Organisations_Search, string>(new PageRequestWithSort(1, 128)).Items)
-            {
-                organisation.ApiKeySalt = Membership.GeneratePassword(8, 1);
-                organisation.ApiKey = Convert.ToBase64String(Encoding.UTF8.GetBytes(_encryptor.Encrypt("{0}|{1}".FormatWith(organisation.FriendlyId, organisation.ApiKeySalt))));
-            }
-
-            return new EmptyResult();
-        }
-
-        public ActionResult UpdateTimezone()
-        {
-            var organisations = Core.Session.MasterRaven.Query<Organisation>();
-
-            foreach (var org in organisations)
-            {
-                Core.Session.SetOrganisation(org, true);
-
-                var apps = Core.Session.Raven.Query<Application, Applications_Search>().GetAllItemsAsList(Core.Session, _configuration.MaxPageSize);
-
-                foreach (var app in apps)
-                {
-                    app.TimezoneId = org.TimezoneId;
-                }
-            }
-
-            return new EmptyResult();
-        }
-
-        public ActionResult StripCss(string organisationId, string issueId)
-        {
-            Core.Session.SetOrganisation(new Organisation
-            {
-                Id = Organisation.GetId(organisationId)
-            });
-
-            var errors = _getApplicationErrorsQuery.Invoke(new GetApplicationErrorsRequest
-                {
-                    IssueId = issueId,
-                    OrganisationId = organisationId,
-                    Paging = new PageRequestWithSort(1, 128)
-                }).Errors.Items;
-
-            foreach (var e in errors)
-            {
-                foreach (var info in e.ExceptionInfos)
-                {
-                    info.Message = info.Message.StripCss();
-                    info.StackTrace = info.StackTrace.StripCss();
-                }
-            }
-
-            Core.Session.Commit();
-
-            return Content("Queued");
         }
     }
 }

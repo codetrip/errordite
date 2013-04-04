@@ -20,6 +20,8 @@ namespace Errordite.Core
             public static string Issues = new Issues_Search().IndexName;
             public static string IssueDailyCount = new IssueDailyCount_Search().IndexName;
             public static string OrganisationIssueDailyCount = new OrganisationDailyCount_Search().IndexName;
+            public static string UserOrganisationMappings = new UserOrganisationMappings().IndexName;
+            public static string Organisations = new Organisations_Search().IndexName;
         }
 
         public static class Authentication

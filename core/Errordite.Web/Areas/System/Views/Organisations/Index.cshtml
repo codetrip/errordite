@@ -1,8 +1,10 @@
 ﻿
 @using Errordite.Core.Domain.Organisation
+@using Errordite.Core.Extensions
 @using Errordite.Web.Areas.System.Models.Organisations
 @using Errordite.Web.Extensions
 @using System.Web.Mvc.Html
+@using CodeTrip.Core.Extensions
 @model Errordite.Web.Models.Account.OrganisationsViewModel
                    
 @{
@@ -23,13 +25,13 @@
                     <tr>
                         <th>Id</th>
                         <th>Name</th>
-                        <th>Payment Plan Id</th>
+                        <th>Plan Id</th>
                         <th>Status</th>  
                         <th>Timezone</th>      
                         <th>Created On Utc</th>   
                         <th>Users</th>   
                         <th>Applications</th>  
-                        <th>Suspend / Activate</th> 
+                        <th>Status</th> 
                         <th>Delete</th> 
                     </tr>  
                 </thead>
@@ -39,10 +41,10 @@
                         <tr>  
                             <td>@organisation.FriendlyId</td>
                             <td>@organisation.Name</td>
-                            <td>@organisation.PaymentPlanId</td>
+                            <td>@organisation.PaymentPlanId.GetFriendlyId()</td>
                             <td>@organisation.Status</td>
                             <td>@organisation.TimezoneId</td>
-                            <td>@organisation.CreatedOnUtc</td>
+                            <td>@organisation.CreatedOnUtc.ToLocalFormatted()</td>
                             <td><a href="@Url.OrganisationUsers(organisation.FriendlyId)">Users</a></td>
                             <td><a href="@Url.OrganisationApplications(organisation.FriendlyId)">Applications</a></td>
                             @if(organisation.Status == OrganisationStatus.Active)
