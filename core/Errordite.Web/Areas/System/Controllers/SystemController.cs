@@ -1,11 +1,12 @@
 ﻿using System;
+using System.ComponentModel.Composition.Hosting;
 using System.Text;
 using System.Web.Mvc;
 using System.Web.Security;
 using CodeTrip.Core.Encryption;
 using CodeTrip.Core.Extensions;
 using CodeTrip.Core.Paging;
-using Errordite.Core.Applications.Commands;
+using Errordite.Core;
 using Errordite.Core.Configuration;
 using Errordite.Core.Domain.Central;
 using Errordite.Core.Domain.Organisation;
@@ -16,6 +17,8 @@ using Errordite.Core.Session;
 using Errordite.Web.ActionFilters;
 using Errordite.Web.Models.Navigation;
 using Errordite.Core.Extensions;
+using Raven.Client.Extensions;
+using Raven.Client.Indexes;
 
 namespace Errordite.Web.Areas.System.Controllers
 {
@@ -23,32 +26,22 @@ namespace Errordite.Web.Areas.System.Controllers
     public class SystemController : AdminControllerBase
     {
         private readonly IAppSession _session;
-        private readonly IDeleteApplicationCommand _deleteApplicationCommand;
         private readonly IEncryptor _encryptor;
         private readonly ErrorditeConfiguration _configuration;
         private readonly IGetApplicationErrorsQuery _getApplicationErrorsQuery;
         private readonly IShardedRavenDocumentStoreFactory _storeFactory;
 
         public SystemController(IAppSession session, 
-            IDeleteApplicationCommand deleteApplicationCommand, 
             IEncryptor encryptor, 
             ErrorditeConfiguration configuration, 
             IGetApplicationErrorsQuery getApplicationErrorsQuery,
             IShardedRavenDocumentStoreFactory storeFactory)
         {
             _session = session;
-            _deleteApplicationCommand = deleteApplicationCommand;
             _encryptor = encryptor;
             _configuration = configuration;
             _getApplicationErrorsQuery = getApplicationErrorsQuery;
             _storeFactory = storeFactory;
-        }
-
-        [HttpGet]
-        public ActionResult Bootstrap()
-        {
-            ErrorditeApplication.BootstrapRaven(_storeFactory);
-            return Content("Bootstrapped Raven");
         }
 
         [HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.SysAdmin)]
@@ -57,18 +50,29 @@ namespace Errordite.Web.Areas.System.Controllers
             return View();
         }
 
-        [HttpPost, ExportViewData]
-        public ActionResult DeleteApplicationErrors(string applicationId)
+        [HttpGet, ExportViewData]
+        public ActionResult SyncIndexes()
         {
-            _deleteApplicationCommand.Invoke(new DeleteApplicationRequest
+            Server.ScriptTimeout = 7200; //timeout in 2 hours
+
+            var masterDocumentStore = _storeFactory.Create(RavenInstance.Master());
+
+            IndexCreation.CreateIndexes(new CompositionContainer(
+                new AssemblyCatalog(typeof(Issues_Search).Assembly), new ExportProvider[0]),
+                masterDocumentStore.DatabaseCommands.ForDatabase(CoreConstants.ErrorditeMasterDatabaseName),
+                masterDocumentStore.Conventions);
+
+            foreach (var organisation in Core.Session.MasterRaven.Query<Organisation>().GetAllItemsAsList(Core.Session, 100))
             {
-                ApplicationId = applicationId,
-                JustDeleteErrors = true,
-                CurrentUser = null
-            });
+                organisation.RavenInstance = Core.Session.MasterRaven.Load<RavenInstance>(organisation.RavenInstanceId);
 
-            ConfirmationNotification("Applications errors and classes have been deleted successfully.");
+                using (_session.SwitchOrg(organisation))
+                {
+                    _session.BootstrapOrganisation(organisation);
+                }
+            }
 
+            ConfirmationNotification("All indexes for all organisations have been updated");
             return RedirectToAction("index");
         }
 
@@ -124,16 +128,6 @@ namespace Errordite.Web.Areas.System.Controllers
         {
             Trace("This is a test logging message");
             throw new InvalidOperationException("Something went wrong");
-        }
-
-        public ActionResult SyncIndexes()
-        {
-            foreach (var organisation in Core.Session.MasterRaven.GetPage<Organisation, Organisations_Search, string>(new PageRequestWithSort(1, 128)).Items)
-            {
-                Core.Session.BootstrapOrganisation(organisation);
-            }
-
-            return new EmptyResult();
         }
 
         public ActionResult SetApiKeys()

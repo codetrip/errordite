@@ -335,6 +335,11 @@ namespace Errordite.Web.Extensions
             return helper.Action("index", "organisations", new {Area = WebConstants.AreaNames.System});
         }
 
+        public static string SyncIndexes(this UrlHelper helper)
+        {
+            return helper.Action("syncindexes", "system", new { Area = WebConstants.AreaNames.System });
+        }
+
         public static string Impersonate(this UrlHelper helper, string userId = null, string organisationId = null)
         {
             return helper.Action("index", "impersonation", new { userId, organisationId, Area = WebConstants.AreaNames.System });

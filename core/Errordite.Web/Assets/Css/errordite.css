@@ -128,9 +128,9 @@ p {
 pre.prettyprint {
   font-size: 12px;
   font-family: Consolas, Menlo, Monaco, Lucida Console;
-  padding: 12px 0 0 15px !important;
+  padding: 12px 0 0 15px!important;
   line-height: 14px;
-  border: 1px solid #d8dee2 !important;
+  border: 1px solid #D8DEE2!important;
   border-radius: 0;
   float: left;
   width: 100%; }
@@ -229,19 +229,19 @@ table {
     .welcome-bar-container .welcome-bar .links {
       height: 32px;
       float: right;
-      width: 474px;
+      width: 450px;
       margin: 4px 0 0 0;
       border-bottom: 2px solid #393a3b;
       margin-top: 16px; }
     .welcome-bar-container .welcome-bar .header-org {
       float: left;
       margin: 8px 0 0 0;
-      padding: 7px 8px;
-      max-width: 250px;
-      font-weight: 600; }
+      padding: 7px 10px 5px 2px;
+      font-weight: 600;
+      font-size: 16px; }
     .welcome-bar-container .welcome-bar .applications {
       height: 48px;
-      width: 500px;
+      width: 524px;
       border-bottom: 2px solid #393a3b;
       float: left; }
       .welcome-bar-container .welcome-bar .applications .dropdown-menu li {
@@ -755,7 +755,7 @@ section {
   background-position: -108px -18px; }
 
 .icon-arrow-left {
-  background-position: -0 -36px; }
+  background-position: 0 -36px; }
 
 .icon-arrow-right {
   background-position: -165px -18px; }

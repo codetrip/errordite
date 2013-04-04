@@ -34,6 +34,16 @@ namespace Errordite.Core.Domain.Central
         /// </summary>
         [ProtoMember(6)]
         public string ReceptionQueueAddress { get; set; }
+        /// <summary>
+        /// Events service queue address for this instance
+        /// </summary>
+        [ProtoMember(7)]
+        public string EventsQueueAddress { get; set; }
+        /// <summary>
+        /// Notifications service queue address for this instance
+        /// </summary>
+        [ProtoMember(8)]
+        public string NotificationsQueueAddress { get; set; }
 
         private static readonly RavenInstance _master = new RavenInstance
         {
@@ -41,7 +51,9 @@ namespace Errordite.Core.Domain.Central
             IsMaster = true,
             Id = "RavenInstances/1",
             ReceptionHttpEndpoint = ErrorditeConfiguration.Current.ReceptionHttpEndpoint,
-            ReceptionQueueAddress = ErrorditeConfiguration.Current.ReceptionQueueName
+            ReceptionQueueAddress = ErrorditeConfiguration.Current.ReceptionQueueName,
+            EventsQueueAddress = ErrorditeConfiguration.Current.EventsQueueName,
+            NotificationsQueueAddress = ErrorditeConfiguration.Current.NotificationsQueueName
         };
 
         public static RavenInstance Master()

@@ -26,14 +26,17 @@ namespace Errordite.Core.Organisations.Commands
         private readonly IGetAvailablePaymentPlansQuery _getAvailablePaymentPlansQuery;
         private readonly IAddApplicationCommand _addApplicationCommand;
         private readonly IEncryptor _encryptor;
+        private readonly IGetRavenInstancesQuery _getRavenInstancesQuery;
 
         public CreateOrganisationCommand(IGetAvailablePaymentPlansQuery getAvailablePaymentPlansQuery, 
             IAddApplicationCommand addApplicationCommand, 
-            IEncryptor encryptor)
+            IEncryptor encryptor, 
+            IGetRavenInstancesQuery getRavenInstancesQuery)
         {
             _getAvailablePaymentPlansQuery = getAvailablePaymentPlansQuery;
             _addApplicationCommand = addApplicationCommand;
             _encryptor = encryptor;
+            _getRavenInstancesQuery = getRavenInstancesQuery;
         }
 
         public CreateOrganisationResponse Invoke(CreateOrganisationRequest request)
@@ -50,8 +53,7 @@ namespace Errordite.Core.Organisations.Commands
                 };
             }
 
-            var existingUserMap =
-                Session.MasterRaven.Query<UserOrganisationMapping>().FirstOrDefault(m => m.EmailAddress == request.Email);
+            var existingUserMap = Session.MasterRaven.Query<UserOrganisationMapping>().FirstOrDefault(m => m.EmailAddress == request.Email);
 
             if (existingUserMap != null)
             {
@@ -74,6 +76,13 @@ namespace Errordite.Core.Organisations.Commands
                 ApiKeySalt = Membership.GeneratePassword(8, 1),
             };
 
+            var ravenInstance = _getRavenInstancesQuery.Invoke(new GetRavenInstancesRequest())
+                .RavenInstances
+                .FirstOrDefault(r => r.Active) ?? RavenInstance.Master();
+
+            organisation.RavenInstance = ravenInstance;
+            organisation.RavenInstanceId = ravenInstance.Id;
+
             MasterStore(organisation);
             MasterStore(new UserOrganisationMapping{EmailAddress = request.Email, OrganisationId = organisation.Id});
 
@@ -81,6 +90,7 @@ namespace Errordite.Core.Organisations.Commands
                 Encoding.UTF8.GetBytes(
                 _encryptor.Encrypt("{0}|{1}".FormatWith(organisation.FriendlyId, organisation.ApiKeySalt))));
 
+            Session.SetOrganisation(organisation);
             Session.BootstrapOrganisation(organisation);
 
             var group = new Group
