@@ -1,6 +1,8 @@
 ﻿
+using CodeTrip.Core.Extensions;
 using Errordite.Core.Configuration;
 using ProtoBuf;
+using Raven.Imports.Newtonsoft.Json;
 
 namespace Errordite.Core.Domain.Central
 {
@@ -59,6 +61,19 @@ namespace Errordite.Core.Domain.Central
         public static RavenInstance Master()
         {
             return _master;
+        }
+
+        public string ServiceHttpEndpoint
+        {
+            get { return "http://services{0}.errordite.com".FormatWith(Id.GetFriendlyId() == "1" ? string.Empty : Id.GetFriendlyId()); }
+        }
+
+        [JsonIgnore]
+        public string FriendlyId { get { return Id == null ? string.Empty : Id.Split('/')[1]; } }
+
+        public static string GetId(string friendlyId)
+        {
+            return friendlyId.Contains("/") ? friendlyId : "RavenInstances/{0}".FormatWith(friendlyId);
         }
     }
 }

@@ -1,10 +1,8 @@
 ﻿using System;
 using System.IO;
-using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Dispatcher;
 using System.Web.Http.SelfHost;
-using CodeTrip.Core.Auditing.Entities;
 using CodeTrip.Core.IoC;
 using Errordite.Core.Configuration;
 using Errordite.Core.IoC;
@@ -25,8 +23,8 @@ namespace Errordite.Reception.Service
             ObjectFactory.Container.Install(new ReceptionMasterInstaller());
             XmlConfigurator.ConfigureAndWatch(new FileInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"config\log4net.config")));
 
-            var httpConfig = ObjectFactory.GetObject<HttpServerConfiguration>();
-            var config = new HttpSelfHostConfiguration(httpConfig.Endpoint);
+            var serviceConfiguration = ObjectFactory.GetObject<ServiceConfiguration>("ReceptionServiceConfiguration");
+            var config = new HttpSelfHostConfiguration("http://localhost:{0}".FormatWith(serviceConfiguration.PortNumber));
 
             config.Services.Replace(typeof(IHttpControllerActivator), new WindsorHttpControllerActivator());
             config.DependencyResolver = new WindsorDependencyResolver(ObjectFactory.Container);
@@ -36,30 +34,22 @@ namespace Errordite.Reception.Service
             config.Formatters.XmlFormatter.SupportedMediaTypes.Clear();
             
             config.Formatters.JsonFormatter.SerializerSettings = WebApiSettings.JsonSerializerSettings;
+
             config.Routes.MapHttpRoute(
                 name: "issueapi",
                 routeTemplate: "api/{orgid}/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            config.Routes.MapHttpRoute(
+                name: "admin",
+                routeTemplate: "admin/{controller}/{action}/{id}",
+                defaults: new { id = RouteParameter.Optional }
+            );
             
             var server = new HttpSelfHostServer(config);
             server.OpenAsync().Wait();
-            Console.WriteLine("The server is running on endpoint {0}...".FormatWith(httpConfig.Endpoint));
-
-            TaskScheduler.UnobservedTaskException += (sender, args) =>
-            {
-                try
-                {
-                    ObjectFactory.GetObject<IComponentAuditor>().Error(GetType(), args.Exception);
-                }
-                catch (Exception e)
-                {
-                    System.Diagnostics.Trace.Write(e);
-                }
-
-                args.SetObserved();
-            };
+            Console.WriteLine("The server is running on endpoint http://localhost:{0}...".FormatWith(serviceConfiguration.PortNumber));
         }
     }
-
 }
