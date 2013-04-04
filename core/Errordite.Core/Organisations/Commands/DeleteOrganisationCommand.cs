@@ -35,13 +35,13 @@ namespace Errordite.Core.Organisations.Commands
 
         public DeleteOrganisationResponse Invoke(DeleteOrganisationRequest request)
         {
-            Session.MasterRaven.Advanced.DocumentStore.DatabaseCommands.DeleteByIndex(
-                CoreConstants.IndexNames.OrganisationIssueDailyCount, new IndexQuery
+            Session.MasterRavenDatabaseCommands.DeleteByIndex(
+                CoreConstants.IndexNames.UserOrganisationMappings, new IndexQuery
                     {
                         Query = "OrganisationId:{0}".FormatWith(Organisation.GetId(request.OrganisationId))
                     }, true);
 
-            Session.MasterRaven.Advanced.DocumentStore.DatabaseCommands.DeleteByIndex(
+            Session.MasterRavenDatabaseCommands.DeleteByIndex(
                 CoreConstants.IndexNames.Organisations, new IndexQuery
                 {
                     Query = "Id:{0}".FormatWith(Organisation.GetId(request.OrganisationId))
