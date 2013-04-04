@@ -298,7 +298,6 @@ namespace Errordite.Core.Session
 
         public void BootstrapOrganisation(Organisation organisation)
         {
-            SetOrganisationContext(organisation);
 			MasterRavenDatabaseCommands.EnsureDatabaseExists(_organisationDatabaseId);
 
             var docStore = _documentStoreFactory.Create(organisation.RavenInstance);

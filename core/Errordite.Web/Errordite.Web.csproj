@@ -281,7 +281,6 @@
     <Compile Include="Mappings\GroupToGroupViewModel.cs" />
     <Compile Include="Mappings\UserToEditUserViewModel.cs" />
     <Compile Include="Mappings\UserToUserViewModel.cs" />
-    <Compile Include="Areas\System\Models\System\ErrorditeErrorsViewModel.cs" />
     <Compile Include="Models\Applications\AddApplicationViewModel.cs" />
     <Compile Include="Models\Applications\ApplicationViewModel.cs" />
     <Compile Include="Models\Applications\EditApplicationViewModel.cs" />

@@ -114,7 +114,7 @@ namespace Errordite.Web.Models.Navigation
                     new Breadcrumb(BreadcrumbId.Billing, urlHelper.Billing(), "Billing"),
                     new Breadcrumb(BreadcrumbId.OrgSettings, urlHelper.Settings(), "Settings"),
                 }),
-                new Breadcrumb(BreadcrumbId.SysAdmin, urlHelper.SysAdmin(), "SysAdmin", new []
+                new Breadcrumb(BreadcrumbId.SysAdmin, urlHelper.SysAdmin(), "System Admin", new []
                 {
                     new Breadcrumb(BreadcrumbId.AdminErrors, string.Empty, "Errors"),
                     new Breadcrumb(BreadcrumbId.AdminImpersonation, string.Empty, "Impersonation"),

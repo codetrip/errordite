@@ -313,7 +313,7 @@ table {
     .links {
 	  height: 32px;
       float: right;
-      width: 474px;
+      width: 450px;
       margin:4px 0 0 0;
 	  border-bottom:2px solid $darkestbrown;
 	  margin-top: 16px;
@@ -321,13 +321,13 @@ table {
 	.header-org {
 		float: left;
 		margin: 8px 0 0 0;
-		padding: 7px 8px;
-		max-width: 250px;
+		padding: 7px 10px 5px 2px;
 		font-weight: $boldfontweight;
+		font-size:16px;
 	}
 	.applications {
 		height:48px;
-		width:500px;
+		width:524px;
 		border-bottom:2px solid $darkestbrown;
 		float:left;
 		.dropdown-menu li{

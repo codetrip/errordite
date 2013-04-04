@@ -70,7 +70,7 @@
                     Welcome back <strong>@appContext.CurrentUser.FirstName
                                      @if (appContext.Impersonated)
                                      {
-                                         <a href="@Url.Impersonate()">(IMPERSONATED)</a>
+                                         <a href="@Url.Impersonate()">(IMP)</a>
                                      }
                                  </strong>&nbsp;&nbsp;|&nbsp;&nbsp; 
                     <a href="@Url.YourDetails()">Your Details</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.SignOut()">Sign Out</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.Contact()">Contact Us</a>
@@ -104,6 +104,7 @@
                             <div class="pointer">
                                 <ul>
                                     <li><a href="@Url.Organisations()">Organisations ›</a></li> 
+                                    <li><a href="@Url.SyncIndexes()">Sync Indexes ›</a></li> 
                                     <li><a href="@Url.Impersonate()">Impersonate ›</a></li> 
                                     <li><a href="@Url.FlushAllCaches()">Flush Caches ›</a></li> 
                                     @foreach (var cache in Enum.GetNames(typeof (CacheProfiles)))

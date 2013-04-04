@@ -1,18 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition.Hosting;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Dispatcher;
 using System.Web.Mvc;
 using System.Web.Routing;
 using Castle.Core.Internal;
-using CodeTrip.Core.Auditing.Entities;
 using CodeTrip.Core.Interfaces;
 using CodeTrip.Core.IoC;
 using CodeTrip.Core.Misc;
@@ -21,8 +17,6 @@ using Errordite.Core;
 using Errordite.Core.Configuration;
 using Errordite.Core.Domain.Central;
 using Errordite.Core.Domain.Exceptions;
-using Errordite.Core.Domain.Organisation;
-using Errordite.Core.Indexing;
 using Errordite.Core.IoC;
 using Errordite.Core.Organisations.Queries;
 using Errordite.Core.Raven;
@@ -31,10 +25,6 @@ using Errordite.Core.WebApi;
 using Errordite.Web.ActionFilters;
 using Errordite.Web.Controllers;
 using Errordite.Web.IoC;
-using Raven.Abstractions.Data;
-using Raven.Client;
-using Raven.Client.Extensions;
-using Raven.Client.Indexes;
 
 namespace Errordite.Web
 {
@@ -130,20 +120,6 @@ namespace Errordite.Web
             Thread.CurrentThread.CurrentCulture = cultureInfo;
             Thread.CurrentThread.CurrentUICulture = cultureInfo;
 
-            TaskScheduler.UnobservedTaskException += (sender, args) =>
-            {
-                try
-                {
-                    ObjectFactory.GetObject<IComponentAuditor>().Error(GetType(), args.Exception);
-                }
-                catch (Exception e)
-                {
-                    System.Diagnostics.Trace.Write(e);
-                }
-
-                args.SetObserved();
-            };
-
             //web API config
             GlobalConfiguration.Configuration.Services.Replace(typeof(IHttpControllerActivator), new WindsorHttpControllerActivator());
             GlobalConfiguration.Configuration.DependencyResolver = new WindsorDependencyResolver(ObjectFactory.Container);
@@ -152,10 +128,6 @@ namespace Errordite.Web
             GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings = WebApiSettings.JsonSerializerSettings;
 
             ErrorditeClient.ConfigurationAugmenter = ErrorditeClientOverrideHelper.Augment;
-
-#if !(DEBUG)
-            BootstrapRaven(ObjectFactory.Container.Resolve<IShardedRavenDocumentStoreFactory>());
-#endif
 
             BootstrapRavenInstances();
         }
@@ -215,8 +187,6 @@ namespace Errordite.Web
             controller.Execute(new RequestContext(new HttpContextWrapper(Context), routeData));
         }
 
-        #region Bootstrap Raven
-
         public static void BootstrapRavenInstances()
         {
             var masterDocumentStoreFactory = ObjectFactory.GetObject<IShardedRavenDocumentStoreFactory>();
@@ -226,111 +196,17 @@ namespace Errordite.Web
                 {
                     Session = session
                 }).RavenInstances;
+
             var master = instances.FirstOrDefault(i => i.IsMaster);
 
             if(master != null)
             {
                 master.ReceptionQueueAddress = ErrorditeConfiguration.Current.ReceptionQueueName;
                 master.ReceptionHttpEndpoint = ErrorditeConfiguration.Current.ReceptionHttpEndpoint;
+                master.NotificationsQueueAddress = ErrorditeConfiguration.Current.NotificationsQueueName;
+                master.EventsQueueAddress = ErrorditeConfiguration.Current.EventsQueueName;
                 session.SaveChanges();
             }
         }
-
-        public static void BootstrapRaven(IShardedRavenDocumentStoreFactory documentStoreFactory)
-        {
-            var masterDocumentStore = documentStoreFactory.Create(RavenInstance.Master());
-            masterDocumentStore.DatabaseCommands.EnsureDatabaseExists(CoreConstants.ErrorditeMasterDatabaseName);
-
-            var session = masterDocumentStore.OpenSession(CoreConstants.ErrorditeMasterDatabaseName);
-
-            IndexCreation.CreateIndexes(new CompositionContainer(
-                new AssemblyCatalog(typeof(Issues_Search).Assembly), new ExportProvider[0]),
-                masterDocumentStore.DatabaseCommands.ForDatabase(CoreConstants.ErrorditeMasterDatabaseName),
-                masterDocumentStore.Conventions);
-
-            if (!session.Query<PaymentPlan>().Any())
-            {
-                session.Store(new PaymentPlan
-                {
-                    Id = "PaymentPlans/1",
-                    MaximumApplications = 10,
-                    MaximumUsers = 20,
-                    MaximumIssues = 500,
-                    Name = PaymentPlanNames.Trial,
-                    Rank = 0,
-                    Price = 0m,
-                    IsAvailable = true,
-                    IsTrial = true,
-                });
-                session.Store(new PaymentPlan
-                {
-                    Id = "PaymentPlans/2",
-                    MaximumApplications = 1,
-                    MaximumUsers = 5,
-                    MaximumIssues = 50,
-                    Name = PaymentPlanNames.Small,
-                    Rank = 100,
-                    Price = 19.00m,
-                    IsAvailable = true,
-                });
-                session.Store(new PaymentPlan
-                {
-                    Id = "PaymentPlans/3",
-                    MaximumApplications = 5,
-                    MaximumUsers = 25,
-                    MaximumIssues = 500,
-                    Name = PaymentPlanNames.Medium,
-                    Rank = 200,
-                    Price = 89.00m,
-                    IsAvailable = true,
-                });
-                session.Store(new PaymentPlan
-                {
-                    Id = "PaymentPlans/4",
-                    MaximumApplications = 25,
-                    MaximumUsers = 100,
-                    MaximumIssues = 5000,
-                    Name = PaymentPlanNames.Large,
-                    Rank = 300,
-                    Price = 299.00m,
-                    IsAvailable = true,
-                });
-
-                session.SaveChanges();
-            }
-
-            var organisations = session.Query<Organisation, Organisations_Search>();
-            var getOrganisationQuery = ObjectFactory.GetObject<IGetOrganisationQuery>();
-
-            foreach (var org in organisations)
-            {
-                var organisation = getOrganisationQuery.Invoke(new GetOrganisationRequest
-                    {
-                        OrganisationId = org.Id
-                    }).Organisation;
-
-                var docStore = documentStoreFactory.Create(organisation.RavenInstance);
-
-                docStore.DatabaseCommands.EnsureDatabaseExists(organisation.FriendlyId);
-
-                IndexCreation.CreateIndexes(
-                    new CompositionContainer(new AssemblyCatalog(typeof(Issues_Search).Assembly), new ExportProvider[0]), 
-                    session.Advanced.DocumentStore.DatabaseCommands.ForDatabase(organisation.FriendlyId),
-                    docStore.Conventions);
-
-                using (var organisationSession = docStore.OpenSession(organisation.FriendlyId))
-                {
-                    var facets = new List<Facet>
-                    {
-                        new Facet {Name = "Status"},
-                    };
-
-                    organisationSession.Store(new FacetSetup { Id = CoreConstants.FacetDocuments.IssueStatus, Facets = facets });
-                    organisationSession.SaveChanges();
-                }
-            }
-        }
-
-        #endregion
     }
 }
