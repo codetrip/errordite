@@ -244,8 +244,12 @@
     <Compile Include="Web\BaseController.cs" />
     <Compile Include="Web\CookieManager.cs" />
     <Compile Include="Web\HtmlExtensions.cs" />
+    <Compile Include="Web\HttpConstants.cs" />
     <Compile Include="Web\ICookieManager.cs" />
+    <Compile Include="Web\IFluentSynchronousWebRequest.cs" />
     <Compile Include="Web\JsonNetJsonValueProvider.cs" />
+    <Compile Include="Web\SynchronousWebRequest.cs" />
+    <Compile Include="Web\SynchronousWebResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

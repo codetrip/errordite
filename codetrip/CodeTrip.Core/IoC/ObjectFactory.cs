@@ -4,6 +4,7 @@ using Castle.Facilities.FactorySupport;
 using Castle.MicroKernel;
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.Releasers;
+using Castle.MicroKernel.Resolvers.SpecializedResolvers;
 using Castle.Windsor;
 using Castle.Windsor.Configuration.Interpreters;
 using CodeTrip.Core.Exceptions;
@@ -43,6 +44,7 @@ namespace CodeTrip.Core.IoC
             */
             _container.Kernel.ReleasePolicy = new NoTrackingReleasePolicy();
             _container.Kernel.Resolver.AddSubResolver(new ArrayResolver(_container.Kernel));
+            _container.Kernel.Resolver.AddSubResolver(new CollectionResolver(_container.Kernel, true));
             _container.AddFacility<FactorySupportFacility>();
 
             //register our ConfigurationOverrideContainerInitialiser

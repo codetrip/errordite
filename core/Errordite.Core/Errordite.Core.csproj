@@ -98,6 +98,7 @@
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Messaging" />
     <Reference Include="System.Net.Http, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Net.Http.2.0.20710.0\lib\net40\System.Net.Http.dll</HintPath>
     </Reference>
@@ -109,6 +110,7 @@
     </Reference>
     <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Http">
@@ -133,7 +135,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Caching\CacheKeys.cs" />
-    <Compile Include="Configuration\HttpServerConfiguration.cs" />
+    <Compile Include="Configuration\ServiceConfiguration.cs" />
     <Compile Include="Domain\Central\RavenInstance.cs" />
     <Compile Include="Domain\Central\UserOrganisationMapping.cs" />
     <Compile Include="Domain\Error\IssueComment.cs" />
@@ -235,6 +237,12 @@
     <Compile Include="Messages\SyncIssueErrorCountsMessage.cs" />
     <Compile Include="Messages\ReceiveErrorMessage.cs" />
     <Compile Include="Messages\SendHipChatMessage.cs" />
+    <Compile Include="Monitoring\Entities\QueueStatus.cs" />
+    <Compile Include="Monitoring\Entities\ServiceStatus.cs" />
+    <Compile Include="Monitoring\Commands\DeleteMessagesCommand.cs" />
+    <Compile Include="Monitoring\Commands\ReturnMessageToSourceQueueCommand.cs" />
+    <Compile Include="Monitoring\Queries\GetQueueStatusQuery.cs" />
+    <Compile Include="Monitoring\AbstractQueueController.cs" />
     <Compile Include="Notifications\Commands\SendHipChatMessageCommand.cs" />
     <Compile Include="Notifications\Commands\SendEmailCommand.cs" />
     <Compile Include="Notifications\Commands\SendNotificationsCommand.cs" />

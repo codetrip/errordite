@@ -118,6 +118,9 @@
     <Reference Include="System.Net.Http.WebRequest, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Net.Http.2.0.20710.0\lib\net40\System.Net.Http.WebRequest.dll</HintPath>
     </Reference>
+    <Reference Include="System.ServiceProcess">
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.Helpers.dll</HintPath>
@@ -251,6 +254,8 @@
       <DependentUpon>Shared.resx</DependentUpon>
     </Compile>
     <Compile Include="Areas\System\Controllers\AdminControllerBase.cs" />
+    <Compile Include="Areas\System\Controllers\ServicesController.cs" />
+    <Compile Include="Areas\System\Models\Services\SystemStatusViewModel.cs" />
     <Compile Include="Areas\System\SysAdminAreaRegistration.cs" />
     <Compile Include="Areas\System\Controllers\SystemController.cs" />
     <Compile Include="Areas\System\Models\Organisations\SuspendOrganisationViewModel.cs" />
@@ -332,6 +337,9 @@
     <Compile Include="WebConstants.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Areas\System\Views\Services\ServiceInfo.cshtml">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="Assets\Css\errordite.css">
       <DependentUpon>errordite.scss</DependentUpon>
     </Content>
@@ -459,6 +467,12 @@
     </Content>
     <Content Include="Assets\Js\search.min.js">
       <DependentUpon>search.coffee</DependentUpon>
+    </Content>
+    <Content Include="Assets\Js\services.js">
+      <DependentUpon>services.coffee</DependentUpon>
+    </Content>
+    <Content Include="Assets\Js\services.min.js">
+      <DependentUpon>services.coffee</DependentUpon>
     </Content>
     <Content Include="Assets\Js\systemadmin.js">
       <DependentUpon>systemadmin.coffee</DependentUpon>
@@ -876,6 +890,18 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\Issue\Comment.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\System\Views\Services\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\Js\services.coffee" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\Errordite.Build\Configuration\services.config">
+      <Link>Config\services.config</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

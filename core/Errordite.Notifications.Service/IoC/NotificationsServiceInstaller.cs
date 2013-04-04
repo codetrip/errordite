@@ -1,24 +1,30 @@
-﻿using System.Collections.Generic;
+﻿using System.Reflection;
+using System.Web.Http.Controllers;
+using System.Web.Http.Dispatcher;
 using Castle.MicroKernel.Registration;
+using Castle.MicroKernel.SubSystems.Configuration;
+using Castle.Windsor;
 using CodeTrip.Core.IoC;
 using Errordite.Core.IoC;
 
 namespace Errordite.Notifications.Service.IoC
 {
-    public class NotificationsServiceInstaller : MasterInstallerBase
+    public class NotificationsServiceInstaller : WindsorInstallerBase
     {
-        protected override IEnumerable<IWindsorInstaller> Installers
+        public override void Install(IWindsorContainer container, IConfigurationStore store)
         {
-            get
-            {
-                return new IWindsorInstaller[]
-                {
-                    new CoreInstaller("Errordite.Notifications"),
-                    new ErrorditeCoreInstaller(),
-                    new NotificationsServiceNServiceBusInstaller(),
-                    new PerThreadAppSessionInstaller(),
-                };
-            }
+            base.Install(container, store);
+
+            container.Register(AllTypes.FromAssembly(Assembly.GetExecutingAssembly())
+                .BasedOn<IHttpController>()
+                .LifestyleTransient());
+
+            //TODO: do we need this?
+            container.Register(Component.For<IHttpControllerActivator>()
+                .Instance(new WindsorHttpControllerActivator())
+                .LifestyleSingleton());
         }
     }
 }
+
+

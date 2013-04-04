@@ -1,0 +1,64 @@
+﻿@using System.ServiceProcess
+@using CodeTrip.Core.Extensions
+@model Errordite.Web.Areas.System.Models.Services.ServiceInfoViewModel
+
+<div class="boxed-item history @(Model.ServiceStatus.Status.IsIn(ServiceControllerStatus.Running, ServiceControllerStatus.StartPending) ? "ok" : "error")">
+	<div class="item-bar">&nbsp;</div>	
+    <div class="item-content">
+        <div class="item-info heading" style="width:625px">
+            Service Name
+        </div>
+        <div class="item-info heading divider" style="width:225px">
+            Service Status
+        </div>
+        <div class="item-info" style="width:625px">
+            @Model.Configuration.ServiceName - ProcessId:(@Model.ServiceStatus.ProcessId)
+        </div>
+         <div class="item-info divider" style="width:225px">
+             @Model.ServiceStatus.Status 
+         </div>
+        <div class="item-info heading" style="width:625px">
+            Queue
+        </div>
+        <div class="item-info heading divider" style="width:50px">
+            Count
+        </div>
+        <div class="item-info heading divider" style="width:175px">
+            Earliest
+        </div>
+        <div class="item-info" style="width:625px">
+            @Model.Configuration.QueueName
+        </div>
+        <div class="item-info divider" style="width:50px">
+            @Model.ServiceStatus.InputQueueStatus.TotalMessages
+        </div>
+        <div class="item-info divider" style="width:175px">
+            @(Model.ServiceStatus.InputQueueStatus.EarliestMessage.HasValue ? Model.ServiceStatus.InputQueueStatus.EarliestMessage.Value.ToString("dd MMM yyyy HH:mm:ss") : "Not available")
+        </div>
+        <div class="item-info heading" style="width:625px">
+            Error Queue
+        </div>
+        <div class="item-info heading divider" style="width:50px">
+            Count
+        </div>
+        <div class="item-info heading divider" style="width:175px">
+            Earliest
+        </div>
+        <div class="item-info" style="width:625px">
+            @Model.Configuration.ErrorQueueName
+            @if (Model.ServiceStatus.ErrorQueueStatus.TotalMessages > 0)
+            {
+                <text>
+                    (<a href="#" title="Purge this queue of messages" class="purge" data-servicename="@Model.Configuration.ServiceName" data-queue="@Model.ServiceStatus.ErrorQueueStatus.QueueName">purge</a> | 
+                    <a href="#" title="Send all messages back to the source queue" class="retry" data-servicename="@Model.Configuration.ServiceName" data-queue="@Model.ServiceStatus.ErrorQueueStatus.QueueName">retry</a>)
+                </text>
+            }
+        </div>
+        <div class="item-info divider" style="width:50px">
+            @Model.ServiceStatus.ErrorQueueStatus.TotalMessages
+        </div>
+        <div class="item-info divider" style="width:175px">
+            @(Model.ServiceStatus.ErrorQueueStatus.EarliestMessage.HasValue ? Model.ServiceStatus.ErrorQueueStatus.EarliestMessage.Value.ToString("dd MMM yyyy HH:mm:ss") : "Not available")
+        </div>
+    </div>
+</div>

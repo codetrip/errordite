@@ -1,0 +1,29 @@
+﻿
+@model Errordite.Web.Areas.System.Models.Services.SystemStatusViewModel
+
+@{
+    ViewBag.Title = "System Status";
+}
+   
+@section headerassets
+{
+    <script type='text/javascript' src="@Url.Content("~/assets/js/services.js")"></script>
+}
+
+<section class="centered">
+    <div class="content">
+        
+        <div class="form">
+            <ul>
+                <li>
+                    @Html.DropDownListFor(m => m.RavenInstanceId, Model.RavenInstances)
+                </li>
+            </ul>
+        </div>
+
+        @foreach (var serviceStatus in Model.Services)
+        {
+            @Html.Partial("ServiceInfo", serviceStatus)
+        }
+    </div>
+</section>  
