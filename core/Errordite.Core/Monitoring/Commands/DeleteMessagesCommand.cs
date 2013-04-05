@@ -14,8 +14,7 @@ namespace Errordite.Core.Monitoring.Commands
         {
             Trace("Starting...");
 
-            var filter = new MessagePropertyFilter();
-            filter.SetAll();
+            var filter = new MessagePropertyFilter {Id = true};
 
             using (var errorQueue = new MessageQueue(request.ErrorQueue) { Formatter = new XmlMessageFormatter(), MessageReadPropertyFilter = filter })
             {

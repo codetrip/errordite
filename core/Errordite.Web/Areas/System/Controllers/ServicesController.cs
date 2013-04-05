@@ -111,7 +111,7 @@ namespace Errordite.Web.Areas.System.Controllers
         }
 
         [ImportViewData, HttpPost]
-        public ActionResult ReturnToSource(string queueName, string serviceName, string instanceId)
+        public ActionResult ReturnToSource(string serviceName, string instanceId)
         {
             var instances = _getRavenInstancesQuery.Invoke(new GetRavenInstancesRequest()).RavenInstances;
             var service = _serviceConfigurations.FirstOrDefault(e => e.ServiceName.ToLowerInvariant() == serviceName.ToLowerInvariant());
@@ -125,8 +125,8 @@ namespace Errordite.Web.Areas.System.Controllers
             {
                 var request = new ReturnMessageToSourceQueueRequest
                 {
-                    ErrorQueue = service.ErrorQueueName,
-                    SourceQueue = service.QueueName
+                    ErrorQueue = service.FullyQualifiedErrorQueueName,
+                    SourceQueue = service.FullyQualifiedQueueName
                 };
 
                 var response = SynchronousWebRequest
@@ -151,7 +151,7 @@ namespace Errordite.Web.Areas.System.Controllers
         }
 
         [ImportViewData, HttpPost]
-        public ActionResult DeleteMessages(string queueName, string serviceName, string instanceId)
+        public ActionResult DeleteMessages(string serviceName, string instanceId)
         {
             var instances = _getRavenInstancesQuery.Invoke(new GetRavenInstancesRequest()).RavenInstances;
             var service = _serviceConfigurations.FirstOrDefault(e => e.ServiceName.ToLowerInvariant() == serviceName.ToLowerInvariant());
@@ -165,7 +165,7 @@ namespace Errordite.Web.Areas.System.Controllers
             {
                 var request = new DeleteMessagesRequest
                 {
-                    ErrorQueue = service.ErrorQueueName
+                    ErrorQueue = service.FullyQualifiedErrorQueueName
                 };
 
                 var response = SynchronousWebRequest
@@ -190,9 +190,9 @@ namespace Errordite.Web.Areas.System.Controllers
         }
 
         [ImportViewData, HttpPost]
-        public ActionResult ServiceControl(string serviceName, string machineName, bool start)
+        public ActionResult ServiceControl(string serviceName, bool start)
         {
-            var scm = new ServiceController(serviceName, machineName);
+            var scm = new ServiceController(serviceName, Environment.MachineName);
 
             if (start)
             {

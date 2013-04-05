@@ -1,5 +1,4 @@
 ﻿
-using System;
 using CodeTrip.Core.Extensions;
 using Errordite.Core.Domain.Central;
 
@@ -20,7 +19,7 @@ namespace Errordite.Core.Configuration
         {
             get
             {
-                return @"{0}\private$\{1}".FormatWith(Environment.MachineName, QueueName);
+                return @".\private$\{0}".FormatWith(QueueName);
             }
         }
 
@@ -28,7 +27,7 @@ namespace Errordite.Core.Configuration
         {
             get
             {
-                return @"{0}\private$\{1}".FormatWith(Environment.MachineName, ErrorQueueName);
+                return @".\private$\{0}".FormatWith(ErrorQueueName);
             }
         }
 
