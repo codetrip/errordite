@@ -1,6 +1,6 @@
 ﻿
 using Castle.Windsor;
-using Errordite.Utils.NServiceBusCastleBridge;
+using NServiceBus.ObjectBuilder.CastleWindsor;
 using NServiceBus.ObjectBuilder.Common.Config;
 
 namespace NServiceBus
