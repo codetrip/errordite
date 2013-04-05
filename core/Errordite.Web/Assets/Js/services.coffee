@@ -9,32 +9,40 @@ jQuery ->
 			e.preventDefault()
 			$this = $(this)
 			return false  unless confirm("Are you sure you want to delete all messages?")
-			serviceManager.deleteMessages $this.data("queue"), $this.data("service")
+			serviceManager.deleteMessages $this.data("service")
 
 		$root.delegate "a.retry", "click", (e) ->
 			e.preventDefault()
 			$this = $(this)
 			return false  unless confirm("Are you sure you want to retry all messages?")
-			serviceManager.returnToSource $this.data("queue"), $this.data("service")
+			serviceManager.returnToSource $this.data("service")
 
 		$root.delegate "select#RavenInstanceId", "change", (e) ->
 			e.preventDefault()
 			$this = $(this)
 			serviceManager.switchInstance $this.val()
 
+		$root.delegate "a#refresh", "click", (e) ->
+			e.preventDefault()
+			serviceManager.reload()
+
+		$root.delegate 'a.start-service', 'click', (e) ->
+			e.preventDefault();
+			$this = $ this;
+			return serviceManager.serviceControl $this.data('service'),  $this.data('start');
+
 		class ServiceManager
 
 			deleteMessages: ->
-				deleteMessages = (queueName, serviceName) ->
+				deleteMessages = (serviceName) ->
 				$.ajax
 					url: "/system/services/deletemessages"
 					data:
 						instanceId: $('select#RavenInstanceId').val()
-						queueName: queueName
 						serviceName: serviceName
 
 					success: (result) ->
-						if result.Success
+						if result.success
 							location.reload()
 						else
 							alert "Failed to delete messages, please try again."
@@ -47,19 +55,16 @@ jQuery ->
 					type: "POST"
 
 				true
-			returnToSource: (queueName, serviceName) ->
-				console.log 'instance: ' + $('select#RavenInstanceId').val()
-				console.log 'queue:' + queueName
-				console.log 'service: ' + serviceName
+			returnToSource: (serviceName) ->
+
 				$.ajax
 					url: "/system/services/returntosource"
 					data:
 						instanceId: $('select#RavenInstanceId').val()
-						queueName: queueName
 						serviceName: serviceName
 
 					success: (result) ->
-						if result.Success
+						if result.success
 							location.reload()
 						else
 							alert "Failed to return error messages to their source queue, please try again."
@@ -77,6 +82,26 @@ jQuery ->
 				true
 			switchInstance: (instanceId) -> 
 				window.location = "/system/services?ravenInstanceId=" + instanceId
+				true
+			serviceControl: (serviceName, start) ->
+				$.ajax
+					url: "/system/services/servicecontrol"
+					data:
+						serviceName:serviceName
+						start:start
+					success: (result) ->
+						if (result.success)
+							return location.reload()
+						else
+							alert "Service failed to " + (start ? "start" : "stop") + ", please try again."
+					
+						true
+					error: -> 
+						alert "Service failed to " + (start ? "start" : "stop") + ", please try again."
+					dataType: "json"
+					type: "POST"
+
+				
 				true
 
 		serviceManager = new ServiceManager();

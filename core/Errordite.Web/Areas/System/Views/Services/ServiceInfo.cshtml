@@ -12,10 +12,11 @@
             Service Status
         </div>
         <div class="item-info" style="width:625px">
-            @Model.Configuration.ServiceName - ProcessId:(@Model.ServiceStatus.ProcessId)
+            @Model.Configuration.ServiceName - ProcessId: @Model.ServiceStatus.ProcessId
         </div>
          <div class="item-info divider" style="width:225px">
              @Model.ServiceStatus.Status 
+             (<a href="#" class="start-service" data-start="@(Model.ServiceStatus.Status == ServiceControllerStatus.Running ? "false" : "true")" data-service="@Model.Configuration.ServiceName">@(Model.ServiceStatus.Status == ServiceControllerStatus.Running ? "stop" : "start") service</a>)
          </div>
         <div class="item-info heading" style="width:625px">
             Queue
@@ -27,7 +28,7 @@
             Earliest
         </div>
         <div class="item-info" style="width:625px">
-            @Model.Configuration.QueueName
+            @Model.Configuration.FullyQualifiedQueueName
         </div>
         <div class="item-info divider" style="width:50px">
             @Model.ServiceStatus.InputQueueStatus.TotalMessages
@@ -45,12 +46,12 @@
             Earliest
         </div>
         <div class="item-info" style="width:625px">
-            @Model.Configuration.ErrorQueueName
+            @Model.Configuration.FullyQualifiedErrorQueueName
             @if (Model.ServiceStatus.ErrorQueueStatus.TotalMessages > 0)
             {
                 <text>
-                    (<a href="#" title="Purge this queue of messages" class="purge" data-service="@Model.Configuration.ServiceName" data-queue="@Model.ServiceStatus.ErrorQueueStatus.QueueName">purge</a> | 
-                    <a href="#" title="Send all messages back to the source queue" class="retry" data-service="@Model.Configuration.ServiceName" data-queue="@Model.ServiceStatus.ErrorQueueStatus.QueueName">retry</a>)
+                    (<a href="#" title="Purge this queue of messages" class="purge" data-service="@Model.Configuration.ServiceName">purge</a> | 
+                    <a href="#" title="Send all messages back to the source queue" class="retry" data-service="@Model.Configuration.ServiceName">retry</a>)
                 </text>
             }
         </div>
