@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading;
-using System.Transactions;
 using CodeTrip.Core;
 using CodeTrip.Core.Extensions;
 using Errordite.Client;
-using Errordite.Core.Domain.Organisation;
+using Errordite.Core.Session;
 using NServiceBus;
 using Raven.Abstractions.Exceptions;
-using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
 
 namespace Errordite.Core.ServiceBus
 {

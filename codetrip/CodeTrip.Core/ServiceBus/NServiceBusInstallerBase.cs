@@ -31,9 +31,9 @@ namespace CodeTrip.Core.ServiceBus
                 AdditionalContainerActions(container, store);
 
                 Configure.With(_assemblies)
-                    .Log4Net()
                     .CastleWindsorBuilder(container)
                         .XmlSerializer()
+                    .Log4Net()
                     .MsmqTransport()
                     .MsmqSubscriptionStorage("Errordite")
                     .IsTransactional(IsTransactional)
