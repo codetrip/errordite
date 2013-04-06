@@ -1,0 +1,91 @@
+﻿
+@using Errordite.Core.Domain.Organisation
+@using Errordite.Core.Extensions
+@using Errordite.Web.Areas.System.Models.Organisations
+@using Errordite.Web.Extensions
+@using System.Web.Mvc.Html
+@using CodeTrip.Core.Extensions
+@model Errordite.Web.Models.Account.OrganisationsViewModel
+                   
+@{
+    ViewBag.Title = "Organisations";
+}
+
+@section headerassets
+{
+    <script type='text/javascript' src="@Url.Content("~/assets/js/systemadmin.js")"></script>
+}
+
+<section id="organisations" class="centered">
+    <div class="content">
+        @if (Model.Organisations != null && Model.Organisations.Items.Any())
+        {
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Plan Id</th>
+                        <th>Status</th>  
+                        <th>Timezone</th>      
+                        <th>Created On Utc</th>   
+                        <th>Users</th>   
+                        <th>Applications</th>  
+                        <th>Status</th> 
+                        <th>Delete</th> 
+                    </tr>  
+                </thead>
+                <tbody>
+                    @foreach (var organisation in Model.Organisations.Items)
+                    {
+                        <tr>  
+                            <td>@organisation.FriendlyId</td>
+                            <td>@organisation.Name</td>
+                            <td>@organisation.PaymentPlanId.GetFriendlyId()</td>
+                            <td>@organisation.Status</td>
+                            <td>@organisation.TimezoneId</td>
+                            <td>@organisation.CreatedOnUtc.ToLocalFormatted()</td>
+                            <td><a href="@Url.OrganisationUsers(organisation.FriendlyId)">Users</a></td>
+                            <td><a href="@Url.OrganisationApplications(organisation.FriendlyId)">Applications</a></td>
+                            @if(organisation.Status == OrganisationStatus.Active)
+                            {
+                                <td><a href="#" class="btn btn-small btn-blue suspend" data-val="@organisation.Id">Suspend</a></td>
+                            }
+                            else
+                            {
+                                <td>
+                                    @using (Html.BeginForm("activateorganisation", "organisations", FormMethod.Post, new { name = "activateForm" }))
+                                    {
+                                        @Html.Hidden("OrganisationId", organisation.Id)
+                                        <input type="submit" class="btn btn-small btn-blue activate" value="Activate" />
+                                    }
+                                </td>
+                            }
+                            <td>
+                                @using (Html.BeginForm("deleteorganisation", "organisations", FormMethod.Post, new { name = "deleteForm" }))
+                                {
+                                    @Html.Hidden("OrganisationId", organisation.Id)
+                                    <input type="submit" class="btn btn-small btn-blue delete" value="Delete" />
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="10">
+                            @Html.Partial("Pagination", Model.Paging)
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+            @Html.Partial("Organisations/SuspendModal", new SuspendOrganisationViewModel())
+        }
+        else
+        {
+            <div>
+                <p>No organisations were found.</p>   
+            </div> 
+        }
+    </div>
+</section>

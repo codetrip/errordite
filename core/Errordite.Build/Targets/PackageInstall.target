@@ -1,0 +1,113 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+
+  <Target Name="PackageInstall" DependsOnTargets="
+          PackageBuildTasks;
+          PackageBuildResources;
+          PackageConfigFileChanger;
+          PackageConfigFileChangerInstructions;">
+  </Target>
+
+  <Target Name="PackageBuildTasks">
+    
+    <MakeDir Directories="$(OutputPath)\Errordite.Install" />
+    <MakeDir Directories="$(OutputPath)\Errordite.Install\bin" />
+
+    <CreateItem Include="
+            $(MSBuildProjectDirectory)\..\Tasks\MSBuild.Community.Tasks.dll;
+            $(MSBuildProjectDirectory)\..\Tasks\MSBuild.Community.Tasks.Targets;
+            $(MSBuildProjectDirectory)\..\Tasks\Microsoft.Sdc.Tasks.dll;
+            $(MSBuildProjectDirectory)\..\Tasks\Microsoft.Sdc.Common.tasks;
+            $(MSBuildProjectDirectory)\..\Tasks\MSBuild.ExtensionPack.dll;
+            $(MSBuildProjectDirectory)\..\Tasks\MSBuild.ExtensionPack.Iis7.dll;
+            $(MSBuildProjectDirectory)\..\Tasks\MSBuild.Mercurial.dll;
+            $(MSBuildProjectDirectory)\..\Tasks\MSBuild.Mercurial.tasks;
+            $(MSBuildProjectDirectory)\..\Tasks\Ionic.Zip.dll;
+            $(MSBuildProjectDirectory)\..\Tasks\ICSharpCode.SharpZipLib.dll;
+            $(MSBuildProjectDirectory)\..\Tasks\MSBuild.ExtensionPack.tasks;
+            $(MSBuildProjectDirectory)\..\Tasks\bin\Microsoft.Build.Utilities.v3.5.dll;
+                
+            $(MSBuildProjectDirectory)\..\bin\$(Configuration)\Errordite.Build.dll;">
+      <Output TaskParameter="Include" ItemName="BuildTasks" />
+    </CreateItem>
+
+    <Copy SourceFiles="@(BuildTasks)" DestinationFolder="$(OutputPath)\Errordite.Install"  />
+
+    <CreateItem Include="$(MSBuildProjectDirectory)\..\Tasks\bin\Microsoft.Build.Utilities.v3.5.dll">
+      <Output TaskParameter="Include" ItemName="BuildBinariesTasks" />
+    </CreateItem>
+
+    <Copy SourceFiles="@(BuildBinariesTasks)" DestinationFolder="$(OutputPath)\Errordite.Install\bin"  />
+
+  </Target>
+
+  <Target Name="PackageBuildResources">
+
+    <CreateItem
+      Include="
+            $(MSBuildProjectDirectory)\..\Imports\Global.imports;
+            
+            $(MSBuildProjectDirectory)\..\Targets\ServiceControl.target;
+            $(MSBuildProjectDirectory)\..\Targets\Configuration.target;
+            $(MSBuildProjectDirectory)\..\Targets\Minify.target;
+            $(MSBuildProjectDirectory)\..\Targets\Common.target;
+            $(MSBuildProjectDirectory)\..\Targets\Versioning.target;
+            $(MSBuildProjectDirectory)\..\Targets\Queues.target;
+            $(MSBuildProjectDirectory)\..\Targets\IIS.target;
+            
+            $(MSBuildProjectDirectory)\..\Configuration\Global.properties;
+            
+            $(MSBuildProjectDirectory)\..\Cmd\RunConfigFileChanger.cmd;
+            
+            $(SourcePath)\version.txt;
+            
+            $(MSBuildProjectDirectory)\..\Projects\InstallWeb.proj;
+            $(MSBuildProjectDirectory)\..\Projects\InstallReceptionWeb.proj;
+            $(MSBuildProjectDirectory)\..\Projects\InstallReceptionService.proj;
+            $(MSBuildProjectDirectory)\..\Projects\InstallEventsService.proj;
+            $(MSBuildProjectDirectory)\..\Projects\InstallScheduledTasks.proj;
+            $(MSBuildProjectDirectory)\..\Projects\InstallNotificationsService.proj;
+            $(MSBuildProjectDirectory)\..\Projects\InstallMaster.proj;">
+      <Output TaskParameter="Include" ItemName="BuildImports" />
+    </CreateItem>
+
+    <Copy SourceFiles="@(BuildImports)" DestinationFolder="$(OutputPath)\Errordite.Install" />
+
+    <CreateItem Include="$(MSBuildProjectDirectory)\..\Cmd\Install.cmd;">
+      <Output TaskParameter="Include" ItemName="Installer" />
+    </CreateItem>
+
+    <Copy SourceFiles="@(Installer)" DestinationFolder="$(OutputPath)" SkipUnchangedFiles="false" />
+
+  </Target>
+
+  <Target Name="PackageConfigFileChanger">
+    <CreateItem Include="$(SourcePath)\lib\ConfigFileChanger\**\*.*">
+      <Output TaskParameter="Include" ItemName="ConfigFileChanger" />
+    </CreateItem>
+
+    <Copy
+      SourceFiles="@(ConfigFileChanger)"
+      DestinationFolder="$(OutputPath)\Errordite.Install\ConfigFileChanger\%(RecursiveDir)"
+      SkipUnchangedFiles="false">
+    </Copy>
+  </Target>
+
+  <Target Name="PackageConfigFileChangerInstructions">
+    <CreateItem Include="
+                $(MSBuildProjectDirectory)\..\Configuration\InstructionReplacements.inst;
+                $(MSBuildProjectDirectory)\..\Configuration\XmlConfig.inst">
+      <Output TaskParameter="Include" ItemName="ConfigFileChangerInstructions" />
+    </CreateItem>
+
+    <Copy
+      SourceFiles="@(ConfigFileChangerInstructions)"
+      DestinationFolder="$(OutputPath)\Errordite.Install\ConfigFileChangerInstructions\%(RecursiveDir)"
+      SkipUnchangedFiles="false">
+    </Copy>
+  </Target>
+
+</Project>
+
+
+
+
