@@ -1,4 +1,8 @@
 ﻿using System.Web.Mvc;
+using CodeTrip.Core.Caching.Entities;
+using CodeTrip.Core.Caching.Interfaces;
+using CodeTrip.Core.Caching.Resources;
+using CodeTrip.Core.IoC;
 using Errordite.Core.Configuration;
 using Errordite.Core.Domain.Central;
 using Errordite.Core.Domain.Organisation;
@@ -41,6 +45,12 @@ namespace Errordite.Web.Controllers
             }
 
             return Content("Ok");
+        }
+
+        public ActionResult ClearCache()
+        {
+            ObjectFactory.GetObject<ICacheEngine>(CacheEngines.RedisMemoryHybrid).Clear();
+            return Content("OK");
         }
 
         [ImportViewData]
