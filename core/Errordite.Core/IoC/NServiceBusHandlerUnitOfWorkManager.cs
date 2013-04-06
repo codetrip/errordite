@@ -1,6 +1,8 @@
 ﻿using System;
 using Castle.MicroKernel.Lifestyle;
 using Castle.Windsor;
+using CodeTrip.Core.Auditing.Entities;
+using Errordite.Client;
 using Errordite.Core.Session;
 using NServiceBus.UnitOfWork;
 
@@ -9,7 +11,6 @@ namespace Errordite.Core.IoC
     public class NServiceBusHandlerUnitOfWorkManager : IManageUnitsOfWork
     {
         private readonly IWindsorContainer _windsorContainer;
-        private IDisposable _containerScope;
 
         public NServiceBusHandlerUnitOfWorkManager(IWindsorContainer windsorContainer)
         {
@@ -18,18 +19,34 @@ namespace Errordite.Core.IoC
 
         public void Begin()
         {
-            _containerScope = _windsorContainer.BeginScope();
+            
         }
 
         public void End(Exception ex = null)
         {
-            if (ex == null)
+            var a = _windsorContainer.Resolve<IComponentAuditor>();
+            try
             {
+                //TODO - not sure why this isn't injected
                 var session = _windsorContainer.Resolve<IAppSession>();
-                session.Commit();
-                session.Close(); //shouldn't really have to do this - it should be disposable
+                if (ex == null)
+                {
+                    session.Commit();
+                }
+                else
+                {
+                    a.Trace(GetType(), "Exception passed to End()");
+                    a.Error(GetType(), ex);
+                }
+                session.Close();
             }
-            _containerScope.Dispose();
+            catch (Exception ex1)
+            {
+                ErrorditeClient.ReportException(ex1);
+                a.Trace(GetType(), "Exception in UoW");
+                a.Error(GetType(), ex1);
+                throw;
+            }
         }
     }
 }
