@@ -11,9 +11,7 @@ using Raven.Abstractions.Exceptions;
 namespace Errordite.Core.ServiceBus
 {
     /// <summary>
-    /// MessageHandlerSessionBase handles session management for a message, we close the session (which is per thread lifestyle)
-    /// at the end of each message being handled, this disposes of the session and ensures a new session is created for
-    /// each message handler regardless of whether they run on the same thread.
+    /// This doesn't really do anything "session"-y  except set the RequestLimit.  We could easily get rid.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public abstract class MessageHandlerSessionBase<T> : SessionAccessBase, IHandleMessages<T> where T : ErrorditeNServiceBusMessageBase
@@ -39,7 +37,6 @@ namespace Errordite.Core.ServiceBus
 
                 HandleMessage(message);
                 Trace("Processed message in {0}ms".FormatWith(watch.ElapsedMilliseconds));
-                Session.Commit();
             }
             catch (Exception e)
             {
@@ -60,10 +57,6 @@ namespace Errordite.Core.ServiceBus
                 ErrorditeClient.ReportException(e, false);
                 Error(e, message.Id);
                 throw;
-            }
-            finally
-            {
-                Session.Close();
             }
         }
     }
