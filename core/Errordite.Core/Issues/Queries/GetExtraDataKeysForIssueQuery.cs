@@ -12,10 +12,9 @@ namespace Errordite.Core.Issues.Queries
     {
         public GetExtraDataKeysForIssueResponse Invoke(GetExtraDataKeysForIssueRequest request)
         {
-            return new GetExtraDataKeysForIssueResponse()
+            return new GetExtraDataKeysForIssueResponse
                 {
-                    Keys =
-                        Query<IssueExtraDataKeys, Issues_ExtraDataKeys>()
+                    Keys = Query<IssueExtraDataKeys, Issues_ExtraDataKeys>()
                             .FirstOrDefault(i => i.IssueId == Issue.GetId(request.IssueId))
                             .IfPoss(r => r.Keys, new List<string>()),
                 };
@@ -23,8 +22,7 @@ namespace Errordite.Core.Issues.Queries
     }
 
     public interface IGetExtraDataKeysForIssueQuery : IQuery<GetExtraDataKeysForIssueRequest, GetExtraDataKeysForIssueResponse>
-    {
-    }
+    {}
 
     public class GetExtraDataKeysForIssueResponse
     {

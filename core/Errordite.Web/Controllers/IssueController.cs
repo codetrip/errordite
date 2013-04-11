@@ -102,25 +102,25 @@ namespace Errordite.Web.Controllers
 
             int ii = 0;
 
-            var extraDataKeys = _getExtraDataKeysForIssueQuery.Invoke(new GetExtraDataKeysForIssueRequest()
-                {
-                    IssueId = issue.Id,
-                }).Keys;
+            var extraDataKeys = _getExtraDataKeysForIssueQuery.Invoke(new GetExtraDataKeysForIssueRequest
+            {
+                IssueId = issue.Id,
+            }).Keys ?? new List<string>();
 
             var ruleViewModels = issue.Rules.OfType<PropertyMatchRule>().Select(r => new RuleViewModel
-                {
-                    ErrorProperty = r.ErrorProperty,
-                    StringOperator = r.StringOperator,
-                    Value = r.Value,
-                    Index = ii++,
-                    Properties = _configuration.GetRuleProperties(r.ErrorProperty)
-                                               .Union(extraDataKeys.Select(k => new SelectListItem()
-                                                   {
-                                                       Selected = r.ErrorProperty == k,
-                                                       Text = k,
-                                                       Value = k
-                                                   })),
-                }).ToList();
+            {
+                ErrorProperty = r.ErrorProperty,
+                StringOperator = r.StringOperator,
+                Value = r.Value,
+                Index = ii++,
+                Properties = _configuration.GetRuleProperties(r.ErrorProperty)
+                                           .Union(extraDataKeys.Select(k => new SelectListItem
+                                            {
+                                                Selected = r.ErrorProperty == k,
+                                                Text = k,
+                                                Value = k
+                                            })),
+            }).ToList();
 
             var rulesViewModel = new UpdateIssueViewModel
             {
