@@ -128,12 +128,12 @@ p {
 pre.prettyprint {
   font-size: 12px;
   font-family: Consolas, Menlo, Monaco, Lucida Console;
-  padding: 12px 0 0 15px!important;
+  padding: 12px 0 0 15px !important;
   line-height: 14px;
-  border: 1px solid #D8DEE2!important;
+  border: 1px solid #d8dee2 !important;
   border-radius: 0;
   float: left;
-  width: 100%; }
+  width: 934px; }
 pre.lang-xml .tag {
   color: maroon; }
 pre.lang-xml .att, pre.lang-xml .atn {
@@ -755,7 +755,7 @@ section {
   background-position: -108px -18px; }
 
 .icon-arrow-left {
-  background-position: 0 -36px; }
+  background-position: -0 -36px; }
 
 .icon-arrow-right {
   background-position: -165px -18px; }
@@ -1494,6 +1494,37 @@ nav {
       top: 48px;
       width: 0; }
 
+.help {
+  float: left; }
+  .help.content {
+    padding-left: 20px;
+    padding-right: 20px; }
+  .help p {
+    float: left;
+    margin: 0 0 10px 0;
+    text-align: justify; }
+  .help h1 {
+    float: left;
+    margin: 10px 0 15px 0; }
+  .help h2 {
+    float: left;
+    margin: 10px 0 5px 0;
+    font-weight: 600; }
+  .help ul {
+    float: left;
+    width: 100%;
+    list-style: square; }
+  .help ol {
+    float: left;
+    width: 100%; }
+  .help li {
+    float: left;
+    width: 100%; }
+    .help li span.heading {
+      font-weight: 600;
+      color: #525252;
+      font-size: 15px; }
+
 .payment-plan {
   margin: 0 0 10px 10px;
   background-color: #e7f0f5; }
@@ -1503,7 +1534,8 @@ nav {
     color: #525252;
     font-size: 17px;
     margin: 0;
-    font-weight: 700; }
+    font-weight: 700;
+    float: none; }
     .payment-plan h2 span {
       float: right;
       font-size: 13px;
@@ -1511,7 +1543,11 @@ nav {
       margin-top: 3px;
       font-weight: 600; }
   .payment-plan ul {
-    padding: 0 0 0 10px; }
+    padding: 0 0 0 10px;
+    float: none;
+    list-style: none; }
+  .payment-plan li {
+    float: none; }
   .payment-plan div {
     background-color: #95c0df;
     padding: 7px 8px 8px 8px; }
@@ -1742,28 +1778,4 @@ nav {
     margin: 0;
     font-size: 13px;
     margin-bottom: 10px; }
-
-.help {
-  float: left; }
-  .help p {
-    float: left;
-    margin: 0 0 10px 0; }
-  .help h1 {
-    float: left;
-    margin: 10px 0 15px 0; }
-  .help h2 {
-    float: left;
-    margin: 10px 0 5px 0;
-    font-weight: 600; }
-  .help ul {
-    float: left;
-    width: 100%;
-    list-style: square; }
-    .help ul li {
-      float: left;
-      width: 100%; }
-      .help ul li span.heading {
-        font-weight: 600;
-        color: #525252;
-        font-size: 15px; }
 

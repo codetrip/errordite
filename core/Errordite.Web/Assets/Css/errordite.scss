@@ -192,7 +192,7 @@ pre {
     border: 1px solid #D8DEE2!important;
     border-radius: 0;
 	float: left;
-	width: 100%;
+	width: 934px;
   }
   &.lang-xml {
     .tag {
@@ -1882,6 +1882,47 @@ nav {
 }
 }
 
+
+.help {
+	&.content{
+		padding-left: 20px;
+		padding-right: 20px;
+	}
+	float:left;
+	p {
+		float:left;
+		margin:0 0 10px 0;
+		text-align: justify;
+	}
+	h1 {
+		float:left;
+		margin:10px 0 15px 0;
+	}
+	h2 {
+		float:left;
+		margin:10px 0 5px 0;
+		font-weight:$boldfontweight;
+	}
+	ul {
+		float:left;
+		width:100%;
+		list-style:square;
+	}
+	ol {
+		float:left;
+		width:100%;
+	}
+	li {
+			float:left;
+			width:100%;
+			span.heading {
+				font-weight:$boldfontweight;
+				color:$mediumbrown;
+				font-size:15px;
+			}
+		}
+}
+
 .payment-plan {
     margin: 0 0 10px 10px;
     background-color:$greyblue;
@@ -1892,6 +1933,7 @@ nav {
         font-size:17px;
         margin:0;
         font-weight: $extraboldfontweight;
+		float:none;
         span {
             float:right;
             font-size:13px;
@@ -1902,7 +1944,10 @@ nav {
     }
     ul {
         padding:0 0 0 10px;
+		float:none;
+		list-style:none;
     }
+	li {float:none;}
     div {
         background-color:$darkblue;
         padding:7px 8px 8px 8px;
@@ -2225,36 +2270,5 @@ nav {
 		margin:0;
 		font-size:13px;
 		margin-bottom:10px;
-	}
-}
-
-.help {
-	float:left;
-	p {
-		float:left;
-		margin:0 0 10px 0;
-	}
-	h1 {
-		float:left;
-		margin:10px 0 15px 0;
-	}
-	h2 {
-		float:left;
-		margin:10px 0 5px 0;
-		font-weight:$boldfontweight;
-	}
-	ul {
-		float:left;
-		width:100%;
-		list-style:square;
-		li {
-			float:left;
-			width:100%;
-			span.heading {
-				font-weight:$boldfontweight;
-				color:$mediumbrown;
-				font-size:15px;
-			}
-		}
 	}
 }
