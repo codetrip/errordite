@@ -1,0 +1,78 @@
+﻿@using Errordite.Web.Models.Docs
+@using Errordite.Web.Extensions
+@{
+    ViewBag.Title = "About Errordite";
+}
+
+@section header
+{
+    @Html.Partial("Docs/Tabs", DocsTab.Api) 
+}
+
+<section class="centered" id="about">
+    <div class="content help">
+        <h2>About Errordite</h2>
+        <p>Errordite was developed with 2 goals in mind:</p>
+        <ol>
+            <li>to expose exactly the types of Error (or <em>Issues</em>) being produced by an application</li>
+            <li>to help these errors to be diagnosed and fixed as quickly as possible</li>
+        </ol>
+        
+        <p>Errordite is different to other error logging applications in that we 
+            <strong>allow you to redefine exactly which Errors belong to which Issues</strong>.
+        </p>
+        
+        <p>Incoming Errors are allocated to an Issue in a sensible way, but if required you can adjust the rules that determine what
+            Errors get attached to each Issue - <em>based on any attribute of your Errors</em>. We've
+            also designed a <strong>super-intuitive visual way of seeing and definining these rules</strong>.  Check out the video
+            on the home page for a demonstration.
+        </p>
+
+@*        <h2>Error logging - the limitations</h2>
+        <p>
+            Software development has come on a great deal in recent years. Agile methods have made it more likely that people 
+            actually get the software they want. Automated testing has made it more likely that the software works properly 
+            first time out. All manner of technologies have reduced the friction involved in development.  
+        </p>
+        <p>
+           Regardless of all this all software will contain bugs and generate exceptions - and the ability to deal with these 
+            exceptions is somewhat limited. For a typical web application, each exception will result in an entry in a log 
+            entry locally, on the web server. This is fine, except: 
+        </p>
+        <ul>
+            <li>if you have multiple servers, your logs will be spread across multiple locations
+</li><li>you can't see how many different Issues you have; only a mass of Errors, which may be all the same underlying problem, or all different
+</li><li>it's just text - it has no structure
+</li><li>there is no application-level context around the errors. Who was logged in at the time? What URL were they accessing? etc.
+</li><li>it's passive - you only find out that something's gone wrong if you carefully sift through the logs (or more likely when a user reports a bug) 
+</li><li>there's no way of directly recording information against an error: even if someone solves the problem, if it recurs in the future you can't see the information previously learned about it 
+        </li></ul>
+        <p>So not fine at all then, really.  To summarise, it’s hard to know exactly what type of errors your application is 
+            suffering from and similarly difficult to be sure you’ve fixed them. all errors for all applications sent to a single place.
+        </p>
+        <p>
+With all this in mind, we developed Errordite to address all these problems. </p>
+        <h2>How Errordite makes it better</h2>
+        <p>Errordite:
+        </p>
+        <ul>
+            <li>is a central place to manage all Errors from all your applications and servers
+</li><li>groups all your Errors into Issues - you don't get swamped by repeated occurrences
+</li><li>logically structures the Error information, including nested exceptions
+</li><li>stores whatever contextual data you choose to send with each Error (e.g. HTTP context, current username, environment information)
+</li><li>alerts you whenever a new Error occurs, or an Issue you thought was solved recurs
+</li><li>allows you to record information against an Issue and assign it to different users for investigation
+        </li></ul>
+        <h2>What makes Errordite special?</h2>
+        <p>
+           Other services exist to receive your application's errors - so what's different about Errordite?
+        </p>
+        <ul>
+            <li>live-updating dashboard showing you each Error and Issue occurring in your application</li>
+            <li>you can decide what constitutes an Issue.  You can define flexible matching rules on the exception type, 
+                exception message, some part of the call stack, the URL, a particular user, the user agent and much more </li>
+        </ul>*@
+       
+    </div>
+   
+</section>

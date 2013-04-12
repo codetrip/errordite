@@ -99,7 +99,7 @@ namespace Errordite.Core.Matching
 
             return error.ExceptionInfos
                         .Where(ei => ei.ExtraData.IfPoss(d => d.ContainsKey(ErrorProperty)))
-                        .Select(ei => ei.ExtraData[ErrorProperty]);
+                        .Select(ei => TreatValue(ei.ExtraData[ErrorProperty]));
         }
 
         public override string GetDescription()

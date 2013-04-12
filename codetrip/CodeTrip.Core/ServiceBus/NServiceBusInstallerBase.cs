@@ -42,7 +42,12 @@ namespace CodeTrip.Core.ServiceBus
                         .ImpersonateSender(false)
                         .ConditionalLoadMessageHandlers(LoadMessageHandlers)
                     .CreateBus()
-                    .Start(() => Configure.Instance.ForInstallationOn<NServiceBus.Installation.Environments.Windows>().Install());
+                    .Start(() =>
+                        {
+                            Configure.Instance.DisableSecondLevelRetries();
+                            Configure.Instance.ForInstallationOn<NServiceBus.Installation.Environments.Windows>()
+                                     .Install();
+                        });
             }
             catch (ReflectionTypeLoadException ex)
             {

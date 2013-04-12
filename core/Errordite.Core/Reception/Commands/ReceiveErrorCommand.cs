@@ -55,7 +55,7 @@ namespace Errordite.Core.Reception.Commands
                 ? issues.FirstOrDefault(i => i.RulesMatch(error)) 
                 : issues.FirstOrDefault(i => i.Id != existingIssue.Id && i.RulesMatch(error));
 
-            Trace("Matching issue: {0}", existingIssue == null ? "NONE" : existingIssue.Id);
+            Trace("Matching issue: {0}", matchingIssue == null ? "NONE" : matchingIssue.Id);
 
             //if we are re-ingesting an issues errors and we cant find another match, do nothing so the error remains attached to the existing issue
             if (matchingIssue == null && existingIssue != null)
