@@ -78,6 +78,11 @@ namespace Errordite.Web.Controllers
         ]
         public ActionResult Index(IssueErrorsPostModel postModel)
         {
+            //this is a bit of a hack but the paging URL is generated based on the page URL so if we get
+            //an ajax call just assume it's error page
+            if (Request.IsAjaxRequest())
+                return Errors(new ErrorCriteriaPostModel());
+
             var viewModel = GetViewModel(postModel, GetSinglePagingRequest());
 
             if(viewModel == null)
