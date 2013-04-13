@@ -7,7 +7,7 @@
         <input type="hidden" id="page-link" value="@Html.ReplacementPageLink(Model.PagingId, Model.Tab)" /> 
 
         <div class="pages">
-            Page @Html.TextBox("pgno", Model.CurrentPage, Model.LastPage == 1 ? new {disabled="disabled"} : null) of <b>@Model.LastPage</b><i data-title="Enter the page number you want to go to and click anywhere on the page to trigger the page transition" class="icon-info"></i>
+            Page @Html.TextBox("pgno", Model.CurrentPage, Model.LastPage == 1 ? new {disabled="disabled"} : null) of <b>@Model.LastPage</b>
         </div>
         
         <div class="pagination">

@@ -176,6 +176,7 @@
     <Compile Include="..\Errordite.Build\Assembly\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="ActionFilters\SelectApplicationActionFilter.cs" />
     <Compile Include="ActionFilters\StoreQueryInCookie.cs" />
     <Compile Include="ActionFilters\ViewDataActionFilter.cs" />
     <Compile Include="ActionFilters\RoleAuthorisation.cs" />

@@ -7,18 +7,18 @@
 	return s.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
 };;
 
-
   Initialisation = (function() {
-
     function Initialisation() {}
 
     Initialisation.prototype.init = function(ajax) {
       var $tabHolders, controller, tabHolder, _i, _len;
+
       $('.icon-info').tooltip();
       $('.tool-tip').tooltip();
       $('div.search-box').tooltip();
       $('.dropdown-toggle').dropdown();
       $tabHolders = $('.tabs');
+      new Paging().init();
       prettyPrint();
       for (_i = 0, _len = $tabHolders.length; _i < _len; _i++) {
         tabHolder = $tabHolders[_i];
@@ -76,7 +76,6 @@
   })();
 
   Spinner = (function() {
-
     function Spinner() {}
 
     Spinner.prototype.disable = function() {
@@ -111,15 +110,15 @@
 
 
   Tabs = (function() {
-
     Tabs.get = function(anyNodeInside) {
       var $tabHolder, tabManager;
+
       $tabHolder = $(anyNodeInside).closest('.tabs');
       if (!$tabHolder.length) {
         return null;
       }
       tabManager = $tabHolder.data('controller');
-      if (!(tabManager != null)) {
+      if (tabManager == null) {
         tabManager = new Tabs($tabHolder);
         tabManager.init();
         $tabHolder.data('controller', tabManager);
@@ -134,6 +133,7 @@
 
     Tabs.prototype.show = function(tabName) {
       var $activeNode, $tab, inactiveNode;
+
       if (this.parentNode.length === 0) {
         return;
       }
@@ -155,6 +155,7 @@
     Tabs.prototype.init = function() {
       var first,
         _this = this;
+
       if (this.node.data('init') === true) {
         return;
       }
@@ -172,11 +173,12 @@
       };
       return this.node.delegate('li a.tablink', 'click', function(e) {
         var $a, tabName;
+
         e.preventDefault();
         $a = $(e.currentTarget);
         tabName = $a.data('val');
         _this.show(tabName);
-        if (!(window.history.pushState != null)) {
+        if (window.history.pushState == null) {
           return;
         }
         return window.history.pushState(tabName, '', $a.attr('href'));
@@ -196,9 +198,9 @@
 
 
   Paging = (function() {
-
     function Paging(baseUrl) {
       var paging;
+
       paging = this;
       this.currentPage = 0;
       this.currentSize = 0;
@@ -213,6 +215,7 @@
 
       this.navigate = function($paging, url) {
         var $ajaxContainer;
+
         $ajaxContainer = $paging.closest('.ajax-container');
         if ($ajaxContainer.length) {
           if (paging.baseUrl !== void 0) {
@@ -234,6 +237,7 @@
       this.init = function() {
         this.rootNode.delegate('input#pgno', 'blur', function(e) {
           var $paging, $this;
+
           e.preventDefault();
           $this = $(this);
           $paging = $this.closest('.paging');
@@ -241,14 +245,22 @@
             return paging.navigate($paging, decodeURI(paging.getBaseUrl($paging).replace('[PGNO]', $this.val()).replace('[PGSZ]', $paging.find('select#pgsz').val())));
           }
         });
+        this.rootNode.delegate('input#pgno', 'keypress', function(e) {
+          if (e.keyCode === 13) {
+            $(this).blur();
+            return false;
+          }
+        });
         this.rootNode.delegate('input#pgno', 'focus', function(e) {
           var $this;
+
           e.preventDefault();
           $this = $(this);
           return $this.data('currentPage', $this.val());
         });
         this.rootNode.delegate('select#pgsz', 'change', function(e) {
           var $paging, $this, firstItemNumber, newPageNumber;
+
           e.preventDefault();
           $this = $(this);
           $paging = $this.closest('.paging');
@@ -258,6 +270,7 @@
         });
         this.rootNode.delegate('div.pagination a', 'click', function(e) {
           var $paging, $this;
+
           e.preventDefault();
           $this = $(this);
           $paging = $this.closest('.paging');
@@ -268,6 +281,7 @@
         });
         return this.contentNode.delegate('th.sort a', 'click', function(e) {
           var $paging, $this;
+
           e.preventDefault();
           $this = $(this);
           $paging = $this.closest('.paging');
@@ -290,6 +304,7 @@
 
   jQuery(function() {
     var init;
+
     init = new Initialisation();
     return init.init(false);
   });

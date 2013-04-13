@@ -17,6 +17,9 @@ class Initialisation
 
 		$tabHolders = $('.tabs')
 
+		#init paging for non-async case.  Any async cases do their own init which (should) override this (bit of a hack)
+		new Paging().init();
+
 		prettyPrint();		
 
 		for tabHolder in $tabHolders			
@@ -190,12 +193,18 @@ class Paging
 		this.init = -> 
 
 			this.rootNode.delegate 'input#pgno', 'blur', (e) -> 
+			
 				e.preventDefault()
 				$this = $ this
 				$paging = $this.closest '.paging'
 				if $this.val() != $this.data 'currentPage'
 					paging.navigate $paging, decodeURI(paging.getBaseUrl($paging).replace('[PGNO]', $this.val()).replace('[PGSZ]', $paging.find('select#pgsz').val()))				
 		
+			this.rootNode.delegate 'input#pgno', 'keypress', (e) ->
+				if e.keyCode == 13 
+					$(this).blur()
+					false
+
 			this.rootNode.delegate 'input#pgno', 'focus', (e) -> 
 				e.preventDefault()
 				$this = $ this
