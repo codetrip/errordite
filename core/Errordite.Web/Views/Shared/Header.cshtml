@@ -1,0 +1,161 @@
+﻿@using CodeTrip.Core.Caching.Entities
+@using Errordite.Core.Domain.Organisation
+@using Errordite.Core.Identity
+@using Errordite.Web
+@using Errordite.Web.Extensions
+@using Errordite.Web.Models.Navigation
+@using System.Linq
+@using CodeTrip.Core.Extensions
+@{
+   var appContext = ViewData.GetAppContext();
+}
+
+<div class="welcome-bar-container">
+    <div class="welcome-bar">
+        
+        <div class="applications">
+            @if (appContext.AuthenticationStatus == AuthenticationStatus.Authenticated)
+            {
+                var applications = ViewData.GetCore().GetApplications().Items;
+                var selectedApplication = applications.FirstOrDefault(a => a.FriendlyId == ViewData.GetSelectedApplication());
+                var selectedApplicationName = selectedApplication == null ? null : selectedApplication.Name;
+            
+                <span class="header-org">@appContext.CurrentUser.Organisation.Name</span>
+                <input type="hidden" value="@(selectedApplication == null ? string.Empty : selectedApplication.FriendlyId)" name="ApplicationId" id="ApplicationId" />
+                 
+                if (applications.Count > 1)
+                 {
+                     <ul class="popup popup-pills">
+                         <li class="dropdown" id="applications">
+                             <a class="dropdown-toggle" data-toggle="dropdown" href="#applications">
+                                 @if (selectedApplicationName.IsNullOrEmpty())
+                                 {
+                                     <text>All Applications (@applications.Count())</text>
+                                 }
+                                 else
+                                 {
+                                     @selectedApplicationName
+                                 }
+                                 <b class="caret"></b>
+                                 
+                             </a>
+                             <ul class="dropdown-menu">
+                                 <li>
+                                     <a href="@Url.CurrentRequest("{0}=-1".FormatWith(WebConstants.RouteValues.SetApplication))">All Applications (@applications.Count())</a>
+                                 </li>
+                                 @foreach (var application in applications)
+                                 {
+                                     <li>
+                                         <a href="@Url.CurrentRequest("{0}={1}".FormatWith(WebConstants.RouteValues.SetApplication, application.FriendlyId))">@application.Name</a>
+                                     </li>
+                                 }
+                             </ul>
+                         </li>
+                     </ul>
+                 }
+            }
+        </div>
+        <nav class="links">
+            @if (appContext.AuthenticationStatus == AuthenticationStatus.Anonymous)
+            {
+                @: Welcome to Errordite &nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.SignIn()">Sign In</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.SignUp()">Sign Up</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.Contact()">Contact Us</a>
+            }
+            else if (appContext.AuthenticationStatus == AuthenticationStatus.NotAuthenticated)
+            {
+                @: Welcome back <strong>@appContext.CurrentUser.FirstName</strong> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.SignIn()">Sign In</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.SignOut()">Not @appContext.CurrentUser.FirstName?</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.Contact()">Contact Us</a>
+            }
+            else
+            {
+                <text>
+                    Welcome back <strong>@appContext.CurrentUser.FirstName
+                                     @if (appContext.Impersonated)
+                                     {
+                                         <a href="@Url.Impersonate()">(IMP)</a>
+                                     }
+                                 </strong>&nbsp;&nbsp;|&nbsp;&nbsp; 
+                    <a href="@Url.YourDetails()">Your Details</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.SignOut()">Sign Out</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.Contact()">Contact Us</a>
+                </text> 
+            }
+        </nav>
+    </div>
+</div>
+<div class="header-container">
+    <div class="header">
+        <div class="logo">
+            <a href="@Url.Home(ViewData.GetAppContext())"><img alt="Errordite: Home" src="@Url.Content("~/Assets/Images/header-logo.png")"/></a>
+        </div>
+        <div class="search">
+            @using (Html.BeginForm("index", "search", FormMethod.Get))
+            {
+                <div class="search-box" data-title="@(appContext.AuthenticationStatus != AuthenticationStatus.Authenticated ? "Please sign in to enable search" : string.Empty)">
+                    <i class="icon-search"></i>
+                    <input autocomplete="off" class="search-input" id="q" name="q" placeholder="Search your errors & issues..." type="text"  @(appContext.AuthenticationStatus != AuthenticationStatus.Authenticated ? "disabled=disabled" : string.Empty) />
+                    <input type="submit" class="search-btn" value="Go" @(appContext.AuthenticationStatus != AuthenticationStatus.Authenticated ? "disabled=disabled" : string.Empty) />
+                </div>
+            }
+        </div>
+        <nav class="main-nav">
+            <div class="nav-container">
+                <ul class="nav">
+                    @if (appContext.AuthenticationStatus == AuthenticationStatus.Authenticated && (appContext.CurrentUser.Role == UserRole.SuperUser || appContext.Impersonated))
+                    {
+                        <li class="nav-item sysadmin">
+                            <a href="@Url.Organisations()">System <span class="rotate">›</span></a>
+                            <div class="pointer">
+                                <ul>
+                                    <li><a href="@Url.Organisations()">Organisations ›</a></li> 
+                                    <li><a href="@Url.ServiceStatus()">Service Status ›</a></li> 
+                                    <li><a href="@Url.SyncIndexes()">Sync Indexes ›</a></li> 
+                                    <li><a href="@Url.Impersonate()">Impersonate ›</a></li> 
+                                    <li><a href="@Url.FlushAllCaches()">Flush Caches ›</a></li> 
+                                    @foreach (var cache in Enum.GetNames(typeof (CacheProfiles)))
+                                    {
+                                        <li><a href="@Url.Cache(cache)">@cache Cache ›</a></li>
+                                    }
+                                </ul>
+                            </div>
+                        </li>
+                    }
+                    <li class="nav-item dashboard">
+                        <a href="@Url.Dashboard()">Dashboard <span class="rotate">›</span></a>
+                        @if (appContext.AuthenticationStatus == AuthenticationStatus.Authenticated)
+                        {
+                            <div class="pointer">
+                                <ul>
+                                    <li><a href="@Url.Issues()">Issues ›</a></li>
+                                    <li><a href="@Url.Errors()">Errors ›</a></li>
+                                    <li><a href="@Url.ActivityLog()">Activity Log ›</a></li>
+                                    <li><a href="@Url.AddIssue()">Add an Issue ›</a></li>
+                                </ul>
+                            </div>
+                        }
+                    </li>
+                    <li class="nav-item admin">
+                        <a href="@Url.Applications()">Account <span class="rotate">›</span></a>
+                        @if (appContext.AuthenticationStatus == AuthenticationStatus.Authenticated)
+                        {
+                            <div class="pointer">
+                                <ul>
+                                    @foreach (var adminPage in Breadcrumbs.GetById(BreadcrumbId.Admin, Url).Children)
+                                    {
+                                        <li><a href="@adminPage.Link">@adminPage.Title ›</a></li>
+                                    }
+                                </ul>
+                            </div>
+                        }
+                    </li>
+                    <li class="nav-item docs">
+                        <a href="@Url.QuickStart()">Docs <span class="rotate">›</span></a>
+                        <div class="pointer">
+                            <ul>
+                                <li><a href="@Url.QuickStart()">Getting Started ›</a></li>
+                                <li><a href="@Url.Pricing()">Pricing & Plans ›</a></li>
+                                <li><a href="@Url.Clients()">Clients ›</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</div>

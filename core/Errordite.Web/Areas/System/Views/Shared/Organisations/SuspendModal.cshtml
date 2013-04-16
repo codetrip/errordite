@@ -1,0 +1,29 @@
+﻿@using CodeTrip.Core.Web
+@model Errordite.Web.Areas.System.Models.Organisations.SuspendOrganisationViewModel
+           
+<div class="modal hide" id="suspend-modal">
+    @using (Html.BeginForm("suspendorganisation", "organisations", FormMethod.Post, new { id = "suspendForm" }))
+    {
+        @Html.HiddenFor(m => m.OrganisationId)
+        <div class="modal-header">
+            <h4>Suspend Organisation</h4>
+        </div>
+        <div class="modal-body">
+            <div class="form">
+                <ul>
+                    <li>
+                        <label class="control-label" for="Reason">Suspend Reason</label>
+                        @Html.DropDownListForEnum(m => m.Reason, Resources.Admin.ResourceManager)
+                    </li>
+                    <li>
+                        @Html.TextAreaFor(m => m.Message, new {placeholder = "Enter a message...", @style="height:60px;amargin-top:10px"})
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-small btn-blue">OK</button>
+            <button class="btn btn-small btn-grey" data-dismiss="modal">Cancel</button>
+        </div>
+    }
+</div>

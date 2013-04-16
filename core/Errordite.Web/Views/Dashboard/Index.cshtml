@@ -1,0 +1,91 @@
+﻿
+@using Errordite.Web.Extensions
+@using Errordite.Web.Models.Dashboard
+@model DashboardViewModel
+           
+@{
+    ViewBag.Title = "Dashboard";
+}
+
+@section topheader
+{
+    <div class="dark-container">
+        <section class="centered">
+            @Html.Partial("Dashboard/Links", Model)
+        </section> 
+    </div>
+}
+
+<section id="dashboard" class="centered">
+    <div class="content">
+        @Html.HiddenFor(m => m.LastErrorDisplayed)
+        @Html.HiddenFor(m => m.LastIssueDisplayed)
+        @if (Model.SingleApplicationId != null && Model.Stats.Issues < 3)
+        {
+            <div class="two-col">
+                <div class="small-padding right">
+                    <p>
+						This is your <strong>dashboard</strong>, where you can see the most recent issues and errors affecting your system, the issues that need your attention, and overall statistics.
+                    </p>
+                    <p>
+                        You do not have much going on at the moment.  
+                        Click @Html.ActionLink("here", "generateerror", "applications", new {applicationId = Model.SingleApplicationId, returnUrl = Url.CurrentRequest()}, new{@class="post"}) to generate a test error and get things going.
+                    </p>
+                </div>
+            </div>
+            <div class="two-col">
+                <div class="small-padding right">
+                    
+            
+                    @if (Model.SingleApplicationId != null)
+                    {
+                        <p class="textbox">
+                            Your token is <b>@Model.SingleApplicationToken</b>
+                        </p>
+                    }
+                    
+                    <p>
+                        To get started for real download the client and configure it into your application - details @Html.ActionLink("here", "client", "help").  
+                    </p>
+
+                    @if (Model.TestIssueId != null)
+                    {
+                        <p>
+                            You've created a test issue - to see it, click <a href="@Url.Issue(Model.TestIssueId)">here</a>.
+                        </p>
+                    }
+                </div>
+            </div>
+            <div class="clear border"></div>
+        }
+
+        @if (Model.HasApplications)
+        {
+            <h2 class="section-header"><i class="icon-barchart"></i>Errors from the last 7 days</h2>
+            <div class="content graph" id="date-graph"></div>
+            
+            <div class="two-col">
+                <h2 class="section-header"><i class="icon-files"></i>Most Recent Issues</h2>
+                <div id="issues">
+                    @foreach(var issue in Model.RecentIssues)
+                    {
+                        @Html.Partial("Dashboard/Issue", issue)
+                    }
+                </div>
+				
+            </div>
+            <div class="two-col">
+                <h2 class="section-header"><i class="icon-file"></i>Most Recent Errors</h2>
+                <div id="errors">
+                    @foreach (var error in Model.RecentErrors)
+                    {
+                        @Html.Partial("Dashboard/Error", error)
+                    }
+                </div>
+            </div>
+        }
+        <div class="clear"></div>
+    </div>
+</section>
+
+
