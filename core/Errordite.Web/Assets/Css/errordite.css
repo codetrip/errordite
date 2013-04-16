@@ -1498,7 +1498,7 @@ nav {
   float: left; }
   .help.content {
     padding-left: 20px;
-    padding-right: 20px; }
+    /*width: 864px;*/ }
   .help p {
     float: left;
     margin: 0 0 10px 0;
