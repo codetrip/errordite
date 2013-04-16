@@ -25,7 +25,7 @@ namespace Errordite.Web.Controllers
         }
 
         [GenerateBreadcrumbs(BreadcrumbId.Help)]
-        public ActionResult GettingStarted()
+        public ActionResult QuickStart()
         {
             return View();
         }
@@ -36,20 +36,26 @@ namespace Errordite.Web.Controllers
             return View();
         }
 
-        [GenerateBreadcrumbs(BreadcrumbId.Client)]
-        public ActionResult Client()
+        [GenerateBreadcrumbs(BreadcrumbId.Clients)]
+        public ActionResult Clients()
         {
             return View();
         }
 
-        [GenerateBreadcrumbs(BreadcrumbId.Client)]
+        [GenerateBreadcrumbs(BreadcrumbId.Clients)]
         public ActionResult SendErrorWithJson()
         {
             return View();
         }
 
-        [GenerateBreadcrumbs(BreadcrumbId.Client)]
+        [GenerateBreadcrumbs(BreadcrumbId.Clients)]
         public ActionResult PythonClient()
+        {
+            return View();
+        }
+
+        [GenerateBreadcrumbs(BreadcrumbId.Clients)]
+        public ActionResult RubyClient()
         {
             return View();
         }

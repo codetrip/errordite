@@ -41,13 +41,13 @@ class Initialisation
 				success: (data) ->
 					alert data
 				failure: ->
-					'failed'
+                    'failed'
 
 		$('body').on 'click', '[data-confirm]', ->
 			confirm $(this).data('confirm')
 
 		$('body').on 'click', 'a#hide-notification', ->
-			$(this).closest('#notifications').hide('fast');
+			$(this).closest('#notifications').hide('fast')
 
 	datepicker: ($root) ->
 		$root.find('div#daterange').daterangepicker
@@ -60,6 +60,7 @@ class Initialisation
 			, (start, end) ->
 				$('#daterange span').html start.toString('MMMM d, yyyy') + ' - ' + end.toString('MMMM d, yyyy')
 				$('#daterange input').val start.toString('u') + '|' + end.toString('u')
+
 
 class Spinner
 
@@ -240,6 +241,6 @@ window.Initalisation = Initialisation
 
 window.Errordite.Spinner = new Spinner();
 
-jQuery -> 
-	init = new Initialisation()
-	init.init(false)
+jQuery ->
+    init = new Initialisation()
+    init.init(false)

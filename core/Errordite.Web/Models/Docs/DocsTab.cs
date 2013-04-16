@@ -3,11 +3,8 @@ namespace Errordite.Web.Models.Docs
 {
     public enum DocsTab
     {
-        GettingStarted,
+        QuickStart,
         Pricing,
-        Api,
-        Client,
-        PythonClient,
-        SendErrorWithJson
+        Clients
     }
 }

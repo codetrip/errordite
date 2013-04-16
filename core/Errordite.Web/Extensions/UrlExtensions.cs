@@ -140,20 +140,10 @@ namespace Errordite.Web.Extensions
         #endregion
 
         #region Help
-
-        public static string ClientDownload(this UrlHelper helper)
-        {
-            return "http://errordite.codeplex.com/releases";
-        }
-
-        public static string ClientSource(this UrlHelper helper)
-        {
-            return "http://errordite.codeplex.com/SourceControl/list/changesets";
-        }
         
-        public static string ClientCodeplex(this UrlHelper helper)
+        public static string ClientGitHub(this UrlHelper helper)
         {
-            return "http://errordite.codeplex.com";
+            return "https://github.com/errordite/dotnet-client";
         }
 
         public static string ClientNuget(this UrlHelper helper)
@@ -161,34 +151,24 @@ namespace Errordite.Web.Extensions
             return "http://nuget.org/packages?q=errordite";
         }
 
-        public static string Client(this UrlHelper helper)
+        public static string Clients(this UrlHelper helper)
         {
-            return helper.Action("client", "docs", new { Area = string.Empty });
+            return helper.Action("clients", "docs", new { Area = string.Empty });
         }
 
         public static string Api(this UrlHelper helper)
         {
             return helper.Action("api", "docs", new { Area = string.Empty });
         }
-
-        public static string JsonFormat(this UrlHelper helper)
-        {
-            return helper.Action("senderrorwithjson", "docs", new { Area = string.Empty });
-        }
         
-        public static string GettingStarted(this UrlHelper helper)
+        public static string QuickStart(this UrlHelper helper)
         {
-            return helper.Action("gettingstarted", "docs", new { Area = string.Empty });
+            return helper.Action("quickstart", "docs", new { Area = string.Empty });
         }
 
         public static string Pricing(this UrlHelper helper)
         {
             return helper.Action("pricing", "docs", new { Area = string.Empty });
-        }
-
-        public static string PythonClient(this UrlHelper helper)
-        {
-            return helper.Action("pythonclient", "help", new { Area = string.Empty });
         }
 
         public static string Privacy(this UrlHelper helper)

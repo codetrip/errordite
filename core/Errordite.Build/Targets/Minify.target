@@ -56,7 +56,8 @@
     		  $(SourcePath)\core\Errordite.Web\Assets\Js\issue.js;
     		  $(SourcePath)\core\Errordite.Web\Assets\Js\rules.js;
     		  $(SourcePath)\core\Errordite.Web\Assets\Js\dashboard.js;
-    		  $(SourcePath)\core\Errordite.Web\Assets\Js\systemadmin.js;">
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\systemadmin.js;
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\docs.js;">
 	  </JavaScriptFiles>
     </ItemGroup>
 

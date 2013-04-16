@@ -4,17 +4,14 @@
          
 <div class="tabs-container">
     <ul class="tabs">
-        <li @(Model == DocsTab.GettingStarted ? " class=active" : " class=inactive") >
-            <a href="@Url.GettingStarted()">Getting Started</a>
+        <li @(Model == DocsTab.QuickStart ? " class=active" : " class=inactive") >
+            <a href="@Url.QuickStart()">Quick Start</a>
         </li>
         <li @(Model == DocsTab.Pricing ? " class=active" : " class=inactive") >
             <a href="@Url.Pricing()">Pricing & Plans</a>
         </li>
-        <li @(Model == DocsTab.Client ? " class=active" : " class=inactive") >
-            <a href="@Url.Client()">.NET Client</a>
-        </li>
-        <li @(Model == DocsTab.SendErrorWithJson ? " class=active" : " class=inactive") >
-            <a href="@Url.JsonFormat()">Send error with JSON</a>
+        <li @(Model == DocsTab.Clients ? " class=active" : " class=inactive") >
+            <a href="@Url.Clients()">Clients</a>
         </li>
     </ul>
 </div>

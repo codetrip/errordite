@@ -153,7 +153,9 @@
     <None Include="..\Errordite.Build\Configuration\log4net.config">
       <Link>Config\log4net.config</Link>
     </None>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

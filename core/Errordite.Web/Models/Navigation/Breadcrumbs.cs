@@ -80,7 +80,7 @@ namespace Errordite.Web.Models.Navigation
                     //new Breadcrumb(BreadcrumbId.WhatIsIt, string.Empty, "What Is It"),
                     new Breadcrumb(BreadcrumbId.About, "", "About"), 
                     new Breadcrumb(BreadcrumbId.Help, string.Empty, "Getting Started"),
-                    new Breadcrumb(BreadcrumbId.Client, string.Empty, "Client"),
+                    new Breadcrumb(BreadcrumbId.Clients, string.Empty, "Client"),
                     new Breadcrumb(BreadcrumbId.Faq, string.Empty, "FAQ"),
                     new Breadcrumb(BreadcrumbId.SendErrorWithJson, string.Empty, "Send error with JSON"),
                     new Breadcrumb(BreadcrumbId.Pricing, string.Empty, "Pricing"),
@@ -106,13 +106,8 @@ namespace Errordite.Web.Models.Navigation
                         new Breadcrumb(BreadcrumbId.AddGroup, string.Empty, "Add Group"),
                         new Breadcrumb(BreadcrumbId.EditGroup, string.Empty, "Edit Group")
                     }),
-                    new Breadcrumb(BreadcrumbId.PaymentPlan, urlHelper.PaymentPlan(), "Payment Plans", new[]
-                    {
-                        new Breadcrumb(BreadcrumbId.Upgrade, string.Empty, "Upgrade"),
-                        new Breadcrumb(BreadcrumbId.Downgrade, string.Empty, "Downgrade"),
-                    }),
                     new Breadcrumb(BreadcrumbId.Billing, urlHelper.Billing(), "Billing"),
-                    new Breadcrumb(BreadcrumbId.OrgSettings, urlHelper.Settings(), "Settings"),
+                    new Breadcrumb(BreadcrumbId.Settings, urlHelper.Settings(), "Settings"),
                 }),
                 new Breadcrumb(BreadcrumbId.SysAdmin, urlHelper.SystemAdmin(), "System Admin", new []
                 {
@@ -165,7 +160,7 @@ namespace Errordite.Web.Models.Navigation
         Help,
         //WhatIsIt,
         Pricing,
-        Client,
+        Clients,
         Faq,
         Features,
         SendErrorWithJson,
@@ -173,10 +168,8 @@ namespace Errordite.Web.Models.Navigation
         Privacy,
 
         Admin,
-        Upgrade,
         Billing,
-        OrgSettings,
-        Downgrade,
+        Settings,
 
         Applications,
         AddApplication,
@@ -199,7 +192,6 @@ namespace Errordite.Web.Models.Navigation
         AdminOrganisations,
         AdminFlushCaches,
         AdminCache,
-        PaymentPlan,
         About
     }
 }

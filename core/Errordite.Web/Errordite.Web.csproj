@@ -345,11 +345,8 @@
     <Content Include="Assets\Css\errordite.css">
       <DependentUpon>errordite.scss</DependentUpon>
     </Content>
-    <Content Include="Assets\Css\errordite.scss">
-      <Compile>True</Compile>
-      <Minify>False</Minify>
-      <CompileStyle>Nested</CompileStyle>
-      <DebugInfo>False</DebugInfo>
+    <Content Include="Assets\Css\errordite.min.css">
+      <DependentUpon>errordite.scss</DependentUpon>
     </Content>
     <Content Include="Assets\Css\img\ajax-loader.gif" />
     <Content Include="Assets\Css\fonts.css" />
@@ -374,6 +371,12 @@
     <Content Include="Assets\Css\lib\normalize.css">
       <Compile>True</Compile>
       <Minify>False</Minify>
+    </Content>
+    <Content Include="Assets\Css\StyleSheet1.css">
+      <DependentUpon>StyleSheet1.scss</DependentUpon>
+    </Content>
+    <Content Include="Assets\Css\StyleSheet1.min.css">
+      <DependentUpon>StyleSheet1.scss</DependentUpon>
     </Content>
     <Content Include="Assets\Images\check.png" />
     <Content Include="Assets\Images\counter.png" />
@@ -547,9 +550,6 @@
     <Content Include="Views\Shared\Notifications.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Account\PaymentPlan.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Shared\EditorTemplates\RuleViewModel.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -711,7 +711,7 @@
     <Content Include="Views\Shared\Docs\Tabs.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Docs\GettingStarted.cshtml" />
+    <Content Include="Views\Docs\QuickStart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Docs\Pricing.cshtml" />
@@ -826,14 +826,14 @@
     <Content Include="Views\EmailTest\List.cshtml" />
     <Content Include="Views\EmailTest\Index.cshtml" />
     <Content Include="Views\Account\Settings.cshtml" />
-    <Content Include="Views\Docs\Client.cshtml" />
+    <Content Include="Views\Shared\Docs\DotNetClient.cshtml" />
     <Content Include="Views\Shared\Users\List.cshtml" />
     <Content Include="Areas\System\Views\Organisations\Users.cshtml" />
     <Content Include="Areas\System\Views\Organisations\Index.cshtml" />
     <Content Include="Areas\System\Views\Impersonation\Index.cshtml" />
     <Content Include="Views\Shared\Applications\List.cshtml" />
     <Content Include="Views\Shared\Errors\TraceMessages.cshtml" />
-    <Content Include="Views\Docs\SendErrorWithJson.cshtml" />
+    <Content Include="Views\Shared\Docs\SendErrorWithJson.cshtml" />
     <Content Include="packages.config" />
     <Content Include="Views\Shared\Master.cshtml" />
     <Content Include="Views\Shared\HeaderAssets.cshtml" />
@@ -885,7 +885,7 @@
     <Content Include="Views\Dashboard\Activity.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Docs\PythonClient.cshtml" />
+    <Content Include="Views\Shared\Docs\PythonClient.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Issue\Comments.cshtml" />
@@ -907,6 +907,18 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Docs\About.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\Css\errordite.scss" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Docs\RubyClient.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Docs\Clients.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\Css\StyleSheet1.scss" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

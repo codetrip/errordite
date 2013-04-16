@@ -21,8 +21,8 @@ namespace Errordite.Web.Controllers
             _setOrganisationTimezoneCommand = setOrganisationTimezoneCommand;
         }
 
-        [HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.PaymentPlan)]
-        public ActionResult PaymentPlan()
+        [HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.Billing)]
+        public ActionResult Billing()
         {
             var plans = _getAvailablePaymentPlansQuery.Invoke(new GetAvailablePaymentPlansRequest()).Plans;
 
@@ -30,8 +30,7 @@ namespace Errordite.Web.Controllers
 
             return View(new OrganisationViewModel
             {
-                Plans = plans
-                    .Select(p => new PaymentPlanViewModel
+                Plans = plans.Select(p => new PaymentPlanViewModel
                 {
                     CurrentPlan = p.Id == currentPlan.Id,
                     Upgrade = p.Rank > currentPlan.Rank,
@@ -41,13 +40,7 @@ namespace Errordite.Web.Controllers
             });
         }
 
-        [HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.Upgrade)]
-        public ActionResult Upgrade()
-        {
-            return View();
-        }
-
-        [HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.OrgSettings)]
+        [HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.Settings)]
         public ActionResult Settings()
         {
             return View(new OrganisationSettingsViewModel
@@ -70,18 +63,6 @@ namespace Errordite.Web.Controllers
             ConfirmationNotification(Resources.Admin.OrganbisationSettingsUpdated);
 
             return RedirectToAction("settings");
-        }
-
-        [HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.Downgrade)]
-        public ActionResult Downgrade()
-        {
-            return View();
-        }
-
-        [HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.Billing)]
-        public ActionResult Billing()
-        {
-            return View();
         }
     }
 }

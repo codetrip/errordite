@@ -192,7 +192,10 @@ pre {
     border: 1px solid #D8DEE2!important;
     border-radius: 0;
 	float: left;
-	width: 934px;
+	width: 800px;
+	&.nested {
+		width:760px;
+	}
   }
   &.lang-xml {
     .tag {
@@ -254,7 +257,7 @@ table {
     background-color: $extralightblue;
     .centered {
         background-color: $extralightblue;
-        padding:0 5px 15px 15px;
+        padding:0 0 15px 10px;
     }
     span.details {
         font-size:13px;
@@ -313,8 +316,8 @@ table {
     .links {
 	  height: 32px;
       float: right;
-      width: 450px;
-      margin:4px 0 0 0;
+      width: 440px;
+      margin:4px 8px 0 0;
 	  border-bottom:2px solid $darkestbrown;
 	  margin-top: 16px;
     }
@@ -1882,17 +1885,152 @@ nav {
 }
 }
 
+.sidenav {
+  margin-bottom: 20px;
+  margin-left: 0;
+  list-style: none;
+  padding-left:5px;
+  > {
+    li > a {
+      display: block;
+      &:hover, &:focus {
+        text-decoration: none;
+        background-color: $extralightblue;
+      }
+      > img {
+        max-width: none;
+      }
+    }
+    .pull-right {
+      float: right;
+    }
+  }
+}
+
+.sidenav-tabs {
+  *zoom: 1;
+  &:before {
+    display: table;
+    line-height: 0;
+    content: "";
+  }
+  &:after {
+    display: table;
+    line-height: 0;
+    content: "";
+    clear: both;
+  }
+  > {
+    li {
+      float: left;
+      > a {
+        padding-right: 12px;
+        padding-left: 12px;
+        margin-right: 2px;
+        line-height: 14px;
+        padding-top: 8px;
+        padding-bottom: 8px;
+        line-height: 20px;
+        border: 1px solid transparent;
+        -webkit-border-radius: 4px 4px 0 0;
+        -moz-border-radius: 4px 4px 0 0;
+        border-radius: 4px 4px 0 0;
+        &:hover, &:focus {
+          border-color: #eeeeee #eeeeee #dddddd;
+        }
+      }
+      margin-bottom: -1px;
+    }
+    .active > a {
+      color: #555555;
+      cursor: default;
+      background-color: #ffffff;
+      border: 1px solid #ddd;
+      border-bottom-color: transparent;
+      &:hover, &:focus {
+        color: #555555;
+        cursor: default;
+        background-color: #ffffff;
+        border: 1px solid #ddd;
+        border-bottom-color: transparent;
+      }
+    }
+  }
+}
+
+.tabbable {
+  *zoom: 1;
+  &:before {
+    display: table;
+    line-height: 0;
+    content: "";
+  }
+  &:after {
+    display: table;
+    line-height: 0;
+    content: "";
+    clear: both;
+  }
+  .sidetab-content {
+	  overflow: auto;
+	}
+}
+
+.tabs-left > .sidenav-tabs {
+	border-bottom: 0;
+}
+
+.sidetab-content > {
+	.tab-pane {
+		display: none;
+	}
+	.active {
+		display: block;
+	}
+}
+
+.tabs-left > .sidenav-tabs > li {
+	float: none;
+}
+
+.tabs-left > .sidenav-tabs > li > a {
+	min-width: 74px;
+	margin-right: 0;
+	margin-bottom: 3px;
+}
+
+.tabs-left > .sidenav-tabs {
+	float: left;
+	margin-right: 19px;
+	border-right: 1px solid #ddd;
+	> li > a {
+	margin-right: -1px;
+	-webkit-border-radius: 4px 0 0 4px;
+	-moz-border-radius: 4px 0 0 4px;
+	border-radius: 4px 0 0 4px;
+	&:hover, &:focus {
+		border-color: #eeeeee #dddddd #eeeeee #eeeeee;
+	}
+	}
+	.active > a {
+	border-color: #ddd transparent #ddd #ddd;
+	*border-right-color: #ffffff;
+	&:hover, &:focus {
+		border-color: #ddd transparent #ddd #ddd;
+		*border-right-color: #ffffff;
+	}
+	}
+}
 
 .help {
 	&.content{
 		padding-left: 20px;
 		padding-right: 20px;
 	}
-	float:left;
 	p {
 		float:left;
 		margin:0 0 10px 0;
-		text-align: justify;
+		font-weight: $lightfontweight;
 	}
 	h1 {
 		float:left;
@@ -1905,7 +2043,6 @@ nav {
 	}
 	ul {
 		float:left;
-		width:100%;
 		list-style:square;
 	}
 	ol {
@@ -1915,6 +2052,7 @@ nav {
 	li {
 			float:left;
 			width:100%;
+		font-weight: $lightfontweight;
 			span.heading {
 				font-weight:$boldfontweight;
 				color:$mediumbrown;
