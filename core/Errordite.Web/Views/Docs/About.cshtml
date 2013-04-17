@@ -12,23 +12,58 @@
 <section class="centered" id="about">
     <div class="content help">
         <h2>About Errordite</h2>
-        <p>Errordite was developed with 2 goals in mind:</p>
+        <p>We have spent years helping develop busy websites and seeing the large numbers of errors filling up the logs.  Some of these errors
+            were caused by genuine bugs that slipped into production, while many others were the result of unexpected URLs from a searchbot or once-a-day database
+            contention problems, caused by some heavy-duty SQL job running at 3am.  The variety of severity and frequency of these different types of errors
+            combined with the flat, distributed and un-parseable nature of the error logs meant dealing with these errors in any proactive way was near-impossible.
+        </p>
+        <p>Errordite was developed as a solution to this problems, with 2 main goals in mind:
+        </p>
         <ol>
-            <li>to expose exactly the types of Error (or <em>Issues</em>) being produced by an application</li>
-            <li>to help these errors to be diagnosed and fixed as quickly as possible</li>
+            <li>to show you <strong>exactly what issues are being experienced</strong> by an application (that is to say the underlying problems resulting in errors)</li>
+            <li>to help you to <strong>process these issues</strong> - assign them to someone to be investigated and fixed them or else choose to ignore them</li>
         </ol>
         
-        <p>Errordite is different to other error logging applications in that we 
+        @*<p>Errordite is different to other error logging applications in that we 
             <strong>allow you to redefine exactly which Errors belong to which Issues</strong>.
         </p>
         
         <p>Incoming Errors are allocated to an Issue in a sensible way, but if required you can adjust the rules that determine what
             Errors get attached to each Issue - <em>based on any attribute of your Errors</em>. We've
-            also designed a <strong>super-intuitive visual way of seeing and definining these rules</strong>.  Check out the video
+            also designed a <strong>intuitive visual way of seeing and definining these rules</strong>.  Check out the video
             on the home page for a demonstration.
+        </p>*@
+        
+        <p>On the face of it, the natural way to categorise errors into issues is by their exception type and the method from which they were thrown,
+            and indeed this is Errordite's default mode. But sometimes this doesn't work.  For example:</p>
+        <ol>
+            <li>multiple different errors result in the same exception type (because of overzealous exception wrapping or because the 
+                precise error is explained in the exception message)
+            </li>
+            <li>conversely, a bunch of different exceptions all come from the same root cause, and you want to consider them the same
+                issue
+            </li>
+        </ol>
+        
+        <p>To get around these scenarios, Errordite has an intuitive and powerful visual rule creation facility to allow you to redefine
+            an issue so that it includes a more (or less) precise set of errors.  Check out the video on the home page to see how it works.
+            <strong>You can use any attribute of incoming errors to make a rule - including custom data.</strong>
         </p>
-
-@*        <h2>Error logging - the limitations</h2>
+        
+        <h2>Features</h2>
+        <p>As well as this, Errordite has:</p>
+        <ul><li>a live updating dashboard, so you can see errors happening in real time</li>
+            <li>alerts when a new issue occurs, or a solved issue recurs</li>
+            <li>graphs to show you the historical number of occurrences of an issue per day plus their distribution over 24 hours </li>
+            <li>quick Lucene-based search</li>
+            <li>the ability to receive custom data with each error</li>
+            <li>an overall activity log so you can see exactly who has done what to which issues</li>
+            <li>integration with HipChat</li>
+        </ul>
+        
+@*        <h2>Roadmap</h2>
+        <p>This is just the start.</p>*@
+        @*        <h2>Error logging - the limitations</h2>
         <p>
             Software development has come on a great deal in recent years. Agile methods have made it more likely that people 
             actually get the software they want. Automated testing has made it more likely that the software works properly 
