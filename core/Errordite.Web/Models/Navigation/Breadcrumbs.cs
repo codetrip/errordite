@@ -70,7 +70,6 @@ namespace Errordite.Web.Models.Navigation
                     new Breadcrumb(BreadcrumbId.Issues, urlHelper.Issues(), "Issues", new []
                     {
                         new Breadcrumb(BreadcrumbId.AddIssue, string.Empty, "Add Issue"),
-                        new Breadcrumb(BreadcrumbId.MergeIssues, string.Empty, "Merge Issues"),
                         new Breadcrumb(BreadcrumbId.Issue, string.Empty, "Issue"),
                     }),
                     new Breadcrumb(BreadcrumbId.Errors, string.Empty, "Errors")
@@ -79,10 +78,8 @@ namespace Errordite.Web.Models.Navigation
                 {
                     //new Breadcrumb(BreadcrumbId.WhatIsIt, string.Empty, "What Is It"),
                     new Breadcrumb(BreadcrumbId.About, "", "About"), 
-                    new Breadcrumb(BreadcrumbId.Help, string.Empty, "Getting Started"),
+                    new Breadcrumb(BreadcrumbId.QuickStart, string.Empty, "Quick Start"),
                     new Breadcrumb(BreadcrumbId.Clients, string.Empty, "Client"),
-                    new Breadcrumb(BreadcrumbId.Faq, string.Empty, "FAQ"),
-                    new Breadcrumb(BreadcrumbId.SendErrorWithJson, string.Empty, "Send error with JSON"),
                     new Breadcrumb(BreadcrumbId.Pricing, string.Empty, "Pricing"),
                     new Breadcrumb(BreadcrumbId.Features, string.Empty, "Features"),
                     new Breadcrumb(BreadcrumbId.Privacy, string.Empty, "Privacy"),
@@ -157,13 +154,10 @@ namespace Errordite.Web.Models.Navigation
         MergeIssues,
         Issue,
 
-        Help,
-        //WhatIsIt,
+        QuickStart,
         Pricing,
         Clients,
-        Faq,
         Features,
-        SendErrorWithJson,
         TermsAndConditions,
         Privacy,
 

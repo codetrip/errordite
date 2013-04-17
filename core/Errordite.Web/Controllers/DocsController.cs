@@ -8,7 +8,7 @@ namespace Errordite.Web.Controllers
 {
     public class DocsController : ErrorditeController
     {
-        private IGetAvailablePaymentPlansQuery _getAvailablePaymentPlansQuery;
+        private readonly IGetAvailablePaymentPlansQuery _getAvailablePaymentPlansQuery;
 
         public DocsController(IGetAvailablePaymentPlansQuery getAvailablePaymentPlansQuery)
         {
@@ -24,7 +24,7 @@ namespace Errordite.Web.Controllers
             return View(paymentPlans);
         }
 
-        [GenerateBreadcrumbs(BreadcrumbId.Help)]
+        [GenerateBreadcrumbs(BreadcrumbId.QuickStart)]
         public ActionResult QuickStart()
         {
             return View();
@@ -38,24 +38,6 @@ namespace Errordite.Web.Controllers
 
         [GenerateBreadcrumbs(BreadcrumbId.Clients)]
         public ActionResult Clients()
-        {
-            return View();
-        }
-
-        [GenerateBreadcrumbs(BreadcrumbId.Clients)]
-        public ActionResult SendErrorWithJson()
-        {
-            return View();
-        }
-
-        [GenerateBreadcrumbs(BreadcrumbId.Clients)]
-        public ActionResult PythonClient()
-        {
-            return View();
-        }
-
-        [GenerateBreadcrumbs(BreadcrumbId.Clients)]
-        public ActionResult RubyClient()
         {
             return View();
         }
