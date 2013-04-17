@@ -1,0 +1,37 @@
+﻿@using Errordite.Web.Models.Docs
+
+@{
+    ViewBag.Title = "Errordite Clients";
+}
+
+@section header
+{
+    @Html.Partial("Docs/Tabs", DocsTab.Clients) 
+}
+
+<section id="clients" class="centered">
+    <div class="content" >
+        <div class="sidenav">
+            <ul class="sidenav-tabs">
+                <li class="active"><a href="#dotnet" data-tab="dotnet" data-toggle="tab">.NET</a></li>
+                <li class=""><a href="#python" data-tab="python" data-toggle="tab">Python (Django)</a></li>
+                <li class=""><a href="#ruby" data-tab="ruby" data-toggle="tab">Ruby</a></li>
+                <li class=""><a href="#other" data-tab="other" data-toggle="tab">Other</a></li>
+            </ul>
+            <div class="sidenav-content help">
+                <div class="sidenav-tab active" id="dotnet">
+                    @Html.Partial("Docs/DotNetClient")
+                </div>
+                <div class="sidenav-tab" id="python">
+                    @Html.Partial("Docs/PythonClient")
+                </div>
+                <div class="sidenav-tab" id="ruby">
+                    @Html.Partial("Docs/RubyClient")
+                </div>
+                <div class="sidenav-tab" id="other">
+                    @Html.Partial("Docs/SendErrorWithJson")
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
