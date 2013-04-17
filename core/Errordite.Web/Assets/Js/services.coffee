@@ -45,7 +45,7 @@ jQuery ->
 						if result.success
 							location.reload()
 						else
-							alert "Failed to delete messages, please try again."
+							return Errordite.Alert.show("Failed to delete messages, please try again.")
 						true
 
 					error: ->
@@ -67,11 +67,11 @@ jQuery ->
 						if result.success
 							location.reload()
 						else
-							alert "Failed to return error messages to their source queue, please try again."
+							Errordite.Alert.show("Failed to return error messages to their source queue, please try again.")
 						true
 
 					error: ->
-						alert "Failed to return error messages to their source queue, please try again."
+						Errordite.Alert.show("Failed to return error messages to their source queue, please try again.")
 
 					dataType: "json"
 					type: "POST"
@@ -93,11 +93,11 @@ jQuery ->
 						if (result.success)
 							return location.reload()
 						else
-							alert "Service failed to " + (start ? "start" : "stop") + ", please try again."
+							Errordite.Alert.show("Service failed to " + (start ? "start" : "stop") + ", please try again.")
 					
 						true
 					error: -> 
-						alert "Service failed to " + (start ? "start" : "stop") + ", please try again."
+						Errordite.Alert.show("Service failed to " + (start ? "start" : "stop") + ", please try again.")
 					dataType: "json"
 					type: "POST"
 

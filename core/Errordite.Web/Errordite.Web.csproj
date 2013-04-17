@@ -263,6 +263,7 @@
     <Compile Include="Areas\System\Models\Organisations\SuspendOrganisationViewModel.cs" />
     <Compile Include="ActionFilters\GenerateBreadcrumbs.cs" />
     <Compile Include="ApiControllers\IssueApiController.cs" />
+    <Content Include="Assets\Js\components.js" />
     <Compile Include="Controllers\ApplicationsController.cs" />
     <Compile Include="Areas\System\Controllers\CacheController.cs" />
     <Compile Include="Areas\System\Controllers\OrganisationsController.cs" />
@@ -919,6 +920,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Js\docs.coffee" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Docs\DjangoClient.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

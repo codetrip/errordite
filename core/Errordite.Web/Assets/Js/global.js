@@ -41,8 +41,15 @@
           }
         });
       });
-      $('body').on('click', '[data-confirm]', function() {
-        return confirm($(this).data('confirm'));
+      $('body').on('click', '[data-confirm]', function(e) {
+        var $this;
+        e.preventDefault();
+        $this = $(this);
+        return Errordite.Confirm.show($this.data('confirm'), {
+          okCallBack: function() {
+            return $this.closest('form').submit();
+          }
+        });
       });
       return $('body').on('click', 'a#hide-notification', function() {
         return $(this).closest('#notifications').hide('fast');

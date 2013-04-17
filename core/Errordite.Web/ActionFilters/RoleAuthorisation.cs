@@ -24,7 +24,7 @@ namespace Errordite.Web.ActionFilters
         /// <param name="filterContext"></param>
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            AppContext appContext = ObjectFactory.GetObject<AppContext>();
+            var appContext = ObjectFactory.GetObject<AppContext>();
 
             if (appContext.Impersonated)
                 return;

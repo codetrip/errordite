@@ -55,7 +55,7 @@
               if (result.success) {
                 location.reload();
               } else {
-                alert("Failed to delete messages, please try again.");
+                return Errordite.Alert.show("Failed to delete messages, please try again.");
               }
               return true;
             },
@@ -79,12 +79,12 @@
               if (result.success) {
                 location.reload();
               } else {
-                alert("Failed to return error messages to their source queue, please try again.");
+                Errordite.Alert.show("Failed to return error messages to their source queue, please try again.");
               }
               return true;
             },
             error: function() {
-              return alert("Failed to return error messages to their source queue, please try again.");
+              return Errordite.Alert.show("Failed to return error messages to their source queue, please try again.");
             },
             dataType: "json",
             type: "POST"
@@ -113,14 +113,14 @@
               if (result.success) {
                 return location.reload();
               } else {
-                alert("Service failed to " + (start != null ? start : {
+                Errordite.Alert.show("Service failed to " + (start != null ? start : {
                   "start": "stop"
                 }) + ", please try again.");
               }
               return true;
             },
             error: function() {
-              return alert("Service failed to " + (start != null ? start : {
+              return Errordite.Alert.show("Service failed to " + (start != null ? start : {
                 "start": "stop"
               }) + ", please try again.");
             },
