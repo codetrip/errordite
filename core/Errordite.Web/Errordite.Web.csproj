@@ -372,12 +372,6 @@
       <Compile>True</Compile>
       <Minify>False</Minify>
     </Content>
-    <Content Include="Assets\Css\StyleSheet1.css">
-      <DependentUpon>StyleSheet1.scss</DependentUpon>
-    </Content>
-    <Content Include="Assets\Css\StyleSheet1.min.css">
-      <DependentUpon>StyleSheet1.scss</DependentUpon>
-    </Content>
     <Content Include="Assets\Images\check.png" />
     <Content Include="Assets\Images\counter.png" />
     <Content Include="Assets\Images\errordite.png" />
@@ -390,6 +384,12 @@
     </Content>
     <Content Include="Assets\Js\dashboard.js">
       <DependentUpon>dashboard.coffee</DependentUpon>
+    </Content>
+    <Content Include="Assets\Js\docs.js">
+      <DependentUpon>docs.coffee</DependentUpon>
+    </Content>
+    <Content Include="Assets\Js\docs.min.js">
+      <DependentUpon>docs.coffee</DependentUpon>
     </Content>
     <Content Include="Assets\Js\errors.js">
       <DependentUpon>errors.coffee</DependentUpon>
@@ -918,7 +918,7 @@
     <Content Include="Views\Docs\Clients.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\Css\StyleSheet1.scss" />
+    <Content Include="Assets\Js\docs.coffee" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

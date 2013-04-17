@@ -139,14 +139,24 @@ namespace Errordite.Web.Extensions
 
         #endregion
 
-        #region Help
-        
-        public static string ClientGitHub(this UrlHelper helper)
+        #region Help 
+
+        public static string DotNetClientGitHub(this UrlHelper helper)
         {
             return "https://github.com/errordite/dotnet-client";
         }
 
-        public static string ClientNuget(this UrlHelper helper)
+        public static string DjangoClientGitHub(this UrlHelper helper)
+        {
+            return "https://github.com/errordite/django-errordite";
+        }
+
+        public static string RubyClientGitHub(this UrlHelper helper)
+        {
+            return "https://github.com/errordite/errordite-ruby";
+        }
+
+        public static string DotNetClientNuget(this UrlHelper helper)
         {
             return "http://nuget.org/packages?q=errordite";
         }

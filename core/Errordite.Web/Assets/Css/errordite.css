@@ -136,6 +136,8 @@ pre.prettyprint {
   width: 800px; }
   pre.prettyprint.nested {
     width: 760px; }
+  pre.prettyprint.textonly {
+    padding: 12px 0 12px 15px!important; }
 pre.lang-xml .tag {
   color: maroon; }
 pre.lang-xml .att, pre.lang-xml .atn {
@@ -1496,23 +1498,13 @@ nav {
       top: 48px;
       width: 0; }
 
-.sidenav {
+.sidenav-tabs {
+  *zoom: 1;
   margin-bottom: 20px;
   margin-left: 0;
   list-style: none;
-  padding-left: 5px; }
-  .sidenav > li > a {
-    display: block; }
-    .sidenav > li > a:hover, .sidenav > li > a:focus {
-      text-decoration: none;
-      background-color: #f3f8fc; }
-    .sidenav > li > a > img {
-      max-width: none; }
-  .sidenav > .pull-right {
-    float: right; }
-
-.sidenav-tabs {
-  *zoom: 1; }
+  padding-left: 5px;
+  min-height: 230px; }
   .sidenav-tabs:before {
     display: table;
     line-height: 0;
@@ -1526,19 +1518,18 @@ nav {
     float: left;
     margin-bottom: -1px; }
     .sidenav-tabs > li > a {
-      padding-right: 12px;
-      padding-left: 12px;
+      display: block;
+      padding: 8px 12px;
       margin-right: 2px;
-      line-height: 14px;
-      padding-top: 8px;
-      padding-bottom: 8px;
       line-height: 20px;
       border: 1px solid transparent;
       -webkit-border-radius: 4px 4px 0 0;
       -moz-border-radius: 4px 4px 0 0;
       border-radius: 4px 4px 0 0; }
       .sidenav-tabs > li > a:hover, .sidenav-tabs > li > a:focus {
-        border-color: #eeeeee #eeeeee #dddddd; }
+        border-color: #eeeeee #eeeeee #dddddd;
+        text-decoration: none;
+        background-color: #f3f8fc; }
   .sidenav-tabs > .active > a {
     color: #555555;
     cursor: default;
@@ -1552,53 +1543,46 @@ nav {
       border: 1px solid #ddd;
       border-bottom-color: transparent; }
 
-.tabbable {
+.sidenav {
   *zoom: 1; }
-  .tabbable:before {
+  .sidenav:before {
     display: table;
     line-height: 0;
     content: ""; }
-  .tabbable:after {
+  .sidenav:after {
     display: table;
     line-height: 0;
     content: "";
     clear: both; }
-  .tabbable .sidetab-content {
+  .sidenav .sidenav-content {
     overflow: auto; }
-
-.tabs-left > .sidenav-tabs {
-  border-bottom: 0; }
-
-.sidetab-content > .tab-pane {
-  display: none; }
-.sidetab-content > .active {
-  display: block; }
-
-.tabs-left > .sidenav-tabs > li {
-  float: none; }
-
-.tabs-left > .sidenav-tabs > li > a {
-  min-width: 74px;
-  margin-right: 0;
-  margin-bottom: 3px; }
-
-.tabs-left > .sidenav-tabs {
-  float: left;
-  margin-right: 19px;
-  border-right: 1px solid #ddd; }
-  .tabs-left > .sidenav-tabs > li > a {
-    margin-right: -1px;
-    -webkit-border-radius: 4px 0 0 4px;
-    -moz-border-radius: 4px 0 0 4px;
-    border-radius: 4px 0 0 4px; }
-    .tabs-left > .sidenav-tabs > li > a:hover, .tabs-left > .sidenav-tabs > li > a:focus {
-      border-color: #eeeeee #dddddd #eeeeee #eeeeee; }
-  .tabs-left > .sidenav-tabs .active > a {
-    border-color: #ddd transparent #ddd #ddd;
-    *border-right-color: #ffffff; }
-    .tabs-left > .sidenav-tabs .active > a:hover, .tabs-left > .sidenav-tabs .active > a:focus {
+    .sidenav .sidenav-content > .sidenav-tab {
+      display: none; }
+    .sidenav .sidenav-content > .active {
+      display: block; }
+  .sidenav > .sidenav-tabs {
+    float: left;
+    margin-right: 19px;
+    border-right: 1px solid #ddd;
+    border-bottom: 0; }
+    .sidenav > .sidenav-tabs > li {
+      float: none; }
+    .sidenav > .sidenav-tabs > li > a {
+      min-width: 105px;
+      margin-right: 0;
+      margin-bottom: 3px;
+      margin-right: -1px;
+      -webkit-border-radius: 4px 0 0 4px;
+      -moz-border-radius: 4px 0 0 4px;
+      border-radius: 4px 0 0 4px; }
+      .sidenav > .sidenav-tabs > li > a:hover, .sidenav > .sidenav-tabs > li > a:focus {
+        border-color: #eeeeee #dddddd #eeeeee #eeeeee; }
+    .sidenav > .sidenav-tabs .active > a {
       border-color: #ddd transparent #ddd #ddd;
       *border-right-color: #ffffff; }
+      .sidenav > .sidenav-tabs .active > a:hover, .sidenav > .sidenav-tabs .active > a:focus {
+        border-color: #ddd transparent #ddd #ddd;
+        *border-right-color: #ffffff; }
 
 .help.content {
   padding-left: 20px;
