@@ -151,6 +151,11 @@ namespace Errordite.Web.Extensions
             return "https://github.com/errordite/django-errordite";
         }
 
+        public static string PythonClientGitHub(this UrlHelper helper)
+        {
+            return "https://github.com/hugorodgerbrown/python-errordite";
+        }
+
         public static string RubyClientGitHub(this UrlHelper helper)
         {
             return "https://github.com/errordite/errordite-ruby";

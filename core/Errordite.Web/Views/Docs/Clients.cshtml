@@ -14,7 +14,8 @@
         <div class="sidenav">
             <ul class="sidenav-tabs">
                 <li class="active"><a href="#dotnet" data-tab="dotnet" data-toggle="tab">.NET</a></li>
-                <li class=""><a href="#python" data-tab="python" data-toggle="tab">Python (Django)</a></li>
+                <li class=""><a href="#python" data-tab="python" data-toggle="tab">Python</a></li>
+                <li class=""><a href="#django" data-tab="django" data-toggle="tab">Django</a></li>
                 <li class=""><a href="#ruby" data-tab="ruby" data-toggle="tab">Ruby</a></li>
                 <li class=""><a href="#other" data-tab="other" data-toggle="tab">Other</a></li>
             </ul>
@@ -24,6 +25,9 @@
                 </div>
                 <div class="sidenav-tab" id="python">
                     @Html.Partial("Docs/PythonClient")
+                </div>
+                <div class="sidenav-tab" id="django">
+                    @Html.Partial("Docs/DjangoClient")
                 </div>
                 <div class="sidenav-tab" id="ruby">
                     @Html.Partial("Docs/RubyClient")

@@ -21,8 +21,11 @@ jQuery ->
 				this.$appEl = $appEl
 
 			delete: () -> 
-				if window.confirm "Are you sure you want to delete this application, all associated errors will be deleted?"
-					this.$appEl.find('form:has(.delete-application)').submit()
+				$element = this.$appEl
+				Errordite.Confirm.show("Are you sure you want to delete the selected application?", {
+					okCallBack: -> 
+						$element.find('form:has(.delete-application)').submit()
+				})
 
 			generateError: () -> 
 				this.$appEl.find('form:has(.generate-error)').submit()				

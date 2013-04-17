@@ -1,7 +1,7 @@
 ﻿@using CodeTrip.Core.Web
 @model Errordite.Web.Areas.System.Models.Organisations.SuspendOrganisationViewModel
            
-<div class="modal hide" id="suspend-modal">
+<div class="modal hide fade" id="suspend-modal">
     @using (Html.BeginForm("suspendorganisation", "organisations", FormMethod.Post, new { id = "suspendForm" }))
     {
         @Html.HiddenFor(m => m.OrganisationId)

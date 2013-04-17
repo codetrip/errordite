@@ -77,16 +77,6 @@
         e.preventDefault();
         return renderReports();
       });
-      $issue.delegate('input[type="button"].confirm', 'click', function() {
-        var $this;
-        $this = $(this);
-        if (confirm("Are you sure you want to delete all errors associated with this issue?")) {
-          return $.post('/issue/purge', 'issueId=' + $this.attr('data-val'), function(data) {
-            clearErrors();
-            return $('span#instance-count').text("0");
-          });
-        }
-      });
       $issue.delegate('.what-if-reprocess', 'click', function(e) {
         e.preventDefault();
         return $(this).closest('form').ajaxSubmit({
@@ -100,7 +90,7 @@
             return $(e.currentTarget).after(msg);
           },
           error: function() {
-            return alert('Error. Please try again.');
+            return Errordite.Alert.show('An error has occured, please try again.');
           }
         });
       });
