@@ -42,6 +42,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Raven", "Raven", "{8AF64A7C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{D27C3FF8-71A3-48FC-B24A-848023D99162}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Errordite.Services", "Errordite.Services\Errordite.Services.csproj", "{0D4E2D91-2BE7-4B1C-8213-5907B109C0CA}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Errordite.Web.vsmdi
@@ -125,6 +127,12 @@ Global
 		{78F9A4B8-AD03-4207-9125-DCD0F5F69340}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{78F9A4B8-AD03-4207-9125-DCD0F5F69340}.Release|Any CPU.Build.0 = Release|Any CPU
 		{78F9A4B8-AD03-4207-9125-DCD0F5F69340}.Release|x86.ActiveCfg = Release|Any CPU
+		{0D4E2D91-2BE7-4B1C-8213-5907B109C0CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D4E2D91-2BE7-4B1C-8213-5907B109C0CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D4E2D91-2BE7-4B1C-8213-5907B109C0CA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0D4E2D91-2BE7-4B1C-8213-5907B109C0CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D4E2D91-2BE7-4B1C-8213-5907B109C0CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D4E2D91-2BE7-4B1C-8213-5907B109C0CA}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

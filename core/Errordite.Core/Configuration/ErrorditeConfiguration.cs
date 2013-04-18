@@ -23,6 +23,7 @@ namespace Errordite.Core.Configuration
         public int MaxPageSize { get; set; }
         public int IssueErrorLimit { get; set; }
         public int IssueCacheId { get; set; }
+        public int TrialLengthInDays { get; set; }
         public double IssueCacheTimeoutMinutes { get; set; }
         public string ReceptionHttpEndpoint { get; set; }
         public List<string> ErrorPropertiesForFiltering { get; set; }

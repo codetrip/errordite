@@ -1,14 +1,24 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using Errordite.Core.Domain.Organisation;
+using Errordite.Core.Organisations.Queries;
 using Errordite.Web.Models.Subscription;
 
 namespace Errordite.Web.Controllers
 {
+    [Authorize]
     public class SubscriptionController : ErrorditeController
     {
-        [HttpGet, Authorize]
-        public ActionResult SignUp()
+        private readonly IGetAvailablePaymentPlansQuery _getAvailablePaymentPlansQuery;
+
+        public SubscriptionController(IGetAvailablePaymentPlansQuery getAvailablePaymentPlansQuery)
+        {
+            _getAvailablePaymentPlansQuery = getAvailablePaymentPlansQuery;
+        }
+
+        [HttpGet]
+        public ActionResult SignUp(string planName)
         {
             var model = new SignUpViewModel
             {
@@ -20,10 +30,17 @@ namespace Errordite.Web.Controllers
             return View(model);
         }
 
-        [HttpPost, Authorize]
+        [HttpPost]
         public ActionResult SignUp(SignUpViewModel model)
         {
             return View();
+        }
+
+        [HttpGet]
+        public ActionResult TrialExpired()
+        {
+            var paymentPlans = _getAvailablePaymentPlansQuery.Invoke(new GetAvailablePaymentPlansRequest()).Plans.Where(p => !p.IsTrial);
+            return View(paymentPlans);
         }
     }
 }

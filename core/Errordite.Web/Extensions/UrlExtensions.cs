@@ -217,6 +217,20 @@ namespace Errordite.Web.Extensions
 
         #endregion
 
+        #region Subscription
+
+        public static string SubscriptionSignUp(this UrlHelper helper, string planName)
+        {
+            return helper.Action("signup", "subscription", new { Area = string.Empty, Name = planName });
+        }
+
+        public static string TrialExpired(this UrlHelper helper)
+        {
+            return helper.Action("trialexpired", "subscription", new { Area = string.Empty });
+        }
+
+        #endregion
+
         #region Users
 
         public static string Users(this UrlHelper helper, string groupId = null)
