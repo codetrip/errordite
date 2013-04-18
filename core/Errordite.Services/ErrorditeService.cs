@@ -1,92 +1,72 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using Amazon;
-using Amazon.SQS;
-using Amazon.SQS.Model;
+﻿using System;
+using System.IO;
+using System.Web.Http;
+using System.Web.Http.Dispatcher;
+using System.Web.Http.SelfHost;
+using CodeTrip.Core.Extensions;
+using CodeTrip.Core.IoC;
+using Errordite.Core.IoC;
+using Errordite.Core.WebApi;
+using Errordite.Services.Configuration;
+using Errordite.Services.IoC;
+using Errordite.Services.Queuing;
+using log4net.Config;
 
 namespace Errordite.Services
 {
-    public interface IErrorditeConsumer
-    { }
-
-    public class ReceptionErrorditeConsumer : IErrorditeConsumer
+    public class ErrorditeService
     {
-
-    }
-
-    public abstract class ErrorditeConsumerBase
-    {
-        private bool _serviceRunning;
+        private readonly SQSQueueProcessor _queueProcessor;
         private readonly ServiceConfiguration _serviceConfiguration;
-        private readonly List<Thread> _workerThreads = new List<Thread>();
-        private readonly AmazonSQS _amazonSQS;
 
-        protected ErrorditeConsumerBase(ServiceConfiguration serviceConfiguration)
+        public ErrorditeService(ServiceConfiguration serviceConfiguration)
         {
             _serviceConfiguration = serviceConfiguration;
-            _amazonSQS = AWSClientFactory.CreateAmazonSQSClient(
-                serviceConfiguration.AWSAccessKey,
-                serviceConfiguration.AWSSecretKey,
-                RegionEndpoint.EUWest1);
+            _queueProcessor = new SQSQueueProcessor(_serviceConfiguration);
         }
 
         public void Start()
         {
-            _serviceRunning = true;
-
-            for (int concurrentThreadCount = 0;
-                 concurrentThreadCount < _serviceConfiguration.Threads;
-                 concurrentThreadCount++)
-            {
-                var thread = new Thread(QueueProcessor);
-                thread.Start();
-                _workerThreads.Add(thread);
-            }
+            Configure();
+            _queueProcessor.Start();
         }
 
         public void Stop()
         {
-            _serviceRunning = false;
-
-            foreach (var thread in _workerThreads)
-            {
-                thread.Join(TimeSpan.FromSeconds(10));
-                thread.Abort();
-            }
+            _queueProcessor.Stop();
         }
 
-        private void QueueProcessor()
+        private void Configure()
         {
-            while (_serviceRunning)
-            {
-                var request = new ReceiveMessageRequest
-                {
-                    QueueUrl = _serviceConfiguration.QueueAddress,
-                    MaxNumberOfMessages = 1,
-                    WaitTimeSeconds = 20
-                };
+            ObjectFactory.Container.Install(new ServicesMasterInstaller());
+            XmlConfigurator.ConfigureAndWatch(new FileInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"config\log4net.config")));
 
-                var response = _amazonSQS.ReceiveMessage(request);
+            var config = new HttpSelfHostConfiguration("http://localhost:{0}".FormatWith(_serviceConfiguration.PortNumber));
 
-                if (response.IsSetReceiveMessageResult())
-                {
-                    foreach (var message in response.ReceiveMessageResult.Message)
-                    {
+            config.Services.Replace(typeof(IHttpControllerActivator), new WindsorHttpControllerActivator());
+            config.DependencyResolver = new WindsorDependencyResolver(ObjectFactory.Container);
+            config.MaxReceivedMessageSize = 655360;
+            config.MaxBufferSize = 655360;
+            //this has the effect of always defaulting to Json serialization as there are no Xml formatters registered
+            config.Formatters.XmlFormatter.SupportedMediaTypes.Clear();
+            config.Formatters.JsonFormatter.SerializerSettings = WebApiSettings.JsonSerializerSettings;
 
-                    }
-                }
+            config.Routes.MapHttpRoute(
+                name: "issueapi",
+                routeTemplate: "api/{orgid}/{controller}/{id}",
+                defaults: new { id = RouteParameter.Optional }
+            );
 
-                var messageRecieptHandle = response.ReceiveMessageResult.Message[0].ReceiptHandle;
-                var deleteRequest = new DeleteMessageRequest
-                {
-                    QueueUrl = _serviceConfiguration.QueueAddress,
-                    ReceiptHandle = messageRecieptHandle
-                };
+            config.Routes.MapHttpRoute(
+                name: "admin",
+                routeTemplate: "admin/{controller}/{action}/{id}",
+                defaults: new { id = RouteParameter.Optional }
+            );
 
-                _amazonSQS.DeleteMessage(deleteRequest);
-            }
+            var server = new HttpSelfHostServer(config);
+            server.OpenAsync().Wait();
+
+            Console.WriteLine("The server is running on endpoint http://localhost:{0}...".FormatWith(_serviceConfiguration.PortNumber));
         }
     }
 }

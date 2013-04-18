@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using CodeTrip.Core.Extensions;
 using CodeTrip.Core.IoC;
+using Errordite.Services.Configuration;
 using Magnum.CommandLineParser;
 using Topshelf;
 
@@ -15,7 +16,7 @@ namespace Errordite.Services
             {
                 var instance = ParseInstanceName(Environment.CommandLine);
 
-                Trace.Write("Attempting to start Asos.StyleManagement.Integration${0}".FormatWith(instance));
+                Trace.Write("Attempting to start Errordite.Services${0}".FormatWith(instance));
 
                 if (instance == null)
                 {
@@ -36,8 +37,6 @@ namespace Errordite.Services
                     c.SetServiceName(configuration.ServiceName);
                     c.SetDisplayName(configuration.ServiceDisplayName);
                     c.SetDescription(configuration.ServiceDiscription);
-
-                    c.DependsOnMsmq();
                     c.DependsOnEventLog();
 
                     c.UseLog4Net(@"config\log4net.config");
@@ -49,11 +48,11 @@ namespace Errordite.Services
 
                     c.Service<ErrorditeService>(s =>
                     {
-                        s.ConstructUsing(builder => new ErrorditeService(configuration, instance));
+                        s.ConstructUsing(builder => new ErrorditeService(configuration));
                         s.WhenStarted(svc => svc.Start());
                         s.WhenStopped(svc =>
                         {
-                            svc.Stop(instance);
+                            svc.Stop();
                             ObjectFactory.Container.Dispose();
                         });
                     });

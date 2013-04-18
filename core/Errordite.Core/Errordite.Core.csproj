@@ -235,6 +235,7 @@
     <Compile Include="Matching\PropertyMatchRule.cs" />
     <Compile Include="Matching\DefaultMatchRuleFactory.cs" />
     <Compile Include="Configuration\EmailConfiguration.cs" />
+    <Compile Include="Messages\Messages.cs" />
     <Compile Include="Messages\SyncIssueErrorCountsMessage.cs" />
     <Compile Include="Messages\ReceiveErrorMessage.cs" />
     <Compile Include="Messages\SendHipChatMessage.cs" />

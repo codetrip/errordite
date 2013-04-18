@@ -24,9 +24,9 @@ namespace CodeTrip.Core.Queueing
         {
             _action = action;
             _workerThread = new Thread(ProcessOutgoing)
-                                {
-                                    IsBackground = true
-                                };
+            {
+                IsBackground = true
+            };
             _workerThread.Start();
         }
 
