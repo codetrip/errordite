@@ -1,12 +1,19 @@
 ﻿using System;
 using CodeTrip.Core.Extensions;
 
-namespace Errordite.Services
+namespace Errordite.Services.Configuration
 {
+    public enum Service
+    {
+        Reception,
+        Notifications,
+        Events
+    }
+
     public class ServiceConfiguration
     {
-        public string Id { get; set; }
-        public string HttpEndpoint { get; set; }
+        public Service Service { get; set; }
+        public int PortNumber { get; set; }
         public string QueueAddress { get; set; }
         public string MachineName { get; set; }
         public string ServiceName { get; set; }
@@ -19,6 +26,8 @@ namespace Errordite.Services
         public string AWSSecretKey { get; set; }
         public int Threads { get; set; }
         public int RetryLimit { get; set; }
+        public int MaxNumberOfMessages { get; set; }
+        public int MaxOrganisationsPerMessageprocesor { get; set; }
 
         public string FullServiceName
         {

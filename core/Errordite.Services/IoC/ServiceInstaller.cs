@@ -6,6 +6,8 @@ using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
 using CodeTrip.Core.IoC;
 using Errordite.Core.IoC;
+using Errordite.Services.Configuration;
+using Errordite.Services.Serialisers;
 
 namespace Errordite.Services.IoC
 {
@@ -23,6 +25,11 @@ namespace Errordite.Services.IoC
             container.Register(Component.For<IHttpControllerActivator>()
                 .Instance(new WindsorHttpControllerActivator())
                 .LifestyleSingleton());
+
+            container.Register(Component.For<IMessageSerialiser>()
+               .ImplementedBy(typeof(ReceiveErrorMessageSerialiser))
+               .Named(Service.Reception.ToString())
+               .LifestyleTransient());
         }
     }
 }
