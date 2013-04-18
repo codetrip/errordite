@@ -2,6 +2,7 @@
 using System.Web.Mvc;
 using Errordite.Core.Identity;
 using Errordite.Web.Controllers;
+using Errordite.Web.Extensions;
 
 namespace Errordite.Web.ActionFilters
 {
@@ -18,9 +19,10 @@ namespace Errordite.Web.ActionFilters
 
             if(appContext.AuthenticationStatus == AuthenticationStatus.Authenticated && 
                appContext.CurrentUser.Organisation.PaymentPlan.IsTrial &&
-               appContext.CurrentUser.Organisation.CreatedOnUtc > DateTime.UtcNow.AddDays(-30))
+               appContext.CurrentUser.Organisation.CreatedOnUtc < DateTime.UtcNow.AddDays(-controller.Core.Configuration.TrialLengthInDays))
             {
-                
+                filterContext.HttpContext.Response.Redirect(new UrlHelper(filterContext.RequestContext).TrialExpired());
+                filterContext.Result = new EmptyResult();
             }
         }
     }

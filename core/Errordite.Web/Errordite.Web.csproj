@@ -178,6 +178,7 @@
     </Compile>
     <Compile Include="ActionFilters\SelectApplicationActionFilter.cs" />
     <Compile Include="ActionFilters\StoreQueryInCookie.cs" />
+    <Compile Include="ActionFilters\ValidateSubscriptionActionFilter.cs" />
     <Compile Include="ActionFilters\ViewDataActionFilter.cs" />
     <Compile Include="ActionFilters\RoleAuthorisation.cs" />
     <Compile Include="ActionFilters\ImportViewData.cs" />
@@ -928,7 +929,9 @@
   <ItemGroup>
     <Content Include="Views\Subscription\SignUp.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Views\Subscription\TrialExpired.cshtml" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
