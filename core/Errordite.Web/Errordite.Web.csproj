@@ -275,6 +275,7 @@
     <Compile Include="Controllers\DocsController.cs" />
     <Compile Include="Controllers\GroupsController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
+    <Compile Include="Controllers\SubscriptionController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\AuthenticationController.cs" />
     <Compile Include="Controllers\IssuesController.cs" />
@@ -315,8 +316,8 @@
     <Compile Include="Models\Account\OrganisationsViewModel.cs" />
     <Compile Include="Models\Account\OrganisationViewModel.cs" />
     <Compile Include="Models\Search\SearchViewModel.cs" />
+    <Compile Include="Models\Subscription\SignUpViewModel.cs" />
     <Compile Include="Models\Users\AddUserViewModel.cs" />
-    <Compile Include="Models\Beta\SignUpViewModel.cs" />
     <Compile Include="Models\Users\UserViewModel.cs" />
     <Compile Include="Models\Users\EditUserViewModel.cs" />
     <Compile Include="Models\Users\UserViewModelBase.cs" />
@@ -924,6 +925,10 @@
   <ItemGroup>
     <Content Include="Views\Shared\Docs\DjangoClient.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Subscription\SignUp.cshtml" />
+  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
