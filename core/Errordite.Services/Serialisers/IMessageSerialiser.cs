@@ -1,19 +1,31 @@
 ﻿
 using Errordite.Core.Messages;
+using Errordite.Services.Configuration;
+using Errordite.Services.Entities;
 using Newtonsoft.Json;
 
 namespace Errordite.Services.Serialisers
 {
     public interface IMessageSerialiser
     {
-        MessageBase Deserialise(string messageBody);
+        MessageEnvelope Deserialise(string messageBody);
+        ServiceInstance ForService { get; }
     }
 
     public class ReceiveErrorMessageSerialiser : IMessageSerialiser
     {
-        public MessageBase Deserialise(string messageBody)
+        public MessageEnvelope Deserialise(string messageBody)
         {
-            return JsonConvert.DeserializeObject<ErrorReceivedMessage>(messageBody);
+            var message = JsonConvert.DeserializeObject<ErrorReceivedMessage>(messageBody);
+            return new MessageEnvelope
+            {
+                Message = message
+            };
+        }
+
+        public ServiceInstance ForService
+        {
+            get { return ServiceInstance.Reception; }
         }
     }
 }

@@ -14,15 +14,21 @@ using log4net.Config;
 
 namespace Errordite.Services
 {
-    public class ErrorditeService
+    public interface IErrorditeService
     {
-        private readonly SQSQueueProcessor _queueProcessor;
-        private readonly ServiceConfiguration _serviceConfiguration;
+        void Start();
+        void Stop();
+    }
 
-        public ErrorditeService(ServiceConfiguration serviceConfiguration)
+    public class ErrorditeService : IErrorditeService
+    {
+        private readonly IQueueProcessor _queueProcessor;
+        private readonly ServiceConfigurationContainer _serviceConfigurationContainer;
+
+        public ErrorditeService(ServiceConfigurationContainer serviceConfigurationContainer, IQueueProcessor queueProcessor)
         {
-            _serviceConfiguration = serviceConfiguration;
-            _queueProcessor = new SQSQueueProcessor(_serviceConfiguration);
+            _serviceConfigurationContainer = serviceConfigurationContainer;
+            _queueProcessor = queueProcessor;
         }
 
         public void Start()
@@ -41,7 +47,7 @@ namespace Errordite.Services
             ObjectFactory.Container.Install(new ServicesMasterInstaller());
             XmlConfigurator.ConfigureAndWatch(new FileInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"config\log4net.config")));
 
-            var config = new HttpSelfHostConfiguration("http://localhost:{0}".FormatWith(_serviceConfiguration.PortNumber));
+            var config = new HttpSelfHostConfiguration("http://localhost:{0}".FormatWith(_serviceConfigurationContainer.Configuration.PortNumber));
 
             config.Services.Replace(typeof(IHttpControllerActivator), new WindsorHttpControllerActivator());
             config.DependencyResolver = new WindsorDependencyResolver(ObjectFactory.Container);
@@ -66,7 +72,7 @@ namespace Errordite.Services
             var server = new HttpSelfHostServer(config);
             server.OpenAsync().Wait();
 
-            Console.WriteLine("The server is running on endpoint http://localhost:{0}...".FormatWith(_serviceConfiguration.PortNumber));
+            Console.WriteLine("The server is running on endpoint http://localhost:{0}...".FormatWith(_serviceConfigurationContainer.Configuration.PortNumber));
         }
     }
 }
