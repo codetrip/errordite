@@ -4,29 +4,37 @@ using System.Threading;
 using Amazon;
 using Amazon.SQS;
 using Amazon.SQS.Model;
-using CodeTrip.Core.IoC;
 using Errordite.Services.Configuration;
+using Errordite.Services.Entities;
 using Errordite.Services.Serialisers;
+using System.Linq;
 
 namespace Errordite.Services.Queuing
 {
-    public class SQSQueueProcessor
+    public interface IQueueProcessor
     {
+        void Start();
+        void Stop();
+    }
+
+    public class SQSQueueProcessor : IQueueProcessor
+    {
+        private readonly object _syncLock = new object();
         private readonly AmazonSQS _amazonSQS;
         private bool _serviceRunning;
         private readonly ServiceConfiguration _serviceConfiguration;
         private readonly List<Thread> _workerThreads = new List<Thread>();
         private readonly IMessageSerialiser _serialiser;
-        private readonly 
+        private readonly IList<MessageProcessor> _messageProcessors = new List<MessageProcessor>(); 
 
-        public SQSQueueProcessor(ServiceConfiguration serviceConfiguration)
+        public SQSQueueProcessor(ServiceConfigurationContainer serviceConfigurationContainer, IEnumerable<IMessageSerialiser> serialisers)
         {
-            _serviceConfiguration = serviceConfiguration; 
+            _serviceConfiguration = serviceConfigurationContainer.Configuration; 
             _amazonSQS = AWSClientFactory.CreateAmazonSQSClient(
-                 serviceConfiguration.AWSAccessKey,
-                 serviceConfiguration.AWSSecretKey,
+                 serviceConfigurationContainer.Configuration.AWSAccessKey,
+                 serviceConfigurationContainer.Configuration.AWSSecretKey,
                  RegionEndpoint.EUWest1);
-            _serialiser = ObjectFactory.GetObject<IMessageSerialiser>(_serviceConfiguration.Service.ToString());
+            _serialiser = serialisers.First(s => s.ForService == serviceConfigurationContainer.Instance);
         }
 
         public void Start()
@@ -73,18 +81,40 @@ namespace Errordite.Services.Queuing
                 {
                     foreach (var message in response.ReceiveMessageResult.Message)
                     {
-                        var deserialisedMessage = _serialiser.Deserialise(message.Body);
+                        var envelope = _serialiser.Deserialise(message.Body);
+                        envelope.ReceiptHandle = response.ReceiveMessageResult.Message[0].ReceiptHandle;
+
+                        var processor =
+                            _messageProcessors.FirstOrDefault(
+                                p => p.ContainsOrganisation(envelope.Message.OrganisationId));
+
+                        if (processor == null)
+                        {
+                            processor = AddProcessorForOrganisation(envelope.Message.OrganisationId);
+                        }
+                        
+                        processor.Enquque(envelope);
                     }
                 }
+            }
+        }
 
-                var messageRecieptHandle = response.ReceiveMessageResult.Message[0].ReceiptHandle;
-                var deleteRequest = new DeleteMessageRequest
+        private MessageProcessor AddProcessorForOrganisation(string organisationId)
+        {
+            lock (_syncLock)
+            {
+                var processor = _messageProcessors.FirstOrDefault(p => p.ContainsOrganisation(organisationId));
+
+                if (processor == null)
                 {
-                    QueueUrl = _serviceConfiguration.QueueAddress,
-                    ReceiptHandle = messageRecieptHandle
-                };
+                    processor = new MessageProcessor(_serviceConfiguration, _amazonSQS);
+                    processor.AddOrganisation(organisationId);
 
-                _amazonSQS.DeleteMessage(deleteRequest);
+                }
+                else
+                {
+                    processor.AddOrganisation(organisationId);
+                }
             }
         }
     }

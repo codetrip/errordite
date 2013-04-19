@@ -87,6 +87,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\ServiceConfigurationContainer.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\IssueController.cs" />
     <Compile Include="Controllers\QueueController.cs" />
