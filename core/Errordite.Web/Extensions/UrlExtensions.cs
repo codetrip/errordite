@@ -6,7 +6,7 @@ using System.Web.Mvc;
 using Errordite.Core.Configuration;
 using Errordite.Core.Domain;
 using Errordite.Core.Domain.Error;
-using CodeTrip.Core.Extensions;
+using Errordite.Core.Extensions;
 using Errordite.Core.Identity;
 using Errordite.Web.Models.Issues;
 using System.Linq;

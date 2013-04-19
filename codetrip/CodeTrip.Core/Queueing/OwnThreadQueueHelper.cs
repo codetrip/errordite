@@ -17,7 +17,6 @@ namespace CodeTrip.Core.Queueing
         private readonly Thread _workerThread;
         private ConcurrentQueue<T> _queue = new ConcurrentQueue<T>();
         private readonly Action<T> _action;
-
         private readonly EventWaitHandle _waitHandle = new AutoResetEvent(false);
 
         public OwnThreadQueueHelper(Action<T> action)

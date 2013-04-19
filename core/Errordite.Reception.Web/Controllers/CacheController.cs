@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
-using CodeTrip.Core.Caching.Interfaces;
-using CodeTrip.Core.IoC;
+using Errordite.Core.Caching.Interfaces;
+using Errordite.Core.IoC;
 using System.Linq;
 
 namespace Errordite.Reception.Web.Controllers

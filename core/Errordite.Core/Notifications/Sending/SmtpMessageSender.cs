@@ -2,8 +2,8 @@
 using System.Diagnostics;
 using System.Net;
 using System.Net.Mail;
-using CodeTrip.Core;
-using CodeTrip.Core.Extensions;
+using Errordite.Core;
+using Errordite.Core.Extensions;
 using Errordite.Core.Configuration;
 
 namespace Errordite.Core.Notifications.Sending

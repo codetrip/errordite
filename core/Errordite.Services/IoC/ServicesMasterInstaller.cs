@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using Castle.MicroKernel.Registration;
-using CodeTrip.Core.IoC;
 using Errordite.Core.IoC;
 using Errordite.Services.Configuration;
-using CodeTrip.Core.Extensions;
+using Errordite.Core.Extensions;
 
 namespace Errordite.Services.IoC
 {

@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 using Castle.Core;
 using Castle.MicroKernel.Registration;
 using Castle.Windsor;
-using CodeTrip.Core.IoC;
+using Errordite.Core.IoC;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Organisations.Commands;
 using Errordite.Core.Reception.Commands;
@@ -35,7 +35,7 @@ namespace Errordite.Test
             var createOrg = _container.Resolve<ICreateOrganisationCommand>();
             createOrg.Invoke(new CreateOrganisationRequest()
                                  {
-                                     Email = "gaz@codetrip.co.uk",
+                                     Email = "gaz@Errordite.co.uk",
                                      FirstName = "Gaz",
                                      LastName = "Thackeray",
                                      OrganisationName = "Code Trip",

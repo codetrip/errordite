@@ -1,7 +1,7 @@
 ﻿using System;
-using CodeTrip.Core;
-using CodeTrip.Core.Extensions;
-using CodeTrip.Core.Interfaces;
+using Errordite.Core;
+using Errordite.Core.Extensions;
+using Errordite.Core.Interfaces;
 using HipChat;
 
 namespace Errordite.Core.Notifications.Commands

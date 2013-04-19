@@ -1,14 +1,14 @@
 ﻿using System.Web.Mvc;
-using CodeTrip.Core.Caching.Interfaces;
-using CodeTrip.Core.Caching.Resources;
-using CodeTrip.Core.IoC;
+using Errordite.Core.Caching.Interfaces;
+using Errordite.Core.Caching.Resources;
+using Errordite.Core.IoC;
 using Errordite.Core.Configuration;
 using Errordite.Core.Identity;
 using Errordite.Core.Notifications.EmailInfo;
 using Errordite.Core.Session;
 using Errordite.Web.ActionFilters;
 using Errordite.Web.Models.Home;
-using CodeTrip.Core.Extensions;
+using Errordite.Core.Extensions;
 using Errordite.Web.Extensions;
 
 namespace Errordite.Web.Controllers

@@ -4,7 +4,7 @@ using System.Web.Http.Dispatcher;
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
-using CodeTrip.Core.IoC;
+using Errordite.Core.IoC;
 using Errordite.Core.IoC;
 
 namespace Errordite.Notifications.Service.IoC

@@ -1,5 +1,5 @@
 ﻿
-using CodeTrip.Core.ServiceBus;
+using Errordite.Core.ServiceBus;
 using Errordite.Core.Messages;
 
 namespace Errordite.Reception.Web.IoC

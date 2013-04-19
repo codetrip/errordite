@@ -1,5 +1,5 @@
-﻿using CodeTrip.Core;
-using CodeTrip.Core.Interfaces;
+﻿using Errordite.Core;
+using Errordite.Core.Interfaces;
 using Errordite.Core.Notifications.EmailInfo;
 using Errordite.Core.Notifications.Parsing;
 using Errordite.Core.Notifications.Rendering;

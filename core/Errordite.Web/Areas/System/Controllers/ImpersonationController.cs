@@ -1,6 +1,6 @@
 using System;
 using System.Web.Mvc;
-using CodeTrip.Core.Extensions;
+using Errordite.Core.Extensions;
 using Errordite.Core.Identity;
 using Errordite.Core.Users.Queries;
 using Errordite.Web.ActionFilters;

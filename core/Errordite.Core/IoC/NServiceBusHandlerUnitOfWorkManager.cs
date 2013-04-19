@@ -1,7 +1,7 @@
 ﻿using System;
 using Castle.MicroKernel.Lifestyle;
 using Castle.Windsor;
-using CodeTrip.Core.Auditing.Entities;
+using Errordite.Core.Auditing.Entities;
 using Errordite.Client;
 using Errordite.Core.Session;
 using NServiceBus.UnitOfWork;

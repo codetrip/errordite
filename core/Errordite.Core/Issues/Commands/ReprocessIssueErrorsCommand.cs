@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
-using CodeTrip.Core.Interfaces;
-using CodeTrip.Core.Paging;
+using Errordite.Core.Interfaces;
+using Errordite.Core.Paging;
 using Errordite.Core.Configuration;
 using Errordite.Core.Authorisation;
 using Errordite.Core.Domain;
@@ -14,7 +14,7 @@ using Errordite.Core.Indexing;
 using Errordite.Core.Messages;
 using Errordite.Core.Organisations;
 using Errordite.Core.Reception.Commands;
-using CodeTrip.Core.Extensions;
+using Errordite.Core.Extensions;
 using System.Linq;
 using Errordite.Core.Session;
 

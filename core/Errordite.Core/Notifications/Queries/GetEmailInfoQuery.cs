@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using CodeTrip.Core.Exceptions;
-using CodeTrip.Core.Interfaces;
+using Errordite.Core.Exceptions;
+using Errordite.Core.Interfaces;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Notifications.Exceptions;
 using Errordite.Core.Notifications.Naming;
@@ -52,7 +52,7 @@ namespace Errordite.Core.Notifications.Queries
             if (t == typeof(User))
                 return EmailParameterType.User;
 
-            throw new CodeTripUnexpectedValueException("EmailParameter Type", t.FullName);
+            throw new ErrorditeUnexpectedValueException("EmailParameter Type", t.FullName);
         }
     }
 

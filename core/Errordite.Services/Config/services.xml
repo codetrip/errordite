@@ -1,31 +1,67 @@
 ﻿<?xml version="1.0"?>
 <configuration>
   <components>
-    <component id="ReceptionServiceConfiguration"
+    <component id="Reception"
            lifestyle="singleton"
            type="Errordite.Services.Configuration.ServiceConfiguration, Errordite.Services">
       <parameters>
+        <Instance>Reception</Instance>
         <PortNumber>800</PortNumber>
-        <ServiceName>ErrorditeReceptionService</ServiceName>
-        <QueueName>errordite.reception.service</QueueName>
+        <QueueAddress>https://sqs.eu-west-1.amazonaws.com/186350237634/errordite-reception-dev</QueueAddress>
+        <ServiceName>Errordite.Reception.Service</ServiceName>
+        <ServiceDisplayName>Errordite Reception Service</ServiceDisplayName>
+        <ServiceDiscription>Processes incoming errors</ServiceDiscription>
+        <Username>errordite_svc_rcp</Username>
+        <Password>Err0rD1t3_R5v$</Password>
+        <AWSAccessKey>AKIAIZV7WJHA3YGIBV7A</AWSAccessKey>
+        <AWSSecretKey>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</AWSSecretKey>
+        <QueueProcessingThreads>1</QueueProcessingThreads>
+        <RetryLimit>2</RetryLimit>
+        <RetryDelayMilliseconds>100</RetryDelayMilliseconds>
+        <MaxNumberOfMessages>1</MaxNumberOfMessages>
+        <MaxOrganisationsPerMessageProcesor>5</MaxOrganisationsPerMessageProcesor>
       </parameters>
     </component>
-    <component id="NotificationsServiceConfiguration"
+    <component id="Notifications"
            lifestyle="singleton"
            type="Errordite.Core.Configuration.ServiceConfiguration, Errordite.Core">
       <parameters>
+        <Instance>Notifications</Instance>
         <PortNumber>801</PortNumber>
-        <ServiceName>ErrorditeNotificationsService</ServiceName>
-        <QueueName>errordite.notifications.service</QueueName>
+        <QueueAddress>https://sqs.eu-west-1.amazonaws.com/186350237634/errordite-notifications-dev</QueueAddress>
+        <ServiceName>Errordite.Notifications.Service</ServiceName>
+        <ServiceDisplayName>Errordite Notifications Service</ServiceDisplayName>
+        <ServiceDiscription>Send notifications to users</ServiceDiscription>
+        <Username>errordite_svc_not</Username>
+        <Password>Err0rD1t3_N0T$</Password>
+        <AWSAccessKey>AKIAIZV7WJHA3YGIBV7A</AWSAccessKey>
+        <AWSSecretKey>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</AWSSecretKey>
+        <QueueProcessingThreads>1</QueueProcessingThreads>
+        <RetryLimit>2</RetryLimit>
+        <RetryDelayMilliseconds>100</RetryDelayMilliseconds>
+        <MaxNumberOfMessages>1</MaxNumberOfMessages>
+        <MaxOrganisationsPerMessageProcesor>5</MaxOrganisationsPerMessageProcesor>
       </parameters>
     </component>
-    <component id="EventsServiceConfiguration"
+    <component id="Events"
            lifestyle="singleton"
            type="Errordite.Core.Configuration.ServiceConfiguration, Errordite.Core">
       <parameters>
+        <Instance>Events</Instance>
         <PortNumber>802</PortNumber>
-        <ServiceName>ErrorditeEventsService</ServiceName>
-        <QueueName>errordite.events.service</QueueName>
+        <QueueAddress>https://sqs.eu-west-1.amazonaws.com/186350237634/errordite-events-dev</QueueAddress>
+        <ServiceName>Errordite.Events.Service</ServiceName>
+        <ServiceDisplayName>Errordite Events Service</ServiceDisplayName>
+        <ServiceDiscription>Processes events raised from Errordite web application</ServiceDiscription>
+        <Username>errordite_svc_evt</Username>
+        <Password>Err0rD1t3_E7t$</Password>
+        <AWSAccessKey>AKIAIZV7WJHA3YGIBV7A</AWSAccessKey>
+        <AWSSecretKey>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</AWSSecretKey>
+        <QueueProcessingThreads>1</QueueProcessingThreads>
+        <RetryLimit>2</RetryLimit>
+        <RetryDelayMilliseconds>100</RetryDelayMilliseconds>
+        <MaxNumberOfMessages>1</MaxNumberOfMessages>
+        <MaxOrganisationsPerMessageProcesor>5</MaxOrganisationsPerMessageProcesor>
       </parameters>
     </component>
   </components>

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading;
-using CodeTrip.Core;
-using CodeTrip.Core.Extensions;
+using Errordite.Core;
+using Errordite.Core.Extensions;
 using Errordite.Client;
 using Errordite.Core.Session;
 using NServiceBus;

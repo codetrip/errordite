@@ -1,4 +1,4 @@
-﻿using CodeTrip.Core.Interfaces;
+﻿using Errordite.Core.Interfaces;
 
 namespace Errordite.Core.Identity
 {

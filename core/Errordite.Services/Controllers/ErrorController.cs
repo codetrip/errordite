@@ -2,7 +2,7 @@ using System;
 using System.Net;
 using System.Net.Http;
 using Errordite.Core.Reception.Commands;
-using Errordite.Core.WebApi;
+using Errordite.Core.Web;
 
 namespace Errordite.Services.Controllers
 {

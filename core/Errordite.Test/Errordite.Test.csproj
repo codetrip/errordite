@@ -117,6 +117,7 @@
     <Compile Include="..\Errordite.Build\Assembly\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="AmazonSQS\SendMessages.cs" />
     <Compile Include="DbAccessTests.cs" />
     <Compile Include="GenerateErrors.cs" />
     <Compile Include="Indexing\IndexingTests.cs" />
@@ -159,15 +160,12 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\codetrip\CodeTrip.Core\CodeTrip.Core.csproj">
-      <Project>{7AD42F34-0629-45B8-BF45-87F8B791376E}</Project>
-      <Name>CodeTrip.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Errordite.Core\Errordite.Core.csproj">
       <Project>{418F4BC8-7042-49B1-9F69-95189A2A5837}</Project>
       <Name>Errordite.Core</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

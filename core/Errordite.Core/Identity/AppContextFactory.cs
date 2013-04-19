@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web;
-using CodeTrip.Core;
-using CodeTrip.Core.Interfaces;
+using Errordite.Core;
+using Errordite.Core.Interfaces;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Organisations.Commands;
 using Errordite.Core.Organisations.Queries;

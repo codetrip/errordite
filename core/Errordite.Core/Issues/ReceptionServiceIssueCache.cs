@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using CodeTrip.Core;
-using CodeTrip.Core.Caching;
+using Errordite.Core;
+using Errordite.Core.Caching;
 using Errordite.Core.Configuration;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Domain.Organisation;

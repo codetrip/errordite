@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using CodeTrip.Core.Interfaces;
+using Errordite.Core.Interfaces;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Indexing;
 using Errordite.Core.Session;
 using System.Linq;
-using CodeTrip.Core.Extensions;
+using Errordite.Core.Extensions;
 
 namespace Errordite.Core.Issues.Queries
 {

@@ -1,5 +1,5 @@
 ﻿
-using CodeTrip.Core.Extensions;
+using Errordite.Core.Extensions;
 using Errordite.Core.Authorisation;
 using ProtoBuf;
 using Raven.Imports.Newtonsoft.Json;

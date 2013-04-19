@@ -2,18 +2,18 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using CodeTrip.Core;
-using CodeTrip.Core.Caching.Entities;
-using CodeTrip.Core.Caching.Interfaces;
-using CodeTrip.Core.IoC;
-using CodeTrip.Core.Paging;
-using CodeTrip.Core.Redis;
+using Errordite.Core;
+using Errordite.Core.Caching.Entities;
+using Errordite.Core.Caching.Interfaces;
+using Errordite.Core.IoC;
+using Errordite.Core.Paging;
+using Errordite.Core.Redis;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Groups.Queries;
 using Errordite.Core.Matching;
 using NUnit.Framework;
-using CodeTrip.Core.Extensions;
+using Errordite.Core.Extensions;
 
 namespace Errordite.Test.Redis
 {

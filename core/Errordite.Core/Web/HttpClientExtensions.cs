@@ -1,11 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Threading.Tasks;
-using CodeTrip.Core.Extensions;
-using Errordite.Core.Domain.Error;
 
-namespace Errordite.Core.WebApi
+namespace Errordite.Core.Web
 {
     public static class HttpClientExtensions
     {

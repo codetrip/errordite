@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using CodeTrip.Core.Dynamic;
-using CodeTrip.Core.Interfaces;
+using Errordite.Core.Dynamic;
+using Errordite.Core.Interfaces;
 using Errordite.Core.Authorisation;
 using Errordite.Core.Configuration;
 using Errordite.Core.Domain.Error;

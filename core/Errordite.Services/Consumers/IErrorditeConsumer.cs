@@ -1,16 +1,9 @@
-﻿
+﻿using Errordite.Core.Messages;
+
 namespace Errordite.Services.Consumers
 {
-    public interface IErrorditeConsumer
+    public interface IErrorditeConsumer<in T> where T : MessageBase
     {
-        void Consume<T>(T message);
-    }
-
-    public class ReceiveErrorConsumer : IErrorditeConsumer
-    {
-        public void Consume<T>(T message)
-        {
-           
-        }
+        void Consume(T message);
     }
 }

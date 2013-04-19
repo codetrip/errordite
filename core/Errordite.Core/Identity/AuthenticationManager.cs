@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Web;
 using System.Web.Security;
-using CodeTrip.Core.Web;
-using CodeTrip.Core.Extensions;
+using Errordite.Core.Web;
+using Errordite.Core.Extensions;
 using Errordite.Core.Organisations.Commands;
 using Errordite.Core.Organisations.Queries;
 using Errordite.Core.Session;

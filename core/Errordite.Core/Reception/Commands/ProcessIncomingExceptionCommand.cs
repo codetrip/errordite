@@ -2,9 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using CodeTrip.Core;
-using CodeTrip.Core.Extensions;
-using CodeTrip.Core.Interfaces;
+using Errordite.Core;
+using Errordite.Core.Extensions;
+using Errordite.Core.Interfaces;
 using Errordite.Client;
 using Errordite.Core.Applications.Queries;
 using Errordite.Core.Domain.Error;

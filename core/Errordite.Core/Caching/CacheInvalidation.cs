@@ -1,6 +1,6 @@
 ﻿
 using System.Collections.Generic;
-using CodeTrip.Core.Caching.Entities;
+using Errordite.Core.Caching.Entities;
 using System.Linq;
 
 namespace Errordite.Core.Caching

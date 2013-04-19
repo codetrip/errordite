@@ -13,6 +13,10 @@
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <SccProjectName>&lt;Project Location In Database&gt;</SccProjectName>
+    <SccLocalPath>&lt;Local Binding Root of Project&gt;</SccLocalPath>
+    <SccAuxPath>&lt;Source Control Database&gt;</SccAuxPath>
+    <SccProvider>Mercurial Source Control Package</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -88,11 +92,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\ServiceConfigurationContainer.cs" />
+    <Compile Include="Consumers\ReceiveErrorConsumer.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\IssueController.cs" />
     <Compile Include="Controllers\QueueController.cs" />
     <Compile Include="Controllers\ReprocessIssueErrorsController.cs" />
     <Compile Include="Entities\MessageEnvelope.cs" />
+    <Compile Include="IoC\AmazonSQSFactory.cs" />
     <Compile Include="Processors\MessageProcessor.cs" />
     <Compile Include="ErrorditeService.cs" />
     <Compile Include="Consumers\IErrorditeConsumer.cs" />
@@ -101,7 +107,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Configuration\ServiceConfiguration.cs" />
-    <Compile Include="Consumers\ReceptionErrorditeConsumer.cs" />
     <Compile Include="Queuing\SQSQueueProcessor.cs" />
     <Compile Include="Serialisers\IMessageSerialiser.cs" />
   </ItemGroup>
@@ -124,10 +129,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\codetrip\CodeTrip.Core\CodeTrip.Core.csproj">
-      <Project>{7ad42f34-0629-45b8-bf45-87f8b791376e}</Project>
-      <Name>CodeTrip.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Errordite.Core\Errordite.Core.csproj">
       <Project>{418f4bc8-7042-49b1-9f69-95189a2a5837}</Project>
       <Name>Errordite.Core</Name>

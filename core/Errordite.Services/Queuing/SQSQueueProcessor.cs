@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
-using Amazon;
 using Amazon.SQS;
 using Amazon.SQS.Model;
 using Errordite.Services.Configuration;
@@ -27,13 +26,12 @@ namespace Errordite.Services.Queuing
         private readonly IMessageSerialiser _serialiser;
         private readonly IList<MessageProcessor> _messageProcessors = new List<MessageProcessor>(); 
 
-        public SQSQueueProcessor(ServiceConfigurationContainer serviceConfigurationContainer, IEnumerable<IMessageSerialiser> serialisers)
+        public SQSQueueProcessor(ServiceConfigurationContainer serviceConfigurationContainer, 
+            IEnumerable<IMessageSerialiser> serialisers,
+            AmazonSQS amazonSQS)
         {
-            _serviceConfiguration = serviceConfigurationContainer.Configuration; 
-            _amazonSQS = AWSClientFactory.CreateAmazonSQSClient(
-                 serviceConfigurationContainer.Configuration.AWSAccessKey,
-                 serviceConfigurationContainer.Configuration.AWSSecretKey,
-                 RegionEndpoint.EUWest1);
+            _serviceConfiguration = serviceConfigurationContainer.Configuration;
+            _amazonSQS = amazonSQS;
             _serialiser = serialisers.First(s => s.ForService == serviceConfigurationContainer.Instance);
         }
 
@@ -41,7 +39,7 @@ namespace Errordite.Services.Queuing
         {
             _serviceRunning = true;
 
-            for (int concurrentThreadCount = 0; concurrentThreadCount < _serviceConfiguration.Threads; concurrentThreadCount++)
+            for (int threadCount = 0; threadCount < _serviceConfiguration.QueueProcessingThreads; threadCount++)
             {
                 var thread = new Thread(ReceiveFromQueue)
                 {
@@ -71,7 +69,7 @@ namespace Errordite.Services.Queuing
                 var request = new ReceiveMessageRequest
                 {
                     QueueUrl = _serviceConfiguration.QueueAddress,
-                    MaxNumberOfMessages = 1,
+                    MaxNumberOfMessages = _serviceConfiguration.MaxNumberOfMessages,
                     WaitTimeSeconds = 20
                 };
 

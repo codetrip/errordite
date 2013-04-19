@@ -1,4 +1,4 @@
-﻿using CodeTrip.Core.ServiceBus;
+﻿using Errordite.Core.ServiceBus;
 using Errordite.Core.Notifications.EmailInfo;
 using Errordite.Notifications.Service.Handlers;
 

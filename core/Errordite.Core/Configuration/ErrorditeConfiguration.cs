@@ -1,8 +1,8 @@
 ﻿
 using System.Collections.Generic;
 using System.Reflection;
-using CodeTrip.Core.Extensions;
-using CodeTrip.Core.IoC;
+using Errordite.Core.Extensions;
+using Errordite.Core.IoC;
 using Errordite.Core.Reception;
 
 namespace Errordite.Core.Configuration

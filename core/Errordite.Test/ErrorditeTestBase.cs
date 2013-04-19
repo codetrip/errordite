@@ -1,7 +1,7 @@
 using System.Transactions;
 using Castle.Core;
 using Castle.MicroKernel.Registration;
-using CodeTrip.Core.IoC;
+using Errordite.Core.IoC;
 using Errordite.Core.IoC;
 using Errordite.Core.Session;
 using Errordite.Test.Mocks;

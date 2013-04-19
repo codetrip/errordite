@@ -7,7 +7,7 @@ using Errordite.Client.Web;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Matching;
 using NUnit.Framework;
-using CodeTrip.Core.Extensions;
+using Errordite.Core.Extensions;
 using System.Linq;
 
 namespace Errordite.Test.Automation.Tests

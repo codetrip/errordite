@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using CodeTrip.Core.Extensions;
+using Errordite.Core.Extensions;
 using ProtoBuf;
 using Raven.Imports.Newtonsoft.Json;
 
