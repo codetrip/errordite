@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Amazon.SQS;
 using Amazon.SQS.Model;
 using CodeTrip.Core.IoC;
@@ -6,8 +7,9 @@ using CodeTrip.Core.Queueing;
 using System.Linq;
 using Errordite.Services.Configuration;
 using Errordite.Services.Consumers;
+using Errordite.Services.Entities;
 
-namespace Errordite.Services.Entities
+namespace Errordite.Services.Processors
 {
     public class MessageProcessor
     {
@@ -25,18 +27,26 @@ namespace Errordite.Services.Entities
 
         private void ProcessMessage(MessageEnvelope envelope)
         {
-            //todo: session scope, transation??
-            var consumer = ObjectFactory.GetObject<IErrorditeConsumer>(_serviceConfiguration.Instance.ToString());
-            consumer.Consume(envelope.Message);
-
-            var messageRecieptHandle = envelope.ReceiptHandle;
-            var deleteRequest = new DeleteMessageRequest
+            try
             {
-                QueueUrl = _serviceConfiguration.QueueAddress,
-                ReceiptHandle = messageRecieptHandle
-            };
+                //todo: session scope, transation??
+                var consumer = ObjectFactory.GetObject<IErrorditeConsumer>(_serviceConfiguration.Instance.ToString());
+                consumer.Consume(envelope.Message);
 
-            _amazonSQS.DeleteMessage(deleteRequest);
+                var messageRecieptHandle = envelope.ReceiptHandle;
+                var deleteRequest = new DeleteMessageRequest
+                {
+                    QueueUrl = _serviceConfiguration.QueueAddress,
+                    ReceiptHandle = messageRecieptHandle
+                };
+
+                _amazonSQS.DeleteMessage(deleteRequest);
+            }
+            catch (Exception e)
+            {
+                
+                throw;
+            }
         }
 
         public bool ContainsOrganisation(string organisationId)
