@@ -5,7 +5,7 @@ using Amazon;
 using Amazon.SQS;
 using Amazon.SQS.Model;
 using Errordite.Services.Configuration;
-using Errordite.Services.Entities;
+using Errordite.Services.Processors;
 using Errordite.Services.Serialisers;
 using System.Linq;
 
@@ -77,43 +77,50 @@ namespace Errordite.Services.Queuing
 
                 var response = _amazonSQS.ReceiveMessage(request);
 
-                if (response.IsSetReceiveMessageResult())
+                if (!response.IsSetReceiveMessageResult()) 
+                    continue;
+
+                foreach (var message in response.ReceiveMessageResult.Message)
                 {
-                    foreach (var message in response.ReceiveMessageResult.Message)
+                    var envelope = _serialiser.Deserialise(message.Body);
+                    envelope.ReceiptHandle = response.ReceiveMessageResult.Message[0].ReceiptHandle;
+
+                    var processor = _messageProcessors.FirstOrDefault(p => p.ContainsOrganisation(envelope.Message.OrganisationId));
+
+                    if (processor != null)
                     {
-                        var envelope = _serialiser.Deserialise(message.Body);
-                        envelope.ReceiptHandle = response.ReceiveMessageResult.Message[0].ReceiptHandle;
-
-                        var processor =
-                            _messageProcessors.FirstOrDefault(
-                                p => p.ContainsOrganisation(envelope.Message.OrganisationId));
-
-                        if (processor == null)
-                        {
-                            processor = AddProcessorForOrganisation(envelope.Message.OrganisationId);
-                        }
-                        
                         processor.Enquque(envelope);
                     }
-                }
-            }
-        }
+                    else
+                    {
+                        lock (_syncLock)
+                        {
+                            processor = _messageProcessors.FirstOrDefault(p => p.ContainsOrganisation(envelope.Message.OrganisationId));
 
-        private MessageProcessor AddProcessorForOrganisation(string organisationId)
-        {
-            lock (_syncLock)
-            {
-                var processor = _messageProcessors.FirstOrDefault(p => p.ContainsOrganisation(organisationId));
+                            if (processor != null)
+                            {
+                                processor.Enquque(envelope);
+                            }
+                            else
+                            {
+                                processor = _messageProcessors.FirstOrDefault(p => p.CanAddOrganisation());
 
-                if (processor == null)
-                {
-                    processor = new MessageProcessor(_serviceConfiguration, _amazonSQS);
-                    processor.AddOrganisation(organisationId);
+                                if (processor != null)
+                                {
+                                    processor.AddOrganisation(envelope.Message.OrganisationId);
+                                    processor.Enquque(envelope);
+                                }
+                                else
+                                {
+                                    processor = new MessageProcessor(_serviceConfiguration, _amazonSQS);
+                                    processor.AddOrganisation(envelope.Message.OrganisationId);
+                                    processor.Enquque(envelope);
 
-                }
-                else
-                {
-                    processor.AddOrganisation(organisationId);
+                                    _messageProcessors.Add(processor);
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }

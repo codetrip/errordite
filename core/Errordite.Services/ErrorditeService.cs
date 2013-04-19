@@ -44,7 +44,7 @@ namespace Errordite.Services
 
         private void Configure()
         {
-            ObjectFactory.Container.Install(new ServicesMasterInstaller());
+            ObjectFactory.Container.Install(new ServicesMasterInstaller(_serviceConfigurationContainer.Instance));
             XmlConfigurator.ConfigureAndWatch(new FileInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"config\log4net.config")));
 
             var config = new HttpSelfHostConfiguration("http://localhost:{0}".FormatWith(_serviceConfigurationContainer.Configuration.PortNumber));
