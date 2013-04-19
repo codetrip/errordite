@@ -5,9 +5,9 @@ using System.Net.Http.Formatting;
 using System.Text;
 using Errordite.Core.Domain;
 using Errordite.Core.Domain.Error;
-using CodeTrip.Core.Extensions;
+using Errordite.Core.Extensions;
 using System.Linq;
-using Errordite.Core.WebApi;
+using Errordite.Core.Web;
 using Newtonsoft.Json;
 
 namespace Errordite.Core.Session

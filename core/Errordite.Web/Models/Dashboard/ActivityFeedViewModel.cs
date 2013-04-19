@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using CodeTrip.Core.Paging;
+using Errordite.Core.Paging;
 using Errordite.Web.Models.Issues;
 
 namespace Errordite.Web.Models.Dashboard

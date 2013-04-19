@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace Errordite.Core.WebApi
+namespace Errordite.Core.Web
 {
     public static class WebApiSettings
     {

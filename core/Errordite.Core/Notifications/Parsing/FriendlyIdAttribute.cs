@@ -1,5 +1,5 @@
 ﻿using System;
-using CodeTrip.Core.Extensions;
+using Errordite.Core.Extensions;
 using Errordite.Core.Domain;
 
 namespace Errordite.Core.Notifications.Parsing

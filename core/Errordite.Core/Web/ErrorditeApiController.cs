@@ -1,13 +1,13 @@
 using System;
 using System.Text;
 using System.Web.Http;
-using CodeTrip.Core.Auditing.Entities;
-using CodeTrip.Core.Encryption;
+using Errordite.Core.Auditing.Entities;
+using Errordite.Core.Encryption;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Organisations.Queries;
 using Errordite.Core.Session;
 
-namespace Errordite.Core.WebApi
+namespace Errordite.Core.Web
 {
     public abstract class ErrorditeApiController : ApiController
     {

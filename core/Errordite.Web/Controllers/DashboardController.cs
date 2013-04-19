@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using CodeTrip.Core;
-using CodeTrip.Core.Paging;
+using Errordite.Core;
+using Errordite.Core.Paging;
 using Errordite.Core.Domain;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Domain.Organisation;
@@ -15,7 +15,7 @@ using Errordite.Web.Extensions;
 using Errordite.Web.Models.Dashboard;
 using Errordite.Web.Models.Errors;
 using Errordite.Web.Models.Issues;
-using CodeTrip.Core.Extensions;
+using Errordite.Core.Extensions;
 
 namespace Errordite.Web.Controllers
 {

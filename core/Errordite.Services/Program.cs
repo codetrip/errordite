@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using Castle.MicroKernel.Registration;
-using CodeTrip.Core.Extensions;
-using CodeTrip.Core.IoC;
+using Errordite.Core.Extensions;
+using Errordite.Core.IoC;
 using Errordite.Services.Configuration;
 using Magnum.CommandLineParser;
 using Topshelf;
@@ -27,10 +27,9 @@ namespace Errordite.Services
 
                 var configuration = ObjectFactory.GetObject<ServiceConfiguration>(instance.ToString());
 
-                Trace.Write("Loaded configuration, ServiceName:={0}, QueuePath:={1}, MachineName:={2}".FormatWith(
+                Trace.Write("Loaded configuration, Service:={0}, Queue:={1}".FormatWith(
                     configuration.ServiceName,
-                    configuration.QueueAddress,
-                    configuration.MachineName));
+                    configuration.QueueAddress));
 
                 //register our configuration for this service
                 ObjectFactory.Container.Register(Component

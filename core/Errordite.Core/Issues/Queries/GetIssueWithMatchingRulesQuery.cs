@@ -1,4 +1,4 @@
-﻿using CodeTrip.Core.Interfaces;
+﻿using Errordite.Core.Interfaces;
 using Errordite.Core.Domain.Error;
 using System.Linq;
 using Errordite.Core.Indexing;

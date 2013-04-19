@@ -1,7 +1,7 @@
 using System.Net.Http;
-using CodeTrip.Core.Auditing.Entities;
+using Errordite.Core.Auditing.Entities;
 
-namespace Errordite.Core.WebApi
+namespace Errordite.Core.Web
 {
     public class LoggingHttpMessageHandler : DelegatingHandler
     {

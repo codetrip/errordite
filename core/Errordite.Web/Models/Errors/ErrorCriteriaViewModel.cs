@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
-using CodeTrip.Core.Paging;
+using Errordite.Core.Paging;
 using Errordite.Client;
 using Errordite.Core.Domain.Error;
 using App = Errordite.Core.Domain.Organisation;

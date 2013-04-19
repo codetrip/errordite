@@ -2,7 +2,7 @@
 using Errordite.Core.Organisations.Queries;
 using Errordite.Core.Reception.Commands;
 using Errordite.Core.ServiceBus;
-using CodeTrip.Core.Extensions;
+using Errordite.Core.Extensions;
 
 namespace Errordite.Reception.Service.Handlers
 {

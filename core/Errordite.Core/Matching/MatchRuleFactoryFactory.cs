@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using CodeTrip.Core.Extensions;
-using CodeTrip.Core.IoC;
+using Errordite.Core.Extensions;
+using Errordite.Core.IoC;
 
 namespace Errordite.Core.Matching
 {

@@ -1,5 +1,5 @@
 ﻿using System;
-using CodeTrip.Core.Extensions;
+using Errordite.Core.Extensions;
 using Errordite.Core.Authorisation;
 using Errordite.Core.Domain.Central;
 using ProtoBuf;

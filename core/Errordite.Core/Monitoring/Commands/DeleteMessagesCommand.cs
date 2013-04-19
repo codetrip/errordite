@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Messaging;
 using System.Transactions;
 using System.Linq;
-using CodeTrip.Core;
-using CodeTrip.Core.Interfaces;
+using Errordite.Core;
+using Errordite.Core.Interfaces;
 
 namespace Errordite.Core.Monitoring.Commands
 {

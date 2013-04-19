@@ -1,6 +1,6 @@
 ﻿
 using System.Collections.Generic;
-using CodeTrip.Core.Extensions;
+using Errordite.Core.Extensions;
 using Errordite.Core.Domain.Error;
 
 namespace Errordite.Web.Models.Errors

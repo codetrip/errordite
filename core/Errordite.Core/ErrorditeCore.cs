@@ -1,6 +1,6 @@
 ﻿
-using CodeTrip.Core.Extensions;
-using CodeTrip.Core.Paging;
+using Errordite.Core.Extensions;
+using Errordite.Core.Paging;
 using Errordite.Core.Applications.Queries;
 using Errordite.Core.Configuration;
 using Errordite.Core.Domain.Organisation;

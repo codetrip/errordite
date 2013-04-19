@@ -1,12 +1,14 @@
 ﻿using System.Reflection;
 using System.Web.Http.Controllers;
 using System.Web.Http.Dispatcher;
+using Amazon.SQS;
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
-using CodeTrip.Core.IoC;
 using Errordite.Core.IoC;
 using Errordite.Services.Configuration;
+using Errordite.Services.Consumers;
+using Errordite.Services.Queuing;
 using Errordite.Services.Serialisers;
 
 namespace Errordite.Services.IoC
@@ -28,8 +30,21 @@ namespace Errordite.Services.IoC
 
             container.Register(Component.For<IMessageSerialiser>()
                .ImplementedBy(typeof(ReceiveErrorMessageSerialiser))
-               .Named(Service.Reception.ToString())
+               .Named(ServiceInstance.Reception.ToString())
                .LifestyleTransient());
+
+            container.Register(Component.For<IQueueProcessor>()
+               .ImplementedBy(typeof(SQSQueueProcessor))
+               .LifestyleTransient());
+
+            container.Register(Component.For<AmazonSQS>()
+                .ImplementedBy<AmazonSQS>()
+                .UsingFactoryMethod(kernel => kernel.Resolve<IAmazonSQSFactory>().Create()).LifeStyle.Singleton);
+
+            container.Register(Classes.FromAssembly(Assembly.GetExecutingAssembly())
+                .BasedOn(typeof (IErrorditeConsumer<>))
+                .WithServiceFromInterface(typeof (IErrorditeConsumer<>))
+                .LifestyleTransient());
         }
     }
 }

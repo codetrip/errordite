@@ -1,7 +1,7 @@
 ﻿using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.MicroKernel.Registration;
 using Castle.Windsor;
-using CodeTrip.Core.IoC;
+using Errordite.Core.IoC;
 using Errordite.Core.Authorisation;
 using Errordite.Core.Identity;
 using Errordite.Core.Issues;
@@ -10,7 +10,7 @@ using Errordite.Core.Notifications.Naming;
 using Errordite.Core.Notifications.Parsing;
 using Errordite.Core.Notifications.Rendering;
 using Errordite.Core.Notifications.Sending;
-using CodeTrip.Core.Extensions;
+using Errordite.Core.Extensions;
 using Errordite.Core.Reception;
 
 namespace Errordite.Core.IoC

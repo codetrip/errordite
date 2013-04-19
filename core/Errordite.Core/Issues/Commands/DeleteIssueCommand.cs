@@ -1,5 +1,5 @@
-﻿using CodeTrip.Core.Extensions;
-using CodeTrip.Core.Interfaces;
+﻿using Errordite.Core.Extensions;
+using Errordite.Core.Interfaces;
 using Errordite.Core.Authorisation;
 using Errordite.Core.Domain;
 using Errordite.Core.Domain.Error;

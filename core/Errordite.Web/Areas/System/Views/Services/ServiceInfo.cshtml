@@ -1,5 +1,5 @@
 ﻿@using System.ServiceProcess
-@using CodeTrip.Core.Extensions
+@using Errordite.Core.Extensions
 @model Errordite.Web.Areas.System.Models.Services.ServiceInfoViewModel
 
 <div class="boxed-item history @(Model.ServiceStatus.Status.IsIn(ServiceControllerStatus.Running, ServiceControllerStatus.StartPending) ? "ok" : "error")">

@@ -1,4 +1,4 @@
-﻿using CodeTrip.Core.Exceptions;
+﻿using Errordite.Core.Exceptions;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Notifications.EmailInfo;
@@ -24,7 +24,7 @@ namespace Errordite.Core.Extensions
                     emailInfo = new InstanceOfAlwaysNotifyIssueEmailInfo();
                     break;
                 default:
-                    throw new CodeTripUnexpectedValueException("NotificationType", notificationType.ToString());
+                    throw new ErrorditeUnexpectedValueException("NotificationType", notificationType.ToString());
             }
 
             emailInfo.ApplicationName = application.Name;

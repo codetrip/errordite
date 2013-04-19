@@ -2,7 +2,7 @@
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
-using CodeTrip.Core.IoC;
+using Errordite.Core.IoC;
 using Errordite.Core.IoC;
 using Errordite.Reception.Web.Controllers;
 

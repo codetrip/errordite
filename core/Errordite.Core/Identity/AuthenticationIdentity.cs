@@ -1,7 +1,7 @@
 ﻿using System.Collections.Specialized;
 using System.Web;
-using CodeTrip.Core;
-using CodeTrip.Core.Extensions;
+using Errordite.Core;
+using Errordite.Core.Extensions;
 
 namespace Errordite.Core.Identity
 {

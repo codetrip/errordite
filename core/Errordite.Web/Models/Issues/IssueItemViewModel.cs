@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Domain.Organisation;
-using CodeTrip.Core.Extensions;
+using Errordite.Core.Extensions;
 
 namespace Errordite.Web.Models.Issues
 {

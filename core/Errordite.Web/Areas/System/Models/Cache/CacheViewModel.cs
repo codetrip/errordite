@@ -1,7 +1,7 @@
 ﻿
 using System.Collections.Generic;
 using System.Web.Mvc;
-using CodeTrip.Core.Caching.Entities;
+using Errordite.Core.Caching.Entities;
 
 namespace Errordite.Web.Models.Cache
 {

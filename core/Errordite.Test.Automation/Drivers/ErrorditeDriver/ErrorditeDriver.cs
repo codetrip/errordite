@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 using System.Text.RegularExpressions;
-using CodeTrip.Core.Extensions;
+using Errordite.Core.Extensions;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Matching;
@@ -62,7 +62,7 @@ namespace Errordite.Test.Automation.Drivers.ErrorditeDriver
 
         public void AdminLogIn()
         {
-            Login("gaz@codetrip.co.uk", "password");
+            Login("gaz@Errordite.co.uk", "password");
         }
 
         public void FlushCaches()

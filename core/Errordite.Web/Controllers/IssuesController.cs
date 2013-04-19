@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Web.Mvc;
 using AutoMapper;
-using CodeTrip.Core.Paging;
+using Errordite.Core.Paging;
 using Errordite.Core;
 using Errordite.Core.Configuration;
 using Errordite.Core.Domain.Error;
@@ -12,7 +12,7 @@ using Errordite.Core.Matching;
 using Errordite.Web.ActionFilters;
 using Errordite.Web.ActionResults;
 using Errordite.Web.Extensions;
-using CodeTrip.Core.Extensions;
+using Errordite.Core.Extensions;
 using Errordite.Web.Models.Issues;
 using Errordite.Web.Models.Navigation;
 using Application = Errordite.Core.Domain.Organisation.Application;

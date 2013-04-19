@@ -3,14 +3,14 @@ using System.IO;
 using System.Web.Http;
 using System.Web.Http.Dispatcher;
 using System.Web.Http.SelfHost;
-using CodeTrip.Core.IoC;
+using Errordite.Core.IoC;
 using Errordite.Core.Configuration;
 using Errordite.Core.IoC;
-using Errordite.Core.WebApi;
+using Errordite.Core.Web;
 using Errordite.Reception.Service.IoC;
 using log4net.Config;
 using NServiceBus;
-using CodeTrip.Core.Extensions;
+using Errordite.Core.Extensions;
 
 namespace Errordite.Reception.Service
 {

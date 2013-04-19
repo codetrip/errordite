@@ -1,12 +1,12 @@
 ﻿using System.Web.Mvc;
-using CodeTrip.Core.Caching.Entities;
-using CodeTrip.Core.Caching.Interfaces;
-using CodeTrip.Core.IoC;
+using Errordite.Core.Caching.Entities;
+using Errordite.Core.Caching.Interfaces;
+using Errordite.Core.IoC;
 using Errordite.Web.ActionFilters;
 using Errordite.Web.Controllers;
 using Errordite.Web.Models.Cache;
 using Errordite.Web.Extensions;
-using CodeTrip.Core.Extensions;
+using Errordite.Core.Extensions;
 using System.Linq;
 using Errordite.Web.Models.Navigation;
 

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.ComponentModel.Composition.Hosting;
 using System.Web.Mvc;
-using CodeTrip.Core.Encryption;
-using CodeTrip.Core.Extensions;
+using Errordite.Core.Encryption;
+using Errordite.Core.Extensions;
 using Errordite.Core;
 using Errordite.Core.Configuration;
 using Errordite.Core.Domain.Central;

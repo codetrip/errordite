@@ -2,8 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Web;
-using CodeTrip.Core;
-using CodeTrip.Core.Extensions;
+using Errordite.Core;
+using Errordite.Core.Extensions;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Issues.Commands;
 using ProtoBuf;

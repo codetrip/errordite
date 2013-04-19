@@ -1,9 +1,9 @@
-﻿using CodeTrip.Core.Exceptions;
-using CodeTrip.Core.Extensions;
+﻿using Errordite.Core.Exceptions;
+using Errordite.Core.Extensions;
 
 namespace Errordite.Core.Notifications.Exceptions
 {
-    public class ErrorditeEmailNotFoundException : CodeTripException
+    public class ErrorditeEmailNotFoundException : ErrorditeException
     {
         public ErrorditeEmailNotFoundException(string templateLocation)
             :base("Template not found at {0}".FormatWith(templateLocation))

@@ -1,6 +1,6 @@
 ﻿using System.Linq;
-using CodeTrip.Core.Extensions;
-using CodeTrip.Core.Interfaces;
+using Errordite.Core.Extensions;
+using Errordite.Core.Interfaces;
 using Errordite.Core.Applications.Queries;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Domain.Organisation;

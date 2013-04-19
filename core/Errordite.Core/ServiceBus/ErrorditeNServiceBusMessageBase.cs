@@ -1,6 +1,6 @@
 ﻿
 using System;
-using CodeTrip.Core.ServiceBus;
+using Errordite.Core.ServiceBus;
 using Errordite.Core.Domain.Organisation;
 
 namespace Errordite.Core.ServiceBus

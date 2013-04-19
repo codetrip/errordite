@@ -3,7 +3,7 @@ using System.Web.Mvc;
 using Errordite.Web.Controllers;
 using Errordite.Web.Extensions;
 using Errordite.Web.Models.Navigation;
-using CodeTrip.Core.Extensions;
+using Errordite.Core.Extensions;
 
 namespace Errordite.Web.ActionFilters
 {

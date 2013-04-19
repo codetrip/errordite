@@ -4,8 +4,8 @@ using System.Web.Mvc;
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
-using CodeTrip.Core.Interfaces;
-using CodeTrip.Core.IoC;
+using Errordite.Core.Interfaces;
+using Errordite.Core.IoC;
 using Errordite.Core.IoC;
 
 namespace Errordite.Web.IoC

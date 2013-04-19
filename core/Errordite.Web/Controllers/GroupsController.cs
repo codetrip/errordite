@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
 using AutoMapper;
-using CodeTrip.Core.Extensions;
-using CodeTrip.Core.Paging;
+using Errordite.Core.Extensions;
+using Errordite.Core.Paging;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Groups.Commands;
 using Errordite.Core.Groups.Queries;

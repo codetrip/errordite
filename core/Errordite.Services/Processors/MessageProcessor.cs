@@ -1,17 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using Amazon.SQS;
 using Amazon.SQS.Model;
-using CodeTrip.Core.IoC;
-using CodeTrip.Core.Queueing;
+using Errordite.Core;
+using Errordite.Core.IoC;
+using Errordite.Core.Queueing;
 using System.Linq;
+using Errordite.Core.Session;
 using Errordite.Services.Configuration;
 using Errordite.Services.Consumers;
 using Errordite.Services.Entities;
+using Castle.MicroKernel.Lifestyle;
 
 namespace Errordite.Services.Processors
 {
-    public class MessageProcessor
+    public class MessageProcessor : ComponentBase
     {
         private readonly ServiceConfiguration _serviceConfiguration;
         private readonly List<string> _organisations = new List<string>();
@@ -27,25 +31,52 @@ namespace Errordite.Services.Processors
 
         private void ProcessMessage(MessageEnvelope envelope)
         {
-            try
-            {
-                //todo: session scope, transation??
-                var consumer = ObjectFactory.GetObject<IErrorditeConsumer>(_serviceConfiguration.Instance.ToString());
-                consumer.Consume(envelope.Message);
+            bool processed = false;
 
-                var messageRecieptHandle = envelope.ReceiptHandle;
-                var deleteRequest = new DeleteMessageRequest
+            for (int attempt = 0; attempt < _serviceConfiguration.RetryLimit; attempt++)
+            {
+                try
                 {
-                    QueueUrl = _serviceConfiguration.QueueAddress,
-                    ReceiptHandle = messageRecieptHandle
-                };
+                    TryProcessMessage(envelope);
+                    processed = true;
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    Error(ex);
+                }
 
-                _amazonSQS.DeleteMessage(deleteRequest);
+                if(_serviceConfiguration.RetryDelayMilliseconds > 0)
+                    Thread.Sleep(_serviceConfiguration.RetryDelayMilliseconds);
             }
-            catch (Exception e)
+            if (!processed)
             {
-                
-                throw;
+                //TODO: handle failures
+            }
+
+            _amazonSQS.DeleteMessage(new DeleteMessageRequest
+            {
+                QueueUrl = _serviceConfiguration.QueueAddress,
+                ReceiptHandle = envelope.ReceiptHandle
+            });
+        }
+
+        private void TryProcessMessage(MessageEnvelope envelope)
+        {
+            //start a scope on the container so the session is shared only within the context of this message processing routine
+            using (ObjectFactory.Container.BeginScope())
+            {
+                using (var session = ObjectFactory.GetObject<IAppSession>())
+                {
+                    Trace("Received Message of type {0}", envelope.Message.GetType().FullName);
+                    TraceObject(envelope.Message);
+
+                    var messageType = typeof(IErrorditeConsumer<>).MakeGenericType(envelope.Message.GetType());
+                    dynamic consumer = ObjectFactory.Container.Resolve(messageType);
+                    consumer.Consume((dynamic)envelope.Message);
+
+                    session.Commit();
+                }
             }
         }
 

@@ -1,8 +1,8 @@
 ﻿using System.Net;
 using System.Web.Mvc;
-using CodeTrip.Core.Auditing;
+using Errordite.Core.Auditing;
 using Errordite.Core.Reception.Commands;
-using CodeTrip.Core.Extensions;
+using Errordite.Core.Extensions;
 
 namespace Errordite.Reception.Web.Controllers
 {

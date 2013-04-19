@@ -2,26 +2,26 @@
 using System.Collections.Generic;
 using System.ComponentModel.Composition.Hosting;
 using System.Net.Http;
-using CodeTrip.Core.Auditing.Entities;
-using CodeTrip.Core.Redis;
+using Errordite.Core.Auditing.Entities;
+using Errordite.Core.Redis;
 using Errordite.Core.Configuration;
 using Errordite.Core.Domain;
 using Errordite.Core.Domain.Central;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Indexing;
 using Errordite.Core.Raven;
-using Errordite.Core.WebApi;
+using Errordite.Core.Web;
 using NServiceBus;
 using Raven.Abstractions.Data;
 using Raven.Client;
 using Raven.Client.Connection;
 using Raven.Client.Indexes;
 using Raven.Client.Extensions;
-using CodeTrip.Core.Extensions;
+using Errordite.Core.Extensions;
 
 namespace Errordite.Core.Session
 {
-    public interface IAppSession
+    public interface IAppSession : IDisposable
     {
         /// <summary>
         /// NServiceBus Bus
@@ -378,6 +378,11 @@ namespace Errordite.Core.Session
             SynchroniseIndexes<T1>();
             SynchroniseIndexes<T2>();
             SynchroniseIndexes<T3>();
+        }
+
+        public void Dispose()
+        {
+            Close();
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using System.IO;
-using CodeTrip.Core.FileSystem;
+using Errordite.Core.FileSystem;
 using Errordite.Core.Configuration;
 using Errordite.Core.Notifications.EmailInfo;
 using Errordite.Core.Notifications.Exceptions;

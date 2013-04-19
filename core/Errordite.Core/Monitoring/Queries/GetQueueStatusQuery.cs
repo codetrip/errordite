@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Messaging;
-using CodeTrip.Core;
-using CodeTrip.Core.Interfaces;
+using Errordite.Core;
+using Errordite.Core.Interfaces;
 using Errordite.Core.Monitoring.Entities;
 
 namespace Errordite.Core.Monitoring.Queries

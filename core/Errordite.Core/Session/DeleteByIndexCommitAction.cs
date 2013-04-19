@@ -1,6 +1,6 @@
 ﻿using Errordite.Core.Domain.Error;
 using Raven.Abstractions.Data;
-using CodeTrip.Core.Extensions;
+using Errordite.Core.Extensions;
 
 namespace Errordite.Core.Session
 {

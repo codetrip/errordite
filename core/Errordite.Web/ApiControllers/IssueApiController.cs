@@ -1,10 +1,10 @@
 ﻿using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using CodeTrip.Core.Extensions;
+using Errordite.Core.Extensions;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Issues.Commands;
-using Errordite.Core.WebApi;
+using Errordite.Core.Web;
 
 namespace Errordite.Web.ApiControllers
 {
