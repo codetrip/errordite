@@ -13,10 +13,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Errordite.Reception.Web", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Errordite.Test.Automation", "Errordite.Test.Automation\Errordite.Test.Automation.csproj", "{1D458F67-570B-40D8-8985-74988C44EF18}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Errordite.Notifications.Service", "Errordite.Notifications.Service\Errordite.Notifications.Service.csproj", "{7ECE0A75-1167-4B9A-9835-BF3B3BB289F8}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Errordite.Reception.Service", "Errordite.Reception.Service\Errordite.Reception.Service.csproj", "{7FB81ADE-C385-4B4B-AA09-2CD2A79CAECC}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{A6456373-BE7C-44C4-82FC-2AA3BE59C936}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\NuGet.exe = .nuget\NuGet.exe
@@ -25,13 +21,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{A64563
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Errordite.Raven", "Errordite.Raven\Errordite.Raven.csproj", "{E4804C8C-8237-4243-A86A-6BCD06273870}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Errordite.Utils.NServiceBusCastleBridge", "Errordite.Utils.NServiceBusCastleBridge\Errordite.Utils.NServiceBusCastleBridge.csproj", "{24344728-3CE7-4ACE-B1F1-83A1DFA3F3C0}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Errordite.Events.Service", "Errordite.Events.Service\Errordite.Events.Service.csproj", "{78F9A4B8-AD03-4207-9125-DCD0F5F69340}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D1313358-825F-45C0-BE69-66E89CC48987}"
 	ProjectSection(SolutionItems) = preProject
 		..\generate-package.cmd = ..\generate-package.cmd
+		..\Services-Install.cmd = ..\Services-Install.cmd
+		..\Services-Start.cmd = ..\Services-Start.cmd
+		..\Services-Stop.cmd = ..\Services-Stop.cmd
+		..\Services-Uninstall.cmd = ..\Services-Uninstall.cmd
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{18D27B41-FE26-4EC5-8178-A0918298E426}"
@@ -89,36 +85,12 @@ Global
 		{1D458F67-570B-40D8-8985-74988C44EF18}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1D458F67-570B-40D8-8985-74988C44EF18}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1D458F67-570B-40D8-8985-74988C44EF18}.Release|x86.ActiveCfg = Release|Any CPU
-		{7ECE0A75-1167-4B9A-9835-BF3B3BB289F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7ECE0A75-1167-4B9A-9835-BF3B3BB289F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7ECE0A75-1167-4B9A-9835-BF3B3BB289F8}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{7ECE0A75-1167-4B9A-9835-BF3B3BB289F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7ECE0A75-1167-4B9A-9835-BF3B3BB289F8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7ECE0A75-1167-4B9A-9835-BF3B3BB289F8}.Release|x86.ActiveCfg = Release|Any CPU
-		{7FB81ADE-C385-4B4B-AA09-2CD2A79CAECC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7FB81ADE-C385-4B4B-AA09-2CD2A79CAECC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7FB81ADE-C385-4B4B-AA09-2CD2A79CAECC}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{7FB81ADE-C385-4B4B-AA09-2CD2A79CAECC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7FB81ADE-C385-4B4B-AA09-2CD2A79CAECC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7FB81ADE-C385-4B4B-AA09-2CD2A79CAECC}.Release|x86.ActiveCfg = Release|Any CPU
 		{E4804C8C-8237-4243-A86A-6BCD06273870}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E4804C8C-8237-4243-A86A-6BCD06273870}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E4804C8C-8237-4243-A86A-6BCD06273870}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{E4804C8C-8237-4243-A86A-6BCD06273870}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E4804C8C-8237-4243-A86A-6BCD06273870}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E4804C8C-8237-4243-A86A-6BCD06273870}.Release|x86.ActiveCfg = Release|Any CPU
-		{24344728-3CE7-4ACE-B1F1-83A1DFA3F3C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{24344728-3CE7-4ACE-B1F1-83A1DFA3F3C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{24344728-3CE7-4ACE-B1F1-83A1DFA3F3C0}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{24344728-3CE7-4ACE-B1F1-83A1DFA3F3C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{24344728-3CE7-4ACE-B1F1-83A1DFA3F3C0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{24344728-3CE7-4ACE-B1F1-83A1DFA3F3C0}.Release|x86.ActiveCfg = Release|Any CPU
-		{78F9A4B8-AD03-4207-9125-DCD0F5F69340}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{78F9A4B8-AD03-4207-9125-DCD0F5F69340}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{78F9A4B8-AD03-4207-9125-DCD0F5F69340}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{78F9A4B8-AD03-4207-9125-DCD0F5F69340}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{78F9A4B8-AD03-4207-9125-DCD0F5F69340}.Release|Any CPU.Build.0 = Release|Any CPU
-		{78F9A4B8-AD03-4207-9125-DCD0F5F69340}.Release|x86.ActiveCfg = Release|Any CPU
 		{0D4E2D91-2BE7-4B1C-8213-5907B109C0CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0D4E2D91-2BE7-4B1C-8213-5907B109C0CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D4E2D91-2BE7-4B1C-8213-5907B109C0CA}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -132,7 +104,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{1D458F67-570B-40D8-8985-74988C44EF18} = {18D27B41-FE26-4EC5-8178-A0918298E426}
 		{0B58036D-D72A-48D2-8E3E-EC046AAB3ED1} = {18D27B41-FE26-4EC5-8178-A0918298E426}
-		{24344728-3CE7-4ACE-B1F1-83A1DFA3F3C0} = {D27C3FF8-71A3-48FC-B24A-848023D99162}
 		{0B57E1B2-4A92-4506-BFD8-5DCAEACC9EDA} = {D27C3FF8-71A3-48FC-B24A-848023D99162}
 		{E4804C8C-8237-4243-A86A-6BCD06273870} = {8AF64A7C-9E7D-4091-8854-653093EF1F67}
 	EndGlobalSection

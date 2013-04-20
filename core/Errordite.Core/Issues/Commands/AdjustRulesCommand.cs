@@ -8,7 +8,7 @@ using Errordite.Core.Domain.Error;
 using Errordite.Core.Errors.Commands;
 using Errordite.Core.Errors.Queries;
 using Errordite.Core.Matching;
-using Errordite.Core.Messages;
+using Errordite.Core.Messaging;
 using Errordite.Core.Organisations;
 using Errordite.Core.Session;
 using Errordite.Core.Extensions;
@@ -95,11 +95,11 @@ namespace Errordite.Core.Issues.Commands
                     });
 
                     //re-sync the error counts only if we have moved errors
-                    Session.AddCommitAction(new SendNServiceBusMessage("Sync Issue Error Counts", new SyncIssueErrorCountsMessage
+                    Session.AddCommitAction(new SendMessageCommitAction("Sync Issue Error Counts", new SyncIssueErrorCountsMessage
                     {
-                        CurrentUser = request.CurrentUser,
                         IssueId = currentIssue.Id,
-                        OrganisationId = request.CurrentUser.OrganisationId
+                        OrganisationId = request.CurrentUser.OrganisationId,
+                        TriggerEventUtc = DateTime.UtcNow,
                     }, _configuration.EventsQueueName));
 
                     Store(new IssueHistory
@@ -111,6 +111,7 @@ namespace Errordite.Core.Issues.Commands
                         IssueId = currentIssue.Id,
                         ApplicationId = currentIssue.ApplicationId
                     });
+
                     Store(new IssueHistory
                     {
                         DateAddedUtc = dateTimeOffset,

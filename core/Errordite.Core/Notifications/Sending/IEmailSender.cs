@@ -1,6 +1,6 @@
 namespace Errordite.Core.Notifications.Sending
 {
-    public interface IMessageSender
+    public interface IEmailSender
     {
         void Send(Message message);
     }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Web.Mvc;
 using Errordite.Core.Interfaces;
+using Errordite.Core.Messaging;
 using Errordite.Core.Paging;
 using Errordite.Core.Configuration;
 using Errordite.Core.Authorisation;
@@ -11,7 +12,6 @@ using Errordite.Core.Domain.Exceptions;
 using Errordite.Core.Errors.Queries;
 using Errordite.Core.Extensions;
 using Errordite.Core.Indexing;
-using Errordite.Core.Messages;
 using Errordite.Core.Organisations;
 using Errordite.Core.Reception.Commands;
 using Errordite.Core.Extensions;
@@ -109,13 +109,12 @@ namespace Errordite.Core.Issues.Commands
                 if (response.AttachedIssueIds.Count > 1)
                 {
                     //re-sync the error counts
-                    Session.AddCommitAction(new SendNServiceBusMessage("Sync Issue Error Counts",
+                    Session.AddCommitAction(new SendMessageCommitAction("Sync Issue Error Counts",
                         new SyncIssueErrorCountsMessage
                             {
-                                CurrentUser = request.CurrentUser,
                                 IssueId = issue.Id,
-                                OrganisationId =
-                                    request.CurrentUser.OrganisationId
+                                OrganisationId = request.CurrentUser.OrganisationId,
+                                TriggerEventUtc = DateTime.UtcNow,
                             }, _configuration.EventsQueueName));
                 }
             }

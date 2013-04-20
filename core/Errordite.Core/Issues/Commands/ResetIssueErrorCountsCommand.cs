@@ -6,10 +6,8 @@ using Errordite.Core.Configuration;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Errors.Queries;
 using Errordite.Core.Indexing;
-using Errordite.Core.Organisations;
 using Errordite.Core.Extensions;
 using Errordite.Core.Session;
-using Raven.Abstractions.Data;
 
 namespace Errordite.Core.Issues.Commands
 {
@@ -144,10 +142,9 @@ namespace Errordite.Core.Issues.Commands
     public class ResetIssueErrorCountsResponse
     {}
 
-    public class ResetIssueErrorCountsRequest : OrganisationRequestBase
+    public class ResetIssueErrorCountsRequest 
     {
         public string IssueId { get; set; }
-
         public DateTime TriggerEventUtc { get; set; }
     }
 }

@@ -5,9 +5,8 @@ using Errordite.Core.Configuration;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Extensions;
 using Errordite.Core.Indexing;
-using Errordite.Core.Messages;
+using Errordite.Core.Messaging;
 using Errordite.Core.Organisations;
-using Errordite.Core.Extensions;
 using Errordite.Core.Session;
 using Raven.Abstractions.Data;
 
@@ -72,11 +71,11 @@ namespace Errordite.Core.Issues.Commands
             Delete(mergeFromIssue);
 
             //re-sync the error counts
-            Session.AddCommitAction(new SendNServiceBusMessage("Sync Issue Error Counts", new SyncIssueErrorCountsMessage
+            Session.AddCommitAction(new SendMessageCommitAction("Sync Issue Error Counts", new SyncIssueErrorCountsMessage
             {
-                CurrentUser = request.CurrentUser,
                 IssueId = request.MergeToIssueId,
-                OrganisationId = request.CurrentUser.OrganisationId
+                OrganisationId = request.CurrentUser.OrganisationId,
+                TriggerEventUtc = DateTime.UtcNow,
             }, _configuration.EventsQueueName));
 
             return new MergeIssuesResponse

@@ -1,4 +1,4 @@
-﻿using Errordite.Core.Messages;
+﻿using Errordite.Core.Messaging;
 
 namespace Errordite.Services.Consumers
 {

@@ -1,11 +1,10 @@
 using System.Collections.Generic;
-using Errordite.Core;
 using Errordite.Core.Interfaces;
+using Errordite.Core.Messaging;
 using Errordite.Core.Paging;
 using Errordite.Core.Configuration;
 using Errordite.Core.Extensions;
 using Errordite.Core.Domain.Organisation;
-using Errordite.Core.Messages;
 using Errordite.Core.Session;
 using Errordite.Core.Users.Queries;
 using Errordite.Core.Notifications.EmailInfo;
@@ -52,7 +51,7 @@ namespace Errordite.Core.Notifications.Commands
             }
             else
             {
-                Session.AddCommitAction(new SendNServiceBusMessage("Send {0}".FormatWith(request.EmailInfo.GetType().Name), request.EmailInfo, _configuration.NotificationsQueueName));
+                Session.AddCommitAction(new SendMessageCommitAction("Send {0}".FormatWith(request.EmailInfo.GetType().Name), request.EmailInfo, _configuration.NotificationsQueueName));
             }
         }
 
@@ -104,7 +103,7 @@ namespace Errordite.Core.Notifications.Commands
             }
             else
             {
-                Session.AddCommitAction(new SendNServiceBusMessage("Send {0}".FormatWith(request.EmailInfo.GetType().Name), request.EmailInfo, _configuration.NotificationsQueueName));
+                Session.AddCommitAction(new SendMessageCommitAction("Send {0}".FormatWith(request.EmailInfo.GetType().Name), request.EmailInfo, _configuration.NotificationsQueueName));
             }
         }
 
@@ -136,7 +135,7 @@ namespace Errordite.Core.Notifications.Commands
                     Message = request.EmailInfo.ConvertToSimpleMessage(_configuration)
                 };
 
-                Session.AddCommitAction(new SendNServiceBusMessage("Send {0}".FormatWith(hipChatMessage.GetType().Name), hipChatMessage, _configuration.NotificationsQueueName));
+                Session.AddCommitAction(new SendMessageCommitAction("Send {0}".FormatWith(hipChatMessage.GetType().Name), hipChatMessage, _configuration.NotificationsQueueName));
             }
         }
     }

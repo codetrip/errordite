@@ -1,8 +1,7 @@
-﻿using Errordite.Core.ServiceBus;
-
-namespace Errordite.Core.Messages
+﻿
+namespace Errordite.Core.Messaging
 {
-    public class SendHipChatMessage : ErrorditeNServiceBusMessageBase
+    public class SendHipChatMessage : MessageBase
     {
         public string Message { get; set; }
         public int HipChatRoomId { get; set; }

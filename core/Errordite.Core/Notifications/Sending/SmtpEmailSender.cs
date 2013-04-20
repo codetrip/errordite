@@ -2,17 +2,16 @@
 using System.Diagnostics;
 using System.Net;
 using System.Net.Mail;
-using Errordite.Core;
 using Errordite.Core.Extensions;
 using Errordite.Core.Configuration;
 
 namespace Errordite.Core.Notifications.Sending
 {
-    public class SmtpMessageSender : ComponentBase, IMessageSender
+    public class SmtpEmailSender : ComponentBase, IEmailSender
     {
         private readonly EmailConfiguration _config;
 
-        public SmtpMessageSender(EmailConfiguration config)
+        public SmtpEmailSender(EmailConfiguration config)
         {
             _config = config;
         }

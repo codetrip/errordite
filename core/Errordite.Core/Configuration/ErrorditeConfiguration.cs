@@ -28,5 +28,8 @@ namespace Errordite.Core.Configuration
         public string ReceptionHttpEndpoint { get; set; }
         public List<string> ErrorPropertiesForFiltering { get; set; }
         public List<RateLimiterRule> RateLimiterRules { get; set; }
+
+        public string AWSAccessKey { get; set; }
+        public string AWSSecretKey { get; set; }
     }
 }
