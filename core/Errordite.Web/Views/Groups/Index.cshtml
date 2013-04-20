@@ -1,0 +1,60 @@
+﻿
+@using Errordite.Web.Extensions
+@using Errordite.Web.Models.Groups
+@model GroupsViewModel
+           
+@{
+    ViewBag.Title = "Groups";
+}
+
+@section header
+{
+    @Html.Partial("Account/Tabs") 
+}
+
+<section id="groups" class="centered">
+    <div class="content">
+        <p class="pull-right">
+             <a href="@Url.AddGroup()" class="btn btn-medium btn-blue pull-right">Add Group</a>
+        </p>
+
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Users</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr> 
+            </thead>      
+            <tbody>
+                @foreach (var group in Model.Groups)
+                {
+                    <tr>  
+                        <td style="width:75%">@group.Name</td>
+                        <td>
+                            <a href="@Url.Users(group.Id)">Users</a>
+                        </td>  
+                        <td>
+                            <a href="@Url.EditGroup(group.Id)">Edit</a>
+                        </td>  
+                        <td>
+                            @using (Html.BeginForm("delete", "groups", new { groupId = group.Id }, FormMethod.Post))
+                            {
+                                <a class="delete" href="#">Delete</a>
+                            }
+                        </td>             
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="4">
+                        @Html.Partial("Pagination", Model.Paging)
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</section>
+

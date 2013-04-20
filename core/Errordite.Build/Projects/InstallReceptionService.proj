@@ -1,0 +1,65 @@
+<Project
+	xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
+	ToolsVersion="4.0"
+	DefaultTargets="InstallReceptionService">
+
+  <UsingTask TaskName="Sleep" AssemblyFile="$(MSBuildProjectDirectory)\Errordite.Build.dll" />
+  
+  <Import Project="$(MSBuildProjectDirectory)\Global.imports" />
+  <Import Project="$(MSBuildProjectDirectory)\Configuration.target" />
+  <Import Project="$(MSBuildProjectDirectory)\ServiceControl.target" />
+  <Import Project="$(MSBuildProjectDirectory)\Queues.target" />
+
+  <PropertyGroup>
+    <CacheEngine>${redis}</CacheEngine>
+    <ServiceName>ErrorditeReceptionService</ServiceName>
+    <ServiceDisplayName>Errordite Reception Service</ServiceDisplayName>
+    <ServiceDomain>$(Domain)</ServiceDomain>
+    <ServiceUser>$(ErrorditeReceptionServiceUser)</ServiceUser>
+    <ServicePassword>$(ErrorditeReceptionServicePassword)</ServicePassword>
+    <DeployedApplicationPath>$(InstallRoot)\Errordite.Reception.Service</DeployedApplicationPath>
+    <ServicePath>$(DeployedApplicationPath)\NServiceBus.Host.exe</ServicePath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <CreateQueue Include=".\Private$\Errordite.Reception.Service">
+      <Label>Errordite.Reception.Service</Label>
+    </CreateQueue>
+  </ItemGroup>
+
+  <Target Name="InstallReceptionService" DependsOnTargets="GetBuildNumberAndInstallPaths;
+          StopService;
+          CopyServiceFiles; 
+          RunConfigFileChanger;
+          CreateNServiceBusSubscriptionsQueue;
+          CreateQueues;
+          InstallNServiceBusHostService;
+          SetCacheEngineToRedis;
+          SetServiceAutomatic;
+          StartService;">
+  </Target>
+
+  <Target Name="CopyServiceFiles" DependsOnTargets="GetBuildNumberAndInstallPaths" >
+    <CreateItem Include="$(MSBuildProjectDirectory)\..\Errordite.Reception.Service\**\*.*;">
+      <Output TaskParameter="Include" ItemName="ErrorditeReceptionServiceFiles" />
+    </CreateItem>
+
+    <Copy SourceFiles="@(ErrorditeReceptionServiceFiles)" DestinationFolder="$(ReceptionServiceInstallPath)\%(RecursiveDir)" />
+  </Target>
+
+  <Target Name="GetBuildNumberAndInstallPaths">
+    <ReadLinesFromFile File="$(MSBuildProjectDirectory)\version.txt">
+      <Output TaskParameter="Lines" PropertyName="BuildNumber" />
+    </ReadLinesFromFile>
+
+    <CreateProperty Value="$(InstallRoot)\Errordite.Reception.Service">
+      <Output TaskParameter="Value" PropertyName="ReceptionServiceInstallPath" />
+    </CreateProperty>
+
+    <CreateProperty Value="$(ReceptionServiceInstallPath)">
+      <Output TaskParameter="Value" PropertyName="ConfigChangerRunLocation" />
+    </CreateProperty>
+
+    <Message Text="$(TasksPath)" />
+  </Target>
+</Project>

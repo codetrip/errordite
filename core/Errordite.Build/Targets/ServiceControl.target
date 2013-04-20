@@ -1,0 +1,65 @@
+<Project
+	xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
+	ToolsVersion="4.0" >
+
+  <Target Name="StopService">
+      <ServiceQuery MachineName="$(ComputerName)" ServiceName="$(ServiceName)">
+        <Output TaskParameter="Status" PropertyName="ServicePresent"/>
+      </ServiceQuery>
+      
+      <ServiceController MachineName="$(ComputerName)" ServiceName="$(ServiceName)" Action="Stop" Condition="'$(ServicePresent)'!='Unknown'"/>
+
+      <Sleep Timeout="5000" />
+
+      <ServiceQuery MachineName="$(ComputerName)" ServiceName="$(ServiceName)">
+        <Output TaskParameter="Status" PropertyName="ServiceStatus"/>
+      </ServiceQuery>
+
+      <Sleep Timeout="5000" Condition="'$(ServiceStatus)'!='Stopped'" />
+  </Target>
+
+  <Target Name="StartService">
+    <ServiceQuery MachineName="$(ComputerName)" ServiceName="$(ServiceName)">
+      <Output TaskParameter="Status" PropertyName="ServicePresent"/>
+    </ServiceQuery>
+
+    <ServiceController MachineName="$(ComputerName)" ServiceName="$(ServiceName)" Action="Start" Condition="'$(ServicePresent)'!='Unknown'"/>
+  </Target>
+
+  <Target Name="UninstallService">
+    <ServiceQuery MachineName="$(ComputerName)" ServiceName="$(ServiceName)">
+      <Output TaskParameter="Status" PropertyName="ServicePresent"/>
+    </ServiceQuery>
+
+    <Exec
+        Command="sc delete $(ServiceName)"
+        Condition="'$(ServicePresent)'!='Unknown'" />
+
+  </Target>
+
+  <Target Name="InstallNServiceBusHostService">
+    <ServiceQuery MachineName="$(ComputerName)" ServiceName="$(ServiceName)">
+      <Output TaskParameter="Status" PropertyName="ServiceStatus"/>
+    </ServiceQuery>
+
+    <Message Text="Installing Service Name:=$(ServiceName), Machine:=$(ComputerName), Path:=$(ServicePath), User:=$(ServiceDomain)\$(ServiceUser), Password:=$(ServicePassword)" />
+
+    <Exec
+        Command="$(ServicePath) /install /serviceName:$(ServiceName) /displayName:%22$(ServiceDisplayName)%22 /description:%22$(ServiceDisplayName)%22 /username:$(ServiceDomain)\$(ServiceUser) /password:$(ServicePassword) /startManually"
+        Condition="'$(ServiceStatus)'=='Unknown'" />
+  </Target>
+
+  <Target Name="SetServiceAutomatic">
+    <ServiceQuery MachineName="$(ComputerName)" ServiceName="$(ServiceName)">
+      <Output TaskParameter="Status" PropertyName="ServicePresent"/>
+    </ServiceQuery>
+    
+    <!--set service to run automatically on restart-->
+    <WindowsService TaskAction="SetAutomatic"
+                    MachineName="$(ComputerName)"
+                    ServiceName="$(ServiceName)" 
+                    Condition="'$(ServicePresent)'!='Unknown'" />
+  </Target>
+
+</Project>
+

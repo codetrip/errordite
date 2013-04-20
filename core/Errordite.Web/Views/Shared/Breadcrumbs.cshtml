@@ -1,0 +1,29 @@
+﻿@using Errordite.Web.Extensions
+@{
+    var breadcrumbs = ViewData.GetBreadcrumbs();   
+}
+
+@if(breadcrumbs != null)
+{
+	<div class="trail-container">
+		<div class="trail">
+			<ul>
+				@foreach(var breadcrumb in breadcrumbs.Take(breadcrumbs.Count - 1))
+				{
+					<li>
+						@if (breadcrumb.Link != null)
+						{
+							<a href="@breadcrumb.Link">@breadcrumb.Title</a>
+						} else
+						{
+							<span>@breadcrumb.Title</span>
+						}
+						<span class="divider">&nbsp;›&nbsp;</span>
+					</li>
+				}
+				<li class="active">@(ViewBag.FinalBreadcrumb ?? ViewBag.Title)</li>
+			</ul>
+		</div>
+	</div>
+    
+}
