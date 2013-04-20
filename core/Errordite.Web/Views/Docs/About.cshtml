@@ -6,18 +6,18 @@
 
 @section header
 {
-    @Html.Partial("Docs/Tabs", DocsTab.Api) 
+    @Html.Partial("Docs/Tabs", DocsTab.About) 
 }
 
 <section class="centered" id="about">
     <div class="content help">
         <h2>About Errordite</h2>
-        <p>We have spent years helping develop busy websites and seeing the large numbers of errors filling up the logs.  Some of these errors
+        <p>We have spent years helping develop busy websites and seeing the large numbers of errors that fill up the logs.  Some of these errors
             were caused by genuine bugs that slipped into production, while many others were the result of unexpected URLs from a searchbot or once-a-day database
             contention problems, caused by some heavy-duty SQL job running at 3am.  The variety of severity and frequency of these different types of errors
             combined with the flat, distributed and un-parseable nature of the error logs meant dealing with these errors in any proactive way was near-impossible.
         </p>
-        <p>Errordite was developed as a solution to this problems, with 2 main goals in mind:
+        <p>Errordite was developed as a solution to these problems, with 2 main goals in mind:
         </p>
         <ol>
             <li>to show you <strong>exactly what issues are being experienced</strong> by an application (that is to say the underlying problems resulting in errors)</li>
@@ -46,8 +46,13 @@
         </ol>
         
         <p>To get around these scenarios, Errordite has an intuitive and powerful visual rule creation facility to allow you to redefine
-            an issue so that it includes a more (or less) precise set of errors.  Check out the video on the home page to see how it works.
+            an issue so that it includes a more (or less) precise set of errors.  Check out the video on the home page to see how it works - 
+            but in a snippet it looks like this:
+            
+            <img src="/Assets/Images/rule-example.jpg" alt="Rule matching example" style="display:block;" />
+
             <strong>You can use any attribute of incoming errors to make a rule - including custom data.</strong>
+
         </p>
         
         <h2>Features</h2>
@@ -61,8 +66,19 @@
             <li>integration with HipChat</li>
         </ul>
         
-@*        <h2>Roadmap</h2>
-        <p>This is just the start.</p>*@
+        <h2>Roadmap</h2>
+        <p>This is just the start and we have loads of ideas to make error management even better:</p>
+        <ul>
+            <li>alerts when your error activity changes unexpectedly</li>
+            <li>logging of application trace information</li>
+            <li>integration with bug tracking software</li>
+            <li>integration with more chat services (CampFire)</li>
+            <li>more visualisations</li>
+        </ul>
+
+        <p>Errordite will not only help you manage and fix your errors but it may well tell you about errors your users see but that you
+            didn't even know existed.  Sign up and start managing your errors!
+        </p>
         @*        <h2>Error logging - the limitations</h2>
         <p>
             Software development has come on a great deal in recent years. Agile methods have made it more likely that people 

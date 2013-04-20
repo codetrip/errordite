@@ -170,7 +170,12 @@ namespace Errordite.Web.Extensions
         {
             return helper.Action("api", "docs", new { Area = string.Empty });
         }
-        
+
+        public static string About(this UrlHelper helper)
+        {
+            return helper.Action("about", "docs", new { Area = string.Empty });
+        }
+
         public static string QuickStart(this UrlHelper helper)
         {
             return helper.Action("quickstart", "docs", new { Area = string.Empty });

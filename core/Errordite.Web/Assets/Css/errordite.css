@@ -128,16 +128,16 @@ p {
 pre.prettyprint {
   font-size: 12px;
   font-family: Consolas, Menlo, Monaco, Lucida Console;
-  padding: 12px 0 0 15px!important;
+  padding: 12px 0 0 15px !important;
   line-height: 14px;
-  border: 1px solid #D8DEE2!important;
+  border: 1px solid #d8dee2 !important;
   border-radius: 0;
   float: left;
   width: 800px; }
   pre.prettyprint.nested {
     width: 760px; }
   pre.prettyprint.textonly {
-    padding: 12px 0 12px 15px!important; }
+    padding: 12px 0 12px 15px !important; }
 pre.lang-xml .tag {
   color: maroon; }
 pre.lang-xml .att, pre.lang-xml .atn {
@@ -759,7 +759,7 @@ section {
   background-position: -108px -18px; }
 
 .icon-arrow-left {
-  background-position: 0 -36px; }
+  background-position: -0 -36px; }
 
 .icon-arrow-right {
   background-position: -165px -18px; }
@@ -1586,7 +1586,7 @@ nav {
 
 .help.content {
   padding-left: 20px;
-  padding-right: 20px; }
+  /*width: 864px;*/ }
 .help p {
   float: left;
   margin: 0 0 10px 0;
@@ -1612,6 +1612,10 @@ nav {
     font-weight: 600;
     color: #525252;
     font-size: 15px; }
+
+#about img {
+  display: block;
+  margin: 15px 100px; }
 
 .payment-plan {
   margin: 0 0 10px 10px;

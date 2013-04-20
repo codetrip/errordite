@@ -377,6 +377,7 @@
     <Content Include="Assets\Images\errordite.png" />
     <Content Include="Assets\Images\header-logo.png" />
     <Content Include="Assets\Images\people.png" />
+    <Content Include="Assets\Images\rule-example.jpg" />
     <Content Include="Assets\Images\settings.png" />
     <Content Include="Assets\Images\waiterrors.png" />
     <Content Include="Assets\Js\applications.js">

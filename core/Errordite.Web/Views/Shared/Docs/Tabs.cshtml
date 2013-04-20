@@ -7,6 +7,10 @@
         <li @(Model == DocsTab.QuickStart ? " class=active" : " class=inactive") >
             <a href="@Url.QuickStart()">Quick Start</a>
         </li>
+        <li @(Model == DocsTab.About ? " class=active" : " class=inactive") >
+            <a href="@Url.About()">About</a>
+        </li>
+
         <li @(Model == DocsTab.Pricing ? " class=active" : " class=inactive") >
             <a href="@Url.Pricing()">Pricing & Plans</a>
         </li>

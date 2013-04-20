@@ -6,6 +6,7 @@ namespace Errordite.Web.Models.Docs
         QuickStart,
         Pricing,
         Clients,
-        Api
+        Api,
+        About
     }
 }
