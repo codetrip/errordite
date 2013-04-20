@@ -1596,6 +1596,7 @@ nav {
   margin: 10px 0 15px 0; }
 .help h2 {
   float: left;
+  clear: left;
   margin: 10px 0 5px 0;
   font-weight: 600; }
 .help ul {
