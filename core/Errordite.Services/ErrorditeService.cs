@@ -1,16 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Web.Http;
 using System.Web.Http.Dispatcher;
 using System.Web.Http.SelfHost;
+using Errordite.Core.Configuration;
 using Errordite.Core.Extensions;
 using Errordite.Core.IoC;
-using Errordite.Core.IoC;
 using Errordite.Core.Web;
-using Errordite.Services.Configuration;
-using Errordite.Services.IoC;
 using Errordite.Services.Queuing;
 using log4net.Config;
+using System.Linq;
 
 namespace Errordite.Services
 {
@@ -23,11 +23,11 @@ namespace Errordite.Services
     public class ErrorditeService : IErrorditeService
     {
         private readonly IQueueProcessor _queueProcessor;
-        private readonly ServiceConfigurationContainer _serviceConfigurationContainer;
+        private readonly ServiceConfiguration _serviceConfiguration;
 
-        public ErrorditeService(ServiceConfigurationContainer serviceConfigurationContainer, IQueueProcessor queueProcessor)
+        public ErrorditeService(IEnumerable<ServiceConfiguration> serviceConfigurations, IQueueProcessor queueProcessor)
         {
-            _serviceConfigurationContainer = serviceConfigurationContainer;
+            _serviceConfiguration = serviceConfigurations.First(c => c.IsActive);
             _queueProcessor = queueProcessor;
         }
 
@@ -44,10 +44,9 @@ namespace Errordite.Services
 
         private void Configure()
         {
-            ObjectFactory.Container.Install(new ServicesMasterInstaller(_serviceConfigurationContainer.Instance));
             XmlConfigurator.ConfigureAndWatch(new FileInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"config\log4net.config")));
 
-            var config = new HttpSelfHostConfiguration("http://localhost:{0}".FormatWith(_serviceConfigurationContainer.Configuration.PortNumber));
+            var config = new HttpSelfHostConfiguration("http://localhost:{0}".FormatWith(_serviceConfiguration.PortNumber));
 
             config.Services.Replace(typeof(IHttpControllerActivator), new WindsorHttpControllerActivator());
             config.DependencyResolver = new WindsorDependencyResolver(ObjectFactory.Container);
@@ -72,7 +71,7 @@ namespace Errordite.Services
             var server = new HttpSelfHostServer(config);
             server.OpenAsync().Wait();
 
-            Console.WriteLine("The server is running on endpoint http://localhost:{0}...".FormatWith(_serviceConfigurationContainer.Configuration.PortNumber));
+            Console.WriteLine("The server is running on endpoint http://localhost:{0}...".FormatWith(_serviceConfiguration.PortNumber));
         }
     }
 }

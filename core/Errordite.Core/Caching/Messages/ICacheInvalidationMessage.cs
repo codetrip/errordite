@@ -1,8 +1,7 @@
-using NServiceBus;
 
 namespace Errordite.Core.Caching.Messages
 {
-    public interface ICacheInvalidationMessage : IMessage
+    public interface ICacheInvalidationMessage
     {
         string CacheProfileKey { get; set; }
         string CacheItemKey { get; set; }

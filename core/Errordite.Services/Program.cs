@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
-using Castle.MicroKernel.Registration;
+using Errordite.Core.Configuration;
 using Errordite.Core.Extensions;
 using Errordite.Core.IoC;
-using Errordite.Services.Configuration;
+using Errordite.Services.IoC;
 using Magnum.CommandLineParser;
 using Topshelf;
 
@@ -15,27 +15,26 @@ namespace Errordite.Services
         {
             try
             {
-                var instance = ParseInstanceName(Environment.CommandLine);
+                var service = ParseInstanceName(Environment.CommandLine);
 
-                Trace.Write("Attempting to start Errordite.Services${0}".FormatWith(instance));
+                Trace.Write("Attempting to start Errordite.Services${0}".FormatWith(service));
 
-                if (instance == null)
+                if (service == null)
                 {
-                    Trace.Write("Failed to load instance configuration from container");
+                    Trace.Write("Failed to load service configuration from container");
                     return;
                 }
 
-                var configuration = ObjectFactory.GetObject<ServiceConfiguration>(instance.ToString());
+                var configuration = ObjectFactory.GetObject<ServiceConfiguration>(service.ToString());
+
+                //indicates this is the active configuration for this service
+                configuration.IsActive = true;
 
                 Trace.Write("Loaded configuration, Service:={0}, Queue:={1}".FormatWith(
                     configuration.ServiceName,
                     configuration.QueueAddress));
 
-                //register our configuration for this service
-                ObjectFactory.Container.Register(Component
-                    .For<ServiceConfigurationContainer>()
-                    .ImplementedBy(typeof (ServiceConfigurationContainer))
-                    .LifestyleSingleton());
+                ObjectFactory.Container.Install(new ServicesMasterInstaller(service.Value));
 
                 HostFactory.Run(c =>
                 {
@@ -44,13 +43,12 @@ namespace Errordite.Services
                     c.SetDisplayName(configuration.ServiceDisplayName);
                     c.SetDescription(configuration.ServiceDiscription);
                     c.DependsOnEventLog();
-
                     c.UseLog4Net(@"config\log4net.config");
 
                     if (configuration.Username.IsNullOrEmpty())
                         c.RunAsPrompt();
                     else
-                        c.RunAs(configuration.Username, configuration.Password);
+                        c.RunAs(@"{0}\{1}".FormatWith(Environment.MachineName, configuration.Username), configuration.Password);
 
                     c.Service<IErrorditeService>(s =>
                     {
@@ -75,7 +73,7 @@ namespace Errordite.Services
         /// </summary>
         /// <param name="commandLine"> The command line to parse </param>
         /// <returns> The command line elements that were found </returns>
-        private static ServiceInstance? ParseInstanceName(string commandLine)
+        private static Service? ParseInstanceName(string commandLine)
         {
             var parser = new StringCommandLineParser();
             var result = parser.All(commandLine);
@@ -86,7 +84,7 @@ namespace Errordite.Services
 
                 if (element != null && element.Key.ToLowerInvariant() == "instance")
                 {
-                    return (ServiceInstance)Enum.Parse(typeof(ServiceInstance), element.Value, true);
+                    return (Service)Enum.Parse(typeof(Service), element.Value, true);
                 }
 
                 result = parser.All(result.Rest);

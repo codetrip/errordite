@@ -6,7 +6,6 @@ using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
 using Errordite.Core.Interfaces;
 using Errordite.Core.IoC;
-using Errordite.Core.IoC;
 
 namespace Errordite.Web.IoC
 {
@@ -30,9 +29,7 @@ namespace Errordite.Web.IoC
                 .WithServiceFromInterface(typeof(IMappingDefinition))
                 .LifestyleTransient());
 
-            container.Install(new CoreInstaller("Errordite.Web"));
-            container.Install(new ErrorditeCoreInstaller());
-            container.Install(new ErrorditeNServiceBusClientInstaller());
+            container.Install(new ErrorditeCoreInstaller("Errordite.Web"));
             container.Install(new PerWebRequestAppSessionInstaller());
         }
     }

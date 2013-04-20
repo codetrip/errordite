@@ -1,19 +1,14 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Errordite.Core;
+using Errordite.Core.Configuration;
 using Errordite.Core.Extensions;
 using Errordite.Core.Interfaces;
 using Errordite.Client;
 using Errordite.Core.Applications.Queries;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Domain.Organisation;
-using Errordite.Core.Messages;
-using NServiceBus;
-using EC = Errordite.Core.Configuration;
-using ErrorditeConfiguration = Errordite.Core.Configuration.ErrorditeConfiguration;
-using Errordite.Core.Extensions;
+using Errordite.Core.Messaging;
 
 namespace Errordite.Core.Reception.Commands
 {
@@ -22,18 +17,16 @@ namespace Errordite.Core.Reception.Commands
         private readonly IReceiveErrorCommand _receiveErrorCommand;
         private readonly IGetApplicationByTokenQuery _getApplicationByToken;
         private readonly ErrorditeConfiguration _configuration;
-        private readonly IBus _bus;
         private readonly IExceptionRateLimiter _exceptionRateLimiter;
+        private readonly IMessageSender _sender;
 
         public ProcessIncomingExceptionCommand(IGetApplicationByTokenQuery getApplicationByToken, 
             ErrorditeConfiguration configuration, 
-            IBus bus, 
             IReceiveErrorCommand receiveErrorCommand,
             IExceptionRateLimiter exceptionRateLimiter)
         {
             _getApplicationByToken = getApplicationByToken;
             _configuration = configuration;
-            _bus = bus;
             _receiveErrorCommand = receiveErrorCommand;
             _exceptionRateLimiter = exceptionRateLimiter;
         }
@@ -97,13 +90,13 @@ namespace Errordite.Core.Reception.Commands
 
             if (_configuration.ServiceBusEnabled)
             {
-                _bus.Send(organisation.RavenInstance.ReceptionQueueAddress, new ReceiveErrorMessage
+                _sender.Send(new ReceiveErrorMessage
                 {
                     Error = error,
                     ApplicationId = applicationId,
                     OrganisationId = organisationId,
                     Token = request.Error.Token
-                });
+                }, organisation.RavenInstance.ReceptionQueueAddress);
             }
             else
             {
@@ -180,7 +173,6 @@ namespace Errordite.Core.Reception.Commands
                 ExtraData = clientExceptionInfo.Data == null ? null : clientExceptionInfo.Data.ToDictionary(kvp => kvp.Key, kvp => kvp.Value),
                 Module = clientExceptionInfo.Source,
                 MethodName = clientExceptionInfo.MethodName
-                
             };
 
             yield return exceptionInfo;

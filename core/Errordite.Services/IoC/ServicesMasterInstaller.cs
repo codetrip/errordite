@@ -1,16 +1,16 @@
 ﻿using System.Collections.Generic;
 using Castle.MicroKernel.Registration;
+using Errordite.Core.Configuration;
 using Errordite.Core.IoC;
-using Errordite.Services.Configuration;
 using Errordite.Core.Extensions;
 
 namespace Errordite.Services.IoC
 {
     public class ServicesMasterInstaller : MasterInstallerBase
     {
-        private readonly ServiceInstance _instance;
+        private readonly Service _instance;
 
-        public ServicesMasterInstaller(ServiceInstance instance)
+        public ServicesMasterInstaller(Service instance)
         {
             _instance = instance;
         }
@@ -21,8 +21,7 @@ namespace Errordite.Services.IoC
             {
                 return new IWindsorInstaller[]
                 {
-                    new CoreInstaller("Errordite.{0}".FormatWith(_instance)),
-                    new ErrorditeCoreInstaller(),
+                    new ErrorditeCoreInstaller("Errordite.{0}".FormatWith(_instance)),
                     new ScopedAppSessionInstaller(), 
                     new ServicesInstaller(),
                 };

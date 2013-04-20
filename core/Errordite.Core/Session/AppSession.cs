@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition.Hosting;
 using System.Net.Http;
 using Errordite.Core.Auditing.Entities;
+using Errordite.Core.Messaging;
 using Errordite.Core.Redis;
 using Errordite.Core.Configuration;
 using Errordite.Core.Domain;
@@ -11,7 +12,6 @@ using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Indexing;
 using Errordite.Core.Raven;
 using Errordite.Core.Web;
-using NServiceBus;
 using Raven.Abstractions.Data;
 using Raven.Client;
 using Raven.Client.Connection;
@@ -24,10 +24,6 @@ namespace Errordite.Core.Session
     public interface IAppSession : IDisposable
     {
         /// <summary>
-        /// NServiceBus Bus
-        /// </summary>
-        IBus Bus { get; }
-        /// <summary>
         /// Access the Raven Session
         /// </summary>
         IDocumentSession MasterRaven { get; }
@@ -39,6 +35,10 @@ namespace Errordite.Core.Session
         /// Access the Redis Databases
         /// </summary>
         IRedisSession Redis { get; }
+        /// <summary>
+        /// publisher messages
+        /// </summary>
+        IMessageSender MessageSender { get; }
 
         //TODO: make these part of the UoW by adding an action on IDatabaseCommands
 	    IDatabaseCommands RavenDatabaseCommands { get; }
@@ -121,28 +121,25 @@ namespace Errordite.Core.Session
         private IDocumentSession _session;
         private readonly object _syncLock = new object();
         private readonly IShardedRavenDocumentStoreFactory _documentStoreFactory;
-        private readonly IBus _bus;
         private readonly IRedisSession _redisSession;
-        private readonly ErrorditeConfiguration _config;
         private readonly IComponentAuditor _auditor;
         private readonly List<SessionCommitAction> _sessionCommitActions;
         private HttpClient _receptionServiceHttpClient;
         private string _organisationDatabaseId;
         private IDocumentSession _organisationSession;
         private RavenInstance _organisationRavenInstance;
+        private readonly IMessageSender _messageSender;
 
         public AppSession(IShardedRavenDocumentStoreFactory documentStoreFactory, 
-            IBus bus, 
             IRedisSession redisSession, 
-            ErrorditeConfiguration config, 
-            IComponentAuditor auditor)
+            IComponentAuditor auditor,
+            IMessageSender messageSender)
         {
             _sessionCommitActions = new List<SessionCommitAction>();
             _documentStoreFactory = documentStoreFactory;
-            _bus = bus;     
             _redisSession = redisSession;
-            _config = config;
             _auditor = auditor;
+            _messageSender = messageSender;
         }
 
         public int RequestLimit { get; set; }
@@ -156,11 +153,6 @@ namespace Errordite.Core.Session
         public string OrganisationDatabaseName
         {
             get { return _organisationDatabaseId; }
-        }
-
-        public IBus Bus
-        {
-            get { return _bus; }
         }
 
         public IDocumentSession MasterRaven
@@ -197,6 +189,11 @@ namespace Errordite.Core.Session
         public IRedisSession Redis
         {
             get { return _redisSession; }
+        }
+
+        public IMessageSender MessageSender
+        {
+            get { return _messageSender; }
         }
 
         public IDatabaseCommands RavenDatabaseCommands

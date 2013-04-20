@@ -5,7 +5,6 @@ using Errordite.Core.Raven;
 using Errordite.Core.Session;
 using ProductionProfiler.Core.Profiling;
 using ProductionProfiler.Core.Profiling.Entities;
-using Raven.Client;
 using Raven.Client.Listeners;
 using Raven.Json.Linq;
 

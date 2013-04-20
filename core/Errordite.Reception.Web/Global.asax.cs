@@ -1,18 +1,13 @@
-﻿using System;
-using System.IO;
-using System.Threading.Tasks;
+﻿using System.IO;
 using System.Web.Mvc;
 using System.Web.Routing;
-using Errordite.Core.Auditing.Entities;
 using Errordite.Core.IoC;
 using Errordite.Core.Misc;
 using Errordite.Client;
 using Errordite.Client.Mvc;
-using Errordite.Core.IoC;
 using Errordite.Core.Session;
 using Errordite.Reception.Web.Binders;
 using Errordite.Reception.Web.IoC;
-using NServiceBus;
 using log4net.Config;
 
 namespace Errordite.Reception.Web
@@ -52,31 +47,13 @@ namespace Errordite.Reception.Web
 
             XmlConfigurator.ConfigureAndWatch(new FileInfo(Server.MapPath(@"bin\config\log4net.config")));
 
-            SetLoggingLibrary.Log4Net(XmlConfigurator.Configure);
-
             ObjectFactory.Container.Install(new ReceptionWebInstaller());
 
             ErrorditeClient.ConfigurationAugmenter = ErrorditeClientOverrideHelper.Augment;
-            ErrorditeClient.SetErrorNotificationAction(e =>
-                {
-                    System.Diagnostics.Trace.Write(e.ToString());
-                });
+            ErrorditeClient.SetErrorNotificationAction(e => System.Diagnostics.Trace.Write(e.ToString()));
+
             var controllerFactory = new WindsorControllerFactory(ObjectFactory.Container.Kernel);
             ControllerBuilder.Current.SetControllerFactory(controllerFactory);
-
-            TaskScheduler.UnobservedTaskException += (sender, args) =>
-            {
-                try
-                {
-                    ObjectFactory.GetObject<IComponentAuditor>().Error(GetType(), args.Exception);
-                }
-                catch (Exception e)
-                {
-                    System.Diagnostics.Trace.Write(e);
-                }
-
-                args.SetObserved();
-            };
         }
     }
 }

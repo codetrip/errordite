@@ -3,7 +3,6 @@ using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
 using Errordite.Core.IoC;
-using Errordite.Core.IoC;
 using Errordite.Reception.Web.Controllers;
 
 namespace Errordite.Reception.Web.IoC
@@ -20,9 +19,7 @@ namespace Errordite.Reception.Web.IoC
                 .If(t => t.Name.EndsWith("Controller"))
                 .LifestyleTransient());
 
-            new CoreInstaller("Errordite.Reception.Web").Install(container, store);
-            new ErrorditeCoreInstaller().Install(container, store);
-            new NServiceBusReceptionWebInstaller().Install(container, store);
+            new ErrorditeCoreInstaller("Errordite.Reception.Web").Install(container, store);
             new PerWebRequestAppSessionInstaller().Install(container, store);
         }
     }
