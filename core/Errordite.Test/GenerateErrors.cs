@@ -1,7 +1,9 @@
-﻿
-using System;
+﻿using System;
+using System.Diagnostics;
 using Errordite.Client;
+using Errordite.Core.Exceptions;
 using NUnit.Framework;
+using Errordite.Core.Extensions;
 
 namespace Errordite.Test
 {
@@ -9,32 +11,37 @@ namespace Errordite.Test
     public class GenerateErrors
     {
         [Test]
-        public void GenerateError()
+        public void Generate()
         {
-            try
-            {
-                int t = 0;
-                int res = 100/t;
-                Console.Write(res);
-            }
-            catch (Exception e)
-            {
-                ErrorditeClient.ReportException(e, false);
-            }
-        }
+            /*
+            Asos Test Token: lEQRBa5MoMpKbNevGwE8Hg== 
+            Marketplace Test Token: 4b4stuqfB7tVTZv4nYbXOw==
+            Codetrip Test Token: s1485PvBqftyCIty72nINg==
+            */
+            Stopwatch watch = Stopwatch.StartNew();
 
-        [Test]
-        public void LocalTime()
-        {
-            var date = DateTime.UtcNow;
-            var timezone = TimeZoneInfo.FindSystemTimeZoneById("UTC");
-            var local = TimeZoneInfo.ConvertTimeFromUtc(date, timezone);
-            var time = timezone.GetUtcOffset(date);
-            Console.WriteLine(date.ToLongTimeString());
-            Console.WriteLine(date.ToUniversalTime().ToLongTimeString());
-            Console.WriteLine(date.ToLocalTime().ToLongTimeString());
-            var offset = new DateTimeOffset(local, time);
-            Console.Write(offset.ToString());
+            for (int i = 0; i < 30; i++)
+            {
+                try
+                {
+                    if (i%3 == 0)
+                    {
+                        throw new ArgumentException("No such value for parameter named Bob!, iteration:={0}".FormatWith(i));
+                    }
+                    if (i%3 == 1)
+                    {
+                        throw new InvalidOperationException("You cant do that to this thing!, iteration:={0}".FormatWith(i));
+                    }
+                    
+                    throw new ErrorditeConfigurationException("You specified invalid configuration!, iteration:={0}".FormatWith(i));
+                }
+                catch (Exception e)
+                {
+                    ErrorditeClient.ReportException(e, false);
+                }
+            }   
+
+            Console.WriteLine(watch.ElapsedMilliseconds + "ms");
         }
     }
 }

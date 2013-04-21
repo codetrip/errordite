@@ -8,6 +8,7 @@ using Errordite.Client;
 using Errordite.Core;
 using Errordite.Core.Auditing.Entities;
 using Errordite.Core.Configuration;
+using Errordite.Core.Domain.Organisation;
 using Errordite.Core.IoC;
 using Errordite.Core.Messaging;
 using Errordite.Core.Misc;
@@ -17,6 +18,7 @@ using Errordite.Core.Session;
 using Errordite.Services.Consumers;
 using Castle.MicroKernel.Lifestyle;
 using Newtonsoft.Json;
+using Errordite.Core.Extensions;
 
 namespace Errordite.Services.Processors
 {
@@ -39,10 +41,9 @@ namespace Errordite.Services.Processors
         {
             var watch = Stopwatch.StartNew();
 
-            Trace("Processing message of type {0} for oranisation with Id;={1}, MessageId:={2}", 
-                envelope.Message.GetType().Name, 
-                envelope.OrganisationId,
-                envelope.Id);
+            Trace("Processing message of type '{0}' for oranisation with Id;={1}", 
+                envelope.MessageType, 
+                envelope.OrganisationId);
 
             bool processed = false;
             Exception error = null;
@@ -51,9 +52,9 @@ namespace Errordite.Services.Processors
             {
                 try
                 {
-                    Trace("Attempt {0} processing message with Id:={1}", attempt, envelope.Id);
+                    Trace("Attempt {0} processing message", attempt);
                     TryProcessMessage(envelope);
-                    Trace("Attempt {0} successfully processed message with Id:={1}", attempt, envelope.Id);
+                    Trace("Attempt {0} successfully processed message", attempt);
                     processed = true;
                     break;
                 }
@@ -75,7 +76,9 @@ namespace Errordite.Services.Processors
                 {
                     using (var session = ObjectFactory.GetObject<IAppSession>())
                     {
-                        Trace("Message with Id:={0} for Organisation:={1} failed, logging to RavenDB", envelope.Id, envelope.OrganisationId);
+                        Trace("Message for Organisation:={0} failed, logging to RavenDB", envelope.OrganisationId);
+
+                        envelope.Service = _serviceConfiguration.Service;
                         session.MasterRaven.Store(envelope);
                         session.Commit();
                     }
@@ -100,31 +103,50 @@ namespace Errordite.Services.Processors
 
         private void TryProcessMessage(MessageEnvelope envelope)
         {
-            //start a scope on the container so the session is shared only within the context of this message processing routine
-            using (ObjectFactory.Container.BeginScope())
+            //if there is no organisation Id this is a notification message, we dont need a session
+            if (envelope.OrganisationId == Organisation.NullOrganisationId)
             {
-                using (var session = ObjectFactory.GetObject<IAppSession>())
+                DoProcessMessage(envelope);
+            }
+            else
+            {
+                //start a scope on the container so the session is shared only within the context of this message processing routine
+                using (ObjectFactory.Container.BeginScope())
                 {
-                    Trace("Received Message of type {0}", envelope.Message.GetType().FullName);
-                    TraceObject(envelope.Message);
-
-                    var organisation = ObjectFactory.GetObject<IGetOrganisationQuery>().Invoke(new GetOrganisationRequest
+                    using (var session = ObjectFactory.GetObject<IAppSession>())
                     {
-                        OrganisationId = envelope.OrganisationId
-                    }).Organisation;
+                        Trace("Received Message of type {0}", envelope.Message.GetType().FullName);
+                        TraceObject(envelope.Message);
 
-                    session.SetOrganisation(organisation);
+                        var organisation = ObjectFactory.GetObject<IGetOrganisationQuery>().Invoke(new GetOrganisationRequest
+                        {
+                            OrganisationId = envelope.OrganisationId
+                        }).Organisation;
 
-                    //we cant resolve the consumer in a strongly typed manner here, so resolve it
-                    //as a dynamic type and invoke the Consume method
-                    var messageType = Type.GetType(envelope.MessageType);
-                    var consumerType = typeof(IErrorditeConsumer<>).MakeGenericType(messageType);
-                    dynamic consumer = ObjectFactory.Container.Resolve(consumerType);
-                    dynamic message = JsonConvert.DeserializeObject(envelope.Message, messageType);
-                    consumer.Consume(message);
-                    session.Commit();
+                        session.SetOrganisation(organisation);
+                        DoProcessMessage(envelope);
+                        session.Commit();
+                    }
                 }
             }
+        }
+
+        private void DoProcessMessage(MessageEnvelope envelope)
+        {
+            var messageType = Type.GetType(envelope.MessageType);
+
+            if (messageType == null)
+                throw new InvalidOperationException("Failed to resolve message type '{0}'".FormatWith(envelope.MessageType));
+
+            var consumerType = typeof(IErrorditeConsumer<>).MakeGenericType(messageType);
+
+            if (!ObjectFactory.Container.Kernel.HasComponent(consumerType))
+                consumerType = typeof(IErrorditeConsumer<>).MakeGenericType(messageType.BaseType);
+
+            dynamic consumer = ObjectFactory.Container.Resolve(consumerType);
+            dynamic message = JsonConvert.DeserializeObject(envelope.Message, messageType);
+
+            consumer.Consume(message);
         }
 
         public bool ContainsOrganisation(string organisationId)

@@ -35,6 +35,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AWSSDK, Version=1.5.18.0, Culture=neutral, PublicKeyToken=9f476d3089b52be3, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Amazon\AWSSDK.dll</HintPath>
+    </Reference>
     <Reference Include="BookSleeve, Version=1.1.0.5, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\Booksleeve\BookSleeve.dll</HintPath>
@@ -127,7 +131,7 @@
     <Compile Include="Redis\RedisTests.cs" />
     <Compile Include="Redis\SerializationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Serialisation\MessageSerialiserTests.cs" />
+    <Compile Include="Messaging\MessagingTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\Errordite.Build\Configuration\cache.config">

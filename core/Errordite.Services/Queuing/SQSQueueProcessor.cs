@@ -80,7 +80,7 @@ namespace Errordite.Services.Queuing
                 foreach (var message in response.ReceiveMessageResult.Message)
                 {
                     var envelope = _deserialiser.Deserialise(message.Body);
-                    envelope.ReceiptHandle = response.ReceiveMessageResult.Message[0].ReceiptHandle;
+                    envelope.ReceiptHandle = message.ReceiptHandle;
 
                     Trace("Receiving message");
 

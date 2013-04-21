@@ -50,7 +50,7 @@ namespace Errordite.Core.Errors.Commands
                 IssueId = request.IssueId,
                 OrganisationId = request.CurrentUser.OrganisationId,
                 TriggerEventUtc = DateTime.UtcNow,
-            }, _configuration.EventsQueueName));
+            }, _configuration.MasterEventsQueueAddress));
             
             return new MoveErrorsToNewIssueResponse();
         }

@@ -19,10 +19,7 @@ namespace Errordite.Core.Messaging
 
         public Amazon.SQS.AmazonSQS Create()
         {
-            return AWSClientFactory.CreateAmazonSQSClient(
-                _configuration.AWSAccessKey,
-                _configuration.AWSSecretKey,
-                RegionEndpoint.EUWest1);
+            return AWSClientFactory.CreateAmazonSQSClient(_configuration.AWSAccessKey, _configuration.AWSSecretKey, RegionEndpoint.EUWest1);
         }
     }
 }

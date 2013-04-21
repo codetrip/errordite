@@ -100,7 +100,7 @@ namespace Errordite.Core.Issues.Commands
                         IssueId = currentIssue.Id,
                         OrganisationId = request.CurrentUser.OrganisationId,
                         TriggerEventUtc = DateTime.UtcNow,
-                    }, _configuration.EventsQueueName));
+                    }, _configuration.MasterEventsQueueAddress));
 
                     Store(new IssueHistory
                     {

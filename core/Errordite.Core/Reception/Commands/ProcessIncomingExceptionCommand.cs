@@ -23,12 +23,14 @@ namespace Errordite.Core.Reception.Commands
         public ProcessIncomingExceptionCommand(IGetApplicationByTokenQuery getApplicationByToken, 
             ErrorditeConfiguration configuration, 
             IReceiveErrorCommand receiveErrorCommand,
-            IExceptionRateLimiter exceptionRateLimiter)
+            IExceptionRateLimiter exceptionRateLimiter, 
+            IMessageSender sender)
         {
             _getApplicationByToken = getApplicationByToken;
             _configuration = configuration;
             _receiveErrorCommand = receiveErrorCommand;
             _exceptionRateLimiter = exceptionRateLimiter;
+            _sender = sender;
         }
 
         public ProcessIncomingExceptionResponse Invoke(ProcessIncomingExceptionRequest request)

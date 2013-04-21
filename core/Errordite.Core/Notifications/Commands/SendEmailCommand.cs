@@ -35,7 +35,7 @@ namespace Errordite.Core.Notifications.Commands
 
             if (request.EmailInfo is NonTemplatedEmailInfo)
             {
-                NonTemplatedEmailInfo emailInfo = request.EmailInfo as NonTemplatedEmailInfo;
+                var emailInfo = request.EmailInfo as NonTemplatedEmailInfo;
                 Trace("...Sending non templated email");
 
                 message = new Message

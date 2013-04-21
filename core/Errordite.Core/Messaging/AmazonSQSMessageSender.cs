@@ -1,7 +1,9 @@
 using System;
 using Amazon.SQS;
 using Amazon.SQS.Model;
+using Errordite.Core.Domain.Organisation;
 using Newtonsoft.Json;
+using Errordite.Core.Extensions;
 
 namespace Errordite.Core.Messaging
 {
@@ -19,8 +21,8 @@ namespace Errordite.Core.Messaging
             var envelope = new MessageEnvelope
             {
                 Message = JsonConvert.SerializeObject(message),
-                MessageType = message.GetType().FullName,
-                OrganisationId = message.OrganisationId,
+                MessageType = message.GetType().AssemblyQualifiedName,
+                OrganisationId = message.OrganisationId.IsNullOrEmpty() ? Organisation.NullOrganisationId : message.OrganisationId,
                 QueueUrl = destination,
                 GeneratedOnUtc = DateTime.UtcNow
             };
@@ -28,7 +30,7 @@ namespace Errordite.Core.Messaging
             _amazonSQS.SendMessage(new SendMessageRequest
             {
                 QueueUrl = destination,
-                MessageBody = JsonConvert.SerializeObject(envelope)
+                MessageBody = JsonConvert.SerializeObject(envelope),
             });
         }
     }

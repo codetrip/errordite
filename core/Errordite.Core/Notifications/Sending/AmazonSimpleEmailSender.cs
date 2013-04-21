@@ -52,6 +52,17 @@ namespace Errordite.Core.Notifications.Sending
 
             Trace("Sending...");
 
+            var subject = new Content();
+            subject.WithCharset("UTF-8");
+            subject.WithData(message.Subject);
+
+            var html = new Content();
+            html.WithCharset("UTF-8");
+            html.WithData(message.Body);
+
+            var body = new Body();
+            body.WithHtml(html);
+
             _emailClient.SendEmail(new SendEmailRequest
             {
                 Destination = new Destination
@@ -62,10 +73,11 @@ namespace Errordite.Core.Notifications.Sending
                 },
                 Message = new Amazon.SimpleEmail.Model.Message
                 {
-                    Body = new Body(new Content(message.Body)),
-                    Subject = new Content(message.Subject)
+                    Body = body,
+                    Subject = html
                 },
-                ReplyToAddresses = replyTo
+                ReplyToAddresses = replyTo,
+                Source = _config.FromAddress
             });
 
             watch.Stop();

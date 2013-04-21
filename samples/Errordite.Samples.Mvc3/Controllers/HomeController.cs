@@ -73,7 +73,7 @@ namespace Errordite.Samples.Mvc3.Controllers
                 case 5:
 					{
 						logger.Debug("Case 5");
-                        throw new IOException("with an inner exception", new EventLogException("inner message"));
+                        throw new IOException("with an inner excepstion", new EventLogException("inner message"));
                     }
                 default:
 					{

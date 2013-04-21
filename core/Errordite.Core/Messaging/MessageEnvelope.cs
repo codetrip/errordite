@@ -1,4 +1,5 @@
 ﻿using System;
+using Errordite.Core.Configuration;
 
 namespace Errordite.Core.Messaging
 {
@@ -11,5 +12,6 @@ namespace Errordite.Core.Messaging
         public string OrganisationId { get; set; }
         public string QueueUrl { get; set; }
         public string ReceiptHandle { get; set; }
+        public Service Service { get; set; }
     }
 }
