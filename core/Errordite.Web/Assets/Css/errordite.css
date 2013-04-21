@@ -1613,6 +1613,9 @@ nav {
     font-weight: 600;
     color: #525252;
     font-size: 15px; }
+.help .last-updated {
+  font-style: italic;
+  clear: left; }
 
 #about img {
   display: block;

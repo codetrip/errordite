@@ -191,6 +191,11 @@ namespace Errordite.Web.Extensions
             return helper.Action("privacy", "docs", new { Area = string.Empty });
         }
 
+        public static string Terms(this UrlHelper helper)
+        {
+            return helper.Action("terms", "docs", new { Area = string.Empty });
+        }
+
         #endregion
 
         #region Authentication
