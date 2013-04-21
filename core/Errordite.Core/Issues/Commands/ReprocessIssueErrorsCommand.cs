@@ -115,7 +115,7 @@ namespace Errordite.Core.Issues.Commands
                                 IssueId = issue.Id,
                                 OrganisationId = request.CurrentUser.OrganisationId,
                                 TriggerEventUtc = DateTime.UtcNow,
-                            }, _configuration.EventsQueueName));
+                            }, _configuration.MasterEventsQueueAddress));
                 }
             }
             else

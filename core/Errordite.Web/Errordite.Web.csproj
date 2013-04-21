@@ -934,7 +934,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>2289</DevelopmentServerPort>
+          <DevelopmentServerPort>4752</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://dev-site.errordite.com</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

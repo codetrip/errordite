@@ -1,6 +1,5 @@
 using System.Transactions;
 using Castle.Core;
-using Castle.MicroKernel.Registration;
 using Errordite.Core.IoC;
 using Errordite.Core.Session;
 using NUnit.Framework;

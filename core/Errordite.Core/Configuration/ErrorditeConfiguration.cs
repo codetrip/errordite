@@ -16,9 +16,9 @@ namespace Errordite.Core.Configuration
         public string ReceptionEndpoint { get; set; }
         public bool RenderMinifiedContent { get; set; }
         public bool ServiceBusEnabled { get; set; }
-        public string ReceptionQueueName { get; set; }
-        public string NotificationsQueueName { get; set; }
-        public string EventsQueueName { get; set; }
+        public string MasterReceptionQueueAddress { get; set; }
+        public string MasterNotificationsQueueAddress { get; set; }
+        public string MasterEventsQueueAddress { get; set; }
         public string AdministratorsEmail { get; set; }
         public int MaxPageSize { get; set; }
         public int IssueErrorLimit { get; set; }

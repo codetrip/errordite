@@ -112,7 +112,7 @@ namespace Errordite.Core.IoC
                 .LifeStyle.Transient);
             
             container.Register(Component.For<IEmailNamingMapper>().ImplementedBy<ConventionalEmailNamingMapper>().LifeStyle.Transient);
-            container.Register(Component.For<IEmailSender>().ImplementedBy<AmazonSimpleEmailSender>().LifeStyle.Transient);
+            container.Register(Component.For<IEmailSender>().ImplementedBy<SmtpEmailSender>().LifeStyle.Transient);
             container.Register(Component.For<ITemplateLocator>().ImplementedBy<TemplateLocator>().LifeStyle.Transient);
             container.Register(Component.For<IEmailRenderer>().ImplementedBy<EmailRenderer>().LifeStyle.Transient);
             container.Register(Component.For<IEmailInfoParser>().ImplementedBy<EmailInfoParser>().LifeStyle.Transient);
@@ -129,7 +129,7 @@ namespace Errordite.Core.IoC
                 .ImplementedBy<AmazonSimpleEmailFactory>()
                 .LifeStyle.Singleton);
 
-            container.Register(Component.For<AmazonSimpleEmailService>()
+            container.Register(Component.For<AmazonSimpleEmailServiceClient>()
                 .UsingFactoryMethod(kernel => kernel.Resolve<IAmazonSimpleEmailFactory>().Create())
                 .LifeStyle.Singleton);
         }

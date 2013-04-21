@@ -43,7 +43,7 @@ namespace Errordite.Services
                     c.SetDisplayName(configuration.ServiceDisplayName);
                     c.SetDescription(configuration.ServiceDiscription);
                     c.DependsOnEventLog();
-                    c.UseLog4Net(@"config\log4net.config");
+                    //c.UseLog4Net(@"config\log4net.config");
 
                     if (configuration.Username.IsNullOrEmpty())
                         c.RunAsPrompt();

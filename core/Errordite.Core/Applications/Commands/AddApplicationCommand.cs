@@ -63,7 +63,7 @@ namespace Errordite.Core.Applications.Commands
                 NotificationGroups = request.NotificationGroups,
                 HipChatRoomId = request.HipChatRoomId,
                 HipChatAuthToken = request.HipChatAuthToken,
-                TokenSalt = Membership.GeneratePassword(4, 0),
+                TokenSalt = Membership.GeneratePassword(4, 0).Replace("|", "^"),
                 Version = request.Version,
                 TimezoneId = request.CurrentUser.Organisation.TimezoneId
             };

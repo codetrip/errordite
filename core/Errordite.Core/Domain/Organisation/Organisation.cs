@@ -50,6 +50,10 @@ namespace Errordite.Core.Domain.Organisation
             get { return Id; }
         }
 
+        public static string NullOrganisationId
+        {
+            get { return "null"; }
+        }
     }
 
     [ProtoContract]

@@ -6,7 +6,7 @@ namespace Errordite.Core.Notifications.Sending
 {
     public interface IAmazonSimpleEmailFactory
     {
-        AmazonSimpleEmailService Create();
+        AmazonSimpleEmailServiceClient Create();
     }
 
     public class AmazonSimpleEmailFactory : IAmazonSimpleEmailFactory
@@ -18,12 +18,12 @@ namespace Errordite.Core.Notifications.Sending
             _configuration = configuration;
         }
 
-        public AmazonSimpleEmailService Create()
+        public AmazonSimpleEmailServiceClient Create()
         {
-            return AWSClientFactory.CreateAmazonSimpleEmailServiceClient(
-                _configuration.AWSAccessKey,
-                _configuration.AWSSecretKey,
-                RegionEndpoint.EUWest1);
+            return new AmazonSimpleEmailServiceClient(_configuration.AWSAccessKey, _configuration.AWSSecretKey, new AmazonSimpleEmailServiceConfig
+            {
+                RegionEndpoint = RegionEndpoint.EUWest1
+            });
         }
     }
 }
