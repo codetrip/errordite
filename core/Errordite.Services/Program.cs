@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using Errordite.Core.Configuration;
+using Errordite.Core.Domain.Central;
 using Errordite.Core.Extensions;
 using Errordite.Core.IoC;
 using Errordite.Services.IoC;
@@ -15,15 +16,23 @@ namespace Errordite.Services
         {
             try
             {
-                var service = ParseInstanceName(Environment.CommandLine);
-
-                Trace.Write("Attempting to start Errordite.Services${0}".FormatWith(service));
+                Service? service;
+                string ravenInstanceId;
+                ParseCommandLine(Environment.CommandLine, out service, out ravenInstanceId);
 
                 if (service == null)
                 {
                     Trace.Write("Failed to load service configuration from container");
                     return;
                 }
+
+                if (ravenInstanceId.IsNullOrEmpty())
+                {
+                    Trace.Write("No raven instance set, defaulting to instance #1");
+                    ravenInstanceId = RavenInstance.GetId("1");
+                } 
+
+                Trace.Write("Attempting to start Errordite.Services${0} for RavenInstanceId:={1}".FormatWith(service, ravenInstanceId));
 
                 var configuration = ObjectFactory.GetObject<ServiceConfiguration>(service.ToString());
 
@@ -43,7 +52,7 @@ namespace Errordite.Services
                     c.SetDisplayName(configuration.ServiceDisplayName);
                     c.SetDescription(configuration.ServiceDiscription);
                     c.DependsOnEventLog();
-                    //c.UseLog4Net(@"config\log4net.config");
+                    c.UseLog4Net(@"config\log4net.config");
 
                     if (configuration.Username.IsNullOrEmpty())
                         c.RunAsPrompt();
@@ -53,12 +62,12 @@ namespace Errordite.Services
                     c.Service<IErrorditeService>(s =>
                     {
                         s.ConstructUsing(builder => ObjectFactory.GetObject<IErrorditeService>());
-                        s.WhenStarted(svc => svc.Start());
-                        s.WhenStopped(svc =>
+                        s.WhenStarted(svc =>
                         {
-                            svc.Stop();
-                            ObjectFactory.Container.Dispose();
+                            svc.Configure();
+                            svc.Start(ravenInstanceId);
                         });
+                        s.WhenStopped(svc => svc.Stop());
                     });
                 });
             }
@@ -72,9 +81,14 @@ namespace Errordite.Services
         ///   Parses the command line
         /// </summary>
         /// <param name="commandLine"> The command line to parse </param>
+        /// <param name="service"></param>
+        /// <param name="ravenInstanceId"></param>
         /// <returns> The command line elements that were found </returns>
-        private static Service? ParseInstanceName(string commandLine)
+        private static void ParseCommandLine(string commandLine, out Service? service, out string ravenInstanceId)
         {
+            service = null;
+            ravenInstanceId = null;
+
             var parser = new StringCommandLineParser();
             var result = parser.All(commandLine);
 
@@ -84,13 +98,16 @@ namespace Errordite.Services
 
                 if (element != null && element.Key.ToLowerInvariant() == "instance")
                 {
-                    return (Service)Enum.Parse(typeof(Service), element.Value, true);
+                    service = (Service)Enum.Parse(typeof(Service), element.Value, true);
+                }
+
+                if (element != null && element.Key.ToLowerInvariant() == "raveninstanceid")
+                {
+                    ravenInstanceId = RavenInstance.GetId(element.Value);
                 }
 
                 result = parser.All(result.Rest);
             }
-
-            return null;
         }
     }
 }

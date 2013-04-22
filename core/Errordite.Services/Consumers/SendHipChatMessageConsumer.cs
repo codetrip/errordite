@@ -15,8 +15,6 @@ namespace Errordite.Services.Consumers
 
         public void Consume(SendHipChatMessage message)
         {
-            TraceObject(message);
-
             _sendHipChatCommand.Invoke(new SendHipChatMessageRequest
             {
                 HipChatRoomId = message.HipChatRoomId,

@@ -49,7 +49,7 @@ namespace Errordite.Web
             routes.IgnoreRoute("errorditelogging/{*pathInfo}");
 
             routes.MapHttpRoute(
-                name: "issueapi",
+                name: "issuesapi",
                 routeTemplate: "api/issues/{id}",
                 defaults: new { controller = "issueapi", id = RouteParameter.Optional }
             );
@@ -202,10 +202,10 @@ namespace Errordite.Web
 
             if(master != null)
             {
-                master.ReceptionQueueAddress = ErrorditeConfiguration.Current.MasterReceiveQueueAddress;
-                master.ReceptionHttpEndpoint = ErrorditeConfiguration.Current.ReceiveHttpEndpoint;
-                master.NotificationsQueueAddress = ErrorditeConfiguration.Current.MasterNotificationsQueueAddress;
-                master.EventsQueueAddress = ErrorditeConfiguration.Current.MasterEventsQueueAddress;
+                master.ReceiveQueueAddress = ErrorditeConfiguration.Current.GetReceiveQueueAddress();
+                master.ReceiveHttpEndpoint = ErrorditeConfiguration.Current.ReceiveHttpEndpoint;
+                master.NotificationsQueueAddress = ErrorditeConfiguration.Current.GetNotificationsQueueAddress();
+                master.EventsQueueAddress = ErrorditeConfiguration.Current.GetEventsQueueAddress();
                 session.SaveChanges();
             }
         }

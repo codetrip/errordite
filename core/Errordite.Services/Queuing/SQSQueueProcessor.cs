@@ -6,20 +6,19 @@ using Amazon.SQS.Model;
 using Errordite.Core;
 using Errordite.Core.Configuration;
 using Errordite.Services.Deserialisers;
-using Errordite.Services.Processors;
 using System.Linq;
+using Magnum.Extensions;
 
 namespace Errordite.Services.Queuing
 {
     public class SQSQueueProcessor : ComponentBase, IQueueProcessor
     {
-        private readonly object _syncLock = new object();
-        private readonly AmazonSQS _amazonSQS;
+        private Thread _worker;
+        private string _organisationId;
         private bool _serviceRunning;
         private readonly ServiceConfiguration _serviceConfiguration;
-        private readonly List<Thread> _workerThreads = new List<Thread>();
         private readonly IMessageDeserialiser _deserialiser;
-        private readonly IList<MessageProcessor> _messageProcessors = new List<MessageProcessor>();
+        private readonly AmazonSQS _amazonSQS;
 
         public SQSQueueProcessor(IEnumerable<ServiceConfiguration> serviceConfigurations,
             IMessageDeserialiser deserialiser,
@@ -30,31 +29,22 @@ namespace Errordite.Services.Queuing
             _deserialiser = deserialiser;
         }
 
-        public void Start()
+        public void Start(string organisationId = null)
         {
+            _organisationId = organisationId;
             _serviceRunning = true;
-
-            for (int threadCount = 0; threadCount < _serviceConfiguration.QueueProcessingThreads; threadCount++)
+            _worker = new Thread(ReceiveFromQueue)
             {
-                var thread = new Thread(ReceiveFromQueue)
-                {
-                    IsBackground = true
-                };
-
-                thread.Start();
-                _workerThreads.Add(thread);
-            }
+                IsBackground = true
+            };
+            _worker.Start();
         }
 
         public void Stop()
         {
             _serviceRunning = false;
-
-            foreach (var thread in _workerThreads)
-            {
-                thread.Join(TimeSpan.FromSeconds(10));
-                thread.Abort();
-            }
+            _worker.Join(TimeSpan.FromSeconds(10));
+            _worker.Abort();
         }
 
         private void ReceiveFromQueue()
@@ -63,15 +53,15 @@ namespace Errordite.Services.Queuing
             {
                 var request = new ReceiveMessageRequest
                 {
-                    QueueUrl = _serviceConfiguration.QueueAddress,
+                    QueueUrl = _serviceConfiguration.QueueAddress.FormatWith(_organisationId ?? string.Empty),
                     MaxNumberOfMessages = _serviceConfiguration.MaxNumberOfMessages,
                     WaitTimeSeconds = 20
                 };
 
-                Trace("Attmpeting to receive message from queue:={0}", _serviceConfiguration.QueueAddress);
+                Trace("Attmepting to receive message from queue:={0}", _serviceConfiguration.QueueAddress);
                 var response = _amazonSQS.ReceiveMessage(request);
 
-                if (!response.IsSetReceiveMessageResult())
+                if (!response.IsSetReceiveMessageResult() || response.ReceiveMessageResult.Message.Count == 0)
                 {
                     Trace("No message returned");
                     continue;
@@ -79,48 +69,47 @@ namespace Errordite.Services.Queuing
                   
                 foreach (var message in response.ReceiveMessageResult.Message)
                 {
-                    var envelope = _deserialiser.Deserialise(message.Body);
-                    envelope.ReceiptHandle = message.ReceiptHandle;
+                    var envelope = _deserialiser.Deserialise(message);
 
-                    Trace("Receiving message");
+                    Trace("Receiving message for organisation:={0}", envelope.OrganisationId);
 
-                    var processor = _messageProcessors.FirstOrDefault(p => p.ContainsOrganisation(envelope.OrganisationId));
+                    //var processor = _messageProcessors.FirstOrDefault(p => p.ContainsOrganisation(envelope.OrganisationId));
 
-                    if (processor != null)
-                    {
-                        Trace("Found processor for organisation {0}", envelope.OrganisationId);
-                        processor.Enquque(envelope);
-                    }
-                    else
-                    {
-                        lock (_syncLock)
-                        {
-                            processor = _messageProcessors.FirstOrDefault(p => p.ContainsOrganisation(envelope.OrganisationId));
+                    //if (processor != null)
+                    //{
+                    //    Trace("Found processor for organisation {0}", envelope.OrganisationId);
+                    //    processor.Enquque(envelope);
+                    //}
+                    //else
+                    //{
+                    //    lock (_syncLock)
+                    //    {
+                    //        processor = _messageProcessors.FirstOrDefault(p => p.ContainsOrganisation(envelope.OrganisationId));
 
-                            if (processor != null)
-                            {
-                                processor.Enquque(envelope);
-                            }
-                            else
-                            {
-                                processor = _messageProcessors.FirstOrDefault(p => p.CanAddOrganisation());
+                    //        if (processor != null)
+                    //        {
+                    //            processor.Enquque(envelope);
+                    //        }
+                    //        else
+                    //        {
+                    //            processor = _messageProcessors.FirstOrDefault(p => p.CanAddOrganisation());
 
-                                if (processor != null)
-                                {
-                                    processor.AddOrganisation(envelope.OrganisationId);
-                                    processor.Enquque(envelope);
-                                }
-                                else
-                                {
-                                    processor = new MessageProcessor(_serviceConfiguration, _amazonSQS, Auditor);
-                                    processor.AddOrganisation(envelope.OrganisationId);
-                                    processor.Enquque(envelope);
+                    //            if (processor != null)
+                    //            {
+                    //                processor.AddOrganisation(envelope.OrganisationId);
+                    //                processor.Enquque(envelope);
+                    //            }
+                    //            else
+                    //            {
+                    //                processor = new MessageProcessor(_serviceConfiguration, _amazonSQS, Auditor);
+                    //                processor.AddOrganisation(envelope.OrganisationId);
+                    //                processor.Enquque(envelope);
 
-                                    _messageProcessors.Add(processor);
-                                }
-                            }
-                        }
-                    }
+                    //                _messageProcessors.Add(processor);
+                    //            }
+                    //        }
+                    //    }
+                    //}
                 }
             }
         }

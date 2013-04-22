@@ -1,9 +1,10 @@
-﻿using Errordite.Core.Messaging;
+﻿using Amazon.SQS.Model;
+using Errordite.Core.Messaging;
 
 namespace Errordite.Services.Deserialisers
 {
     public interface IMessageDeserialiser
     {
-        MessageEnvelope Deserialise(string message);
+        MessageEnvelope Deserialise(Message message);
     }
 }

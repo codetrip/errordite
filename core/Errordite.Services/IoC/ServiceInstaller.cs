@@ -30,7 +30,7 @@ namespace Errordite.Services.IoC
                 .LifestyleSingleton());
 
             container.Register(Component.For<IMessageDeserialiser>()
-               .ImplementedBy(typeof(MessageDeserialiser))
+               .ImplementedBy(typeof(AmazonSQSMessageDeserialiser))
                .LifestyleTransient());
 
             container.Register(Component.For<IQueueProcessor>()

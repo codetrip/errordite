@@ -100,7 +100,7 @@ namespace Errordite.Core.Issues.Commands
                         IssueId = currentIssue.Id,
                         OrganisationId = request.CurrentUser.OrganisationId,
                         TriggerEventUtc = DateTime.UtcNow,
-                    }, _configuration.MasterEventsQueueAddress));
+                    }, _configuration.GetEventsQueueAddress(request.CurrentUser.Organisation.RavenInstance)));
 
                     Store(new IssueHistory
                     {

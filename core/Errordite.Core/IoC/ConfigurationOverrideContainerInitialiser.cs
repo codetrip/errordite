@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Reflection;
 using System.Xml.Linq;
 using Castle.Windsor;
 using Errordite.Core.Extensions;
@@ -35,7 +34,6 @@ namespace Errordite.Core.IoC
                 catch(Exception e)
                 {
                     System.Diagnostics.Trace.Write(e.ToString());
-                    continue;
                 }
             }
         }

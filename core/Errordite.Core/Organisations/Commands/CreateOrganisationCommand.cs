@@ -15,6 +15,7 @@ using Errordite.Core.Extensions;
 using System.Linq;
 using Errordite.Core.Indexing;
 using Errordite.Core.Matching;
+using Errordite.Core.Messaging.Commands;
 using Errordite.Core.Organisations.Queries;
 using Errordite.Core.Session;
 
@@ -27,16 +28,19 @@ namespace Errordite.Core.Organisations.Commands
         private readonly IAddApplicationCommand _addApplicationCommand;
         private readonly IEncryptor _encryptor;
         private readonly IGetRavenInstancesQuery _getRavenInstancesQuery;
+        private readonly ICreateSQSQueueCommand _createSQSQueueCommand;
 
         public CreateOrganisationCommand(IGetAvailablePaymentPlansQuery getAvailablePaymentPlansQuery, 
             IAddApplicationCommand addApplicationCommand, 
             IEncryptor encryptor, 
-            IGetRavenInstancesQuery getRavenInstancesQuery)
+            IGetRavenInstancesQuery getRavenInstancesQuery, 
+            ICreateSQSQueueCommand createSqsQueueCommand)
         {
             _getAvailablePaymentPlansQuery = getAvailablePaymentPlansQuery;
             _addApplicationCommand = addApplicationCommand;
             _encryptor = encryptor;
             _getRavenInstancesQuery = getRavenInstancesQuery;
+            _createSQSQueueCommand = createSqsQueueCommand;
         }
 
         public CreateOrganisationResponse Invoke(CreateOrganisationRequest request)
@@ -124,6 +128,12 @@ namespace Errordite.Core.Organisations.Commands
                 Name = request.OrganisationName,
                 NotificationGroups = new List<string> { group.Id },
                 UserId = user.Id,
+            });
+
+            //create the SQS queue for this organisation
+            _createSQSQueueCommand.Invoke(new CreateSQSCommandRequest
+            {
+                OrganisationId = organisation.Id
             });
 
             //TODO: sync indexes

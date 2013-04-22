@@ -244,7 +244,7 @@ namespace Errordite.Web.Controllers
                 return HttpNotFound();
             }
 
-            var task = Core.Session.ReceptionServiceHttpClient.PostJsonAsync("error", new ReceiveErrorRequest
+            var task = Core.Session.ReceiveServiceHttpClient.PostJsonAsync("error", new ReceiveErrorRequest
             {
                 Error = new Error
                 {
@@ -268,12 +268,12 @@ namespace Errordite.Web.Controllers
                     Version = application.Version
                 },
                 ApplicationId = application.Id,
-                OrganisationId = application.OrganisationId,
+                Organisation = AppContext.CurrentUser.Organisation,
             }).ContinueWith(t =>
-                                {
-                                    t.Result.EnsureSuccessStatusCode();
-                                    return t.Result.Content.ReadAsAsync<ReceiveErrorResponse>().Result;
-                                });
+                {
+                    t.Result.EnsureSuccessStatusCode();
+                    return t.Result.Content.ReadAsAsync<ReceiveErrorResponse>().Result;
+                });
 
             var receiveErrorResponse = task.Result;
 

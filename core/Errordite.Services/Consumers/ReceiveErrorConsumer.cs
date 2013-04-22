@@ -15,13 +15,11 @@ namespace Errordite.Services.Consumers
 
         public void Consume(ReceiveErrorMessage message)
         {
-            TraceObject(message);
-
             _receiveErrorCommand.Invoke(new ReceiveErrorRequest
             {
                 Error = message.Error,
                 ApplicationId = message.ApplicationId,
-                OrganisationId = message.OrganisationId,
+                Organisation = message.Organisation,
                 Token = message.Token,
                 ExistingIssueId = message.ExistingIssueId
             });

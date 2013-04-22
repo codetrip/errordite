@@ -105,7 +105,7 @@
     <Compile Include="Controllers\IssueController.cs" />
     <Compile Include="Controllers\QueueController.cs" />
     <Compile Include="Controllers\ReprocessIssueErrorsController.cs" />
-    <Compile Include="Deserialisers\MessageDeserialiser.cs" />
+    <Compile Include="Deserialisers\AmazonSQSMessageDeserialiser.cs" />
     <Compile Include="Processors\MessageProcessor.cs" />
     <Compile Include="ErrorditeService.cs" />
     <Compile Include="Consumers\IErrorditeConsumer.cs" />
