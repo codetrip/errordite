@@ -14,13 +14,12 @@ namespace Errordite.Test
         public void Generate()
         {
             /*
-            Asos Test Token: lEQRBa5MoMpKbNevGwE8Hg== 
+            Asos Test Token: i3OVOLrniDWzv3YLY1pNcA==
             Marketplace Test Token: 4b4stuqfB7tVTZv4nYbXOw==
-            Codetrip Test Token: s1485PvBqftyCIty72nINg==
             */
             Stopwatch watch = Stopwatch.StartNew();
 
-            for (int i = 0; i < 30; i++)
+            for (int i = 0; i < 5; i++)
             {
                 try
                 {

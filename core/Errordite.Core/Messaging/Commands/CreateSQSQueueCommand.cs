@@ -25,7 +25,7 @@ namespace Errordite.Core.Messaging.Commands
             _amazonSQS.CreateQueue(new CreateQueueRequest
             {
                 DefaultVisibilityTimeout = _configuration.QueueVisibilityTimeoutSeconds,
-                QueueName = "errordite-receive-{0}".FormatWith(request.OrganisationId.GetFriendlyId())
+                QueueName = "errordite-receive-{0}".FormatWith(request.OrganisationId.GetFriendlyId()),
             });
 
             return new CreateSQSCommandResponse

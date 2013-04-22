@@ -30,7 +30,7 @@ namespace Errordite.Core.Domain.Central
         /// Endpoint for this Raven server
         /// </summary>
         [ProtoMember(5)]
-        public string ReceiveHttpEndpoint { get; set; }
+        public string ReceiveServiceEndpoint { get; set; }
         /// <summary>
         /// Receive service queue address for this instance
         /// </summary>
@@ -52,7 +52,7 @@ namespace Errordite.Core.Domain.Central
             Active = true,
             IsMaster = true,
             Id = "RavenInstances/1",
-            ReceiveHttpEndpoint = ErrorditeConfiguration.Current.ReceiveHttpEndpoint,
+            ReceiveServiceEndpoint = ErrorditeConfiguration.Current.ReceiveServiceEndpoint,
             ReceiveQueueAddress = ErrorditeConfiguration.Current.GetNotificationsQueueAddress(),
             EventsQueueAddress = ErrorditeConfiguration.Current.GetEventsQueueAddress(),
             NotificationsQueueAddress = ErrorditeConfiguration.Current.GetNotificationsQueueAddress()

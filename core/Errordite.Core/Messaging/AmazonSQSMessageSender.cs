@@ -2,6 +2,7 @@ using System;
 using Amazon.SQS;
 using Amazon.SQS.Model;
 using Errordite.Core.Domain.Organisation;
+using Errordite.Core.Messaging.Commands;
 using Newtonsoft.Json;
 using Errordite.Core.Extensions;
 
@@ -10,10 +11,12 @@ namespace Errordite.Core.Messaging
     public class AmazonSQSMessageSender : ComponentBase, IMessageSender
     {
         private readonly AmazonSQS _amazonSQS;
+        private readonly ICreateSQSQueueCommand _createSQSQueueCommand;
 
-        public AmazonSQSMessageSender(AmazonSQS amazonSQS)
+        public AmazonSQSMessageSender(AmazonSQS amazonSQS, ICreateSQSQueueCommand createSQSQueueCommand)
         {
             _amazonSQS = amazonSQS;
+            _createSQSQueueCommand = createSQSQueueCommand;
         }
 
         public void Send<T>(T message, string destination) where T : MessageBase
@@ -27,11 +30,34 @@ namespace Errordite.Core.Messaging
                 GeneratedOnUtc = DateTime.UtcNow
             };
 
-            _amazonSQS.SendMessage(new SendMessageRequest
+            try
             {
-                QueueUrl = destination,
-                MessageBody = JsonConvert.SerializeObject(envelope),
-            });
+                _amazonSQS.SendMessage(new SendMessageRequest
+                {
+                    QueueUrl = destination,
+                    MessageBody = JsonConvert.SerializeObject(envelope),
+                });
+            }
+            catch (AmazonSQSException e)
+            {
+                //if we are attempting to send a message to a receive queue which does not exist for an organisation
+                //craete the queue and try to send the message again
+                if (message.OrganisationId.IsNotNullOrEmpty() && 
+                    destination.Contains("errordite-receive-") && 
+                    e.Message.ToLowerInvariant().StartsWith("the specified queue does not exist"))
+                {
+                    _createSQSQueueCommand.Invoke(new CreateSQSCommandRequest
+                    {
+                        OrganisationId = message.OrganisationId
+                    });
+
+                    _amazonSQS.SendMessage(new SendMessageRequest
+                    {
+                        QueueUrl = destination,
+                        MessageBody = JsonConvert.SerializeObject(envelope),
+                    });
+                }
+            }
         }
     }
 }

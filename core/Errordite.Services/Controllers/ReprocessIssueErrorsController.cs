@@ -4,7 +4,7 @@ using System.Net.Http;
 using Errordite.Core.Issues.Commands;
 using Errordite.Core.Web;
 
-namespace Errordite.Reception.Service.Controllers
+namespace Errordite.Services.Controllers
 {
     public class ReprocessIssueErrorsController : ErrorditeApiController
     {

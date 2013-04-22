@@ -1,43 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
-using Amazon.SQS;
-using Amazon.SQS.Model;
 using Errordite.Client;
 using Errordite.Core;
-using Errordite.Core.Auditing.Entities;
 using Errordite.Core.Configuration;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.IoC;
 using Errordite.Core.Messaging;
-using Errordite.Core.Misc;
 using Errordite.Core.Organisations.Queries;
-using System.Linq;
 using Errordite.Core.Session;
 using Errordite.Services.Consumers;
 using Castle.MicroKernel.Lifestyle;
 using Newtonsoft.Json;
 using Errordite.Core.Extensions;
+using Raven.Abstractions.Exceptions;
 
 namespace Errordite.Services.Processors
 {
-    public class MessageProcessor : ComponentBase
+    public class SQSMessageProcessor : ComponentBase, IMessageProcessor
     {
-        private readonly ServiceConfiguration _serviceConfiguration;
-        private readonly List<string> _organisations = new List<string>();
-        private readonly OwnThreadQueueProcessor<MessageEnvelope> _queueProcessor;
-        private readonly AmazonSQS _amazonSQS;
-
-        public MessageProcessor(ServiceConfiguration serviceConfiguration, AmazonSQS amazonSQS, IComponentAuditor auditor)
-        {
-            _serviceConfiguration = serviceConfiguration;
-            _amazonSQS = amazonSQS;
-            _queueProcessor = new OwnThreadQueueProcessor<MessageEnvelope>(ProcessMessage, auditor);
-            Auditor = auditor;
-        }
-
-        private void ProcessMessage(MessageEnvelope envelope)
+        public void Process(ServiceConfiguration configuration, MessageEnvelope envelope)
         {
             var watch = Stopwatch.StartNew();
 
@@ -45,30 +27,31 @@ namespace Errordite.Services.Processors
                 envelope.MessageType, 
                 envelope.OrganisationId);
 
-            bool processed = false;
-            Exception error = null;
-
-            for (int attempt = 0; attempt < _serviceConfiguration.RetryLimit; attempt++)
+            try
             {
-                try
+                for (int attempt = 1; attempt <= configuration.ConcurrencyRetryLimit; attempt++)
                 {
-                    Trace("Attempt {0} processing message", attempt);
-                    TryProcessMessage(envelope);
-                    Trace("Attempt {0} successfully processed message", attempt);
-                    processed = true;
-                    break;
-                }
-                catch (Exception ex)
-                {
-                    Trace("Failed to proccess attempt {0}, error:{1}", attempt, ex.Message);
-                    error = ex;
-                }
+                    try
+                    {
+                        Trace("Attempt {0} processing message", attempt);
+                        TryProcessMessage(envelope);
+                        Trace("Attempt {0} successfully processed message", attempt);
+                        break;
+                    }
+                    catch (ConcurrencyException ex)
+                    {
+                        Trace("Concurrency exception proccessing attempt #{0}, message:{1}", attempt, ex.Message);
 
-                if(_serviceConfiguration.RetryDelayMilliseconds > 0)
-                    Thread.Sleep(_serviceConfiguration.RetryDelayMilliseconds); 
+                        //failed on last attempt so rethrow the error
+                        if (attempt == configuration.ConcurrencyRetryLimit)
+                            throw;
+                    }
+
+                    if (configuration.ConcurrencyRetryDelayMilliseconds > 0)
+                        Thread.Sleep(configuration.ConcurrencyRetryDelayMilliseconds);
+                }
             }
-
-            if (!processed)
+            catch (Exception e)
             {
                 Trace("Failed all attempts for message with Id:{0}", envelope.Id);
 
@@ -78,27 +61,17 @@ namespace Errordite.Services.Processors
                     {
                         Trace("Message for Organisation:={0} failed, logging to RavenDB", envelope.OrganisationId);
 
-                        envelope.Service = _serviceConfiguration.Service;
                         session.MasterRaven.Store(envelope);
                         session.Commit();
                     }
 
-                    if (error != null)
-                    {
-                        error.Data.Add("MessageEnvelopeId", envelope.Id);
-                        Error(error);
-                        ErrorditeClient.ReportException(error);
-                    }
+                    e.Data.Add("MessageEnvelopeId", envelope.Id);
+                    Error(e);
+                    ErrorditeClient.ReportException(e);
                 }
             }
 
             Trace("Processing for message with Id:={0} completed in {1}ms", envelope.Id, watch.ElapsedMilliseconds);
-
-            _amazonSQS.DeleteMessage(new DeleteMessageRequest
-            {
-                QueueUrl = _serviceConfiguration.QueueAddress,
-                ReceiptHandle = envelope.ReceiptHandle
-            });
         }
 
         private void TryProcessMessage(MessageEnvelope envelope)
@@ -115,9 +88,6 @@ namespace Errordite.Services.Processors
                 {
                     using (var session = ObjectFactory.GetObject<IAppSession>())
                     {
-                        Trace("Received Message of type {0}", envelope.Message.GetType().FullName);
-                        TraceObject(envelope.Message);
-
                         var organisation = ObjectFactory.GetObject<IGetOrganisationQuery>().Invoke(new GetOrganisationRequest
                         {
                             OrganisationId = envelope.OrganisationId
@@ -149,26 +119,6 @@ namespace Errordite.Services.Processors
             //base type is MessageBase, set Organisation property before invoking message consumer
             message.Organisation = organisation;
             consumer.Consume(message);
-        }
-
-        public bool ContainsOrganisation(string organisationId)
-        {
-            return _organisations.Any(o => o == organisationId);
-        }
-
-        public bool CanAddOrganisation()
-        {
-            return _organisations.Count < _serviceConfiguration.MaxOrganisationsPerMessageProcesor;
-        }
-
-        public void AddOrganisation(string organisationId)
-        {
-            _organisations.Add(organisationId);
-        }
-
-        public void Enquque(MessageEnvelope message)
-        {
-            _queueProcessor.Enqueue(message);
         }
     }
 }

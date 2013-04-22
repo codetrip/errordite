@@ -249,7 +249,6 @@
       <DependentUpon>Shared.resx</DependentUpon>
     </Compile>
     <Compile Include="Areas\System\Controllers\AdminControllerBase.cs" />
-    <Compile Include="Areas\System\Controllers\ServicesController.cs" />
     <Compile Include="Areas\System\Models\Services\SystemStatusViewModel.cs" />
     <Compile Include="Areas\System\SysAdminAreaRegistration.cs" />
     <Compile Include="Areas\System\Controllers\SystemController.cs" />
@@ -334,9 +333,6 @@
     <Compile Include="WebConstants.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\System\Views\Services\ServiceInfo.cshtml">
-      <SubType>Code</SubType>
-    </Content>
     <Content Include="Assets\Css\errordite.css">
       <DependentUpon>errordite.scss</DependentUpon>
     </Content>
@@ -883,9 +879,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\Issue\Comment.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\System\Views\Services\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Js\services.coffee" />

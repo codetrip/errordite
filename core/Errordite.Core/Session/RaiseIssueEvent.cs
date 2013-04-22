@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net.Http;
-using System.Net.Http.Formatting;
 using System.Text;
 using Errordite.Core.Domain;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Extensions;
 using System.Linq;
 using Errordite.Core.Web;
-using Newtonsoft.Json;
 
 namespace Errordite.Core.Session
 {

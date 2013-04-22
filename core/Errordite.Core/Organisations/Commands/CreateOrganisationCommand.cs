@@ -18,6 +18,7 @@ using Errordite.Core.Matching;
 using Errordite.Core.Messaging.Commands;
 using Errordite.Core.Organisations.Queries;
 using Errordite.Core.Session;
+using Errordite.Core.Web;
 
 namespace Errordite.Core.Organisations.Commands
 {
@@ -130,11 +131,23 @@ namespace Errordite.Core.Organisations.Commands
                 UserId = user.Id,
             });
 
-            //create the SQS queue for this organisation
-            _createSQSQueueCommand.Invoke(new CreateSQSCommandRequest
+            try
             {
-                OrganisationId = organisation.Id
-            });
+                //create the SQS queue for this organisation
+                _createSQSQueueCommand.Invoke(new CreateSQSCommandRequest
+                {
+                    OrganisationId = organisation.Id
+                });
+
+                //add organisation to receive service so we can start receiving errors from the organisations queue
+                Session.ReceiveServiceHttpClient.PostJsonAsync("Organisation", organisation);
+            }
+            catch (Exception e)
+            {
+                //dont fail the creation of org is service is not running, hope the service starts up soon 
+                //when it does it will pick up this org and start processing its errors
+                Error(e);
+            }
 
             //TODO: sync indexes
             Session.SynchroniseIndexes<Organisations_Search, Users_Search>();

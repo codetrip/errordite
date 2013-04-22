@@ -11,7 +11,7 @@ using Errordite.Core.Indexing;
 using Errordite.Core.IoC;
 using Errordite.Core.Session;
 using Errordite.Core.Web;
-using Errordite.Services.Queuing;
+using Errordite.Services.Processors;
 using log4net.Config;
 using System.Linq;
 using Castle.MicroKernel.Lifestyle;
@@ -71,7 +71,12 @@ namespace Errordite.Services
 
         public void AddOrganisation(Organisation organisation)
         {
-            throw new NotImplementedException();
+            if (_queueProcessors.All(p => p.OrganisationId != organisation.FriendlyId))
+            {
+                var processor = ObjectFactory.GetObject<IQueueProcessor>();
+                _queueProcessors.Add(processor);
+                processor.Start(organisation.FriendlyId);
+            }
         }
 
         public void Stop()
@@ -98,12 +103,6 @@ namespace Errordite.Services
             config.Routes.MapHttpRoute(
                 name: "issueapi",
                 routeTemplate: "api/{orgid}/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
-            );
-
-            config.Routes.MapHttpRoute(
-                name: "admin",
-                routeTemplate: "admin/{controller}/{action}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
 
