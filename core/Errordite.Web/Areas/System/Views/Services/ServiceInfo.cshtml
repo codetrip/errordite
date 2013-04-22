@@ -28,7 +28,7 @@
             Earliest
         </div>
         <div class="item-info" style="width:625px">
-            @Model.Configuration.FullyQualifiedQueueName
+            @Model.Configuration.QueueAddress
         </div>
         <div class="item-info divider" style="width:50px">
             @Model.ServiceStatus.InputQueueStatus.TotalMessages
@@ -46,7 +46,7 @@
             Earliest
         </div>
         <div class="item-info" style="width:625px">
-            @Model.Configuration.FullyQualifiedErrorQueueName
+            @Model.Configuration.QueueAddress
             @if (Model.ServiceStatus.ErrorQueueStatus.TotalMessages > 0)
             {
                 <text>
