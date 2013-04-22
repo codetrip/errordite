@@ -11,7 +11,7 @@
 
   <PropertyGroup>
     <CacheEngine>${redis}</CacheEngine>
-    <ServiceName>Errordite.Service$Notifications</ServiceName>
+    <ServiceName>Errordite.Services$Notifications</ServiceName>
     <ServiceDomain>$(Domain)</ServiceDomain>
     <ServiceUser>$(ErrorditeNotificationsServiceUser)</ServiceUser>
     <ServicePassword>$(ErrorditeNotificationsServicePassword)</ServicePassword>

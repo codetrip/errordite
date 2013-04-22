@@ -13,21 +13,21 @@
         </GenerateBuildProject>
     </Target>
 
-    <Target Name="InstallReceptionWeb">
+    <Target Name="InstallReceiveWeb">
         <GenerateBuildProject
               ConfigFile="$(MSBuildProjectDirectory)\ConfigFileChangerInstructions\InstructionReplacements.inst"
-              SourceProjectPath="$(MSBuildProjectDirectory)\InstallReceptionWeb.proj"
-              OutputProjectPath="$(MSBuildProjectDirectory)\InstallReceptionWeb_Gen.proj"
+              SourceProjectPath="$(MSBuildProjectDirectory)\InstallReceiveWeb.proj"
+              OutputProjectPath="$(MSBuildProjectDirectory)\InstallReceiveWeb_Gen.proj"
               Properties="Configuration=Release;Environment=$(TargetEnvironment)"
               Environment="$(TargetEnvironment)">
         </GenerateBuildProject>
     </Target>
 
-    <Target Name="InstallReceptionService">
+    <Target Name="InstallReceiveService">
         <GenerateBuildProject
               ConfigFile="$(MSBuildProjectDirectory)\ConfigFileChangerInstructions\InstructionReplacements.inst"
-              SourceProjectPath="$(MSBuildProjectDirectory)\InstallReceptionService.proj"
-              OutputProjectPath="$(MSBuildProjectDirectory)\InstallReceptionService_Gen.proj"
+              SourceProjectPath="$(MSBuildProjectDirectory)\InstallReceiveService.proj"
+              OutputProjectPath="$(MSBuildProjectDirectory)\InstallReceiveService_Gen.proj"
               Properties="Configuration=Release;Environment=$(TargetEnvironment)"
               Environment="$(TargetEnvironment)">
         </GenerateBuildProject>
