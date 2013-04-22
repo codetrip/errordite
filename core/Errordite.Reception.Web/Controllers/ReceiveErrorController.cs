@@ -4,7 +4,7 @@ using Errordite.Core.Auditing;
 using Errordite.Core.Reception.Commands;
 using Errordite.Core.Extensions;
 
-namespace Errordite.Reception.Web.Controllers
+namespace Errordite.Receive.Controllers
 {
     public class ReceiveErrorController : AuditingController
     {

@@ -3,7 +3,7 @@ using Errordite.Core.Caching.Interfaces;
 using Errordite.Core.IoC;
 using System.Linq;
 
-namespace Errordite.Reception.Web.Controllers
+namespace Errordite.Receive.Controllers
 {
     public class CacheController : Controller
     {

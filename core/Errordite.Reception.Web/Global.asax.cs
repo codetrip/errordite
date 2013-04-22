@@ -6,11 +6,11 @@ using Errordite.Core.Misc;
 using Errordite.Client;
 using Errordite.Client.Mvc;
 using Errordite.Core.Session;
-using Errordite.Reception.Web.Binders;
-using Errordite.Reception.Web.IoC;
+using Errordite.Receive.Binders;
+using Errordite.Receive.IoC;
 using log4net.Config;
 
-namespace Errordite.Reception.Web
+namespace Errordite.Receive
 {
     // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
     // visit http://go.microsoft.com/?LinkId=9394801
@@ -19,7 +19,6 @@ namespace Errordite.Reception.Web
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
-            filters.Add(new ErrorditeExceptionFilter());
             filters.Add(new HandleErrorAttribute());
             filters.Add(new SessionActionFilterAttribute());
         }
@@ -47,7 +46,7 @@ namespace Errordite.Reception.Web
 
             XmlConfigurator.ConfigureAndWatch(new FileInfo(Server.MapPath(@"bin\config\log4net.config")));
 
-            ObjectFactory.Container.Install(new ReceptionWebInstaller());
+            ObjectFactory.Container.Install(new ReceiveInstaller());
 
             ErrorditeClient.ConfigurationAugmenter = ErrorditeClientOverrideHelper.Augment;
             ErrorditeClient.SetErrorNotificationAction(e => System.Diagnostics.Trace.Write(e.ToString()));

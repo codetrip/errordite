@@ -8,32 +8,23 @@
   <Import Project="$(MSBuildProjectDirectory)\Global.imports" />
   <Import Project="$(MSBuildProjectDirectory)\Configuration.target" />
   <Import Project="$(MSBuildProjectDirectory)\ServiceControl.target" />
-  <Import Project="$(MSBuildProjectDirectory)\Queues.target" />
 
   <PropertyGroup>
     <CacheEngine>${redis}</CacheEngine>
-    <ServiceName>ErrorditeEventsService</ServiceName>
-    <ServiceDisplayName>Errordite Events Service</ServiceDisplayName>
+    <ServiceName>Errordite.Services$Events</ServiceName>
     <ServiceDomain>$(Domain)</ServiceDomain>
     <ServiceUser>$(ErrorditeEventsServiceUser)</ServiceUser>
     <ServicePassword>$(ErrorditeEventsServicePassword)</ServicePassword>
-    <DeployedApplicationPath>$(InstallRoot)\Errordite.Events.Service</DeployedApplicationPath>
-    <ServicePath>$(DeployedApplicationPath)\NServiceBus.Host.exe</ServicePath>
+    <DeployedApplicationPath>$(InstallRoot)\Errordite.Services.Events</DeployedApplicationPath>
+    <ServicePath>$(DeployedApplicationPath)\Errordite.Services.exe</ServicePath>
+    <ServiceInstance>Events</ServiceInstance>
   </PropertyGroup>
-
-  <ItemGroup>
-    <CreateQueue Include=".\Private$\Errordite.Events.Service">
-      <Label>Errordite.Events.Service</Label>
-    </CreateQueue>
-  </ItemGroup>
 
   <Target Name="InstallEventsService" DependsOnTargets="GetBuildNumberAndInstallPaths;
           StopService;
           CopyServiceFiles; 
           RunConfigFileChanger;
-          CreateNServiceBusSubscriptionsQueue;
-          CreateQueues;
-          InstallNServiceBusHostService;
+          InstallService;
           SetCacheEngineToRedis;
           SetServiceAutomatic;
           StartService;">

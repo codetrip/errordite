@@ -1,7 +1,7 @@
 <Project
 	xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
 	ToolsVersion="4.0"
-	DefaultTargets="InstallNotificationsService">
+	DefaultTargets="InstallReceiveService">
 
   <UsingTask TaskName="Sleep" AssemblyFile="$(MSBuildProjectDirectory)\Errordite.Build.dll" />
   
@@ -11,16 +11,16 @@
 
   <PropertyGroup>
     <CacheEngine>${redis}</CacheEngine>
-    <ServiceName>Errordite.Service$Notifications</ServiceName>
+    <ServiceName>Errordite.Services$Receive</ServiceName>
     <ServiceDomain>$(Domain)</ServiceDomain>
-    <ServiceUser>$(ErrorditeNotificationsServiceUser)</ServiceUser>
-    <ServicePassword>$(ErrorditeNotificationsServicePassword)</ServicePassword>
-    <DeployedApplicationPath>$(InstallRoot)\Errordite.Services.Notifications</DeployedApplicationPath>
+    <ServiceUser>$(ErrorditeReceiveServiceUser)</ServiceUser>
+    <ServicePassword>$(ErrorditeReceiveServicePassword)</ServicePassword>
+    <DeployedApplicationPath>$(InstallRoot)\Errordite.Services.Receive</DeployedApplicationPath>
     <ServicePath>$(DeployedApplicationPath)\Errordite.Services.exe</ServicePath>
-    <ServiceInstance>Notifications</ServiceInstance>
+    <ServiceInstance>Receive</ServiceInstance>
   </PropertyGroup>
 
-  <Target Name="InstallNotificationsService" DependsOnTargets="GetBuildNumberAndInstallPaths;
+  <Target Name="InstallReceiveService" DependsOnTargets="GetBuildNumberAndInstallPaths;
           StopService;
           CopyServiceFiles; 
           RunConfigFileChanger;
@@ -32,10 +32,10 @@
 
   <Target Name="CopyServiceFiles" DependsOnTargets="GetBuildNumberAndInstallPaths" >
     <CreateItem Include="$(MSBuildProjectDirectory)\..\Errordite.Services\**\*.*;">
-      <Output TaskParameter="Include" ItemName="ErrorditeNotificationsServiceFiles" />
+      <Output TaskParameter="Include" ItemName="ErrorditeReceiveServiceFiles" />
     </CreateItem>
 
-    <Copy SourceFiles="@(ErrorditeNotificationsServiceFiles)" DestinationFolder="$(NotificationsServiceInstallPath)\%(RecursiveDir)" />
+    <Copy SourceFiles="@(ErrorditeReceiveServiceFiles)" DestinationFolder="$(ReceiveServiceInstallPath)\%(RecursiveDir)" />
   </Target>
 
   <Target Name="GetBuildNumberAndInstallPaths">
@@ -43,12 +43,14 @@
       <Output TaskParameter="Lines" PropertyName="BuildNumber" />
     </ReadLinesFromFile>
 
-    <CreateProperty Value="$(InstallRoot)\Errordite.Services.Notifications">
-      <Output TaskParameter="Value" PropertyName="NotificationsServiceInstallPath" />
+    <CreateProperty Value="$(InstallRoot)\Errordite.Services.Receive">
+      <Output TaskParameter="Value" PropertyName="ReceiveServiceInstallPath" />
     </CreateProperty>
 
-    <CreateProperty Value="$(NotificationsServiceInstallPath)">
+    <CreateProperty Value="$(ReceiveServiceInstallPath)">
       <Output TaskParameter="Value" PropertyName="ConfigChangerRunLocation" />
     </CreateProperty>
+
+    <Message Text="$(TasksPath)" />
   </Target>
 </Project>

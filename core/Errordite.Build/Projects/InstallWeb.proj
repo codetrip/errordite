@@ -6,23 +6,15 @@
   <Import Project="$(MSBuildProjectDirectory)\Global.imports" />
   <Import Project="$(MSBuildProjectDirectory)\Configuration.target" />
   <Import Project="$(MSBuildProjectDirectory)\IIS.target" />
-  <Import Project="$(MSBuildProjectDirectory)\Queues.target" />
 
   <PropertyGroup>
     <CacheEngine>${redis-memory-hybrid}</CacheEngine>
   </PropertyGroup>
 
-  <ItemGroup>
-    <CreateQueue Include=".\Private$\Errordite.Client">
-      <Label>Errordite Client</Label>
-    </CreateQueue>
-  </ItemGroup>
-
   <Target Name="InstallWeb" DependsOnTargets="GetBuildNumberAndInstallPaths;
           CopyWebFiles;
           RunConfigFileChanger;
-          CreateNServiceBusSubscriptionsQueue;
-          CreateQueues;
+          CreateNServiceBusSubscriptionsQueue
           UpdateIISDirectoryPathAndPermissions;
           RecycleWebAppPool;">
   </Target>
