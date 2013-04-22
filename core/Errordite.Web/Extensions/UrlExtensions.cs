@@ -195,7 +195,7 @@ namespace Errordite.Web.Extensions
 
         #region Authentication
 
-        public static string SignUp(this UrlHelper helper)
+        public static string SignUp(this UrlHelper helper, string planName = null)
         {
             return helper.Action("signup", "authentication", new { Area = string.Empty });
         }
