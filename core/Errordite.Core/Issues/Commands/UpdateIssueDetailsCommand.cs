@@ -62,6 +62,7 @@ namespace Errordite.Core.Issues.Commands
 						IssueName = request.Name
 					},
 					OrganisationId = issue.OrganisationId,
+                    Organisation = request.CurrentUser.Organisation
 				});
 			}
 

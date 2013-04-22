@@ -1,6 +1,7 @@
 ﻿
 using System.Collections.Generic;
 using System.Reflection;
+using Errordite.Core.Domain.Central;
 using Errordite.Core.Extensions;
 using Errordite.Core.IoC;
 using Errordite.Core.Reception;
@@ -16,20 +17,44 @@ namespace Errordite.Core.Configuration
         public string ReceiveEndpoint { get; set; }
         public bool RenderMinifiedContent { get; set; }
         public bool ServiceBusEnabled { get; set; }
-        public string MasterReceiveQueueAddress { get; set; }
-        public string MasterNotificationsQueueAddress { get; set; }
-        public string MasterEventsQueueAddress { get; set; }
+        public string MasterReceiveQueueAddress { private get; set; }
+        public string MasterNotificationsQueueAddress { private get; set; }
+        public string MasterEventsQueueAddress { private get; set; }
         public string AdministratorsEmail { get; set; }
         public int MaxPageSize { get; set; }
         public int IssueErrorLimit { get; set; }
         public int IssueCacheId { get; set; }
         public int TrialLengthInDays { get; set; }
+        public int QueueVisibilityTimeoutSeconds { get; set; }
         public double IssueCacheTimeoutMinutes { get; set; }
         public string ReceiveHttpEndpoint { get; set; }
         public List<string> ErrorPropertiesForFiltering { get; set; }
         public List<RateLimiterRule> RateLimiterRules { get; set; }
-
         public string AWSAccessKey { get; set; }
         public string AWSSecretKey { get; set; }
+
+        public string GetReceiveQueueAddress(RavenInstance instance = null)
+        {
+            if (instance == null || instance.Id == RavenInstance.Master().Id)
+                return MasterReceiveQueueAddress;
+
+            return instance.ReceiveQueueAddress;
+        }
+
+        public string GetEventsQueueAddress(RavenInstance instance = null)
+        {
+            if (instance == null || instance.Id == RavenInstance.Master().Id)
+                return MasterEventsQueueAddress;
+
+            return instance.EventsQueueAddress;
+        }
+
+        public string GetNotificationsQueueAddress(RavenInstance instance = null)
+        {
+            if (instance == null || instance.Id == RavenInstance.Master().Id)
+                return MasterNotificationsQueueAddress;
+
+            return instance.NotificationsQueueAddress;
+        }
     }
 }

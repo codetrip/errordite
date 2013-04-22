@@ -106,7 +106,7 @@ namespace Errordite.Services.Processors
             //if there is no organisation Id this is a notification message, we dont need a session
             if (envelope.OrganisationId == Organisation.NullOrganisationId)
             {
-                DoProcessMessage(envelope);
+                DoProcessMessage(envelope, null);
             }
             else
             {
@@ -124,14 +124,14 @@ namespace Errordite.Services.Processors
                         }).Organisation;
 
                         session.SetOrganisation(organisation);
-                        DoProcessMessage(envelope);
+                        DoProcessMessage(envelope, organisation);
                         session.Commit();
                     }
                 }
             }
         }
 
-        private void DoProcessMessage(MessageEnvelope envelope)
+        private void DoProcessMessage(MessageEnvelope envelope, Organisation organisation)
         {
             var messageType = Type.GetType(envelope.MessageType);
 
@@ -146,6 +146,8 @@ namespace Errordite.Services.Processors
             dynamic consumer = ObjectFactory.Container.Resolve(consumerType);
             dynamic message = JsonConvert.DeserializeObject(envelope.Message, messageType);
 
+            //base type is MessageBase, set Organisation property before invoking message consumer
+            message.Organisation = organisation;
             consumer.Consume(message);
         }
 

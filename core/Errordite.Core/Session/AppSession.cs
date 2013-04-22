@@ -5,7 +5,6 @@ using System.Net.Http;
 using Errordite.Core.Auditing.Entities;
 using Errordite.Core.Messaging;
 using Errordite.Core.Redis;
-using Errordite.Core.Configuration;
 using Errordite.Core.Domain;
 using Errordite.Core.Domain.Central;
 using Errordite.Core.Domain.Organisation;
@@ -69,7 +68,7 @@ namespace Errordite.Core.Session
         /// <summary>
         /// Http interface for the reception services
         /// </summary>
-        HttpClient ReceptionServiceHttpClient { get; }
+        HttpClient ReceiveServiceHttpClient { get; }
 
         /// <summary>
         /// Sets the organisationId for this session
@@ -124,7 +123,7 @@ namespace Errordite.Core.Session
         private readonly IRedisSession _redisSession;
         private readonly IComponentAuditor _auditor;
         private readonly List<SessionCommitAction> _sessionCommitActions;
-        private HttpClient _receptionServiceHttpClient;
+        private HttpClient _receiveServiceHttpClient;
         private string _organisationDatabaseId;
         private IDocumentSession _organisationSession;
         private RavenInstance _organisationRavenInstance;
@@ -144,10 +143,10 @@ namespace Errordite.Core.Session
 
         public int RequestLimit { get; set; }
 
-        public HttpClient ReceptionServiceHttpClient
+        public HttpClient ReceiveServiceHttpClient
         {
             //TODO: think about disposing + also creating derived class (and so add more specific methods)
-            get { return _receptionServiceHttpClient; }
+            get { return _receiveServiceHttpClient; }
         }
 
         public string OrganisationDatabaseName
@@ -229,14 +228,14 @@ namespace Errordite.Core.Session
 
             SetOrganisationContext(organisation);
 
-            var uriBuilder = new UriBuilder(organisation.RavenInstance.ReceptionHttpEndpoint);
+            var uriBuilder = new UriBuilder(organisation.RavenInstance.ReceiveHttpEndpoint);
 
             if (!uriBuilder.Path.EndsWith("/"))
                 uriBuilder.Path += "/";
 
             uriBuilder.Path += "{0}/".FormatWith(organisation.FriendlyId);
 
-            _receptionServiceHttpClient = new HttpClient(new LoggingHttpMessageHandler(_auditor)) { BaseAddress = uriBuilder.Uri };
+            _receiveServiceHttpClient = new HttpClient(new LoggingHttpMessageHandler(_auditor)) { BaseAddress = uriBuilder.Uri };
         }
 
         public void Close()

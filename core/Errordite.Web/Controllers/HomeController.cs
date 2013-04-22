@@ -63,7 +63,7 @@ namespace Errordite.Web.Controllers
                     .FormatWith(viewModel.Name, viewModel.Reason, viewModel.Email, viewModel.Message)
             };
 
-            Core.Session.AddCommitAction(new SendMessageCommitAction("Send {0}".FormatWith(emailInfo.GetType().Name), emailInfo, _configuration.MasterNotificationsQueueAddress));
+            Core.Session.AddCommitAction(new SendMessageCommitAction("Send {0}".FormatWith(emailInfo.GetType().Name), emailInfo, _configuration.GetNotificationsQueueAddress()));
 
             ConfirmationNotification(Resources.Home.MessageReceived);
             return RedirectToAction("contact");

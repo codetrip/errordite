@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using Errordite.Core.Exceptions;
 
-namespace Errordite.Core.FileSystem
+namespace Errordite.Core.Misc
 {
     public static class RepositoryPathHelper
     {

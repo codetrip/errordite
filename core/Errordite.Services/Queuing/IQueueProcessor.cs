@@ -1,8 +1,9 @@
-﻿namespace Errordite.Services.Queuing
+﻿
+namespace Errordite.Services.Queuing
 {
     public interface IQueueProcessor
     {
-        void Start();
+        void Start(string organisationId = null);
         void Stop();
     }
 }

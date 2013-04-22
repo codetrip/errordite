@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Errordite.Core.Configuration;
+using Errordite.Core.Domain.Central;
 using Errordite.Core.Extensions;
 using Errordite.Core.Interfaces;
 using Errordite.Client;
@@ -98,7 +99,8 @@ namespace Errordite.Core.Reception.Commands
                     ApplicationId = applicationId,
                     OrganisationId = organisationId,
                     Token = request.Error.Token
-                }, organisation.RavenInstance.ReceptionQueueAddress);
+                },
+                _configuration.GetReceiveQueueAddress(organisation.RavenInstance));
             }
             else
             {
@@ -108,7 +110,7 @@ namespace Errordite.Core.Reception.Commands
                 {
                     Error = error,
                     ApplicationId = applicationId,
-                    OrganisationId = organisationId,
+                    Organisation = organisation,
                     Token = request.Error.Token
                 });
             }

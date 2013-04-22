@@ -50,7 +50,7 @@ namespace Errordite.Core.Errors.Commands
                 IssueId = request.IssueId,
                 OrganisationId = request.CurrentUser.OrganisationId,
                 TriggerEventUtc = DateTime.UtcNow,
-            }, _configuration.MasterEventsQueueAddress));
+            }, _configuration.GetEventsQueueAddress(request.CurrentUser.Organisation.RavenInstance)));
             
             return new MoveErrorsToNewIssueResponse();
         }

@@ -71,15 +71,25 @@ namespace Errordite.Core.Reception.Commands
             if (request.WhatIf)
             {
                 return new ReceiveErrorResponse
-                    {
-                        IssueId = matchingIssue.Id,
-                    }; //matchingissue can't be null here
+                {
+                    IssueId = matchingIssue.Id,
+                }; //matchingissue can't be null here
             }
 
             var issue = matchingIssue == null
-                              ? _attachToNewIssueCommand.Invoke(new AttachToNewIssueRequest { Application = application, Error = error }).Issue
-                              : _attachToExistingIssueCommand.Invoke(new AttachToExistingIssueRequest { Application = application, Error = error, IssueId = matchingIssue.Id }).Issue;
-            
+                ? _attachToNewIssueCommand.Invoke(new AttachToNewIssueRequest
+                    {
+                        Application = application, 
+                        Error = error, 
+                        Organisation = request.Organisation
+                    }).Issue
+                : _attachToExistingIssueCommand.Invoke(new AttachToExistingIssueRequest
+                    {
+                        Application = application, 
+                        Error = error,
+                        IssueId = matchingIssue.Id,
+                        Organisation = request.Organisation
+                    }).Issue;
 
             Trace("Complete");
 
@@ -104,22 +114,6 @@ namespace Errordite.Core.Reception.Commands
             }
             else
             {
-                //if no token supplied get the org and set the session
-                string organisationId = Organisation.GetId(request.OrganisationId);
-
-                var organisation = _getOrganisationQuery.Invoke(new GetOrganisationRequest
-                {
-                    OrganisationId = organisationId
-                }).Organisation;
-
-                if (organisation == null)
-                {
-                    Trace("Organisation with id {0} not found", organisationId);
-                    return null;
-                }
-
-                Session.SetOrganisation(organisation);
-
                 getApplicationResponse = _getApplicationQuery.Invoke(new GetApplicationRequest
                 {
                     ApplicationId = request.Error.ApplicationId,
@@ -152,7 +146,7 @@ namespace Errordite.Core.Reception.Commands
     {
         public Error Error { get; set; }
         public string ApplicationId { get; set; }
-        public string OrganisationId { get; set; }
+        public Organisation Organisation { get; set; }
         public string Token { get; set; }
         public string ExistingIssueId { get; set; }
         public bool WhatIf { get; set; }

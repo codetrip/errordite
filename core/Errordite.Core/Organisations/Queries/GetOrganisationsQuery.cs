@@ -1,5 +1,4 @@
-﻿
-using Castle.Core;
+﻿using Castle.Core;
 using Errordite.Core.Caching.Entities;
 using Errordite.Core.Caching.Interceptors;
 using Errordite.Core.Interfaces;

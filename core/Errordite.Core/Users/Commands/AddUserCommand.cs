@@ -109,7 +109,8 @@ namespace Errordite.Core.Users.Commands
                     Token = _encryptor.Encrypt("{0}|{1}".FormatWith(user.PasswordToken.ToString(), request.Organisation.FriendlyId)).Base64Encode(),
                     UserName = user.FirstName
                 },
-                OrganisationId = request.Organisation.Id
+                OrganisationId = request.Organisation.Id,
+                Organisation = request.Organisation
             });
             
             Session.SynchroniseIndexes<Users_Search, Groups_Search>();
