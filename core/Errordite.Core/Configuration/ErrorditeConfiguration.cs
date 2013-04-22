@@ -13,10 +13,10 @@ namespace Errordite.Core.Configuration
 
         public static readonly string CurrentBuildNumber = Assembly.GetExecutingAssembly().GetCurrentBuildNumber();
         public string SiteBaseUrl { get; set; }
-        public string ReceptionEndpoint { get; set; }
+        public string ReceiveEndpoint { get; set; }
         public bool RenderMinifiedContent { get; set; }
         public bool ServiceBusEnabled { get; set; }
-        public string MasterReceptionQueueAddress { get; set; }
+        public string MasterReceiveQueueAddress { get; set; }
         public string MasterNotificationsQueueAddress { get; set; }
         public string MasterEventsQueueAddress { get; set; }
         public string AdministratorsEmail { get; set; }
@@ -25,7 +25,7 @@ namespace Errordite.Core.Configuration
         public int IssueCacheId { get; set; }
         public int TrialLengthInDays { get; set; }
         public double IssueCacheTimeoutMinutes { get; set; }
-        public string ReceptionHttpEndpoint { get; set; }
+        public string ReceiveHttpEndpoint { get; set; }
         public List<string> ErrorPropertiesForFiltering { get; set; }
         public List<RateLimiterRule> RateLimiterRules { get; set; }
 

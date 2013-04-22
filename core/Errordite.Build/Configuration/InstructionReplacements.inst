@@ -16,7 +16,7 @@ In time we hope to use this for replacing values in sql files as well, but we ar
   <Replacements match="*.inst">
 
     <ErrorditeWebsiteHostName dev="dev-site.errordite.com" test="test-site.errordite.com" production="site.errordite.com" />
-    <ErrorditeReceptionWebsiteHostName dev="dev-reception.errordite.com" test="test-reception.errordite.com" production="reception.errordite.com" />
+    <ErrorditeReceiveHostName dev="dev-reception.errordite.com" test="test-reception.errordite.com" production="receive.errordite.com" />
     <ErrorditeToken production="c0kH5d4B9FbfJxSScry5EQ==" theRest="TODO"/>
     
     <RavenConnectionString 
@@ -26,8 +26,8 @@ In time we hope to use this for replacing values in sql files as well, but we ar
     
     <RavenPort theRest="80" />
     <SiteBaseUrl dev="http://dev-site.errordite.com/" test="http://test.errordite.com/" production="https://www.errordite.com/" />
-    <ReceptionEndpoint dev="http://dev-reception.errordite.com/" test="http://test-reception.errordite.com/" production="http://internal-reception.errordite.com:8001/" />
-    <InternalReceptionEndpoint dev="http://dev-reception.errordite.com/receiveerror" test="http://reception.errordite.com/receiveerror" production="http://internal-reception.errordite.com:8001/receiveerror" />
+    <ReceiveEndpoint dev="http://dev-reception.errordite.com/" test="http://test-reception.errordite.com/" production="http://internal-receive.errordite.com:8001/" />
+    <InternalReceiveEndpoint dev="http://dev-reception.errordite.com/receiveerror" test="http://receive.errordite.com/receiveerror" production="http://internal-receive.errordite.com:8001/receiveerror" />
 
     <Domain theRest="" />
 
@@ -41,16 +41,16 @@ In time we hope to use this for replacing values in sql files as well, but we ar
       production="redis.errordite.com" />
     
     <EmailTemplateLocation
-      dev="$reproot\core\Errordite.Notifications\Templates"
-      test="C:\ErrorditeTest\Errordite.Notifications.Service\Templates"
-      production="C:\Errordite\Errordite.Notifications.Service\Templates" />
+      dev="$reproot\core\Errordite.Core\Notifications\Templates"
+      test="C:\ErrorditeTest\Errordite.Services.Notifications\Templates"
+      production="C:\Errordite\Errordite.Services.Notifications\Templates" />
     
     <ErrorditeWebUser theRest="errordite_web" />
     <ErrorditeWebPassword theRest="Err0rD1t3_W3b$" />
-    <ErrorditeReceptionWebUser theRest="errordite_web_rcp" />
-    <ErrorditeReceptionWebPassword theRest="Err0rD1t3_R3p$" />
-    <ErrorditeReceptionServiceUser theRest="errordite_svc_rcp" />
-    <ErrorditeReceptionServicePassword theRest="Err0rD1t3_R5v$" />
+    <ErrorditeReceiveWebUser theRest="errordite_web_rcp" />
+    <ErrorditeReceiveWebPassword theRest="Err0rD1t3_R3p$" />
+    <ErrorditeReceiveServiceUser theRest="errordite_svc_rcp" />
+    <ErrorditeReceiveServicePassword theRest="Err0rD1t3_R5v$" />
     <ErrorditeEventsServiceUser theRest="errordite_svc_evt" />
     <ErrorditeEventsServicePassword theRest="Err0rD1t3_E7t$" />
     <ErrorditeRavenUser theRest="errordite_raven" />
@@ -59,6 +59,10 @@ In time we hope to use this for replacing values in sql files as well, but we ar
     <ErrorditeNotificationsServicePassword theRest="Err0rD1t3_N0T$" />
     <ErrorditeScheduledTasksUser theRest="errordite_svc_tasks" />
     <ErrorditeScheduledTasksPassword theRest="Err0rD1t3_3vT$" />
+
+    <ReceiveQueueAddress theRest="https://sqs.eu-west-1.amazonaws.com/186350237634/errordite-receive-1" />
+    <NotificationsQueueAddress theRest="https://sqs.eu-west-1.amazonaws.com/186350237634/errordite-notifications-1" />
+    <EventsQueueAddress theRest="https://sqs.eu-west-1.amazonaws.com/186350237634/errordite-events-1" />
     
   </Replacements>
 </Root>

@@ -6,7 +6,7 @@ using System.Xml.Serialization;
 using Errordite.Client;
 using Newtonsoft.Json;
 
-namespace Errordite.Reception.Web.Binders
+namespace Errordite.Receive.Binders
 {
     public class ClientErrorModelBinder : DefaultModelBinder
     {

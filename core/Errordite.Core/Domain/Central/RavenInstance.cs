@@ -52,8 +52,8 @@ namespace Errordite.Core.Domain.Central
             Active = true,
             IsMaster = true,
             Id = "RavenInstances/1",
-            ReceptionHttpEndpoint = ErrorditeConfiguration.Current.ReceptionHttpEndpoint,
-            ReceptionQueueAddress = ErrorditeConfiguration.Current.MasterReceptionQueueAddress,
+            ReceptionHttpEndpoint = ErrorditeConfiguration.Current.ReceiveHttpEndpoint,
+            ReceptionQueueAddress = ErrorditeConfiguration.Current.MasterReceiveQueueAddress,
             EventsQueueAddress = ErrorditeConfiguration.Current.MasterEventsQueueAddress,
             NotificationsQueueAddress = ErrorditeConfiguration.Current.MasterNotificationsQueueAddress
         };
