@@ -6,8 +6,8 @@ using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
 using Errordite.Core.IoC;
 using Errordite.Services.Consumers;
-using Errordite.Services.Deserialisers;
-using Errordite.Services.Queuing;
+using Errordite.Services.Processors;
+using Errordite.Services.Throttlers;
 
 namespace Errordite.Services.IoC
 {
@@ -29,8 +29,12 @@ namespace Errordite.Services.IoC
                 .Instance(new WindsorHttpControllerActivator())
                 .LifestyleSingleton());
 
-            container.Register(Component.For<IMessageDeserialiser>()
-               .ImplementedBy(typeof(AmazonSQSMessageDeserialiser))
+            container.Register(Component.For<IMessageProcessor>()
+               .ImplementedBy(typeof(SQSMessageProcessor))
+               .LifestyleTransient());
+
+            container.Register(Component.For<IRequestThrottler>()
+               .ImplementedBy(typeof(SQSRequestThrottler))
                .LifestyleTransient());
 
             container.Register(Component.For<IQueueProcessor>()
@@ -40,11 +44,6 @@ namespace Errordite.Services.IoC
             container.Register(Classes.FromAssembly(Assembly.GetExecutingAssembly())
                 .BasedOn(typeof (IErrorditeConsumer<>))
                 .WithServiceFromInterface(typeof (IErrorditeConsumer<>))
-                .LifestyleTransient());
-
-            container.Register(Classes.FromAssembly(Assembly.GetExecutingAssembly())
-                .BasedOn(typeof(IMessageDeserialiser))
-                .WithServiceFromInterface(typeof(IMessageDeserialiser))
                 .LifestyleTransient());
         }
     }

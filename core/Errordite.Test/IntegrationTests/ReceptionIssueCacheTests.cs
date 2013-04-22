@@ -21,7 +21,7 @@ namespace Errordite.Test.IntegrationTests
         [Test]
         public void SendErrorsForProcessing()
         {
-            var postTask = new HttpClient().PostJsonAsync("{0}/1/ReprocessIssueErrors".FormatWith(Core.Configuration.ErrorditeConfiguration.Current.ReceiveHttpEndpoint), new ReprocessIssueErrorsRequest
+            var postTask = new HttpClient().PostJsonAsync("{0}/1/ReprocessIssueErrors".FormatWith(Core.Configuration.ErrorditeConfiguration.Current.ReceiveServiceEndpoint), new ReprocessIssueErrorsRequest
             {
                 IssueId = "issues/1",
                 OrganisationId = "organisations/1"
@@ -41,7 +41,7 @@ namespace Errordite.Test.IntegrationTests
         {
             var issue = GetIssue();
 
-            var postTask = new HttpClient().PostJsonAsync("{0}/1/issue".FormatWith(Core.Configuration.ErrorditeConfiguration.Current.ReceiveHttpEndpoint), issue);
+            var postTask = new HttpClient().PostJsonAsync("{0}/1/issue".FormatWith(Core.Configuration.ErrorditeConfiguration.Current.ReceiveServiceEndpoint), issue);
 
             postTask.Wait();
 
@@ -57,14 +57,14 @@ namespace Errordite.Test.IntegrationTests
             issue.LastErrorUtc = DateTime.UtcNow;
 
             //now update
-            var putTask = new HttpClient().PutJsonAsync("{0}/1/issue".FormatWith(Core.Configuration.ErrorditeConfiguration.Current.ReceiveHttpEndpoint), new[] { issue });
+            var putTask = new HttpClient().PutJsonAsync("{0}/1/issue".FormatWith(Core.Configuration.ErrorditeConfiguration.Current.ReceiveServiceEndpoint), new[] { issue });
             putTask.Wait();
 
             Assert.That(putTask.Result.StatusCode == HttpStatusCode.NoContent);
 
             var task = new HttpClient().GetAsync(
                 "{0}/1/issue/{1}?applicationId={2}".FormatWith(
-                    Core.Configuration.ErrorditeConfiguration.Current.ReceiveHttpEndpoint, issue.FriendlyId, issue.ApplicationId));
+                    Core.Configuration.ErrorditeConfiguration.Current.ReceiveServiceEndpoint, issue.FriendlyId, issue.ApplicationId));
 
             task.Wait();
 
@@ -80,7 +80,7 @@ namespace Errordite.Test.IntegrationTests
         {
             var issue = GetIssue();
 
-            var postTask = new HttpClient().PostJsonAsync("{0}/1/issue".FormatWith(Core.Configuration.ErrorditeConfiguration.Current.ReceiveHttpEndpoint), issue);
+            var postTask = new HttpClient().PostJsonAsync("{0}/1/issue".FormatWith(Core.Configuration.ErrorditeConfiguration.Current.ReceiveServiceEndpoint), issue);
 
             postTask.Wait();
             Console.Write(postTask.Result.StatusCode);
@@ -88,7 +88,7 @@ namespace Errordite.Test.IntegrationTests
 
             var task =
                 new HttpClient().GetAsync(
-                    "{0}/1/issue/{1}?applicationId={2}".FormatWith(Core.Configuration.ErrorditeConfiguration.Current.ReceiveHttpEndpoint, issue.FriendlyId, issue.ApplicationId));
+                    "{0}/1/issue/{1}?applicationId={2}".FormatWith(Core.Configuration.ErrorditeConfiguration.Current.ReceiveServiceEndpoint, issue.FriendlyId, issue.ApplicationId));
 
             task.Wait();
             Console.Write(task.Result.StatusCode);
@@ -100,28 +100,28 @@ namespace Errordite.Test.IntegrationTests
         {
             var issue = GetIssue();
 
-            var postTask = new HttpClient().PostAsJsonAsync("{0}/1/issue".FormatWith(Core.Configuration.ErrorditeConfiguration.Current.ReceiveHttpEndpoint), issue);
+            var postTask = new HttpClient().PostAsJsonAsync("{0}/1/issue".FormatWith(Core.Configuration.ErrorditeConfiguration.Current.ReceiveServiceEndpoint), issue);
 
             postTask.Wait();
             Assert.That(postTask.Result.StatusCode == HttpStatusCode.Created);
 
             var task =
                 new HttpClient().GetAsync(
-                    "{0}/1/issue/{1}?applicationId={2}".FormatWith(Core.Configuration.ErrorditeConfiguration.Current.ReceiveHttpEndpoint, issue.FriendlyId, issue.ApplicationId));
+                    "{0}/1/issue/{1}?applicationId={2}".FormatWith(Core.Configuration.ErrorditeConfiguration.Current.ReceiveServiceEndpoint, issue.FriendlyId, issue.ApplicationId));
 
             task.Wait();
             Assert.That(task.Result.StatusCode == HttpStatusCode.OK);
 
             string id = "{0}|{1}".FormatWith(issue.FriendlyId, IdHelper.GetFriendlyId(issue.ApplicationId));
 
-            var deleteTask = new HttpClient().DeleteAsync("{0}/1/issue/{1}".FormatWith(Core.Configuration.ErrorditeConfiguration.Current.ReceiveHttpEndpoint, id));
+            var deleteTask = new HttpClient().DeleteAsync("{0}/1/issue/{1}".FormatWith(Core.Configuration.ErrorditeConfiguration.Current.ReceiveServiceEndpoint, id));
 
             deleteTask.Wait();
             Assert.That(deleteTask.Result.StatusCode == HttpStatusCode.NoContent);
 
             var getTask =
                 new HttpClient().GetAsync(
-                    "{0}/1/issue/{1}?applicationId={2}".FormatWith(Core.Configuration.ErrorditeConfiguration.Current.ReceiveHttpEndpoint, issue.Id, issue.ApplicationId));
+                    "{0}/1/issue/{1}?applicationId={2}".FormatWith(Core.Configuration.ErrorditeConfiguration.Current.ReceiveServiceEndpoint, issue.Id, issue.ApplicationId));
 
             getTask.Wait();
             Assert.That(getTask.Result.StatusCode == HttpStatusCode.NotFound);

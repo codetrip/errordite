@@ -37,12 +37,12 @@ the config file.  If you wish to allow a choice of folders, they can be separate
 
   <File match="errordite.config">
     <SiteBaseUrl theRest="$(SiteBaseUrl)" />
-    <ReceiveEndpoint theRest="$(ReceiveEndpoint)" />
+    <ReceiveWebEndpoint theRest="$(ReceiveEndpoint)" />
+    <ReceiveServiceEndpoint production="http://services.errordite.com:800/api" />
     <RenderMinifiedContent theRest="true" />
     <MasterEventsQueueAddress production="$(EventsQueueAddress)" />
     <MasterReceiveQueueAddress production="$(ReceiveQueueAddress)" />
     <MasterNotificationsQueueAddress production="$(NotificationsQueueAddress)" />
-    <ReceiveHttpEndpoint production="http://services.errordite.com:800/api" />
   </File>
 
   <File match="email.config">

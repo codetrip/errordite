@@ -228,7 +228,7 @@ namespace Errordite.Core.Session
 
             SetOrganisationContext(organisation);
 
-            var uriBuilder = new UriBuilder(organisation.RavenInstance.ReceiveHttpEndpoint);
+            var uriBuilder = new UriBuilder(organisation.RavenInstance.ReceiveServiceEndpoint);
 
             if (!uriBuilder.Path.EndsWith("/"))
                 uriBuilder.Path += "/";

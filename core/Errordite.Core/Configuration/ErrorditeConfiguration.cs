@@ -14,7 +14,8 @@ namespace Errordite.Core.Configuration
 
         public static readonly string CurrentBuildNumber = Assembly.GetExecutingAssembly().GetCurrentBuildNumber();
         public string SiteBaseUrl { get; set; }
-        public string ReceiveEndpoint { get; set; }
+        public string ReceiveWebEndpoint { get; set; }
+        public string ReceiveServiceEndpoint { get; set; }
         public bool RenderMinifiedContent { get; set; }
         public bool ServiceBusEnabled { get; set; }
         public string MasterReceiveQueueAddress { private get; set; }
@@ -27,18 +28,17 @@ namespace Errordite.Core.Configuration
         public int TrialLengthInDays { get; set; }
         public int QueueVisibilityTimeoutSeconds { get; set; }
         public double IssueCacheTimeoutMinutes { get; set; }
-        public string ReceiveHttpEndpoint { get; set; }
         public List<string> ErrorPropertiesForFiltering { get; set; }
         public List<RateLimiterRule> RateLimiterRules { get; set; }
         public string AWSAccessKey { get; set; }
         public string AWSSecretKey { get; set; }
 
-        public string GetReceiveQueueAddress(RavenInstance instance = null)
+        public string GetReceiveQueueAddress(string organisationId, RavenInstance instance = null)
         {
             if (instance == null || instance.Id == RavenInstance.Master().Id)
-                return MasterReceiveQueueAddress;
+                return MasterReceiveQueueAddress + organisationId.GetFriendlyId();
 
-            return instance.ReceiveQueueAddress;
+            return instance.ReceiveQueueAddress + organisationId.GetFriendlyId();
         }
 
         public string GetEventsQueueAddress(RavenInstance instance = null)

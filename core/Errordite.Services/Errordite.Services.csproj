@@ -101,21 +101,22 @@
     <Compile Include="Consumers\SendHipChatMessageConsumer.cs" />
     <Compile Include="Consumers\ReceiveErrorConsumer.cs" />
     <Compile Include="Consumers\SyncIssueCountsConsumer.cs" />
+    <Compile Include="Controllers\OrganisationController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\IssueController.cs" />
-    <Compile Include="Controllers\QueueController.cs" />
     <Compile Include="Controllers\ReprocessIssueErrorsController.cs" />
-    <Compile Include="Deserialisers\AmazonSQSMessageDeserialiser.cs" />
-    <Compile Include="Processors\MessageProcessor.cs" />
+    <Compile Include="Processors\IMessageProcessor.cs" />
+    <Compile Include="Processors\SQSMessageProcessor.cs" />
     <Compile Include="ErrorditeService.cs" />
     <Compile Include="Consumers\IErrorditeConsumer.cs" />
     <Compile Include="IoC\ServicesMasterInstaller.cs" />
     <Compile Include="IoC\ServiceInstaller.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Queuing\IQueueProcessor.cs" />
-    <Compile Include="Queuing\SQSQueueProcessor.cs" />
-    <Compile Include="Deserialisers\IMessageDeserialiser.cs" />
+    <Compile Include="Processors\IQueueProcessor.cs" />
+    <Compile Include="Processors\SQSQueueProcessor.cs" />
+    <Compile Include="Throttlers\IRequestThrottler.cs" />
+    <Compile Include="Throttlers\SQSRequestThrottler.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Errordite.Build\Configuration\cache.config">

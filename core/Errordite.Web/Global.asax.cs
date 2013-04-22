@@ -202,8 +202,8 @@ namespace Errordite.Web
 
             if(master != null)
             {
-                master.ReceiveQueueAddress = ErrorditeConfiguration.Current.GetReceiveQueueAddress();
-                master.ReceiveHttpEndpoint = ErrorditeConfiguration.Current.ReceiveHttpEndpoint;
+                master.ReceiveQueueAddress = ErrorditeConfiguration.Current.GetReceiveQueueAddress(string.Empty);
+                master.ReceiveServiceEndpoint = ErrorditeConfiguration.Current.ReceiveServiceEndpoint;
                 master.NotificationsQueueAddress = ErrorditeConfiguration.Current.GetNotificationsQueueAddress();
                 master.EventsQueueAddress = ErrorditeConfiguration.Current.GetEventsQueueAddress();
                 session.SaveChanges();
