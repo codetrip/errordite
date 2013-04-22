@@ -31,7 +31,7 @@
   </Target>
 
   <Target Name="CopyServiceFiles" DependsOnTargets="GetBuildNumberAndInstallPaths" >
-    <CreateItem Include="$(MSBuildProjectDirectory)\..\Errordite.Events.Service\**\*.*;">
+    <CreateItem Include="$(MSBuildProjectDirectory)\..\Errordite.Services.Events\**\*.*;">
       <Output TaskParameter="Include" ItemName="ErrorditeEventsServiceFiles" />
     </CreateItem>
 
@@ -43,7 +43,7 @@
       <Output TaskParameter="Lines" PropertyName="BuildNumber" />
     </ReadLinesFromFile>
 
-    <CreateProperty Value="$(InstallRoot)\Errordite.Events.Service">
+    <CreateProperty Value="$(InstallRoot)\Errordite.Services.Events">
       <Output TaskParameter="Value" PropertyName="EventsServiceInstallPath" />
     </CreateProperty>
 
