@@ -56,16 +56,15 @@ namespace Errordite.Services
 
                 foreach (var organisation in organisations)
                 {
-                    var processor = ObjectFactory.GetObject<IQueueProcessor>();
-                    _queueProcessors.Add(processor);
-                    processor.Start(organisation.FriendlyId);
+                    AddProcessor(organisation.FriendlyId);
                 }
             }
             else
             {
-                var processor = ObjectFactory.GetObject<IQueueProcessor>();
-                _queueProcessors.Add(processor);
-                processor.Start();
+                for (int i = 0; i < _serviceConfiguration.ServiceProcessorCount; i++)
+                {
+                    AddProcessor();
+                }
             }
         }
 
@@ -73,10 +72,15 @@ namespace Errordite.Services
         {
             if (_queueProcessors.All(p => p.OrganisationId != organisation.FriendlyId))
             {
-                var processor = ObjectFactory.GetObject<IQueueProcessor>();
-                _queueProcessors.Add(processor);
-                processor.Start(organisation.FriendlyId);
+                AddProcessor(organisation.FriendlyId);
             }
+        }
+
+        public void AddProcessor(string organisationId = null)
+        {
+            var processor = ObjectFactory.GetObject<IQueueProcessor>();
+            _queueProcessors.Add(processor);
+            processor.Start(organisationId);
         }
 
         public void Stop()
