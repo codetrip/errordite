@@ -20,6 +20,7 @@ namespace Errordite.Core.Configuration
         public string Password { get; set; }
         public bool IsActive { get; set; }
 
+        public int ServiceProcessorCount { get; set; }
         public int ConcurrencyRetryLimit { get; set; }
         public int ConcurrencyRetryDelayMilliseconds { get; set; }
         public int MaxNumberOfMessagesPerReceive { get; set; }
