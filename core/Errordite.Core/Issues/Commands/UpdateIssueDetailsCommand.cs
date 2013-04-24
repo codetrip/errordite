@@ -7,6 +7,7 @@ using Errordite.Core.Notifications.Commands;
 using Errordite.Core.Notifications.EmailInfo;
 using Errordite.Core.Organisations;
 using Errordite.Core.Session;
+using Errordite.Core.Session.Actions;
 using Errordite.Core.Users.Queries;
 using Errordite.Core.Extensions;
 using Errordite.Core.Extensions;

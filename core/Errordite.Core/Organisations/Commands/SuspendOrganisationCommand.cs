@@ -8,7 +8,8 @@ using Errordite.Core.Applications.Queries;
 using Errordite.Core.Caching;
 using Errordite.Core.Configuration;
 using Errordite.Core.Domain.Organisation;
-using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
+using Errordite.Core.Session;
+using Errordite.Core.Session.Actions;
 
 namespace Errordite.Core.Organisations.Commands
 {
@@ -51,6 +52,8 @@ namespace Errordite.Core.Organisations.Commands
             {
                 application.IsActive = false;
             }
+
+            Session.AddCommitAction(new FlushOrganisationCacheCommitAction(_configuration, organisation.FriendlyId));
 
             return new SuspendOrganisationResponse(organisation.Id)
             {

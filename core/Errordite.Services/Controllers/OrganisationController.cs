@@ -19,5 +19,11 @@ namespace Errordite.Services.Controllers
             _errorditeService.AddOrganisation(organisation);
             return Request.CreateResponse(HttpStatusCode.OK, organisation);
         }
+
+        public HttpResponseMessage Delete(string orgId)
+        {
+            _errorditeService.RemoveOrganisation(orgId);
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
     }
 }

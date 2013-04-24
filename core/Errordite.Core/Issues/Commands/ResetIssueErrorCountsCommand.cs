@@ -8,6 +8,7 @@ using Errordite.Core.Errors.Queries;
 using Errordite.Core.Indexing;
 using Errordite.Core.Extensions;
 using Errordite.Core.Session;
+using Errordite.Core.Session.Actions;
 
 namespace Errordite.Core.Issues.Commands
 {
@@ -100,7 +101,7 @@ namespace Errordite.Core.Issues.Commands
             new DeleteAllDailyCountsCommitAction(issue.Id, deleteHistorical: false).Execute(Session);
 
             //make sure the issue index is not stale
-            new SynchroniseIndex<IssueDailyCount_Search>().Execute(Session);
+            new SynchroniseIndexCommitAction<IssueDailyCount_Search>().Execute(Session);
 
             foreach (var dailyCount in dailyCounts)
             {

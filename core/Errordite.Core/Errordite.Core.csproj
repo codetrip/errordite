@@ -76,10 +76,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="ProductionProfiler.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=06afa51a2c047269, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\Profiler\ProductionProfiler.Core.dll</HintPath>
-    </Reference>
     <Reference Include="protobuf-net, Version=2.0.0.480, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\protobuf\protobuf-net.dll</HintPath>
@@ -441,20 +437,22 @@
     </Compile>
     <Compile Include="Serialisation\SimpleXmlSerialiser.cs" />
     <Compile Include="SerializationHelper.cs" />
+    <Compile Include="Session\Actions\FlushApplicationCacheCommitAction.cs" />
     <Compile Include="Session\AppSession.cs" />
-    <Compile Include="Session\UpdateByIndexCommitAction.cs" />
-    <Compile Include="Session\DeleteByIndexCommitAction.cs" />
+    <Compile Include="Session\Actions\FlushOrganisationCacheCommitAction.cs" />
+    <Compile Include="Session\Actions\UpdateByIndexCommitAction.cs" />
+    <Compile Include="Session\Actions\DeleteByIndexCommitAction.cs" />
     <Compile Include="Caching\NullCacheInstaller.cs" />
     <Compile Include="Users\Queries\GetUserByEmailAddressQuery.cs" />
     <Compile Include="Web\ErrorditeApiController.cs" />
     <Compile Include="Web\LoggingHttpMessageHandler.cs" />
-    <Compile Include="Session\RaiseIssueEvent.cs" />
-    <Compile Include="Session\SendMessageCommitAction.cs" />
+    <Compile Include="Session\Actions\RaiseIssueEventCommitAction.cs" />
+    <Compile Include="Session\Actions\SendMessageCommitAction.cs" />
     <Compile Include="Session\SessionAccessBase.cs" />
     <Compile Include="Session\SessionActionFilterAttribute.cs" />
-    <Compile Include="Session\SessionCommitAction.cs" />
+    <Compile Include="Session\Actions\SessionCommitAction.cs" />
     <Compile Include="Session\SessionExtensions.cs" />
-    <Compile Include="Session\SynchroniseIndex.cs" />
+    <Compile Include="Session\Actions\SynchroniseIndexCommitAction.cs" />
     <Compile Include="Users\Commands\AddUserCommand.cs" />
     <Compile Include="Users\Commands\DeleteUserCommand.cs" />
     <Compile Include="Users\Commands\EditUserCommand.cs" />

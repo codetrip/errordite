@@ -6,10 +6,12 @@ using Errordite.Core.Configuration;
 using Errordite.Core.Identity;
 using Errordite.Core.Notifications.EmailInfo;
 using Errordite.Core.Session;
+using Errordite.Core.Session.Actions;
 using Errordite.Web.ActionFilters;
 using Errordite.Web.Models.Home;
 using Errordite.Core.Extensions;
 using Errordite.Web.Extensions;
+using Errordite.Core.Web;
 
 namespace Errordite.Web.Controllers
 {
@@ -20,6 +22,17 @@ namespace Errordite.Web.Controllers
         public HomeController(ErrorditeConfiguration configuration)
         {
             _configuration = configuration;
+        }
+
+        [HttpGet, ImportViewData]
+        public ActionResult Test()
+        {
+            var session = ObjectFactory.GetObject<IAppSession>();
+            session.ReceiveServiceHttpClient.DeleteAsync("cache");
+            session.ReceiveServiceHttpClient.DeleteAsync("cache?applicationId=122");
+            session.ReceiveServiceHttpClient.DeleteAsync("organisation");
+            session.ReceiveServiceHttpClient.PostJsonAsync("organisation", AppContext.CurrentUser.Organisation);
+            return Content("Done");
         }
 
         public ActionResult ClearCache()
@@ -63,7 +76,7 @@ namespace Errordite.Web.Controllers
                     .FormatWith(viewModel.Name, viewModel.Reason, viewModel.Email, viewModel.Message)
             };
 
-            Core.Session.AddCommitAction(new SendMessageCommitAction("Send {0}".FormatWith(emailInfo.GetType().Name), emailInfo, _configuration.GetNotificationsQueueAddress()));
+            Core.Session.AddCommitAction(new SendMessageCommitAction(emailInfo, _configuration.GetNotificationsQueueAddress()));
 
             ConfirmationNotification(Resources.Home.MessageReceived);
             return RedirectToAction("contact");

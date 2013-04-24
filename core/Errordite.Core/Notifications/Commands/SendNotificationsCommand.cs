@@ -6,6 +6,7 @@ using Errordite.Core.Configuration;
 using Errordite.Core.Extensions;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Session;
+using Errordite.Core.Session.Actions;
 using Errordite.Core.Users.Queries;
 using Errordite.Core.Notifications.EmailInfo;
 using System.Linq;
@@ -50,7 +51,7 @@ namespace Errordite.Core.Notifications.Commands
             }
             else
             {
-                Session.AddCommitAction(new SendMessageCommitAction("Send {0}".FormatWith(request.EmailInfo.GetType().Name), request.EmailInfo,
+                Session.AddCommitAction(new SendMessageCommitAction(request.EmailInfo,
                     _configuration.GetNotificationsQueueAddress(request.Organisation == null ?
                         null :
                         request.Organisation.RavenInstance)));
@@ -90,7 +91,7 @@ namespace Errordite.Core.Notifications.Commands
             }
             else
             {
-                Session.AddCommitAction(new SendMessageCommitAction("Send {0}".FormatWith(request.EmailInfo.GetType().Name), request.EmailInfo, 
+                Session.AddCommitAction(new SendMessageCommitAction(request.EmailInfo, 
                     _configuration.GetNotificationsQueueAddress(request.Organisation == null ? 
                         null : 
                         request.Organisation.RavenInstance)));
@@ -125,7 +126,7 @@ namespace Errordite.Core.Notifications.Commands
                     Message = request.EmailInfo.ConvertToSimpleMessage(_configuration)
                 };
 
-                Session.AddCommitAction(new SendMessageCommitAction("Send {0}".FormatWith(hipChatMessage.GetType().Name), hipChatMessage,
+                Session.AddCommitAction(new SendMessageCommitAction(hipChatMessage,
                     _configuration.GetNotificationsQueueAddress(request.Organisation == null ? 
                         null : 
                         request.Organisation.RavenInstance)));

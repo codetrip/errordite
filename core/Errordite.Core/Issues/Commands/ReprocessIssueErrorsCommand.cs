@@ -16,6 +16,7 @@ using Errordite.Core.Organisations;
 using Errordite.Core.Reception.Commands;
 using System.Linq;
 using Errordite.Core.Session;
+using Errordite.Core.Session.Actions;
 
 namespace Errordite.Core.Issues.Commands
 {
@@ -108,13 +109,12 @@ namespace Errordite.Core.Issues.Commands
                 if (response.AttachedIssueIds.Count > 1)
                 {
                     //re-sync the error counts
-                    Session.AddCommitAction(new SendMessageCommitAction("Sync Issue Error Counts",
-                        new SyncIssueErrorCountsMessage
-                            {
-                                IssueId = issue.Id,
-                                OrganisationId = request.CurrentUser.OrganisationId,
-                                TriggerEventUtc = DateTime.UtcNow,
-                            }, _configuration.GetEventsQueueAddress(request.CurrentUser.Organisation.RavenInstance)));
+                    Session.AddCommitAction(new SendMessageCommitAction(new SyncIssueErrorCountsMessage
+                    {
+                        IssueId = issue.Id,
+                        OrganisationId = request.CurrentUser.OrganisationId,
+                        TriggerEventUtc = DateTime.UtcNow,
+                    }, _configuration.GetEventsQueueAddress(request.CurrentUser.Organisation.RavenInstance)));
                 }
             }
             else

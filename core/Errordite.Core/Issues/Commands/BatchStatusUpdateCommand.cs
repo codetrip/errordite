@@ -7,6 +7,7 @@ using Errordite.Core.Domain.Error;
 using Errordite.Core.Extensions;
 using Errordite.Core.Organisations;
 using Errordite.Core.Session;
+using Errordite.Core.Session.Actions;
 using Errordite.Core.Users.Queries;
 
 namespace Errordite.Core.Issues.Commands

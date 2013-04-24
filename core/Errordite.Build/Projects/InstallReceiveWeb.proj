@@ -17,7 +17,6 @@
           CopyReceiveFiles;
           RunConfigFileChanger;
           UpdateWebIISDirectoryPathAndPermissions;
-          SetCacheEngineToRedis;
           RecycleWebReceptionAppPool">
   </Target>
 

@@ -2,11 +2,13 @@
 using Castle.Core;
 using Errordite.Core.Caching.Entities;
 using Errordite.Core.Caching.Interceptors;
+using Errordite.Core.Configuration;
 using Errordite.Core.Interfaces;
 using Errordite.Core.Authorisation;
 using Errordite.Core.Caching;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Session;
+using Errordite.Core.Session.Actions;
 
 namespace Errordite.Core.Organisations.Commands
 {
@@ -14,10 +16,12 @@ namespace Errordite.Core.Organisations.Commands
     public class SetOrganisationTimezoneCommand : SessionAccessBase, ISetOrganisationTimezoneCommand
     {
         private readonly IAuthorisationManager _authorisationManager;
+        private readonly ErrorditeConfiguration _configuration;
 
-        public SetOrganisationTimezoneCommand(IAuthorisationManager authorisationManager)
+        public SetOrganisationTimezoneCommand(IAuthorisationManager authorisationManager, ErrorditeConfiguration configuration)
         {
             _authorisationManager = authorisationManager;
+            _configuration = configuration;
         }
 
         public SetOrganisationTimezoneResponse Invoke(SetOrganisationTimezoneRequest request)
@@ -28,6 +32,8 @@ namespace Errordite.Core.Organisations.Commands
             _authorisationManager.Authorise(organisation, request.CurrentUser);
 
             organisation.TimezoneId = request.TimezoneId;
+
+            Session.AddCommitAction(new FlushOrganisationCacheCommitAction(_configuration, organisation.FriendlyId));
 
             return new SetOrganisationTimezoneResponse(organisation.Id);
         }

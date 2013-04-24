@@ -2,6 +2,7 @@
 using Castle.Core;
 using Errordite.Core.Caching.Entities;
 using Errordite.Core.Caching.Interceptors;
+using Errordite.Core.Configuration;
 using Errordite.Core.Interfaces;
 using Errordite.Core.Authorisation;
 using Errordite.Core.Domain.Organisation;
@@ -9,6 +10,8 @@ using System.Linq;
 using Errordite.Core.Indexing;
 using Errordite.Core.Organisations;
 using Errordite.Core.Session;
+using Errordite.Core.Session.Actions;
+using Errordite.Core.Extensions;
 
 namespace Errordite.Core.Applications.Commands
 {
@@ -16,10 +19,12 @@ namespace Errordite.Core.Applications.Commands
     public class EditApplicationCommand : SessionAccessBase, IEditApplicationCommand
     {
         private readonly IAuthorisationManager _authorisationManager;
+        private readonly ErrorditeConfiguration _configuration;
 
-        public EditApplicationCommand(IAuthorisationManager authorisationManager)
+        public EditApplicationCommand(IAuthorisationManager authorisationManager, ErrorditeConfiguration configuration)
         {
             _authorisationManager = authorisationManager;
+            _configuration = configuration;
         }
 
         public EditApplicationResponse Invoke(EditApplicationRequest request)
@@ -61,6 +66,7 @@ namespace Errordite.Core.Applications.Commands
             application.Version = request.Version;
 
             Session.SynchroniseIndexes<Applications_Search>();
+            Session.AddCommitAction(new FlushApplicationCacheCommitAction(_configuration, application.OrganisationId.GetFriendlyId(), application.FriendlyId));
 
             return new EditApplicationResponse(false, request.ApplicationId, request.CurrentUser.OrganisationId)
             {

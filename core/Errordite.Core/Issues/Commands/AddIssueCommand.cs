@@ -9,6 +9,7 @@ using Errordite.Core.Matching;
 using Errordite.Core.Organisations;
 using Errordite.Core.Session;
 using Errordite.Core.Extensions;
+using Errordite.Core.Session.Actions;
 
 namespace Errordite.Core.Issues.Commands
 {

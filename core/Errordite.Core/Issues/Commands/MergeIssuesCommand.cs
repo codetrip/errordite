@@ -8,6 +8,7 @@ using Errordite.Core.Indexing;
 using Errordite.Core.Messaging;
 using Errordite.Core.Organisations;
 using Errordite.Core.Session;
+using Errordite.Core.Session.Actions;
 using Raven.Abstractions.Data;
 
 namespace Errordite.Core.Issues.Commands
@@ -40,7 +41,7 @@ namespace Errordite.Core.Issues.Commands
             _authorisationManager.Authorise(mergeFromIssue, request.CurrentUser);
             _authorisationManager.Authorise(mergeToIssue, request.CurrentUser);
 
-            new SynchroniseIndex<Errors_Search>().Execute(Session);
+            new SynchroniseIndexCommitAction<Errors_Search>().Execute(Session);
 
             //move all errors fron the MergeFromIssue to the MergeToIssue
             Session.AddCommitAction(new UpdateByIndexCommitAction(CoreConstants.IndexNames.Errors,
@@ -71,7 +72,7 @@ namespace Errordite.Core.Issues.Commands
             Delete(mergeFromIssue);
 
             //re-sync the error counts
-            Session.AddCommitAction(new SendMessageCommitAction("Sync Issue Error Counts", new SyncIssueErrorCountsMessage
+            Session.AddCommitAction(new SendMessageCommitAction(new SyncIssueErrorCountsMessage
             {
                 IssueId = request.MergeToIssueId,
                 OrganisationId = request.CurrentUser.OrganisationId,

@@ -83,16 +83,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="ProductionProfiler.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=06afa51a2c047269, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\Profiler\ProductionProfiler.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="ProductionProfiler.IoC.Windsor">
-      <HintPath>..\..\lib\Profiler\ProductionProfiler.IoC.Windsor.dll</HintPath>
-    </Reference>
-    <Reference Include="ProductionProfiler.Persistence.Raven">
-      <HintPath>..\..\lib\Profiler\ProductionProfiler.Persistence.Raven.dll</HintPath>
-    </Reference>
     <Reference Include="Raven.Abstractions, Version=2.0.3.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\RavenDB.Client.2.0.2330\lib\net40\Raven.Abstractions.dll</HintPath>
