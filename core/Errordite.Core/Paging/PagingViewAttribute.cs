@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using Errordite.Core.Extensions;
 using Errordite.Core.Web;
-using ProductionProfiler.Core.Extensions;
 
 namespace Errordite.Core.Paging
 {

@@ -10,6 +10,7 @@ using Errordite.Core.Domain.Central;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Indexing;
 using Errordite.Core.Raven;
+using Errordite.Core.Session.Actions;
 using Errordite.Core.Web;
 using Raven.Abstractions.Data;
 using Raven.Client;
@@ -355,7 +356,7 @@ namespace Errordite.Core.Session
         public void SynchroniseIndexes<T>(bool masterRaven = false)
             where T : AbstractIndexCreationTask, new()
         {
-            AddCommitAction(new SynchroniseIndex<T>(masterRaven));
+            AddCommitAction(new SynchroniseIndexCommitAction<T>(masterRaven));
         }
 
         public void SynchroniseIndexes<T1, T2>()

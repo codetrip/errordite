@@ -101,6 +101,7 @@
     <Compile Include="Consumers\SendHipChatMessageConsumer.cs" />
     <Compile Include="Consumers\ReceiveErrorConsumer.cs" />
     <Compile Include="Consumers\SyncIssueCountsConsumer.cs" />
+    <Compile Include="Controllers\CacheController.cs" />
     <Compile Include="Controllers\OrganisationController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\IssueController.cs" />

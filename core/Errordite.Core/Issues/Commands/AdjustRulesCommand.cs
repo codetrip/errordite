@@ -12,6 +12,7 @@ using Errordite.Core.Messaging;
 using Errordite.Core.Organisations;
 using Errordite.Core.Session;
 using Errordite.Core.Extensions;
+using Errordite.Core.Session.Actions;
 
 namespace Errordite.Core.Issues.Commands
 {
@@ -95,7 +96,7 @@ namespace Errordite.Core.Issues.Commands
                     });
 
                     //re-sync the error counts only if we have moved errors
-                    Session.AddCommitAction(new SendMessageCommitAction("Sync Issue Error Counts", new SyncIssueErrorCountsMessage
+                    Session.AddCommitAction(new SendMessageCommitAction(new SyncIssueErrorCountsMessage
                     {
                         IssueId = currentIssue.Id,
                         OrganisationId = request.CurrentUser.OrganisationId,

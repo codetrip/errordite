@@ -14,7 +14,7 @@ namespace Errordite.Core.Configuration
 
         public static readonly string CurrentBuildNumber = Assembly.GetExecutingAssembly().GetCurrentBuildNumber();
         public string SiteBaseUrl { get; set; }
-        public string ReceiveWebEndpoint { get; set; }
+        public string ReceiveWebEndpoints { get; set; }
         public string ReceiveServiceEndpoint { get; set; }
         public bool RenderMinifiedContent { get; set; }
         public bool ServiceBusEnabled { get; set; }

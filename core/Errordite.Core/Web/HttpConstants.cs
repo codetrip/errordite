@@ -8,6 +8,7 @@ namespace Errordite.Core.Web
             public const string Get = "get";
             public const string Post = "post";
             public const string Head = "head";
+            public const string Delete = "delete";
         }
 
         public static class HttpHeaders

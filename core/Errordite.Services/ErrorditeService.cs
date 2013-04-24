@@ -21,9 +21,10 @@ namespace Errordite.Services
     public interface IErrorditeService
     {
         void Start(string ravenInstanceId);
-        void AddOrganisation(Organisation organisation);
         void Stop();
         void Configure();
+        void AddOrganisation(Organisation organisation);
+        void RemoveOrganisation(string organisationId);
     }
 
     public class ErrorditeService : IErrorditeService
@@ -73,6 +74,16 @@ namespace Errordite.Services
             if (_queueProcessors.All(p => p.OrganisationId != organisation.FriendlyId))
             {
                 AddProcessor(organisation.FriendlyId);
+            }
+        }
+
+        public void RemoveOrganisation(string organisationId)
+        {
+            var processor = _queueProcessors.FirstOrDefault(p => p.OrganisationId != organisationId.GetFriendlyId());
+            if (processor != null)
+            {
+                processor.Stop();
+                _queueProcessors.Remove(processor);
             }
         }
 

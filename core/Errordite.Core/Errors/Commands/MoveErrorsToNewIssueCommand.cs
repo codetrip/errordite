@@ -9,6 +9,7 @@ using Errordite.Core.Indexing;
 using Errordite.Core.Messaging;
 using Errordite.Core.Organisations;
 using Errordite.Core.Session;
+using Errordite.Core.Session.Actions;
 using Raven.Abstractions.Data;
 
 namespace Errordite.Core.Errors.Commands
@@ -27,7 +28,7 @@ namespace Errordite.Core.Errors.Commands
             Trace("Starting...");
             TraceObject(request);
 
-            new SynchroniseIndex<Errors_Search>().Execute(Session);
+            new SynchroniseIndexCommitAction<Errors_Search>().Execute(Session);
 
             //now move errors from the other issues
             Session.RavenDatabaseCommands.UpdateByIndex(CoreConstants.IndexNames.Errors,
@@ -45,7 +46,7 @@ namespace Errordite.Core.Errors.Commands
                     }
             }, true);
 
-            Session.AddCommitAction(new SendMessageCommitAction("Sync Issue Error Counts", new SyncIssueErrorCountsMessage
+            Session.AddCommitAction(new SendMessageCommitAction(new SyncIssueErrorCountsMessage
             {
                 IssueId = request.IssueId,
                 OrganisationId = request.CurrentUser.OrganisationId,

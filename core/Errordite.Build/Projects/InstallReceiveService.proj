@@ -10,7 +10,6 @@
   <Import Project="$(MSBuildProjectDirectory)\ServiceControl.target" />
 
   <PropertyGroup>
-    <CacheEngine>${redis}</CacheEngine>
     <ServiceName>Errordite.Services$Receive</ServiceName>
     <ServiceDomain>$(Domain)</ServiceDomain>
     <ServiceUser>$(ErrorditeReceiveServiceUser)</ServiceUser>
@@ -25,7 +24,6 @@
           CopyServiceFiles; 
           RunConfigFileChanger;
           InstallService;
-          SetCacheEngineToRedis;
           SetServiceAutomatic;
           StartService;">
   </Target>
