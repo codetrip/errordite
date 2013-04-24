@@ -20,7 +20,7 @@ namespace Errordite.Core.Session.Actions
 
         public override void Execute(IAppSession session)
         {
-            session.ReceiveServiceHttpClient.PostJsonAsync("issue", _issue.ToIssueBase());
+            session.ReceiveHttpClient.PostJsonAsync("issue", _issue.ToIssueBase());
         }
     }
 
@@ -40,7 +40,7 @@ namespace Errordite.Core.Session.Actions
         public override void Execute(IAppSession session)
         {
             var issues = _issues.Select(i => i.ToIssueBase()).ToList(); //need to materialise this at IEnumerable as otherwise the dynamic property setter on the other side fails due to HttpContext.Current being null - didn't expect that one did you?!
-            session.ReceiveServiceHttpClient.PutJsonAsync("issue", issues);
+            session.ReceiveHttpClient.PutJsonAsync("issue", issues);
         }
     }
 
@@ -68,7 +68,7 @@ namespace Errordite.Core.Session.Actions
                 ids.Append("{0}|{1}^".FormatWith(IdHelper.GetFriendlyId(idparts[0]), IdHelper.GetFriendlyId(idparts[1])));
             }
 
-            session.ReceiveServiceHttpClient.DeleteAsync("issue/{0}".FormatWith(ids.ToString().TrimEnd(new []{'^'})));
+            session.ReceiveHttpClient.DeleteAsync("issue/{0}".FormatWith(ids.ToString().TrimEnd(new []{'^'})));
         }
     }
 }

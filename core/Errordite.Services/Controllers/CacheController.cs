@@ -21,9 +21,12 @@ namespace Errordite.Services.Controllers
 
         public HttpResponseMessage Delete(string orgId)
         {
-            var cacheInvalidator = new CacheInvalidator(_cacheConfiguration);
+            var cacheInvalidator = new CacheInvalidator(_cacheConfiguration)
+	        {
+		        Auditor = Auditor
+	        };
 
-            cacheInvalidator.SetCacheEngine(_cacheEngine);
+	        cacheInvalidator.SetCacheEngine(_cacheEngine);
             cacheInvalidator.Invalidate(new CacheInvalidationItem(
                 CacheProfiles.Organisations,
                 CacheKeys.Organisations.Key(orgId)));
@@ -33,7 +36,10 @@ namespace Errordite.Services.Controllers
 
         public HttpResponseMessage Delete(string orgId, string applicationId)
         {
-            var cacheInvalidator = new CacheInvalidator(_cacheConfiguration);
+			var cacheInvalidator = new CacheInvalidator(_cacheConfiguration)
+			{
+				Auditor = Auditor
+			};
 
             cacheInvalidator.SetCacheEngine(_cacheEngine);
             cacheInvalidator.Invalidate(new CacheInvalidationItem(

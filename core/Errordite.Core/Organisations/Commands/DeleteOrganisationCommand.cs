@@ -26,6 +26,13 @@ namespace Errordite.Core.Organisations.Commands
 
         public DeleteOrganisationResponse Invoke(DeleteOrganisationRequest request)
         {
+	        var organisation = MasterLoad<Organisation>(Organisation.GetId(request.OrganisationId));
+
+			if (organisation == null)
+			{
+				return new DeleteOrganisationResponse(request.OrganisationId, true);
+			}
+
             Session.MasterRavenDatabaseCommands.DeleteByIndex(
                 CoreConstants.IndexNames.UserOrganisationMappings, new IndexQuery
                     {
@@ -38,7 +45,7 @@ namespace Errordite.Core.Organisations.Commands
                     Query = "Id:{0}".FormatWith(Organisation.GetId(request.OrganisationId))
                 }, true);
 
-            Session.AddCommitAction(new FlushOrganisationCacheCommitAction(_configuration, request.OrganisationId.GetFriendlyId()));
+			Session.AddCommitAction(new FlushOrganisationCacheCommitAction(_configuration, organisation));
             Session.SynchroniseIndexes<UserOrganisationMappings, Organisations_Search>();
 
             return new DeleteOrganisationResponse(request.OrganisationId);

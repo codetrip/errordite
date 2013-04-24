@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Errordite.Core.Domain.Central;
+using Errordite.Core.Domain.Master;
 using Raven.Client;
 using Raven.Client.Document;
 using Raven.Imports.Newtonsoft.Json;

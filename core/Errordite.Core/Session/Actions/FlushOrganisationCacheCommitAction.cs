@@ -3,43 +3,38 @@ using System.Net.Http;
 using Errordite.Core.Configuration;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Extensions;
-using Errordite.Core.Web;
 
 namespace Errordite.Core.Session.Actions
 {
     public class FlushOrganisationCacheCommitAction : SessionCommitAction
     {
-        private readonly string _organisationId;
+        private readonly Organisation _organisation;
         private readonly ErrorditeConfiguration _configration;
 
         public FlushOrganisationCacheCommitAction(ErrorditeConfiguration configration, Organisation organisation)
         {
             _configration = configration;
-            _organisationId = organisationId;
+            _organisation = organisation;
         }
 
         public override void Execute(IAppSession session)
         {
-            session.ReceiveServiceHttpClient.DeleteAsync("cache");
+            session.ReceiveHttpClient.DeleteAsync("cache");
 
             foreach (var endpoint in _configration.ReceiveWebEndpoints.Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries))
             {
-                var client = new HttpClient
-                {
-                    BaseAddress = new Uri(endpoint)
-                };
-
-                client.DeleteAsync("cache/flush?organisationId={0}".FormatWith(_organisationId));
+                using(var client = new HttpClient { BaseAddress = new Uri(endpoint) })
+	            {
+					client.DeleteAsync("cache/flush?organisationId={0}".FormatWith(_organisation.FriendlyId));
+	            }
             }
 
-            var uriBuilder = new UriBuilder(organisation.RavenInstance.ReceiveServiceEndpoint);
+			var eventsClient = new HttpClient
+			{
+				BaseAddress = new Uri("{0}:802/api/{1}/".FormatWith(_organisation.RavenInstance.ServicesBaseUrl, _organisation.FriendlyId))
+			};
 
-            if (!uriBuilder.Path.EndsWith("/"))
-                uriBuilder.Path += "/";
-
-            uriBuilder.Path += "{0}/".FormatWith(organisation.FriendlyId);
-
-            _receiveServiceHttpClient = new HttpClient(new LoggingHttpMessageHandler(_auditor)) { BaseAddress = uriBuilder.Uri };
+	        eventsClient.DeleteAsync("cache");
         }
     }
 }

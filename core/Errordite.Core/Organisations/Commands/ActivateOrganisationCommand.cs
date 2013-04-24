@@ -51,7 +51,7 @@ namespace Errordite.Core.Organisations.Commands
                 application.IsActive = true;
             }
 
-            Session.AddCommitAction(new FlushOrganisationCacheCommitAction(_configuration, organisation.FriendlyId));
+            Session.AddCommitAction(new FlushOrganisationCacheCommitAction(_configuration, organisation));
 
             return new ActivateOrganisationResponse(organisation.Id)
             {

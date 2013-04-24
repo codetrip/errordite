@@ -1,9 +1,9 @@
 ﻿using Castle.Core;
 using Errordite.Core.Caching.Entities;
 using Errordite.Core.Caching.Interceptors;
+using Errordite.Core.Domain.Master;
 using Errordite.Core.Interfaces;
 using Errordite.Core.Caching;
-using Errordite.Core.Domain.Central;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Session;
 using ProtoBuf;

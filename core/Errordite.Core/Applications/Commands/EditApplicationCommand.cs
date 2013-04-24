@@ -66,7 +66,7 @@ namespace Errordite.Core.Applications.Commands
             application.Version = request.Version;
 
             Session.SynchroniseIndexes<Applications_Search>();
-            Session.AddCommitAction(new FlushApplicationCacheCommitAction(_configuration, application.OrganisationId.GetFriendlyId(), application.FriendlyId));
+            Session.AddCommitAction(new FlushApplicationCacheCommitAction(_configuration, request.CurrentUser.Organisation, application.FriendlyId));
 
             return new EditApplicationResponse(false, request.ApplicationId, request.CurrentUser.OrganisationId)
             {

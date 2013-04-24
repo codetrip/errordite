@@ -116,7 +116,7 @@ namespace Errordite.Services
             config.Formatters.JsonFormatter.SerializerSettings = WebApiSettings.JsonSerializerSettings;
 
             config.Routes.MapHttpRoute(
-                name: "issueapi",
+                name: "api",
                 routeTemplate: "api/{orgid}/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );

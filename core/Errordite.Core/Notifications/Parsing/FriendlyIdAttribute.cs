@@ -1,5 +1,4 @@
 ﻿using System;
-using Errordite.Core.Extensions;
 using Errordite.Core.Domain;
 
 namespace Errordite.Core.Notifications.Parsing

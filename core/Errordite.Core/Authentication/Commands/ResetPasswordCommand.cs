@@ -1,17 +1,14 @@
 ﻿using System;
-using Errordite.Core;
 using Errordite.Core.Encryption;
 using Errordite.Core.Extensions;
 using Errordite.Core.Interfaces;
-using Errordite.Core.Domain.Central;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Indexing;
 using Errordite.Core.Notifications.Commands;
 using Errordite.Core.Notifications.EmailInfo;
 using System.Linq;
-using Errordite.Core.Organisations.Commands;
 using Errordite.Core.Organisations.Queries;
-using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
+using Errordite.Core.Session;
 
 namespace Errordite.Core.Authentication.Commands
 {
