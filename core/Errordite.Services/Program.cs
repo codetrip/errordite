@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using Errordite.Core.Configuration;
-using Errordite.Core.Domain.Central;
+using Errordite.Core.Domain.Master;
 using Errordite.Core.Extensions;
 using Errordite.Core.IoC;
 using Errordite.Services.IoC;

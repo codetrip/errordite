@@ -1,17 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using Errordite.Core.Configuration;
 using Errordite.Core.Messaging;
 
 namespace Errordite.Core.Notifications.EmailInfo
 {
-    public interface IAlertInfo
-    {
-        IEnumerable<string> ToUserIds { get; set; }
-        string[] Replacements { get; }
-        string MessageTemplate { get; }
-    }
-
     /// <summary>
     /// Base class for sending an email.
     /// </summary>

@@ -28,10 +28,10 @@ namespace Errordite.Web.Controllers
         public ActionResult Test()
         {
             var session = ObjectFactory.GetObject<IAppSession>();
-            session.ReceiveServiceHttpClient.DeleteAsync("cache");
-            session.ReceiveServiceHttpClient.DeleteAsync("cache?applicationId=122");
-            session.ReceiveServiceHttpClient.DeleteAsync("organisation");
-            session.ReceiveServiceHttpClient.PostJsonAsync("organisation", AppContext.CurrentUser.Organisation);
+            session.ReceiveHttpClient.DeleteAsync("cache");
+            session.ReceiveHttpClient.DeleteAsync("cache?applicationId=1");
+			session.ReceiveHttpClient.DeleteAsync("organisation");
+			session.ReceiveHttpClient.PostJsonAsync("organisation", AppContext.CurrentUser.Organisation);
             return Content("Done");
         }
 

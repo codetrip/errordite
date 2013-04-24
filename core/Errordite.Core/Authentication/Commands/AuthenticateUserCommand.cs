@@ -1,6 +1,5 @@
 ﻿using Errordite.Core;
 using Errordite.Core.Interfaces;
-using Errordite.Core.Domain.Central;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Extensions;
 using Errordite.Core.Indexing;

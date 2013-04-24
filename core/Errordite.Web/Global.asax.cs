@@ -9,13 +9,13 @@ using System.Web.Http.Dispatcher;
 using System.Web.Mvc;
 using System.Web.Routing;
 using Castle.Core.Internal;
+using Errordite.Core.Domain.Master;
 using Errordite.Core.Interfaces;
 using Errordite.Core.IoC;
 using Errordite.Core.Misc;
 using Errordite.Client;
 using Errordite.Core;
 using Errordite.Core.Configuration;
-using Errordite.Core.Domain.Central;
 using Errordite.Core.Domain.Exceptions;
 using Errordite.Core.IoC;
 using Errordite.Core.Organisations.Queries;
@@ -203,7 +203,6 @@ namespace Errordite.Web
             if(master != null)
             {
                 master.ReceiveQueueAddress = ErrorditeConfiguration.Current.GetReceiveQueueAddress(string.Empty);
-                master.ReceiveServiceEndpoint = ErrorditeConfiguration.Current.ReceiveServiceEndpoint;
                 master.NotificationsQueueAddress = ErrorditeConfiguration.Current.GetNotificationsQueueAddress();
                 master.EventsQueueAddress = ErrorditeConfiguration.Current.GetEventsQueueAddress();
                 session.SaveChanges();

@@ -69,7 +69,7 @@ namespace Errordite.Core.Applications.Commands
                 Delete(application);
 
             Session.SynchroniseIndexes<Errors_Search, Issues_Search, Applications_Search>();
-            Session.AddCommitAction(new FlushApplicationCacheCommitAction(_configuration, application.OrganisationId.GetFriendlyId(), application.FriendlyId));
+            Session.AddCommitAction(new FlushApplicationCacheCommitAction(_configuration, request.CurrentUser.Organisation, application.FriendlyId));
 
             return new DeleteApplicationResponse(false, request.ApplicationId, application.OrganisationId)
             {

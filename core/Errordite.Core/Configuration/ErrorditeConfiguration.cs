@@ -1,7 +1,7 @@
 ﻿
 using System.Collections.Generic;
 using System.Reflection;
-using Errordite.Core.Domain.Central;
+using Errordite.Core.Domain.Master;
 using Errordite.Core.Extensions;
 using Errordite.Core.IoC;
 using Errordite.Core.Reception;
@@ -15,7 +15,6 @@ namespace Errordite.Core.Configuration
         public static readonly string CurrentBuildNumber = Assembly.GetExecutingAssembly().GetCurrentBuildNumber();
         public string SiteBaseUrl { get; set; }
         public string ReceiveWebEndpoints { get; set; }
-        public string ReceiveServiceEndpoint { get; set; }
         public bool RenderMinifiedContent { get; set; }
         public bool ServiceBusEnabled { get; set; }
         public string MasterReceiveQueueAddress { private get; set; }

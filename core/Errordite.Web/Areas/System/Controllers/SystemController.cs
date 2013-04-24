@@ -1,11 +1,11 @@
 ﻿using System;
 using System.ComponentModel.Composition.Hosting;
 using System.Web.Mvc;
+using Errordite.Core.Domain.Master;
 using Errordite.Core.Encryption;
 using Errordite.Core.Extensions;
 using Errordite.Core;
 using Errordite.Core.Configuration;
-using Errordite.Core.Domain.Central;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Errors.Queries;
 using Errordite.Core.Indexing;

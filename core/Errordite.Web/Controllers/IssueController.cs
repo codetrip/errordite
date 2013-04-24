@@ -498,7 +498,7 @@ namespace Errordite.Web.Controllers
                 WhatIf = true,
             };
 
-            var httpTask = Core.Session.ReceiveServiceHttpClient.PostJsonAsync("ReprocessIssueErrors", request);
+            var httpTask = Core.Session.ReceiveHttpClient.PostJsonAsync("ReprocessIssueErrors", request);
             httpTask.Wait();
 
             if (!httpTask.Result.IsSuccessStatusCode)
@@ -530,7 +530,7 @@ namespace Errordite.Web.Controllers
                 CurrentUser = Core.AppContext.CurrentUser
             };
 
-            var httpTask = Core.Session.ReceiveServiceHttpClient.PostJsonAsync("ReprocessIssueErrors", request);
+            var httpTask = Core.Session.ReceiveHttpClient.PostJsonAsync("ReprocessIssueErrors", request);
             httpTask.Wait();
 
             if (!httpTask.Result.IsSuccessStatusCode)

@@ -193,8 +193,8 @@
     <Compile Include="Caching\Resources\CacheEngines.cs" />
     <Compile Include="ComponentBase.cs" />
     <Compile Include="Configuration\ServiceConfiguration.cs" />
-    <Compile Include="Domain\Central\RavenInstance.cs" />
-    <Compile Include="Domain\Central\UserOrganisationMapping.cs" />
+    <Compile Include="Domain\Master\RavenInstance.cs" />
+    <Compile Include="Domain\Master\UserOrganisationMapping.cs" />
     <Compile Include="Domain\Error\IssueComment.cs" />
     <Compile Include="Domain\Error\ErrorditeError.cs" />
     <Compile Include="Domain\Error\IssueDailyCount.cs" />
@@ -443,6 +443,7 @@
     <Compile Include="Session\Actions\UpdateByIndexCommitAction.cs" />
     <Compile Include="Session\Actions\DeleteByIndexCommitAction.cs" />
     <Compile Include="Caching\NullCacheInstaller.cs" />
+    <Compile Include="Session\IAppSession.cs" />
     <Compile Include="Users\Queries\GetUserByEmailAddressQuery.cs" />
     <Compile Include="Web\ErrorditeApiController.cs" />
     <Compile Include="Web\LoggingHttpMessageHandler.cs" />

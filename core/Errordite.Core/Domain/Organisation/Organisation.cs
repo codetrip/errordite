@@ -1,7 +1,7 @@
 ﻿using System;
+using Errordite.Core.Domain.Master;
 using Errordite.Core.Extensions;
 using Errordite.Core.Authorisation;
-using Errordite.Core.Domain.Central;
 using ProtoBuf;
 using Raven.Imports.Newtonsoft.Json;
 

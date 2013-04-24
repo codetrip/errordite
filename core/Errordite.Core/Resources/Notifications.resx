@@ -118,18 +118,18 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="SimpleMessage_ErrorThresholdReached" xml:space="preserve">
-    <value>The issue {0} is nearing its error threshold, Errordite will no longer record full error information for errors matching this issue, &lt;a href="{1}issue/{2}"  target="_blank"&gt;click here to view the issue&lt;/a&gt;.</value>
+    <value>The issue {0} is nearing its error threshold, Errordite will no longer record full error information for errors matching this issue, &lt;a href="{1}/issue/{2}"  target="_blank"&gt;click here to view the issue&lt;/a&gt;.</value>
   </data>
   <data name="SimpleMessage_ErrorThresholdWarning" xml:space="preserve">
-    <value>The issue {0} is nearing its error threshold. You should ensure the rules are appropriate for the errors being logged, &lt;a href="{1}issue/{2}"  target="_blank"&gt;click here to view the issue&lt;/a&gt;.</value>
+    <value>The issue {0} is nearing its error threshold. You should ensure the rules are appropriate for the errors being logged, &lt;a href="{1}/issue/{2}"  target="_blank"&gt;click here to view the issue&lt;/a&gt;.</value>
   </data>
   <data name="SimpleMessage_NewIssue" xml:space="preserve">
-    <value>A new issue has been created named {0}, &lt;a href="{1}issue/{2}"  target="_blank"&gt;click here to view the issue&lt;/a&gt;.</value>
+    <value>A new issue has been created named {0}, &lt;a href="{1}/issue/{2}"  target="_blank"&gt;click here to view the issue&lt;/a&gt;.</value>
   </data>
   <data name="SimpleMessage_SolvedIssueOccurance" xml:space="preserve">
-    <value>A new error has been received which matches a solved issue named {0}, &lt;a href="{1}issue/{2}"  target="_blank"&gt;click here to view the issue&lt;/a&gt;.</value>
+    <value>A new error has been received which matches a solved issue named {0}, &lt;a href="{1}/issue/{2}"  target="_blank"&gt;click here to view the issue&lt;/a&gt;.</value>
   </data>
   <data name="SimpleMessage_AlwaysNotifyIssueOccurance" xml:space="preserve">
-    <value>A new error has been received which matches "always notify" issue named {0}, &lt;a href="{1}issue/{2}"  target="_blank"&gt;click here to view the issue&lt;/a&gt;.</value>
+    <value>A new error has been received which matches "always notify" issue named {0}, &lt;a href="{1}/issue/{2}"  target="_blank"&gt;click here to view the issue&lt;/a&gt;.</value>
   </data>
 </root>

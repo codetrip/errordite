@@ -2,9 +2,9 @@
 using Castle.Core;
 using Errordite.Core.Caching.Entities;
 using Errordite.Core.Caching.Interceptors;
+using Errordite.Core.Domain.Master;
 using Errordite.Core.Interfaces;
 using Errordite.Core.Authorisation;
-using Errordite.Core.Domain.Central;
 using Errordite.Core.Domain.Organisation;
 using System.Linq;
 using Errordite.Core.Indexing;

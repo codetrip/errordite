@@ -47,7 +47,7 @@ namespace Errordite.Core.Caching.Invalidation
 
         private void InvalidateItem(CacheInvalidationItem item)
         {
-            CacheProfile cacheProfile = _cacheConfiguration.GetCacheProfile(item.CacheProfile);
+            var cacheProfile = _cacheConfiguration.GetCacheProfile(item.CacheProfile);
 
             if (cacheProfile == null)
                 throw new InvalidOperationException("CacheProfile with key {0} does not exist.".FormatWith(item.CacheProfile));

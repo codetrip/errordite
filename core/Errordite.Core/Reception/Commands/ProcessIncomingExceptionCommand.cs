@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Errordite.Core.Configuration;
-using Errordite.Core.Domain.Central;
 using Errordite.Core.Extensions;
 using Errordite.Core.Interfaces;
 using Errordite.Client;

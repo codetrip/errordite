@@ -5,11 +5,11 @@ using System.Web.Security;
 using Castle.Core;
 using Errordite.Core.Caching.Entities;
 using Errordite.Core.Caching.Interceptors;
+using Errordite.Core.Domain.Master;
 using Errordite.Core.Encryption;
 using Errordite.Core.Interfaces;
 using Errordite.Core.Applications.Commands;
 using Errordite.Core.Caching;
-using Errordite.Core.Domain.Central;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Extensions;
 using System.Linq;
@@ -140,7 +140,7 @@ namespace Errordite.Core.Organisations.Commands
                 });
 
                 //add organisation to receive service so we can start receiving errors from the organisations queue
-                Session.ReceiveServiceHttpClient.PostJsonAsync("Organisation", organisation);
+                Session.ReceiveHttpClient.PostJsonAsync("Organisation", organisation);
             }
             catch (Exception e)
             {

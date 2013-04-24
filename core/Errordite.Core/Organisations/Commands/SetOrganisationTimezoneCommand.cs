@@ -33,7 +33,7 @@ namespace Errordite.Core.Organisations.Commands
 
             organisation.TimezoneId = request.TimezoneId;
 
-            Session.AddCommitAction(new FlushOrganisationCacheCommitAction(_configuration, organisation.FriendlyId));
+            Session.AddCommitAction(new FlushOrganisationCacheCommitAction(_configuration, organisation));
 
             return new SetOrganisationTimezoneResponse(organisation.Id);
         }
