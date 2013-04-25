@@ -37,7 +37,7 @@
       </Allow>
     </ItemGroup>
 
-    <MSBuild.ExtensionPack.FileSystem.Folder TaskAction="AddSecurity" AccessType="Allow" Path="$(ReceptionInstallPath)" Users="@(Allow)" Recursive="true" />
+    <MSBuild.ExtensionPack.FileSystem.Folder TaskAction="AddSecurity" AccessType="Allow" Path="$(ReceiveWebInstallPath)" Users="@(Allow)" Recursive="true" />
     <MSBuild.ExtensionPack.Web.Iis7Website TaskAction="ModifyPath" Name="$(ErrorditeReceiveHostName)" Path="$(ReceiveWebInstallPath)" AppPool="$(ErrorditeReceiveHostName)"/>
 
   </Target>

@@ -5,15 +5,12 @@ using Errordite.Core.Domain.Master;
 using Errordite.Core.Encryption;
 using Errordite.Core.Extensions;
 using Errordite.Core;
-using Errordite.Core.Configuration;
 using Errordite.Core.Domain.Organisation;
-using Errordite.Core.Errors.Queries;
 using Errordite.Core.Indexing;
 using Errordite.Core.Raven;
 using Errordite.Core.Session;
 using Errordite.Web.ActionFilters;
 using Errordite.Web.Models.Navigation;
-using Errordite.Core.Extensions;
 using Raven.Client.Indexes;
 
 namespace Errordite.Web.Areas.System.Controllers
@@ -23,20 +20,14 @@ namespace Errordite.Web.Areas.System.Controllers
     {
         private readonly IAppSession _session;
         private readonly IEncryptor _encryptor;
-        private readonly ErrorditeConfiguration _configuration;
-        private readonly IGetApplicationErrorsQuery _getApplicationErrorsQuery;
         private readonly IShardedRavenDocumentStoreFactory _storeFactory;
 
         public SystemController(IAppSession session, 
             IEncryptor encryptor, 
-            ErrorditeConfiguration configuration, 
-            IGetApplicationErrorsQuery getApplicationErrorsQuery,
             IShardedRavenDocumentStoreFactory storeFactory)
         {
             _session = session;
             _encryptor = encryptor;
-            _configuration = configuration;
-            _getApplicationErrorsQuery = getApplicationErrorsQuery;
             _storeFactory = storeFactory;
         }
 

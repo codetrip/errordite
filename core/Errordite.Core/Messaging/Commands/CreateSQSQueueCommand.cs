@@ -21,12 +21,15 @@ namespace Errordite.Core.Messaging.Commands
         public CreateSQSCommandResponse Invoke(CreateSQSCommandRequest request)
         {
             Trace("Starting...");
+            Trace("...Attempting to create queue:={0}", "errordite-receive-{0}".FormatWith(request.OrganisationId.GetFriendlyId()));
 
-            _amazonSQS.CreateQueue(new CreateQueueRequest
+            var response = _amazonSQS.CreateQueue(new CreateQueueRequest
             {
                 DefaultVisibilityTimeout = _configuration.QueueVisibilityTimeoutSeconds,
                 QueueName = "errordite-receive-{0}".FormatWith(request.OrganisationId.GetFriendlyId()),
             });
+
+            Trace("Completed, queue '{0}' created", response.CreateQueueResult.QueueUrl);
 
             return new CreateSQSCommandResponse
             {

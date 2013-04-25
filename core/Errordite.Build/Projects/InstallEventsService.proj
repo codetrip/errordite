@@ -29,7 +29,7 @@
   </Target>
 
   <Target Name="CopyServiceFiles" DependsOnTargets="GetBuildNumberAndInstallPaths" >
-    <CreateItem Include="$(MSBuildProjectDirectory)\..\Errordite.Services.Events\**\*.*;">
+    <CreateItem Include="$(MSBuildProjectDirectory)\..\Errordite.Services\**\*.*;">
       <Output TaskParameter="Include" ItemName="ErrorditeEventsServiceFiles" />
     </CreateItem>
 

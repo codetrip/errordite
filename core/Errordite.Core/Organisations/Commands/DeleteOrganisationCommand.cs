@@ -3,6 +3,7 @@ using Castle.Core;
 using Errordite.Core.Caching.Entities;
 using Errordite.Core.Caching.Interceptors;
 using Errordite.Core.Configuration;
+using Errordite.Core.Domain.Master;
 using Errordite.Core.Extensions;
 using Errordite.Core.Interfaces;
 using Errordite.Core.Caching;
@@ -26,12 +27,14 @@ namespace Errordite.Core.Organisations.Commands
 
         public DeleteOrganisationResponse Invoke(DeleteOrganisationRequest request)
         {
-	        var organisation = MasterLoad<Organisation>(Organisation.GetId(request.OrganisationId));
+            var organisation = Session.MasterRaven
+                    .Include<Organisation>(o => o.RavenInstanceId)
+                    .Load<Organisation>(request.OrganisationId);
 
-			if (organisation == null)
-			{
-				return new DeleteOrganisationResponse(request.OrganisationId, true);
-			}
+            if (organisation == null)
+                return new DeleteOrganisationResponse(request.OrganisationId, true);
+
+            organisation.RavenInstance = MasterLoad<RavenInstance>(organisation.RavenInstanceId);
 
             Session.MasterRavenDatabaseCommands.DeleteByIndex(
                 CoreConstants.IndexNames.UserOrganisationMappings, new IndexQuery

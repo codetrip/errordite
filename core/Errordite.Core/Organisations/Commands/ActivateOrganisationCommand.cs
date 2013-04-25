@@ -2,6 +2,7 @@
 using Castle.Core;
 using Errordite.Core.Caching.Entities;
 using Errordite.Core.Caching.Interceptors;
+using Errordite.Core.Domain.Master;
 using Errordite.Core.Interfaces;
 using Errordite.Core.Paging;
 using Errordite.Core.Applications.Queries;
@@ -27,7 +28,14 @@ namespace Errordite.Core.Organisations.Commands
 
         public ActivateOrganisationResponse Invoke(ActivateOrganisationRequest request)
         {
-            var organisation = Load<Organisation>(request.OrganisationId);
+            var organisation = Session.MasterRaven
+                    .Include<Organisation>(o => o.RavenInstanceId)
+                    .Load<Organisation>(request.OrganisationId);
+
+            if (organisation == null)
+                return new ActivateOrganisationResponse(request.OrganisationId, true);
+
+            organisation.RavenInstance = MasterLoad<RavenInstance>(organisation.RavenInstanceId);
 
             if (organisation.Status != OrganisationStatus.Suspended)
             {

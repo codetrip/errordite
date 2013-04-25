@@ -108,17 +108,28 @@ namespace Errordite.Services.Processors
             if (messageType == null)
                 throw new InvalidOperationException("Failed to resolve message type '{0}'".FormatWith(envelope.MessageType));
 
-            var consumerType = typeof(IErrorditeConsumer<>).MakeGenericType(messageType);
+            Type consumerMessageType = messageType;
+            Type consumerType = null;
 
-            if (!ObjectFactory.Container.Kernel.HasComponent(consumerType))
-                consumerType = typeof(IErrorditeConsumer<>).MakeGenericType(messageType.BaseType);
+            while (consumerMessageType != null)
+            {
+                consumerType = typeof(IErrorditeConsumer<>).MakeGenericType(consumerMessageType);
+
+                if (ObjectFactory.Container.Kernel.HasComponent(consumerType))
+                    break;
+
+                consumerMessageType = consumerMessageType.BaseType;
+            }
 
             dynamic consumer = ObjectFactory.Container.Resolve(consumerType);
             dynamic message = JsonConvert.DeserializeObject(envelope.Message, messageType);
 
             //base type is MessageBase, set Organisation property before invoking message consumer
             message.Organisation = organisation;
+
+            Trace("Invoking consumer for organisation '{0}' of type '{1}'...", organisation == null ? "No Organisation Set" : organisation.Id, consumer.GetType());
             consumer.Consume(message);
+            Trace("Completed invocation of consumer for organisation '{0}' of type '{1}'...", organisation == null ? "No Organisation Set" : organisation.Id, consumer.GetType());
         }
     }
 }

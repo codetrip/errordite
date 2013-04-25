@@ -4,6 +4,7 @@ using System.IO;
 using System.Web.Http;
 using System.Web.Http.Dispatcher;
 using System.Web.Http.SelfHost;
+using Errordite.Core;
 using Errordite.Core.Configuration;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Extensions;
@@ -27,7 +28,7 @@ namespace Errordite.Services
         void RemoveOrganisation(string organisationId);
     }
 
-    public class ErrorditeService : IErrorditeService
+    public class ErrorditeService : ComponentBase, IErrorditeService
     {
         private readonly IList<IQueueProcessor> _queueProcessors = new List<IQueueProcessor>();
         private readonly ServiceConfiguration _serviceConfiguration;
@@ -39,6 +40,8 @@ namespace Errordite.Services
 
         public void Start(string ravenInstanceId)
         {
+            Trace("Starting Errordite service {0} for raven instance:={1}", _serviceConfiguration.Service, ravenInstanceId);
+
             //receive service runs a thread per organisation, polling every org's queue
             //other services just have a single thread processing the queue
             if (_serviceConfiguration.Service == Service.Receive)
@@ -67,39 +70,57 @@ namespace Errordite.Services
                     AddProcessor();
                 }
             }
+
+            Trace("Started Errordite service {0} for raven instance:={1}", _serviceConfiguration.Service, ravenInstanceId);
         }
 
         public void AddOrganisation(Organisation organisation)
         {
+            Trace("Adding SQS Queue Processor for organisation:={0}", organisation.FriendlyId);
             if (_queueProcessors.All(p => p.OrganisationId != organisation.FriendlyId))
             {
                 AddProcessor(organisation.FriendlyId);
+                Trace("Added SQS Queue Processor for organisation:={0}", organisation.FriendlyId);
+            }
+            else
+            {
+                Trace("SQS Queue Processor for organisation:={0} already exists", organisation.FriendlyId);
             }
         }
 
         public void RemoveOrganisation(string organisationId)
         {
+            Trace("Removing SQS Queue Processor for organisation:={0}", organisationId);
             var processor = _queueProcessors.FirstOrDefault(p => p.OrganisationId != organisationId.GetFriendlyId());
             if (processor != null)
             {
                 processor.Stop();
                 _queueProcessors.Remove(processor);
             }
+            Trace("Removed SQS Queue Processor for organisation:={0}", organisationId);
         }
 
         public void AddProcessor(string organisationId = null)
         {
+            Trace("Adding SQS Queue Processor for organisation:={0}", organisationId ?? string.Empty);
             var processor = ObjectFactory.GetObject<IQueueProcessor>();
             _queueProcessors.Add(processor);
             processor.Start(organisationId);
+            Trace("Successfully added SQS Queue Processor for organisation:={0}", organisationId ?? string.Empty);
         }
 
         public void Stop()
         {
+            Trace("Stopping SQS Queue Processors");
+
             foreach (var processor in _queueProcessors)
+            {
                 processor.Stop();
+            }
 
             ObjectFactory.Container.Dispose();
+
+            Trace("Stopped SQS Queue Processors");
         }
 
         public void Configure()
