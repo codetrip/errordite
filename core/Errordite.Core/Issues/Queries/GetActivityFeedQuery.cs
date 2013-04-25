@@ -8,7 +8,6 @@ using Errordite.Core.Indexing;
 using Errordite.Core.Organisations;
 using Errordite.Core.Session;
 using Raven.Client;
-using Errordite.Core.Extensions;
 
 namespace Errordite.Core.Issues.Queries
 {

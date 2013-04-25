@@ -1,12 +1,13 @@
 (function() {
-
   jQuery(function() {
-    var $body, hiddenPanelCss;
-    $body = $('section#home');
+    var $root, hiddenPanelCss;
+
+    $root = $('section#home');
     hiddenPanelCss = null;
-    if ($body.length > 0) {
-      $body.delegate('a#showplayer', 'click', function() {
+    if ($root.length > 0) {
+      $root.delegate('a#showplayer', 'click', function() {
         var $panel, $player, $preview, $this;
+
         $this = $(this);
         $panel = $this.closest('div.video-panel');
         $preview = $this.closest('div.preview');
@@ -31,8 +32,9 @@
         });
         return false;
       });
-      return $body.delegate('a#hideplayer', 'click', function() {
+      return $root.delegate('a#hideplayer', 'click', function() {
         var $panel, $player, $preview, $this;
+
         $this = $(this);
         $panel = $this.closest('div.video-panel');
         $preview = $panel.find('div.preview');

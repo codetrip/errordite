@@ -57,7 +57,7 @@ namespace Errordite.Web.Extensions
 
         public static string ActivityLog(this UrlHelper helper, string applicationId = null)
         {
-            return applicationId != null ? helper.Action("feed", "dashboard", new { applicationId, Area = string.Empty }) : helper.Action("feed", "dashboard", new { Area = string.Empty });
+			return applicationId != null ? helper.Action("activity", "dashboard", new { applicationId, Area = string.Empty }) : helper.Action("activity", "dashboard", new { Area = string.Empty });
         }
         
         public static string Errors(this UrlHelper helper, string applicationId = null)

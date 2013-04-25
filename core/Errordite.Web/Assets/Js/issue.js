@@ -1,7 +1,7 @@
 (function() {
-
   jQuery(function() {
     var $issue, clearErrors, loadTabData, paging, renderHistory, renderReports;
+
     $issue = $('section#issue');
     if ($issue.length > 0) {
       paging = new window.Paging('/issue/errors?Id=' + $issue.find('#IssueId').val() + '&');
@@ -63,10 +63,11 @@
       };
       renderHistory = function() {
         var $node, url;
-        $node = $issue.find('#history-items');
+
+        $node = $issue.find('table.history tbody');
         url = '/issue/history?IssueId=' + $issue.find('#IssueId').val();
         return $.get(url, function(data) {
-          $node.html(data.data);
+          $node.append(data.data);
           return $('div.content').animate({
             scrollTop: 0
           }, 'slow');
@@ -85,6 +86,7 @@
           },
           success: function(data) {
             var msg;
+
             $('.reprocess-what-if-msg').remove();
             msg = $('<span/>').addClass('reprocess-what-if-msg').html(data);
             return $(e.currentTarget).after(msg);
@@ -96,6 +98,7 @@
       });
       $issue.delegate('select#Status', 'change', function() {
         var $this;
+
         $this = $(this);
         if ($this.val() === 'Ignored') {
           return $issue.find('li.inline').removeClass('hidden');

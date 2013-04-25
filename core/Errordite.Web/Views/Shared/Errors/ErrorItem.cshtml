@@ -61,7 +61,7 @@
 					</div>
 				}
 			}
-			@if (Model.Error.Messages != null)
+			@if (Model.Error.Messages != null && Model.Error.Messages.Count > 0)
 			{
 				<div class="tab-content hidden messages">
 					@Html.Partial("Errors/TraceMessages", Model.Error.Messages)

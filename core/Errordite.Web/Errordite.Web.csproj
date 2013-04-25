@@ -245,6 +245,12 @@
     <Compile Include="Areas\System\Models\Organisations\SuspendOrganisationViewModel.cs" />
     <Compile Include="ActionFilters\GenerateBreadcrumbs.cs" />
     <Compile Include="ApiControllers\IssueApiController.cs" />
+    <Content Include="Assets\Js\activity.js">
+      <DependentUpon>activity.coffee</DependentUpon>
+    </Content>
+    <Content Include="Assets\Js\activity.min.js">
+      <DependentUpon>activity.coffee</DependentUpon>
+    </Content>
     <Content Include="Assets\Js\components.js" />
     <Compile Include="Controllers\ApplicationsController.cs" />
     <Compile Include="Areas\System\Controllers\CacheController.cs" />
@@ -278,7 +284,7 @@
     <Compile Include="Models\Authentication\ResetPasswordViewModel.cs" />
     <Compile Include="Models\Authentication\PasswordViewModel.cs" />
     <Compile Include="Models\Common\IWizardViewModel.cs" />
-    <Compile Include="Models\Dashboard\ActivityFeedViewModel.cs" />
+    <Compile Include="Models\Dashboard\ActivityViewModel.cs" />
     <Compile Include="Models\Issues\MergeIssuesViewModel.cs" />
     <Compile Include="Areas\System\Models\Cache\CacheViewModel.cs" />
     <Compile Include="Models\Errors\ExceptionViewModel.cs" />
@@ -865,9 +871,6 @@
     <Content Include="Views\Shared\Docs\PythonClient.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Issue\Comments.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Shared\Issue\Comment.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -894,7 +897,9 @@
   <ItemGroup>
     <Content Include="Views\Subscription\SignUp.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Assets\Js\activity.coffee" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

@@ -1,10 +1,10 @@
 ﻿
 @using Errordite.Core.Extensions
 @using Errordite.Web.Models.Dashboard
-@model ActivityFeedViewModel
+@model ActivityViewModel
            
 @{
-    ViewBag.Title = "Activity ActivityLog";
+    ViewBag.Title = "Activity Log";
 }
 
 <div class="dark-container">
@@ -12,27 +12,31 @@
         @Html.Partial("Dashboard/Links", Model)
     </section> 
 </div>
-<section id="feed" class="centered">
+<section id="activity" class="centered">
     @if (Model.Paging.TotalItems > 0)
     {
         <div class="content">
-            <div>
-                @foreach (var item in Model.Feed)
-                {
-                    Html.RenderPartial("Issue/HistoryItem", item);
-                }
-            </div>
-            <div>
-                <table class="table table-bordered">
-                    <tfoot>
-                        <tr>
-                            <td>
-                                @Html.Partial("Pagination", Model.Paging)
-                            </td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
+	        <table class="table table-condensed history" id="history-items">
+		        <thead>
+			        <tr>
+				        <th>User</th>
+				        <th>Occured</th>
+				        <th>Message</th>
+			        </tr>
+		        </thead>
+		        <tbody>
+			        @foreach (var item in Model.Items)
+			        {
+				        Html.RenderPartial("Issue/HistoryItem", item);
+			        }
+		        </tbody>
+	        </table>
+			@if (Model.Paging.TotalPages > 1)
+			{
+				<div>
+					<button id="activity-load-more" class="btn btn-small btn-blue">Load more items</button>
+				</div>
+			}
         </div>
     }
     else

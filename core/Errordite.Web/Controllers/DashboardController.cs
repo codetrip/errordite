@@ -116,7 +116,8 @@ namespace Errordite.Web.Controllers
                 viewModel.RecentErrors = recentErrors.Items.Select(e => new ErrorInstanceViewModel
 	            {
 		            Error = e,
-					ApplicationName = GetApplicationName(applications.Items, e.ApplicationId)
+					ApplicationName = GetApplicationName(applications.Items, e.ApplicationId),
+					VerbalTime = e.TimestampUtc.ToVerbalTimeSinceUtc(Core.AppContext.CurrentUser.Organisation.TimezoneId)
 	            }).ToList();
                 viewModel.UrlGetter = GetDashboardUrl;
             }
@@ -156,7 +157,8 @@ namespace Errordite.Web.Controllers
                 errors = errors == null ? new string[] { } : errors.Items.Select(e => new ErrorInstanceViewModel
 	            {
 		            Error = e,
-					ApplicationName = GetApplicationName(applications.Items, e.ApplicationId)
+					ApplicationName = GetApplicationName(applications.Items, e.ApplicationId),
+					VerbalTime = e.TimestampUtc.ToVerbalTimeSinceUtc(Core.AppContext.CurrentUser.Organisation.TimezoneId)
 	            }).Select(e => RenderPartial("Dashboard/Error", e)),
                 lastErrorDisplayed = errors != null && errors.PagingStatus.TotalItems > 0 ? int.Parse(errors.Items.First().FriendlyId) : lastErrorDisplayed,
                 lastIssueDisplayed = issues != null && issues.PagingStatus.TotalItems > 0 ? int.Parse(issues.Items.First().FriendlyId) : lastIssueDisplayed
@@ -165,18 +167,27 @@ namespace Errordite.Web.Controllers
 			return new JsonSuccessResult(result, allowGet: true);
 		}
 
-        [PagingView]
-        public ActionResult Activity()
+		public ActionResult Activity()
+		{
+			return View(GetActivityViewModel(1));
+		}
+
+		public ActionResult GetNextActivityPage(int pageNumber)
+		{
+			var model = GetActivityViewModel(pageNumber);
+			return Content(string.Join("", model.Items.Select(i => RenderPartial("Issue/HistoryItem", i))));
+		}
+
+		public ActivityViewModel GetActivityViewModel(int pageNumber)
         {
             var curentApplication = CurrentApplication;
             var applicationId = curentApplication == null ? null : curentApplication.Id;
-            var paging = GetSinglePagingRequest();
             var issueMemoizer = new LocalMemoizer<string, Issue>(id => _getIssueQuery.Invoke(new GetIssueRequest { CurrentUser = Core.AppContext.CurrentUser, IssueId = id }).Issue);
             var users = Core.GetUsers();
             var applications = Core.GetApplications();
-            var history = _getActivityLogQuery.Invoke(new GetActivityLogRequest
+            var activity = _getActivityLogQuery.Invoke(new GetActivityLogRequest
                 {
-                    Paging = paging,
+                    Paging = new PageRequestWithSort(pageNumber, 20),
                     ApplicationId = applicationId
                 }).Log;
 
@@ -184,13 +195,13 @@ namespace Errordite.Web.Controllers
                     ? applications.Items.FirstOrDefault(a => a.FriendlyId == applicationId.GetFriendlyId())
                     : null;
 
-            var items = history.Items.Select(h =>
+            var items = activity.Items.Select(h =>
             {
                 var user = users.Items.FirstOrDefault(u => u.Id == h.UserId);
                 return new IssueHistoryItemViewModel
                 {
                     Message = h.GetMessage(users.Items, issueMemoizer, GetIssueLink),
-                    DateAddedUtc = h.DateAddedUtc.ToLocalTime(),
+                    VerbalTime = h.DateAddedUtc.ToVerbalTimeSinceUtc(Core.AppContext.CurrentUser.Organisation.TimezoneId, true),
                     UserEmail = user != null ? user.Email : string.Empty,
                     Username = user != null ? user.FullName : string.Empty,
                     SystemMessage = h.SystemMessage,
@@ -198,10 +209,10 @@ namespace Errordite.Web.Controllers
                 };
             });
 
-            var model = new ActivityFeedViewModel
+            var model = new ActivityViewModel
             {
-                Paging = _pagingViewModelGenerator.Generate(PagingConstants.DefaultPagingId, history.PagingStatus, paging),
-                Feed = items,
+                Paging = activity.PagingStatus,
+                Items = items,
                 Stats = _getOrganisationStatisticsQuery.Invoke(new GetOrganisationStatisticsRequest { ApplicationId = applicationId }).Statistics ?? new Statistics(),
                 Applications = applications.Items,
                 SelectedApplicationId = selectedApplication == null ? null : selectedApplication.FriendlyId,
@@ -209,7 +220,7 @@ namespace Errordite.Web.Controllers
                 UrlGetter = GetFeedUrl
             };
 
-            return View(model);
+            return model;
         }
 
         private string GetFeedUrl(UrlHelper url, string applicationId)

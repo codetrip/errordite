@@ -1,40 +1,15 @@
 ﻿
 @using Errordite.Core.Extensions
-@using Errordite.Core.Extensions
 @model Errordite.Web.Models.Issues.IssueHistoryItemViewModel
 
-<div class="boxed-item history">
-	<div class="item-bar">&nbsp;</div>	
-	<div class="item-content">
-	    <div class="item-info heading short">
-	        Created By
-	    </div>
-	    <div class="item-info heading short" @(Model.IssueLink.IsNullOrEmpty() ? "style=width:75%" : "")>
-	        Created At
-	    </div>
-        @if (Model.IssueLink.IsNotNullOrEmpty())
-        {
-            <div class="item-info heading divider" style="width:70%">
-			    Issue
-		    </div>
-        }
-		<div class="item-info short" style="margin-bottom:5px;">
-			@(Model.SystemMessage ? "System" : Model.Username)
-		</div>
-	    <div class="item-info short" style="margin-bottom:5px; @(Model.IssueLink.IsNullOrEmpty() ? "width:75%" : "")>">
-	        @Model.DateAddedUtc.ToLocalTimeFormatted()
-	    </div>
-        @if (Model.IssueLink.IsNotNullOrEmpty())
-        {
-            <div class="item-info divider" style="margin-bottom:5px;width:70%">
-			    @Html.Raw(Model.IssueLink)
-		    </div>
-        }
-		<div class="item-info heading full">
-			Message
-		</div>
-		<div class="item-info full">
-			@Html.Raw(Model.Message)
-		</div>
-	</div>
-</div>
+<tr>
+	<td style="width:125px">@(Model.SystemMessage ? "System" : Model.Username)</td>
+	<td style="width:125px">@Html.Raw(Model.VerbalTime)</td>
+	<td>
+		@if (Model.IssueLink.IsNotNullOrEmpty())
+		{
+			<span class="bold">Issue:</span> @Html.Raw(Model.IssueLink) <br />
+		}
+		@Html.Raw(Model.Message)
+	</td>
+</tr>
