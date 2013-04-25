@@ -1,6 +1,6 @@
 ﻿using System.IO;
-using CodeTrip.Core.FileSystem;
 using Errordite.Core.Configuration;
+using Errordite.Core.Misc;
 using Errordite.Core.Notifications.EmailInfo;
 using Errordite.Core.Notifications.Exceptions;
 using Errordite.Core.Notifications.Naming;

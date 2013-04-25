@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using CodeTrip.Core.Extensions;
-using CodeTrip.Core.Interfaces;
+using Errordite.Core.Extensions;
+using Errordite.Core.Interfaces;
 using Errordite.Core.Configuration;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Errors.Commands;
-using Errordite.Core.Extensions;
 using Errordite.Core.Notifications.Commands;
 using Errordite.Core.Session;
 
@@ -96,7 +95,7 @@ namespace Errordite.Core.Reception.Commands
                         issue.Status == IssueStatus.Solved ?
                         NotificationType.NotifyOnNewInstanceOfSolvedIssue :
                         NotificationType.AlwaysNotifyOnInstanceOfIssue
-                    , request.Error);
+                    , request.Error, request.Organisation);
 
                     issue.LastNotified = DateTime.UtcNow;
 
@@ -124,14 +123,15 @@ namespace Errordite.Core.Reception.Commands
             }
         }
 
-        private void SendNotification(Issue issue, Application application, NotificationType notificationType, Error instance)
+        private void SendNotification(Issue issue, Application application, NotificationType notificationType, Error instance, Organisation organisation)
         {
             _sendNotificationCommand.Invoke(new SendNotificationRequest
             {
                 OrganisationId = application.OrganisationId,
                 Groups = application.NotificationGroups ?? new List<string>(),
                 EmailInfo = issue.ToEmailInfo(notificationType, instance, application),
-                Application = application
+                Application = application,
+                Organisation = organisation
             });
         }  
     }
@@ -142,7 +142,8 @@ namespace Errordite.Core.Reception.Commands
     public class AttachToExistingIssueRequest
     {
         public Error Error { get; set; }
-		public Application Application { get; set; }
+        public Application Application { get; set; }
+        public Organisation Organisation { get; set; }
 		public string IssueId { get; set; }
     }
 

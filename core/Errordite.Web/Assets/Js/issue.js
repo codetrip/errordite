@@ -1,7 +1,7 @@
 (function() {
-
   jQuery(function() {
     var $issue, clearErrors, loadTabData, paging, renderHistory, renderReports;
+
     $issue = $('section#issue');
     if ($issue.length > 0) {
       paging = new window.Paging('/issue/errors?Id=' + $issue.find('#IssueId').val() + '&');
@@ -63,10 +63,11 @@
       };
       renderHistory = function() {
         var $node, url;
-        $node = $issue.find('#history-items');
+
+        $node = $issue.find('table.history tbody');
         url = '/issue/history?IssueId=' + $issue.find('#IssueId').val();
         return $.get(url, function(data) {
-          $node.html(data.data);
+          $node.append(data.data);
           return $('div.content').animate({
             scrollTop: 0
           }, 'slow');
@@ -77,16 +78,6 @@
         e.preventDefault();
         return renderReports();
       });
-      $issue.delegate('input[type="button"].confirm', 'click', function() {
-        var $this;
-        $this = $(this);
-        if (confirm("Are you sure you want to delete all errors associated with this issue?")) {
-          return $.post('/issue/purge', 'issueId=' + $this.attr('data-val'), function(data) {
-            clearErrors();
-            return $('span#instance-count').text("0");
-          });
-        }
-      });
       $issue.delegate('.what-if-reprocess', 'click', function(e) {
         e.preventDefault();
         return $(this).closest('form').ajaxSubmit({
@@ -95,17 +86,19 @@
           },
           success: function(data) {
             var msg;
+
             $('.reprocess-what-if-msg').remove();
             msg = $('<span/>').addClass('reprocess-what-if-msg').html(data);
             return $(e.currentTarget).after(msg);
           },
           error: function() {
-            return alert('Error. Please try again.');
+            return Errordite.Alert.show('An error has occured, please try again.');
           }
         });
       });
       $issue.delegate('select#Status', 'change', function() {
         var $this;
+
         $this = $(this);
         if ($this.val() === 'Ignored') {
           return $issue.find('li.inline').removeClass('hidden');

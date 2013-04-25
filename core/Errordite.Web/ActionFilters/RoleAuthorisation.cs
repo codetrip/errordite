@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.Security;
-using CodeTrip.Core.IoC;
+using Errordite.Core.IoC;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Identity;
 
@@ -24,7 +24,7 @@ namespace Errordite.Web.ActionFilters
         /// <param name="filterContext"></param>
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            AppContext appContext = ObjectFactory.GetObject<AppContext>();
+            var appContext = ObjectFactory.GetObject<AppContext>();
 
             if (appContext.Impersonated)
                 return;

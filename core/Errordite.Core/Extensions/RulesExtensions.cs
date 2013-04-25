@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Errordite.Core.Matching;
-using CodeTrip.Core.Extensions;
+using Errordite.Core.Extensions;
 
 namespace Errordite.Core.Extensions
 {

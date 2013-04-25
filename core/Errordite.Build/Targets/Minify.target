@@ -46,6 +46,7 @@
     		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\jqplot\jqplot.categoryAxisRenderer.js;
     		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\jqplot\jqplot.highlighter.js;
     		  $(SourcePath)\core\Errordite.Web\Assets\Js\global.js;
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\components.js;
     		  $(SourcePath)\core\Errordite.Web\Assets\Js\applications.js;
     		  $(SourcePath)\core\Errordite.Web\Assets\Js\home.js;
     		  $(SourcePath)\core\Errordite.Web\Assets\Js\users.js;
@@ -56,6 +57,7 @@
     		  $(SourcePath)\core\Errordite.Web\Assets\Js\issue.js;
     		  $(SourcePath)\core\Errordite.Web\Assets\Js\rules.js;
     		  $(SourcePath)\core\Errordite.Web\Assets\Js\dashboard.js;
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\activity.js;
     		  $(SourcePath)\core\Errordite.Web\Assets\Js\systemadmin.js;
     		  $(SourcePath)\core\Errordite.Web\Assets\Js\docs.js;">
 	  </JavaScriptFiles>

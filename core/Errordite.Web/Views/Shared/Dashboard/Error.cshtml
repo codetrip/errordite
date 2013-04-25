@@ -1,5 +1,4 @@
-﻿@using CodeTrip.Core.Extensions
-@using Errordite.Core.Extensions
+﻿@using Errordite.Core.Extensions
 @using Errordite.Web.Extensions
 @model Errordite.Web.Models.Errors.ErrorInstanceViewModel
 
@@ -16,7 +15,7 @@
 			Application
 		</div>
         <div class="item-info heading divider">
-			Received On
+			Received
 		</div>
         <div class="item-info heading divider short">
 			Issue
@@ -25,7 +24,7 @@
 			@Model.ApplicationName
 		</div>
 		<div class="item-info divider">
-		    @Model.Error.TimestampUtc.ToLocalTimeFormatted()
+		    @Model.VerbalTime
 		</div>
 		<div class="item-info divider short">
 			<a href="@Url.Issue(Model.Error.IssueId)">#@Model.Error.IssueId.GetFriendlyId()</a>

@@ -2,165 +2,59 @@
 using System.Collections.Generic;
 using System.ComponentModel.Composition.Hosting;
 using System.Net.Http;
-using CodeTrip.Core.Auditing.Entities;
-using CodeTrip.Core.Redis;
-using Errordite.Core.Configuration;
-using Errordite.Core.Domain;
-using Errordite.Core.Domain.Central;
+using Errordite.Core.Auditing.Entities;
+using Errordite.Core.Domain.Master;
+using Errordite.Core.Messaging;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Indexing;
 using Errordite.Core.Raven;
-using Errordite.Core.WebApi;
-using NServiceBus;
+using Errordite.Core.Session.Actions;
+using Errordite.Core.Web;
 using Raven.Abstractions.Data;
 using Raven.Client;
 using Raven.Client.Connection;
 using Raven.Client.Indexes;
 using Raven.Client.Extensions;
-using CodeTrip.Core.Extensions;
+using Errordite.Core.Extensions;
 
 namespace Errordite.Core.Session
 {
-    public interface IAppSession
-    {
-        /// <summary>
-        /// NServiceBus Bus
-        /// </summary>
-        IBus Bus { get; }
-        /// <summary>
-        /// Access the Raven Session
-        /// </summary>
-        IDocumentSession MasterRaven { get; }
-        /// <summary>
-        /// Access to organisation dspecific databases
-        /// </summary>
-        IDocumentSession Raven { get; }
-        /// <summary>
-        /// Access the Redis Databases
-        /// </summary>
-        IRedisSession Redis { get; }
-
-        //TODO: make these part of the UoW by adding an action on IDatabaseCommands
-	    IDatabaseCommands RavenDatabaseCommands { get; }
-	    IDatabaseCommands MasterRavenDatabaseCommands { get; }
-
-        /// <summary>
-        /// Disposes and nulls the Raven session, does not perform any other operations, you 
-        /// should call Commit() prior to calling Clear() to persist your session.
-        /// </summary>
-        void Close();
-        /// <summary>
-        /// Saves changes within the session and executes all session flush actions
-        /// </summary>
-        void Commit();
-        /// <summary>
-        /// Add an NServiceBus message to send when committing the session.
-        /// </summary>
-        /// <param name="sessionCommitAction">Teh session flush action.</param>
-        void AddCommitAction(SessionCommitAction sessionCommitAction);
-        /// <summary>
-        /// Clear down the list of actions to invoke on commit.
-        /// </summary>
-        void ClearCommitActions();
-        /// <summary>
-        /// The maximum number of requests per session
-        /// </summary>
-        int RequestLimit { get; set; }
-        /// <summary>
-        /// Http interface for the reception services
-        /// </summary>
-        HttpClient ReceptionServiceHttpClient { get; }
-
-        /// <summary>
-        /// Sets the organisationId for this session
-        /// </summary>
-        /// <param name="organisation"></param>
-        /// <param name="allowReset"></param>
-        void SetOrganisation(Organisation organisation, bool allowReset = false);
-        /// <summary>
-        /// Gets the organisationId for this session
-        /// </summary>
-        string OrganisationDatabaseName { get; }
-
-        /// <summary>
-        /// Sets up a new organisation in Raven
-        /// </summary>
-        /// <param name="organisation"></param>
-        void BootstrapOrganisation(Organisation organisation);
-
-        /// <summary>
-        /// Synchronise the index specified in the type parameter
-        /// </summary>
-        void SynchroniseIndexes<T>(bool masterRaven = false) 
-            where T : AbstractIndexCreationTask, new();
-
-        /// <summary>
-        /// Synchronise the index specified in the type parameter
-        /// </summary>
-        void SynchroniseIndexes<T1, T2>()
-            where T1 : AbstractIndexCreationTask, new()
-            where T2 : AbstractIndexCreationTask, new();
-
-        /// <summary>
-        /// Synchronise the index specified in the type parameter
-        /// </summary>
-        void SynchroniseIndexes<T1, T2, T3>()
-            where T1 : AbstractIndexCreationTask, new()
-            where T2 : AbstractIndexCreationTask, new()
-            where T3 : AbstractIndexCreationTask, new();
-
-        /// <summary>
-        /// For use when you temporarily want read-only access to an org db other than your own.
-        /// Note this only switches the db, not any other per-org things (e.g. reception service web api endpoint)
-        /// </summary>
-        IDisposable SwitchOrg(Organisation organisation);
-    }
-
-    public class AppSession : IAppSession
+	public class AppSession : IAppSession
     {
         private IDocumentSession _session;
         private readonly object _syncLock = new object();
         private readonly IShardedRavenDocumentStoreFactory _documentStoreFactory;
-        private readonly IBus _bus;
-        private readonly IRedisSession _redisSession;
-        private readonly ErrorditeConfiguration _config;
         private readonly IComponentAuditor _auditor;
         private readonly List<SessionCommitAction> _sessionCommitActions;
-        private HttpClient _receptionServiceHttpClient;
-        private string _organisationDatabaseId;
+        private HttpClient _receiveServiceHttpClient;
         private IDocumentSession _organisationSession;
-        private RavenInstance _organisationRavenInstance;
+        private Organisation _organisation;
+        private readonly IMessageSender _messageSender;
 
         public AppSession(IShardedRavenDocumentStoreFactory documentStoreFactory, 
-            IBus bus, 
-            IRedisSession redisSession, 
-            ErrorditeConfiguration config, 
-            IComponentAuditor auditor)
+            IComponentAuditor auditor,
+            IMessageSender messageSender)
         {
             _sessionCommitActions = new List<SessionCommitAction>();
             _documentStoreFactory = documentStoreFactory;
-            _bus = bus;     
-            _redisSession = redisSession;
-            _config = config;
             _auditor = auditor;
+            _messageSender = messageSender;
         }
 
-        public int RequestLimit { get; set; }
-
-        public HttpClient ReceptionServiceHttpClient
+        public HttpClient ReceiveHttpClient
         {
-            //TODO: think about disposing + also creating derived class (and so add more specific methods)
-            get { return _receptionServiceHttpClient; }
+            get
+            {
+				if (_receiveServiceHttpClient == null)
+					InitialiseReceiveServiceClient();
+
+	            return _receiveServiceHttpClient;
+            }
         }
 
         public string OrganisationDatabaseName
         {
-            get { return _organisationDatabaseId; }
-        }
-
-        public IBus Bus
-        {
-            get { return _bus; }
+            get { return _organisation == null ? null : _organisation.FriendlyId; }
         }
 
         public IDocumentSession MasterRaven
@@ -171,7 +65,7 @@ namespace Errordite.Core.Session
                     return _session;
 
                 _session = _documentStoreFactory.Create(RavenInstance.Master()).OpenSession(CoreConstants.ErrorditeMasterDatabaseName);
-                _session.Advanced.MaxNumberOfRequestsPerSession = RequestLimit == 0 ? 500 : RequestLimit;
+				_session.Advanced.MaxNumberOfRequestsPerSession = 500;
                 _session.Advanced.UseOptimisticConcurrency = true;
                 return _session;
             }
@@ -184,19 +78,19 @@ namespace Errordite.Core.Session
                 if (_organisationSession != null)
                     return _organisationSession;
 
-                if (_organisationDatabaseId == null)
-                    throw new InvalidOperationException("Can't get session till Organisation has beens set.");
+				if (_organisation == null)
+                    throw new InvalidOperationException("Can't get session until the session Organisation has been set.");
 
-                _organisationSession = _documentStoreFactory.Create(_organisationRavenInstance).OpenSession(_organisationDatabaseId);
-                _organisationSession.Advanced.MaxNumberOfRequestsPerSession = RequestLimit == 0 ? 500 : RequestLimit;
+				_organisationSession = _documentStoreFactory.Create(_organisation.RavenInstance).OpenSession(_organisation.FriendlyId);
+                _organisationSession.Advanced.MaxNumberOfRequestsPerSession = 500;
                 _organisationSession.Advanced.UseOptimisticConcurrency = true;
                 return _organisationSession;
             }
         }
 
-        public IRedisSession Redis
+        public IMessageSender MessageSender
         {
-            get { return _redisSession; }
+            get { return _messageSender; }
         }
 
         public IDatabaseCommands RavenDatabaseCommands
@@ -227,78 +121,26 @@ namespace Errordite.Core.Session
 
         public void SetOrganisation(Organisation organisation, bool allowReset = false /*some system tasks require us to do this*/)
         {
-            if (!allowReset && _organisationDatabaseId != null && _organisationDatabaseId != IdHelper.GetFriendlyId(organisation.OrganisationId))
+			if (!allowReset && _organisation != null && _organisation.FriendlyId != organisation.FriendlyId)
                 throw new InvalidOperationException("Cannot set Organisation twice in one session.");
 
-            SetOrganisationContext(organisation);
-
-            var uriBuilder = new UriBuilder(organisation.RavenInstance.ReceptionHttpEndpoint);
-
-            if (!uriBuilder.Path.EndsWith("/"))
-                uriBuilder.Path += "/";
-
-            uriBuilder.Path += "{0}/".FormatWith(organisation.FriendlyId);
-
-            _receptionServiceHttpClient = new HttpClient(new LoggingHttpMessageHandler(_auditor)) { BaseAddress = uriBuilder.Uri };
+			_organisation = organisation;
         }
 
-        public void Close()
-        {
-            if (_session != null)
-            {
-                lock (_syncLock)
-                {
-                    if (_session != null)
-                    {
-                        _session.Dispose();
-                        _session = null;
-                    }
-                }
-            }
+		private void InitialiseReceiveServiceClient()
+		{
+			if(_organisation == null)
+				throw new InvalidOperationException("Can't get receive service http client until the session Organisation has been set.");
 
-            if (_organisationSession != null)
-            {
-                lock (_syncLock)
-                {
-                    if (_organisationSession != null)
-                    {
-                        _organisationSession.Dispose();
-                        _organisationSession = null;
-                    }
-                }
-            }
-        }
-
-        public void Commit()
-        {
-            lock (_syncLock)
-            {
-                if (_session != null)
-                    _session.SaveChanges();
-
-                if (_organisationSession != null)
-                    _organisationSession.SaveChanges();
-
-                foreach (var sessionCommitAction in _sessionCommitActions)
-                    sessionCommitAction.Execute(this);
-
-                _sessionCommitActions.Clear();
-            }
-        }
-
-        private void SetOrganisationContext(Organisation organisation)
-        {
-            if (_organisationSession == null)
-            {
-                _organisationDatabaseId = IdHelper.GetFriendlyId(organisation.OrganisationId);
-                _organisationRavenInstance = organisation.RavenInstance;
-                _auditor.Trace(GetType(), "Set organisation id to {0}", _organisationDatabaseId);    
-            }
-        }
+			_receiveServiceHttpClient = new HttpClient(new LoggingHttpMessageHandler(_auditor))
+			{
+				BaseAddress = new Uri("{0}:800/api/{1}/".FormatWith(_organisation.RavenInstance.ServicesBaseUrl, _organisation.FriendlyId))
+			};
+		}
 
         public void BootstrapOrganisation(Organisation organisation)
         {
-			MasterRavenDatabaseCommands.EnsureDatabaseExists(_organisationDatabaseId);
+			MasterRavenDatabaseCommands.EnsureDatabaseExists(_organisation.FriendlyId);
 
             var docStore = _documentStoreFactory.Create(organisation.RavenInstance);
 
@@ -306,17 +148,63 @@ namespace Errordite.Core.Session
                 new CompositionContainer(new AssemblyCatalog(typeof(Issues_Search).Assembly), new ExportProvider[0]),
                  RavenDatabaseCommands, docStore.Conventions);
 
-            _organisationSession = docStore.OpenSession(_organisationDatabaseId);
-            _organisationSession.Advanced.MaxNumberOfRequestsPerSession = RequestLimit == 0 ? 250 : RequestLimit;
+			_organisationSession = docStore.OpenSession(_organisation.FriendlyId);
+            _organisationSession.Advanced.MaxNumberOfRequestsPerSession = 500;
 
             var facets = new List<Facet>
             {
                 new Facet {Name = "Status"},
             };
 
-            _organisationSession.Store(new FacetSetup { Id = Core.CoreConstants.FacetDocuments.IssueStatus, Facets = facets });
+            _organisationSession.Store(new FacetSetup { Id = CoreConstants.FacetDocuments.IssueStatus, Facets = facets });
             _organisationSession.SaveChanges();
         }
+
+		public void Close()
+		{
+			if (_session != null)
+			{
+				_session.Dispose();
+				_session = null;
+			}
+
+			if (_organisationSession != null)
+			{
+				_organisationSession.Dispose();
+				_organisationSession = null;
+			}
+
+			//trouble with this is there may be an async request in progress when the session closes
+			//if (_receiveServiceHttpClient != null)
+			//{
+			//	_receiveServiceHttpClient.Dispose();
+			//	_receiveServiceHttpClient = null;
+			//}	
+		}
+
+		public void Commit()
+		{
+			lock (_syncLock)
+			{
+				if (_session != null)
+					_session.SaveChanges();
+
+				if (_organisationSession != null)
+					_organisationSession.SaveChanges();
+
+				foreach (var sessionCommitAction in _sessionCommitActions)
+					sessionCommitAction.Execute(this);
+
+				_sessionCommitActions.Clear();
+			}
+		}
+
+		public void Dispose()
+		{
+			Close();
+		}
+
+		#region Switch Organisation
 
         public IDisposable SwitchOrg(Organisation organisation)
         {
@@ -326,21 +214,16 @@ namespace Errordite.Core.Session
         private class SwitchOrgBack : IDisposable
         {
             private readonly IDocumentSession _oldSession;
-            private readonly string _oldDbId;
             private readonly AppSession _appSession;
-            private readonly RavenInstance _oldRavenInstance;
+            private readonly Organisation _oldOrganisation;
 
             public SwitchOrgBack(AppSession appSession, Organisation tempOrg)
             {
                 _oldSession = appSession._organisationSession;
-                _oldDbId = appSession._organisationDatabaseId;
-                _oldRavenInstance = appSession._organisationRavenInstance;
+				_oldOrganisation = appSession._organisation;
 
                 appSession._organisationSession = null;
-                appSession._organisationDatabaseId = null;
-                appSession._organisationRavenInstance = null;
-
-                appSession.SetOrganisationContext(tempOrg);
+				appSession._organisation = tempOrg;
                 _appSession = appSession;
             }
 
@@ -351,15 +234,18 @@ namespace Errordite.Core.Session
                     _appSession._organisationSession.Dispose();
 
                 _appSession._organisationSession = _oldSession;
-                _appSession._organisationDatabaseId = _oldDbId;
-                _appSession._organisationRavenInstance = _oldRavenInstance;
+                _appSession._organisation = _oldOrganisation;
             }
         }
+
+		#endregion
+
+		#region Sync Indexes
 
         public void SynchroniseIndexes<T>(bool masterRaven = false)
             where T : AbstractIndexCreationTask, new()
         {
-            AddCommitAction(new SynchroniseIndex<T>(masterRaven));
+            AddCommitAction(new SynchroniseIndexCommitAction<T>(masterRaven));
         }
 
         public void SynchroniseIndexes<T1, T2>()
@@ -379,5 +265,7 @@ namespace Errordite.Core.Session
             SynchroniseIndexes<T2>();
             SynchroniseIndexes<T3>();
         }
+
+		#endregion
     }
 }

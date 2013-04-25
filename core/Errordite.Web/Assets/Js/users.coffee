@@ -23,7 +23,10 @@ jQuery ->
 				this.$form = $form
 
 			delete: () -> 
-				if window.confirm "Are you sure you want to delete this user, any issues assigned to this user will be assigned to you!"
-					this.$form.submit();
+				$frm = this.$form
+				Errordite.Confirm.show("Are you sure you want to delete this user, any issues assigned to this user will be assigned to you!", {
+					okCallBack: -> 
+						$frm.submit()
+				})
 
 	

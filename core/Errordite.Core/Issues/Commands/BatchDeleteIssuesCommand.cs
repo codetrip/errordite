@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
-using CodeTrip.Core.Interfaces;
+using Errordite.Core.Interfaces;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Organisations;
 using Errordite.Core.Session;
 using System.Linq;
+using Errordite.Core.Session.Actions;
 
 namespace Errordite.Core.Issues.Commands
 {

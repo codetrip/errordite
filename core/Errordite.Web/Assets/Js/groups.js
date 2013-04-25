@@ -19,9 +19,13 @@
         }
 
         Group.prototype["delete"] = function() {
-          if (window.confirm("Are you sure you want to delete this group?")) {
-            return this.$form.submit();
-          }
+          var $frm;
+          $frm = this.$form;
+          return Errordite.Confirm.show("Are you sure you want to delete this group?", {
+            okCallBack: function() {
+              return $frm.submit();
+            }
+          });
         };
 
         return Group;

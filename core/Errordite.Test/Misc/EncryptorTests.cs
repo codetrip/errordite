@@ -1,8 +1,8 @@
 ﻿using System;
-using CodeTrip.Core.Encryption;
+using Errordite.Core.Encryption;
 using Errordite.Core.Domain.Organisation;
 using NUnit.Framework;
-using CodeTrip.Core.Extensions;
+using Errordite.Core.Extensions;
 
 namespace Errordite.Test.Misc
 {

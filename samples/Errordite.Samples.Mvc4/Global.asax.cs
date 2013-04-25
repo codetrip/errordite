@@ -25,6 +25,7 @@ namespace Errordite.Samples.Mvc4
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
+            //ErrorditeClient.Debug = true;
             ErrorditeClient.ConfigurationAugmenter = ErrorditeClientOverrideHelper.Augment;
         }
     }

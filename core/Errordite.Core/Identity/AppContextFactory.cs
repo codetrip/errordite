@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web;
-using CodeTrip.Core;
-using CodeTrip.Core.Interfaces;
+using Errordite.Core;
+using Errordite.Core.Interfaces;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Organisations.Commands;
 using Errordite.Core.Organisations.Queries;
@@ -23,7 +23,10 @@ namespace Errordite.Core.Identity
         private readonly IAppSession _session;
         private readonly IGetOrganisationByEmailAddressCommand _getOrganisationByEmailAddressCommand;
 
-        public AppContextFactory(IAuthenticationManager authenticationManager, IGetUserQuery getUserQuery, IGetOrganisationByEmailAddressCommand getOrganisationByEmailAddressCommand, IAppSession session)
+        public AppContextFactory(IAuthenticationManager authenticationManager, 
+            IGetUserQuery getUserQuery, 
+            IGetOrganisationByEmailAddressCommand getOrganisationByEmailAddressCommand, 
+            IAppSession session)
         {
             _authenticationManager = authenticationManager;
             _getUserQuery = getUserQuery;

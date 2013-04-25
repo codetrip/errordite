@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Web.Mvc;
-using CodeTrip.Core.Extensions;
+using Errordite.Core.Extensions;
 using Errordite.Core.Configuration;
 
 namespace Errordite.Web.Extensions

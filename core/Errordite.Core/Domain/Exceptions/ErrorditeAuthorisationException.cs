@@ -1,11 +1,11 @@
 ﻿
-using CodeTrip.Core.Exceptions;
+using Errordite.Core.Exceptions;
 using Errordite.Core.Authorisation;
 using Errordite.Core.Domain.Organisation;
 
 namespace Errordite.Core.Domain.Exceptions
 {
-    public class ErrorditeAuthorisationException : CodeTripException
+    public class ErrorditeAuthorisationException : ErrorditeException
     {
         public ErrorditeAuthorisationException(IOrganisationEntity entity, User user)
         {

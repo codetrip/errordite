@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using BookSleeve;
-using CodeTrip.Core;
+using Errordite.Core;
 
 namespace Errordite.Core.Caching
 {

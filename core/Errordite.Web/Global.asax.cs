@@ -9,19 +9,19 @@ using System.Web.Http.Dispatcher;
 using System.Web.Mvc;
 using System.Web.Routing;
 using Castle.Core.Internal;
-using CodeTrip.Core.Interfaces;
-using CodeTrip.Core.IoC;
-using CodeTrip.Core.Misc;
+using Errordite.Core.Domain.Master;
+using Errordite.Core.Interfaces;
+using Errordite.Core.IoC;
+using Errordite.Core.Misc;
 using Errordite.Client;
 using Errordite.Core;
 using Errordite.Core.Configuration;
-using Errordite.Core.Domain.Central;
 using Errordite.Core.Domain.Exceptions;
 using Errordite.Core.IoC;
 using Errordite.Core.Organisations.Queries;
 using Errordite.Core.Raven;
 using Errordite.Core.Session;
-using Errordite.Core.WebApi;    
+using Errordite.Core.Web;
 using Errordite.Web.ActionFilters;
 using Errordite.Web.Controllers;
 using Errordite.Web.IoC;
@@ -49,7 +49,7 @@ namespace Errordite.Web
             routes.IgnoreRoute("errorditelogging/{*pathInfo}");
 
             routes.MapHttpRoute(
-                name: "issueapi",
+                name: "issuesapi",
                 routeTemplate: "api/issues/{id}",
                 defaults: new { controller = "issueapi", id = RouteParameter.Optional }
             );
@@ -202,10 +202,9 @@ namespace Errordite.Web
 
             if(master != null)
             {
-                master.ReceptionQueueAddress = ErrorditeConfiguration.Current.ReceptionQueueName;
-                master.ReceptionHttpEndpoint = ErrorditeConfiguration.Current.ReceptionHttpEndpoint;
-                master.NotificationsQueueAddress = ErrorditeConfiguration.Current.NotificationsQueueName;
-                master.EventsQueueAddress = ErrorditeConfiguration.Current.EventsQueueName;
+                master.ReceiveQueueAddress = ErrorditeConfiguration.Current.GetReceiveQueueAddress(string.Empty);
+                master.NotificationsQueueAddress = ErrorditeConfiguration.Current.GetNotificationsQueueAddress();
+                master.EventsQueueAddress = ErrorditeConfiguration.Current.GetEventsQueueAddress();
                 session.SaveChanges();
             }
         }

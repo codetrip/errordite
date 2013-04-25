@@ -1,5 +1,5 @@
 ﻿using System.Web.Mvc;
-using CodeTrip.Core;
+using Errordite.Core;
 using Errordite.Web.Controllers;
 
 namespace Errordite.Web.ActionFilters

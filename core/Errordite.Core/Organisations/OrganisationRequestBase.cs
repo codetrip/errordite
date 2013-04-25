@@ -1,5 +1,5 @@
 ﻿
-using CodeTrip.Core.Caching.Entities;
+using Errordite.Core.Caching.Entities;
 using Errordite.Core.Domain.Organisation;
 
 namespace Errordite.Core.Organisations

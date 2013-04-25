@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Web.Mvc;
 using AutoMapper;
-using CodeTrip.Core.Extensions;
-using CodeTrip.Core.Paging;
+using Errordite.Core.Extensions;
+using Errordite.Core.Paging;
 using Errordite.Core.Applications.Commands;
 using Errordite.Core.Applications.Queries;
 using Errordite.Core.Domain;
@@ -12,6 +12,7 @@ using Errordite.Core.Domain.Error;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Matching;
 using Errordite.Core.Reception.Commands;
+using Errordite.Core.Web;
 using Errordite.Web.ActionFilters;
 using Errordite.Web.Extensions;
 using System.Linq;
@@ -19,7 +20,6 @@ using Errordite.Web.Models.Applications;
 using Errordite.Web.Models.Groups;
 using Errordite.Web.Models.Navigation;
 using Application = Errordite.Core.Domain.Organisation.Application;
-using Errordite.Core.WebApi;
 
 namespace Errordite.Web.Controllers
 {
@@ -244,7 +244,7 @@ namespace Errordite.Web.Controllers
                 return HttpNotFound();
             }
 
-            var task = Core.Session.ReceptionServiceHttpClient.PostJsonAsync("error", new ReceiveErrorRequest
+            var task = Core.Session.ReceiveHttpClient.PostJsonAsync("error", new ReceiveErrorRequest
             {
                 Error = new Error
                 {
@@ -268,12 +268,12 @@ namespace Errordite.Web.Controllers
                     Version = application.Version
                 },
                 ApplicationId = application.Id,
-                OrganisationId = application.OrganisationId,
+                Organisation = AppContext.CurrentUser.Organisation,
             }).ContinueWith(t =>
-                                {
-                                    t.Result.EnsureSuccessStatusCode();
-                                    return t.Result.Content.ReadAsAsync<ReceiveErrorResponse>().Result;
-                                });
+                {
+                    t.Result.EnsureSuccessStatusCode();
+                    return t.Result.Content.ReadAsAsync<ReceiveErrorResponse>().Result;
+                });
 
             var receiveErrorResponse = task.Result;
 

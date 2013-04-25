@@ -54,6 +54,11 @@
     <Reference Include="AutoMapper">
       <HintPath>..\..\lib\AutoMapper\AutoMapper.dll</HintPath>
     </Reference>
+    <Reference Include="AWSSDK, Version=1.5.18.0, Culture=neutral, PublicKeyToken=9f476d3089b52be3, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Amazon\AWSSDK.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Castle.Core">
       <HintPath>..\packages\Castle.Core.3.1.0\lib\net40-client\Castle.Core.dll</HintPath>
     </Reference>
@@ -71,9 +76,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Errordite.Client.Mvc4.1.3.31.0\lib\net40\Errordite.Client.Mvc4.dll</HintPath>
     </Reference>
-    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+    <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\log4net.1.2.10\lib\2.0\log4net.dll</HintPath>
+      <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
@@ -82,24 +87,6 @@
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="NServiceBus, Version=3.3.0.0, Culture=neutral, PublicKeyToken=9fc386479f8a226c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\NServiceBus.Interfaces.3.3.5\lib\net40\NServiceBus.dll</HintPath>
-    </Reference>
-    <Reference Include="NServiceBus.Core, Version=3.3.0.0, Culture=neutral, PublicKeyToken=9fc386479f8a226c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\NServiceBus.3.3.5\lib\net40\NServiceBus.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="ProductionProfiler.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=06afa51a2c047269, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\Profiler\ProductionProfiler.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="ProductionProfiler.IoC.Windsor">
-      <HintPath>..\..\lib\Profiler\ProductionProfiler.IoC.Windsor.dll</HintPath>
-    </Reference>
-    <Reference Include="ProductionProfiler.Persistence.Raven">
-      <HintPath>..\..\lib\Profiler\ProductionProfiler.Persistence.Raven.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Abstractions, Version=2.0.3.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -176,6 +163,7 @@
     <Compile Include="..\Errordite.Build\Assembly\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="ActionFilters\ValidateSubscriptionActionFilter.cs" />
     <Compile Include="ActionFilters\SelectApplicationActionFilter.cs" />
     <Compile Include="ActionFilters\StoreQueryInCookie.cs" />
     <Compile Include="ActionFilters\ViewDataActionFilter.cs" />
@@ -256,13 +244,19 @@
       <DependentUpon>Shared.resx</DependentUpon>
     </Compile>
     <Compile Include="Areas\System\Controllers\AdminControllerBase.cs" />
-    <Compile Include="Areas\System\Controllers\ServicesController.cs" />
     <Compile Include="Areas\System\Models\Services\SystemStatusViewModel.cs" />
     <Compile Include="Areas\System\SysAdminAreaRegistration.cs" />
     <Compile Include="Areas\System\Controllers\SystemController.cs" />
     <Compile Include="Areas\System\Models\Organisations\SuspendOrganisationViewModel.cs" />
     <Compile Include="ActionFilters\GenerateBreadcrumbs.cs" />
     <Compile Include="ApiControllers\IssueApiController.cs" />
+    <Content Include="Assets\Js\activity.js">
+      <DependentUpon>activity.coffee</DependentUpon>
+    </Content>
+    <Content Include="Assets\Js\activity.min.js">
+      <DependentUpon>activity.coffee</DependentUpon>
+    </Content>
+    <Content Include="Assets\Js\components.js" />
     <Compile Include="Controllers\ApplicationsController.cs" />
     <Compile Include="Areas\System\Controllers\CacheController.cs" />
     <Compile Include="Areas\System\Controllers\OrganisationsController.cs" />
@@ -274,6 +268,7 @@
     <Compile Include="Controllers\DocsController.cs" />
     <Compile Include="Controllers\GroupsController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
+    <Compile Include="Controllers\SubscriptionController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\AuthenticationController.cs" />
     <Compile Include="Controllers\IssuesController.cs" />
@@ -294,7 +289,7 @@
     <Compile Include="Models\Authentication\ResetPasswordViewModel.cs" />
     <Compile Include="Models\Authentication\PasswordViewModel.cs" />
     <Compile Include="Models\Common\IWizardViewModel.cs" />
-    <Compile Include="Models\Dashboard\ActivityFeedViewModel.cs" />
+    <Compile Include="Models\Dashboard\ActivityViewModel.cs" />
     <Compile Include="Models\Issues\MergeIssuesViewModel.cs" />
     <Compile Include="Areas\System\Models\Cache\CacheViewModel.cs" />
     <Compile Include="Models\Errors\ExceptionViewModel.cs" />
@@ -314,8 +309,8 @@
     <Compile Include="Models\Account\OrganisationsViewModel.cs" />
     <Compile Include="Models\Account\OrganisationViewModel.cs" />
     <Compile Include="Models\Search\SearchViewModel.cs" />
+    <Compile Include="Models\Subscription\SignUpViewModel.cs" />
     <Compile Include="Models\Users\AddUserViewModel.cs" />
-    <Compile Include="Models\Beta\SignUpViewModel.cs" />
     <Compile Include="Models\Users\UserViewModel.cs" />
     <Compile Include="Models\Users\EditUserViewModel.cs" />
     <Compile Include="Models\Users\UserViewModelBase.cs" />
@@ -339,9 +334,6 @@
     <Compile Include="WebConstants.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\System\Views\Services\ServiceInfo.cshtml">
-      <SubType>Code</SubType>
-    </Content>
     <Content Include="Assets\Css\errordite.css">
       <DependentUpon>errordite.scss</DependentUpon>
     </Content>
@@ -500,10 +492,6 @@
     <Content Include="Views\Shared\ServerError.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\codetrip\CodeTrip.Core\CodeTrip.Core.csproj">
-      <Project>{7AD42F34-0629-45B8-BF45-87F8B791376E}</Project>
-      <Name>CodeTrip.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Errordite.Core\Errordite.Core.csproj">
       <Project>{418F4BC8-7042-49B1-9F69-95189A2A5837}</Project>
       <Name>Errordite.Core</Name>
@@ -889,22 +877,7 @@
     <Content Include="Views\Shared\Docs\PythonClient.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Issue\Comments.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shared\Issue\Comment.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\System\Views\Services\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Assets\Js\services.coffee" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="..\Errordite.Build\Configuration\services.config">
-      <Link>Config\services.config</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Docs\About.cshtml" />
@@ -923,6 +896,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Docs\Terms.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Docs\DjangoClient.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Subscription\SignUp.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\Js\activity.coffee" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -946,7 +928,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>2289</DevelopmentServerPort>
+          <DevelopmentServerPort>4752</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://dev-site.errordite.com</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

@@ -2,7 +2,7 @@
 using System;
 using System.Text;
 using Castle.Core;
-using CodeTrip.Core.IoC;
+using Errordite.Core.IoC;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Test.Automation.Configuration;
 using Errordite.Test.Automation.IoC;

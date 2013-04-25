@@ -9,6 +9,11 @@ namespace Errordite.Core
         public const string MatchRuleFactoryIdFormat = "mf-{0}";
         public const string QueryDateFormat = "yyyy-MM-ddTHH:mm:ss.fff";
 
+        public static class Auditing
+        {
+            public const string DefaultLogger = "Errordite";
+        }
+
         public static class FacetDocuments
         {
             public static string IssueStatus = "facets/Status";

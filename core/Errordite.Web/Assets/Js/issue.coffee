@@ -52,12 +52,12 @@ jQuery ->
 			$('div#error-items').clear();
 						
 		renderHistory = () -> 
-			$node = $issue.find('#history-items')
+			$node = $issue.find('table.history tbody')
 			url = '/issue/history?IssueId=' + $issue.find('#IssueId').val()
 			
 			$.get url,
 				(data) -> 
-					$node.html(data.data)
+					$node.append(data.data)
 					$('div.content').animate 
 						scrollTop : 0,
 						'slow'			
@@ -67,13 +67,6 @@ jQuery ->
 		$issue.delegate 'form#reportform', 'submit', (e) ->
 			e.preventDefault()
 			renderReports()
-
-		$issue.delegate 'input[type="button"].confirm', 'click', () ->
-			$this = $ this
-			if confirm "Are you sure you want to delete all errors associated with this issue?" 
-				$.post '/issue/purge', 'issueId=' + $this.attr('data-val'), (data) -> 
-					clearErrors()
-					$('span#instance-count').text "0"
 
 		$issue.delegate '.what-if-reprocess', 'click', (e) ->
 			e.preventDefault()
@@ -87,9 +80,7 @@ jQuery ->
 #					setTimeout -> msg.fadeOut(500), 
 #					5000 
 				error: ->
-					alert 'Error. Please try again.'
-		
-
+					Errordite.Alert.show('An error has occured, please try again.')
 
 		$issue.delegate 'select#Status', 'change', () -> 
 			$this = $ this

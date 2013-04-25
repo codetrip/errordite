@@ -1,16 +1,18 @@
 ﻿using System.Collections.Generic;
 using Castle.Core;
-using CodeTrip.Core.Caching.Entities;
-using CodeTrip.Core.Caching.Interceptors;
-using CodeTrip.Core.Interfaces;
+using Errordite.Core.Caching.Entities;
+using Errordite.Core.Caching.Interceptors;
+using Errordite.Core.Configuration;
+using Errordite.Core.Interfaces;
 using Errordite.Core.Authorisation;
 using Errordite.Core.Caching;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Indexing;
 using Errordite.Core.Organisations;
 using Errordite.Core.Session;
+using Errordite.Core.Session.Actions;
 using Raven.Abstractions.Data;
-using CodeTrip.Core.Extensions;
+using Errordite.Core.Extensions;
 
 namespace Errordite.Core.Applications.Commands
 {
@@ -18,10 +20,12 @@ namespace Errordite.Core.Applications.Commands
     public class DeleteApplicationCommand : SessionAccessBase, IDeleteApplicationCommand
     {
         private readonly IAuthorisationManager _authorisationManager;
+        private readonly ErrorditeConfiguration _configuration;
 
-        public DeleteApplicationCommand(IAuthorisationManager authorisationManager)
+        public DeleteApplicationCommand(IAuthorisationManager authorisationManager, ErrorditeConfiguration configuration)
         {
             _authorisationManager = authorisationManager;
+            _configuration = configuration;
         }
 
         public DeleteApplicationResponse Invoke(DeleteApplicationRequest request)
@@ -65,6 +69,7 @@ namespace Errordite.Core.Applications.Commands
                 Delete(application);
 
             Session.SynchroniseIndexes<Errors_Search, Issues_Search, Applications_Search>();
+            Session.AddCommitAction(new FlushApplicationCacheCommitAction(_configuration, request.CurrentUser.Organisation, application.FriendlyId));
 
             return new DeleteApplicationResponse(false, request.ApplicationId, application.OrganisationId)
             {

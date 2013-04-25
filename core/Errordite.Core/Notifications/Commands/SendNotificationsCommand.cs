@@ -1,16 +1,15 @@
 using System.Collections.Generic;
-using CodeTrip.Core;
-using CodeTrip.Core.Interfaces;
-using CodeTrip.Core.Paging;
+using Errordite.Core.Interfaces;
+using Errordite.Core.Messaging;
+using Errordite.Core.Paging;
 using Errordite.Core.Configuration;
-using CodeTrip.Core.Extensions;
+using Errordite.Core.Extensions;
 using Errordite.Core.Domain.Organisation;
-using Errordite.Core.Messages;
 using Errordite.Core.Session;
+using Errordite.Core.Session.Actions;
 using Errordite.Core.Users.Queries;
 using Errordite.Core.Notifications.EmailInfo;
 using System.Linq;
-using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
 
 namespace Errordite.Core.Notifications.Commands
 {
@@ -52,7 +51,10 @@ namespace Errordite.Core.Notifications.Commands
             }
             else
             {
-                Session.AddCommitAction(new SendNServiceBusMessage("Send {0}".FormatWith(request.EmailInfo.GetType().Name), request.EmailInfo, _configuration.NotificationsQueueName));
+                Session.AddCommitAction(new SendMessageCommitAction(request.EmailInfo,
+                    _configuration.GetNotificationsQueueAddress(request.Organisation == null ?
+                        null :
+                        request.Organisation.RavenInstance)));
             }
         }
 
@@ -83,28 +85,16 @@ namespace Errordite.Core.Notifications.Commands
 
             request.EmailInfo.To = usersToSendTo.Aggregate(string.Empty, (current, u) => current + (u.Email + ';')).TrimEnd(';');
 
-            //var alertInfo = request.EmailInfo as IAlertInfo;
-            //if (alertInfo != null)
-            //{
-            //    foreach (var user in usersToSendTo) //hopefully this isn't too large!
-            //    {
-            //        Store(new UserAlert
-            //        {
-            //            UserId = user.Id,
-            //            Message = alertInfo.MessageTemplate,
-            //            Replacements = alertInfo.Replacements,
-            //            Type = request.EmailInfo.GetType().Name,
-            //        });
-            //    }
-            //}
-
             if (!_configuration.ServiceBusEnabled)
             {
                 _sendEmailCommand.Invoke(new SendEmailRequest { EmailInfo = request.EmailInfo });
             }
             else
             {
-                Session.AddCommitAction(new SendNServiceBusMessage("Send {0}".FormatWith(request.EmailInfo.GetType().Name), request.EmailInfo, _configuration.NotificationsQueueName));
+                Session.AddCommitAction(new SendMessageCommitAction(request.EmailInfo, 
+                    _configuration.GetNotificationsQueueAddress(request.Organisation == null ? 
+                        null : 
+                        request.Organisation.RavenInstance)));
             }
         }
 
@@ -136,7 +126,10 @@ namespace Errordite.Core.Notifications.Commands
                     Message = request.EmailInfo.ConvertToSimpleMessage(_configuration)
                 };
 
-                Session.AddCommitAction(new SendNServiceBusMessage("Send {0}".FormatWith(hipChatMessage.GetType().Name), hipChatMessage, _configuration.NotificationsQueueName));
+                Session.AddCommitAction(new SendMessageCommitAction(hipChatMessage,
+                    _configuration.GetNotificationsQueueAddress(request.Organisation == null ? 
+                        null : 
+                        request.Organisation.RavenInstance)));
             }
         }
     }
@@ -155,6 +148,7 @@ namespace Errordite.Core.Notifications.Commands
         public EmailInfoBase EmailInfo { get; set; }
         public string OrganisationId { get; set; }
         public Application Application { get; set; }
+        public Organisation Organisation { get; set; }
         public IList<string> Users { get; set; }
         public IList<string> Groups { get; set; }
     }

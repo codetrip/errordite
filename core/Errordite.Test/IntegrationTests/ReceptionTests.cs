@@ -23,7 +23,7 @@ namespace Errordite.Test.IntegrationTests
             if (org != null)
                 ravenSession.Delete(org); //TODO: delete child entities
 
-            var user = Session.Raven.Query<User, Users_Search>().FirstOrDefault(u => u.Email == "unittests@codetrip.co.uk");
+            var user = Session.Raven.Query<User, Users_Search>().FirstOrDefault(u => u.Email == "unittests@Errordite.co.uk");
             if (user != null)
                 ravenSession.Delete(user);
 
@@ -32,7 +32,7 @@ namespace Errordite.Test.IntegrationTests
             var orgInfo = Get<ICreateOrganisationCommand>().Invoke(
                 new CreateOrganisationRequest()
                     {
-                        Email = "unittests@codetrip.co.uk",
+                        Email = "unittests@Errordite.co.uk",
                         FirstName = "Unit",
                         LastName = "Tests",
                         OrganisationName = "UnitTests",

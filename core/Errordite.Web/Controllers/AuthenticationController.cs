@@ -6,7 +6,7 @@ using Errordite.Core.Organisations.Commands;
 using Errordite.Web.ActionFilters;
 using Errordite.Web.Models.Authentication;
 using Errordite.Web.Extensions;
-using CodeTrip.Core.Extensions;
+using Errordite.Core.Extensions;
 using Resources;
 
 namespace Errordite.Web.Controllers

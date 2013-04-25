@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
-using CodeTrip.Core.Paging;
+using Errordite.Core.Paging;
 using Errordite.Client;
 using Errordite.Core.Domain.Error;
 using App = Errordite.Core.Domain.Organisation;
@@ -34,6 +34,7 @@ namespace Errordite.Web.Models.Errors
         public Error Error { get; set; }
         public bool HideIssues { get; set; }
 		public string ApplicationName { get; set; }
+		public string VerbalTime { get; set; }
         public IEnumerable<ExceptionViewModel> Exceptions {get
         {
             return Error.ExceptionInfos

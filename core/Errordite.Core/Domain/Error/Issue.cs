@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using CodeTrip.Core.Dynamic;
-using CodeTrip.Core.Extensions;
+using Errordite.Core.Dynamic;
+using Errordite.Core.Extensions;
 using Errordite.Core.Authorisation;
 using Errordite.Core.Matching;
 using System.Linq;
@@ -76,8 +76,6 @@ namespace Errordite.Core.Domain.Error
         [ProtoMember(16)]
         public DateTimeOffset LastErrorUtc { get; set; }
         [ProtoMember(17)]
-        public IList<IssueComment> Comments { get; set; }
-        [ProtoMember(18)]
         public DateTimeOffset? LastNotified { get; set; }
 
         [JsonIgnore]

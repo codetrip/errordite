@@ -62,9 +62,6 @@
     </None>
     <None Include="Configuration\log4net.config" />
     <None Include="Configuration\raven.config" />
-    <Content Include="Configuration\services.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <None Include="Configuration\XmlConfig.inst">
       <SubType>Designer</SubType>
     </None>
@@ -78,10 +75,10 @@
     <None Include="Projects\InstallNotificationsService.proj">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Projects\InstallReceptionWeb.proj">
+    <None Include="Projects\InstallReceiveWeb.proj">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Projects\InstallReceptionService.proj">
+    <None Include="Projects\InstallReceiveService.proj">
       <SubType>Designer</SubType>
     </None>
     <None Include="Projects\InstallWeb.proj">
@@ -110,7 +107,6 @@
     <None Include="Targets\PackageErrordite.target">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Targets\Queues.target" />
     <None Include="Targets\ServiceControl.target">
       <SubType>Designer</SubType>
     </None>

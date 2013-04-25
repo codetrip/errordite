@@ -1,4 +1,4 @@
-﻿@using CodeTrip.Core.Extensions
+﻿@using Errordite.Core.Extensions
 @using Errordite.Core.Domain
 @using Errordite.Core.Extensions
 @using Errordite.Web.Models.Issues
@@ -45,9 +45,6 @@
             <li @(Model.Tab == IssueTab.Actions ? " class=active" : " class=inactive") >
                 <a href="@Url.Issue(Model.Update.IssueId, IssueTab.Actions)" class="tablink" data-val="actions"><span>Actions</span></a>
             </li>
-            <li @(Model.Tab == IssueTab.Comments ? " class=active" : " class=inactive") >
-                <a href="@Url.Issue(Model.Update.IssueId, IssueTab.Comments)" class="tablink" data-val="comments"><span>Comments</span></a>
-            </li>
             <li @(Model.Tab == IssueTab.History ? " class=active" : " class=inactive") >
                 <a href="@Url.Issue(Model.Update.IssueId, IssueTab.History)" class="tablink" data-val="history"><span>History</span></a>
             </li>
@@ -66,9 +63,6 @@
         <div id="details" class="tab @(Model.Tab == IssueTab.Details ? "" : "hidden")">
             @Html.Partial("Details", Model)
         </div>
-        <div id="comments" class="tab @(Model.Tab == IssueTab.Comments ? "" : "hidden")">
-            @Html.Partial("Comments", Model.Comments)
-        </div>
         @using (Html.BeginForm("AdjustRules", "issue", FormMethod.Post, new { id = "rulesForm" }))
         {
             <div id="rules" class="tab @(Model.Tab == IssueTab.Rules ? "" : "hidden")">
@@ -82,9 +76,18 @@
         <div id="actions" class="tab @(Model.Tab == IssueTab.Actions ? "" : "hidden")">
             @Html.Partial("Actions", Model.Details)
         </div>
-        <div id="history" class="tab @(Model.Tab == IssueTab.History ? "" : "hidden")">
-            <div id="history-items" data-val="@Model.Details.IssueId"></div>
-        </div>
+	    <div id="history" class="tab @(Model.Tab == IssueTab.History ? "" : "hidden")">
+		    <table class="table table-condensed history" id="history-items">
+			    <thead>
+				    <tr>
+					    <th>User</th>
+					    <th>Occured</th>
+						<th>Message</th>
+				    </tr>
+			    </thead>
+				<tbody></tbody>
+		    </table>
+	    </div>
     </div>
 </section>
 

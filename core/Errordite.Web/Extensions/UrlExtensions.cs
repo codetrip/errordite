@@ -6,7 +6,7 @@ using System.Web.Mvc;
 using Errordite.Core.Configuration;
 using Errordite.Core.Domain;
 using Errordite.Core.Domain.Error;
-using CodeTrip.Core.Extensions;
+using Errordite.Core.Extensions;
 using Errordite.Core.Identity;
 using Errordite.Web.Models.Issues;
 using System.Linq;
@@ -57,7 +57,7 @@ namespace Errordite.Web.Extensions
 
         public static string ActivityLog(this UrlHelper helper, string applicationId = null)
         {
-            return applicationId != null ? helper.Action("feed", "dashboard", new { applicationId, Area = string.Empty }) : helper.Action("feed", "dashboard", new { Area = string.Empty });
+			return applicationId != null ? helper.Action("activity", "dashboard", new { applicationId, Area = string.Empty }) : helper.Action("activity", "dashboard", new { Area = string.Empty });
         }
         
         public static string Errors(this UrlHelper helper, string applicationId = null)
@@ -151,6 +151,11 @@ namespace Errordite.Web.Extensions
             return "https://github.com/errordite/django-errordite";
         }
 
+        public static string PythonClientGitHub(this UrlHelper helper)
+        {
+            return "https://github.com/hugorodgerbrown/python-errordite";
+        }
+
         public static string RubyClientGitHub(this UrlHelper helper)
         {
             return "https://github.com/errordite/errordite-ruby";
@@ -200,7 +205,7 @@ namespace Errordite.Web.Extensions
 
         #region Authentication
 
-        public static string SignUp(this UrlHelper helper)
+        public static string SignUp(this UrlHelper helper, string planName = null)
         {
             return helper.Action("signup", "authentication", new { Area = string.Empty });
         }
@@ -218,6 +223,20 @@ namespace Errordite.Web.Extensions
         public static string ResetPassword(this UrlHelper helper)
         {
             return helper.Action("resetpassword", "authentication", new { Area = string.Empty });
+        }
+
+        #endregion
+
+        #region Subscription
+
+        public static string SubscriptionSignUp(this UrlHelper helper, string planName)
+        {
+            return helper.Action("signup", "subscription", new { Area = string.Empty, Name = planName });
+        }
+
+        public static string TrialExpired(this UrlHelper helper)
+        {
+            return helper.Action("trialexpired", "subscription", new { Area = string.Empty });
         }
 
         #endregion

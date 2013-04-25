@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
-using CodeTrip.Core.Interfaces;
-using CodeTrip.Core.Paging;
+using Errordite.Core.Interfaces;
+using Errordite.Core.Messaging;
+using Errordite.Core.Paging;
 using Errordite.Core.Configuration;
 using Errordite.Core.Authorisation;
 using Errordite.Core.Domain;
@@ -11,12 +12,11 @@ using Errordite.Core.Domain.Exceptions;
 using Errordite.Core.Errors.Queries;
 using Errordite.Core.Extensions;
 using Errordite.Core.Indexing;
-using Errordite.Core.Messages;
 using Errordite.Core.Organisations;
 using Errordite.Core.Reception.Commands;
-using CodeTrip.Core.Extensions;
 using System.Linq;
 using Errordite.Core.Session;
+using Errordite.Core.Session.Actions;
 
 namespace Errordite.Core.Issues.Commands
 {
@@ -59,35 +59,35 @@ namespace Errordite.Core.Issues.Commands
             catch (ErrorditeAuthorisationException)
             {
                 return new ReprocessIssueErrorsResponse
-                    {
-                        Status = ReprocessIssueErrorsStatus.NotAuthorised,
-                        WhatIf = request.WhatIf,
-                    };
+                {
+                    Status = ReprocessIssueErrorsStatus.NotAuthorised,
+                    WhatIf = request.WhatIf,
+                };
             }
 
             var errors = _getApplicationErrorsQuery.Invoke(new GetApplicationErrorsRequest
-                {
-                    ApplicationId = issue.ApplicationId,
-                    IssueId = issue.Id,
-                    OrganisationId = issue.OrganisationId,
-                    Paging = new PageRequestWithSort(1, _configuration.MaxPageSize)
-                }).Errors;
+            {
+                ApplicationId = issue.ApplicationId,
+                IssueId = issue.Id,
+                OrganisationId = issue.OrganisationId,
+                Paging = new PageRequestWithSort(1, _configuration.MaxPageSize)
+            }).Errors;
 
             var responses = errors.Items.Select(error => _receiveErrorCommand.Invoke(new ReceiveErrorRequest
-                {
-                    ApplicationId = issue.ApplicationId,
-                    Error = error,
-                    ExistingIssueId = issue.Id,
-                    OrganisationId = issue.OrganisationId,
-                    WhatIf = request.WhatIf,
-                })).ToList();
+            {
+                ApplicationId = issue.ApplicationId,
+                Error = error,
+                ExistingIssueId = issue.Id,
+                Organisation = request.CurrentUser.Organisation,
+                WhatIf = request.WhatIf,
+            })).ToList();
 
             var response = new ReprocessIssueErrorsResponse
-                {
-                    AttachedIssueIds = responses.GroupBy(r => r.IssueId).ToDictionary(g => g.Key, g => g.Count()),
-                    Status = ReprocessIssueErrorsStatus.Ok,
-                    WhatIf = request.WhatIf,
-                };
+            {
+                AttachedIssueIds = responses.GroupBy(r => r.IssueId).ToDictionary(g => g.Key, g => g.Count()),
+                Status = ReprocessIssueErrorsStatus.Ok,
+                WhatIf = request.WhatIf,
+            };
 
             if (request.WhatIf)
                 return response;
@@ -109,14 +109,12 @@ namespace Errordite.Core.Issues.Commands
                 if (response.AttachedIssueIds.Count > 1)
                 {
                     //re-sync the error counts
-                    Session.AddCommitAction(new SendNServiceBusMessage("Sync Issue Error Counts",
-                        new SyncIssueErrorCountsMessage
-                            {
-                                CurrentUser = request.CurrentUser,
-                                IssueId = issue.Id,
-                                OrganisationId =
-                                    request.CurrentUser.OrganisationId
-                            }, _configuration.EventsQueueName));
+                    Session.AddCommitAction(new SendMessageCommitAction(new SyncIssueErrorCountsMessage
+                    {
+                        IssueId = issue.Id,
+                        OrganisationId = request.CurrentUser.OrganisationId,
+                        TriggerEventUtc = DateTime.UtcNow,
+                    }, _configuration.GetEventsQueueAddress(request.CurrentUser.Organisation.RavenInstance)));
                 }
             }
             else
@@ -125,10 +123,11 @@ namespace Errordite.Core.Issues.Commands
                 //counts.  Note we do NOT want to call purge as this may delete all the errors previously-owned
                 //errors if the index has not caught up yet!
                 Session.AddCommitAction(new DeleteAllDailyCountsCommitAction(issue.Id));
-                var hourlyCount =
-                    Session.Raven.Load<IssueHourlyCount>("IssueHourlyCount/{0}".FormatWith(issue.FriendlyId));
+
+                var hourlyCount = Session.Raven.Load<IssueHourlyCount>("IssueHourlyCount/{0}".FormatWith(issue.FriendlyId));
                 if (hourlyCount != null)
                     hourlyCount.Initialise();
+
                 issue.ErrorCount = 0;
                 issue.LimitStatus = ErrorLimitStatus.Ok;
             }

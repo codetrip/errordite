@@ -3,12 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
-using CodeTrip.Core.Extensions;
+using Errordite.Core.Domain.Master;
+using Errordite.Core.Extensions;
 using Errordite.Core.Domain;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Issues.Commands;
 using Errordite.Core.Matching;
-using Errordite.Core.WebApi;
+using Errordite.Core.Web;
 using NUnit.Framework;
 using Newtonsoft.Json;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace Errordite.Test.IntegrationTests
         [Test]
         public void SendErrorsForProcessing()
         {
-            var postTask = new HttpClient().PostJsonAsync("{0}/1/ReprocessIssueErrors".FormatWith(Core.Configuration.ErrorditeConfiguration.Current.ReceptionHttpEndpoint), new ReprocessIssueErrorsRequest
+            var postTask = new HttpClient().PostJsonAsync("{0}/api/1/ReprocessIssueErrors".FormatWith(RavenInstance.Master().ServicesBaseUrl), new ReprocessIssueErrorsRequest
             {
                 IssueId = "issues/1",
                 OrganisationId = "organisations/1"
@@ -41,7 +42,7 @@ namespace Errordite.Test.IntegrationTests
         {
             var issue = GetIssue();
 
-            var postTask = new HttpClient().PostJsonAsync("{0}/1/issue".FormatWith(Core.Configuration.ErrorditeConfiguration.Current.ReceptionHttpEndpoint), issue);
+            var postTask = new HttpClient().PostJsonAsync("{0}/api/1/issue".FormatWith(RavenInstance.Master().ServicesBaseUrl), issue);
 
             postTask.Wait();
 
@@ -57,14 +58,14 @@ namespace Errordite.Test.IntegrationTests
             issue.LastErrorUtc = DateTime.UtcNow;
 
             //now update
-            var putTask = new HttpClient().PutJsonAsync("{0}/1/issue".FormatWith(Core.Configuration.ErrorditeConfiguration.Current.ReceptionHttpEndpoint), new[] { issue });
+            var putTask = new HttpClient().PutJsonAsync("{0}/api/1/issue".FormatWith(RavenInstance.Master().ServicesBaseUrl), new[] { issue });
             putTask.Wait();
 
             Assert.That(putTask.Result.StatusCode == HttpStatusCode.NoContent);
 
             var task = new HttpClient().GetAsync(
-                "{0}/1/issue/{1}?applicationId={2}".FormatWith(
-                    Core.Configuration.ErrorditeConfiguration.Current.ReceptionHttpEndpoint, issue.FriendlyId, issue.ApplicationId));
+                "{0}/api/1/issue/{1}?applicationId={2}".FormatWith(
+                    RavenInstance.Master().ServicesBaseUrl, issue.FriendlyId, issue.ApplicationId));
 
             task.Wait();
 
@@ -80,7 +81,7 @@ namespace Errordite.Test.IntegrationTests
         {
             var issue = GetIssue();
 
-            var postTask = new HttpClient().PostJsonAsync("{0}/1/issue".FormatWith(Core.Configuration.ErrorditeConfiguration.Current.ReceptionHttpEndpoint), issue);
+            var postTask = new HttpClient().PostJsonAsync("{0}/api/1/issue".FormatWith(RavenInstance.Master().ServicesBaseUrl), issue);
 
             postTask.Wait();
             Console.Write(postTask.Result.StatusCode);
@@ -88,7 +89,7 @@ namespace Errordite.Test.IntegrationTests
 
             var task =
                 new HttpClient().GetAsync(
-                    "{0}/1/issue/{1}?applicationId={2}".FormatWith(Core.Configuration.ErrorditeConfiguration.Current.ReceptionHttpEndpoint, issue.FriendlyId, issue.ApplicationId));
+					"{0}/api/1/issue/{1}?applicationId={2}".FormatWith(RavenInstance.Master().ServicesBaseUrl, issue.FriendlyId, issue.ApplicationId));
 
             task.Wait();
             Console.Write(task.Result.StatusCode);
@@ -100,28 +101,28 @@ namespace Errordite.Test.IntegrationTests
         {
             var issue = GetIssue();
 
-            var postTask = new HttpClient().PostAsJsonAsync("{0}/1/issue".FormatWith(Core.Configuration.ErrorditeConfiguration.Current.ReceptionHttpEndpoint), issue);
+            var postTask = new HttpClient().PostAsJsonAsync("{0}/api/1/issue".FormatWith(RavenInstance.Master().ServicesBaseUrl), issue);
 
             postTask.Wait();
             Assert.That(postTask.Result.StatusCode == HttpStatusCode.Created);
 
             var task =
                 new HttpClient().GetAsync(
-                    "{0}/1/issue/{1}?applicationId={2}".FormatWith(Core.Configuration.ErrorditeConfiguration.Current.ReceptionHttpEndpoint, issue.FriendlyId, issue.ApplicationId));
+                    "{0}/api/1/issue/{1}?applicationId={2}".FormatWith(RavenInstance.Master().ServicesBaseUrl, issue.FriendlyId, issue.ApplicationId));
 
             task.Wait();
             Assert.That(task.Result.StatusCode == HttpStatusCode.OK);
 
             string id = "{0}|{1}".FormatWith(issue.FriendlyId, IdHelper.GetFriendlyId(issue.ApplicationId));
 
-            var deleteTask = new HttpClient().DeleteAsync("{0}/1/issue/{1}".FormatWith(Core.Configuration.ErrorditeConfiguration.Current.ReceptionHttpEndpoint, id));
+			var deleteTask = new HttpClient().DeleteAsync("{0}/api/1/issue/{1}".FormatWith(RavenInstance.Master().ServicesBaseUrl, id));
 
             deleteTask.Wait();
             Assert.That(deleteTask.Result.StatusCode == HttpStatusCode.NoContent);
 
             var getTask =
                 new HttpClient().GetAsync(
-                    "{0}/1/issue/{1}?applicationId={2}".FormatWith(Core.Configuration.ErrorditeConfiguration.Current.ReceptionHttpEndpoint, issue.Id, issue.ApplicationId));
+					"{0}/api/1/issue/{1}?applicationId={2}".FormatWith(RavenInstance.Master().ServicesBaseUrl, issue.Id, issue.ApplicationId));
 
             getTask.Wait();
             Assert.That(getTask.Result.StatusCode == HttpStatusCode.NotFound);

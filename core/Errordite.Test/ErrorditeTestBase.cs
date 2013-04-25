@@ -1,11 +1,7 @@
 using System.Transactions;
 using Castle.Core;
-using Castle.MicroKernel.Registration;
-using CodeTrip.Core.IoC;
 using Errordite.Core.IoC;
 using Errordite.Core.Session;
-using Errordite.Test.Mocks;
-using NServiceBus;
 using NUnit.Framework;
 
 namespace Errordite.Test
@@ -49,10 +45,8 @@ namespace Errordite.Test
         {
             ObjectFactory.Container.Kernel.ComponentModelCreated += Kernel_ComponentModelCreated;
             ObjectFactory.Container.Install(
-                new ErrorditeCoreInstaller(), 
-                new CoreInstaller("Errordite.Tests"),
+                new ErrorditeCoreInstaller("Errordite.Tests"), 
                 new PerThreadAppSessionInstaller());
-            ObjectFactory.Container.Register(Component.For<IBus>().ImplementedBy<MockServiceBus>().LifeStyle.Singleton);
         }
 
         void Kernel_ComponentModelCreated(ComponentModel model)
@@ -75,10 +69,8 @@ namespace Errordite.Test
         {
             ObjectFactory.Container.Kernel.ComponentModelCreated += Kernel_ComponentModelCreated;
             ObjectFactory.Container.Install(
-                new ErrorditeCoreInstaller(), 
-                new CoreInstaller("Errordite.Tests"),
+                new ErrorditeCoreInstaller("Errordite.Tests"), 
                 new PerThreadAppSessionInstaller());
-            ObjectFactory.Container.Register(Component.For<IBus>().ImplementedBy<MockServiceBus>().LifeStyle.Singleton);
         }
 
         [TestFixtureTearDown]

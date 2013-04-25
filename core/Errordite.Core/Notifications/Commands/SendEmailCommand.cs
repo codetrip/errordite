@@ -1,5 +1,5 @@
-﻿using CodeTrip.Core;
-using CodeTrip.Core.Interfaces;
+﻿using Errordite.Core;
+using Errordite.Core.Interfaces;
 using Errordite.Core.Notifications.EmailInfo;
 using Errordite.Core.Notifications.Parsing;
 using Errordite.Core.Notifications.Rendering;
@@ -13,19 +13,19 @@ namespace Errordite.Core.Notifications.Commands
     public class SendEmailCommand : ComponentBase, ISendEmailCommand
     {
         private readonly IEmailRenderer _emailRenderer;
-        private readonly IMessageSender _messageSender;
+        private readonly IEmailSender _emailSender;
         private readonly IEmailInfoParser _emailInfoParser;
         private readonly ITemplateLocator _templateLocator;
 
         public SendEmailCommand(IEmailRenderer emailRenderer, 
-            IMessageSender messageSender, 
+            IEmailSender emailSender, 
             IEmailInfoParser emailInfoParser, 
             ITemplateLocator templateLocator) 
         {
             _emailRenderer = emailRenderer;
             _templateLocator = templateLocator;
             _emailInfoParser = emailInfoParser;
-            _messageSender = messageSender;
+            _emailSender = emailSender;
         }
 
         public SendEmailResponse Invoke(SendEmailRequest request)
@@ -35,7 +35,7 @@ namespace Errordite.Core.Notifications.Commands
 
             if (request.EmailInfo is NonTemplatedEmailInfo)
             {
-                NonTemplatedEmailInfo emailInfo = request.EmailInfo as NonTemplatedEmailInfo;
+                var emailInfo = request.EmailInfo as NonTemplatedEmailInfo;
                 Trace("...Sending non templated email");
 
                 message = new Message
@@ -46,7 +46,7 @@ namespace Errordite.Core.Notifications.Commands
                     Cc = emailInfo.Cc,
                     Subject = emailInfo.Subject,
                 };
-                _messageSender.Send(message);
+                _emailSender.Send(message);
                 Trace("...Sent");
             }
             else
@@ -60,7 +60,7 @@ namespace Errordite.Core.Notifications.Commands
                 if (!request.SkipSend)
                 {
                     Trace("...Sending");
-                    _messageSender.Send(message);
+                    _emailSender.Send(message);
                 }
                 Trace("...Sent");
             }

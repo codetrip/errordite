@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using CodeTrip.Core.Extensions;
-using CodeTrip.Core.Interfaces;
+using Errordite.Core.Extensions;
+using Errordite.Core.Interfaces;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Extensions;
@@ -88,7 +88,7 @@ namespace Errordite.Core.Reception.Commands
 
 			Trace("AttachTod issue: Id:={0}, Name:={1}", issue.Id, issue.Name);
 			error.IssueId = issue.Id;
-			MaybeSendNotification(issue, application, NotificationType.NotifyOnNewIssueCreated, error);
+			MaybeSendNotification(issue, application, NotificationType.NotifyOnNewIssueCreated, error, request.Organisation);
 
 			//tell the issue cache we have a new issue
 			_receptionServiceIssueCache.Add(issue);
@@ -103,14 +103,15 @@ namespace Errordite.Core.Reception.Commands
             };
         }
 
-        private void MaybeSendNotification(Issue issue, Application application, NotificationType notificationType, Error instance)
+        private void MaybeSendNotification(Issue issue, Application application, NotificationType notificationType, Error instance, Organisation organisation)
         {
             _sendNotificationCommand.Invoke(new SendNotificationRequest
             {
                 OrganisationId = application.OrganisationId,
                 Groups = application.NotificationGroups ?? new List<string>(),
                 EmailInfo = issue.ToEmailInfo(notificationType, instance, application),
-                Application = application
+                Application = application,
+                Organisation = organisation
             });
         }
     }
@@ -122,6 +123,7 @@ namespace Errordite.Core.Reception.Commands
     {
         public Error Error { get; set; }
         public Application Application { get; set; }
+        public Organisation Organisation { get; set; }
     }
 
 	public class AttachToNewIssueResponse

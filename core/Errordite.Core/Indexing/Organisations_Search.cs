@@ -9,11 +9,12 @@ namespace Errordite.Core.Indexing
         public Organisations_Search()
         {
             Map = organisations => from o in organisations
-                            select new
-                            {
-                                o.Id,
-                                o.Name
-                            };
+                select new
+                {
+                    o.Id,
+                    o.Name,
+                    o.RavenInstanceId
+                };
         }
     }
 }

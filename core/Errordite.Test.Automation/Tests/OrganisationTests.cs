@@ -1,6 +1,6 @@
 ﻿using Errordite.Test.Automation.Data;
 using NUnit.Framework;
-using CodeTrip.Core.Extensions;
+using Errordite.Core.Extensions;
 
 namespace Errordite.Test.Automation.Tests
 {

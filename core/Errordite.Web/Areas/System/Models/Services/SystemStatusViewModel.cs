@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using Errordite.Core.Configuration;
-using Errordite.Core.Domain.Central;
+using Errordite.Core.Domain.Master;
 using Errordite.Core.Monitoring.Entities;
 
 namespace Errordite.Web.Areas.System.Models.Services

@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using Errordite.Core.Domain.Central;
+using Errordite.Core.Domain.Master;
 using Raven.Client.Indexes;
 
 namespace Errordite.Core.Indexing

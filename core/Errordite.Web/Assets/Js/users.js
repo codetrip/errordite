@@ -25,9 +25,13 @@
         }
 
         User.prototype["delete"] = function() {
-          if (window.confirm("Are you sure you want to delete this user, any issues assigned to this user will be assigned to you!")) {
-            return this.$form.submit();
-          }
+          var $frm;
+          $frm = this.$form;
+          return Errordite.Confirm.show("Are you sure you want to delete this user, any issues assigned to this user will be assigned to you!", {
+            okCallBack: function() {
+              return $frm.submit();
+            }
+          });
         };
 
         return User;

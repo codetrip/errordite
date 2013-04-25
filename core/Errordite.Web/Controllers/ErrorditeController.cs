@@ -2,15 +2,15 @@
 using System.IO;
 using System.Resources;
 using System.Web.Mvc;
-using CodeTrip.Core.Dynamic;
-using CodeTrip.Core.IoC;
-using CodeTrip.Core.Web;
+using Errordite.Core.Dynamic;
+using Errordite.Core.IoC;
+using Errordite.Core.Web;
 using Errordite.Core;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Identity;
 using Errordite.Web.Extensions;
 using Errordite.Web.Models.Notifications;
-using CodeTrip.Core.Extensions;
+using Errordite.Core.Extensions;
 using System.Linq;
 
 namespace Errordite.Web.Controllers

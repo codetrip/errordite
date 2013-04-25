@@ -2,7 +2,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using CodeTrip.Core.Extensions;
+using Errordite.Core.Extensions;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Indexing;
 using Errordite.Core.Session;

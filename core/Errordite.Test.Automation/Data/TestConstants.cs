@@ -20,7 +20,7 @@ namespace Errordite.Test.Automation.Data
 
         public static class TestUser
         {
-            public static string Email = "errordite@codetrip.co.uk";
+            public static string Email = "errordite@Errordite.co.uk";
             public static string Password = "password";
             public static string FirstName = "test";
             public static string LastName = "user";

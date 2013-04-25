@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using CodeTrip.Core.Interfaces;
+using Errordite.Core.Interfaces;
 using Errordite.Core.Configuration;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Indexing;
 using Errordite.Core.Session;
+using Raven.Abstractions.Data;
 using Raven.Client;
 using Raven.Client.Linq;
 

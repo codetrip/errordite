@@ -1,13 +1,15 @@
 ﻿using System.Collections.Generic;
 using Castle.Core;
-using CodeTrip.Core.Caching.Entities;
-using CodeTrip.Core.Caching.Interceptors;
-using CodeTrip.Core.Interfaces;
-using CodeTrip.Core.Paging;
+using Errordite.Core.Caching.Entities;
+using Errordite.Core.Caching.Interceptors;
+using Errordite.Core.Domain.Master;
+using Errordite.Core.Interfaces;
+using Errordite.Core.Paging;
 using Errordite.Core.Applications.Queries;
 using Errordite.Core.Caching;
 using Errordite.Core.Configuration;
 using Errordite.Core.Domain.Organisation;
+using Errordite.Core.Session.Actions;
 using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
 
 namespace Errordite.Core.Organisations.Commands
@@ -26,7 +28,14 @@ namespace Errordite.Core.Organisations.Commands
 
         public ActivateOrganisationResponse Invoke(ActivateOrganisationRequest request)
         {
-            var organisation = Load<Organisation>(request.OrganisationId);
+            var organisation = Session.MasterRaven
+                    .Include<Organisation>(o => o.RavenInstanceId)
+                    .Load<Organisation>(request.OrganisationId);
+
+            if (organisation == null)
+                return new ActivateOrganisationResponse(request.OrganisationId, true);
+
+            organisation.RavenInstance = MasterLoad<RavenInstance>(organisation.RavenInstanceId);
 
             if (organisation.Status != OrganisationStatus.Suspended)
             {
@@ -49,6 +58,8 @@ namespace Errordite.Core.Organisations.Commands
             {
                 application.IsActive = true;
             }
+
+            Session.AddCommitAction(new FlushOrganisationCacheCommitAction(_configuration, organisation));
 
             return new ActivateOrganisationResponse(organisation.Id)
             {

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
-using CodeTrip.Core;
-using CodeTrip.Core.Extensions;
-using CodeTrip.Core.Paging;
+using Errordite.Core;
+using Errordite.Core.Extensions;
+using Errordite.Core.Paging;
 using Errordite.Core.Configuration;
 using Errordite.Core.Domain;
 using Errordite.Core.Domain.Error;
@@ -16,7 +16,7 @@ using Errordite.Core.Indexing;
 using Errordite.Core.Issues.Commands;
 using Errordite.Core.Issues.Queries;
 using Errordite.Core.Matching;
-using Errordite.Core.WebApi;
+using Errordite.Core.Web;
 using Errordite.Web.ActionFilters;
 using Errordite.Web.ActionResults;
 using Errordite.Web.ActionSelectors;
@@ -28,7 +28,6 @@ using Newtonsoft.Json;
 using Raven.Abstractions.Exceptions;
 using Raven.Client;
 using Resources;
-using Errordite.Core.Extensions;
 
 namespace Errordite.Web.Controllers
 {
@@ -44,7 +43,6 @@ namespace Errordite.Web.Controllers
         private readonly IDeleteIssueErrorsCommand _deleteIssueErrorsCommand;
         private readonly IDeleteIssueCommand _deleteIssueCommand;
         private readonly IGetIssueReportDataQuery _getIssueReportDataQuery;
-        private readonly IAddCommentCommand _addCommentCommand;
         private readonly IGetExtraDataKeysForIssueQuery _getExtraDataKeysForIssueQuery;
 
         public IssueController(IGetIssueQuery getIssueQuery, 
@@ -56,7 +54,7 @@ namespace Errordite.Web.Controllers
             IDeleteIssueErrorsCommand deleteIssueErrorsCommand, 
             IDeleteIssueCommand deleteIssueCommand,
             IGetIssueReportDataQuery getIssueReportDataQuery, 
-            IAddCommentCommand addCommentCommand, IGetExtraDataKeysForIssueQuery getExtraDataKeysForIssueQuery)
+            IGetExtraDataKeysForIssueQuery getExtraDataKeysForIssueQuery)
         {
             _getIssueQuery = getIssueQuery;
             _adjustRulesCommand = adjustRulesCommand;
@@ -67,7 +65,6 @@ namespace Errordite.Web.Controllers
             _deleteIssueErrorsCommand = deleteIssueErrorsCommand;
             _deleteIssueCommand = deleteIssueCommand;
             _getIssueReportDataQuery = getIssueReportDataQuery;
-            _addCommentCommand = addCommentCommand;
             _getExtraDataKeysForIssueQuery = getExtraDataKeysForIssueQuery;
         }
 
@@ -161,18 +158,7 @@ namespace Errordite.Web.Controllers
                 },
                 Errors = GetErrorsViewModel(postModel, paging, extraDataKeys),
                 Update = rulesViewModel,
-                Tab = postModel.Tab,
-                Comments = new CommentsViewModel
-                {
-                    ApplicationId = issue.ApplicationId,
-                    IssueId = issue.Id,
-                    Comments = issue.Comments != null ? issue.Comments.OrderByDescending(c => c.DateAdded).Select(c => new CommentViewModel
-                    {
-                        Comment = c.Comment,
-                        User = GetUsername(users.Items, c.UserId),
-                        DateAdded = c.DateAdded
-                    }) : null
-                }
+                Tab = postModel.Tab
             };
 
             //dont let users set an issue to unacknowledged
@@ -297,7 +283,7 @@ namespace Errordite.Web.Controllers
                     return RenderPartial("Issue/HistoryItem", new IssueHistoryItemViewModel
                     {
                         Message = h.GetMessage(users.Items, issueMemoizer, GetIssueLink),
-                        DateAddedUtc = h.DateAddedUtc,
+                        VerbalTime = h.DateAddedUtc.ToVerbalTimeSinceUtc(Core.AppContext.CurrentUser.Organisation.TimezoneId),
                         UserEmail = user != null ? user.Email : string.Empty,
                         Username = user != null ? user.FullName : string.Empty,
                         SystemMessage = h.SystemMessage,
@@ -439,31 +425,6 @@ namespace Errordite.Web.Controllers
             }
         }
 
-		[HttpPost, ExportViewData]
-		public ActionResult AddComment(CommentsViewModel postModel)
-		{
-            if (!ModelState.IsValid)
-            {
-                return RedirectWithViewModel(postModel, "index", routeValues: new { id = postModel.IssueId.GetFriendlyId(), tab = IssueTab.History.ToString() });
-            }
-
-            var result = _addCommentCommand.Invoke(new AddCommentRequest
-			{
-				IssueId = postModel.IssueId,
-				CurrentUser = Core.AppContext.CurrentUser,
-				Comment = postModel.Comment,
-                ApplicationId = postModel.ApplicationId
-			});
-
-			if (result.Status == AddCommentStatus.IssueNotFound)
-			{
-				return RedirectToAction("notfound", new { FriendlyId = postModel.IssueId.GetFriendlyId() });
-			}
-
-			ConfirmationNotification("Comment was added to this issue successfully");
-            return RedirectToAction("index", new { id = postModel.IssueId.GetFriendlyId(), tab = IssueTab.Comments.ToString() });
-		}
-
         [HttpPost, ExportViewData]
         public ActionResult Purge(string issueId)
         {
@@ -498,7 +459,7 @@ namespace Errordite.Web.Controllers
                 WhatIf = true,
             };
 
-            var httpTask = Core.Session.ReceptionServiceHttpClient.PostJsonAsync("ReprocessIssueErrors", request);
+            var httpTask = Core.Session.ReceiveHttpClient.PostJsonAsync("ReprocessIssueErrors", request);
             httpTask.Wait();
 
             if (!httpTask.Result.IsSuccessStatusCode)
@@ -530,7 +491,7 @@ namespace Errordite.Web.Controllers
                 CurrentUser = Core.AppContext.CurrentUser
             };
 
-            var httpTask = Core.Session.ReceptionServiceHttpClient.PostJsonAsync("ReprocessIssueErrors", request);
+            var httpTask = Core.Session.ReceiveHttpClient.PostJsonAsync("ReprocessIssueErrors", request);
             httpTask.Wait();
 
             if (!httpTask.Result.IsSuccessStatusCode)

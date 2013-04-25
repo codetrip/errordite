@@ -1,12 +1,12 @@
 ﻿
 using System;
 using System.Collections.Generic;
-using CodeTrip.Core;
-using CodeTrip.Core.Paging;
+using Errordite.Core;
+using Errordite.Core.Paging;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Matching;
 using NUnit.Framework;
-using CodeTrip.Core.Extensions;
+using Errordite.Core.Extensions;
 using System.Linq;
 
 namespace Errordite.Test.Redis

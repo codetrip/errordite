@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Web.Mvc;
-using CodeTrip.Core.Paging;
+using Errordite.Core.Paging;
 using Errordite.Core;
 using Errordite.Core.Errors.Queries;
 using Errordite.Web.ActionFilters;
 using Errordite.Web.Models.Errors;
 using System.Linq;
-using CodeTrip.Core.Extensions;
+using Errordite.Core.Extensions;
 using Errordite.Web.Extensions;
 using Errordite.Web.Models.Navigation;
 

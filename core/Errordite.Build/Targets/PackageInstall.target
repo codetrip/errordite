@@ -51,7 +51,6 @@
             $(MSBuildProjectDirectory)\..\Targets\Minify.target;
             $(MSBuildProjectDirectory)\..\Targets\Common.target;
             $(MSBuildProjectDirectory)\..\Targets\Versioning.target;
-            $(MSBuildProjectDirectory)\..\Targets\Queues.target;
             $(MSBuildProjectDirectory)\..\Targets\IIS.target;
             
             $(MSBuildProjectDirectory)\..\Configuration\Global.properties;
@@ -61,8 +60,8 @@
             $(SourcePath)\version.txt;
             
             $(MSBuildProjectDirectory)\..\Projects\InstallWeb.proj;
-            $(MSBuildProjectDirectory)\..\Projects\InstallReceptionWeb.proj;
-            $(MSBuildProjectDirectory)\..\Projects\InstallReceptionService.proj;
+            $(MSBuildProjectDirectory)\..\Projects\InstallReceiveWeb.proj;
+            $(MSBuildProjectDirectory)\..\Projects\InstallReceiveService.proj;
             $(MSBuildProjectDirectory)\..\Projects\InstallEventsService.proj;
             $(MSBuildProjectDirectory)\..\Projects\InstallScheduledTasks.proj;
             $(MSBuildProjectDirectory)\..\Projects\InstallNotificationsService.proj;
