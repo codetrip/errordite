@@ -1,9 +1,8 @@
-﻿
-using Castle.Core;
-using CodeTrip.Core.Caching.Entities;
-using CodeTrip.Core.Caching.Interceptors;
-using CodeTrip.Core.Interfaces;
-using CodeTrip.Core.Paging;
+﻿using Castle.Core;
+using Errordite.Core.Caching.Entities;
+using Errordite.Core.Caching.Interceptors;
+using Errordite.Core.Interfaces;
+using Errordite.Core.Paging;
 using Errordite.Core.Caching;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Indexing;

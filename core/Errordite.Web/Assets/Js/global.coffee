@@ -43,8 +43,13 @@ class Initialisation
 				failure: ->
                     'failed'
 
-		$('body').on 'click', '[data-confirm]', ->
-			confirm $(this).data('confirm')
+		$('body').on 'click', '[data-confirm]', (e) ->
+			e.preventDefault()
+			$this = $ this
+			Errordite.Confirm.show($this.data('confirm'), {
+				okCallBack: -> 
+					$this.closest('form').submit()
+				})
 
 		$('body').on 'click', 'a#hide-notification', ->
 			$(this).closest('#notifications').hide('fast')

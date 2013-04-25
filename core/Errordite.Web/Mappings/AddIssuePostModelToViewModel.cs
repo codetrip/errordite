@@ -1,6 +1,6 @@
 ﻿
 using AutoMapper;
-using CodeTrip.Core.Interfaces;
+using Errordite.Core.Interfaces;
 using Errordite.Web.Models.Issues;
 
 namespace Errordite.Web.Mappings

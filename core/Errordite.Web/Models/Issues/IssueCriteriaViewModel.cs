@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Web.Mvc;
-using CodeTrip.Core.Paging;
+using Errordite.Core.Paging;
 using Errordite.Core.Domain.Error;
 
 namespace Errordite.Web.Models.Issues

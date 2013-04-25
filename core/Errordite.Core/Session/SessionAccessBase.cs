@@ -1,7 +1,7 @@
 using System;
 using System.Linq.Expressions;
-using CodeTrip.Core;
-using CodeTrip.Core.Paging;
+using Errordite.Core;
+using Errordite.Core.Paging;
 using Raven.Client.Indexes;
 using Raven.Client.Linq;
 

@@ -17,7 +17,10 @@ jQuery ->
 				this.$form = $form
 
 			delete: () -> 
-				if window.confirm "Are you sure you want to delete this group?"
-					this.$form.submit();
+				$frm = this.$form
+				Errordite.Confirm.show("Are you sure you want to delete this group?", {
+					okCallBack: -> 
+						$frm.submit()
+				})
 
 	

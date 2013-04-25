@@ -703,7 +703,7 @@ section {
     font-weight: $normalfontweight;
   }
   &.btn-small {
-    padding: 9px 18px 9px 18px;
+    padding: 7px 18px 7px 18px;
     font-size: 13px;
 	line-height:15px;
     font-weight: $normalfontweight;
@@ -1422,7 +1422,8 @@ section {
 
 .modal-body {
   overflow-y: auto;
-  padding: 0 15px;
+  padding: 10px 15px;
+  min-height:60px;
 }
 
 .modal-footer {
@@ -1525,22 +1526,6 @@ section {
         .item-bar {
             background-color:$red;
         }
-    }
-    &.history {
-		width:99.7%;
-        border:1px solid $darkblue;
-        -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 2px rgba(90, 165, 103, 0.6);
-        -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 2px rgba(90, 165, 103, 0.6);
-        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 2px rgba(90, 165, 103, 0.6);
-        .item-bar {
-            background-color:$darkblue;
-        }
-        .item-content {
-            width:944px;
-        }
-		span.bold {
-			color:#3D3D99;
-		}
     }
     &.issue {
         border:1px solid $darkblue;
@@ -2394,5 +2379,24 @@ nav {
 		margin:0;
 		font-size:13px;
 		margin-bottom:10px;
+	}
+}
+
+table.history {
+	th {
+		background-color:transparent;
+		border-top:0;
+		height:25px;
+	}
+	td {
+		padding-right:10px;
+		height:45px;
+		font-size:13px;
+		font-weight: $lightfontweight;
+		color:$lightbrown;
+		span.bold {
+			font-weight:$normalfontweight;
+			color:#000;
+		}
 	}
 }

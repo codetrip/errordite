@@ -1,4 +1,4 @@
-﻿using CodeTrip.Core.Paging;
+﻿using Errordite.Core.Paging;
 using Errordite.Web.Models.Users;
 
 namespace Errordite.Web.Models.Account

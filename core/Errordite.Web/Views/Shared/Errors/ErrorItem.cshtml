@@ -1,4 +1,4 @@
-﻿@using CodeTrip.Core.Extensions
+﻿@using Errordite.Core.Extensions
 @using Errordite.Core.Extensions
 @using Errordite.Web.Extensions
 @using Errordite.Web.Models.Errors
@@ -61,7 +61,7 @@
 					</div>
 				}
 			}
-			@if (Model.Error.Messages != null)
+			@if (Model.Error.Messages != null && Model.Error.Messages.Count > 0)
 			{
 				<div class="tab-content hidden messages">
 					@Html.Partial("Errors/TraceMessages", Model.Error.Messages)

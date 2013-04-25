@@ -1,10 +1,10 @@
 ﻿
 using System.Collections.Generic;
 using Castle.Core;
-using CodeTrip.Core.Caching.Entities;
-using CodeTrip.Core.Caching.Interceptors;
-using CodeTrip.Core.Interfaces;
-using Errordite.Core.Domain.Central;
+using Errordite.Core.Caching.Entities;
+using Errordite.Core.Caching.Interceptors;
+using Errordite.Core.Domain.Master;
+using Errordite.Core.Interfaces;
 using Errordite.Core.Session;
 using ProtoBuf;
 using System.Linq;

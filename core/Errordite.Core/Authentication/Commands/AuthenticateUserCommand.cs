@@ -1,8 +1,7 @@
-﻿using CodeTrip.Core;
-using CodeTrip.Core.Interfaces;
-using Errordite.Core.Domain.Central;
+﻿using Errordite.Core;
+using Errordite.Core.Interfaces;
 using Errordite.Core.Domain.Organisation;
-using CodeTrip.Core.Extensions;
+using Errordite.Core.Extensions;
 using Errordite.Core.Indexing;
 using System.Linq;
 using Errordite.Core.Organisations.Commands;

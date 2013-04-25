@@ -1,11 +1,11 @@
 ﻿using Castle.Core;
-using CodeTrip.Core.Caching.Entities;
-using CodeTrip.Core.Caching.Interceptors;
-using CodeTrip.Core.Interfaces;
-using CodeTrip.Core.Paging;
+using Errordite.Core.Caching.Entities;
+using Errordite.Core.Caching.Interceptors;
+using Errordite.Core.Interfaces;
+using Errordite.Core.Paging;
 using Errordite.Core.Caching;
 using Errordite.Core.Domain.Organisation;
-using CodeTrip.Core.Extensions;
+using Errordite.Core.Extensions;
 using Errordite.Core.Indexing;
 using Errordite.Core.Session;
 using ProtoBuf;

@@ -1,4 +1,4 @@
-﻿@using CodeTrip.Core.Extensions
+﻿@using Errordite.Core.Extensions
 @using Errordite.Core.Configuration
 
 @if (ErrorditeConfiguration.Current.RenderMinifiedContent)
@@ -27,6 +27,7 @@ else
 	<script type='text/javascript' src='@Url.Content("~/assets/js/lib/jqplot/jqplot.highlighter.js")'></script>
     
     <script type='text/javascript' src="@Url.Content("~/assets/js/global.js")"></script>
+    <script type='text/javascript' src="@Url.Content("~/assets/js/components.js")"></script>
     <script type='text/javascript' src="@Url.Content("~/assets/js/applications.js")"></script>
     <script type='text/javascript' src="@Url.Content("~/assets/js/users.js")"></script>
     <script type='text/javascript' src="@Url.Content("~/assets/js/search.js")"></script>
@@ -37,6 +38,7 @@ else
     <script type='text/javascript' src="@Url.Content("~/assets/js/issue.js")"></script>
     <script type='text/javascript' src="@Url.Content("~/assets/js/rules.js")"></script>
     <script type='text/javascript' src="@Url.Content("~/assets/js/dashboard.js")"></script>
+    <script type='text/javascript' src="@Url.Content("~/assets/js/activity.js")"></script>
     <script type='text/javascript' src="@Url.Content("~/assets/js/systemadmin.js")"></script>
     <script type='text/javascript' src="@Url.Content("~/assets/js/docs.js")"></script>
 }

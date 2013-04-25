@@ -15,35 +15,21 @@ the config file.  If you wish to allow a choice of folders, they can be separate
     <File match="web.config">
         <param xpath="//system.web/customErrors/@mode" theRest="On" />
         <param xpath="//system.web/authentication/forms/@timeout" theRest="1440" />
-        <param xpath="//errordite/@endpoint" theRest="$(InternalReceptionEndpoint)" />
+        <param xpath="//errordite/@endpoint" theRest="$(InternalReceiveEndpoint)" />
         <param xpath="//errordite/@token" theRest="$(ErrorditeToken)"/>
         <param xpath="//errordite/@enabled" theRest="true"/>
         <param xpath="//connectionStrings/add[@name='RavenDB']/@connectionString" theRest="$(RavenConnectionString)" />
     </File>
 
     <File match="app.config">
-        <param xpath="//errordite/@endpoint" theRest="$(InternalReceptionEndpoint)" />
+        <param xpath="//errordite/@endpoint" theRest="$(InternalReceiveEndpoint)" />
         <param xpath="//errordite/@token" theRest="$(ErrorditeToken)"/>
         <param xpath="//errordite/@enabled" theRest="true"/>
         <param xpath="//connectionStrings/add[@name='RavenDB']/@connectionString" theRest="$(RavenConnectionString)" />
     </File>
 
-    <File match="Errordite.Notifications.Service.dll.config">
-        <param xpath="//errordite/@endpoint" theRest="$(InternalReceptionEndpoint)" />
-        <param xpath="//errordite/@token" theRest="$(ErrorditeToken)"/>
-        <param xpath="//errordite/@enabled" theRest="true" />
-        <param xpath="//connectionStrings/add[@name='RavenDB']/@connectionString" theRest="$(RavenConnectionString)" />
-    </File>
-
-    <File match="Errordite.Reception.Service.dll.config">
-        <param xpath="//errordite/@endpoint" theRest="$(InternalReceptionEndpoint)" />
-        <param xpath="//errordite/@token" theRest="$(ErrorditeToken)"/>
-        <param xpath="//errordite/@enabled" theRest="true" />
-        <param xpath="//connectionStrings/add[@name='RavenDB']/@connectionString" theRest="$(RavenConnectionString)" />
-    </File>
-
-    <File match="Errordite.Events.Service.dll.config">
-        <param xpath="//errordite/@endpoint" theRest="$(InternalReceptionEndpoint)" />
+    <File match="Errordite.Services.exe.config">
+        <param xpath="//errordite/@endpoint" theRest="$(InternalReceiveEndpoint)" />
         <param xpath="//errordite/@token" theRest="$(ErrorditeToken)"/>
         <param xpath="//errordite/@enabled" theRest="true" />
         <param xpath="//connectionStrings/add[@name='RavenDB']/@connectionString" theRest="$(RavenConnectionString)" />
@@ -51,13 +37,11 @@ the config file.  If you wish to allow a choice of folders, they can be separate
 
     <File match="errordite.config">
         <SiteBaseUrl theRest="$(SiteBaseUrl)" />
-        <ReceptionEndpoint theRest="$(ReceptionEndpoint)" />
-        <ReceptionHttpEndpoint theRest="http://localhost:800/api" />
+        <ReceiveWebEndpoints theRest="$(ReceiveEndpoints)" />
         <RenderMinifiedContent theRest="true" />
-        <EventsQueueName production="errordite.events.service@services.errordite.com"/>
-        <ReceptionQueueName production="errordite.reception.service@services.errordite.com"/>
-        <NotificationsQueueName production="errordite.notifications.service@services.errordite.com"/>
-        <ReceptionHttpEndpoint production="http://services.errordite.com:800/api"/>
+        <MasterEventsQueueAddress production="$(EventsQueueAddress)" />
+        <MasterReceiveQueueAddress production="$(ReceiveQueueAddress)" />
+        <MasterNotificationsQueueAddress production="$(NotificationsQueueAddress)" />
     </File>
 
     <File match="email.config">
@@ -67,5 +51,11 @@ the config file.  If you wish to allow a choice of folders, they can be separate
 
     <File match="cache.config">
         <param xpath="//components/component[@id='RedisConfiguration']/parameters/Endpoint" theRest="$(RedisEndpoint)" />
+    </File>
+
+    <File match="services.config">
+        <param xpath="//components/component[@id='Receive']/parameters/QueueAddress" theRest="$(ReceiveQueueAddress)" />
+        <param xpath="//components/component[@id='Notifications']/parameters/QueueAddress" theRest="$(NotificationsQueueAddress)" />
+        <param xpath="//components/component[@id='Events']/parameters/QueueAddress" theRest="$(EventsQueueAddress)" />
     </File>
 </Files>

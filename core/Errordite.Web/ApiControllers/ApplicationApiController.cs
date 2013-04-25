@@ -2,8 +2,8 @@
 using System.Net.Http;
 using System.Web.Http;
 using Errordite.Core.Domain.Organisation;
-using Errordite.Core.WebApi;
-using ProductionProfiler.Core.Extensions;
+using Errordite.Core.Extensions;
+using Errordite.Core.Web;
 
 namespace Errordite.Web.ApiControllers
 {

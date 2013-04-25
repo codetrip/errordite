@@ -1,14 +1,13 @@
 ﻿using System.Linq;
-using CodeTrip.Core.Extensions;
-using CodeTrip.Core.Interfaces;
-using CodeTrip.Core.Paging;
+using Errordite.Core.Extensions;
+using Errordite.Core.Interfaces;
+using Errordite.Core.Paging;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Indexing;
 using Errordite.Core.Organisations;
 using Errordite.Core.Session;
 using Raven.Client;
-using Errordite.Core.Extensions;
 
 namespace Errordite.Core.Issues.Queries
 {

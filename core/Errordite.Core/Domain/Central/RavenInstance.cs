@@ -1,5 +1,5 @@
 ﻿
-using CodeTrip.Core.Extensions;
+using Errordite.Core.Extensions;
 using Errordite.Core.Configuration;
 using ProtoBuf;
 using Raven.Imports.Newtonsoft.Json;
@@ -30,12 +30,12 @@ namespace Errordite.Core.Domain.Central
         /// Endpoint for this Raven server
         /// </summary>
         [ProtoMember(5)]
-        public string ReceptionHttpEndpoint { get; set; }
+        public string ReceiveServiceEndpoint { get; set; }
         /// <summary>
-        /// Reception service queue address for this instance
+        /// Receive service queue address for this instance
         /// </summary>
         [ProtoMember(6)]
-        public string ReceptionQueueAddress { get; set; }
+        public string ReceiveQueueAddress { get; set; }
         /// <summary>
         /// Events service queue address for this instance
         /// </summary>
@@ -52,10 +52,10 @@ namespace Errordite.Core.Domain.Central
             Active = true,
             IsMaster = true,
             Id = "RavenInstances/1",
-            ReceptionHttpEndpoint = ErrorditeConfiguration.Current.ReceptionHttpEndpoint,
-            ReceptionQueueAddress = ErrorditeConfiguration.Current.ReceptionQueueName,
-            EventsQueueAddress = ErrorditeConfiguration.Current.EventsQueueName,
-            NotificationsQueueAddress = ErrorditeConfiguration.Current.NotificationsQueueName
+            ReceiveServiceEndpoint = ErrorditeConfiguration.Current.ReceiveServiceEndpoint,
+            ReceiveQueueAddress = ErrorditeConfiguration.Current.GetNotificationsQueueAddress(),
+            EventsQueueAddress = ErrorditeConfiguration.Current.GetEventsQueueAddress(),
+            NotificationsQueueAddress = ErrorditeConfiguration.Current.GetNotificationsQueueAddress()
         };
 
         public static RavenInstance Master()

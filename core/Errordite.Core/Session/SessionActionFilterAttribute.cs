@@ -1,6 +1,6 @@
 using System.Web.Http.Filters;
 using System.Web.Mvc;
-using CodeTrip.Core.IoC;
+using Errordite.Core.IoC;
 
 namespace Errordite.Core.Session
 {

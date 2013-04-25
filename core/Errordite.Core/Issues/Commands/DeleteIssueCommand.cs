@@ -1,10 +1,11 @@
-﻿using CodeTrip.Core.Extensions;
-using CodeTrip.Core.Interfaces;
+﻿using Errordite.Core.Extensions;
+using Errordite.Core.Interfaces;
 using Errordite.Core.Authorisation;
 using Errordite.Core.Domain;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Organisations;
 using Errordite.Core.Session;
+using Errordite.Core.Session.Actions;
 using Raven.Abstractions.Data;
 
 namespace Errordite.Core.Issues.Commands

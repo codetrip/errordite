@@ -1,40 +1,41 @@
 ﻿using System.Collections.Generic;
 using Castle.Core;
-using CodeTrip.Core.Caching.Entities;
-using CodeTrip.Core.Caching.Interceptors;
-using CodeTrip.Core.Interfaces;
-using CodeTrip.Core.Paging;
-using Errordite.Core.Applications.Commands;
-using Errordite.Core.Applications.Queries;
-using Errordite.Core.Caching;
+using Errordite.Core.Caching.Entities;
+using Errordite.Core.Caching.Interceptors;
 using Errordite.Core.Configuration;
+using Errordite.Core.Domain.Master;
+using Errordite.Core.Extensions;
+using Errordite.Core.Interfaces;
+using Errordite.Core.Caching;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Indexing;
-using System.Linq;
 using Errordite.Core.Session;
+using Errordite.Core.Session.Actions;
 using Raven.Abstractions.Data;
-using ProductionProfiler.Core.Extensions;
 
 namespace Errordite.Core.Organisations.Commands
 {
     [Interceptor(CacheInvalidationInterceptor.IoCName)]
     public class DeleteOrganisationCommand : SessionAccessBase, IDeleteOrganisationCommand
     {
-        private readonly IGetApplicationsQuery _getApplicationsQuery;
         private readonly ErrorditeConfiguration _configuration;
-        private readonly IDeleteApplicationCommand _deleteApplicationCommand;
 
-        public DeleteOrganisationCommand(IGetApplicationsQuery getApplicationsQuery, 
-            ErrorditeConfiguration configuration, 
-            IDeleteApplicationCommand deleteApplicationCommand)
+        public DeleteOrganisationCommand(ErrorditeConfiguration configuration)
         {
-            _getApplicationsQuery = getApplicationsQuery;
             _configuration = configuration;
-            _deleteApplicationCommand = deleteApplicationCommand;
         }
 
         public DeleteOrganisationResponse Invoke(DeleteOrganisationRequest request)
         {
+            var organisation = Session.MasterRaven
+                    .Include<Organisation>(o => o.RavenInstanceId)
+                    .Load<Organisation>(request.OrganisationId);
+
+            if (organisation == null)
+                return new DeleteOrganisationResponse(request.OrganisationId, true);
+
+            organisation.RavenInstance = MasterLoad<RavenInstance>(organisation.RavenInstanceId);
+
             Session.MasterRavenDatabaseCommands.DeleteByIndex(
                 CoreConstants.IndexNames.UserOrganisationMappings, new IndexQuery
                     {
@@ -47,6 +48,7 @@ namespace Errordite.Core.Organisations.Commands
                     Query = "Id:{0}".FormatWith(Organisation.GetId(request.OrganisationId))
                 }, true);
 
+			Session.AddCommitAction(new FlushOrganisationCacheCommitAction(_configuration, organisation));
             Session.SynchroniseIndexes<UserOrganisationMappings, Organisations_Search>();
 
             return new DeleteOrganisationResponse(request.OrganisationId);

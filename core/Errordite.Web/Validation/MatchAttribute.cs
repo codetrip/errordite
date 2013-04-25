@@ -1,6 +1,6 @@
 ﻿
 using System.ComponentModel.DataAnnotations;
-using CodeTrip.Core.Extensions;
+using Errordite.Core.Extensions;
 
 namespace Errordite.Web.Validation
 {

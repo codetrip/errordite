@@ -31,21 +31,18 @@
       <Output TaskParameter="Status" PropertyName="ServicePresent"/>
     </ServiceQuery>
 
-    <Exec
-        Command="sc delete $(ServiceName)"
-        Condition="'$(ServicePresent)'!='Unknown'" />
-
+    <Exec Command="$(ServicePath) uninstall" Condition="'$(ServicePresent)'!='Unknown'" />
   </Target>
 
-  <Target Name="InstallNServiceBusHostService">
+  <Target Name="InstallService">
     <ServiceQuery MachineName="$(ComputerName)" ServiceName="$(ServiceName)">
       <Output TaskParameter="Status" PropertyName="ServiceStatus"/>
     </ServiceQuery>
 
-    <Message Text="Installing Service Name:=$(ServiceName), Machine:=$(ComputerName), Path:=$(ServicePath), User:=$(ServiceDomain)\$(ServiceUser), Password:=$(ServicePassword)" />
+    <Message Text="Installing Service:=$(ServiceInstance), Machine:=$(ComputerName), Path:=$(ServicePath)" />
 
     <Exec
-        Command="$(ServicePath) /install /serviceName:$(ServiceName) /displayName:%22$(ServiceDisplayName)%22 /description:%22$(ServiceDisplayName)%22 /username:$(ServiceDomain)\$(ServiceUser) /password:$(ServicePassword) /startManually"
+        Command="$(ServicePath) install -instance:$(ServiceInstance)"
         Condition="'$(ServiceStatus)'=='Unknown'" />
   </Target>
 

@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
-using CodeTrip.Core.Web;
+using Errordite.Core.Web;
 using Errordite.Core;
 using Errordite.Core.Configuration;
 using Errordite.Core.Identity;
 using Errordite.Web.Models.Navigation;
 using Errordite.Web.Models.Notifications;
-using CodeTrip.Core.Extensions;
+using Errordite.Core.Extensions;
 
 namespace Errordite.Web.Extensions
 {

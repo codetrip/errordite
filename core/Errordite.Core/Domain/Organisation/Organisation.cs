@@ -1,7 +1,7 @@
 ﻿using System;
-using CodeTrip.Core.Extensions;
+using Errordite.Core.Domain.Master;
+using Errordite.Core.Extensions;
 using Errordite.Core.Authorisation;
-using Errordite.Core.Domain.Central;
 using ProtoBuf;
 using Raven.Imports.Newtonsoft.Json;
 
@@ -50,6 +50,10 @@ namespace Errordite.Core.Domain.Organisation
             get { return Id; }
         }
 
+        public static string NullOrganisationId
+        {
+            get { return "null"; }
+        }
     }
 
     [ProtoContract]

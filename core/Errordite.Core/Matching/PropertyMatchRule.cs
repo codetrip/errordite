@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using CodeTrip.Core.Exceptions;
+using Errordite.Core.Exceptions;
 using Errordite.Core.Domain.Error;
-using CodeTrip.Core.Extensions;
+using Errordite.Core.Extensions;
 using ProtoBuf;
 using System.Linq;
 
@@ -71,7 +71,7 @@ namespace Errordite.Core.Matching
                     case StringOperator.RegexMatches:
                         return Regex.IsMatch(v, ruleValue);
                     default: 
-                        throw new CodeTripUnexpectedValueException("StringOperator", StringOperator.ToString());
+                        throw new ErrorditeUnexpectedValueException("StringOperator", StringOperator.ToString());
                 }
             });
         }

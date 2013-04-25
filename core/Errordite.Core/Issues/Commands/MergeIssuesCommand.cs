@@ -1,14 +1,14 @@
 ﻿using System;
-using CodeTrip.Core.Interfaces;
+using Errordite.Core.Interfaces;
 using Errordite.Core.Authorisation;
 using Errordite.Core.Configuration;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Extensions;
 using Errordite.Core.Indexing;
-using Errordite.Core.Messages;
+using Errordite.Core.Messaging;
 using Errordite.Core.Organisations;
-using CodeTrip.Core.Extensions;
 using Errordite.Core.Session;
+using Errordite.Core.Session.Actions;
 using Raven.Abstractions.Data;
 
 namespace Errordite.Core.Issues.Commands
@@ -41,7 +41,7 @@ namespace Errordite.Core.Issues.Commands
             _authorisationManager.Authorise(mergeFromIssue, request.CurrentUser);
             _authorisationManager.Authorise(mergeToIssue, request.CurrentUser);
 
-            new SynchroniseIndex<Errors_Search>().Execute(Session);
+            new SynchroniseIndexCommitAction<Errors_Search>().Execute(Session);
 
             //move all errors fron the MergeFromIssue to the MergeToIssue
             Session.AddCommitAction(new UpdateByIndexCommitAction(CoreConstants.IndexNames.Errors,
@@ -72,12 +72,12 @@ namespace Errordite.Core.Issues.Commands
             Delete(mergeFromIssue);
 
             //re-sync the error counts
-            Session.AddCommitAction(new SendNServiceBusMessage("Sync Issue Error Counts", new SyncIssueErrorCountsMessage
+            Session.AddCommitAction(new SendMessageCommitAction(new SyncIssueErrorCountsMessage
             {
-                CurrentUser = request.CurrentUser,
                 IssueId = request.MergeToIssueId,
-                OrganisationId = request.CurrentUser.OrganisationId
-            }, _configuration.EventsQueueName));
+                OrganisationId = request.CurrentUser.OrganisationId,
+                TriggerEventUtc = DateTime.UtcNow,
+            }, _configuration.GetEventsQueueAddress(request.CurrentUser.Organisation.RavenInstance)));
 
             return new MergeIssuesResponse
             {

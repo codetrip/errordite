@@ -1,18 +1,23 @@
-﻿using System.Web.Mvc;
-using CodeTrip.Core.Caching.Entities;
-using CodeTrip.Core.Caching.Interfaces;
-using CodeTrip.Core.Caching.Resources;
-using CodeTrip.Core.IoC;
-using Errordite.Core.Configuration;
-using Errordite.Core.Domain.Central;
+﻿using System.ComponentModel.Composition.Hosting;
+using System.Web.Mvc;
+using Errordite.Core;
+using Errordite.Core.Caching.Interfaces;
+using Errordite.Core.Caching.Resources;
+using Errordite.Core.Domain.Master;
 using Errordite.Core.Domain.Organisation;
+using Errordite.Core.Indexing;
+using Errordite.Core.IoC;
+using Errordite.Core.Configuration;
 using Errordite.Core.Identity;
 using Errordite.Core.Notifications.EmailInfo;
 using Errordite.Core.Session;
+using Errordite.Core.Session.Actions;
 using Errordite.Web.ActionFilters;
 using Errordite.Web.Models.Home;
-using CodeTrip.Core.Extensions;
+using Errordite.Core.Extensions;
 using Errordite.Web.Extensions;
+using Errordite.Core.Web;
+using Raven.Client.Indexes;
 
 namespace Errordite.Web.Controllers
 {
@@ -25,31 +30,20 @@ namespace Errordite.Web.Controllers
             _configuration = configuration;
         }
 
-        [ImportViewData]
-        public ActionResult RavenInstances()
+        [HttpGet, ImportViewData]
+        public ActionResult Test()
         {
-            var instance = new RavenInstance
-            {
-                Active = true,
-                RavenUrl = "http://dev-raven.errordite.com",
-                IsMaster = true,
-            };
-
-            Core.Session.MasterRaven.Store(instance);
-
-            var organisations = Core.Session.MasterRaven.Query<Organisation>();
-
-            foreach (var org in organisations)
-            {
-                org.RavenInstanceId = instance.Id;
-            }
-
-            return Content("Ok");
+            var session = ObjectFactory.GetObject<IAppSession>();
+            session.ReceiveHttpClient.DeleteAsync("cache");
+            session.ReceiveHttpClient.DeleteAsync("cache?applicationId=1");
+			session.ReceiveHttpClient.DeleteAsync("organisation");
+			session.ReceiveHttpClient.PostJsonAsync("organisation", AppContext.CurrentUser.Organisation);
+            return Content("Done");
         }
 
         public ActionResult ClearCache()
         {
-            ObjectFactory.GetObject<ICacheEngine>(CacheEngines.RedisMemoryHybrid).Clear();
+            ObjectFactory.GetObject<ICacheEngine>(CacheEngines.Memory).Clear();
             return Content("OK");
         }
 
@@ -88,7 +82,7 @@ namespace Errordite.Web.Controllers
                     .FormatWith(viewModel.Name, viewModel.Reason, viewModel.Email, viewModel.Message)
             };
 
-            Core.Session.AddCommitAction(new SendNServiceBusMessage("Send {0}".FormatWith(emailInfo.GetType().Name), emailInfo, _configuration.NotificationsQueueName));
+            Core.Session.AddCommitAction(new SendMessageCommitAction(emailInfo, _configuration.GetNotificationsQueueAddress()));
 
             ConfirmationNotification(Resources.Home.MessageReceived);
             return RedirectToAction("contact");

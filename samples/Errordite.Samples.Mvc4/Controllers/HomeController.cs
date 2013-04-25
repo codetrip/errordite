@@ -13,15 +13,7 @@ namespace Errordite.Samples.Mvc4.Controllers
     {
         public ActionResult Index()
         {
-            try
-            {
-                throw new Exception("test exception");
-            }
-            catch (Exception ex)
-            {
-                //new RaygunClient().Send(ex);
-                throw;
-            }
+            return View();
         }
 
         public ActionResult ErrorInView()

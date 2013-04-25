@@ -3,20 +3,22 @@ using System.Collections.Generic;
 using System.Text;
 using System.Web.Security;
 using Castle.Core;
-using CodeTrip.Core.Caching.Entities;
-using CodeTrip.Core.Caching.Interceptors;
-using CodeTrip.Core.Encryption;
-using CodeTrip.Core.Interfaces;
+using Errordite.Core.Caching.Entities;
+using Errordite.Core.Caching.Interceptors;
+using Errordite.Core.Domain.Master;
+using Errordite.Core.Encryption;
+using Errordite.Core.Interfaces;
 using Errordite.Core.Applications.Commands;
 using Errordite.Core.Caching;
-using Errordite.Core.Domain.Central;
 using Errordite.Core.Domain.Organisation;
-using CodeTrip.Core.Extensions;
+using Errordite.Core.Extensions;
 using System.Linq;
 using Errordite.Core.Indexing;
 using Errordite.Core.Matching;
+using Errordite.Core.Messaging.Commands;
 using Errordite.Core.Organisations.Queries;
 using Errordite.Core.Session;
+using Errordite.Core.Web;
 
 namespace Errordite.Core.Organisations.Commands
 {
@@ -27,16 +29,19 @@ namespace Errordite.Core.Organisations.Commands
         private readonly IAddApplicationCommand _addApplicationCommand;
         private readonly IEncryptor _encryptor;
         private readonly IGetRavenInstancesQuery _getRavenInstancesQuery;
+        private readonly ICreateSQSQueueCommand _createSQSQueueCommand;
 
         public CreateOrganisationCommand(IGetAvailablePaymentPlansQuery getAvailablePaymentPlansQuery, 
             IAddApplicationCommand addApplicationCommand, 
             IEncryptor encryptor, 
-            IGetRavenInstancesQuery getRavenInstancesQuery)
+            IGetRavenInstancesQuery getRavenInstancesQuery, 
+            ICreateSQSQueueCommand createSqsQueueCommand)
         {
             _getAvailablePaymentPlansQuery = getAvailablePaymentPlansQuery;
             _addApplicationCommand = addApplicationCommand;
             _encryptor = encryptor;
             _getRavenInstancesQuery = getRavenInstancesQuery;
+            _createSQSQueueCommand = createSqsQueueCommand;
         }
 
         public CreateOrganisationResponse Invoke(CreateOrganisationRequest request)
@@ -125,6 +130,24 @@ namespace Errordite.Core.Organisations.Commands
                 NotificationGroups = new List<string> { group.Id },
                 UserId = user.Id,
             });
+
+            try
+            {
+                //create the SQS queue for this organisation
+                _createSQSQueueCommand.Invoke(new CreateSQSCommandRequest
+                {
+                    OrganisationId = organisation.Id
+                });
+
+                //add organisation to receive service so we can start receiving errors from the organisations queue
+                Session.ReceiveHttpClient.PostJsonAsync("Organisation", organisation);
+            }
+            catch (Exception e)
+            {
+                //dont fail the creation of org is service is not running, hope the service starts up soon 
+                //when it does it will pick up this org and start processing its errors
+                Error(e);
+            }
 
             //TODO: sync indexes
             Session.SynchroniseIndexes<Organisations_Search, Users_Search>();

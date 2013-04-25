@@ -39,11 +39,11 @@ namespace Errordite.Core.Monitoring
                 ProcessId = Process.GetCurrentProcess().Id,
                 ErrorQueueStatus = _getQueueStatusQuery.Invoke(new GetQueueStatusRequest
                 {
-                    QueuePath = config.FullyQualifiedErrorQueueName
+                    QueuePath = config.QueueAddress
                 }).Status,
                 InputQueueStatus = _getQueueStatusQuery.Invoke(new GetQueueStatusRequest
                 {
-                    QueuePath = config.FullyQualifiedQueueName
+                    QueuePath = config.QueueAddress
                 }).Status
             };
 

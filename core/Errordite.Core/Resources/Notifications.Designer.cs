@@ -61,7 +61,7 @@ namespace Errordite.Core.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A new error has been received which matches &quot;always notify&quot; issue named {0}, &lt;a href=&quot;{1}issue/{2}&quot;  target=&quot;_blank&quot;&gt;click here to view the issue&lt;/a&gt;..
+        ///   Looks up a localized string similar to A new error has been received which matches &quot;always notify&quot; issue named {0}, &lt;a href=&quot;{1}/issue/{2}&quot;  target=&quot;_blank&quot;&gt;click here to view the issue&lt;/a&gt;..
         /// </summary>
         internal static string SimpleMessage_AlwaysNotifyIssueOccurance {
             get {
@@ -70,7 +70,7 @@ namespace Errordite.Core.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The issue {0} is nearing its error threshold, Errordite will no longer record full error information for errors matching this issue, &lt;a href=&quot;{1}issue/{2}&quot;  target=&quot;_blank&quot;&gt;click here to view the issue&lt;/a&gt;..
+        ///   Looks up a localized string similar to The issue {0} is nearing its error threshold, Errordite will no longer record full error information for errors matching this issue, &lt;a href=&quot;{1}/issue/{2}&quot;  target=&quot;_blank&quot;&gt;click here to view the issue&lt;/a&gt;..
         /// </summary>
         internal static string SimpleMessage_ErrorThresholdReached {
             get {
@@ -79,7 +79,7 @@ namespace Errordite.Core.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The issue {0} is nearing its error threshold. You should ensure the rules are appropriate for the errors being logged, &lt;a href=&quot;{1}issue/{2}&quot;  target=&quot;_blank&quot;&gt;click here to view the issue&lt;/a&gt;..
+        ///   Looks up a localized string similar to The issue {0} is nearing its error threshold. You should ensure the rules are appropriate for the errors being logged, &lt;a href=&quot;{1}/issue/{2}&quot;  target=&quot;_blank&quot;&gt;click here to view the issue&lt;/a&gt;..
         /// </summary>
         internal static string SimpleMessage_ErrorThresholdWarning {
             get {
@@ -88,7 +88,7 @@ namespace Errordite.Core.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A new issue has been created named {0}, &lt;a href=&quot;{1}issue/{2}&quot;  target=&quot;_blank&quot;&gt;click here to view the issue&lt;/a&gt;..
+        ///   Looks up a localized string similar to A new issue has been created named {0}, &lt;a href=&quot;{1}/issue/{2}&quot;  target=&quot;_blank&quot;&gt;click here to view the issue&lt;/a&gt;..
         /// </summary>
         internal static string SimpleMessage_NewIssue {
             get {
@@ -97,7 +97,7 @@ namespace Errordite.Core.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A new error has been received which matches a solved issue named {0}, &lt;a href=&quot;{1}issue/{2}&quot;  target=&quot;_blank&quot;&gt;click here to view the issue&lt;/a&gt;..
+        ///   Looks up a localized string similar to A new error has been received which matches a solved issue named {0}, &lt;a href=&quot;{1}/issue/{2}&quot;  target=&quot;_blank&quot;&gt;click here to view the issue&lt;/a&gt;..
         /// </summary>
         internal static string SimpleMessage_SolvedIssueOccurance {
             get {

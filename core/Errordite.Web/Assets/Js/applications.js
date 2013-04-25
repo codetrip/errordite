@@ -25,9 +25,13 @@
         }
 
         Application.prototype["delete"] = function() {
-          if (window.confirm("Are you sure you want to delete this application, all associated errors will be deleted?")) {
-            return this.$appEl.find('form:has(.delete-application)').submit();
-          }
+          var $element;
+          $element = this.$appEl;
+          return Errordite.Confirm.show("Are you sure you want to delete the selected application?", {
+            okCallBack: function() {
+              return $element.find('form:has(.delete-application)').submit();
+            }
+          });
         };
 
         Application.prototype.generateError = function() {

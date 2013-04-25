@@ -8,39 +8,28 @@
   <Import Project="$(MSBuildProjectDirectory)\Global.imports" />
   <Import Project="$(MSBuildProjectDirectory)\Configuration.target" />
   <Import Project="$(MSBuildProjectDirectory)\ServiceControl.target" />
-  <Import Project="$(MSBuildProjectDirectory)\Queues.target" />
 
   <PropertyGroup>
-    <CacheEngine>${redis}</CacheEngine>
-    <ServiceName>ErrorditeNotificationsService</ServiceName>
-    <ServiceDisplayName>Errordite Notifications Service</ServiceDisplayName>
+    <ServiceName>Errordite.Services$Notifications</ServiceName>
     <ServiceDomain>$(Domain)</ServiceDomain>
     <ServiceUser>$(ErrorditeNotificationsServiceUser)</ServiceUser>
     <ServicePassword>$(ErrorditeNotificationsServicePassword)</ServicePassword>
-    <DeployedApplicationPath>$(InstallRoot)\Errordite.Notifications.Service</DeployedApplicationPath>
-    <ServicePath>$(DeployedApplicationPath)\NServiceBus.Host.exe</ServicePath>
+    <DeployedApplicationPath>$(InstallRoot)\Errordite.Services.Notifications</DeployedApplicationPath>
+    <ServicePath>$(DeployedApplicationPath)\Errordite.Services.exe</ServicePath>
+    <ServiceInstance>Notifications</ServiceInstance>
   </PropertyGroup>
-
-  <ItemGroup>
-    <CreateQueue Include=".\Private$\Errordite.Notifications.Service">
-      <Label>Errordite Notifications</Label>
-    </CreateQueue>
-  </ItemGroup>
 
   <Target Name="InstallNotificationsService" DependsOnTargets="GetBuildNumberAndInstallPaths;
           StopService;
           CopyServiceFiles; 
           RunConfigFileChanger;
-          CreateNServiceBusSubscriptionsQueue;
-          CreateQueues;
-          InstallNServiceBusHostService;
-          SetCacheEngineToRedis;
+          InstallService;
           SetServiceAutomatic;
           StartService;">
   </Target>
 
   <Target Name="CopyServiceFiles" DependsOnTargets="GetBuildNumberAndInstallPaths" >
-    <CreateItem Include="$(MSBuildProjectDirectory)\..\Errordite.Notifications.Service\**\*.*;">
+    <CreateItem Include="$(MSBuildProjectDirectory)\..\Errordite.Services\**\*.*;">
       <Output TaskParameter="Include" ItemName="ErrorditeNotificationsServiceFiles" />
     </CreateItem>
 
@@ -52,7 +41,7 @@
       <Output TaskParameter="Lines" PropertyName="BuildNumber" />
     </ReadLinesFromFile>
 
-    <CreateProperty Value="$(InstallRoot)\Errordite.Notifications.Service">
+    <CreateProperty Value="$(InstallRoot)\Errordite.Services.Notifications">
       <Output TaskParameter="Value" PropertyName="NotificationsServiceInstallPath" />
     </CreateProperty>
 

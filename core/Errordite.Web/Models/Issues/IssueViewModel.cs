@@ -13,7 +13,6 @@ namespace Errordite.Web.Models.Issues
         public UpdateIssueViewModel Update { get; set; }
         public IssueDetailsViewModel Details { get; set; }
         public ErrorCriteriaViewModel Errors { get; set; }
-        public CommentsViewModel Comments { get; set; }
     }
 
     public class UpdateIssueViewModel : UpdateIssuePostModel
@@ -54,28 +53,12 @@ namespace Errordite.Web.Models.Issues
         public string IssueId { get; set; }
     }
 
-	public class CommentsViewModel
-	{
-		[Required(ErrorMessage = "Please enter a comment")]
-		public string Comment { get; set; }
-        public string IssueId { get; set; }
-        public string ApplicationId { get; set; }
-        public IEnumerable<CommentViewModel> Comments { get; set; }
-	}
-
-    public class CommentViewModel
-    {
-        public string Comment { get; set; }
-        public string User { get; set; }
-        public DateTimeOffset DateAdded { get; set; }
-    }
-
     public class IssueHistoryItemViewModel
     {
         public string Message { get; set; }
         public string Username { get; set; }
         public string UserEmail { get; set; }
-        public DateTimeOffset DateAddedUtc { get; set; }
+        public string VerbalTime { get; set; }
         public bool SystemMessage { get; set; }
         public string Reference { get; set; }
         public string IssueLink { get; set; }
@@ -108,6 +91,5 @@ namespace Errordite.Web.Models.Issues
         Debug,
         History,
 		Actions,
-        Comments
     }
 }
