@@ -11,7 +11,7 @@
   
   <Target Name="RecycleWebReceptionAppPool">
 
-    <Exec Command="&quot;C:\Windows\System32\inetsrv\appcmd.exe&quot; recycle apppool /apppool.name:$(ErrorditeReceptionWebsiteHostName)" />
+    <Exec Command="&quot;C:\Windows\System32\inetsrv\appcmd.exe&quot; recycle apppool /apppool.name:$(ErrorditeReceiveHostName)" />
 
   </Target>
 

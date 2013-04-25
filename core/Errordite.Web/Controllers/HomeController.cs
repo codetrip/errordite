@@ -1,6 +1,11 @@
-﻿using System.Web.Mvc;
+﻿using System.ComponentModel.Composition.Hosting;
+using System.Web.Mvc;
+using Errordite.Core;
 using Errordite.Core.Caching.Interfaces;
 using Errordite.Core.Caching.Resources;
+using Errordite.Core.Domain.Master;
+using Errordite.Core.Domain.Organisation;
+using Errordite.Core.Indexing;
 using Errordite.Core.IoC;
 using Errordite.Core.Configuration;
 using Errordite.Core.Identity;
@@ -12,6 +17,7 @@ using Errordite.Web.Models.Home;
 using Errordite.Core.Extensions;
 using Errordite.Web.Extensions;
 using Errordite.Core.Web;
+using Raven.Client.Indexes;
 
 namespace Errordite.Web.Controllers
 {
@@ -37,7 +43,7 @@ namespace Errordite.Web.Controllers
 
         public ActionResult ClearCache()
         {
-            ObjectFactory.GetObject<ICacheEngine>(CacheEngines.RedisMemoryHybrid).Clear();
+            ObjectFactory.GetObject<ICacheEngine>(CacheEngines.Memory).Clear();
             return Content("OK");
         }
 

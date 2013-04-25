@@ -25,16 +25,19 @@ namespace Errordite.Core.Session.Actions
             {
                 using(var client = new HttpClient { BaseAddress = new Uri(endpoint) })
 	            {
-					client.DeleteAsync("cache/flush?organisationId={0}".FormatWith(_organisation.FriendlyId));
+					var t = client.DeleteAsync("cache/flush?organisationId={0}".FormatWith(_organisation.FriendlyId));
+                    t.Wait(5000);
 	            }
             }
 
-			var eventsClient = new HttpClient
-			{
-				BaseAddress = new Uri("{0}:802/api/{1}/".FormatWith(_organisation.RavenInstance.ServicesBaseUrl, _organisation.FriendlyId))
-			};
-
-	        eventsClient.DeleteAsync("cache");
+            using(var eventsClient = new HttpClient
+                {
+                    BaseAddress = new Uri("{0}:802/api/{1}/".FormatWith(_organisation.RavenInstance.ServicesBaseUrl, _organisation.FriendlyId))
+                })
+            {
+                var task = eventsClient.DeleteAsync("cache");
+                task.Wait(5000);
+            };
         }
     }
 }

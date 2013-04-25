@@ -39,6 +39,7 @@ namespace Errordite.Services.Processors
 
         public void Start(string organisationId = null)
         {
+            Trace("Starting SQS Queue Processor for organisation:={0}", organisationId ?? string.Empty);
             OrganisationId = organisationId;
             _queueUrl = _serviceConfiguration.QueueAddress + organisationId;
             _serviceRunning = true;
@@ -47,13 +48,16 @@ namespace Errordite.Services.Processors
                 IsBackground = true
             };
             _worker.Start();
+            Trace("Started SQS Queue Processor");
         }
 
         public void Stop()
         {
+            Trace("Stopping SQS Queue Processor for organisation:={0}", OrganisationId ?? string.Empty);
             _serviceRunning = false;
             _worker.Join(TimeSpan.FromSeconds(5));
             _worker.Abort();
+            Trace("Stopped SQS Queue Processor");
         }
 
         private void ReceiveFromQueue()
@@ -79,7 +83,10 @@ namespace Errordite.Services.Processors
                 }
                 catch (AmazonSQSException e)
                 {
-                    //craete the queue if the exception indicates the queue does not exist
+                    if (_serviceConfiguration.Service != Service.Receive)
+                        throw;
+
+                    //create the queue if the exception indicates the queue does not exist
                     if (e.Message.ToLowerInvariant().StartsWith("the specified queue does not exist"))
                     {
                         _createSQSQueueCommand.Invoke(new CreateSQSCommandRequest

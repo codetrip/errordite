@@ -3,7 +3,6 @@ using Errordite.Core.Caching;
 using Errordite.Core.Caching.Entities;
 using Errordite.Core.Caching.Interfaces;
 using Errordite.Core.Caching.Invalidation;
-using Errordite.Core.Domain.Organisation;
 
 namespace Errordite.Receive.Controllers
 {

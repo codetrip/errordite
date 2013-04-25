@@ -54,6 +54,11 @@
     <Reference Include="AutoMapper">
       <HintPath>..\..\lib\AutoMapper\AutoMapper.dll</HintPath>
     </Reference>
+    <Reference Include="AWSSDK, Version=1.5.18.0, Culture=neutral, PublicKeyToken=9f476d3089b52be3, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Amazon\AWSSDK.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Castle.Core">
       <HintPath>..\packages\Castle.Core.3.1.0\lib\net40-client\Castle.Core.dll</HintPath>
     </Reference>
@@ -869,9 +874,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\Docs\PythonClient.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shared\Issue\Comment.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Js\services.coffee" />

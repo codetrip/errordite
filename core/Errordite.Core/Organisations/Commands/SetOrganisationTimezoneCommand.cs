@@ -3,6 +3,7 @@ using Castle.Core;
 using Errordite.Core.Caching.Entities;
 using Errordite.Core.Caching.Interceptors;
 using Errordite.Core.Configuration;
+using Errordite.Core.Domain.Master;
 using Errordite.Core.Interfaces;
 using Errordite.Core.Authorisation;
 using Errordite.Core.Caching;
@@ -26,7 +27,14 @@ namespace Errordite.Core.Organisations.Commands
 
         public SetOrganisationTimezoneResponse Invoke(SetOrganisationTimezoneRequest request)
         {
-            var organisation = MasterLoad<Organisation>(request.OrganisationId);
+            var organisation = Session.MasterRaven
+                    .Include<Organisation>(o => o.RavenInstanceId)
+                    .Load<Organisation>(request.OrganisationId);
+
+            if (organisation == null)
+                return new SetOrganisationTimezoneResponse(request.OrganisationId, true);
+
+            organisation.RavenInstance = MasterLoad<RavenInstance>(organisation.RavenInstanceId);
 
             //TODO - admin auth
             _authorisationManager.Authorise(organisation, request.CurrentUser);
@@ -53,7 +61,8 @@ namespace Errordite.Core.Organisations.Commands
     {
         private readonly string _organisationId;
 
-        public SetOrganisationTimezoneResponse(string organisationId)
+        public SetOrganisationTimezoneResponse(string organisationId, bool ignoreCache = false)
+            : base(ignoreCache)
         {
             _organisationId = organisationId;
         }
