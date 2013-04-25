@@ -1,11 +1,11 @@
 
 jQuery -> 
-	$body = $ 'section#home'
+	$root = $ 'section#home'
 
 	hiddenPanelCss = null
 
-	if $body.length > 0
-		$body.delegate 'a#showplayer', 'click', () -> 
+	if $root.length > 0
+		$root.delegate 'a#showplayer', 'click', () -> 
 			$this = $ this
 			$panel = $this.closest('div.video-panel')
 			$preview = $this.closest('div.preview')
@@ -30,7 +30,7 @@ jQuery ->
 
 			false
 
-		$body.delegate 'a#hideplayer', 'click', () -> 
+		$root.delegate 'a#hideplayer', 'click', () -> 
 			$this = $ this
 			$panel = $this.closest('div.video-panel')
 			$preview = $panel.find('div.preview')

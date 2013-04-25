@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Errordite.Core.Interfaces;
 using Errordite.Core.Authorisation;
 using Errordite.Core.Domain.Error;
@@ -9,7 +8,6 @@ using Errordite.Core.Organisations;
 using Errordite.Core.Session;
 using Errordite.Core.Session.Actions;
 using Errordite.Core.Users.Queries;
-using Errordite.Core.Extensions;
 using Errordite.Core.Extensions;
 
 namespace Errordite.Core.Issues.Commands
@@ -71,7 +69,7 @@ namespace Errordite.Core.Issues.Commands
             {
                 Store(new IssueHistory
                 {
-                    DateAddedUtc = DateTime.UtcNow,
+					DateAddedUtc = DateTime.UtcNow.ToDateTimeOffset(request.CurrentUser.Organisation.TimezoneId),
                     IssueId = issue.Id,
                     NewStatus = request.Status,
                     PreviousStatus = issue.Status,
@@ -86,7 +84,7 @@ namespace Errordite.Core.Issues.Commands
             {
                 Store(new IssueHistory
                 {
-                    DateAddedUtc = DateTime.UtcNow,
+					DateAddedUtc = DateTime.UtcNow.ToDateTimeOffset(request.CurrentUser.Organisation.TimezoneId),
                     IssueId = issue.Id,
                     SystemMessage = true,
                     UserId = request.CurrentUser.Id,
@@ -103,15 +101,15 @@ namespace Errordite.Core.Issues.Commands
 
             if (request.Comment.IsNotNullOrEmpty())
             {
-                if (issue.Comments == null)
-                    issue.Comments = new List<IssueComment>();
-
-                issue.Comments.Add(new IssueComment
-                {
-                    UserId = request.CurrentUser.Id,
-                    DateAdded = DateTime.UtcNow.ToDateTimeOffset(request.CurrentUser.Organisation.TimezoneId),
-                    Comment = request.Comment
-                });
+				Store(new IssueHistory
+				{
+					DateAddedUtc = DateTime.UtcNow.ToDateTimeOffset(request.CurrentUser.Organisation.TimezoneId),
+					IssueId = issue.Id,
+					UserId = request.CurrentUser.Id,
+					AssignedToUserId = request.AssignedUserId,
+					Type = HistoryItemType.Comment,
+					Comment = request.Comment
+				});
             }
 
 			Session.AddCommitAction(new RaiseIssueModifiedEvent(issue));

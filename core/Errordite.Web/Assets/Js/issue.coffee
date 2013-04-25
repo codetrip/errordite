@@ -52,12 +52,12 @@ jQuery ->
 			$('div#error-items').clear();
 						
 		renderHistory = () -> 
-			$node = $issue.find('#history-items')
+			$node = $issue.find('table.history tbody')
 			url = '/issue/history?IssueId=' + $issue.find('#IssueId').val()
 			
 			$.get url,
 				(data) -> 
-					$node.html(data.data)
+					$node.append(data.data)
 					$('div.content').animate 
 						scrollTop : 0,
 						'slow'			

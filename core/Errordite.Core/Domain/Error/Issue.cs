@@ -76,8 +76,6 @@ namespace Errordite.Core.Domain.Error
         [ProtoMember(16)]
         public DateTimeOffset LastErrorUtc { get; set; }
         [ProtoMember(17)]
-        public IList<IssueComment> Comments { get; set; }
-        [ProtoMember(18)]
         public DateTimeOffset? LastNotified { get; set; }
 
         [JsonIgnore]
