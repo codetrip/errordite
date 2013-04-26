@@ -23,13 +23,13 @@ namespace Errordite.Web.Extensions
             return list.FirstOrDefault(selectListItem => selectListItem.Value == value);
         }
 
-        public static List<SelectListItem> EnumToSelectList<TSource> (this TSource e, string unselectedText = null) 
+		public static List<SelectListItem> EnumToSelectList<TSource>(this TSource e, string unselectedText = null, TSource? selectedValue = null) 
             where TSource : struct
         {
-            return ((TSource?) e).EnumToSelectList(unselectedText);
+            return ((TSource?) e).EnumToSelectList(unselectedText, selectedValue);
         }
 
-        public static List<SelectListItem> EnumToSelectList<TSource> (this TSource? e, string unselectedText = null) 
+		public static List<SelectListItem> EnumToSelectList<TSource>(this TSource? e, string unselectedText = null, TSource? selectedValue = null) 
             where TSource : struct
         {
             var type = typeof (TSource);
@@ -42,9 +42,9 @@ namespace Errordite.Web.Extensions
 
                             var value = n.GetValue(e);
 
-                            return new SelectListItem()
+                            return new SelectListItem
                                 {
-                                    Selected = value.Equals(e),
+									Selected = selectedValue == null ? false : value.Equals(selectedValue),
                                     Text = friendlyNameAttribute == null ? value.ToString() : friendlyNameAttribute.Name,
                                     Value = value.ToString()
                                 };
@@ -52,7 +52,12 @@ namespace Errordite.Web.Extensions
 
             if (unselectedText != null)
             {
-                enumOptions = new[] {new SelectListItem() {Value = "", Text = unselectedText}}
+                enumOptions = new[] {new SelectListItem
+	                {
+		                Value = "", 
+						Text = unselectedText,
+						Selected = selectedValue == null
+	                }}
                     .Union(enumOptions);
             }
 

@@ -1,11 +1,12 @@
 (function() {
-
   jQuery(function() {
     var $root, ServiceManager, serviceManager;
-    $root = $("section#services");
+
+    $root = $("section#monitoring");
     if ($root.length > 0) {
       $root.delegate("a.purge", "click", function(e) {
         var $this;
+
         e.preventDefault();
         $this = $(this);
         if (!confirm("Are you sure you want to delete all messages?")) {
@@ -15,6 +16,7 @@
       });
       $root.delegate("a.retry", "click", function(e) {
         var $this;
+
         e.preventDefault();
         $this = $(this);
         if (!confirm("Are you sure you want to retry all messages?")) {
@@ -24,6 +26,7 @@
       });
       $root.delegate("select#RavenInstanceId", "change", function(e) {
         var $this;
+
         e.preventDefault();
         $this = $(this);
         return serviceManager.switchInstance($this.val());
@@ -34,16 +37,17 @@
       });
       $root.delegate('a.start-service', 'click', function(e) {
         var $this;
+
         e.preventDefault();
         $this = $(this);
         return serviceManager.serviceControl($this.data('service'), $this.data('start'));
       });
       ServiceManager = (function() {
-
         function ServiceManager() {}
 
         ServiceManager.prototype.deleteMessages = function() {
           var deleteMessages;
+
           deleteMessages = function(serviceName) {};
           $.ajax({
             url: "/system/services/deletemessages",

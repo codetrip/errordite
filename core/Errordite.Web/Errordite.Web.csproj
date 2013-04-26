@@ -244,7 +244,8 @@
       <DependentUpon>Shared.resx</DependentUpon>
     </Compile>
     <Compile Include="Areas\System\Controllers\AdminControllerBase.cs" />
-    <Compile Include="Areas\System\Models\Services\SystemStatusViewModel.cs" />
+    <Compile Include="Areas\System\Controllers\MonitoringController.cs" />
+    <Compile Include="Areas\System\Models\Monitoring\ServiceFailuresViewModel.cs" />
     <Compile Include="Areas\System\SysAdminAreaRegistration.cs" />
     <Compile Include="Areas\System\Controllers\SystemController.cs" />
     <Compile Include="Areas\System\Models\Organisations\SuspendOrganisationViewModel.cs" />
@@ -454,6 +455,12 @@
       <Compile>True</Compile>
       <Minify>False</Minify>
     </Content>
+    <Content Include="Assets\Js\monitoring.js">
+      <DependentUpon>monitoring.coffee</DependentUpon>
+    </Content>
+    <Content Include="Assets\Js\monitoring.min.js">
+      <DependentUpon>monitoring.coffee</DependentUpon>
+    </Content>
     <Content Include="Assets\Js\organisations.js">
       <DependentUpon>organisations.coffee</DependentUpon>
     </Content>
@@ -465,12 +472,6 @@
     </Content>
     <Content Include="Assets\Js\search.min.js">
       <DependentUpon>search.coffee</DependentUpon>
-    </Content>
-    <Content Include="Assets\Js\services.js">
-      <DependentUpon>services.coffee</DependentUpon>
-    </Content>
-    <Content Include="Assets\Js\services.min.js">
-      <DependentUpon>services.coffee</DependentUpon>
     </Content>
     <Content Include="Assets\Js\systemadmin.js">
       <DependentUpon>systemadmin.coffee</DependentUpon>
@@ -877,7 +878,7 @@
     <Content Include="Views\Shared\Docs\PythonClient.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\Js\services.coffee" />
+    <Content Include="Assets\Js\monitoring.coffee" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Docs\About.cshtml" />
@@ -905,6 +906,16 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Js\activity.coffee" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Areas\System\Views\Monitoring\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\System\Views\Shared\Monitoring\MessageFailures.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\System\Views\Shared\Monitoring\MessageFailuresCriteria.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

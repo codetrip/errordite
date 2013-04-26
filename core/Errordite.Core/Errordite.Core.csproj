@@ -258,6 +258,7 @@
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\TypeReflectionExtensions.cs" />
     <Compile Include="Extensions\XElementExtensions.cs" />
+    <Compile Include="Indexing\MessageEnvelopes.cs" />
     <Compile Include="Messaging\Commands\CreateSQSQueueCommand.cs" />
     <Compile Include="Misc\RepositoryPathHelper.cs" />
     <Compile Include="Identity\IImpersonationManager.cs" />
@@ -348,12 +349,8 @@
     <Compile Include="Messaging\ReceiveErrorMessage.cs" />
     <Compile Include="Messaging\SendHipChatMessage.cs" />
     <Compile Include="Misc\ErrorditeClientOverrideHelper.cs" />
-    <Compile Include="Monitoring\Entities\QueueStatus.cs" />
-    <Compile Include="Monitoring\Entities\ServiceStatus.cs" />
-    <Compile Include="Monitoring\Commands\DeleteMessagesCommand.cs" />
     <Compile Include="Monitoring\Commands\ReturnMessageToSourceQueueCommand.cs" />
-    <Compile Include="Monitoring\Queries\GetQueueStatusQuery.cs" />
-    <Compile Include="Monitoring\AbstractQueueController.cs" />
+    <Compile Include="Monitoring\Queries\GetMessageEnvelopesQuery.cs" />
     <Compile Include="Notifications\Commands\SendHipChatMessageCommand.cs" />
     <Compile Include="Notifications\Commands\SendEmailCommand.cs" />
     <Compile Include="Notifications\Commands\SendNotificationsCommand.cs" />

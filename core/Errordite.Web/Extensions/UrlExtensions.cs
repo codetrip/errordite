@@ -359,9 +359,9 @@ namespace Errordite.Web.Extensions
             return helper.Action("syncindexes", "system", new { Area = WebConstants.AreaNames.System });
         }
 
-        public static string ServiceStatus(this UrlHelper helper)
+        public static string MessageFailures(this UrlHelper helper)
         {
-            return helper.Action("index", "services", new { Area = WebConstants.AreaNames.System });
+            return helper.Action("index", "monitoring", new { Area = WebConstants.AreaNames.System });
         }
 
         public static string Impersonate(this UrlHelper helper, string userId = null, string organisationId = null)

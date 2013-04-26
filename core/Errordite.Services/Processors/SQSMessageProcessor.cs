@@ -59,13 +59,15 @@ namespace Errordite.Services.Processors
                 {
                     using (var session = ObjectFactory.GetObject<IAppSession>())
                     {
+	                    envelope.ErrorMessage = e.Message;
+
                         Trace("Message for Organisation:={0} failed, logging to RavenDB", envelope.OrganisationId);
 
                         session.MasterRaven.Store(envelope);
                         session.Commit();
                     }
 
-                    e.Data.Add("MessageEnvelopeId", envelope.Id);
+                    e.Data.Add("MessageEnvelopeId", envelope.FriendlyId);
                     Error(e);
                     ErrorditeClient.ReportException(e);
                 }

@@ -24,7 +24,7 @@
 			@Model.ApplicationName
 		</div>
 		<div class="item-info divider">
-		    @Model.VerbalTime
+		    @Model.Error.TimestampUtc.ToLocalTimeFormatted()
 		</div>
 		<div class="item-info divider short">
 			<a href="@Url.Issue(Model.Error.IssueId)">#@Model.Error.IssueId.GetFriendlyId()</a>

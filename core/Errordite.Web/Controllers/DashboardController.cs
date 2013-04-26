@@ -117,7 +117,6 @@ namespace Errordite.Web.Controllers
 	            {
 		            Error = e,
 					ApplicationName = GetApplicationName(applications.Items, e.ApplicationId),
-					VerbalTime = e.TimestampUtc.ToVerbalTimeSinceUtc(Core.AppContext.CurrentUser.Organisation.TimezoneId)
 	            }).ToList();
                 viewModel.UrlGetter = GetDashboardUrl;
             }
@@ -158,7 +157,6 @@ namespace Errordite.Web.Controllers
 	            {
 		            Error = e,
 					ApplicationName = GetApplicationName(applications.Items, e.ApplicationId),
-					VerbalTime = e.TimestampUtc.ToVerbalTimeSinceUtc(Core.AppContext.CurrentUser.Organisation.TimezoneId)
 	            }).Select(e => RenderPartial("Dashboard/Error", e)),
                 lastErrorDisplayed = errors != null && errors.PagingStatus.TotalItems > 0 ? int.Parse(errors.Items.First().FriendlyId) : lastErrorDisplayed,
                 lastIssueDisplayed = issues != null && issues.PagingStatus.TotalItems > 0 ? int.Parse(issues.Items.First().FriendlyId) : lastIssueDisplayed
