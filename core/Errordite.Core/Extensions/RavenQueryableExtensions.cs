@@ -3,10 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Errordite.Core.Domain.Error;
-using Errordite.Core.Domain.Organisation;
-using Errordite.Core.Indexing;
-using Errordite.Core.Session;
 using Raven.Client;
 using Raven.Client.Linq;
 
@@ -30,7 +26,7 @@ namespace Errordite.Core.Extensions
             return query;
         }
 
-        public static IList<T> GetAllItemsAsList<T>(this IRavenQueryable<T> query, IAppSession session, int pageSize)
+        public static IList<T> GetAllItemsAsList<T>(this IRavenQueryable<T> query, int pageSize)
         {
             RavenQueryStatistics stats;
 

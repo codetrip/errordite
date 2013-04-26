@@ -1,11 +1,14 @@
 ﻿
 @using Errordite.Core.Extensions
 @using Errordite.Web
-@model Errordite.Web.Areas.System.Models.Monitoring.ServiceFailuresViewModel
+@model Errordite.Web.Areas.System.Models.Monitoring.MessageFailuresViewModel
            
 <div id="results">
-    @using (Html.BeginForm("deletemessages", "monitoring", FormMethod.Post, new { Area = WebConstants.AreaNames.System, id = "actionForm" }))
+    @using (Html.BeginForm("delete", "monitoring", FormMethod.Post, new { Area = WebConstants.AreaNames.System, id = "actionForm" }))
     {
+        @Html.Hidden("OrgId")
+        @Html.Hidden("Svc")
+
         <table class="table table-bordered">
             <thead>
                 <tr>
@@ -20,7 +23,7 @@
                 @foreach (var envelope in Model.Envelopes)
                 {
                     <tr>
-                        <td><input type="checkbox" name="envelopes" value="@envelope.FriendlyId"/></td>
+                        <td><input type="checkbox" name="envelopeIds" value="@envelope.FriendlyId"/></td>
                         <td>@envelope.OrganisationId</td>
                         <td>@envelope.Service.ToString()</td>
                         <td>@envelope.GeneratedOnUtc.ToLocalTimeFormatted()</td>

@@ -18,7 +18,7 @@ namespace Errordite.Core.Monitoring.Queries
 		{
 			RavenQueryStatistics stats;
 
-			var query = Session.Raven.Query<MessageEnvelope, MessageEnvelopes>().Statistics(out stats);
+			var query = Session.MasterRaven.Query<MessageEnvelope, MessageEnvelopes>().Statistics(out stats);
 
 			if (request.Service.HasValue)
 			{

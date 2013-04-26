@@ -3,8 +3,8 @@ namespace Errordite.Services.Processors
 {
     public interface IQueueProcessor
     {
-        void Start(string organisationId = null);
+        void Start(string organisationId, string ravenInstanceId);
         void Stop();
-        string OrganisationId { get; }
+        string OrganisationFriendlyId { get; }
     }
 }

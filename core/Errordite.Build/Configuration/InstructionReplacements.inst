@@ -60,9 +60,5 @@ In time we hope to use this for replacing values in sql files as well, but we ar
 		<ErrorditeScheduledTasksUser theRest="errordite_svc_tasks" />
 		<ErrorditeScheduledTasksPassword theRest="Err0rD1t3_3vT$" />
 
-		<ReceiveQueueAddress theRest="https://sqs.eu-west-1.amazonaws.com/186350237634/errordite-receive-" />
-		<NotificationsQueueAddress theRest="https://sqs.eu-west-1.amazonaws.com/186350237634/errordite-notifications-1" />
-		<EventsQueueAddress theRest="https://sqs.eu-west-1.amazonaws.com/186350237634/errordite-events-1" />
-
 	</Replacements>
 </Root>

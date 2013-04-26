@@ -6,6 +6,7 @@ using System.Web.Http.Dispatcher;
 using System.Web.Http.SelfHost;
 using Errordite.Core;
 using Errordite.Core.Configuration;
+using Errordite.Core.Domain.Master;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Extensions;
 using Errordite.Core.Indexing;
@@ -53,21 +54,21 @@ namespace Errordite.Services
                     {
                         organisations = session.MasterRaven
                             .Query<Organisation, Organisations_Search>()
-                            .Where(o => o.RavenInstanceId == ravenInstanceId)
+                            .Where(o => o.RavenInstanceId == RavenInstance.GetId(ravenInstanceId))
                             .ToList();
                     }
                 }
 
                 foreach (var organisation in organisations)
                 {
-                    AddProcessor(organisation.FriendlyId);
+                    AddProcessor(organisation.FriendlyId, null);
                 }
             }
             else
             {
                 for (int i = 0; i < _serviceConfiguration.ServiceProcessorCount; i++)
                 {
-                    AddProcessor();
+                    AddProcessor(null, ravenInstanceId);
                 }
             }
 
@@ -77,9 +78,9 @@ namespace Errordite.Services
         public void AddOrganisation(Organisation organisation)
         {
             Trace("Adding SQS Queue Processor for organisation:={0}", organisation.FriendlyId);
-            if (_queueProcessors.All(p => p.OrganisationId != organisation.FriendlyId))
+            if (_queueProcessors.All(p => p.OrganisationFriendlyId != organisation.FriendlyId))
             {
-                AddProcessor(organisation.FriendlyId);
+                AddProcessor(organisation.FriendlyId, null);
                 Trace("Added SQS Queue Processor for organisation:={0}", organisation.FriendlyId);
             }
             else
@@ -91,7 +92,7 @@ namespace Errordite.Services
         public void RemoveOrganisation(string organisationId)
         {
             Trace("Removing SQS Queue Processor for organisation:={0}", organisationId);
-            var processor = _queueProcessors.FirstOrDefault(p => p.OrganisationId != organisationId.GetFriendlyId());
+            var processor = _queueProcessors.FirstOrDefault(p => p.OrganisationFriendlyId != organisationId.GetFriendlyId());
             if (processor != null)
             {
                 processor.Stop();
@@ -100,12 +101,12 @@ namespace Errordite.Services
             Trace("Removed SQS Queue Processor for organisation:={0}", organisationId);
         }
 
-        public void AddProcessor(string organisationId = null)
+        public void AddProcessor(string organisationId, string ravenInstanceId)
         {
             Trace("Adding SQS Queue Processor for organisation:={0}", organisationId ?? string.Empty);
             var processor = ObjectFactory.GetObject<IQueueProcessor>();
             _queueProcessors.Add(processor);
-            processor.Start(organisationId);
+            processor.Start(organisationId, ravenInstanceId);
             Trace("Successfully added SQS Queue Processor for organisation:={0}", organisationId ?? string.Empty);
         }
 
