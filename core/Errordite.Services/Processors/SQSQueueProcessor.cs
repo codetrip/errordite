@@ -5,6 +5,7 @@ using Amazon.SQS;
 using Amazon.SQS.Model;
 using Errordite.Core;
 using Errordite.Core.Configuration;
+using Errordite.Core.Extensions;
 using Errordite.Core.IoC;
 using Errordite.Core.Messaging;
 using System.Linq;
@@ -24,7 +25,7 @@ namespace Errordite.Services.Processors
         private readonly IRequestThrottler _requestThrottler;
         private readonly ICreateSQSQueueCommand _createSQSQueueCommand;
 
-        public string OrganisationId { get; private set; }
+        public string OrganisationFriendlyId { get; private set; }
 
         public SQSQueueProcessor(IEnumerable<ServiceConfiguration> serviceConfigurations,
             AmazonSQS amazonSQS, 
@@ -37,11 +38,13 @@ namespace Errordite.Services.Processors
             _createSQSQueueCommand = createSQSQueueCommand;
         }
 
-        public void Start(string organisationId = null)
+        public void Start(string organisationId, string ravenInstanceId)
         {
-            Trace("Starting SQS Queue Processor for organisation:={0}", organisationId ?? string.Empty);
-            OrganisationId = organisationId;
-            _queueUrl = _serviceConfiguration.QueueAddress + organisationId;
+            _queueUrl = "{0}{1}".FormatWith(_serviceConfiguration.QueueAddress, organisationId ?? ravenInstanceId);
+
+            Trace("Starting SQS Queue Processor for organisation:={0}, ravenInstanceId:={1}, queue:={2}", organisationId ?? string.Empty, ravenInstanceId, _queueUrl);
+            OrganisationFriendlyId = organisationId;
+
             _serviceRunning = true;
             _worker = new Thread(ReceiveFromQueue)
             {
@@ -53,7 +56,7 @@ namespace Errordite.Services.Processors
 
         public void Stop()
         {
-            Trace("Stopping SQS Queue Processor for organisation:={0}", OrganisationId ?? string.Empty);
+            Trace("Stopping SQS Queue Processor for organisation:={0}", OrganisationFriendlyId ?? string.Empty);
             _serviceRunning = false;
             _worker.Join(TimeSpan.FromSeconds(5));
             _worker.Abort();
@@ -91,7 +94,7 @@ namespace Errordite.Services.Processors
                     {
                         _createSQSQueueCommand.Invoke(new CreateSQSCommandRequest
                         {
-                            OrganisationId = OrganisationId
+                            OrganisationId = OrganisationFriendlyId
                         });
                     }
 

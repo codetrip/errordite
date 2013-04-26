@@ -49,7 +49,7 @@ namespace Errordite.Web.Areas.System.Controllers
                 masterDocumentStore.DatabaseCommands.ForDatabase(CoreConstants.ErrorditeMasterDatabaseName),
                 masterDocumentStore.Conventions);
 
-            foreach (var organisation in Core.Session.MasterRaven.Query<Organisation>().GetAllItemsAsList(Core.Session, 100))
+            foreach (var organisation in Core.Session.MasterRaven.Query<Organisation>().GetAllItemsAsList(100))
             {
                 organisation.RavenInstance = Core.Session.MasterRaven.Load<RavenInstance>(organisation.RavenInstanceId);
 

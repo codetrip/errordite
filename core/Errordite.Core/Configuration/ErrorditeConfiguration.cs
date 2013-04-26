@@ -17,9 +17,9 @@ namespace Errordite.Core.Configuration
         public string ReceiveWebEndpoints { get; set; }
         public bool RenderMinifiedContent { get; set; }
         public bool ServiceBusEnabled { get; set; }
-        public string MasterReceiveQueueAddress { private get; set; }
-        public string MasterNotificationsQueueAddress { private get; set; }
-        public string MasterEventsQueueAddress { private get; set; }
+        public string ReceiveQueueAddress { private get; set; }
+        public string NotificationsQueueAddress { private get; set; }
+        public string EventsQueueAddress { private get; set; }
         public string AdministratorsEmail { get; set; }
         public int MaxPageSize { get; set; }
         public int IssueErrorLimit { get; set; }
@@ -31,29 +31,30 @@ namespace Errordite.Core.Configuration
         public List<RateLimiterRule> RateLimiterRules { get; set; }
         public string AWSAccessKey { get; set; }
         public string AWSSecretKey { get; set; }
+        public string DeveloperQueueSuffix { get; set; }
 
         public string GetReceiveQueueAddress(string organisationId, RavenInstance instance = null)
         {
             if (instance == null || instance.Id == RavenInstance.Master().Id)
-                return MasterReceiveQueueAddress + organisationId.GetFriendlyId();
+                return "{0}1{2}".FormatWith(ReceiveQueueAddress, DeveloperQueueSuffix);
 
-            return instance.ReceiveQueueAddress + organisationId.GetFriendlyId();
+            return "{0}{1}{2}".FormatWith(instance.ReceiveQueueAddress, instance.FriendlyId, DeveloperQueueSuffix);
         }
 
         public string GetEventsQueueAddress(RavenInstance instance = null)
         {
-            if (instance == null || instance.Id == RavenInstance.Master().Id)
-                return MasterEventsQueueAddress;
+            if (instance == null)
+                return "{0}1{2}".FormatWith(EventsQueueAddress, DeveloperQueueSuffix);
 
-            return instance.EventsQueueAddress;
+            return "{0}{1}{2}".FormatWith(instance.EventsQueueAddress, instance.FriendlyId, DeveloperQueueSuffix);
         }
 
         public string GetNotificationsQueueAddress(RavenInstance instance = null)
         {
-            if (instance == null || instance.Id == RavenInstance.Master().Id)
-                return MasterNotificationsQueueAddress;
+            if (instance == null)
+                return "{0}1{2}".FormatWith(NotificationsQueueAddress, DeveloperQueueSuffix);
 
-            return instance.NotificationsQueueAddress;
+            return "{0}{1}{2}".FormatWith(instance.NotificationsQueueAddress, instance.FriendlyId, DeveloperQueueSuffix);
         }
     }
 }

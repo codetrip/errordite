@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.Composition.Hosting;
+﻿using System;
+using System.ComponentModel.Composition.Hosting;
 using System.Web.Mvc;
 using Errordite.Core;
 using Errordite.Core.Caching.Interfaces;
@@ -9,6 +10,7 @@ using Errordite.Core.Indexing;
 using Errordite.Core.IoC;
 using Errordite.Core.Configuration;
 using Errordite.Core.Identity;
+using Errordite.Core.Messaging;
 using Errordite.Core.Notifications.EmailInfo;
 using Errordite.Core.Session;
 using Errordite.Core.Session.Actions;
@@ -34,10 +36,50 @@ namespace Errordite.Web.Controllers
         public ActionResult Test()
         {
             var session = ObjectFactory.GetObject<IAppSession>();
-            session.ReceiveHttpClient.DeleteAsync("cache");
-            session.ReceiveHttpClient.DeleteAsync("cache?applicationId=1");
-			session.ReceiveHttpClient.DeleteAsync("organisation");
-			session.ReceiveHttpClient.PostJsonAsync("organisation", AppContext.CurrentUser.Organisation);
+
+            for (int i = 0; i < 5; i++)
+            {
+                session.MasterRaven.Store(new MessageEnvelope
+                {
+                    Message = "test",
+                    QueueUrl = "test",
+                    Service = Service.Receive,
+                    ErrorMessage = "This is a test error message",
+                    GeneratedOnUtc = DateTime.UtcNow,
+                    MessageType = "message type",
+                    OrganisationId = "Organisations/1"
+                });
+            }
+
+            for (int i = 0; i < 5; i++)
+            {
+                session.MasterRaven.Store(new MessageEnvelope
+                {
+                    Message = "test",
+                    QueueUrl = "test",
+                    Service = Service.Notifications,
+                    ErrorMessage = "This is a test error message",
+                    GeneratedOnUtc = DateTime.UtcNow,
+                    MessageType = "message type",
+                    OrganisationId = "Organisations/1"
+                });
+            }
+
+            for (int i = 0; i < 5; i++)
+            {
+                session.MasterRaven.Store(new MessageEnvelope
+                {
+                    Message = "test",
+                    QueueUrl = "test",
+                    Service = Service.Events,
+                    ErrorMessage = "This is a test error message",
+                    GeneratedOnUtc = DateTime.UtcNow,
+                    MessageType = "message type",
+                    OrganisationId = "Organisations/1"
+                });
+            }
+
+            session.Commit();
             return Content("Done");
         }
 

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using Errordite.Core.Configuration;
-using Errordite.Core.Domain.Master;
 using Errordite.Core.Extensions;
 using Errordite.Core.IoC;
 using Errordite.Services.IoC;
@@ -16,9 +15,7 @@ namespace Errordite.Services
         {
             try
             {
-                Service? service;
-                string ravenInstanceId;
-                ParseCommandLine(Environment.CommandLine, out service, out ravenInstanceId);
+                Service? service = ParseCommandLine(Environment.CommandLine);
 
                 if (service == null)
                 {
@@ -26,10 +23,11 @@ namespace Errordite.Services
                     return;
                 }
 
+                string ravenInstanceId = Environment.GetEnvironmentVariable("raveninstanceid");
                 if (ravenInstanceId.IsNullOrEmpty())
                 {
                     Trace.Write("No raven instance set, defaulting to instance #1");
-                    ravenInstanceId = RavenInstance.GetId("1");
+                    ravenInstanceId = "1";
                 } 
 
                 Trace.Write("Attempting to start Errordite.Services${0} for RavenInstanceId:={1}".FormatWith(service, ravenInstanceId));
@@ -81,14 +79,9 @@ namespace Errordite.Services
         ///   Parses the command line
         /// </summary>
         /// <param name="commandLine"> The command line to parse </param>
-        /// <param name="service"></param>
-        /// <param name="ravenInstanceId"></param>
         /// <returns> The command line elements that were found </returns>
-        private static void ParseCommandLine(string commandLine, out Service? service, out string ravenInstanceId)
+        private static Service? ParseCommandLine(string commandLine)
         {
-            service = null;
-            ravenInstanceId = null;
-
             var parser = new StringCommandLineParser();
             var result = parser.All(commandLine);
 
@@ -98,16 +91,13 @@ namespace Errordite.Services
 
                 if (element != null && element.Key.ToLowerInvariant() == "instance")
                 {
-                    service = (Service)Enum.Parse(typeof(Service), element.Value, true);
-                }
-
-                if (element != null && element.Key.ToLowerInvariant() == "raveninstanceid")
-                {
-                    ravenInstanceId = RavenInstance.GetId(element.Value);
+                    return (Service)Enum.Parse(typeof(Service), element.Value, true);
                 }
 
                 result = parser.All(result.Rest);
             }
+
+            return null;
         }
     }
 }

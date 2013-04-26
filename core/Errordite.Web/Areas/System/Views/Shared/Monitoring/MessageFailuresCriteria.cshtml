@@ -1,7 +1,7 @@
 ﻿@using Errordite.Web
-@model Errordite.Web.Areas.System.Models.Monitoring.ServiceFailuresViewModel
+@model Errordite.Web.Areas.System.Models.Monitoring.MessageFailuresViewModel
            
-@using (Html.BeginForm("index", "monitoring", FormMethod.Get, new { Area = WebConstants.AreaNames.System, id = "servicefailures" }))
+@using (Html.BeginForm("index", "monitoring", FormMethod.Get, new { Area = WebConstants.AreaNames.System, id = "failuresForm" }))
 {
     <div class="form form-inline criteria">
         <ul>
@@ -22,12 +22,10 @@
                             <b class="caret"></b>
                         </a>
                         <ul class="dropdown-menu pull-right" style="width: 208px;">
-                            <li><a href="#" data-val-modal="delete">Delete Selected</a></li>
-                            <li><a href="#" data-val-modal="delete">Delete All Messages</a></li>
-                            <li><a href="#" data-val-modal="retry">Retry Selected</a></li>
-                            <li><a href="#" data-val-modal="retry">Retry All Messages</a></li>
-                            <li><a href="#" data-val-modal="retrydelete">Retry Selected + Delete</a></li>
-                            <li><a href="#" data-val-modal="retrydelete">Retry All Messages + Delete</a></li>
+                            <li><a href="#" data-action="delete" data-check="Are you sure you want to delete the selected messages?">Delete Selected</a></li>
+                            <li><a href="#" data-action="deleteall" data-check="Are you sure you want to delete all messages?">Delete All Messages</a></li>
+                            <li><a href="#" data-action="retry" data-check="Are you sure you want to retry the selected messages?">Retry Selected</a></li>
+                            <li><a href="#" data-action="retryall" data-check="Are you sure you want to retry all messages?">Retry All Messages</a></li>
                         </ul>
                     </li>
                 </ul>  

@@ -39,23 +39,11 @@ the config file.  If you wish to allow a choice of folders, they can be separate
         <SiteBaseUrl theRest="$(SiteBaseUrl)" />
         <ReceiveWebEndpoints theRest="$(ReceiveEndpoints)" />
         <RenderMinifiedContent theRest="true" />
-        <MasterEventsQueueAddress production="$(EventsQueueAddress)" />
-        <MasterReceiveQueueAddress production="$(ReceiveQueueAddress)" />
-        <MasterNotificationsQueueAddress production="$(NotificationsQueueAddress)" />
+        <DeveloperQueueSuffix theRest="" />
     </File>
 
     <File match="email.config">
         <ErrorditeUrl theRest="$(SiteBaseUrl)" />
         <TemplateLocation theRest="$(EmailTemplateLocation)" />
-    </File>
-
-    <File match="cache.config">
-        <param xpath="//components/component[@id='RedisConfiguration']/parameters/Endpoint" theRest="$(RedisEndpoint)" />
-    </File>
-
-    <File match="services.config">
-        <param xpath="//components/component[@id='Receive']/parameters/QueueAddress" theRest="$(ReceiveQueueAddress)" />
-        <param xpath="//components/component[@id='Notifications']/parameters/QueueAddress" theRest="$(NotificationsQueueAddress)" />
-        <param xpath="//components/component[@id='Events']/parameters/QueueAddress" theRest="$(EventsQueueAddress)" />
     </File>
 </Files>
