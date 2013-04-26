@@ -1,0 +1,37 @@
+﻿@using Errordite.Web
+@model Errordite.Web.Areas.System.Models.Monitoring.ServiceFailuresViewModel
+           
+@using (Html.BeginForm("index", "monitoring", FormMethod.Get, new { Area = WebConstants.AreaNames.System, id = "servicefailures" }))
+{
+    <div class="form form-inline criteria">
+        <ul>
+            <li>
+                @Html.TextBoxFor(m => m.OrganisationId, new { autocomplete = "off", placeholder = "Organisation Id", style="width:150px" })
+            </li>
+            <li>
+                @Html.DropDownListFor(m => m.Service, Model.Services)
+            </li>
+            <li>
+                <input type="submit" class="btn btn-small btn-blue btn-inline" value="Search" />
+            </li>
+            <li class="pull-right">
+                <ul id="action-list" class="popup popup-pills">
+                    <li class="dropdown blue" id="actions">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#actions">
+                            Message Actions
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu pull-right" style="width: 208px;">
+                            <li><a href="#" data-val-modal="delete">Delete Selected</a></li>
+                            <li><a href="#" data-val-modal="delete">Delete All Messages</a></li>
+                            <li><a href="#" data-val-modal="retry">Retry Selected</a></li>
+                            <li><a href="#" data-val-modal="retry">Retry All Messages</a></li>
+                            <li><a href="#" data-val-modal="retrydelete">Retry Selected + Delete</a></li>
+                            <li><a href="#" data-val-modal="retrydelete">Retry All Messages + Delete</a></li>
+                        </ul>
+                    </li>
+                </ul>  
+            </li>
+        </ul>
+    </div>
+}

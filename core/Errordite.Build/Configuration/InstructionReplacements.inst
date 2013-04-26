@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- 
+
+This file is used by the ConfigFileChanger via ApplyEnvironmentConfiguration.cmd.  It walks the destination directory and finds-and-replaces the 
+contents of all matching files with the name of the element (e.g. $(Domain)) depending on the environment.  "theRest" can be used for all 
+environments that are not specifically mentioned.
+
+You can refer to a previous tag in a subsequent tag, as long as the referencing one appears lower in the list (e.g. SolrIndexPath = d:\asos\\data\solr).
+
+An important role of this file is to fill in placeholders in XmlConfig.inst, so that certain values (e.g. the website address) can be reused.
+
+In time we hope to use this for replacing values in sql files as well, but we are not there yet.
+
+-->
+<Root>
+	<Replacements match="*.inst">
+
+		<ErrorditeWebsiteHostName dev="dev-site.errordite.com" test="test-site.errordite.com" production="site.errordite.com" />
+		<ErrorditeReceiveHostName dev="dev-receive.errordite.com" test="test-receive.errordite.com" production="receive.errordite.com" />
+		<ErrorditeToken production="c0kH5d4B9FbfJxSScry5EQ==" theRest="TODO"/>
+
+		<RavenConnectionString
+		  dev="Url = http://dev-raven.errordite.com"
+		  test="Url = http://test-raven.errordite.com"
+		  production="Url = http://raven.errordite.com" />
+
+		<RavenPort theRest="80" />
+		<SiteBaseUrl dev="http://dev-site.errordite.com" test="http://test.errordite.com" production="https://www.errordite.com" />
+		<ReceiveEndpoints dev="http://dev-receive.errordite.com" test="http://test-receive.errordite.com" production="http://internal-receive.errordite.com:8001" />
+        <InternalReceiveEndpoint dev="http://dev-receive.errordite.com/receiveerror" test="http://receive.errordite.com/receiveerror" production="http://internal-receive.errordite.com:8001/receiveerror" />
+
+		<Domain theRest="" />
+
+		<InstallRoot
+		  dev="c:\inetpub\wwwroot"
+		  test="c:\ErrorditeTest"
+		  production="c:\Errordite" />
+
+		<RedisEndpoint
+		  theRest="127.0.0.1"
+		  production="redis.errordite.com" />
+
+		<EmailTemplateLocation
+		  dev="$reproot\core\Errordite.Core\Notifications\Templates"
+		  test="C:\ErrorditeTest\Errordite.Services.Notifications\Templates"
+		  production="C:\Errordite\Errordite.Services.Notifications\Templates" />
+
+		<ErrorditeWebUser theRest="errordite_web" />
+		<ErrorditeWebPassword theRest="Err0rD1t3_W3b$" />
+		<ErrorditeReceiveWebUser theRest="errordite_web_rcp" />
+		<ErrorditeReceiveWebPassword theRest="Err0rD1t3_R3p$" />
+		<ErrorditeReceiveServiceUser theRest="errordite_svc_rcp" />
+		<ErrorditeReceiveServicePassword theRest="Err0rD1t3_R5v$" />
+		<ErrorditeEventsServiceUser theRest="errordite_svc_evt" />
+		<ErrorditeEventsServicePassword theRest="Err0rD1t3_E7t$" />
+		<ErrorditeRavenUser theRest="errordite_raven" />
+		<ErrorditeRavenPassword theRest="Err0rD1t3_RVN$" />
+		<ErrorditeNotificationsServiceUser theRest="errordite_svc_not" />
+		<ErrorditeNotificationsServicePassword theRest="Err0rD1t3_N0T$" />
+		<ErrorditeScheduledTasksUser theRest="errordite_svc_tasks" />
+		<ErrorditeScheduledTasksPassword theRest="Err0rD1t3_3vT$" />
+
+		<ReceiveQueueAddress theRest="https://sqs.eu-west-1.amazonaws.com/186350237634/errordite-receive-" />
+		<NotificationsQueueAddress theRest="https://sqs.eu-west-1.amazonaws.com/186350237634/errordite-notifications-1" />
+		<EventsQueueAddress theRest="https://sqs.eu-west-1.amazonaws.com/186350237634/errordite-events-1" />
+
+	</Replacements>
+</Root>

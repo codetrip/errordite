@@ -1,0 +1,1 @@
+if exist %2obj\%3\%4.dll xcopy %2obj\%3\%4.dll %1\..\lib\RavenDb\Web\bin\ /Y /R

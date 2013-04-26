@@ -1,0 +1,29 @@
+﻿@using Errordite.Web.Extensions
+@using Errordite.Web.Models.Applications
+@model ApplicationsViewModel
+           
+@{
+    ViewBag.Title = "Applications";
+}
+
+@section header
+{
+    @Html.Partial("Account/Tabs") 
+}
+
+<section id="applications" class="centered">
+    <div class="content">
+        <p class="pull-right">
+             <a href="@Url.AddApplication()" class="btn btn-medium btn-blue pull-right">Add Application</a>
+        </p>
+       
+        @if (Model.Applications.Count > 0)
+        {
+            @Html.Partial("Applications/List")
+        }
+        else
+        {
+            <p>You have no applications.</p>
+        }
+    </div>
+</section>
