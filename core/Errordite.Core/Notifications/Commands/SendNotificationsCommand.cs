@@ -52,9 +52,7 @@ namespace Errordite.Core.Notifications.Commands
             else
             {
                 Session.AddCommitAction(new SendMessageCommitAction(request.EmailInfo,
-                    _configuration.GetNotificationsQueueAddress(request.Organisation == null ?
-                        null :
-                        request.Organisation.RavenInstance)));
+                    _configuration.GetNotificationsQueueAddress(request.Organisation == null ? "1" : request.Organisation.RavenInstance.FriendlyId)));
             }
         }
 
@@ -93,8 +91,8 @@ namespace Errordite.Core.Notifications.Commands
             {
                 Session.AddCommitAction(new SendMessageCommitAction(request.EmailInfo, 
                     _configuration.GetNotificationsQueueAddress(request.Organisation == null ? 
-                        null : 
-                        request.Organisation.RavenInstance)));
+                        "1" :
+                        request.Organisation.RavenInstance.FriendlyId)));
             }
         }
 
@@ -128,8 +126,8 @@ namespace Errordite.Core.Notifications.Commands
 
                 Session.AddCommitAction(new SendMessageCommitAction(hipChatMessage,
                     _configuration.GetNotificationsQueueAddress(request.Organisation == null ? 
-                        null : 
-                        request.Organisation.RavenInstance)));
+                        "1" :
+                        request.Organisation.RavenInstance.FriendlyId)));
             }
         }
     }

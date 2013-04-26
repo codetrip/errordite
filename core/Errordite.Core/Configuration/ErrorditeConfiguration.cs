@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Errordite.Core.Domain.Master;
@@ -33,28 +34,34 @@ namespace Errordite.Core.Configuration
         public string AWSSecretKey { get; set; }
         public string DeveloperQueueSuffix { get; set; }
 
-        public string GetReceiveQueueAddress(string organisationId, RavenInstance instance = null)
+        public string GetReceiveQueueAddress(string organisationFriendlyId = "1")
         {
-            if (instance == null || instance.Id == RavenInstance.Master().Id)
-                return "{0}1{2}".FormatWith(ReceiveQueueAddress, DeveloperQueueSuffix);
-
-            return "{0}{1}{2}".FormatWith(instance.ReceiveQueueAddress, instance.FriendlyId, DeveloperQueueSuffix);
+            return "{0}{1}{2}".FormatWith(ReceiveQueueAddress, organisationFriendlyId, DeveloperQueueSuffix);
         }
 
-        public string GetEventsQueueAddress(RavenInstance instance = null)
+        public string GetEventsQueueAddress(string ravenInstanceFriendlyId = "1")
         {
-            if (instance == null)
-                return "{0}1{2}".FormatWith(EventsQueueAddress, DeveloperQueueSuffix);
-
-            return "{0}{1}{2}".FormatWith(instance.EventsQueueAddress, instance.FriendlyId, DeveloperQueueSuffix);
+            return "{0}{1}{2}".FormatWith(EventsQueueAddress, ravenInstanceFriendlyId, DeveloperQueueSuffix);
         }
 
-        public string GetNotificationsQueueAddress(RavenInstance instance = null)
+        public string GetNotificationsQueueAddress(string ravenInstanceFriendlyId = "1")
         {
-            if (instance == null)
-                return "{0}1{2}".FormatWith(NotificationsQueueAddress, DeveloperQueueSuffix);
+            return "{0}{1}{2}".FormatWith(NotificationsQueueAddress, ravenInstanceFriendlyId, DeveloperQueueSuffix);
+        }
 
-            return "{0}{1}{2}".FormatWith(instance.NotificationsQueueAddress, instance.FriendlyId, DeveloperQueueSuffix);
+        public string GetQueueForService(Service service, string organisationFriendlyId = null, string ravenInstanceFriendlyId = null)
+        {
+            switch (service)
+            {
+                case Service.Receive:
+                    return GetReceiveQueueAddress(organisationFriendlyId);
+                case Service.Notifications:
+                    return GetNotificationsQueueAddress(ravenInstanceFriendlyId);
+                case Service.Events:
+                    return GetEventsQueueAddress(ravenInstanceFriendlyId);
+            }
+
+            throw new InvalidOperationException("Invalid service name:={0}".FormatWith(service.ToString()));
         }
     }
 }

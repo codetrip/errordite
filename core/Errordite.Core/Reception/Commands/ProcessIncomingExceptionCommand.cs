@@ -99,7 +99,7 @@ namespace Errordite.Core.Reception.Commands
                     OrganisationId = organisationId,
                     Token = request.Error.Token
                 },
-                _configuration.GetReceiveQueueAddress(organisation.FriendlyId, organisation.RavenInstance));
+                _configuration.GetReceiveQueueAddress(organisation.FriendlyId));
             }
             else
             {

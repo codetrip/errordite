@@ -77,7 +77,7 @@ namespace Errordite.Core.Issues.Commands
                 IssueId = request.MergeToIssueId,
                 OrganisationId = request.CurrentUser.OrganisationId,
                 TriggerEventUtc = DateTime.UtcNow,
-            }, _configuration.GetEventsQueueAddress(request.CurrentUser.Organisation.RavenInstance)));
+            }, _configuration.GetEventsQueueAddress(request.CurrentUser.Organisation.RavenInstance.FriendlyId)));
 
             return new MergeIssuesResponse
             {
