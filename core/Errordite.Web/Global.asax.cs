@@ -129,8 +129,6 @@ namespace Errordite.Web
             GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings = WebApiSettings.JsonSerializerSettings;
 
             ErrorditeClient.ConfigurationAugmenter = ErrorditeClientOverrideHelper.Augment;
-
-            BootstrapRavenInstances();
         }
         
         protected void Application_Error(object sender, EventArgs e)
@@ -186,27 +184,6 @@ namespace Errordite.Web
             Server.ClearError();
             IController controller = new ErrorController(null);
             controller.Execute(new RequestContext(new HttpContextWrapper(Context), routeData));
-        }
-
-        public static void BootstrapRavenInstances()
-        {
-            var masterDocumentStoreFactory = ObjectFactory.GetObject<IShardedRavenDocumentStoreFactory>();
-            var masterDocumentStore = masterDocumentStoreFactory.Create(RavenInstance.Master());
-            var session = masterDocumentStore.OpenSession(CoreConstants.ErrorditeMasterDatabaseName);
-            var instances = ObjectFactory.GetObject<IGetRavenInstancesQuery>().Invoke(new GetRavenInstancesRequest
-                {
-                    Session = session
-                }).RavenInstances;
-
-            var master = instances.FirstOrDefault(i => i.IsMaster);
-
-            if(master != null)
-            {
-                master.ReceiveQueueAddress = ErrorditeConfiguration.Current.GetReceiveQueueAddress(string.Empty);
-                master.NotificationsQueueAddress = ErrorditeConfiguration.Current.GetNotificationsQueueAddress();
-                master.EventsQueueAddress = ErrorditeConfiguration.Current.GetEventsQueueAddress();
-                session.SaveChanges();
-            }
         }
     }
 }

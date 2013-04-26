@@ -24,23 +24,26 @@ namespace Errordite.Services.Processors
         private readonly AmazonSQS _amazonSQS;
         private readonly IRequestThrottler _requestThrottler;
         private readonly ICreateSQSQueueCommand _createSQSQueueCommand;
+        private readonly ErrorditeConfiguration _configuration;
 
         public string OrganisationFriendlyId { get; private set; }
 
         public SQSQueueProcessor(IEnumerable<ServiceConfiguration> serviceConfigurations,
             AmazonSQS amazonSQS, 
             IRequestThrottler requestThrottler, 
-            ICreateSQSQueueCommand createSQSQueueCommand)
+            ICreateSQSQueueCommand createSQSQueueCommand, 
+            ErrorditeConfiguration configuration)
         {
             _serviceConfiguration = serviceConfigurations.First(c => c.IsActive);
             _amazonSQS = amazonSQS;
             _requestThrottler = requestThrottler;
             _createSQSQueueCommand = createSQSQueueCommand;
+            _configuration = configuration;
         }
 
         public void Start(string organisationId, string ravenInstanceId)
         {
-            _queueUrl = "{0}{1}".FormatWith(_serviceConfiguration.QueueAddress, organisationId ?? ravenInstanceId);
+            _queueUrl = _configuration.GetQueueForService(_serviceConfiguration.Service, organisationId, ravenInstanceId);
 
             Trace("Starting SQS Queue Processor for organisation:={0}, ravenInstanceId:={1}, queue:={2}", organisationId ?? string.Empty, ravenInstanceId, _queueUrl);
             OrganisationFriendlyId = organisationId;

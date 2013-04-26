@@ -1,5 +1,4 @@
 ﻿using Errordite.Core.Extensions;
-using Errordite.Core.Configuration;
 using ProtoBuf;
 using Raven.Imports.Newtonsoft.Json;
 
@@ -25,21 +24,6 @@ namespace Errordite.Core.Domain.Master
         /// </summary>
         [ProtoMember(4)]
         public bool IsMaster { get; set; }
-        /// <summary>
-        /// Receive service queue address for this instance
-        /// </summary>
-        [ProtoMember(5)]
-        public string ReceiveQueueAddress { get; set; }
-        /// <summary>
-        /// Events service queue address for this instance
-        /// </summary>
-        [ProtoMember(6)]
-        public string EventsQueueAddress { get; set; }
-        /// <summary>
-        /// Notifications service queue address for this instance
-        /// </summary>
-        [ProtoMember(7)]
-        public string NotificationsQueueAddress { get; set; }
 
 		[JsonIgnore]
         public string ServicesBaseUrl
@@ -65,10 +49,7 @@ namespace Errordite.Core.Domain.Master
 		{
 			Active = true,
 			IsMaster = true,
-			Id = "RavenInstances/1",
-			ReceiveQueueAddress = ErrorditeConfiguration.Current.GetNotificationsQueueAddress(),
-			EventsQueueAddress = ErrorditeConfiguration.Current.GetEventsQueueAddress(),
-			NotificationsQueueAddress = ErrorditeConfiguration.Current.GetNotificationsQueueAddress()
+			Id = "RavenInstances/1"
 		};
     }
 }

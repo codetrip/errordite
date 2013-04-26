@@ -37,9 +37,7 @@ namespace Errordite.Services
                 //indicates this is the active configuration for this service
                 configuration.IsActive = true;
 
-                Trace.Write("Loaded configuration, Service:={0}, Queue:={1}".FormatWith(
-                    configuration.ServiceName,
-                    configuration.QueueAddress));
+                Trace.Write("Loaded configuration, Service:={0}".FormatWith(configuration.ServiceName));
 
                 ObjectFactory.Container.Install(new ServicesMasterInstaller(service.Value));
 
