@@ -3,6 +3,7 @@ using System.Web.Mvc;
 using Errordite.Core.Organisations.Queries;
 using Errordite.Web.ActionFilters;
 using Errordite.Web.Models.Navigation;
+using Errordite.Web.Models.Subscription;
 
 namespace Errordite.Web.Controllers
 {
@@ -21,7 +22,11 @@ namespace Errordite.Web.Controllers
             var paymentPlans =
                 _getAvailablePaymentPlansQuery.Invoke(new GetAvailablePaymentPlansRequest()).Plans.Where(p => !p.IsTrial);
             
-            return View(paymentPlans);
+            return View(paymentPlans.Select(p => new PaymentPlanViewModel
+	        {
+		        Plan = p,
+				Status = PaymentPlanStatus.FirstSignUp
+	        }));
         }
 
         [GenerateBreadcrumbs(BreadcrumbId.QuickStart)]

@@ -1627,12 +1627,26 @@ nav {
       color: #8e9090;
       margin-top: 3px;
       font-weight: 600; }
+  .payment-plan h4 {
+    padding: 2px 0;
+    color: #525252;
+    font-size: 14px;
+    margin: 0;
+    font-weight: 400;
+    float: none; }
+    .payment-plan h4 span {
+      float: right;
+      font-size: 14px;
+      color: #8e9090;
+      margin: 2px 10px 2px 0;
+      font-weight: 700; }
   .payment-plan ul {
-    padding: 0 0 0 10px;
+    padding: 10px 0 0 10px;
     float: none;
     list-style: none; }
   .payment-plan li {
-    float: none; }
+    float: none;
+    padding: 4px 0; }
   .payment-plan div {
     background-color: #95c0df;
     padding: 7px 8px 8px 8px; }

@@ -310,6 +310,7 @@
     <Compile Include="Models\Account\OrganisationsViewModel.cs" />
     <Compile Include="Models\Account\OrganisationViewModel.cs" />
     <Compile Include="Models\Search\SearchViewModel.cs" />
+    <Compile Include="Models\Subscription\PaymentPlanViewModel.cs" />
     <Compile Include="Models\Subscription\SignUpViewModel.cs" />
     <Compile Include="Models\Users\AddUserViewModel.cs" />
     <Compile Include="Models\Users\UserViewModel.cs" />
@@ -907,7 +908,6 @@
   <ItemGroup>
     <Content Include="Assets\Js\activity.coffee" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Content Include="Areas\System\Views\Monitoring\Index.cshtml" />
   </ItemGroup>
@@ -916,6 +916,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\System\Views\Shared\Monitoring\MessageFailuresCriteria.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Subscription\TrialExpired.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

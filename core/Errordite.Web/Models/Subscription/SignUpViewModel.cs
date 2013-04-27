@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
-using Errordite.Core.Domain.Organisation;
 
 namespace Errordite.Web.Models.Subscription
 {
     public class SignUpViewModel : SignUpPostModel
     {
-        public IEnumerable<PaymentPlan> Plans { get; set; }
+        public PaymentPlanViewModel SelectedPlan { get; set; }
         public IEnumerable<SelectListItem> CreditCards { get; set; }
         public IEnumerable<SelectListItem> Countries { get; set; }
     }

@@ -9,40 +9,33 @@
         <h1>Sign Up</h1>
             @using (Html.BeginForm("signup", "subscription", FormMethod.Post, new { id = "signupForm" }))
             {
-             <div class="form double">
-                 <ul>
-                     <li>
-                         <ul class="plans">
-                             <li><a href="#small">Small</a></li>
-                             <li><a href="#medium">Medium</a></li>
-                             <li><a href="#large">Large</a></li>
-                         </ul>
-                     </li>
-                     <li>
-                         @Html.LabelFor(m => m.CreditCardNumber, "Credit Card Number")
-                         @Html.TextBoxFor(m => m.CreditCardNumber)
-                         @Html.ValidationMessageFor(m => m.CreditCardNumber)
-                     </li>
-                     <li>
-                         @Html.LabelFor(m => m.CreditCard, "Card Type")
-                         @Html.DropDownListFor(m => m.CreditCard, Model.CreditCards)
-                         @Html.ValidationMessageFor(m => m.CreditCard)
-                     </li>
-                     <li>
-                         @Html.LabelFor(m => m.NameOnCard, "Name On Card")
-                         @Html.TextBoxFor(m => m.NameOnCard)
-                         @Html.ValidationMessageFor(m => m.NameOnCard)
-                     </li>
-                     <li>
-                         @Html.LabelFor(m => m.SecurityCode, "Security Code")
-                         @Html.TextBoxFor(m => m.SecurityCode)
-                         @Html.ValidationMessageFor(m => m.SecurityCode)
-                     </li>
-                     <li class="buttons">
-                         <input type="submit" class="btn btn-medium btn-blue" value="Sign Up" />
-                     </li>
-                 </ul>
-            </div>
+	            <div class="form double">
+		            <ul>
+			            <li>
+				            @Html.LabelFor(m => m.CreditCardNumber, "Credit Card Number")
+				            @Html.TextBoxFor(m => m.CreditCardNumber)
+				            @Html.ValidationMessageFor(m => m.CreditCardNumber)
+			            </li>
+			            <li>
+				            @Html.LabelFor(m => m.CreditCard, "Card Type")
+				            @Html.DropDownListFor(m => m.CreditCard, Model.CreditCards)
+				            @Html.ValidationMessageFor(m => m.CreditCard)
+			            </li>
+			            <li>
+				            @Html.LabelFor(m => m.NameOnCard, "Name On Card")
+				            @Html.TextBoxFor(m => m.NameOnCard)
+				            @Html.ValidationMessageFor(m => m.NameOnCard)
+			            </li>
+			            <li>
+				            @Html.LabelFor(m => m.SecurityCode, "Security Code")
+				            @Html.TextBoxFor(m => m.SecurityCode, new {@style="width:60px"})
+				            @Html.ValidationMessageFor(m => m.SecurityCode)
+			            </li>
+			            <li class="buttons">
+				            <input type="submit" class="btn btn-medium btn-blue" value="Sign Up" />
+			            </li>
+		            </ul>
+	            </div>
             <div class="form double">
                 <ul>
                     <li>
@@ -67,7 +60,7 @@
                     </li>
                     <li>
                         @Html.LabelFor(m => m.ZipPostalCode, "Zip or Postal Code")
-                        @Html.TextBoxFor(m => m.ZipPostalCode)
+                        @Html.TextBoxFor(m => m.ZipPostalCode, new {@style="width:100px"})
                         @Html.ValidationMessageFor(m => m.ZipPostalCode)
                     </li>
                     <li>

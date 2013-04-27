@@ -205,7 +205,7 @@ namespace Errordite.Web.Extensions
 
         #region Authentication
 
-        public static string SignUp(this UrlHelper helper, string planName = null)
+        public static string SignUp(this UrlHelper helper)
         {
             return helper.Action("signup", "authentication", new { Area = string.Empty });
         }
@@ -231,7 +231,7 @@ namespace Errordite.Web.Extensions
 
         public static string SubscriptionSignUp(this UrlHelper helper, string planName)
         {
-            return helper.Action("signup", "subscription", new { Area = string.Empty, Name = planName });
+            return helper.Action("signup", "subscription", new { Area = string.Empty, planName });
         }
 
         public static string TrialExpired(this UrlHelper helper)

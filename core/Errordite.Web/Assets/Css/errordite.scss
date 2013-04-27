@@ -2051,12 +2051,31 @@ nav {
             font-weight: $boldfontweight;
         }
     }
+	
+    h4 {
+        padding:2px 0;
+        color:$mediumbrown;
+        font-size:14px;
+        margin:0;
+        font-weight: $normalfontweight;
+		float:none;
+        span {
+            float:right;
+            font-size:14px;
+            color:$verylightbrown;
+            margin:2px 10px 2px 0;
+            font-weight: $extraboldfontweight;
+        }
+    }
     ul {
-        padding:0 0 0 10px;
+        padding:10px 0 0 10px;
 		float:none;
 		list-style:none;
     }
-	li {float:none;}
+	li {
+		float:none;
+		padding:4px 0;
+	}
     div {
         background-color:$darkblue;
         padding:7px 8px 8px 8px;

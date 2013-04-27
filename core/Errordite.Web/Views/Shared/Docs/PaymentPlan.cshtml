@@ -1,17 +1,35 @@
 ﻿@using Errordite.Web.Extensions
-@using Errordite.Core.Domain.Organisation
-@model PaymentPlan
+@using Errordite.Web.Models.Subscription
+@model Errordite.Web.Models.Subscription.PaymentPlanViewModel
            
 <div class="three-col">
     <div class="payment-plan">
-        <h2>@Model.Name<span>$@Model.Price.ToString("0") / Month</span></h2>
+        <h2>@Model.Plan.Name<span>$@Model.Plan.Price.ToString("0") / Month</span></h2>
         <ul>
-            <li><b>@Model.MaximumIssues</b> Issues</li>
-            <li><b>@Model.MaximumUsers</b> User@(Model.MaximumUsers == 1 ? "": "s")</li>
-            <li><b>@Model.MaximumApplications</b> Application@(Model.MaximumApplications == 1 ? "": "s")</li>
+	        <li>
+		        <h4>Issues<span>@Model.Plan.MaximumIssues</span></h4>
+	        </li>
+	        <li>
+		        <h4>Users<span>@Model.Plan.MaximumUsers</span></h4>
+	        </li>
+	        <li>
+		        <h4>Applications<span>@Model.Plan.MaximumApplications</span></h4>
+	        </li>
+	        <li>
+		        <h4>Data Retention<span>Indefinately</span></h4>
+	        </li>
         </ul>
-        <div>
-            <a href="@Url.SignUp(Model.Name)">Sign Up Now ›</a>
-        </div>
+		@if (Model.Status == PaymentPlanStatus.SubscriptionSignUp)
+		{
+			<div>
+				<a href="@Url.SubscriptionSignUp(Model.Plan.Name)">Sign up to the '@Model.Plan.Name' Plan ›</a>
+			</div>
+		}
+		else if (Model.Status == PaymentPlanStatus.FirstSignUp)
+		{
+			<div>
+				<a href="@Url.SignUp()">Sign Up Now ›</a>
+			</div>
+		}
     </div>
 </div>
