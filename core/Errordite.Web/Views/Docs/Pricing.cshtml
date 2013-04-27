@@ -1,0 +1,34 @@
+﻿@using Errordite.Web.Models.Docs
+@using Errordite.Web.Extensions
+@model IEnumerable<Errordite.Web.Models.Subscription.PaymentPlanViewModel>
+
+@{
+    ViewBag.Title = "Pricing";
+}   
+
+@section header
+{
+    @Html.Partial("Docs/Tabs", DocsTab.Pricing) 
+}     
+
+<section class="centered">
+    <div class="content help">
+        <h1>Pricing</h1>
+        <p>
+            Errordite is a subscription-based service, with payments made monthly. The first 30 days is a free trial, after which you may select
+            from one of 3 different plans - details below.
+        </p>
+    
+        @foreach (var paymentPlan in Model)
+        {
+            @Html.Partial("Docs/PaymentPlan", paymentPlan)
+        }
+		
+        <div class="clear"></div>
+
+		<p>
+            If you needs are not met by what is here, please <a href="@Url.Contact()">contact us</a>.
+        </p>
+    </div>
+    
+</section>

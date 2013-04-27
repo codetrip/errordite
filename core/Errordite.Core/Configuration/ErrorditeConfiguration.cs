@@ -1,0 +1,67 @@
+﻿
+using System;
+using System.Collections.Generic;
+using System.Reflection;
+using Errordite.Core.Domain.Master;
+using Errordite.Core.Extensions;
+using Errordite.Core.IoC;
+using Errordite.Core.Reception;
+
+namespace Errordite.Core.Configuration
+{
+    public class ErrorditeConfiguration
+    {
+        public static ErrorditeConfiguration Current { get { return ObjectFactory.GetObject<ErrorditeConfiguration>(); } }
+
+        public static readonly string CurrentBuildNumber = Assembly.GetExecutingAssembly().GetCurrentBuildNumber();
+        public string SiteBaseUrl { get; set; }
+        public string ReceiveWebEndpoints { get; set; }
+        public bool RenderMinifiedContent { get; set; }
+        public bool ServiceBusEnabled { get; set; }
+        public string ReceiveQueueAddress { private get; set; }
+        public string NotificationsQueueAddress { private get; set; }
+        public string EventsQueueAddress { private get; set; }
+        public string AdministratorsEmail { get; set; }
+        public int MaxPageSize { get; set; }
+        public int IssueErrorLimit { get; set; }
+        public int IssueCacheId { get; set; }
+        public int TrialLengthInDays { get; set; }
+        public int QueueVisibilityTimeoutSeconds { get; set; }
+        public double IssueCacheTimeoutMinutes { get; set; }
+        public List<string> ErrorPropertiesForFiltering { get; set; }
+        public List<RateLimiterRule> RateLimiterRules { get; set; }
+        public string AWSAccessKey { get; set; }
+        public string AWSSecretKey { get; set; }
+        public string DeveloperQueueSuffix { get; set; }
+
+        public string GetReceiveQueueAddress(string organisationFriendlyId = "1")
+        {
+            return "{0}{1}{2}".FormatWith(ReceiveQueueAddress, organisationFriendlyId, DeveloperQueueSuffix);
+        }
+
+        public string GetEventsQueueAddress(string ravenInstanceFriendlyId = "1")
+        {
+            return "{0}{1}{2}".FormatWith(EventsQueueAddress, ravenInstanceFriendlyId, DeveloperQueueSuffix);
+        }
+
+        public string GetNotificationsQueueAddress(string ravenInstanceFriendlyId = "1")
+        {
+            return "{0}{1}{2}".FormatWith(NotificationsQueueAddress, ravenInstanceFriendlyId, DeveloperQueueSuffix);
+        }
+
+        public string GetQueueForService(Service service, string organisationFriendlyId = null, string ravenInstanceFriendlyId = null)
+        {
+            switch (service)
+            {
+                case Service.Receive:
+                    return GetReceiveQueueAddress(organisationFriendlyId);
+                case Service.Notifications:
+                    return GetNotificationsQueueAddress(ravenInstanceFriendlyId);
+                case Service.Events:
+                    return GetEventsQueueAddress(ravenInstanceFriendlyId);
+            }
+
+            throw new InvalidOperationException("Invalid service name:={0}".FormatWith(service.ToString()));
+        }
+    }
+}

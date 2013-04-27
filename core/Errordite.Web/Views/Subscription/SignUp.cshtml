@@ -1,0 +1,76 @@
+﻿@model Errordite.Web.Models.Subscription.SignUpViewModel
+
+@{
+    ViewBag.Title = "Sign Up";
+}
+
+<section class="centered">
+    <div class="content">
+        <h1>Sign Up</h1>
+            @using (Html.BeginForm("signup", "subscription", FormMethod.Post, new { id = "signupForm" }))
+            {
+	            <div class="form double">
+		            <ul>
+			            <li>
+				            @Html.LabelFor(m => m.CreditCardNumber, "Credit Card Number")
+				            @Html.TextBoxFor(m => m.CreditCardNumber)
+				            @Html.ValidationMessageFor(m => m.CreditCardNumber)
+			            </li>
+			            <li>
+				            @Html.LabelFor(m => m.CreditCard, "Card Type")
+				            @Html.DropDownListFor(m => m.CreditCard, Model.CreditCards)
+				            @Html.ValidationMessageFor(m => m.CreditCard)
+			            </li>
+			            <li>
+				            @Html.LabelFor(m => m.NameOnCard, "Name On Card")
+				            @Html.TextBoxFor(m => m.NameOnCard)
+				            @Html.ValidationMessageFor(m => m.NameOnCard)
+			            </li>
+			            <li>
+				            @Html.LabelFor(m => m.SecurityCode, "Security Code")
+				            @Html.TextBoxFor(m => m.SecurityCode, new {@style="width:60px"})
+				            @Html.ValidationMessageFor(m => m.SecurityCode)
+			            </li>
+			            <li class="buttons">
+				            <input type="submit" class="btn btn-medium btn-blue" value="Sign Up" />
+			            </li>
+		            </ul>
+	            </div>
+            <div class="form double">
+                <ul>
+                    <li>
+                        @Html.LabelFor(m => m.AddressLine1, "Address Line 1")
+                        @Html.TextBoxFor(m => m.AddressLine1)
+                        @Html.ValidationMessageFor(m => m.AddressLine1)
+                    </li>
+                    <li>
+                        @Html.LabelFor(m => m.AddressLine2, "Address Line 2")
+                        @Html.TextBoxFor(m => m.AddressLine2)
+                        @Html.ValidationMessageFor(m => m.AddressLine2)
+                    </li>
+                    <li>
+                        @Html.LabelFor(m => m.AddressLine3, "Address Line 3")
+                        @Html.TextBoxFor(m => m.AddressLine3)
+                        @Html.ValidationMessageFor(m => m.AddressLine3)
+                    </li>
+                    <li>
+                        @Html.LabelFor(m => m.CityRegion, "City or Region")
+                        @Html.TextBoxFor(m => m.CityRegion)
+                        @Html.ValidationMessageFor(m => m.CityRegion)
+                    </li>
+                    <li>
+                        @Html.LabelFor(m => m.ZipPostalCode, "Zip or Postal Code")
+                        @Html.TextBoxFor(m => m.ZipPostalCode, new {@style="width:100px"})
+                        @Html.ValidationMessageFor(m => m.ZipPostalCode)
+                    </li>
+                    <li>
+                        @Html.LabelFor(m => m.Country, "Country")
+                        @Html.DropDownListFor(m => m.Country, Model.Countries)
+                        @Html.ValidationMessageFor(m => m.Country)
+                    </li>
+                </ul>
+            </div>
+            }
+        </div>
+    </div>
+</section>

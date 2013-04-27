@@ -1,0 +1,29 @@
+﻿@using Errordite.Web.Extensions
+@model IEnumerable<Errordite.Web.Models.Subscription.PaymentPlanViewModel>
+
+@{
+    ViewBag.Title = "Sign Up";
+}
+
+<section class="centered">
+    <div class="content">
+        <h1>Your Trial has Expired</h1>
+        <p>Thank you for trying out Errordite, your free trial has now expired. In order to continue to use Errordite you need to sign up to one of our payment plans.</p>
+	    <p>
+		    When you sign up we will create a subscription on the credit / debit card supplied and will bill you monthly for the amount specified for your selected plan.
+			Invoices will be available in the Account | Billing section of Errordite. Errordite does not store your credit card information, but passes it on to our payment gateway <a href="http://www.authorize.net">Authorize.Net</a> who manage all card payments for us.</p>
+	    <p>If you have any questions regarding our pricing and billing please <a href="@Url.Contact()">Contact Us</a>.</p>
+	    <div class="clear" style="height:20px;"></div>
+
+		@foreach (var paymentPlan in Model)
+        {
+            @Html.Partial("Docs/PaymentPlan", paymentPlan)
+        }
+		
+        <div class="clear"></div>
+
+		<p>
+            If you needs are not met by what is here, please <a href="@Url.Contact()">contact us</a>.
+        </p>
+    </div>
+</section>

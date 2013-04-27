@@ -1,0 +1,54 @@
+<Project
+	xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
+	ToolsVersion="4.0"
+	DefaultTargets="InstallEventsService">
+
+  <UsingTask TaskName="Sleep" AssemblyFile="$(MSBuildProjectDirectory)\Errordite.Build.dll" />
+  
+  <Import Project="$(MSBuildProjectDirectory)\Global.imports" />
+  <Import Project="$(MSBuildProjectDirectory)\Configuration.target" />
+  <Import Project="$(MSBuildProjectDirectory)\ServiceControl.target" />
+
+  <PropertyGroup>
+    <ServiceName>Errordite.Services$Events</ServiceName>
+    <ServiceDomain>$(Domain)</ServiceDomain>
+    <ServiceUser>$(ErrorditeEventsServiceUser)</ServiceUser>
+    <ServicePassword>$(ErrorditeEventsServicePassword)</ServicePassword>
+    <DeployedApplicationPath>$(InstallRoot)\Errordite.Services.Events</DeployedApplicationPath>
+    <ServicePath>$(DeployedApplicationPath)\Errordite.Services.exe</ServicePath>
+    <ServiceInstance>Events</ServiceInstance>
+  </PropertyGroup>
+
+  <Target Name="InstallEventsService" DependsOnTargets="GetBuildNumberAndInstallPaths;
+          StopService;
+          CopyServiceFiles; 
+          RunConfigFileChanger;
+          InstallService;
+          SetServiceAutomatic;
+          StartService;">
+  </Target>
+
+  <Target Name="CopyServiceFiles" DependsOnTargets="GetBuildNumberAndInstallPaths" >
+    <CreateItem Include="$(MSBuildProjectDirectory)\..\Errordite.Services\**\*.*;">
+      <Output TaskParameter="Include" ItemName="ErrorditeEventsServiceFiles" />
+    </CreateItem>
+
+    <Copy SourceFiles="@(ErrorditeEventsServiceFiles)" DestinationFolder="$(EventsServiceInstallPath)\%(RecursiveDir)" />
+  </Target>
+
+  <Target Name="GetBuildNumberAndInstallPaths">
+    <ReadLinesFromFile File="$(MSBuildProjectDirectory)\version.txt">
+      <Output TaskParameter="Lines" PropertyName="BuildNumber" />
+    </ReadLinesFromFile>
+
+    <CreateProperty Value="$(InstallRoot)\Errordite.Services.Events">
+      <Output TaskParameter="Value" PropertyName="EventsServiceInstallPath" />
+    </CreateProperty>
+
+    <CreateProperty Value="$(EventsServiceInstallPath)">
+      <Output TaskParameter="Value" PropertyName="ConfigChangerRunLocation" />
+    </CreateProperty>
+
+    <Message Text="$(TasksPath)" />
+  </Target>
+</Project>
