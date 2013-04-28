@@ -91,7 +91,8 @@ namespace Errordite.Core.Reception.Commands
                 Trace("Failed rate limiter rule named {0}", failedRule.Name);
                 return new ProcessIncomingExceptionResponse
                 {
-                    ResponseMessage = "The error was not stored due to limits on the number of errors we can receive for you in a given time frame"
+                    ResponseMessage = "The error was not stored due to limits on the number of errors we can receive for you in a given time frame",
+                    SpecialResponseCode = 429, //too many requests http://tools.ietf.org/html/draft-nottingham-http-new-status-02
                 };
             }
 
@@ -255,7 +256,9 @@ namespace Errordite.Core.Reception.Commands
 
         public string ResponseMessage { get; set; }
 
-        public HttpStatusCode ResponseCode { get; set; }
+        public HttpStatusCode? ResponseCode { get; set; }
+        //if the Response Code we want to use isn't in the .net enum, set it here instead
+        public int? SpecialResponseCode { get; set; }
 
     }
 }
