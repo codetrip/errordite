@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Web;
 using Errordite.Core.Configuration;
 using Errordite.Core.Extensions;
 using Errordite.Core.Interfaces;
@@ -48,27 +50,32 @@ namespace Errordite.Core.Reception.Commands
                 case ApplicationStatus.Inactive:
                     return new ProcessIncomingExceptionResponse
                     {
-                        ResponseMessage = "The application specified in the token is not currently active"
+                        ResponseMessage = "The application specified in the token is not currently active",
+                        ResponseCode = HttpStatusCode.NotAcceptable,
                     };
                 case ApplicationStatus.NotFound:
                     return new ProcessIncomingExceptionResponse
                     {
-                        ResponseMessage = "The application specified in the token could not be found"
+                        ResponseMessage = "The application specified in the token could not be found",
+                        ResponseCode = HttpStatusCode.Unauthorized,
                     };
                 case ApplicationStatus.Error:
                     return new ProcessIncomingExceptionResponse
                     {
+                        ResponseCode = HttpStatusCode.InternalServerError,
                         ResponseMessage = "An unhandled error occured while attempting to store this error"
                     };
                 case ApplicationStatus.InvalidOrganisation:
                     return new ProcessIncomingExceptionResponse
                     {
-                        ResponseMessage = "Failed to locate the organisation specified in your token"
+                        ResponseMessage = "Failed to locate the organisation specified in your token",
+                        ResponseCode = HttpStatusCode.Unauthorized,
                     };
                 case ApplicationStatus.InvalidToken:
                     return new ProcessIncomingExceptionResponse
                     {
-                        ResponseMessage = "The token supplied is invalid, please check your token in the applications page in Errordite"
+                        ResponseMessage = "The token supplied is invalid, please check your token in the applications page in Errordite",
+                        ResponseCode = HttpStatusCode.BadRequest,
                     };
                 case ApplicationStatus.Ok:
                     {
@@ -241,6 +248,14 @@ namespace Errordite.Core.Reception.Commands
 
     public class ProcessIncomingExceptionResponse
     {
+        public ProcessIncomingExceptionResponse()
+        {
+            ResponseCode = HttpStatusCode.Accepted;
+        }
+
         public string ResponseMessage { get; set; }
+
+        public HttpStatusCode ResponseCode { get; set; }
+
     }
 }
