@@ -23,13 +23,16 @@ namespace Errordite.Receive.Controllers
                 Error = clientError
             });
 
+
+            Response.StatusCode = response.ResponseCode.HasValue
+                                      ? (int) response.ResponseCode.Value
+                                      : response.SpecialResponseCode ?? 200;
+
             if (response.ResponseMessage.IsNotNullOrEmpty())
             {
-                Response.StatusCode = (int)HttpStatusCode.NotAcceptable;
                 return Content(response.ResponseMessage);
             }
 
-            Response.StatusCode = (int) HttpStatusCode.Created;
             return Content("Received error");
         }
     }
