@@ -33,8 +33,10 @@ namespace Errordite.Core.Domain.Organisation
         [ProtoMember(11)]
         public string ApiKeySalt { get; set; }
         [ProtoMember(12)]
-        public string RavenInstanceId { get; set; }
-        [JsonIgnore, ProtoMember(13)]
+		public string RavenInstanceId { get; set; }
+		[ProtoMember(13)]
+		public bool SubscriptionDispensation { get; set; }
+        [JsonIgnore, ProtoMember(14)]
         public RavenInstance RavenInstance { get; set; }
 
         [JsonIgnore]

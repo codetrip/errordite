@@ -15,11 +15,10 @@ using Errordite.Web.Extensions;
 using Errordite.Core.Extensions;
 using Errordite.Web.Models.Issues;
 using Errordite.Web.Models.Navigation;
-using Application = Errordite.Core.Domain.Organisation.Application;
 
 namespace Errordite.Web.Controllers
 {
-    [Authorize]
+	[Authorize, ValidateSubscriptionActionFilter]
     public class IssuesController : ErrorditeController
     {
         private readonly IPagingViewModelGenerator _pagingViewModelGenerator;

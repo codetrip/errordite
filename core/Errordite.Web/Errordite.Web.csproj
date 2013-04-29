@@ -284,6 +284,7 @@
     <Compile Include="Mappings\GroupToGroupViewModel.cs" />
     <Compile Include="Mappings\UserToEditUserViewModel.cs" />
     <Compile Include="Mappings\UserToUserViewModel.cs" />
+    <Compile Include="Models\Account\BillingTab.cs" />
     <Compile Include="Models\Applications\AddApplicationViewModel.cs" />
     <Compile Include="Models\Applications\ApplicationViewModel.cs" />
     <Compile Include="Models\Applications\EditApplicationViewModel.cs" />
@@ -810,10 +811,8 @@
     <Content Include="Areas\System\Views\Cache\Item.cshtml" />
     <Content Include="Views\Shared\NotAuthorised.cshtml" />
     <Content Include="Views\Shared\NotFound.cshtml" />
-    <Content Include="Views\Account\Upgrade.cshtml" />
     <Content Include="Views\Shared\Docs\PaymentPlan.cshtml" />
-    <Content Include="Views\Account\Billing.cshtml" />
-    <Content Include="Views\Account\Downgrade.cshtml" />
+    <Content Include="Views\Account\PaymentPlan.cshtml" />
     <Content Include="Views\EmailTest\List.cshtml" />
     <Content Include="Views\EmailTest\Index.cshtml" />
     <Content Include="Views\Account\Settings.cshtml" />
@@ -919,6 +918,18 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Subscription\TrialExpired.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Account\BillingTabs.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Account\BillingHistory.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Account\ChangeSubscription.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Account\Cancel.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

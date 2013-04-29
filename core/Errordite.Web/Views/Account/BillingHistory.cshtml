@@ -1,0 +1,25 @@
+﻿
+@using Errordite.Web.Models.Account
+@model Errordite.Web.Models.Account.OrganisationViewModel
+           
+@{
+    ViewBag.Title = "Billing History";
+}
+
+@section header
+{
+    @Html.Partial("Account/Tabs") 
+}
+
+<section class="centered">
+	<div class="sidenav">
+		@Html.Partial("Account/BillingTabs", BillingTab.BillingHistory)
+		<div class="sidenav-content billing">
+			<div class="sidenav-tab active" id="billinghistory">
+				You do not currently have any billing history.
+			</div>
+		</div>
+    </div>
+</section>
+
+

@@ -14,7 +14,8 @@ namespace Errordite.Web.Models.Subscription
 
     public class SignUpPostModel
     {
-        public string PaymentPlanId { get; set; }
+		public string PaymentPlanId { get; set; }
+		[Required(ErrorMessage = "Please select your credit card type")]
         public string CreditCard { get; set; }
         [Required(ErrorMessage = "Please enter your credit card number")]
         public string CreditCardNumber { get; set; }

@@ -291,9 +291,9 @@ namespace Errordite.Web.Extensions
             return helper.Action("paymentplan", "account", new {Area = string.Empty});
         }
 
-        public static string Billing(this UrlHelper helper)
+        public static string BillingHistory(this UrlHelper helper)
         {
-            return helper.Action("billing", "account", new { Area = string.Empty });
+            return helper.Action("billinghistory", "account", new { Area = string.Empty });
         }
 
         public static string Settings(this UrlHelper helper)
@@ -301,15 +301,15 @@ namespace Errordite.Web.Extensions
             return helper.Action("settings", "account", new { Area = string.Empty });
         }
 
-        public static string Upgrade(this UrlHelper helper)
+		public static string ChangeSubscription(this UrlHelper helper, string newPlanName)
         {
-            return helper.Action("upgrade", "account", new { Area = string.Empty });
+            return helper.Action("changesubscription", "account", new { Area = string.Empty, newPlanName });
         }
 
-        public static string Downgrade(this UrlHelper helper)
-        {
-            return helper.Action("downgrade", "account", new { Area = string.Empty });
-        }
+		public static string Cancel(this UrlHelper helper)
+		{
+			return helper.Action("cancel", "account", new { Area = string.Empty });
+		}
 
         #endregion
 

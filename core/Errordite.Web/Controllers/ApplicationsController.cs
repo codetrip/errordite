@@ -23,7 +23,7 @@ using Application = Errordite.Core.Domain.Organisation.Application;
 
 namespace Errordite.Web.Controllers
 {
-    [Authorize, RoleAuthorize(UserRole.Administrator)]
+	[Authorize, RoleAuthorize(UserRole.Administrator), ValidateSubscriptionActionFilter]
     public class ApplicationsController : ErrorditeController
     {
         private readonly IAddApplicationCommand _addApplicationCommand;

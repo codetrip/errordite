@@ -31,7 +31,7 @@ using Resources;
 
 namespace Errordite.Web.Controllers
 {
-    [Authorize]
+	[Authorize, ValidateSubscriptionActionFilter]
     public class IssueController : ErrorditeController
     {
         private readonly IGetIssueQuery _getIssueQuery;

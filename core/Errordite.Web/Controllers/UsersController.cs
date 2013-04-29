@@ -18,7 +18,7 @@ using Errordite.Web.Models.Users;
 
 namespace Errordite.Web.Controllers
 {
-    [Authorize]
+	[Authorize, ValidateSubscriptionActionFilter]
     public class UsersController : ErrorditeController
     {
         private readonly IGetUserQuery _getUserQuery;

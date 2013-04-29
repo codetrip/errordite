@@ -24,7 +24,9 @@ namespace Errordite.Core.Domain.Organisation
         [ProtoMember(8)]
         public bool IsAvailable { get; set; }
         [ProtoMember(9)]
-        public bool IsTrial { get; set; }
+		public bool IsTrial { get; set; }
+		[ProtoMember(10)]
+		public string SignUpUrl { get; set; }
     }
 
     public static class PaymentPlanNames

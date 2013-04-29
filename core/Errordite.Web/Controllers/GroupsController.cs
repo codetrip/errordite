@@ -13,7 +13,7 @@ using Errordite.Web.Models.Navigation;
 
 namespace Errordite.Web.Controllers
 {
-    [Authorize, RoleAuthorize(UserRole.Administrator)]
+	[Authorize, RoleAuthorize(UserRole.Administrator), ValidateSubscriptionActionFilter]
     public class GroupsController : ErrorditeController
     {
         private readonly IGetGroupQuery _getGroupQuery;
