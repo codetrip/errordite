@@ -27,6 +27,7 @@ namespace Errordite.Services
         void Configure();
         void AddOrganisation(Organisation organisation);
         void RemoveOrganisation(string organisationId);
+        void PollNow(string organisationFriendlyId = null);
     }
 
     public class ErrorditeService : ComponentBase, IErrorditeService
@@ -37,6 +38,13 @@ namespace Errordite.Services
         public ErrorditeService(IEnumerable<ServiceConfiguration> serviceConfigurations)
         {
             _serviceConfiguration = serviceConfigurations.First(c => c.IsActive);
+        }
+
+        public void PollNow(string organisationFriendlyId = null)
+        {
+            var qp = _queueProcessors.FirstOrDefault(q => q.OrganisationFriendlyId == organisationFriendlyId);
+            if(qp != null)
+                qp.PollNow();
         }
 
         public void Start(string ravenInstanceId)

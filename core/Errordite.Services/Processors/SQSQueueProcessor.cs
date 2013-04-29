@@ -25,6 +25,7 @@ namespace Errordite.Services.Processors
         private readonly IRequestThrottler _requestThrottler;
         private readonly ICreateSQSQueueCommand _createSQSQueueCommand;
         private readonly ErrorditeConfiguration _configuration;
+        private bool _pollNow;
 
         public string OrganisationFriendlyId { get; private set; }
 
@@ -64,6 +65,11 @@ namespace Errordite.Services.Processors
             _worker.Join(TimeSpan.FromSeconds(5));
             _worker.Abort();
             Trace("Stopped SQS Queue Processor");
+        }
+
+        public void PollNow()
+        {
+            _pollNow = true;
         }
 
         private void ReceiveFromQueue()
@@ -111,8 +117,20 @@ namespace Errordite.Services.Processors
                     emptyReceiptCount++;
                     Trace("No message returned from queue '{0}', zero message count:={1}", _queueUrl, emptyReceiptCount);
 
-                    //sleep for delay as specified by throttler
-                    Thread.Sleep(_requestThrottler.GetDelayMilliseconds(emptyReceiptCount));
+                    //sleep for delay as specified by throttler (unless instructed to poll now)
+                    int delay = _requestThrottler.GetDelayMilliseconds(emptyReceiptCount);
+                    const int sleepPeriod = 10;
+                    int sleepCount = 0;
+                    while (sleepPeriod*++sleepCount < delay)
+                    {
+                        if (_pollNow)
+                        {
+                            emptyReceiptCount = 0;
+                            _pollNow = false;
+                            break;
+                        }
+                        Thread.Sleep(sleepPeriod);
+                    }
                     continue;
                 }
 

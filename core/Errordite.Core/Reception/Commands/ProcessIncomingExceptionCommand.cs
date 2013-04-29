@@ -11,10 +11,12 @@ using Errordite.Core.Applications.Queries;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Messaging;
+using Errordite.Core.Session;
+using Errordite.Core.Session.Actions;
 
 namespace Errordite.Core.Reception.Commands
 {
-    public class ProcessIncomingExceptionCommand : ComponentBase, IProcessIncomingExceptionCommand
+    public class ProcessIncomingExceptionCommand : SessionAccessBase, IProcessIncomingExceptionCommand
     {
         private readonly IReceiveErrorCommand _receiveErrorCommand;
         private readonly IGetApplicationByTokenQuery _getApplicationByToken;
@@ -108,6 +110,7 @@ namespace Errordite.Core.Reception.Commands
                     Token = request.Error.Token
                 },
                 _configuration.GetReceiveQueueAddress(organisation.FriendlyId));
+                Session.AddCommitAction(new PollNowAction(organisation));
             }
             else
             {
@@ -121,6 +124,8 @@ namespace Errordite.Core.Reception.Commands
                     Token = request.Error.Token
                 });
             }
+
+            
 
             return new ProcessIncomingExceptionResponse();
         }
