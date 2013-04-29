@@ -79,6 +79,9 @@ namespace Errordite.Core.Organisations.Commands
                 TimezoneId = request.TimezoneId ?? "UTC",
                 PaymentPlan = freeTrialPlan,
                 ApiKeySalt = Membership.GeneratePassword(8, 1),
+				SubscriptionStatus = SubscriptionStatus.Trial,
+				SubscriptionDispensation = false,
+
             };
 
             var ravenInstance = _getRavenInstancesQuery.Invoke(new GetRavenInstancesRequest())

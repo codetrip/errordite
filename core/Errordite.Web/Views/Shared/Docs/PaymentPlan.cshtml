@@ -22,7 +22,7 @@
 		@if (Model.Status == PaymentPlanStatus.SubscriptionSignUp)
 		{
 			<div>
-				<a href="@Model.Plan.SignUpUrl">Sign up to the '@Model.Plan.Name' Plan ›</a>
+				<a href="@Model.SignUpUrl">Sign up to the '@Model.Plan.Name' Plan ›</a>
 			</div>
 		}
 		else if (Model.Status == PaymentPlanStatus.FirstSignUp)

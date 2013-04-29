@@ -56,6 +56,7 @@ namespace Errordite.Web.Controllers
 			{
 				organisation.SubscriptionDispensation = true;
 				organisation.PaymentPlanId = "PaymentPlans/1";
+				organisation.SubscriptionStatus = SubscriptionStatus.Trial;
 			}
 
             session.Commit();
