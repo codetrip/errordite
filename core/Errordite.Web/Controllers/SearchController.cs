@@ -5,6 +5,7 @@ using Errordite.Core.Paging;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Errors.Queries;
 using Errordite.Core.Issues.Queries;
+using Errordite.Web.ActionFilters;
 using Errordite.Web.Models.Errors;
 using Errordite.Web.Models.Issues;
 using Errordite.Web.Models.Search;
@@ -13,6 +14,7 @@ using Errordite.Core.Extensions;
 
 namespace Errordite.Web.Controllers
 {
+	[Authorize, ValidateSubscriptionActionFilter]
     public class SearchController : ErrorditeController
     {
 		private readonly IGetApplicationIssuesQuery _getApplicationIssuesQuery;

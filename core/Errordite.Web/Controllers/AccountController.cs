@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace Errordite.Web.Controllers
 {
-    [Authorize]
+	[Authorize, ValidateSubscriptionActionFilter]
     public class AccountController : ErrorditeController
     {
         private readonly IGetAvailablePaymentPlansQuery _getAvailablePaymentPlansQuery;
@@ -21,8 +21,8 @@ namespace Errordite.Web.Controllers
             _setOrganisationTimezoneCommand = setOrganisationTimezoneCommand;
         }
 
-        [HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.Billing)]
-        public ActionResult Billing()
+        [HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.PaymentPlan)]
+        public ActionResult PaymentPlan()
         {
             var plans = _getAvailablePaymentPlansQuery.Invoke(new GetAvailablePaymentPlansRequest()).Plans;
 
@@ -39,6 +39,24 @@ namespace Errordite.Web.Controllers
                 }),
             });
         }
+
+		[HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.BillingHistory)]
+		public ActionResult BillingHistory()
+		{
+			return View();
+		}
+
+		[HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.ChangeSubscription)]
+		public ActionResult ChangeSubscription()
+		{
+			return View();
+		}
+
+		[HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.Cancel)]
+		public ActionResult Cancel()
+		{
+			return View();
+		}
 
         [HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.Settings)]
         public ActionResult Settings()

@@ -1,6 +1,6 @@
 ﻿@using Errordite.Web.Extensions
 @using Errordite.Web.Models.Subscription
-@model Errordite.Web.Models.Subscription.PaymentPlanViewModel
+@model PaymentPlanViewModel
            
 <div class="three-col">
     <div class="payment-plan">
@@ -22,7 +22,7 @@
 		@if (Model.Status == PaymentPlanStatus.SubscriptionSignUp)
 		{
 			<div>
-				<a href="@Url.SubscriptionSignUp(Model.Plan.Name)">Sign up to the '@Model.Plan.Name' Plan ›</a>
+				<a href="@Model.Plan.SignUpUrl">Sign up to the '@Model.Plan.Name' Plan ›</a>
 			</div>
 		}
 		else if (Model.Status == PaymentPlanStatus.FirstSignUp)

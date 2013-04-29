@@ -19,7 +19,7 @@ using Errordite.Core.Extensions;
 
 namespace Errordite.Web.Controllers
 {
-    [Authorize]
+	[Authorize, ValidateSubscriptionActionFilter]
     public class DashboardController : ErrorditeController
     {
         private readonly IGetApplicationIssuesQuery _getApplicationIssuesQuery;

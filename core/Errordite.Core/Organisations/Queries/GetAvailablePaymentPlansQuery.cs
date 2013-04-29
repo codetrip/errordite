@@ -17,11 +17,7 @@ namespace Errordite.Core.Organisations.Queries
         {
             Trace("Starting...");
 
-            var plans = Session.MasterRaven.Query<PaymentPlan>()
-                .Where(p => p.IsAvailable)
-                .ToList();
-
-            Trace("Found {0} Payment Plans.", plans.Count);
+            var plans = Session.MasterRaven.Query<PaymentPlan>().ToList().OrderBy(p => p.Rank).ToList();
 
             return new GetAvailablePaymentPlansResponse
             {

@@ -12,7 +12,7 @@ using Errordite.Web.Models.Navigation;
 
 namespace Errordite.Web.Controllers
 {
-    [Authorize]
+	[Authorize, ValidateSubscriptionActionFilter]
     public class ErrorsController : ErrorditeController
     {
         private readonly IGetApplicationErrorsQuery _getApplicationErrorsQuery;

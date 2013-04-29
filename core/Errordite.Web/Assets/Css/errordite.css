@@ -1573,6 +1573,13 @@ nav {
         border-color: #ddd transparent #ddd #ddd;
         *border-right-color: #ffffff; }
 
+.billing {
+  padding: 20px 0 0 0; }
+  .billing p {
+    float: left;
+    margin: 0 0 10px 0;
+    font-weight: 300; }
+
 .help.content {
   padding-left: 20px;
   /*width: 864px;*/ }
@@ -1646,7 +1653,7 @@ nav {
     list-style: none; }
   .payment-plan li {
     float: none;
-    padding: 4px 0; }
+    padding: 4spx 0; }
   .payment-plan div {
     background-color: #95c0df;
     padding: 7px 8px 8px 8px; }

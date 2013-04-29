@@ -103,7 +103,13 @@ namespace Errordite.Web.Models.Navigation
                         new Breadcrumb(BreadcrumbId.AddGroup, string.Empty, "Add Group"),
                         new Breadcrumb(BreadcrumbId.EditGroup, string.Empty, "Edit Group")
                     }),
-                    new Breadcrumb(BreadcrumbId.Billing, urlHelper.Billing(), "Billing"),
+                    new Breadcrumb(BreadcrumbId.Billing, null, "Billing & Plan", new []
+                    {
+                        new Breadcrumb(BreadcrumbId.PaymentPlan, string.Empty, "Payment Plan"),
+                        new Breadcrumb(BreadcrumbId.BillingHistory, string.Empty, "Billing History"),
+                        new Breadcrumb(BreadcrumbId.ChangeSubscription, string.Empty, "Change Subscription"),
+                        new Breadcrumb(BreadcrumbId.Cancel, string.Empty, "Cancel")
+                    }),
                     new Breadcrumb(BreadcrumbId.Settings, urlHelper.Settings(), "Settings"),
                 }),
                 new Breadcrumb(BreadcrumbId.SysAdmin, urlHelper.SystemAdmin(), "System Admin", new []
@@ -162,7 +168,11 @@ namespace Errordite.Web.Models.Navigation
         Privacy,
 
         Admin,
-        Billing,
+		Billing,
+		BillingHistory,
+        PaymentPlan,
+		ChangeSubscription,
+		Cancel,
         Settings,
 
         Applications,

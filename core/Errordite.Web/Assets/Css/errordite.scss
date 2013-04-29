@@ -1983,6 +1983,15 @@ nav {
 	}
 }
 
+.billing {
+	padding: 20px 0 0 0;
+	p {
+		float:left;
+		margin:0 0 10px 0;
+		font-weight: $lightfontweight;
+	}
+}
+
 .help {
 	&.content{
 		padding-left: 20px;
@@ -2074,7 +2083,7 @@ nav {
     }
 	li {
 		float:none;
-		padding:4px 0;
+		padding:4spx 0;
 	}
     div {
         background-color:$darkblue;

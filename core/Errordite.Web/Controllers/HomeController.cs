@@ -1,16 +1,10 @@
-﻿using System;
-using System.ComponentModel.Composition.Hosting;
-using System.Web.Mvc;
-using Errordite.Core;
+﻿using System.Web.Mvc;
 using Errordite.Core.Caching.Interfaces;
 using Errordite.Core.Caching.Resources;
-using Errordite.Core.Domain.Master;
 using Errordite.Core.Domain.Organisation;
-using Errordite.Core.Indexing;
 using Errordite.Core.IoC;
 using Errordite.Core.Configuration;
 using Errordite.Core.Identity;
-using Errordite.Core.Messaging;
 using Errordite.Core.Notifications.EmailInfo;
 using Errordite.Core.Session;
 using Errordite.Core.Session.Actions;
@@ -18,8 +12,6 @@ using Errordite.Web.ActionFilters;
 using Errordite.Web.Models.Home;
 using Errordite.Core.Extensions;
 using Errordite.Web.Extensions;
-using Errordite.Core.Web;
-using Raven.Client.Indexes;
 
 namespace Errordite.Web.Controllers
 {
@@ -35,49 +27,36 @@ namespace Errordite.Web.Controllers
         [HttpGet, ImportViewData]
         public ActionResult Test()
         {
-            var session = ObjectFactory.GetObject<IAppSession>();
+	        var session = ObjectFactory.GetObject<IAppSession>();
 
-            for (int i = 0; i < 5; i++)
-            {
-                session.MasterRaven.Store(new MessageEnvelope
-                {
-                    Message = "test",
-                    QueueUrl = "test",
-                    Service = Service.Receive,
-                    ErrorMessage = "This is a test error message",
-                    GeneratedOnUtc = DateTime.UtcNow,
-                    MessageType = "message type",
-                    OrganisationId = "Organisations/1"
-                });
-            }
+			foreach (var plan in session.MasterRaven.Query<PaymentPlan>())
+			{
+				if(plan.IsTrial)
+					continue;
 
-            for (int i = 0; i < 5; i++)
-            {
-                session.MasterRaven.Store(new MessageEnvelope
-                {
-                    Message = "test",
-                    QueueUrl = "test",
-                    Service = Service.Notifications,
-                    ErrorMessage = "This is a test error message",
-                    GeneratedOnUtc = DateTime.UtcNow,
-                    MessageType = "message type",
-                    OrganisationId = "Organisations/1"
-                });
-            }
+				if (plan.Name.ToLowerInvariant() == "small")
+				{
+					plan.SignUpUrl = "https://code-trip-ltd.chargify.com/h/1182474/subscriptions/new";
+					plan.MaximumUsers = 5;
+					plan.MaximumApplications = 2;
+				}
+				else if (plan.Name.ToLowerInvariant() == "medium")
+				{
+					plan.SignUpUrl = "https://code-trip-ltd.chargify.com/h/1182475/subscriptions/new";
+				}
+				else if (plan.Name.ToLowerInvariant() == "large")
+				{
+					plan.SignUpUrl = "https://code-trip-ltd.chargify.com/h/1182476/subscriptions/new";
+					plan.MaximumUsers = 100;
+					plan.MaximumApplications = 25;
+				}
+			}
 
-            for (int i = 0; i < 5; i++)
-            {
-                session.MasterRaven.Store(new MessageEnvelope
-                {
-                    Message = "test",
-                    QueueUrl = "test",
-                    Service = Service.Events,
-                    ErrorMessage = "This is a test error message",
-                    GeneratedOnUtc = DateTime.UtcNow,
-                    MessageType = "message type",
-                    OrganisationId = "Organisations/1"
-                });
-            }
+			foreach (var organisation in session.MasterRaven.Query<Organisation>())
+			{
+				organisation.SubscriptionDispensation = true;
+				organisation.PaymentPlanId = "PaymentPlans/1";
+			}
 
             session.Commit();
             return Content("Done");
