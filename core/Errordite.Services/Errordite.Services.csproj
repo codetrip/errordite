@@ -134,6 +134,7 @@
     <Compile Include="Controllers\OrganisationController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\IssueController.cs" />
+    <Compile Include="Controllers\PollNowController.cs" />
     <Compile Include="Controllers\ReprocessIssueErrorsController.cs" />
     <Compile Include="Processors\IMessageProcessor.cs" />
     <Compile Include="Processors\SQSMessageProcessor.cs" />
