@@ -1,6 +1,7 @@
 ﻿
 
 using ProtoBuf;
+using Raven.Imports.Newtonsoft.Json;
 
 namespace Errordite.Core.Domain.Organisation
 {
@@ -27,6 +28,9 @@ namespace Errordite.Core.Domain.Organisation
 		public bool IsTrial { get; set; }
 		[ProtoMember(10)]
 		public string SignUpUrl { get; set; }
+
+		[JsonIgnore]
+		public string FriendlyId { get { return Id == null ? string.Empty : Id.Split('/')[1]; } }
     }
 
     public static class PaymentPlanNames

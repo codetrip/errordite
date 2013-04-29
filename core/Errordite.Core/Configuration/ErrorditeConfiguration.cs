@@ -1,8 +1,6 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Errordite.Core.Domain.Master;
 using Errordite.Core.Extensions;
 using Errordite.Core.IoC;
 using Errordite.Core.Reception;
@@ -33,8 +31,11 @@ namespace Errordite.Core.Configuration
         public string AWSAccessKey { get; set; }
         public string AWSSecretKey { get; set; }
         public string DeveloperQueueSuffix { get; set; }
+		public string ChargifyApiKey { get; set; }
+		public string ChargifyUrl { get; set; }
+		public string ChargifyPassword { get { return "x"; } }
 
-        public string GetReceiveQueueAddress(string organisationFriendlyId = "1")
+	    public string GetReceiveQueueAddress(string organisationFriendlyId = "1")
         {
             return "{0}{1}{2}".FormatWith(ReceiveQueueAddress, organisationFriendlyId, DeveloperQueueSuffix);
         }

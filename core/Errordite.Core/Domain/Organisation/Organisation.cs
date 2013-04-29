@@ -34,10 +34,14 @@ namespace Errordite.Core.Domain.Organisation
         public string ApiKeySalt { get; set; }
         [ProtoMember(12)]
 		public string RavenInstanceId { get; set; }
-		[ProtoMember(13)]
+        [JsonIgnore, ProtoMember(13)]
+		public RavenInstance RavenInstance { get; set; }
+		[ProtoMember(14)]
 		public bool SubscriptionDispensation { get; set; }
-        [JsonIgnore, ProtoMember(14)]
-        public RavenInstance RavenInstance { get; set; }
+		[JsonIgnore, ProtoMember(15)]
+		public int SubscriptionId { get; set; }
+		[JsonIgnore, ProtoMember(16)]
+		public SubscriptionStatus SubscriptionStatus { get; set; }
 
         [JsonIgnore]
         public string FriendlyId { get { return Id == null ? string.Empty : Id.Split('/')[1]; } }
@@ -68,6 +72,17 @@ namespace Errordite.Core.Domain.Organisation
         [ProtoMember(3)]
         PlanQuotaExceeded
     }
+
+	[ProtoContract]
+	public enum SubscriptionStatus
+	{
+		[ProtoMember(1)]
+		Trial,
+		[ProtoMember(2)]
+		Active,
+		[ProtoMember(3)]
+		Query
+	}
 
     [ProtoContract]
     public enum SuspendedReason
