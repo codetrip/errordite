@@ -21,7 +21,7 @@ namespace Errordite.Core.Session.Actions
 
         public override void Execute(IAppSession session)
         {
-            session.ReceiveHttpClient.PostJsonAsync("pollnow", new {organisationFriendlyId = _organisation.FriendlyId});
+            session.ReceiveHttpClient.PostJsonAsync("pollnow", new {});
         }
     }
 

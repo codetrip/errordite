@@ -48,7 +48,7 @@ namespace Errordite.Core.Messaging
                 {
                     _createSQSQueueCommand.Invoke(new CreateSQSCommandRequest
                     {
-                        OrganisationId = message.OrganisationId
+                        QueueUrl = destination
                     });
 
                     _amazonSQS.SendMessage(new SendMessageRequest
