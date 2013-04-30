@@ -1,5 +1,5 @@
-﻿@using Errordite.Web.Extensions
-@using Errordite.Web.Models.Applications
+﻿@using Errordite.Web.Models.Applications
+@using Errordite.Web.Models.Shared
 @model ApplicationsViewModel
            
 @{
@@ -12,18 +12,21 @@
 }
 
 <section id="applications" class="centered">
-    <div class="content">
-        <p class="pull-right">
-             <a href="@Url.AddApplication()" class="btn btn-medium btn-blue pull-right">Add Application</a>
-        </p>
-       
-        @if (Model.Applications.Count > 0)
-        {
-            @Html.Partial("Applications/List")
-        }
-        else
-        {
-            <p>You have no applications.</p>
-        }
-    </div>
+	<div class="content">
+		<div class="sidenav">
+            @Html.Partial("Applications/ApplicationTabs", SharedTab.List)
+            <div class="sidenav-content billing">
+                <div class="sidenav-tab active">
+                    @if (Model.Applications.Count > 0)
+					{
+						@Html.Partial("Applications/List")
+					}
+					else
+					{
+						<p>You have no applications.</p>
+					}
+                </div>
+            </div>
+        </div>
+	</div>
 </section>

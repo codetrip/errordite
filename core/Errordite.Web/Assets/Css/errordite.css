@@ -18,7 +18,7 @@ ul {
 
 input[type='text'], input[type='password'], textarea, select {
   display: inline-block;
-  width: 350px;
+  width: 340px;
   height: 24px;
   padding: 4px;
   font-size: 13px;
@@ -40,7 +40,7 @@ input[type='text'], input[type='password'], textarea, select {
 select {
   height: 34px;
   line-height: 34px;
-  width: 385px;
+  width: 350px;
   padding: 6px 5px; }
   select[multiple], select[size] {
     height: auto; }
@@ -795,7 +795,7 @@ section {
         display: inline-block;
         cursor: pointer; }
     .form li.sublist {
-      width: 385px; }
+      width: 350px; }
       .form li.sublist input {
         display: inline-block; }
       .form li.sublist label {
@@ -1493,7 +1493,7 @@ nav {
   margin-left: 0;
   list-style: none;
   padding-left: 5px;
-  min-height: 230px; }
+  min-height: 350px; }
   .sidenav-tabs:before {
     display: table;
     line-height: 0;
@@ -1547,6 +1547,8 @@ nav {
     margin-top: -5px; }
   .sidenav .sidenav-content {
     overflow: auto; }
+    .sidenav .sidenav-content form {
+      margin-top: -5px; }
     .sidenav .sidenav-content > .sidenav-tab {
       display: none; }
     .sidenav .sidenav-content > .active {
@@ -1575,12 +1577,10 @@ nav {
         border-color: #ddd transparent #ddd #ddd;
         *border-right-color: #ffffff; }
 
-.billing {
-  padding: 10px 0 0 0; }
-  .billing p {
-    float: left;
-    margin: 0 0 10px 0;
-    font-weight: 300; }
+.billing p {
+  float: left;
+  margin: 0 0 10px 0;
+  font-weight: 300; }
 
 .help.content {
   padding-left: 20px;

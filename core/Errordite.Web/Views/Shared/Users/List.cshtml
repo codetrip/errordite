@@ -16,8 +16,7 @@
             }   
             else
             {
-                <th>Edit</th>
-                <th>Delete</th>
+                <th></th>
             }
         </tr>  
     </thead>
@@ -48,13 +47,11 @@
                 }
                 else
                 {
-                    <td>
-                        <a href="@Url.EditUser(user.Id)">Edit</a>
-                    </td>             
-                    <td>
-                        @using (Html.BeginForm("delete", "users", new { userId = user.Id }, FormMethod.Post))
+                    <td style="width:60px">
+	                    <a href="@Url.EditUser(user.Id)"><img src="@Url.Content("~/assets/images/edit.png")" alt="Edit this user" title="Edit this user" width="24" height="24" /></a>
+						@using (Html.BeginForm("delete", "users", new { userId = user.Id }, FormMethod.Post, new {style="display:inline-block"}))
                         {
-                            <a class="delete" href="#">Delete</a>
+                            <a class="delete" href="#"><img src="@Url.Content("~/assets/images/trash.png")" alt="Delete this users" title="Delete this user" width="24" height="24" /></a>
                         }
                     </td>  
                 }        
@@ -63,7 +60,7 @@
     </tbody>
     <tfoot>
         <tr>
-            <td @(Model.EnableImpersonation ? "colspan=6" : "colspan=7") >
+            <td colspan="6">
                 @Html.Partial("Pagination", Model.Paging)
             </td>
         </tr>

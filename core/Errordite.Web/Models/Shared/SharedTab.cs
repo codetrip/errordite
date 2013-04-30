@@ -3,7 +3,7 @@ namespace Errordite.Web.Models.Shared
 {
 	public enum SharedTab
     {
-		None,
+		Edit,
         List,
         Add
     }

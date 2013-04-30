@@ -53,7 +53,7 @@ ul {
 
 input[type='text'],input[type='password'], textarea, select {
     display: inline-block;
-    width: 350px;
+    width: 340px;
     height: 24px;
     padding: 4px;
     font-size: 13px;
@@ -77,7 +77,7 @@ input[type='text'],input[type='password'], textarea, select {
 select {
   height: 34px;
   line-height: 34px;
-  width: 385px;
+  width: 350px;
   padding: 6px 5px;
   &[multiple], &[size] {
     height: auto;
@@ -1007,7 +1007,7 @@ section {
             label { display:inline-block; cursor:pointer;}
         }
         &.sublist {
-            width:385px;
+            width:350px;
             input { display:inline-block; }
             label { display:inline-block; }
             ul { 
@@ -1879,7 +1879,7 @@ nav {
   margin-left: 0;
   list-style: none;
   padding-left:5px;
-  min-height:230px;
+  min-height:350px;
   &:before {
     display: table;
     line-height: 0;
@@ -1946,6 +1946,9 @@ nav {
 	}
 	.sidenav-content {
 		overflow: auto;
+		form {
+			margin-top:-5px;
+		}
 		> {
 			.sidenav-tab {
 				display: none;
@@ -1987,7 +1990,6 @@ nav {
 }
 
 .billing {
-	padding: 10px 0 0 0;
 	p {
 		float:left;
 		margin:0 0 10px 0;
