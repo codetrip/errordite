@@ -103,7 +103,7 @@ namespace Errordite.Services.Processors
                     {
                         _createSQSQueueCommand.Invoke(new CreateSQSCommandRequest
                         {
-                            OrganisationId = OrganisationFriendlyId
+                            QueueUrl = _queueUrl,
                         });
                     }
 

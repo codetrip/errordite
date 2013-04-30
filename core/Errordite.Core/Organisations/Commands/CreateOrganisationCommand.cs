@@ -133,11 +133,13 @@ namespace Errordite.Core.Organisations.Commands
 
             try
             {
+                //TODO: leave polling to do queue creation for now but prob better to do here too
                 //create the SQS queue for this organisation
-                _createSQSQueueCommand.Invoke(new CreateSQSCommandRequest
-                {
-                    OrganisationId = organisation.Id
-                });
+                //_createSQSQueueCommand.Invoke(new CreateSQSCommandRequest
+                //{
+                //    QueueUrl = 
+                //    OrganisationId = organisation.Id
+                //});
 
                 //add organisation to receive service so we can start receiving errors from the organisations queue
                 Session.ReceiveHttpClient.PostJsonAsync("Organisation", organisation);

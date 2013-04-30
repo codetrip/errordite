@@ -1,9 +1,11 @@
-﻿using Amazon.SQS;
+﻿using System;
+using Amazon.SQS;
 using Amazon.SQS.Model;
 using Errordite.Core.Configuration;
 using Errordite.Core.Extensions;
 using Errordite.Core.Interfaces;
 using Errordite.Core.Session;
+using System.Linq;
 
 namespace Errordite.Core.Messaging.Commands
 {
@@ -21,12 +23,12 @@ namespace Errordite.Core.Messaging.Commands
         public CreateSQSCommandResponse Invoke(CreateSQSCommandRequest request)
         {
             Trace("Starting...");
-            Trace("...Attempting to create queue:={0}", "errordite-receive-{0}".FormatWith(request.OrganisationId.GetFriendlyId()));
+            Trace("...Attempting to create queue:={0}", request.QueueUrl);
 
             var response = _amazonSQS.CreateQueue(new CreateQueueRequest
             {
                 DefaultVisibilityTimeout = _configuration.QueueVisibilityTimeoutSeconds,
-                QueueName = "errordite-receive-{0}".FormatWith(request.OrganisationId.GetFriendlyId()),
+                QueueName = new Uri(request.QueueUrl).Segments.Last(),
             });
 
             Trace("Completed, queue '{0}' created", response.CreateQueueResult.QueueUrl);
@@ -48,7 +50,7 @@ namespace Errordite.Core.Messaging.Commands
 
     public class CreateSQSCommandRequest
     {
-        public string OrganisationId { get; set; }
+        public string QueueUrl { get; set; }
     }
 
     public enum CreateSQSCommandStatus
