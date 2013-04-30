@@ -1,31 +1,40 @@
-﻿using System.Web.Mvc;
+﻿using System.ComponentModel.Composition.Hosting;
+using System.Web.Mvc;
+using Errordite.Core;
 using Errordite.Core.Caching.Interfaces;
 using Errordite.Core.Caching.Resources;
+using Errordite.Core.Domain.Master;
 using Errordite.Core.Domain.Organisation;
+using Errordite.Core.Indexing;
 using Errordite.Core.IoC;
 using Errordite.Core.Configuration;
 using Errordite.Core.Identity;
 using Errordite.Core.Notifications.EmailInfo;
-using Errordite.Core.Organisations.Commands;
+using Errordite.Core.Raven;
 using Errordite.Core.Session;
 using Errordite.Core.Session.Actions;
 using Errordite.Web.ActionFilters;
 using Errordite.Web.Models.Home;
 using Errordite.Core.Extensions;
 using Errordite.Web.Extensions;
+using Raven.Client.Indexes;
 
 namespace Errordite.Web.Controllers
 {
     public class HomeController : ErrorditeController
     {
-        private readonly ErrorditeConfiguration _configuration;
+		private readonly ErrorditeConfiguration _configuration;
+		private readonly IAppSession _session;
+		private readonly IShardedRavenDocumentStoreFactory _storeFactory;
 
-        public HomeController(ErrorditeConfiguration configuration)
+        public HomeController(ErrorditeConfiguration configuration, IShardedRavenDocumentStoreFactory storeFactory, IAppSession session)
         {
-            _configuration = configuration;
+	        _configuration = configuration;
+	        _storeFactory = storeFactory;
+	        _session = session;
         }
 
-        [HttpGet, ImportViewData]
+	    [HttpGet, ImportViewData]
         public ActionResult Test()
         {
 	        var session = ObjectFactory.GetObject<IAppSession>();
@@ -69,6 +78,32 @@ namespace Errordite.Web.Controllers
             session.Commit();
             return Content("Done");
         }
+
+		[HttpGet, ExportViewData]
+		public ActionResult SyncIndexes()
+		{
+			Server.ScriptTimeout = 7200; //timeout in 2 hours
+
+			var masterDocumentStore = _storeFactory.Create(RavenInstance.Master());
+
+			IndexCreation.CreateIndexes(new CompositionContainer(
+				new AssemblyCatalog(typeof(Issues).Assembly), new ExportProvider[0]),
+				masterDocumentStore.DatabaseCommands.ForDatabase(CoreConstants.ErrorditeMasterDatabaseName),
+				masterDocumentStore.Conventions);
+
+			foreach (var organisation in Core.Session.MasterRaven.Query<Organisation>().GetAllItemsAsList(100))
+			{
+				organisation.RavenInstance = Core.Session.MasterRaven.Load<RavenInstance>(organisation.RavenInstanceId);
+
+				using (_session.SwitchOrg(organisation))
+				{
+					_session.BootstrapOrganisation(organisation);
+				}
+			}
+
+			ConfirmationNotification("All indexes for all organisations have been updated");
+			return RedirectToAction("index");
+		}
 
         public ActionResult ClearCache()
         {

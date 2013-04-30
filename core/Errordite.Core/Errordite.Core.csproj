@@ -398,11 +398,9 @@
     <Compile Include="Notifications\Sending\SmtpEmailSender.cs" />
     <Compile Include="Organisations\Commands\ActivateOrganisationCommand.cs" />
     <Compile Include="Organisations\Commands\CompleteSignUpCommand.cs" />
-    <Compile Include="Organisations\Commands\CreateS3BucketCommand.cs" />
     <Compile Include="Organisations\Commands\DeleteOrganisationCommand.cs" />
     <Compile Include="Organisations\Commands\SuspendOrganisationCommand.cs" />
     <Compile Include="Organisations\Commands\SetOrganisationTimezoneCommand.cs" />
-    <Compile Include="Organisations\Factory\AmazonS3Factory.cs" />
     <Compile Include="Organisations\OrganisationRequestBase.cs" />
     <Compile Include="Organisations\Queries\GetRavenInstancesQuery.cs" />
     <Compile Include="Organisations\Queries\GetOrganisationByEmailAddressCommand.cs" />

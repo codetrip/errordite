@@ -1,8 +1,9 @@
 ﻿
-namespace Errordite.Web.Models.Account
+namespace Errordite.Web.Models.Subscription
 {
     public enum SubscriptionTab
     {
+		None,
         Subscription,
         BillingHistory,
         Cancel

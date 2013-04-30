@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using Castle.MicroKernel.Registration;
 using Errordite.Core.Domain.Error;
-using Errordite.Core.Matching;
 using Lucene.Net.Analysis;
 using Raven.Abstractions.Indexing;
 using Raven.Client.Indexes;
@@ -26,9 +24,9 @@ namespace Errordite.Core.Indexing
         public string Query { get; set; }
     }
 
-    public class Issues_Search : AbstractIndexCreationTask<Issue, IssueDocument>
+    public class Issues : AbstractIndexCreationTask<Issue, IssueDocument>
     {
-        public Issues_Search()
+        public Issues()
         {
             Map = issues => from doc in issues
                             select new

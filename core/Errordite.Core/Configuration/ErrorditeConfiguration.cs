@@ -36,31 +36,31 @@ namespace Errordite.Core.Configuration
 		public string ChargifyPassword { get { return "x"; } }
         public int RavenBackupInterval { get; set; }
 
-	    public string GetReceiveQueueAddress(string organisationFriendlyId = "1")
+	    public string GetReceiveQueueAddress(string organisationId = "1")
         {
-            return "{0}{1}{2}".FormatWith(ReceiveQueueAddress, organisationFriendlyId, DeveloperQueueSuffix);
+			return "{0}{1}{2}".FormatWith(ReceiveQueueAddress, organisationId.GetFriendlyId(), DeveloperQueueSuffix);
         }
 
-        public string GetEventsQueueAddress(string ravenInstanceFriendlyId = "1")
+        public string GetEventsQueueAddress(string ravenInstanceId = "1")
         {
-            return "{0}{1}{2}".FormatWith(EventsQueueAddress, ravenInstanceFriendlyId, DeveloperQueueSuffix);
+            return "{0}{1}{2}".FormatWith(EventsQueueAddress, ravenInstanceId.GetFriendlyId(), DeveloperQueueSuffix);
         }
 
-        public string GetNotificationsQueueAddress(string ravenInstanceFriendlyId = "1")
+        public string GetNotificationsQueueAddress(string ravenInstanceId = "1")
         {
-            return "{0}{1}{2}".FormatWith(NotificationsQueueAddress, ravenInstanceFriendlyId, DeveloperQueueSuffix);
+			return "{0}{1}{2}".FormatWith(NotificationsQueueAddress, ravenInstanceId.GetFriendlyId(), DeveloperQueueSuffix);
         }
 
-        public string GetQueueForService(Service service, string organisationFriendlyId = null, string ravenInstanceFriendlyId = null)
+        public string GetQueueForService(Service service, string organisationId = null, string ravenInstanceId = null)
         {
             switch (service)
             {
                 case Service.Receive:
-                    return GetReceiveQueueAddress(organisationFriendlyId);
+                    return GetReceiveQueueAddress(organisationId);
                 case Service.Notifications:
-                    return GetNotificationsQueueAddress(ravenInstanceFriendlyId);
+                    return GetNotificationsQueueAddress(ravenInstanceId);
                 case Service.Events:
-                    return GetEventsQueueAddress(ravenInstanceFriendlyId);
+                    return GetEventsQueueAddress(ravenInstanceId);
             }
 
             throw new InvalidOperationException("Invalid service name:={0}".FormatWith(service.ToString()));

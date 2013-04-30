@@ -5,9 +5,9 @@ using Raven.Client.Indexes;
 
 namespace Errordite.Core.Indexing
 {
-	public class OrganisationDailyCount_Search : AbstractIndexCreationTask<IssueDailyCount>
+	public class OrganisationDailyCounts : AbstractIndexCreationTask<IssueDailyCount>
 	{
-		public OrganisationDailyCount_Search()
+		public OrganisationDailyCounts()
 		{
             Map = docs => 
                from dailyCount in docs

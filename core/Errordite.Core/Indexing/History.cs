@@ -14,9 +14,9 @@ namespace Errordite.Core.Indexing
         public DateTime DateAddedUtc { get; set; }
     }
 
-    public class History_Search : AbstractIndexCreationTask<IssueHistory, HistoryDocument>
+    public class History : AbstractIndexCreationTask<IssueHistory, HistoryDocument>
     {
-        public History_Search()
+        public History()
         {
             Map = history => from doc in history
                             select new

@@ -287,7 +287,8 @@
     <Compile Include="Mappings\GroupToGroupViewModel.cs" />
     <Compile Include="Mappings\UserToEditUserViewModel.cs" />
     <Compile Include="Mappings\UserToUserViewModel.cs" />
-    <Compile Include="Models\Account\SubscriptionTab.cs" />
+    <Compile Include="Models\Shared\SharedTab.cs" />
+    <Compile Include="Models\Subscription\SubscriptionTab.cs" />
     <Compile Include="Models\Applications\AddApplicationViewModel.cs" />
     <Compile Include="Models\Applications\ApplicationViewModel.cs" />
     <Compile Include="Models\Applications\EditApplicationViewModel.cs" />
@@ -937,6 +938,16 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Subscription\Failed.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Users\UserTabs.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Applications\ApplicationTabs.cshtml" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Views\Shared\Groups\GroupTabs.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -19,9 +19,9 @@ namespace Errordite.Core.Indexing
         public int FriendlyId { get; set; }
     }
 
-    public class Errors_Search : AbstractIndexCreationTask<Error, ErrorDocument>
+    public class Errors : AbstractIndexCreationTask<Error, ErrorDocument>
     {
-        public Errors_Search()
+        public Errors()
         {
             Map = errors => from error in errors
                             select new

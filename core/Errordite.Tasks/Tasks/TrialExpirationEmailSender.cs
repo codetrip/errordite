@@ -4,7 +4,6 @@ using Errordite.Core.Configuration;
 using Errordite.Core.Domain.Master;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Indexing;
-using Errordite.Core.Notifications.Commands;
 using Errordite.Core.Notifications.EmailInfo;
 using Errordite.Core.Session;
 using Raven.Client;
@@ -17,15 +16,12 @@ namespace Errordite.Tasks.Tasks
 	{
 		private readonly IAppSession _session;
 		private readonly ErrorditeConfiguration _configuration;
-		private readonly ISendEmailCommand _sendEmailCommand;
 
 		public TrialExpirationEmailSender(IAppSession session, 
-			ErrorditeConfiguration configuration, 
-			ISendEmailCommand sendEmailCommand)
+			ErrorditeConfiguration configuration)
 		{
 			_session = session;
 			_configuration = configuration;
-			_sendEmailCommand = sendEmailCommand;
 		}
 
 		public void Execute(string ravenInstanceId)
@@ -44,14 +40,12 @@ namespace Errordite.Tasks.Tasks
 				{
 					var users = _session.MasterRaven.Query<UserOrganisationMapping>().Where(m => m.OrganisationId == organisation.Id);
 
-					_sendEmailCommand.Invoke(new SendEmailRequest
+					_session.MessageSender.Send(new TrialExpiredEmailInfo
 					{
-						EmailInfo = new TrialExpiredEmailInfo
-						{
-							OrganisationName = organisation.Name,
-							To = string.Join(",", users.Select(u => u.EmailAddress))
-						}
-					});
+						OrganisationName = organisation.Name,
+						To = string.Join(",", users.Select(u => u.EmailAddress))
+					},
+					_configuration.GetNotificationsQueueAddress(organisation.RavenInstanceId));
 				}
 			}
 		}

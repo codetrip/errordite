@@ -55,7 +55,7 @@ namespace Errordite.Web.Controllers
             return View(model);
         }
 
-        [HttpGet, Authorize]
+		[HttpGet, Authorize, GenerateBreadcrumbs(BreadcrumbId.SubscriptionSignUp)]
         public ActionResult SignUp(bool expired = false)
         {
             var paymentPlans = _getAvailablePaymentPlansQuery.Invoke(new GetAvailablePaymentPlansRequest()).Plans.Where(p => !p.IsTrial);
@@ -91,7 +91,7 @@ namespace Errordite.Web.Controllers
             return RedirectToAction("failed", new { SubscritpionId = model.SubscriptionId});
         }
 
-        [HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.Subscription)]
+		[HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.SubscriptionSignUpFailed)]
         public ActionResult Failed(SubscriptionCompleteViewModel model)
         {
             return View(model);
