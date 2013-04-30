@@ -103,12 +103,14 @@ namespace Errordite.Web.Models.Navigation
                         new Breadcrumb(BreadcrumbId.AddGroup, string.Empty, "Add Group"),
                         new Breadcrumb(BreadcrumbId.EditGroup, string.Empty, "Edit Group")
                     }),
-                    new Breadcrumb(BreadcrumbId.Billing, urlHelper.Subscription(), "Subscription", new []
+                    new Breadcrumb(BreadcrumbId.Subscription, urlHelper.Subscription(), "Subscription", new []
                     {
-                        new Breadcrumb(BreadcrumbId.Subscription, string.Empty, "Subscription"),
+                        new Breadcrumb(BreadcrumbId.SubscriptionHome, string.Empty, "Subscription"),
                         new Breadcrumb(BreadcrumbId.BillingHistory, string.Empty, "Billing History"),
                         new Breadcrumb(BreadcrumbId.ChangeSubscription, string.Empty, "Change Subscription"),
-                        new Breadcrumb(BreadcrumbId.CancelSubscription, string.Empty, "Cancel Subscription")
+                        new Breadcrumb(BreadcrumbId.CancelSubscription, string.Empty, "Cancel Subscription"),
+                        new Breadcrumb(BreadcrumbId.SubscriptionSignUp, string.Empty, "Subscription Sign Up"),
+                        new Breadcrumb(BreadcrumbId.SubscriptionSignUpFailed, string.Empty, "Subscription Sign Up Failed")
                     }),
                     new Breadcrumb(BreadcrumbId.Settings, urlHelper.Settings(), "Settings"),
                 }),
@@ -171,8 +173,11 @@ namespace Errordite.Web.Models.Navigation
 		Billing,
 		BillingHistory,
         Subscription,
+		SubscriptionHome,
 		ChangeSubscription,
 		CancelSubscription,
+		SubscriptionSignUp,
+		SubscriptionSignUpFailed,
         Settings,
 
         Applications,

@@ -4,9 +4,9 @@ using Raven.Client.Indexes;
 
 namespace Errordite.Core.Indexing
 {
-    public class Users_Search : AbstractIndexCreationTask<User>
+    public class Users : AbstractIndexCreationTask<User>
     {
-        public Users_Search()
+        public Users()
         {
             Map = users => from user in users
                             select new

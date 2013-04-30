@@ -20,7 +20,6 @@ using Errordite.Core.Notifications.Parsing;
 using Errordite.Core.Notifications.Rendering;
 using Errordite.Core.Notifications.Sending;
 using Errordite.Core.Extensions;
-using Errordite.Core.Organisations.Factory;
 using Errordite.Core.Paging;
 using Errordite.Core.Reception;
 using Errordite.Core.Web;
@@ -118,14 +117,6 @@ namespace Errordite.Core.IoC
             container.Register(Component.For<ITemplateLocator>().ImplementedBy<TemplateLocator>().LifeStyle.Transient);
             container.Register(Component.For<IEmailRenderer>().ImplementedBy<EmailRenderer>().LifeStyle.Transient);
             container.Register(Component.For<IEmailInfoParser>().ImplementedBy<EmailInfoParser>().LifeStyle.Transient);
-
-            container.Register(Component.For<IAmazonS3Factory>()
-                .ImplementedBy<AmazonS3Factory>()
-                .LifeStyle.Singleton);
-
-            container.Register(Component.For<AmazonS3>()
-                .UsingFactoryMethod(kernel => kernel.Resolve<IAmazonS3Factory>().Create())
-                .LifeStyle.Singleton);
 
             container.Register(Component.For<IAmazonSQSFactory>()
                 .ImplementedBy<AmazonSQSFactory>()

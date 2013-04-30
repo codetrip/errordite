@@ -53,7 +53,7 @@ ul {
 
 input[type='text'],input[type='password'], textarea, select {
     display: inline-block;
-    width: 375px;
+    width: 350px;
     height: 24px;
     padding: 4px;
     font-size: 13px;
@@ -1941,6 +1941,9 @@ nav {
 		content: "";
 		clear: both;
 	}
+	h1 {
+		margin-top:-5px;
+	}
 	.sidenav-content {
 		overflow: auto;
 		> {
@@ -1961,7 +1964,7 @@ nav {
 			float: none;
 		}
 		> li > a {
-			min-width: 105px;
+			min-width: 85px;
 			margin-right: 0;
 			margin-bottom: 3px;
 			margin-right: -1px;

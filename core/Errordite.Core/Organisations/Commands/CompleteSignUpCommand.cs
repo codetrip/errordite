@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Web;
 using Castle.Core;
 using ChargifyNET;
@@ -11,9 +12,10 @@ using Errordite.Core.Interfaces;
 using Errordite.Core.Caching;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Extensions;
-using Errordite.Core.Indexing;
+using Errordite.Core.Notifications.EmailInfo;
 using Errordite.Core.Session;
 using System.Linq;
+using Errordite.Core.Session.Actions;
 
 namespace Errordite.Core.Organisations.Commands
 {
@@ -55,7 +57,9 @@ namespace Errordite.Core.Organisations.Commands
                 };
             }
 
-            var organisation = Session.MasterRaven.Load<Organisation>(request.CurrentUser.Organisation.Id);
+            var organisation = Session.MasterRaven
+                    .Include<Organisation>(o => o.PaymentPlanId)
+					.Load<Organisation>(request.CurrentUser.Organisation.Id);
 
             if (organisation == null)
             {
@@ -65,6 +69,7 @@ namespace Errordite.Core.Organisations.Commands
                 };
             }
 
+			organisation.PaymentPlan = MasterLoad<PaymentPlan>(organisation.PaymentPlanId);
             organisation.Subscription.ChargifyId = subscription.SubscriptionID;
             organisation.Subscription.Status = SubscriptionStatus.Active;
             organisation.Subscription.StartDate = DateTime.UtcNow;
@@ -72,6 +77,15 @@ namespace Errordite.Core.Organisations.Commands
             organisation.PaymentPlanId = "PaymentPlans/{0}".FormatWith(token[1]);
 
             Session.SynchroniseIndexes<Indexing.Organisations, Indexing.Users>();
+			Session.AddCommitAction(new SendMessageCommitAction(
+				new SignUpCompleteEmailInfo
+				{
+					OrganisationName = organisation.Name,
+					SubscriptionId = request.SubscriptionId.ToString(),
+					UserName = request.CurrentUser.FirstName,
+					BillingAmount = string.Format(CultureInfo.GetCultureInfo(1033), "{0:C}", organisation.PaymentPlan.Price)
+				},
+				_configuration.GetNotificationsQueueAddress(organisation.RavenInstanceId)));
 
             return new CompleteSignUpResponse(organisation.Id, request.CurrentUser.Id, request.CurrentUser.Email)
             {
@@ -85,9 +99,9 @@ namespace Errordite.Core.Organisations.Commands
 
     public class CompleteSignUpResponse : CacheInvalidationResponseBase
     {
-        private string _organisationId { get; set; }
-        private string _userId { get; set; }
-        private string _email { get; set; }
+	    private readonly string _organisationId;
+		private readonly string _userId;
+		private readonly string _email;
         public CompleteSignUpStatus Status { get; set; }
 
         public CompleteSignUpResponse(string organisationId = null, string userId = null, string email = null, bool ignoreCache = false)

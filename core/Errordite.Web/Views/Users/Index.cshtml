@@ -1,5 +1,6 @@
 ﻿
 @using Errordite.Web.Extensions
+@using Errordite.Web.Models.Shared
 @using Errordite.Web.Models.Users
 @model UsersViewModel
            
@@ -13,18 +14,22 @@
 }
 
 <section id="users" class="centered">
-    <div class="content">
-        <p class="pull-right">
-            <a href="@Url.AddUser()" class="btn btn-medium btn-blue pull-right">Add User</a>
-        </p>
-
-        @if (Model.Users != null && Model.Users.Any())
-        {
-            @Html.Partial("Users/List", Model)
-        }
-        else
-        {
-            <p>No users were found.</p>
-        }
-    </div>
+	<div class="content">
+		<div class="sidenav">
+            @Html.Partial("Users/UserTabs", SharedTab.List)
+            <div class="sidenav-content billing">
+                <div class="sidenav-tab active">
+					@if (Model.Users != null && Model.Users.Any())
+					{
+						@Html.Partial("Users/List", Model)
+					}
+					else
+					{
+						<p>No users were found.</p>
+					}
+                </div>
+            </div>
+        </div>
+		
+	</div>
 </section>

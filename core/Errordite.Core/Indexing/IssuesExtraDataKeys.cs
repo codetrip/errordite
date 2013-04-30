@@ -11,16 +11,15 @@ namespace Errordite.Core.Indexing
         public List<string> Keys { get; set; }
     }
 
-    public class Issues_ExtraDataKeys : AbstractIndexCreationTask<Error, IssueExtraDataKeys>
+    public class IssuesExtraDataKeys : AbstractIndexCreationTask<Error, IssueExtraDataKeys>
     {
-        public Issues_ExtraDataKeys()
+        public IssuesExtraDataKeys()
         {
             Map = errors => from doc in errors
                             select new
                                 {
                                     doc.IssueId,
-                                    Keys =
-                                        doc.ExceptionInfos.SelectMany(i => i.ExtraData.Select(d => d.Key)).Distinct()
+                                    Keys = doc.ExceptionInfos.SelectMany(i => i.ExtraData.Select(d => d.Key)).Distinct()
                                 };
 
             Reduce = keysPerIssue => from k in keysPerIssue

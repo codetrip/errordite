@@ -244,9 +244,9 @@ namespace Errordite.Web.Extensions
             return helper.Action("signup", "subscription", new { Area = string.Empty, expired = false });
         }
 
-        public static string ChangeSubscription(this UrlHelper helper, string newPlanName)
+		public static string ChangeSubscription(this UrlHelper helper, string planId)
         {
-            return helper.Action("changesubscription", "subscription", new { Area = string.Empty, newPlanName });
+			return helper.Action("changesubscription", "subscription", new { Area = string.Empty, planId });
         }
 
         public static string Cancel(this UrlHelper helper)
