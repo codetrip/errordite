@@ -13,9 +13,9 @@ namespace Errordite.Services.Controllers
             _errorditeService = errorditeService;
         }
 
-        public HttpResponseMessage Post(string organisationId)
+        public HttpResponseMessage Post(string orgid)
         {
-            _errorditeService.PollNow(organisationId);
+            _errorditeService.PollNow(orgid);
             return Request.CreateResponse(HttpStatusCode.OK);
         }
     }
