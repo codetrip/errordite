@@ -26,7 +26,7 @@ namespace Errordite.Core.Issues.Queries
             var endDate = DateTime.UtcNow.Date.AddHours(2);
             object data;
 
-            var dateResults = Query<IssueDailyCount, OrganisationDailyCount_Search>()
+            var dateResults = Query<IssueDailyCount, OrganisationDailyCounts>()
                 .ConditionalWhere(i => i.ApplicationId == Application.GetId(request.ApplicationId), request.ApplicationId.IsNotNullOrEmpty)
                 .Where(i => i.Date >= startDate && i.Date <= endDate)
                 .OrderBy(i => i.Date)
