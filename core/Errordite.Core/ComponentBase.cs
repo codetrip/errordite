@@ -69,5 +69,6 @@ namespace Errordite.Core
             var type = obj == null ? typeof(T) : obj.GetType();
             Auditor.Trace(type, SummaryWriter.GetSummary(obj));
         }
+
     }
 }
