@@ -21,14 +21,14 @@ namespace Errordite.Web.Controllers
             _setOrganisationTimezoneCommand = setOrganisationTimezoneCommand;
         }
 
-        [HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.PaymentPlan)]
-        public ActionResult PaymentPlan()
+        [HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.Subscription)]
+        public ActionResult Subscription()
         {
             var plans = _getAvailablePaymentPlansQuery.Invoke(new GetAvailablePaymentPlansRequest()).Plans;
 
             var currentPlan = Core.AppContext.CurrentUser.Organisation.PaymentPlan;
 
-            return View(new OrganisationViewModel
+            var model = new SubscriptionViewModel
             {
                 Plans = plans.Select(p => new PaymentPlanViewModel
                 {
@@ -36,8 +36,16 @@ namespace Errordite.Web.Controllers
                     Upgrade = p.Rank > currentPlan.Rank,
                     Downgrade = p.Rank < currentPlan.Rank && !p.IsTrial,
                     Plan = p
-                }),
-            });
+                }).ToList(),
+				Organisation = Core.AppContext.CurrentUser.Organisation
+            };
+
+			if (!model.Organisation.PaymentPlan.IsTrial)
+			{
+				model.Plans.Remove(model.Plans.First(p => p.Plan.IsTrial));
+			}
+
+	        return View(model);
         }
 
 		[HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.BillingHistory)]

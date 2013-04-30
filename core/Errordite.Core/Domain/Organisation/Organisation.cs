@@ -37,11 +37,7 @@ namespace Errordite.Core.Domain.Organisation
         [JsonIgnore, ProtoMember(13)]
 		public RavenInstance RavenInstance { get; set; }
 		[ProtoMember(14)]
-		public bool SubscriptionDispensation { get; set; }
-		[JsonIgnore, ProtoMember(15)]
-		public int SubscriptionId { get; set; }
-		[JsonIgnore, ProtoMember(16)]
-		public SubscriptionStatus SubscriptionStatus { get; set; }
+		public Subscription Subscription { get; set; }
 
         [JsonIgnore]
         public string FriendlyId { get { return Id == null ? string.Empty : Id.Split('/')[1]; } }
@@ -61,6 +57,18 @@ namespace Errordite.Core.Domain.Organisation
             get { return "null"; }
         }
     }
+
+	public class Subscription
+	{
+		[ProtoMember(1)]
+		public bool Dispensation { get; set; }
+		[ProtoMember(2)]
+		public int? ChargifyId { get; set; }
+		[ProtoMember(3)]
+		public SubscriptionStatus Status { get; set; }
+		[ProtoMember(4)]
+		public DateTime? StartDate { get; set; }
+	}
 
     [ProtoContract]
     public enum OrganisationStatus

@@ -3,9 +3,10 @@ using Errordite.Core.Domain.Organisation;
 
 namespace Errordite.Web.Models.Account
 {
-    public class OrganisationViewModel
+    public class SubscriptionViewModel
     {
-        public IEnumerable<PaymentPlanViewModel> Plans { get; set; }
+        public IList<PaymentPlanViewModel> Plans { get; set; }
+	    public Organisation Organisation { get; set; }
     }
 
     public class OrganisationSettingsViewModel

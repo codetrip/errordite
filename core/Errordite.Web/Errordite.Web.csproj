@@ -312,7 +312,7 @@
     <Compile Include="Models\Issues\IssueViewModel.cs" />
     <Compile Include="Models\Navigation\Breadcrumbs.cs" />
     <Compile Include="Models\Account\OrganisationsViewModel.cs" />
-    <Compile Include="Models\Account\OrganisationViewModel.cs" />
+    <Compile Include="Models\Account\SubscriptionViewModel.cs" />
     <Compile Include="Models\Search\SearchViewModel.cs" />
     <Compile Include="Models\Subscription\PaymentPlanViewModel.cs" />
     <Compile Include="Models\Subscription\SignUpViewModel.cs" />
@@ -817,7 +817,7 @@
     <Content Include="Views\Shared\NotAuthorised.cshtml" />
     <Content Include="Views\Shared\NotFound.cshtml" />
     <Content Include="Views\Shared\Docs\PaymentPlan.cshtml" />
-    <Content Include="Views\Account\PaymentPlan.cshtml" />
+    <Content Include="Views\Account\Subscription.cshtml" />
     <Content Include="Views\EmailTest\List.cshtml" />
     <Content Include="Views\EmailTest\Index.cshtml" />
     <Content Include="Views\Account\Settings.cshtml" />

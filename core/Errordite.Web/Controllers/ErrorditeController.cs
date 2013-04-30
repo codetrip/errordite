@@ -110,7 +110,7 @@ namespace Errordite.Web.Controllers
         {
             var user = (Core == null || Core.AppContext == null ? null : Core.AppContext.CurrentUser);
 
-            if (user != null)
+			if (user != null && !exceptionContext.Exception.Data.Contains(CoreConstants.ExceptionKeys.User))
                 exceptionContext.Exception.Data.Add(CoreConstants.ExceptionKeys.User, "{0} ({1})".FormatWith(user.FullName, user.Id));
             
             Error(exceptionContext.Exception);
