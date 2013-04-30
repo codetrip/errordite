@@ -41,7 +41,7 @@ namespace Errordite.Core.Issues.Commands
             _authorisationManager.Authorise(mergeFromIssue, request.CurrentUser);
             _authorisationManager.Authorise(mergeToIssue, request.CurrentUser);
 
-            new SynchroniseIndexCommitAction<Errors_Search>().Execute(Session);
+            new SynchroniseIndexCommitAction<Indexing.Errors>().Execute(Session);
 
             //move all errors fron the MergeFromIssue to the MergeToIssue
             Session.AddCommitAction(new UpdateByIndexCommitAction(CoreConstants.IndexNames.Errors,

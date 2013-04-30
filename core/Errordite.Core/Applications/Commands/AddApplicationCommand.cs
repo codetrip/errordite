@@ -29,7 +29,7 @@ namespace Errordite.Core.Applications.Commands
         {
             Trace("Starting...");
 
-            var existingApplication = Session.Raven.Query<Application, Applications_Search>().FirstOrDefault(a => a.Name == request.Name);
+            var existingApplication = Session.Raven.Query<Application, Indexing.Applications>().FirstOrDefault(a => a.Name == request.Name);
 
             if (existingApplication != null)
             {
@@ -40,7 +40,7 @@ namespace Errordite.Core.Applications.Commands
             }
 
             RavenQueryStatistics stats;
-            var applications = Session.Raven.Query<Application, Applications_Search>()
+            var applications = Session.Raven.Query<Application, Indexing.Applications>()
                 .Statistics(out stats)
                 .Customize(x => x.WaitForNonStaleResultsAsOfLastWrite())
                 .Take(0);
@@ -72,7 +72,7 @@ namespace Errordite.Core.Applications.Commands
 
             application.Token = _encryptor.Encrypt("{0}|{1}|{2}".FormatWith(application.FriendlyId, application.OrganisationId.GetFriendlyId(), application.TokenSalt));
 
-            Session.SynchroniseIndexes<Applications_Search>();
+            Session.SynchroniseIndexes<Indexing.Applications>();
             
             return new AddApplicationResponse(false, request.CurrentUser.OrganisationId)
             {

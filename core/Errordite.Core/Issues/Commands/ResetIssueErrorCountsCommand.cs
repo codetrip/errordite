@@ -101,7 +101,7 @@ namespace Errordite.Core.Issues.Commands
             new DeleteAllDailyCountsCommitAction(issue.Id, deleteHistorical: false).Execute(Session);
 
             //make sure the issue index is not stale
-            new SynchroniseIndexCommitAction<IssueDailyCount_Search>().Execute(Session);
+            new SynchroniseIndexCommitAction<IssueDailyCounts>().Execute(Session);
 
             foreach (var dailyCount in dailyCounts)
             {

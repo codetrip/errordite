@@ -73,7 +73,7 @@ namespace Errordite.Core.Groups.Commands
             if (request.Name.IsNotNullOrEmpty())
                 existingGroup.Name = request.Name;
 
-            Session.SynchroniseIndexes<Users_Search, Groups_Search>();
+            Session.SynchroniseIndexes<Indexing.Users, Indexing.Groups>();
 
             return new EditGroupResponse(false, request.GroupId, request.CurrentUser.OrganisationId)
             {

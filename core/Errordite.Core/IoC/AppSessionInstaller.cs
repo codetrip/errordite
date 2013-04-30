@@ -31,6 +31,14 @@ namespace Errordite.Core.IoC
         }
     }
 
+	public class TransientAppSessionInstaller : AppSessionInstallerBase
+	{
+		protected override ComponentRegistration<T> PerUnitOfWorkLifeStyleRegistration<T>(ComponentRegistration<T> registration)
+		{
+			return registration.LifeStyle.Transient;
+		}
+	}
+
     public abstract class AppSessionInstallerBase : IWindsorInstaller
     {
         protected abstract ComponentRegistration<T> PerUnitOfWorkLifeStyleRegistration<T>(

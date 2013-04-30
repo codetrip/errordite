@@ -19,7 +19,7 @@ namespace Errordite.Core.Issues.Queries
 
             RavenQueryStatistics stats;
 
-            var history = Query<HistoryDocument, History_Search>().Statistics(out stats)
+            var history = Query<HistoryDocument, History>().Statistics(out stats)
                 .ConditionalWhere(h => h.ApplicationId == Application.GetId(request.ApplicationId), request.ApplicationId.IsNotNullOrEmpty)
                 .Skip((request.Paging.PageNumber - 1) * request.Paging.PageSize)
                 .Take(request.Paging.PageSize)

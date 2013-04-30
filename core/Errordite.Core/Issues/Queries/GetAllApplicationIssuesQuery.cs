@@ -26,7 +26,7 @@ namespace Errordite.Core.Issues.Queries
 
             RavenQueryStatistics stats;
 
-            var issues = Session.Raven.Query<IssueDocument, Issues_Search>().Statistics(out stats)
+            var issues = Session.Raven.Query<IssueDocument, Indexing.Issues>().Statistics(out stats)
                 .Where(i => i.ApplicationId == Application.GetId(request.ApplicationId))
                 .Take(_configuration.MaxPageSize)
                 .As<Issue>()
@@ -42,7 +42,7 @@ namespace Errordite.Core.Issues.Queries
             
             while(stats.TotalResults > issues.Count)
             {
-                issues.AddRange(Session.Raven.Query<IssueDocument, Issues_Search>().Statistics(out stats)
+                issues.AddRange(Session.Raven.Query<IssueDocument, Indexing.Issues>().Statistics(out stats)
                     .Where(issue => issue.ApplicationId == Application.GetId(request.ApplicationId))
                     .Skip(issues.Count)
                     .Take(_configuration.MaxPageSize)

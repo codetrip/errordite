@@ -132,7 +132,7 @@ namespace Errordite.Core.Issues.Commands
                 issue.LimitStatus = ErrorLimitStatus.Ok;
             }
 
-            Session.SynchroniseIndexes<Issues_Search, Errors_Search>();
+            Session.SynchroniseIndexes<Indexing.Issues, Indexing.Errors>();
             return response;
         }
     }

@@ -14,9 +14,11 @@ using Errordite.Core.IoC;
 using Errordite.Core.Session;
 using Errordite.Core.Web;
 using Errordite.Services.Processors;
+using Raven.Client;
 using log4net.Config;
 using System.Linq;
 using Castle.MicroKernel.Lifestyle;
+using Raven.Client.Linq;
 
 namespace Errordite.Services
 {
@@ -64,8 +66,9 @@ namespace Errordite.Services
                     using (var session = ObjectFactory.GetObject<IAppSession>())
                     {
                         organisations = session.MasterRaven
-                            .Query<Organisation, Organisations_Search>()
+                            .Query<OrganisationDocument, Organisations>()
                             .Where(o => o.RavenInstanceId == RavenInstance.GetId(ravenInstanceId))
+							.As<Organisation>()
                             .ToList();
                     }
                 }

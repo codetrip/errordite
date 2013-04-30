@@ -21,7 +21,7 @@ namespace Errordite.Test.IntegrationTests
         {
             RollbackTransaction = false;
 
-            var query = Session.Raven.Query<IssueDocument, Issues_Search>()
+            var query = Session.Raven.Query<IssueDocument, Issues>()
                 .Where(e => e.ApplicationId == "applications/97")
                 .As<Issue>()
                 .Select(issue => new IssueBase

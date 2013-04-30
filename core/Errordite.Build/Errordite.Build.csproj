@@ -55,13 +55,13 @@
     <None Include="Cmd\SignAssembly.cmd" />
     <None Include="Cmd\ZipOutput.cmd" />
     <None Include="Configuration\cache.config" />
+    <None Include="Configuration\email.config" />
     <None Include="Configuration\errordite.config" />
     <None Include="Configuration\Global.properties" />
     <None Include="Configuration\InstructionReplacements.inst">
       <SubType>Designer</SubType>
     </None>
     <None Include="Configuration\log4net.config" />
-    <None Include="Configuration\raven.config" />
     <None Include="Configuration\XmlConfig.inst">
       <SubType>Designer</SubType>
     </None>

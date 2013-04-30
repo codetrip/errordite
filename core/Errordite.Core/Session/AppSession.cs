@@ -146,7 +146,7 @@ namespace Errordite.Core.Session
             var docStore = _documentStoreFactory.Create(organisation.RavenInstance);
 
             IndexCreation.CreateIndexes(
-                new CompositionContainer(new AssemblyCatalog(typeof(Issues_Search).Assembly), new ExportProvider[0]),
+                new CompositionContainer(new AssemblyCatalog(typeof(Indexing.Issues).Assembly), new ExportProvider[0]),
                  RavenDatabaseCommands, docStore.Conventions);
 
 			_organisationSession = docStore.OpenSession(_organisation.FriendlyId);

@@ -54,7 +54,7 @@ namespace Errordite.Core.Users.Commands
                 };
             }
 
-            var existingUser = Session.Raven.Query<User, Users_Search>().FirstOrDefault(u => u.Email == request.Email);
+            var existingUser = Session.Raven.Query<User, Indexing.Users>().FirstOrDefault(u => u.Email == request.Email);
 
             if (existingUser != null)
             {
@@ -65,7 +65,7 @@ namespace Errordite.Core.Users.Commands
             }
 
             RavenQueryStatistics stats;
-            var users = Session.Raven.Query<User, Users_Search>()
+            var users = Session.Raven.Query<User, Indexing.Users>()
                 .Statistics(out stats)
                 .Customize(x => x.WaitForNonStaleResultsAsOfLastWrite())
                 .Take(0);
@@ -113,7 +113,7 @@ namespace Errordite.Core.Users.Commands
                 Organisation = request.Organisation
             });
             
-            Session.SynchroniseIndexes<Users_Search, Groups_Search>();
+            Session.SynchroniseIndexes<Indexing.Users, Indexing.Groups>();
             Session.SynchroniseIndexes<UserOrganisationMappings>(true);
 
             return new AddUserResponse(false, request.Organisation.Id)

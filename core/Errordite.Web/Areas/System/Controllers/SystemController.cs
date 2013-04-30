@@ -45,7 +45,7 @@ namespace Errordite.Web.Areas.System.Controllers
             var masterDocumentStore = _storeFactory.Create(RavenInstance.Master());
 
             IndexCreation.CreateIndexes(new CompositionContainer(
-                new AssemblyCatalog(typeof(Issues_Search).Assembly), new ExportProvider[0]),
+                new AssemblyCatalog(typeof(Issues).Assembly), new ExportProvider[0]),
                 masterDocumentStore.DatabaseCommands.ForDatabase(CoreConstants.ErrorditeMasterDatabaseName),
                 masterDocumentStore.Conventions);
 

@@ -49,7 +49,7 @@ namespace Errordite.Core.Organisations.Commands
                 }, true);
 
 			Session.AddCommitAction(new FlushOrganisationCacheCommitAction(_configuration, organisation));
-            Session.SynchroniseIndexes<UserOrganisationMappings, Organisations_Search>();
+            Session.SynchroniseIndexes<UserOrganisationMappings, Indexing.Organisations>();
 
             return new DeleteOrganisationResponse(request.OrganisationId);
         }

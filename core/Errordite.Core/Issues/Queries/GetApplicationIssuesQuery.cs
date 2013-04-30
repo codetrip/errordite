@@ -20,7 +20,7 @@ namespace Errordite.Core.Issues.Queries
 
             RavenQueryStatistics stats;
 
-            var query = Session.Raven.Query<IssueDocument, Issues_Search>().Statistics(out stats);
+            var query = Session.Raven.Query<IssueDocument, Indexing.Issues>().Statistics(out stats);
 
             if (request.ApplicationId.IsNotNullOrEmpty())
             {

@@ -47,7 +47,7 @@ namespace Errordite.Core.Authentication.Commands
 
             Session.SetOrganisation(organisation);
 
-            var user = Session.Raven.Query<User, Users_Search>().FirstOrDefault(u => u.Email == request.Email);
+            var user = Session.Raven.Query<User, Indexing.Users>().FirstOrDefault(u => u.Email == request.Email);
 
             if (user == null)
             {

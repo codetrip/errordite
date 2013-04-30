@@ -33,7 +33,7 @@ namespace Errordite.Core.Applications.Commands
 
             var applicationId = Application.GetId(request.ApplicationId);
 
-            var existingApplication = Session.Raven.Query<Application, Applications_Search>().Count(o => o.Name == request.Name && o.Id != applicationId);
+            var existingApplication = Session.Raven.Query<Application, Indexing.Applications>().Count(o => o.Name == request.Name && o.Id != applicationId);
 
             if (existingApplication > 0)
             {
@@ -65,7 +65,7 @@ namespace Errordite.Core.Applications.Commands
             application.HipChatAuthToken = request.HipChatAuthToken;
             application.Version = request.Version;
 
-            Session.SynchroniseIndexes<Applications_Search>();
+            Session.SynchroniseIndexes<Indexing.Applications>();
             Session.AddCommitAction(new FlushApplicationCacheCommitAction(_configuration, request.CurrentUser.Organisation, application.FriendlyId));
 
             return new EditApplicationResponse(false, request.ApplicationId, request.CurrentUser.OrganisationId)
