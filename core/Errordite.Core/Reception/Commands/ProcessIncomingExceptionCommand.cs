@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Web;
 using Errordite.Core.Configuration;
 using Errordite.Core.Extensions;
 using Errordite.Core.Interfaces;
@@ -9,10 +11,12 @@ using Errordite.Core.Applications.Queries;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Messaging;
+using Errordite.Core.Session;
+using Errordite.Core.Session.Actions;
 
 namespace Errordite.Core.Reception.Commands
 {
-    public class ProcessIncomingExceptionCommand : ComponentBase, IProcessIncomingExceptionCommand
+    public class ProcessIncomingExceptionCommand : SessionAccessBase, IProcessIncomingExceptionCommand
     {
         private readonly IReceiveErrorCommand _receiveErrorCommand;
         private readonly IGetApplicationByTokenQuery _getApplicationByToken;
@@ -48,27 +52,32 @@ namespace Errordite.Core.Reception.Commands
                 case ApplicationStatus.Inactive:
                     return new ProcessIncomingExceptionResponse
                     {
-                        ResponseMessage = "The application specified in the token is not currently active"
+                        ResponseMessage = "The application specified in the token is not currently active",
+                        ResponseCode = HttpStatusCode.NotAcceptable,
                     };
                 case ApplicationStatus.NotFound:
                     return new ProcessIncomingExceptionResponse
                     {
-                        ResponseMessage = "The application specified in the token could not be found"
+                        ResponseMessage = "The application specified in the token could not be found",
+                        ResponseCode = HttpStatusCode.Unauthorized,
                     };
                 case ApplicationStatus.Error:
                     return new ProcessIncomingExceptionResponse
                     {
+                        ResponseCode = HttpStatusCode.InternalServerError,
                         ResponseMessage = "An unhandled error occured while attempting to store this error"
                     };
                 case ApplicationStatus.InvalidOrganisation:
                     return new ProcessIncomingExceptionResponse
                     {
-                        ResponseMessage = "Failed to locate the organisation specified in your token"
+                        ResponseMessage = "Failed to locate the organisation specified in your token",
+                        ResponseCode = HttpStatusCode.Unauthorized,
                     };
                 case ApplicationStatus.InvalidToken:
                     return new ProcessIncomingExceptionResponse
                     {
-                        ResponseMessage = "The token supplied is invalid, please check your token in the applications page in Errordite"
+                        ResponseMessage = "The token supplied is invalid, please check your token in the applications page in Errordite",
+                        ResponseCode = HttpStatusCode.BadRequest,
                     };
                 case ApplicationStatus.Ok:
                     {
@@ -84,7 +93,8 @@ namespace Errordite.Core.Reception.Commands
                 Trace("Failed rate limiter rule named {0}", failedRule.Name);
                 return new ProcessIncomingExceptionResponse
                 {
-                    ResponseMessage = "The error was not stored due to limits on the number of errors we can receive for you in a given time frame"
+                    ResponseMessage = "The error was not stored due to limits on the number of errors we can receive for you in a given time frame",
+                    SpecialResponseCode = 429, //too many requests http://tools.ietf.org/html/draft-nottingham-http-new-status-02
                 };
             }
 
@@ -100,6 +110,7 @@ namespace Errordite.Core.Reception.Commands
                     Token = request.Error.Token
                 },
                 _configuration.GetReceiveQueueAddress(organisation.FriendlyId));
+                Session.AddCommitAction(new PollNowAction(organisation));
             }
             else
             {
@@ -113,6 +124,8 @@ namespace Errordite.Core.Reception.Commands
                     Token = request.Error.Token
                 });
             }
+
+            
 
             return new ProcessIncomingExceptionResponse();
         }
@@ -241,6 +254,16 @@ namespace Errordite.Core.Reception.Commands
 
     public class ProcessIncomingExceptionResponse
     {
+        public ProcessIncomingExceptionResponse()
+        {
+            ResponseCode = HttpStatusCode.Accepted;
+        }
+
         public string ResponseMessage { get; set; }
+
+        public HttpStatusCode? ResponseCode { get; set; }
+        //if the Response Code we want to use isn't in the .net enum, set it here instead
+        public int? SpecialResponseCode { get; set; }
+
     }
 }
