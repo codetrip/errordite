@@ -24,7 +24,7 @@ namespace Errordite.Core
             public static string Errors = new Indexing.Errors().IndexName;
             public static string Issues = new Indexing.Issues().IndexName;
             public static string IssueDailyCount = new IssueDailyCounts().IndexName;
-            public static string OrganisationIssueDailyCount = new OrganisationDailyCount_Search().IndexName;
+            public static string OrganisationIssueDailyCount = new OrganisationDailyCounts().IndexName;
             public static string UserOrganisationMappings = new UserOrganisationMappings().IndexName;
             public static string Organisations = new Indexing.Organisations().IndexName;
         }

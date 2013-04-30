@@ -269,7 +269,7 @@
     <Compile Include="Indexing\Applications.cs" />
     <Compile Include="Indexing\History.cs" />
     <Compile Include="Indexing\IssuesExtraDataKeys.cs" />
-    <Compile Include="Indexing\OrganisationDailyCount_Search.cs" />
+    <Compile Include="Indexing\OrganisationDailyCounts.cs" />
     <Compile Include="Indexing\Organisations.cs" />
     <Compile Include="Indexing\Groups.cs" />
     <Compile Include="Indexing\UserOrganisationMappings.cs" />
