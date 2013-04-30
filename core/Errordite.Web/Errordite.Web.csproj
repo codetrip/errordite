@@ -254,6 +254,9 @@
     <Compile Include="Areas\System\Models\Organisations\SuspendOrganisationViewModel.cs" />
     <Compile Include="ActionFilters\GenerateBreadcrumbs.cs" />
     <Compile Include="ApiControllers\IssueApiController.cs" />
+    <Content Include="Assets\Images\edit.png" />
+    <Content Include="Assets\Images\error.png" />
+    <Content Include="Assets\Images\trash.png" />
     <Content Include="Assets\Js\activity.js">
       <DependentUpon>activity.coffee</DependentUpon>
     </Content>
