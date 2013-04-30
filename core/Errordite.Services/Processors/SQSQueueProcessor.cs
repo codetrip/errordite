@@ -100,7 +100,7 @@ namespace Errordite.Services.Processors
                     //create the queue if the exception indicates the queue does not exist
                     if (e.Message.ToLowerInvariant().StartsWith("the specified queue does not exist"))
                     {
-                        _createSQSQueueCommand.Invoke(new CreateSQSCommandRequest
+                        _createSQSQueueCommand.Invoke(new CreateSQSQueueRequest
                         {
                             OrganisationId = OrganisationFriendlyId
                         });

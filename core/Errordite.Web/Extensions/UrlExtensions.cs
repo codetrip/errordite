@@ -234,9 +234,34 @@ namespace Errordite.Web.Extensions
             return helper.Action("complete", "subscription", new { Area = string.Empty, subscriptionId, reference });
         }
 
-        public static string TrialExpired(this UrlHelper helper)
+        public static string SignUpExpired(this UrlHelper helper)
         {
-            return helper.Action("trialexpired", "subscription", new { Area = string.Empty });
+            return helper.Action("signup", "subscription", new { Area = string.Empty, expired = true });
+        }
+
+        public static string SignUpNotExpired(this UrlHelper helper)
+        {
+            return helper.Action("signup", "subscription", new { Area = string.Empty, expired = false });
+        }
+
+        public static string ChangeSubscription(this UrlHelper helper, string newPlanName)
+        {
+            return helper.Action("changesubscription", "subscription", new { Area = string.Empty, newPlanName });
+        }
+
+        public static string Cancel(this UrlHelper helper)
+        {
+            return helper.Action("cancel", "subscription", new { Area = string.Empty });
+        }
+
+        public static string Subscription(this UrlHelper helper)
+        {
+            return helper.Action("index", "subscription", new { Area = string.Empty });
+        }
+
+        public static string BillingHistory(this UrlHelper helper)
+        {
+            return helper.Action("billinghistory", "subscription", new { Area = string.Empty });
         }
 
         #endregion
@@ -286,30 +311,10 @@ namespace Errordite.Web.Extensions
 
         #region Admin
 
-        public static string PaymentPlan(this UrlHelper helper)
-        {
-            return helper.Action("subscription", "account", new {Area = string.Empty});
-        }
-
-        public static string BillingHistory(this UrlHelper helper)
-        {
-            return helper.Action("billinghistory", "account", new { Area = string.Empty });
-        }
-
         public static string Settings(this UrlHelper helper)
         {
             return helper.Action("settings", "account", new { Area = string.Empty });
         }
-
-		public static string ChangeSubscription(this UrlHelper helper, string newPlanName)
-        {
-            return helper.Action("changesubscription", "account", new { Area = string.Empty, newPlanName });
-        }
-
-		public static string Cancel(this UrlHelper helper)
-		{
-			return helper.Action("cancel", "account", new { Area = string.Empty });
-		}
 
         #endregion
 

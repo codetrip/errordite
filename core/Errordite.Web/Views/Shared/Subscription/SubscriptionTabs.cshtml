@@ -1,0 +1,7 @@
+﻿@using Errordite.Web.Extensions
+@using Errordite.Web.Models.Account
+<ul class="sidenav-tabs">
+    <li @(Model == SubscriptionTab.Subscription ? " class=active" : "")><a href="@Url.Subscription()" >Subscription</a></li>
+    <li @(Model == SubscriptionTab.BillingHistory ? " class=active" : "")><a href="@Url.BillingHistory()">Billing History</a></li>
+    <li @(Model == SubscriptionTab.Cancel ? " class=active" : "")><a href="@Url.Cancel()">Cancel</a></li>
+</ul>

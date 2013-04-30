@@ -106,7 +106,7 @@ h1 {
 
 h2 {
     font-size:18px;
-    margin:8px 0;
+    margin:8px 0 12px 0;
     &.section-header {
         text-transform:uppercase;
         font-weight:$extraboldfontweight;
@@ -1984,7 +1984,7 @@ nav {
 }
 
 .billing {
-	padding: 20px 0 0 0;
+	padding: 10px 0 0 0;
 	p {
 		float:left;
 		margin:0 0 10px 0;

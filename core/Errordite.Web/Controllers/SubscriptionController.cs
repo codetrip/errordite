@@ -1,13 +1,13 @@
 ﻿using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Errordite.Core.Configuration;
-using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Encryption;
+using Errordite.Core.Organisations.Commands;
 using Errordite.Core.Organisations.Queries;
+using Errordite.Web.ActionFilters;
+using Errordite.Web.Models.Navigation;
 using Errordite.Web.Models.Subscription;
 using Errordite.Core.Extensions;
-using ChargifyNET;
 using Errordite.Web.Extensions;
 
 namespace Errordite.Web.Controllers
@@ -15,60 +15,105 @@ namespace Errordite.Web.Controllers
     public class SubscriptionController : ErrorditeController
     {
         private readonly IGetAvailablePaymentPlansQuery _getAvailablePaymentPlansQuery;
-		private readonly IEncryptor _encryptor;
-		private readonly ErrorditeConfiguration _configuration;
+        private readonly ICompleteSignUpCommand _completeSignUpCommand;
+        private readonly IEncryptor _encryptor;
 
         public SubscriptionController(IGetAvailablePaymentPlansQuery getAvailablePaymentPlansQuery, 
-			IEncryptor encryptor, 
-			ErrorditeConfiguration configuration)
+			ICompleteSignUpCommand completeSignUpCommand, 
+            IEncryptor encryptor)
         {
-	        _getAvailablePaymentPlansQuery = getAvailablePaymentPlansQuery;
-	        _encryptor = encryptor;
-	        _configuration = configuration;
+            _getAvailablePaymentPlansQuery = getAvailablePaymentPlansQuery;
+            _completeSignUpCommand = completeSignUpCommand;
+            _encryptor = encryptor;
         }
 
-		[HttpGet, Authorize]
-        public ActionResult TrialExpired()
+        [HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.Subscription)]
+        public ActionResult Index()
+        {
+            var plans = _getAvailablePaymentPlansQuery.Invoke(new GetAvailablePaymentPlansRequest()).Plans;
+
+            var currentPlan = Core.AppContext.CurrentUser.Organisation.PaymentPlan;
+
+            var model = new SubscriptionViewModel
+            {
+                Plans = plans.Select(p => new ChangePaymentPlanViewModel
+                {
+                    CurrentPlan = p.Id == currentPlan.Id,
+                    Upgrade = p.Rank > currentPlan.Rank && !currentPlan.IsTrial,
+                    Downgrade = p.Rank < currentPlan.Rank && !p.IsTrial,
+                    SignUp = currentPlan.IsTrial && !p.IsTrial,
+                    Plan = p
+                }).ToList(),
+                Organisation = Core.AppContext.CurrentUser.Organisation
+            };
+
+            if (!model.Organisation.PaymentPlan.IsTrial)
+            {
+                model.Plans.Remove(model.Plans.First(p => p.Plan.IsTrial));
+            }
+
+            return View(model);
+        }
+
+        [HttpGet, Authorize]
+        public ActionResult SignUp(bool expired = false)
         {
             var paymentPlans = _getAvailablePaymentPlansQuery.Invoke(new GetAvailablePaymentPlansRequest()).Plans.Where(p => !p.IsTrial);
-
-            return View(paymentPlans.Select(p => new PaymentPlanViewModel
-	        {
-		        Plan = p,
-				Status = PaymentPlanStatus.SubscriptionSignUp,
-				SignUpUrl = "{0}{1}".FormatWith(p.SignUpUrl, GetSignUpToken(p.FriendlyId))
-	        }));
+		    var model = new SubscriptionSignUpViewModel
+		    {
+		        Plans = paymentPlans.Select(p => new PaymentPlanViewModel
+		        {
+		            Plan = p,
+		            Status = PaymentPlanStatus.SubscriptionSignUp,
+		            SignUpUrl = "{0}{1}".FormatWith(p.SignUpUrl, GetSignUpToken(p.FriendlyId))
+		        }),
+		        Expired = expired
+		    };
+            return View(model);
         }
 
-		[HttpGet, Authorize]
+		[HttpGet, Authorize, ExportViewData]
 		public ActionResult Complete(SubscriptionCompleteViewModel model)
 		{
-			//verify  
-			var connection = new ChargifyConnect(_configuration.ChargifyUrl, _configuration.ChargifyApiKey, _configuration.ChargifyPassword);
-			var subscription = connection.LoadSubscription(model.SubscriptionId);
-			var token = _encryptor.Decrypt(HttpUtility.UrlDecode(model.Reference).Base64Decode()).Split('|');
+		    var status = _completeSignUpCommand.Invoke(new CompleteSignUpRequest
+		    {
+		        CurrentUser = Core.AppContext.CurrentUser,
+		        Reference = model.Reference,
+		        SubscriptionId = model.SubscriptionId
+		    }).Status;
 
-			if (token[0] != Core.AppContext.CurrentUser.Organisation.FriendlyId)
-			{
-				model.Status = SignUpStatus.InvalidOrganisation;
-				return View(model);
-			}
+            if (status == CompleteSignUpStatus.Ok)
+            {
+                ConfirmationNotification("Your subscription has been created successfully, thank you.");
+                return RedirectToAction("index");
+            }
 
-			var organisation = Core.Session.MasterRaven.Load<Organisation>(Core.AppContext.CurrentUser.Organisation.Id);
+            return RedirectToAction("failed", new { SubscritpionId = model.SubscriptionId});
+        }
 
-			if (organisation == null)
-			{
-				model.Status = SignUpStatus.InvalidOrganisation;
-				return View(model);
-			}
+        [HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.Subscription)]
+        public ActionResult Failed(SubscriptionCompleteViewModel model)
+        {
+            return View(model);
+        }
 
-			organisation.Subscription.ChargifyId = subscription.SubscriptionID;
-			organisation.Subscription.Status = SubscriptionStatus.Active;
-			organisation.PaymentPlanId = "PaymentPlans/{0}".FormatWith(token[1]);
+        [HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.BillingHistory)]
+        public ActionResult BillingHistory()
+        {
+            return View();
+        }
 
-			model.Status = SignUpStatus.Ok;
-			return View(model);
-		}
+        [HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.ChangeSubscription)]
+        public ActionResult ChangeSubscription(string planId)
+        {
+            return View();
+        }
+
+        [HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.CancelSubscription)]
+        public ActionResult Cancel()
+        {
+            return View();
+        }
 
 		public ActionResult ChargifyComplete(SubscriptionCompleteViewModel model)
 		{

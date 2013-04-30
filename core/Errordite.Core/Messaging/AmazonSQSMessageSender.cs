@@ -46,7 +46,7 @@ namespace Errordite.Core.Messaging
                     destination.Contains("errordite-receive-") && 
                     e.Message.ToLowerInvariant().StartsWith("the specified queue does not exist"))
                 {
-                    _createSQSQueueCommand.Invoke(new CreateSQSCommandRequest
+                    _createSQSQueueCommand.Invoke(new CreateSQSQueueRequest
                     {
                         OrganisationId = message.OrganisationId
                     });

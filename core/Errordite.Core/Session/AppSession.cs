@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition.Hosting;
 using System.Net.Http;
 using Errordite.Core.Auditing.Entities;
+using Errordite.Core.Configuration;
 using Errordite.Core.Domain.Master;
 using Errordite.Core.Messaging;
 using Errordite.Core.Domain.Organisation;
