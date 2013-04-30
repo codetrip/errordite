@@ -28,7 +28,7 @@ namespace Errordite.Core.Groups.Commands
 
             var groupId = Group.GetId(request.GroupId);
 
-            var existingGroup = Session.Raven.Query<Group, Groups_Search>().FirstOrDefault(o => o.Id == groupId);
+            var existingGroup = Session.Raven.Query<Group, Indexing.Groups>().FirstOrDefault(o => o.Id == groupId);
 
             if (existingGroup == null)
             {
@@ -40,7 +40,7 @@ namespace Errordite.Core.Groups.Commands
 
             _authorisationManager.Authorise(existingGroup, request.CurrentUser);
 
-            var usersInGroup = Session.Raven.Query<User, Users_Search>().FirstOrDefault(e => e.GroupIds.Any(id => id == existingGroup.Id));
+            var usersInGroup = Session.Raven.Query<User, Indexing.Users>().FirstOrDefault(e => e.GroupIds.Any(id => id == existingGroup.Id));
 
             if (usersInGroup != null)
             {
@@ -52,7 +52,7 @@ namespace Errordite.Core.Groups.Commands
 
             Delete(existingGroup);
 
-            Session.SynchroniseIndexes<Groups_Search>();
+            Session.SynchroniseIndexes<Indexing.Groups>();
 
             return new DeleteGroupResponse(groupId: request.GroupId, organisationId: request.CurrentUser.OrganisationId)
             {

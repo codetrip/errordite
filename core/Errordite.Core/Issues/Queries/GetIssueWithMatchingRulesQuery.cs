@@ -16,7 +16,7 @@ namespace Errordite.Core.Issues.Queries
 
             RavenQueryStatistics stats;
 
-            var q = Session.Raven.Query<IssueDocument, Issues_Search>().Statistics(out stats)
+            var q = Session.Raven.Query<IssueDocument, Indexing.Issues>().Statistics(out stats)
                 .Where(i => i.ApplicationId == request.IssueToMatch.ApplicationId && i.RulesHash == request.IssueToMatch.RulesHash);
 
             if (request.IssueToMatch.Id != null)

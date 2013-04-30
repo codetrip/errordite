@@ -48,7 +48,9 @@ namespace Errordite.Core.Organisations.Commands
         {
             Trace("Starting...");
 
-            var existingOrganisation = Session.MasterRaven.Query<Organisation, Organisations_Search>().FirstOrDefault(o => o.Name == request.OrganisationName);
+            var existingOrganisation = Session.MasterRaven
+				.Query<OrganisationDocument, Indexing.Organisations>()
+				.FirstOrDefault(o => o.Name == request.OrganisationName);
 
             if(existingOrganisation != null)
             {
@@ -155,7 +157,7 @@ namespace Errordite.Core.Organisations.Commands
             }
 
             //TODO: sync indexes
-            Session.SynchroniseIndexes<Organisations_Search, Users_Search>();
+            Session.SynchroniseIndexes<Indexing.Organisations, Indexing.Users>();
 
             return new CreateOrganisationResponse
             {

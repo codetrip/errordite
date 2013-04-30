@@ -1,4 +1,5 @@
-﻿using Castle.Core;
+﻿using System.Linq;
+using Castle.Core;
 using Errordite.Core.Caching.Entities;
 using Errordite.Core.Caching.Interceptors;
 using Errordite.Core.Interfaces;
@@ -8,6 +9,8 @@ using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Indexing;
 using Errordite.Core.Session;
 using ProtoBuf;
+using Raven.Client;
+using Raven.Client.Linq;
 
 namespace Errordite.Core.Organisations.Queries
 {
@@ -18,7 +21,14 @@ namespace Errordite.Core.Organisations.Queries
         {
             Trace("Starting...");
 
-            var page = GetMasterPage<Organisation, Organisations_Search, string>(request.Paging);
+			RavenQueryStatistics stats;
+
+            var entities = Session.MasterRaven.Query<OrganisationDocument, Indexing.Organisations>()
+				.Statistics(out stats)
+				.Skip((request.Paging.PageNumber - 1) * request.Paging.PageSize)
+				.Take(request.Paging.PageSize);
+
+			var page = new Page<Organisation>(entities.As<Organisation>().ToList(), new PagingStatus(request.Paging.PageSize, request.Paging.PageNumber, stats.TotalResults));
 
             return new GetOrganisationsResponse
             {

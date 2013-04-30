@@ -66,7 +66,7 @@ namespace Errordite.Core.Users.Commands
 
             Delete(existingUser);
 
-            Session.SynchroniseIndexes<Users_Search, Issues_Search>();
+            Session.SynchroniseIndexes<Indexing.Users, Indexing.Issues>();
 
             return new DeleteUserResponse(userId: request.UserId, organisationId: request.CurrentUser.OrganisationId, email: existingUser.Email)
             {

@@ -19,7 +19,7 @@ namespace Errordite.Core.Groups.Queries
         {
             Trace("Starting...");
 
-            var groups = GetPage<Group, Groups_Search, string>(request.Paging, orderByClause: u => u.Name);
+            var groups = GetPage<Group, Indexing.Groups, string>(request.Paging, orderByClause: u => u.Name);
 
             return new GetGroupsResponse
             {

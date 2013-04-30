@@ -40,7 +40,7 @@ namespace Errordite.Core.Users.Commands
 
             _authorisationManager.Authorise(existingUser, request.CurrentUser);
 
-            var existingEmail = Session.Raven.Query<User, Users_Search>().FirstOrDefault(u => u.Email == request.Email && u.Id != userId);
+            var existingEmail = Session.Raven.Query<User, Indexing.Users>().FirstOrDefault(u => u.Email == request.Email && u.Id != userId);
 
             if (existingEmail != null)
             {
@@ -68,7 +68,7 @@ namespace Errordite.Core.Users.Commands
             if (request.GroupIds != null)
                 existingUser.GroupIds = request.GroupIds.Select(Group.GetId).ToList();
 
-            Session.SynchroniseIndexes<Users_Search, Groups_Search>();
+            Session.SynchroniseIndexes<Indexing.Users, Indexing.Groups>();
             Session.SynchroniseIndexes<UserOrganisationMappings>(true);
 
             return new EditUserResponse(false, request.UserId, request.CurrentUser.OrganisationId, email)

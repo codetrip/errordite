@@ -19,11 +19,11 @@ namespace Errordite.Test.IntegrationTests
         public void ReceiveTwoIdenticalErrors()
         {
             var ravenSession = Get<IAppSession>().Raven;
-            var org = ravenSession.Query<Organisation, Organisations_Search>().FirstOrDefault(o => o.Name == "UnitTests");
+            var org = ravenSession.Query<Organisation, Organisations>().FirstOrDefault(o => o.Name == "UnitTests");
             if (org != null)
                 ravenSession.Delete(org); //TODO: delete child entities
 
-            var user = Session.Raven.Query<User, Users_Search>().FirstOrDefault(u => u.Email == "unittests@Errordite.co.uk");
+            var user = Session.Raven.Query<User, Users>().FirstOrDefault(u => u.Email == "unittests@Errordite.co.uk");
             if (user != null)
                 ravenSession.Delete(user);
 
@@ -50,7 +50,7 @@ namespace Errordite.Test.IntegrationTests
                 UserId = orgInfo.UserId,
             });
 
-            var app = ravenSession.Query<Application, Applications_Search>().First(a => a.OrganisationId == orgInfo.OrganisationId && a.Name == "UnitTestApp1");
+            var app = ravenSession.Query<Application, Applications>().First(a => a.OrganisationId == orgInfo.OrganisationId && a.Name == "UnitTestApp1");
 
             Get<IReceiveErrorCommand>().Invoke(new ReceiveErrorRequest
             {

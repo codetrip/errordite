@@ -37,7 +37,7 @@ namespace Errordite.Core.Authentication.Commands
             Session.SetOrganisation(organisation);
 
             Trace("Getting user {0} from org {1} with pwdhash {2}", request.Email, organisation.Id, request.Password.Hash());
-            var user = Session.Raven.Query<User, Users_Search>()
+            var user = Session.Raven.Query<User, Indexing.Users>()
                 .FirstOrDefault(u => u.Email == request.Email.ToLowerInvariant() && u.Password == request.Password.Hash());
 
             if (user != null)

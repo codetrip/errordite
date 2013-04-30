@@ -71,7 +71,7 @@ namespace Errordite.Core.Organisations.Commands
             organisation.Subscription.Dispensation = false;
             organisation.PaymentPlanId = "PaymentPlans/{0}".FormatWith(token[1]);
 
-            Session.SynchroniseIndexes<Organisations_Search, Users_Search>();
+            Session.SynchroniseIndexes<Indexing.Organisations, Indexing.Users>();
 
             return new CompleteSignUpResponse(organisation.Id, request.CurrentUser.Id, request.CurrentUser.Email)
             {

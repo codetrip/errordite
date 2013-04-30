@@ -19,7 +19,7 @@ namespace Errordite.Core.Applications.Queries
         {
             Trace("Starting...");
 
-            var page = GetPage<Application, Applications_Search, string>(request.Paging, orderByClause: a => a.Name);
+            var page = GetPage<Application, Indexing.Applications, string>(request.Paging, orderByClause: a => a.Name);
 
             return new GetApplicationsResponse
             {

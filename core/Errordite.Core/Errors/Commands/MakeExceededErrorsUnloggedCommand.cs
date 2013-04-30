@@ -37,7 +37,7 @@ namespace Errordite.Core.Errors.Commands
             //as the extra errors will be deleted next time round anyway, so aggresively cache for 1 minute
             //using (Session.Raven.Advanced.DocumentStore.AggressivelyCacheFor(TimeSpan.FromMinutes(1)))
             //{
-                errors = Session.Raven.Query<ErrorDocument, Errors_Search>()
+                errors = Session.Raven.Query<ErrorDocument, Indexing.Errors>()
                      .Where(e => e.IssueId == request.IssueId)
                      .OrderByDescending(e => e.TimestampUtc)
                      .Skip(_configuration.IssueErrorLimit)

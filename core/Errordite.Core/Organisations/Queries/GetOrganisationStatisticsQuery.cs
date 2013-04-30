@@ -26,7 +26,7 @@ namespace Errordite.Core.Organisations.Queries
 
             var stats = new Statistics();
 
-            var results = Session.Raven.Query<IssueDocument, Issues_Search>()
+            var results = Session.Raven.Query<IssueDocument, Indexing.Issues>()
                 .ConditionalWhere(r => r.ApplicationId == Application.GetId(request.ApplicationId), request.ApplicationId.IsNotNullOrEmpty)
                 .ToFacets(CoreConstants.FacetDocuments.IssueStatus);
             

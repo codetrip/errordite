@@ -29,7 +29,7 @@ namespace Errordite.Core.Groups.Commands
         {
             Trace("Starting...");
 
-            var existingGroup = Session.Raven.Query<Group, Groups_Search>().FirstOrDefault(o => o.Name == request.Name);
+            var existingGroup = Session.Raven.Query<Group, Indexing.Groups>().FirstOrDefault(o => o.Name == request.Name);
 
             if (existingGroup != null)
             {
@@ -59,7 +59,7 @@ namespace Errordite.Core.Groups.Commands
                 }
             }
 
-            Session.SynchroniseIndexes<Groups_Search, Users_Search>();
+            Session.SynchroniseIndexes<Indexing.Groups, Indexing.Users>();
 
             return new AddGroupResponse(false, request.Organisation.Id)
             {

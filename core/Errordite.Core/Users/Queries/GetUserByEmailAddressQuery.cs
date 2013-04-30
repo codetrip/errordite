@@ -16,7 +16,7 @@ namespace Errordite.Core.Users.Queries
     {
         public GetUserByEmailAddressResponse Invoke(GetUserByEmailAddressRequest request)
         {
-            var user = Query<User, Users_Search>().FirstOrDefault(u => u.Email == request.EmailAddress);
+            var user = Query<User, Indexing.Users>().FirstOrDefault(u => u.Email == request.EmailAddress);
 
             return new GetUserByEmailAddressResponse()
             {

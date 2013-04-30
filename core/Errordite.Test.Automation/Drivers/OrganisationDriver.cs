@@ -14,7 +14,7 @@ namespace Errordite.Test.Automation.Drivers
     {
         public User GetUser(string email)
         {
-            return Session.Raven.Query<User, Users_Search>()
+            return Session.Raven.Query<User, Users>()
                 .Customize(c => c.WaitForNonStaleResultsAsOfNow())
                 .FirstOrDefault(u => u.Email == email);
         }

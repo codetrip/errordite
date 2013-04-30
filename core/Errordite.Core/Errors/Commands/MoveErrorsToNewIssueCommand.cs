@@ -28,7 +28,7 @@ namespace Errordite.Core.Errors.Commands
             Trace("Starting...");
             TraceObject(request);
 
-            new SynchroniseIndexCommitAction<Errors_Search>().Execute(Session);
+            new SynchroniseIndexCommitAction<Indexing.Errors>().Execute(Session);
 
             //now move errors from the other issues
             Session.RavenDatabaseCommands.UpdateByIndex(CoreConstants.IndexNames.Errors,

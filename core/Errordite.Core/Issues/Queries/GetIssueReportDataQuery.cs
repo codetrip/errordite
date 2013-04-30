@@ -25,7 +25,7 @@ namespace Errordite.Core.Issues.Queries
                 y = hourlyCount.HourlyCount.Select(h => h.Value)
             });
 
-            var dateResults = Query<IssueDailyCount, IssueDailyCount_Search>()
+            var dateResults = Query<IssueDailyCount, IssueDailyCounts>()
                 .Where(i => i.IssueId == Issue.GetId(request.IssueId))
                 .Where(i => i.Historical == false)
                 .Where(i => i.Date >= request.StartDate && i.Date <= request.EndDate)

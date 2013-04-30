@@ -20,7 +20,7 @@ namespace Errordite.Core.Errors.Queries
 
             RavenQueryStatistics stats;
             
-            var query = Session.Raven.Query<ErrorDocument, Errors_Search>()
+            var query = Session.Raven.Query<ErrorDocument, Indexing.Errors>()
                 .Statistics(out stats);
 
             if (request.WaitForIndexStaleAtUtc.HasValue)

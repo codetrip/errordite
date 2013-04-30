@@ -1,0 +1,23 @@
+﻿using Castle.MicroKernel.Registration;
+using Castle.MicroKernel.SubSystems.Configuration;
+using Castle.Windsor;
+using Errordite.Core.IoC;
+using Errordite.Tasks.Tasks;
+
+namespace Errordite.Tasks.IoC
+{
+    public class TasksInstaller : WindsorInstallerBase
+    {
+        public override void Install(IWindsorContainer container, IConfigurationStore store)
+        {
+            base.Install(container, store);
+
+	        container.Register(Component.For<ITask>()
+		        .ImplementedBy<TrialExpirationEmailSender>()
+		        .Named("trialexpirations")
+		        .LifestyleTransient());
+        }
+    }
+}
+
+

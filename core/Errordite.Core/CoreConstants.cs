@@ -21,12 +21,12 @@ namespace Errordite.Core
 
         public static class IndexNames
         {
-            public static string Errors = new Errors_Search().IndexName;
-            public static string Issues = new Issues_Search().IndexName;
-            public static string IssueDailyCount = new IssueDailyCount_Search().IndexName;
+            public static string Errors = new Indexing.Errors().IndexName;
+            public static string Issues = new Indexing.Issues().IndexName;
+            public static string IssueDailyCount = new IssueDailyCounts().IndexName;
             public static string OrganisationIssueDailyCount = new OrganisationDailyCount_Search().IndexName;
             public static string UserOrganisationMappings = new UserOrganisationMappings().IndexName;
-            public static string Organisations = new Organisations_Search().IndexName;
+            public static string Organisations = new Indexing.Organisations().IndexName;
         }
 
         public static class Authentication

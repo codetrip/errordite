@@ -36,7 +36,7 @@ namespace Errordite.Core.Users.Queries
 
             RavenQueryStatistics stats;
 
-            var query = Session.Raven.Query<User, Users_Search>()
+            var query = Session.Raven.Query<User, Indexing.Users>()
                 .Statistics(out stats)
                 .OrderBy(u => u.LastName);
 

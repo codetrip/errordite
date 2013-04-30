@@ -56,7 +56,7 @@ namespace Errordite.Core.Authentication.Commands
                 {
                     Session.SetOrganisation(organisation);
 
-                    var user = Session.Raven.Query<User, Users_Search>().FirstOrDefault(u => u.PasswordToken == userToken);
+                    var user = Session.Raven.Query<User, Indexing.Users>().FirstOrDefault(u => u.PasswordToken == userToken);
 
                     if (user == null || user.PasswordToken == default(Guid))
                     {

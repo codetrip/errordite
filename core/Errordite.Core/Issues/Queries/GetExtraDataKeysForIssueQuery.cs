@@ -14,7 +14,7 @@ namespace Errordite.Core.Issues.Queries
         {
             return new GetExtraDataKeysForIssueResponse
                 {
-                    Keys = Query<IssueExtraDataKeys, Issues_ExtraDataKeys>()
+                    Keys = Query<IssueExtraDataKeys, IssuesExtraDataKeys>()
                             .FirstOrDefault(i => i.IssueId == Issue.GetId(request.IssueId))
                             .IfPoss(r => r.Keys ?? new List<string>(), new List<string>()),
                 };

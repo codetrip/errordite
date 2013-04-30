@@ -28,6 +28,7 @@ using Newtonsoft.Json;
 using Raven.Abstractions.Exceptions;
 using Raven.Client;
 using Resources;
+using History = Errordite.Core.Indexing.History;
 
 namespace Errordite.Web.Controllers
 {
@@ -270,7 +271,7 @@ namespace Errordite.Web.Controllers
             var issueMemoizer = new LocalMemoizer<string, Issue>(id =>
                     _getIssueQuery.Invoke(new GetIssueRequest { CurrentUser = Core.AppContext.CurrentUser, IssueId = id }).Issue);
 
-            var history = Core.Session.Raven.Query<HistoryDocument, History_Search>()
+            var history = Core.Session.Raven.Query<HistoryDocument, History>()
                 .Where(h => h.IssueId == Issue.GetId(issueId))
                 .As<IssueHistory>()
                 .ToList();
