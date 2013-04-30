@@ -287,7 +287,7 @@
     <Compile Include="Mappings\GroupToGroupViewModel.cs" />
     <Compile Include="Mappings\UserToEditUserViewModel.cs" />
     <Compile Include="Mappings\UserToUserViewModel.cs" />
-    <Compile Include="Models\Account\BillingTab.cs" />
+    <Compile Include="Models\Account\SubscriptionTab.cs" />
     <Compile Include="Models\Applications\AddApplicationViewModel.cs" />
     <Compile Include="Models\Applications\ApplicationViewModel.cs" />
     <Compile Include="Models\Applications\EditApplicationViewModel.cs" />
@@ -312,7 +312,7 @@
     <Compile Include="Models\Issues\IssueViewModel.cs" />
     <Compile Include="Models\Navigation\Breadcrumbs.cs" />
     <Compile Include="Models\Account\OrganisationsViewModel.cs" />
-    <Compile Include="Models\Account\SubscriptionViewModel.cs" />
+    <Compile Include="Models\Subscription\SubscriptionViewModel.cs" />
     <Compile Include="Models\Search\SearchViewModel.cs" />
     <Compile Include="Models\Subscription\PaymentPlanViewModel.cs" />
     <Compile Include="Models\Subscription\SignUpViewModel.cs" />
@@ -489,7 +489,6 @@
     <Content Include="Global.asax" />
     <Content Include="google06c34901e78e12bd.html" />
     <Content Include="robots.txt" />
-    <Content Include="wallet.ico" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -817,7 +816,7 @@
     <Content Include="Views\Shared\NotAuthorised.cshtml" />
     <Content Include="Views\Shared\NotFound.cshtml" />
     <Content Include="Views\Shared\Docs\PaymentPlan.cshtml" />
-    <Content Include="Views\Account\Subscription.cshtml" />
+    <Content Include="Views\Subscription\Index.cshtml" />
     <Content Include="Views\EmailTest\List.cshtml" />
     <Content Include="Views\EmailTest\Index.cshtml" />
     <Content Include="Views\Account\Settings.cshtml" />
@@ -907,7 +906,7 @@
     <Content Include="Views\Shared\Docs\DjangoClient.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Subscription\SignUp.cshtml" />
+    <Content Include="Views\Subscription\SignUpOld.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Js\activity.coffee" />
@@ -922,22 +921,22 @@
     <Content Include="Areas\System\Views\Shared\Monitoring\MessageFailuresCriteria.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Subscription\TrialExpired.cshtml" />
+    <Content Include="Views\Subscription\SignUp.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\Account\BillingTabs.cshtml" />
+    <Content Include="Views\Shared\Subscription\SubscriptionTabs.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Account\BillingHistory.cshtml" />
+    <Content Include="Views\Subscription\BillingHistory.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Account\ChangeSubscription.cshtml" />
+    <Content Include="Views\Subscription\ChangeSubscription.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Account\Cancel.cshtml" />
+    <Content Include="Views\Subscription\Cancel.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Subscription\Complete.cshtml" />
+    <Content Include="Views\Subscription\Failed.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

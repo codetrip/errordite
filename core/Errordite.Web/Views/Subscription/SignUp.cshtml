@@ -1,5 +1,5 @@
 ﻿@using Errordite.Web.Extensions
-@model Errordite.Web.Models.Subscription.SignUpViewModel
+@model Errordite.Web.Models.Subscription.SubscriptionSignUpViewModel
 
 @{
     ViewBag.Title = "Sign Up";
@@ -7,81 +7,43 @@
 
 <section class="centered">
     <div class="content">
-	    <h1>Subscription Sign Up</h1>
-	    <p>
-		    Enter your credit card details and the associated billing address and we will set up your Errordite subscription. Once the process
-		    is complete your account will be updated to the <span class="bold"></span> plan. You can upgrade or downgrade your plan at any time by 
-			visiting your <a href="@Url.PaymentPlan()">billing & plan</a> section.
-	    </p>
-            @using (Html.BeginForm("signup", "subscription", FormMethod.Post, new { id = "signupForm" }))
-            {
-				<div class="form double">
-					<ul>
-						<li>
-							<h3 class="bold">Billing Address</h3>
-						</li>
-						<li>
-							@Html.LabelFor(m => m.AddressLine1, "Address Line 1")
-							@Html.TextBoxFor(m => m.AddressLine1)
-							@Html.ValidationMessageFor(m => m.AddressLine1)
-						</li>
-						<li>
-							@Html.LabelFor(m => m.AddressLine2, "Address Line 2")
-							@Html.TextBoxFor(m => m.AddressLine2)
-							@Html.ValidationMessageFor(m => m.AddressLine2)
-						</li>
-						<li>
-							@Html.LabelFor(m => m.AddressLine3, "Address Line 3")
-							@Html.TextBoxFor(m => m.AddressLine3)
-							@Html.ValidationMessageFor(m => m.AddressLine3)
-						</li>
-						<li>
-							@Html.LabelFor(m => m.CityRegion, "City or Region")
-							@Html.TextBoxFor(m => m.CityRegion)
-							@Html.ValidationMessageFor(m => m.CityRegion)
-						</li>
-						<li>
-							@Html.LabelFor(m => m.ZipPostalCode, "Zip or Postal Code")
-							@Html.TextBoxFor(m => m.ZipPostalCode, new {@style="width:100px"})
-							@Html.ValidationMessageFor(m => m.ZipPostalCode)
-						</li>
-						<li>
-							@Html.LabelFor(m => m.Country, "Country")
-							@Html.DropDownListFor(m => m.Country, Model.Countries)
-							@Html.ValidationMessageFor(m => m.Country)
-						</li>
-					</ul>
-				</div>
-	            <div class="form double">
-		            <ul>
-						<li>
-							<h3 class="bold">Credit Card Details</h3>
-						</li>
-			            <li>
-				            @Html.LabelFor(m => m.CreditCardNumber, "Credit Card Number")
-				            @Html.TextBoxFor(m => m.CreditCardNumber)
-				            @Html.ValidationMessageFor(m => m.CreditCardNumber)
-			            </li>
-			            <li>
-				            @Html.LabelFor(m => m.CreditCard, "Card Type")
-				            @Html.DropDownListFor(m => m.CreditCard, Model.CreditCards)
-				            @Html.ValidationMessageFor(m => m.CreditCard)
-			            </li>
-			            <li>
-				            @Html.LabelFor(m => m.NameOnCard, "Name On Card")
-				            @Html.TextBoxFor(m => m.NameOnCard)
-				            @Html.ValidationMessageFor(m => m.NameOnCard)
-			            </li>
-			            <li>
-				            @Html.LabelFor(m => m.SecurityCode, "Security Code")
-				            @Html.TextBoxFor(m => m.SecurityCode, new {@style="width:60px"})
-				            @Html.ValidationMessageFor(m => m.SecurityCode)
-			            </li>
-			            <li class="buttons">
-				            <input type="submit" class="btn btn-medium btn-blue" value="Sign Up" />
-			            </li>
-		            </ul>
-	            </div>
-            }
-        </div>
+        @if (Model.Expired)
+        {
+            <h1>Your Trial has Expired</h1>
+            <p>
+                Thank you for trying out Errordite, your free trial has now expired. In order to continue to use Errordite you need to sign up to one of our payment plans.
+            </p>
+        }
+        else
+        {
+            <h1>Sign up for an Errordite subscription</h1>
+        }
+        
+        <p>
+            When you sign up we will create a subscription on the credit / debit card supplied and will bill you monthly for the amount specified for your selected plan.
+            Invoices will be available in your <a href="@Url.BillingHistory()">subscription</a> area. 
+        </p>
+        <p>
+            Errordite uses a 3rd party called <a href="http://www.chargify.com">Chargify</a> to manage subscription payments, you will be taken to chargify
+            to create your Errordite subscription when you select a plan below.
+        </p>
+        <p>
+            If you do not sign up to a plan within 30 days of your trial expiring your organisation and all associated data may be deleted from our systems.
+        </p>
+        <p>
+            If you have any questions regarding our pricing or billing please <a href="@Url.Contact()">contact Us</a>.
+        </p>
+        <div class="clear" style="height:20px;"></div>
+
+        @foreach (var paymentPlan in Model.Plans)
+        {
+            @Html.Partial("Docs/PaymentPlan", paymentPlan)
+        }
+		
+        <div class="clear"></div>
+
+        <p>
+            If you needs are not met by what is here, please <a href="@Url.Contact()">contact us</a>.
+        </p>
+    </div>
 </section>

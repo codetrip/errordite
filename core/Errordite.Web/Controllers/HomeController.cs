@@ -6,6 +6,7 @@ using Errordite.Core.IoC;
 using Errordite.Core.Configuration;
 using Errordite.Core.Identity;
 using Errordite.Core.Notifications.EmailInfo;
+using Errordite.Core.Organisations.Commands;
 using Errordite.Core.Session;
 using Errordite.Core.Session.Actions;
 using Errordite.Web.ActionFilters;
@@ -38,17 +39,20 @@ namespace Errordite.Web.Controllers
 				{
 					plan.SignUpUrl = "https://code-trip-ltd.chargify.com/h/1182474/subscriptions/new";
 					plan.MaximumUsers = 5;
-					plan.MaximumApplications = 2;
+                    plan.MaximumApplications = 2;
+                    plan.Price = 19.00m;
 				}
 				else if (plan.Name.ToLowerInvariant() == "medium")
 				{
-					plan.SignUpUrl = "https://code-trip-ltd.chargify.com/h/1182475/subscriptions/new";
+                    plan.SignUpUrl = "https://code-trip-ltd.chargify.com/h/1182475/subscriptions/new";
+                    plan.Price = 79.00m;
 				}
 				else if (plan.Name.ToLowerInvariant() == "large")
 				{
 					plan.SignUpUrl = "https://code-trip-ltd.chargify.com/h/1182476/subscriptions/new";
 					plan.MaximumUsers = 100;
 					plan.MaximumApplications = 25;
+				    plan.Price = 199.00m;
 				}
 			}
 

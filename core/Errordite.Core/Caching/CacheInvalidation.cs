@@ -1,5 +1,4 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Errordite.Core.Caching.Entities;
 using System.Linq;
 
@@ -36,8 +35,13 @@ namespace Errordite.Core.Caching
             yield return new CacheInvalidationItem(CacheProfiles.Users, CacheKeys.Users.PerOrganisationPrefix(organisationId), true);
         }
 
-        public static IEnumerable<CacheInvalidationItem> GetOrganisationInvalidationItems(string organisationId)
+        public static IEnumerable<CacheInvalidationItem> GetOrganisationInvalidationItems(string organisationId, string email = null)
         {
+            if (email != null)
+            {
+                yield return new CacheInvalidationItem(CacheProfiles.Organisations, CacheKeys.Organisations.Email(email));
+            }
+
             yield return new CacheInvalidationItem(CacheProfiles.Organisations, CacheKeys.Organisations.Key());
             yield return new CacheInvalidationItem(CacheProfiles.Organisations, CacheKeys.Organisations.Key(organisationId));
             foreach (var item in GetUserInvalidationItems(organisationId)

@@ -18,7 +18,7 @@ namespace Errordite.Core.Messaging.Commands
             _configuration = configuration;
         }
 
-        public CreateSQSCommandResponse Invoke(CreateSQSCommandRequest request)
+        public CreateSQSQueueResponse Invoke(CreateSQSQueueRequest request)
         {
             Trace("Starting...");
             Trace("...Attempting to create queue:={0}", "errordite-receive-{0}".FormatWith(request.OrganisationId.GetFriendlyId()));
@@ -31,22 +31,22 @@ namespace Errordite.Core.Messaging.Commands
 
             Trace("Completed, queue '{0}' created", response.CreateQueueResult.QueueUrl);
 
-            return new CreateSQSCommandResponse
+            return new CreateSQSQueueResponse
             {
                 Status = CreateSQSCommandStatus.Ok
             };
         }
     }
 
-    public interface ICreateSQSQueueCommand : ICommand<CreateSQSCommandRequest, CreateSQSCommandResponse>
+    public interface ICreateSQSQueueCommand : ICommand<CreateSQSQueueRequest, CreateSQSQueueResponse>
     { }
 
-    public class CreateSQSCommandResponse
+    public class CreateSQSQueueResponse
     {
         public CreateSQSCommandStatus Status { get; set; }
     }
 
-    public class CreateSQSCommandRequest
+    public class CreateSQSQueueRequest
     {
         public string OrganisationId { get; set; }
     }

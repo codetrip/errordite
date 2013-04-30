@@ -139,7 +139,7 @@ namespace Errordite.Core.Organisations.Commands
             try
             {
                 //create the SQS queue for this organisation
-                _createSQSQueueCommand.Invoke(new CreateSQSCommandRequest
+                _createSQSQueueCommand.Invoke(new CreateSQSQueueRequest
                 {
                     OrganisationId = organisation.Id
                 });

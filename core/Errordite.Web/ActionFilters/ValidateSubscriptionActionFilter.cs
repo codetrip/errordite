@@ -22,7 +22,7 @@ namespace Errordite.Web.ActionFilters
 			   !appContext.CurrentUser.Organisation.Subscription.Dispensation &&
                appContext.CurrentUser.Organisation.CreatedOnUtc < DateTime.UtcNow.AddDays(-controller.Core.Configuration.TrialLengthInDays))
             {
-                filterContext.HttpContext.Response.Redirect(new UrlHelper(filterContext.RequestContext).TrialExpired());
+                filterContext.HttpContext.Response.Redirect(new UrlHelper(filterContext.RequestContext).SignUpExpired());
                 filterContext.Result = new EmptyResult();
             }
         }

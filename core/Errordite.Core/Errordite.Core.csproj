@@ -52,6 +52,9 @@
     <Reference Include="Castle.Windsor">
       <HintPath>..\packages\Castle.Windsor.3.1.0\lib\net40\Castle.Windsor.dll</HintPath>
     </Reference>
+    <Reference Include="ChargifyNET">
+      <HintPath>..\packages\chargify.1.0.4864.27267\lib\net35\ChargifyNET.dll</HintPath>
+    </Reference>
     <Reference Include="Errordite.Client, Version=1.3.0.0, Culture=neutral, PublicKeyToken=0c2d28c225f773ee, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Errordite.Client.1.3.31.0\lib\net40\Errordite.Client.dll</HintPath>
@@ -244,6 +247,7 @@
     <Compile Include="Extensions\AssemblyExtensions.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="Extensions\DocumentQueryExtensions.cs" />
+    <Compile Include="Extensions\DocumentStoreExtensions.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\NameValueCollectionExtensions.cs" />
@@ -393,9 +397,12 @@
     <Compile Include="Notifications\Sending\NullSender.cs" />
     <Compile Include="Notifications\Sending\SmtpEmailSender.cs" />
     <Compile Include="Organisations\Commands\ActivateOrganisationCommand.cs" />
+    <Compile Include="Organisations\Commands\CompleteSignUpCommand.cs" />
+    <Compile Include="Organisations\Commands\CreateS3BucketCommand.cs" />
     <Compile Include="Organisations\Commands\DeleteOrganisationCommand.cs" />
     <Compile Include="Organisations\Commands\SuspendOrganisationCommand.cs" />
     <Compile Include="Organisations\Commands\SetOrganisationTimezoneCommand.cs" />
+    <Compile Include="Organisations\Factory\AmazonS3Factory.cs" />
     <Compile Include="Organisations\OrganisationRequestBase.cs" />
     <Compile Include="Organisations\Queries\GetRavenInstancesQuery.cs" />
     <Compile Include="Organisations\Queries\GetOrganisationByEmailAddressCommand.cs" />
