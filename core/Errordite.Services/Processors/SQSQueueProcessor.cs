@@ -5,7 +5,6 @@ using Amazon.SQS;
 using Amazon.SQS.Model;
 using Errordite.Core;
 using Errordite.Core.Configuration;
-using Errordite.Core.Extensions;
 using Errordite.Core.IoC;
 using Errordite.Core.Messaging;
 using System.Linq;
@@ -107,7 +106,7 @@ namespace Errordite.Services.Processors
                         });
                     }
 
-                    emptyReceiptCount = 18; //equiv to 3 mins pause, the maximum we wait
+                    emptyReceiptCount = 15; //equiv to 5 mins pause, the maximum we wait
                     Thread.Sleep(_requestThrottler.GetDelayMilliseconds(emptyReceiptCount));
                     continue;
                 }
@@ -119,7 +118,7 @@ namespace Errordite.Services.Processors
 
                     //sleep for delay as specified by throttler (unless instructed to poll now)
                     int delay = _requestThrottler.GetDelayMilliseconds(emptyReceiptCount);
-                    const int sleepPeriod = 10;
+                    const int sleepPeriod = 100;
                     int sleepCount = 0;
                     while (sleepPeriod*++sleepCount < delay)
                     {

@@ -3,29 +3,13 @@ using System.Collections.Generic;
 using System.Text;
 using Errordite.Core.Domain;
 using Errordite.Core.Domain.Error;
-using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Extensions;
 using System.Linq;
 using Errordite.Core.Web;
 
 namespace Errordite.Core.Session.Actions
 {
-    public class PollNowAction : SessionCommitAction
-    {
-        private Organisation _organisation;
-
-        public PollNowAction(Organisation organisation)
-        {
-            _organisation = organisation;
-        }
-
-        public override void Execute(IAppSession session)
-        {
-            session.ReceiveHttpClient.PostJsonAsync("pollnow", new {organisationFriendlyId = _organisation.FriendlyId});
-        }
-    }
-
-    public class RaiseIssueCreatedEvent : SessionCommitAction
+	public class RaiseIssueCreatedEvent : SessionCommitAction
     {
         private readonly Issue _issue;
 

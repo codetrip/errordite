@@ -1,0 +1,13 @@
+﻿$(Master:EmailTemplateMasterPage)
+$(Placeholder:Subject)Errordite subscription created successfully
+$(Placeholder:Body)
+
+<tr>
+    <td>
+        <p>Hi $(UserName),</p>
+	    <p>Thank you for signin up to Errordite. Your organisation, <b>$(OrganisationName)</b> has been signed up to our '$(PlanName)' plan.</p>
+	    <p>We will be billed $(BillingAmount) each month until you cancel your subscription, your unique subscription id is <b>$(SubscriptionId)</b>.</p>
+	    <p>You can upgrade, downgrade or cancel your subscription at any time by visiting your <a href="$(ErrorditeUrl)/">billing</a> area.</p>
+        <p><a href="$(ErrorditeUrl)/dashboard">Go to your dashboard</a></p>
+    </td>
+</tr>

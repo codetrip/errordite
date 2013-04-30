@@ -19,7 +19,7 @@ namespace Errordite.Web.ActionFilters
 
             if(appContext.AuthenticationStatus == AuthenticationStatus.Authenticated && 
                appContext.CurrentUser.Organisation.PaymentPlan.IsTrial &&
-			   !appContext.CurrentUser.Organisation.SubscriptionDispensation &&
+			   !appContext.CurrentUser.Organisation.Subscription.Dispensation &&
                appContext.CurrentUser.Organisation.CreatedOnUtc < DateTime.UtcNow.AddDays(-controller.Core.Configuration.TrialLengthInDays))
             {
                 filterContext.HttpContext.Response.Redirect(new UrlHelper(filterContext.RequestContext).TrialExpired());

@@ -8,10 +8,10 @@ using Errordite.Core.Organisations.Queries;
 using Errordite.Web.Models.Subscription;
 using Errordite.Core.Extensions;
 using ChargifyNET;
+using Errordite.Web.Extensions;
 
 namespace Errordite.Web.Controllers
 {
-	[Authorize]
     public class SubscriptionController : ErrorditeController
     {
         private readonly IGetAvailablePaymentPlansQuery _getAvailablePaymentPlansQuery;
@@ -27,7 +27,7 @@ namespace Errordite.Web.Controllers
 	        _configuration = configuration;
         }
 
-		[HttpGet]
+		[HttpGet, Authorize]
         public ActionResult TrialExpired()
         {
             var paymentPlans = _getAvailablePaymentPlansQuery.Invoke(new GetAvailablePaymentPlansRequest()).Plans.Where(p => !p.IsTrial);
@@ -40,6 +40,7 @@ namespace Errordite.Web.Controllers
 	        }));
         }
 
+		[HttpGet, Authorize]
 		public ActionResult Complete(SubscriptionCompleteViewModel model)
 		{
 			//verify  
@@ -61,12 +62,17 @@ namespace Errordite.Web.Controllers
 				return View(model);
 			}
 
-			organisation.SubscriptionId = subscription.SubscriptionID;
-			organisation.SubscriptionStatus = SubscriptionStatus.Active;
+			organisation.Subscription.ChargifyId = subscription.SubscriptionID;
+			organisation.Subscription.Status = SubscriptionStatus.Active;
 			organisation.PaymentPlanId = "PaymentPlans/{0}".FormatWith(token[1]);
 
 			model.Status = SignUpStatus.Ok;
 			return View(model);
+		}
+
+		public ActionResult ChargifyComplete(SubscriptionCompleteViewModel model)
+		{
+			return Redirect(Url.Complete(model.SubscriptionId, model.Reference));
 		}
 
 		private string GetSignUpToken(string planId)

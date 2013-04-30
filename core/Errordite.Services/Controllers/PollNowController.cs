@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Net.Http;
 using Errordite.Core.Web;
+using Errordite.Core.Extensions;
 
 namespace Errordite.Services.Controllers
 {
@@ -13,9 +14,9 @@ namespace Errordite.Services.Controllers
             _errorditeService = errorditeService;
         }
 
-        public HttpResponseMessage Post(string organisationId)
+        public HttpResponseMessage Post(string orgId)
         {
-            _errorditeService.PollNow(organisationId);
+			_errorditeService.PollNow(orgId.GetFriendlyId());
             return Request.CreateResponse(HttpStatusCode.OK);
         }
     }

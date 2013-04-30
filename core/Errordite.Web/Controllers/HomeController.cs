@@ -54,9 +54,12 @@ namespace Errordite.Web.Controllers
 
 			foreach (var organisation in session.MasterRaven.Query<Organisation>())
 			{
-				organisation.SubscriptionDispensation = true;
+				organisation.Subscription = new Subscription
+				{
+					Dispensation = true,
+					Status = SubscriptionStatus.Trial
+				};
 				organisation.PaymentPlanId = "PaymentPlans/1";
-				organisation.SubscriptionStatus = SubscriptionStatus.Trial;
 			}
 
             session.Commit();

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Web;
 using Errordite.Core.Configuration;
 using Errordite.Core.Extensions;
 using Errordite.Core.Interfaces;
@@ -110,7 +109,7 @@ namespace Errordite.Core.Reception.Commands
                     Token = request.Error.Token
                 },
                 _configuration.GetReceiveQueueAddress(organisation.FriendlyId));
-                Session.AddCommitAction(new PollNowAction(organisation));
+                Session.AddCommitAction(new PollNowCommitAction(organisation));
             }
             else
             {
@@ -124,8 +123,6 @@ namespace Errordite.Core.Reception.Commands
                     Token = request.Error.Token
                 });
             }
-
-            
 
             return new ProcessIncomingExceptionResponse();
         }

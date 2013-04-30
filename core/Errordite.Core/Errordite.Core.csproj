@@ -343,6 +343,8 @@
     <Compile Include="Messaging\AmazonSQSMessageSender.cs" />
     <Compile Include="Messaging\AmazonSQSFactory.cs" />
     <Compile Include="Messaging\MessageEnvelope.cs" />
+    <Compile Include="Notifications\EmailInfo\TrialExpiredEmailInfo.cs" />
+    <Compile Include="Notifications\EmailInfo\SignUpCompleteEmailInfo.cs" />
     <Compile Include="Notifications\Sending\AmazonSimpleEmailFactory.cs" />
     <Compile Include="Messaging\MessageBase.cs" />
     <Compile Include="Messaging\SyncIssueErrorCountsMessage.cs" />
@@ -434,6 +436,7 @@
     <Compile Include="Serialisation\SimpleXmlSerialiser.cs" />
     <Compile Include="SerializationHelper.cs" />
     <Compile Include="Session\Actions\FlushApplicationCacheCommitAction.cs" />
+    <Compile Include="Session\Actions\PollNowCommitAction.cs" />
     <Compile Include="Session\AppSession.cs" />
     <Compile Include="Session\Actions\FlushOrganisationCacheCommitAction.cs" />
     <Compile Include="Session\Actions\UpdateByIndexCommitAction.cs" />
@@ -487,6 +490,8 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Notifications\Templates\SignUpCompleteEmailTemplate.html" />
+    <Content Include="Notifications\Templates\TrialExpiredEmailTemplate.html" />
     <Content Include="Notifications\Templates\InstanceOfAlwaysNotifyIssueEmailTemplate.html" />
     <Content Include="Notifications\Templates\IssueAssignedToUserEmailTemplate.html" />
     <Content Include="Notifications\Templates\NewInstanceofSolvedIssueEmailTemplate.html" />
