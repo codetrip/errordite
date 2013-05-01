@@ -1,9 +1,9 @@
 ﻿
+@using Errordite.Core.Domain.Organisation
 @using Errordite.Web.Extensions
-@using Errordite.Web.Models.Account
 @using Errordite.Core.Extensions
 @using Errordite.Web.Models.Subscription
-@model Errordite.Web.Models.Subscription.SubscriptionViewModel
+@model SubscriptionViewModel
            
 @{
 	ViewBag.Title = "Your Subscription";
@@ -25,24 +25,45 @@
                     {
                         <h2>Subscription Info</h2>
                         <table class="table table-condensed">
-                            <tr>
-                                <td style="width:175px"><b>Plan</b></td>
-                                <td>@Model.Organisation.PaymentPlan.Name</td>
-                            </tr>
-                            @if (Model.Organisation.Subscription.ChargifyId > 0)
-                            {
-                                <tr>
-                                    <td style="width:175px"><b>Subscription Id</b></td>
-                                    <td>@Model.Organisation.Subscription.ChargifyId</td>
-                                </tr>
-                            }
-                            @if (Model.Organisation.Subscription.StartDate.HasValue)
-                            {
-                                <tr>
-                                    <td style="width:175px"><b>Subscription Start Date</b></td>
-                                    <td>@Model.Organisation.Subscription.StartDate.Value.ToLocalTimeFormatted()</td>
-                                </tr>
-                            }
+	                        <tr>
+		                        <td style="width:225px"><b>Plan</b></td>
+		                        <td>@Model.Organisation.PaymentPlan.Name</td>
+	                        </tr>
+							@if (Model.Organisation.Subscription.Status == SubscriptionStatus.Cancelled)
+							{
+								<tr>
+									<td style="width:225px"><b>Status</b></td>
+									<td>Cancelled</td>
+								</tr>
+								<tr>
+									<td style="width:225px"><b>Cancelled On</b></td>
+									<td>@Model.Organisation.Subscription.CancellationDate.Value.ToLocalFormatted()</td>
+								</tr>
+								<tr>
+									<td style="width:225px"><b>Account Deactivated On</b></td>
+									<td>@Model.Organisation.Subscription.CurrentPeriodEndsDate.Value.ToLocalFormatted()</td>
+								</tr>
+							}
+							else
+							{
+								<tr>
+									<td style="width:225px"><b>Status</b></td>
+									<td>Active</td>
+								</tr>
+								<tr>
+									<td style="width:225px"><b>Subscription Id</b></td>
+									<td>@Model.Organisation.Subscription.ChargifyId.Value</td>
+								</tr>
+								<tr>
+									<td style="width:225px"><b>Subscription Start Date</b></td>
+									<td>@Model.Organisation.Subscription.StartDate.Value.ToLocalFormatted()</td>
+								</tr>
+								<tr>
+									<td style="width:225px"><b>Current Billing Period Ends</b></td>
+									<td>@Model.Organisation.Subscription.CurrentPeriodEndsDate.Value.ToLocalFormatted()</td>
+								</tr>
+							}
+							
                         </table>
                         <h2>Upgrade / Downgrade</h2>
                     }

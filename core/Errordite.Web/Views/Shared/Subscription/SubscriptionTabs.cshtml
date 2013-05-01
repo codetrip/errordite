@@ -3,5 +3,10 @@
 <ul class="sidenav-tabs">
     <li @(Model == SubscriptionTab.Subscription ? " class=active" : "")><a href="@Url.Subscription()" >Subscription</a></li>
     <li @(Model == SubscriptionTab.BillingHistory ? " class=active" : "")><a href="@Url.BillingHistory()">Billing History</a></li>
-    <li @(Model == SubscriptionTab.Cancel ? " class=active" : "")><a href="@Url.Cancel()">Cancel</a></li>
+	<li @(Model == SubscriptionTab.Cancel ? " class=active" : "")><a href="@Url.Cancel()">Cancel</a></li>
+	
+	@if (Model == SubscriptionTab.Change)
+	{
+		<li class="active"><a href="#">Change</a></li>
+	}
 </ul>

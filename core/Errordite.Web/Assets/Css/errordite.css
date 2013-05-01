@@ -1545,10 +1545,13 @@ nav {
     clear: both; }
   .sidenav h1 {
     margin-top: -5px; }
+  .sidenav h2 {
+    margin-top: 0; }
   .sidenav .sidenav-content {
-    overflow: auto; }
+    overflow: auto;
+    margin-top: 10px; }
     .sidenav .sidenav-content form {
-      margin-top: -5px; }
+      margin-top: -10px; }
     .sidenav .sidenav-content > .sidenav-tab {
       display: none; }
     .sidenav .sidenav-content > .active {

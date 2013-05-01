@@ -1944,10 +1944,14 @@ nav {
 	h1 {
 		margin-top:-5px;
 	}
+	h2 {
+		margin-top:0;
+	}
 	.sidenav-content {
 		overflow: auto;
+		margin-top:10px;
 		form {
-			margin-top:-5px;
+			margin-top:-10px;
 		}
 		> {
 			.sidenav-tab {

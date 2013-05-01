@@ -311,10 +311,15 @@ namespace Errordite.Web.Extensions
 
         #region Admin
 
-        public static string Settings(this UrlHelper helper)
+        public static string Timezone(this UrlHelper helper)
         {
-            return helper.Action("settings", "account", new { Area = string.Empty });
+            return helper.Action("timezone", "account", new { Area = string.Empty });
         }
+
+		public static string ApiAccess(this UrlHelper helper)
+		{
+			return helper.Action("apiaccess", "account", new { Area = string.Empty });
+		}
 
         #endregion
 

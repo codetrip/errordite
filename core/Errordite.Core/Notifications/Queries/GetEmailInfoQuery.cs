@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Errordite.Core.Exceptions;
+using Errordite.Core.Extensions;
 using Errordite.Core.Interfaces;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Notifications.Exceptions;
@@ -27,7 +28,7 @@ namespace Errordite.Core.Notifications.Queries
                 throw new ErrorditeEmailNotFoundException(request.EmailName);
 
             var ret = t.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.GetProperty | BindingFlags.SetProperty)
-                .Where(p => p.Name != "TemplateName" && p.CanWrite)
+                .Where(p => !p.Name.IsIn("TemplateName", "Organisation") && p.CanWrite)
                 .ToDictionary(p => p.Name, p => GetType(p.PropertyType));
 
             return new GetEmailInfoQueryResponse() { Parameters = ret, EmailInfoType = t, EmailName = _mapper.InfoToName(t)};

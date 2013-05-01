@@ -51,7 +51,8 @@ namespace Errordite.Core.Notifications.Commands
             }
             else
             {
-                Session.AddCommitAction(new SendMessageCommitAction(request.EmailInfo,
+                Session.AddCommitAction(new SendMessageCommitAction(
+					request.EmailInfo,
                     _configuration.GetNotificationsQueueAddress(request.Organisation == null ? "1" : request.Organisation.RavenInstance.FriendlyId)));
             }
         }

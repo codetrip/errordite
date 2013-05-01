@@ -1,0 +1,40 @@
+﻿
+@using Errordite.Web.Models.Shared
+@model Errordite.Web.Models.Subscription.OrganisationSettingsViewModel
+           
+@{
+    ViewBag.Title = "Settings";
+}
+
+@section header
+{
+    @Html.Partial("Account/Tabs") 
+}
+
+<section class="centered">
+	<div class="content">
+		<div class="sidenav">
+            @Html.Partial("Account/SettingTabs", SettingTab.Timezone)
+            <div class="sidenav-content">
+	            <div class="sidenav-tab active">
+		            <p>Set the default timezone for your application, all dates will be stored in Errordite with this timezone setting.</p>
+		            <div class="form">
+			            @using (Html.BeginForm("settimezone", "account"))
+			            {
+				            <ul>
+					            <li>
+						            @Html.DropDownListFor(m => m.TimezoneId, TimeZoneInfo.GetSystemTimeZones().Select(t => new SelectListItem {Selected = Model.TimezoneId == t.Id || (Model.TimezoneId == null && t.Id == "UTC"), Value = t.Id, Text = t.DisplayName}))
+					            </li>
+					            <li class="buttons">
+						            <input type="submit" value="Save Changes" class="btn btn-medium btn-blue"/>
+					            </li>
+				            </ul>
+			            }
+		            </div>
+	            </div>
+            </div>
+        </div>
+	</div>
+</section>
+
+
