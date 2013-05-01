@@ -63,7 +63,7 @@
             $(MSBuildProjectDirectory)\..\Projects\InstallReceiveWeb.proj;
             $(MSBuildProjectDirectory)\..\Projects\InstallReceiveService.proj;
             $(MSBuildProjectDirectory)\..\Projects\InstallEventsService.proj;
-            $(MSBuildProjectDirectory)\..\Projects\InstallScheduledTasks.proj;
+            $(MSBuildProjectDirectory)\..\Projects\InstallTasks.proj;
             $(MSBuildProjectDirectory)\..\Projects\InstallNotificationsService.proj;
             $(MSBuildProjectDirectory)\..\Projects\InstallMaster.proj;">
       <Output TaskParameter="Include" ItemName="BuildImports" />

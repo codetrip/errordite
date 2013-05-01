@@ -47,16 +47,20 @@ namespace Errordite.Core.Organisations.Commands
 
             organisation.Status = OrganisationStatus.Active;
 
-            //disable all applications
-            var applications = _getApplicationsQuery.Invoke(new GetApplicationsRequest
+            using (Session.SwitchOrg(organisation))
             {
-                OrganisationId = organisation.Id,
-                Paging = new PageRequestWithSort(1, _configuration.MaxPageSize)
-            }).Applications;
+                //disable all applications
+                var applications = _getApplicationsQuery.Invoke(new GetApplicationsRequest
+                {
+                    OrganisationId = organisation.Id,
+                    Paging = new PageRequestWithSort(1, _configuration.MaxPageSize)
+                }).Applications;
 
-            foreach(var application in applications.Items)
-            {
-                application.IsActive = true;
+                foreach (var application in applications.Items)
+                {
+                    application.IsActive = true;
+                    Session.AddCommitAction(new FlushApplicationCacheCommitAction(_configuration, organisation, application.Id));
+                }
             }
 
             Session.AddCommitAction(new FlushOrganisationCacheCommitAction(_configuration, organisation));

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using Errordite.Core.Domain.Master;
 using Errordite.Core.Extensions;
 using Errordite.Core.Authorisation;
@@ -37,7 +38,9 @@ namespace Errordite.Core.Domain.Organisation
         [JsonIgnore, ProtoMember(13)]
 		public RavenInstance RavenInstance { get; set; }
 		[ProtoMember(14)]
-		public Subscription Subscription { get; set; }
+        public Subscription Subscription { get; set; }
+        [ProtoMember(15)]
+        public string PrimaryUserId { get; set; }
 
         [JsonIgnore]
         public string FriendlyId { get { return Id == null ? string.Empty : Id.Split('/')[1]; } }
@@ -69,7 +72,7 @@ namespace Errordite.Core.Domain.Organisation
 		[ProtoMember(4)]
 		public DateTimeOffset? StartDate { get; set; }
 		[ProtoMember(5)]
-		public DateTimeOffset? CurrentPeriodEndsDate { get; set; }
+		public DateTimeOffset? CurrentPeriodEndDate { get; set; }
 		[ProtoMember(6)]
 		public string CancellationReason { get; set; }
 		[ProtoMember(7)]
@@ -84,7 +87,7 @@ namespace Errordite.Core.Domain.Organisation
         [ProtoMember(2)]
         Suspended,
         [ProtoMember(3)]
-        PlanQuotaExceeded
+        PlanQuotaExceeded,
     }
 
 	[ProtoContract]
@@ -103,11 +106,11 @@ namespace Errordite.Core.Domain.Organisation
     [ProtoContract]
     public enum SuspendedReason
     {
-        [ProtoMember(1)]
-        RequestedByAccountHolder,
-        [ProtoMember(2)]
+        [ProtoMember(1), Description("you cancelled your subscription")]
+        SubscriptionCancelled,
+        [ProtoMember(2), Description("we have not been able to take payment for your subscription")]
         PaymentArrears,
-        [ProtoMember(3)]
+        [ProtoMember(3), Description("please contact support for further information")]
         Other
     }
 }

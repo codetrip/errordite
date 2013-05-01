@@ -69,7 +69,7 @@
     <None Include="Key\Errordite.snk" />
     <None Include="Projects\Build.proj" />
     <None Include="Projects\InstallEventsService.proj" />
-    <None Include="Projects\InstallScheduledTasks.proj">
+    <None Include="Projects\InstallTasks.proj">
       <SubType>Designer</SubType>
     </None>
     <None Include="Projects\InstallNotificationsService.proj">
