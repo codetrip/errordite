@@ -403,6 +403,7 @@
     <Compile Include="Organisations\Commands\CompleteSignUpCommand.cs" />
     <Compile Include="Organisations\Commands\CancelSubscriptionCommand.cs" />
     <Compile Include="Organisations\Commands\CreateInvoiceCommand.cs" />
+    <Compile Include="Organisations\Commands\ChangeSubscriptionCommand.cs" />
     <Compile Include="Organisations\Commands\DeleteOrganisationCommand.cs" />
     <Compile Include="Organisations\Commands\SuspendOrganisationCommand.cs" />
     <Compile Include="Organisations\Commands\SetOrganisationTimezoneCommand.cs" />

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
+using Errordite.Client;
+using Errordite.Core.Auditing.Entities;
 using Errordite.Core.Extensions;
 using Errordite.Core.IoC;
 using Errordite.Tasks.IoC;
@@ -30,7 +32,18 @@ namespace Errordite.Tasks
 				}
 
 				ObjectFactory.Container.Install(new TasksMasterInstaller());
-				ObjectFactory.GetObject<ITask>(task).Execute(ravenInstanceId);
+
+			    try
+			    {
+                    ObjectFactory.GetObject<ITask>(task).Execute(ravenInstanceId);
+			    }
+			    catch (Exception e)
+			    {
+                    e.Data.Add("task", task);
+                    e.Data.Add("ravenInstanceId", ravenInstanceId);
+                    ObjectFactory.GetObject<IComponentAuditor>().Error(typeof(Program), e);
+                    ErrorditeClient.ReportException(e);
+			    }
 			}
 			catch (Exception e)
 			{

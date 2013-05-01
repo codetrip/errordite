@@ -1,5 +1,6 @@
 ﻿
 
+using Errordite.Core.Extensions;
 using ProtoBuf;
 using Raven.Imports.Newtonsoft.Json;
 
@@ -31,6 +32,11 @@ namespace Errordite.Core.Domain.Organisation
 
 		[JsonIgnore]
 		public string FriendlyId { get { return Id == null ? string.Empty : Id.Split('/')[1]; } }
+
+        public static string GetId(string friendlyId)
+        {
+            return friendlyId.Contains("/") ? friendlyId : "PaymentPlans/{0}".FormatWith(friendlyId);
+        }
     }
 
     public static class PaymentPlanNames

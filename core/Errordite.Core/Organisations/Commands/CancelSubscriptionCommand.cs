@@ -90,7 +90,7 @@ namespace Errordite.Core.Organisations.Commands
             return new CancelSubscriptionResponse(organisation.Id, request.CurrentUser.Id, request.CurrentUser.Email)
             {
                 Status = CancelSubscriptionStatus.Ok,
-				AccountExpirationDate = organisation.Subscription.CurrentPeriodEndsDate.Value
+				AccountExpirationDate = organisation.Subscription.CurrentPeriodEndDate.Value
             };
         }
     }

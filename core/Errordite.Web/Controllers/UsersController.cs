@@ -74,7 +74,7 @@ namespace Errordite.Web.Controllers
             if (users.PagingStatus.TotalItems >= Core.AppContext.CurrentUser.Organisation.PaymentPlan.MaximumUsers)
             {
                 SetNotification(AddUserStatus.PlanThresholdReached, Resources.Account.ResourceManager);
-                return RedirectToAction("upgrade", "admin");
+                return RedirectToAction("index", "subscription");
             }
 
             var groups = Core.GetGroups();

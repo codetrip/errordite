@@ -23,4 +23,16 @@ namespace Errordite.Web.Models.Subscription
         public bool Downgrade { get; set; }
         public bool SignUp { get; set; }
     }
+
+    public class ChangeSubscriptionViewModel : ChangeSubscriptionPostModel
+    {
+        public PaymentPlan CurrentPlan { get; set; }
+        public PaymentPlan NewPlan { get; set; }
+    }
+
+    public class ChangeSubscriptionPostModel
+    {
+        public string NewPlanId { get; set; }
+        public string NewPlanName { get; set; }
+    }
 }
