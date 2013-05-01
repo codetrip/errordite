@@ -3,7 +3,7 @@ namespace Errordite.Web.Models.Subscription
 {
     public enum SubscriptionTab
     {
-		None,
+		Change,
         Subscription,
         BillingHistory,
         Cancel

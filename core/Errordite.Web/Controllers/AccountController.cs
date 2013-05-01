@@ -17,7 +17,7 @@ namespace Errordite.Web.Controllers
         }
 
         [HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.Settings)]
-        public ActionResult Settings()
+        public ActionResult Timezone()
         {
             return View(new OrganisationSettingsViewModel
             {
@@ -25,6 +25,16 @@ namespace Errordite.Web.Controllers
                 ApiKey = Core.AppContext.CurrentUser.Organisation.ApiKey
             });
         }
+
+		[HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.Settings)]
+		public ActionResult ApiAccess()
+		{
+			return View(new OrganisationSettingsViewModel
+			{
+				TimezoneId = Core.AppContext.CurrentUser.Organisation.TimezoneId,
+				ApiKey = Core.AppContext.CurrentUser.Organisation.ApiKey
+			});
+		}
 
         [HttpPost, ExportViewData]
         public ActionResult SetTimezone(string timezoneId)
@@ -38,7 +48,7 @@ namespace Errordite.Web.Controllers
 
             ConfirmationNotification(Resources.Admin.OrganbisationSettingsUpdated);
 
-            return RedirectToAction("settings");
+            return RedirectToAction("timezone");
         }
     }
 }

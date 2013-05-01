@@ -22,7 +22,10 @@ namespace Errordite.Web.Controllers
         private readonly ISendNotificationCommand _sendNotificationCommand;
         private readonly IEmailNamingMapper _mapper;
 
-        public EmailTestController(IGetEmailInfoQuery getEmailInfoQuery, ISendEmailCommand sendEmailCommand, ISendNotificationCommand sendNotificationCommand, IEmailNamingMapper mapper)
+        public EmailTestController(IGetEmailInfoQuery getEmailInfoQuery, 
+			ISendEmailCommand sendEmailCommand, 
+			ISendNotificationCommand sendNotificationCommand, 
+			IEmailNamingMapper mapper)
         {
             _getEmailInfoQuery = getEmailInfoQuery;
             _sendEmailCommand = sendEmailCommand;

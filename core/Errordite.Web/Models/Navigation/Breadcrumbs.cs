@@ -87,6 +87,15 @@ namespace Errordite.Web.Models.Navigation
                 }),  
                 new Breadcrumb(BreadcrumbId.Admin, null, "Admin", new []
                 {
+                    new Breadcrumb(BreadcrumbId.Subscription, urlHelper.Subscription(), "Subscription", new []
+                    {
+                        new Breadcrumb(BreadcrumbId.SubscriptionHome, string.Empty, "Subscription"),
+                        new Breadcrumb(BreadcrumbId.BillingHistory, string.Empty, "Billing History"),
+                        new Breadcrumb(BreadcrumbId.ChangeSubscription, string.Empty, "Change Subscription"),
+                        new Breadcrumb(BreadcrumbId.CancelSubscription, string.Empty, "Cancel Subscription"),
+                        new Breadcrumb(BreadcrumbId.SubscriptionSignUp, string.Empty, "Subscription Sign Up"),
+                        new Breadcrumb(BreadcrumbId.SubscriptionSignUpFailed, string.Empty, "Subscription Sign Up Failed")
+                    }),
                     new Breadcrumb(BreadcrumbId.Applications, urlHelper.Applications(), "Applications", new []
                     {
                         new Breadcrumb(BreadcrumbId.AddApplication, string.Empty, "Add Application"),
@@ -103,16 +112,7 @@ namespace Errordite.Web.Models.Navigation
                         new Breadcrumb(BreadcrumbId.AddGroup, string.Empty, "Add Group"),
                         new Breadcrumb(BreadcrumbId.EditGroup, string.Empty, "Edit Group")
                     }),
-                    new Breadcrumb(BreadcrumbId.Subscription, urlHelper.Subscription(), "Subscription", new []
-                    {
-                        new Breadcrumb(BreadcrumbId.SubscriptionHome, string.Empty, "Subscription"),
-                        new Breadcrumb(BreadcrumbId.BillingHistory, string.Empty, "Billing History"),
-                        new Breadcrumb(BreadcrumbId.ChangeSubscription, string.Empty, "Change Subscription"),
-                        new Breadcrumb(BreadcrumbId.CancelSubscription, string.Empty, "Cancel Subscription"),
-                        new Breadcrumb(BreadcrumbId.SubscriptionSignUp, string.Empty, "Subscription Sign Up"),
-                        new Breadcrumb(BreadcrumbId.SubscriptionSignUpFailed, string.Empty, "Subscription Sign Up Failed")
-                    }),
-                    new Breadcrumb(BreadcrumbId.Settings, urlHelper.Settings(), "Settings"),
+                    new Breadcrumb(BreadcrumbId.Settings, urlHelper.Timezone(), "Settings"),
                 }),
                 new Breadcrumb(BreadcrumbId.SysAdmin, urlHelper.SystemAdmin(), "System Admin", new []
                 {

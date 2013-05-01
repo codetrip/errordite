@@ -246,6 +246,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Shared.resx</DependentUpon>
     </Compile>
+    <Compile Include="App_GlobalResources\Subscription.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Subscription.resx</DependentUpon>
+    </Compile>
     <Compile Include="Areas\System\Controllers\AdminControllerBase.cs" />
     <Compile Include="Areas\System\Controllers\MonitoringController.cs" />
     <Compile Include="Areas\System\Models\Monitoring\MessageFailuresViewModel.cs" />
@@ -291,6 +296,7 @@
     <Compile Include="Mappings\UserToEditUserViewModel.cs" />
     <Compile Include="Mappings\UserToUserViewModel.cs" />
     <Compile Include="Models\Shared\SharedTab.cs" />
+    <Compile Include="Models\Subscription\CancelSubscriptionViewModel.cs" />
     <Compile Include="Models\Subscription\SubscriptionTab.cs" />
     <Compile Include="Models\Applications\AddApplicationViewModel.cs" />
     <Compile Include="Models\Applications\ApplicationViewModel.cs" />
@@ -319,7 +325,6 @@
     <Compile Include="Models\Subscription\SubscriptionViewModel.cs" />
     <Compile Include="Models\Search\SearchViewModel.cs" />
     <Compile Include="Models\Subscription\PaymentPlanViewModel.cs" />
-    <Compile Include="Models\Subscription\SignUpViewModel.cs" />
     <Compile Include="Models\Subscription\SubscriptionCompleteViewModel.cs" />
     <Compile Include="Models\Users\AddUserViewModel.cs" />
     <Compile Include="Models\Users\UserViewModel.cs" />
@@ -823,7 +828,7 @@
     <Content Include="Views\Subscription\Index.cshtml" />
     <Content Include="Views\EmailTest\List.cshtml" />
     <Content Include="Views\EmailTest\Index.cshtml" />
-    <Content Include="Views\Account\Settings.cshtml" />
+    <Content Include="Views\Account\Timezone.cshtml" />
     <Content Include="Views\Shared\Docs\DotNetClient.cshtml" />
     <Content Include="Views\Shared\Users\List.cshtml" />
     <Content Include="Areas\System\Views\Organisations\Users.cshtml" />
@@ -910,9 +915,6 @@
     <Content Include="Views\Shared\Docs\DjangoClient.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Subscription\SignUpOld.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Assets\Js\activity.coffee" />
   </ItemGroup>
   <ItemGroup>
@@ -948,9 +950,20 @@
   <ItemGroup>
     <Content Include="Views\Shared\Applications\ApplicationTabs.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="App_GlobalResources\Subscription.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Subscription.Designer.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\Groups\GroupTabs.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Account\SettingTabs.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Account\APIAccess.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

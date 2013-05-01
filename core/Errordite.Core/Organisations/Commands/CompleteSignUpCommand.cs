@@ -72,8 +72,9 @@ namespace Errordite.Core.Organisations.Commands
 			organisation.PaymentPlan = MasterLoad<PaymentPlan>(organisation.PaymentPlanId);
             organisation.Subscription.ChargifyId = subscription.SubscriptionID;
             organisation.Subscription.Status = SubscriptionStatus.Active;
-            organisation.Subscription.StartDate = DateTime.UtcNow;
+            organisation.Subscription.StartDate = DateTime.UtcNow.ToDateTimeOffset(organisation.TimezoneId);
             organisation.Subscription.Dispensation = false;
+	        organisation.Subscription.CurrentPeriodEndsDate = subscription.CurrentPeriodEndsAt.ToDateTimeOffset(organisation.TimezoneId);
             organisation.PaymentPlanId = "PaymentPlans/{0}".FormatWith(token[1]);
 
             Session.SynchroniseIndexes<Indexing.Organisations, Indexing.Users>();

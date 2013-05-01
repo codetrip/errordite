@@ -67,7 +67,13 @@ namespace Errordite.Core.Domain.Organisation
 		[ProtoMember(3)]
 		public SubscriptionStatus Status { get; set; }
 		[ProtoMember(4)]
-		public DateTime? StartDate { get; set; }
+		public DateTimeOffset? StartDate { get; set; }
+		[ProtoMember(5)]
+		public DateTimeOffset? CurrentPeriodEndsDate { get; set; }
+		[ProtoMember(6)]
+		public string CancellationReason { get; set; }
+		[ProtoMember(7)]
+		public DateTimeOffset? CancellationDate { get; set; }
 	}
 
     [ProtoContract]
@@ -89,7 +95,9 @@ namespace Errordite.Core.Domain.Organisation
 		[ProtoMember(2)]
 		Active,
 		[ProtoMember(3)]
-		Query
+		Query,
+		[ProtoMember(4)]
+		Cancelled
 	}
 
     [ProtoContract]

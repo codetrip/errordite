@@ -7,4 +7,10 @@ namespace Errordite.Web.Models.Shared
         List,
         Add
     }
+
+	public enum SettingTab
+	{
+		Timezone,
+		Api,
+	}
 }

@@ -16,15 +16,18 @@ namespace Errordite.Web.Controllers
     {
         private readonly IGetAvailablePaymentPlansQuery _getAvailablePaymentPlansQuery;
         private readonly ICompleteSignUpCommand _completeSignUpCommand;
+	    private readonly ICancelSubscriptionCommand _cancelSubscriptionCommand;
         private readonly IEncryptor _encryptor;
 
         public SubscriptionController(IGetAvailablePaymentPlansQuery getAvailablePaymentPlansQuery, 
 			ICompleteSignUpCommand completeSignUpCommand, 
-            IEncryptor encryptor)
+            IEncryptor encryptor, 
+			ICancelSubscriptionCommand cancelSubscriptionCommand)
         {
             _getAvailablePaymentPlansQuery = getAvailablePaymentPlansQuery;
             _completeSignUpCommand = completeSignUpCommand;
             _encryptor = encryptor;
+	        _cancelSubscriptionCommand = cancelSubscriptionCommand;
         }
 
         [HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.Subscription)]
@@ -112,8 +115,36 @@ namespace Errordite.Web.Controllers
         [HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.CancelSubscription)]
         public ActionResult Cancel()
         {
-            return View();
+	        var model = new CancelSubscriptionViewModel
+		    {
+			    Subscription = Core.AppContext.CurrentUser.Organisation.Subscription
+		    };
+
+			if (ViewData.Model != null)
+			{
+				model.CancellationReason = ((CancelSubscriptionPostModel) ViewData.Model).CancellationReason;
+			}
+
+			return View(model);
         }
+
+		[HttpGet, ExportViewData]
+		public ActionResult CancelSubscription(CancelSubscriptionPostModel model)
+		{
+			var response = _cancelSubscriptionCommand.Invoke(new CancelSubscriptionRequest
+			{
+				CurrentUser = Core.AppContext.CurrentUser,
+				CancellationReason = model.CancellationReason
+			});
+
+			if (response.Status == CancelSubscriptionStatus.Ok)
+			{
+				ConfirmationNotification("Your subscription has been cancelled, your account will become inactive on {0}.".FormatWith(response.AccountExpirationDate.ToLocalFormatted()));
+				return RedirectToAction("index");
+			}
+
+			return RedirectWithViewModel(model, "cancel", response.Status.MapToResource(Resources.Subscription.ResourceManager));
+		}
 
 		public ActionResult ChargifyComplete(SubscriptionCompleteViewModel model)
 		{
