@@ -1,6 +1,5 @@
 ﻿
 @using Errordite.Core.Domain.Organisation
-@using Errordite.Web.Extensions
 @using Errordite.Web.Models.Subscription
 @model CancelSubscriptionViewModel
            
@@ -18,7 +17,7 @@
         <div class="sidenav">
             @Html.Partial("Subscription/SubscriptionTabs", SubscriptionTab.Cancel)
             <div class="sidenav-content billing">
-                <div class="sidenav-tab active" id="cancel">
+                <div class="sidenav-tab active">
 					@if (Model.Subscription.Status == SubscriptionStatus.Trial)
 					{
 						<p>You are not currently signup to a paid subscription</p>

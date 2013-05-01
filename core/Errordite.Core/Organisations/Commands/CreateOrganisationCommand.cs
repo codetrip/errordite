@@ -128,6 +128,9 @@ namespace Errordite.Core.Organisations.Commands
 
             Store(user);
 
+            //update the organisation with the primary user
+            organisation.PrimaryUserId = user.Id;
+
             var addApplicationResponse = _addApplicationCommand.Invoke(new AddApplicationRequest
             {
                 CurrentUser = user,

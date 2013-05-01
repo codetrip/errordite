@@ -15,7 +15,7 @@ namespace Errordite.Core.Session.Actions
 
 		public FlushApplicationCacheCommitAction(ErrorditeConfiguration configration, Organisation organisation, string applicationId)
         {
-            _applicationId = applicationId;
+            _applicationId = applicationId.GetFriendlyId();
             _configration = configration;
 			_organisation = organisation;
         }

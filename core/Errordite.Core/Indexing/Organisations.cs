@@ -10,8 +10,10 @@ namespace Errordite.Core.Indexing
 		public string Id { get; set; }
 		public string Name { get; set; }
 		public string RavenInstanceId { get; set; }
-		public SubscriptionStatus SubscriptionStatus { get; set; }
-		public DateTime CreatedOnUtc { get; set; }
+        public SubscriptionStatus SubscriptionStatus { get; set; }
+        public OrganisationStatus OrganisationStatus { get; set; }
+        public DateTime CreatedOnDate { get; set; }
+        public DateTime? CurrentPeriodEndDate { get; set; }
 	}
 
 	public class Organisations : AbstractIndexCreationTask<Organisation, OrganisationDocument>
@@ -25,7 +27,9 @@ namespace Errordite.Core.Indexing
                     o.Name,
                     o.RavenInstanceId,
 					SubscriptionStatus = o.Subscription.Status,
-					CreatedOnUtc = o.CreatedOnUtc.Date
+					CreatedOnDate = o.CreatedOnUtc.Date,
+                    OrganisationStatus = o.Status,
+                    o.Subscription.CurrentPeriodEndDate
                 };
         }
     }

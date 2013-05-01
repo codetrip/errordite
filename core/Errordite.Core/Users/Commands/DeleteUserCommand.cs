@@ -9,7 +9,6 @@ using Errordite.Core.Interfaces;
 using Errordite.Core.Authorisation;
 using Errordite.Core.Caching;
 using Errordite.Core.Domain.Organisation;
-using Errordite.Core.Indexing;
 using Errordite.Core.Organisations;
 using Errordite.Core.Session;
 using Raven.Abstractions.Data;
@@ -31,6 +30,15 @@ namespace Errordite.Core.Users.Commands
             Trace("Starting...");
 
             var userId = User.GetId(request.UserId);
+
+            if (userId == request.CurrentUser.Id)
+            {
+                return new DeleteUserResponse
+                {
+                    Status = DeleteUserStatus.CantDeleteCurrentUser
+                };
+            }
+
             var existingUser = Load<User>(userId);
 
             if (existingUser == null)
@@ -41,13 +49,21 @@ namespace Errordite.Core.Users.Commands
                 };
             }
 
-            var userOrgMapping =
-                Session.MasterRaven.Query<UserOrganisationMapping>().FirstOrDefault(u => u.EmailAddress == existingUser.Email);
+            _authorisationManager.Authorise(existingUser, request.CurrentUser);
+
+            var organisation = Session.MasterRaven.Load<Organisation>(existingUser.OrganisationId);
+
+            if (organisation.PrimaryUserId == userId)
+            {
+                organisation.PrimaryUserId = request.CurrentUser.Id;
+            }
+                
+            var userOrgMapping = Session.MasterRaven.Query<UserOrganisationMapping>().FirstOrDefault(u => u.EmailAddress == existingUser.Email);
 
             if (userOrgMapping != null)
+            {
                 Session.MasterRaven.Delete(userOrgMapping);
-
-            _authorisationManager.Authorise(existingUser, request.CurrentUser);
+            } 
 
 			Session.RavenDatabaseCommands.UpdateByIndex(CoreConstants.IndexNames.Issues,
                 new IndexQuery
@@ -107,6 +123,7 @@ namespace Errordite.Core.Users.Commands
     public enum DeleteUserStatus
     {
         Ok,
-        UserNotFound
+        UserNotFound,
+        CantDeleteCurrentUser
     }
 }

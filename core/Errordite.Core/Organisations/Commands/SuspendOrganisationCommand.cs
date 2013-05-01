@@ -1,9 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using Castle.Core;
 using Errordite.Core.Caching.Entities;
 using Errordite.Core.Caching.Interceptors;
 using Errordite.Core.Domain.Master;
 using Errordite.Core.Interfaces;
+using Errordite.Core.Notifications.EmailInfo;
 using Errordite.Core.Paging;
 using Errordite.Core.Applications.Queries;
 using Errordite.Core.Caching;
@@ -11,6 +14,7 @@ using Errordite.Core.Configuration;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Session;
 using Errordite.Core.Session.Actions;
+using Errordite.Core.Extensions;
 
 namespace Errordite.Core.Organisations.Commands
 {
@@ -45,23 +49,40 @@ namespace Errordite.Core.Organisations.Commands
                 };
             }
 
-            organisation.Status = OrganisationStatus.Suspended;
-            organisation.SuspendedReason = request.Reason;
-            organisation.SuspendedMessage = request.Message;
-
-            //disable all applications
-            var applications = _getApplicationsQuery.Invoke(new GetApplicationsRequest
+            using (Session.SwitchOrg(organisation))
             {
-                OrganisationId = organisation.Id,
-                Paging = new PageRequestWithSort(1, _configuration.MaxPageSize)
-            }).Applications;
+                organisation.Status = OrganisationStatus.Suspended;
+                organisation.SuspendedReason = request.Reason;
+                organisation.SuspendedMessage = request.Message;
 
-            foreach(var application in applications.Items)
-            {
-                application.IsActive = false;
+                var applications = _getApplicationsQuery.Invoke(new GetApplicationsRequest
+                {
+                    OrganisationId = organisation.Id,
+                    Paging = new PageRequestWithSort(1, _configuration.MaxPageSize)
+                }).Applications;
+
+                foreach (var application in applications.Items)
+                {
+                    application.IsActive = false;
+                    Session.AddCommitAction(new FlushApplicationCacheCommitAction(_configuration, organisation, application.Id));
+                }
+
+                Session.AddCommitAction(new FlushOrganisationCacheCommitAction(_configuration, organisation));
+
+                var primaryUser = Session.Raven.Query<User>().FirstOrDefault(m => m.Id == organisation.PrimaryUserId);
+
+                if (primaryUser != null)
+                {
+                    Session.AddCommitAction(new SendMessageCommitAction(
+                        new AccountSuspendedEmailInfo
+                        {
+                            OrganisationName = organisation.Name,
+                            UserName = primaryUser.FirstName,
+                            SuspendedReason = request.Reason.GetDescription()
+                        },
+                        _configuration.GetNotificationsQueueAddress(organisation.RavenInstanceId)));
+                }
             }
-
-            Session.AddCommitAction(new FlushOrganisationCacheCommitAction(_configuration, organisation));
 
             return new SuspendOrganisationResponse(organisation.Id)
             {
