@@ -202,6 +202,7 @@
     <Compile Include="Domain\Error\ErrorditeError.cs" />
     <Compile Include="Domain\Error\IssueDailyCount.cs" />
     <Compile Include="Domain\IdHelper.cs" />
+    <Compile Include="Domain\Organisation\Invoice.cs" />
     <Compile Include="Domain\Organisation\PaymentPlan.cs" />
     <Compile Include="Applications\Commands\DeleteApplicationCommand.cs" />
     <Compile Include="Applications\Commands\EditApplicationCommand.cs" />
@@ -401,6 +402,7 @@
     <Compile Include="Organisations\Commands\ActivateOrganisationCommand.cs" />
     <Compile Include="Organisations\Commands\CompleteSignUpCommand.cs" />
     <Compile Include="Organisations\Commands\CancelSubscriptionCommand.cs" />
+    <Compile Include="Organisations\Commands\CreateInvoiceCommand.cs" />
     <Compile Include="Organisations\Commands\DeleteOrganisationCommand.cs" />
     <Compile Include="Organisations\Commands\SuspendOrganisationCommand.cs" />
     <Compile Include="Organisations\Commands\SetOrganisationTimezoneCommand.cs" />
