@@ -10,7 +10,7 @@
     <MakeDir Directories="$(OutputPath)\Errordite.Receive" Condition="!Exists('$(OutputPath)\Errordite.Receive')" />
     <MakeDir Directories="$(OutputPath)\Errordite.Services" Condition="!Exists('$(OutputPath)\Errordite.Services')" />
     <MakeDir Directories="$(OutputPath)\Errordite.Services\Templates" Condition="!Exists('$(OutputPath)\Errordite.Services\Templates')" />
-    <MakeDir Directories="$(OutputPath)\Errordite.ScheduledTasks" Condition="!Exists('$(OutputPath)\Errordite.ScheduledTasks')" />
+    <MakeDir Directories="$(OutputPath)\Errordite.Tasks" Condition="!Exists('$(OutputPath)\Errordite.Tasks')" />
 
     <ItemGroup>
       <WebDeploymentFiles
@@ -51,15 +51,11 @@
 
     <ItemGroup>
       <ScheduledTasksDeploymentFiles
-        Include="$(SourcePath)\core\Errordite.ScheduledTasks\**\*.*"
-        Exclude="$(SourcePath)\core\Errordite.ScheduledTasks\**\*.cs;
-                 $(SourcePath)\core\Errordite.ScheduledTasks\**\*.csproj*;                 
-                 $(SourcePath)\core\Errordite.ScheduledTasks\Config\**;
-                 $(SourcePath)\core\Errordite.ScheduledTasks\obj\**;">
+        Include="$(SourcePath)\core\Errordite.Tasks\bin\$(Configuration)\**\*.*">
       </ScheduledTasksDeploymentFiles>
     </ItemGroup>
 
-    <Copy SourceFiles="@(ScheduledTasksDeploymentFiles)" DestinationFolder="$(OutputPath)\Errordite.ScheduledTasks\%(RecursiveDir)" />
+    <Copy SourceFiles="@(ScheduledTasksDeploymentFiles)" DestinationFolder="$(OutputPath)\Errordite.Tasks\%(RecursiveDir)" />
 
     <ItemGroup>
       <ServiceDeploymentFiles
@@ -80,6 +76,7 @@
     <ItemGroup>
       <XmlFilesToDelete
         Include="$(OutputPath)\Errordite.Services\*.xml;
+                 $(OutputPath)\Errordite.Tasks\*.xml;
                  $(OutputPath)\Errordite.Web\bin\*.xml;
                  $(OutputPath)\Errordite.Receive\bin\*.xml">
       </XmlFilesToDelete>

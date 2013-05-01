@@ -153,6 +153,9 @@
   <data name="DeleteGroupStatus_UsersInGroup" xml:space="preserve">
     <value>There are currently users in the group, please move these users to another group before deleting this group.</value>
   </data>
+  <data name="DeleteUserStatus_CantDeleteCurrentUser" xml:space="preserve">
+    <value>You can't delete your own account.</value>
+  </data>
   <data name="DeleteUserStatus_Ok" xml:space="preserve">
     <value>The user has been deleted successfully.</value>
   </data>

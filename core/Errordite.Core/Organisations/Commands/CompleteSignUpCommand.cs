@@ -74,7 +74,7 @@ namespace Errordite.Core.Organisations.Commands
             organisation.Subscription.Status = SubscriptionStatus.Active;
             organisation.Subscription.StartDate = DateTime.UtcNow.ToDateTimeOffset(organisation.TimezoneId);
             organisation.Subscription.Dispensation = false;
-	        organisation.Subscription.CurrentPeriodEndsDate = subscription.CurrentPeriodEndsAt.ToDateTimeOffset(organisation.TimezoneId);
+	        organisation.Subscription.CurrentPeriodEndDate = subscription.CurrentPeriodEndsAt.ToDateTimeOffset(organisation.TimezoneId);
             organisation.PaymentPlanId = "PaymentPlans/{0}".FormatWith(token[1]);
 
             Session.SynchroniseIndexes<Indexing.Organisations, Indexing.Users>();
@@ -84,7 +84,8 @@ namespace Errordite.Core.Organisations.Commands
 					OrganisationName = organisation.Name,
 					SubscriptionId = request.SubscriptionId.ToString(),
 					UserName = request.CurrentUser.FirstName,
-					BillingAmount = string.Format(CultureInfo.GetCultureInfo(1033), "{0:C}", organisation.PaymentPlan.Price)
+					BillingAmount = string.Format(CultureInfo.GetCultureInfo(1033), "{0:C}", organisation.PaymentPlan.Price),
+                    PlanName = organisation.PaymentPlan.Name
 				},
 				_configuration.GetNotificationsQueueAddress(organisation.RavenInstanceId)));
 

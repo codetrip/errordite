@@ -51,7 +51,7 @@ echo	B. WEB: Errordite Receive Web
 echo	C. SVC: Errordite Receive Svc
 echo	D. SVC: Errordite Notifications Svc
 echo	E. SVC: Errordite Events Svc
-echo	F. SVC: Errordite Scheduled Tasks
+echo	F. SVC: Errordite Tasks
 echo	G. All Web
 echo	H. All Services
 echo	0. ABORT DEPLOYMENT
@@ -80,8 +80,8 @@ if "%ERRORLEVEL%" == "5" (
 	set DEPLOYDISPLAYNAME=SVC: Errordite Events Svc
 )
 if "%ERRORLEVEL%" == "6" (
-	set MSBUILDTARGET=InstallScheduledTasks
-	set DEPLOYDISPLAYNAME=SVC: Errordite Scheduled Tasks
+	set MSBUILDTARGET=InstallTasks
+	set DEPLOYDISPLAYNAME=SVC: Errordite Tasks
 )
 if "%ERRORLEVEL%" == "7" (
 	set MSBUILDTARGET=ALLWEB

@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Encryption;
 using Errordite.Core.Organisations.Commands;
 using Errordite.Core.Organisations.Queries;
@@ -18,16 +19,19 @@ namespace Errordite.Web.Controllers
         private readonly ICompleteSignUpCommand _completeSignUpCommand;
 	    private readonly ICancelSubscriptionCommand _cancelSubscriptionCommand;
         private readonly IEncryptor _encryptor;
+        private readonly IChangeSubscriptionCommand _changeSubscriptionCommand;
 
         public SubscriptionController(IGetAvailablePaymentPlansQuery getAvailablePaymentPlansQuery, 
 			ICompleteSignUpCommand completeSignUpCommand, 
             IEncryptor encryptor, 
-			ICancelSubscriptionCommand cancelSubscriptionCommand)
+			ICancelSubscriptionCommand cancelSubscriptionCommand, 
+            IChangeSubscriptionCommand changeSubscriptionCommand)
         {
             _getAvailablePaymentPlansQuery = getAvailablePaymentPlansQuery;
             _completeSignUpCommand = completeSignUpCommand;
             _encryptor = encryptor;
 	        _cancelSubscriptionCommand = cancelSubscriptionCommand;
+            _changeSubscriptionCommand = changeSubscriptionCommand;
         }
 
         [HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.Subscription)]
@@ -106,10 +110,38 @@ namespace Errordite.Web.Controllers
             return View();
         }
 
-        [HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.ChangeSubscription)]
+        [HttpGet, ImportViewData, ExportViewData, GenerateBreadcrumbs(BreadcrumbId.ChangeSubscription)]
         public ActionResult ChangeSubscription(string planId)
         {
-            return View();
+            var plans = _getAvailablePaymentPlansQuery.Invoke(new GetAvailablePaymentPlansRequest()).Plans;
+            var model = new ChangeSubscriptionViewModel
+            {
+                CurrentPlan = Core.AppContext.CurrentUser.Organisation.PaymentPlan,
+                NewPlan = plans.FirstOrDefault(p => p.FriendlyId == planId.GetFriendlyId()),
+                NewPlanId = PaymentPlan.GetId(planId)
+            };
+
+            if (model.NewPlan == null)
+            {
+                ErrorNotification("Unrecognised payment plan id {0}, cannot change your subscription.".FormatWith(planId));
+                return RedirectToAction("index");
+            }
+
+            model.NewPlanName = model.NewPlan.Name;
+
+            return View(model);
+        }
+
+        [HttpPost, ExportViewData]
+        public ActionResult DoChangeSubscription(ChangeSubscriptionPostModel model)
+        {
+            _changeSubscriptionCommand.Invoke(new ChangeSubscriptionRequest
+                {
+                    CurrentUser = Core.AppContext.CurrentUser,
+                    NewPlanId = model.NewPlanId,
+                    NewPlanName = model.NewPlanName
+                });
+            return RedirectToAction("index");
         }
 
         [HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.CancelSubscription)]

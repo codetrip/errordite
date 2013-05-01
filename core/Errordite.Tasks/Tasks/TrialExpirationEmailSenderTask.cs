@@ -1,7 +1,6 @@
 ﻿using System;
 using Errordite.Core;
 using Errordite.Core.Configuration;
-using Errordite.Core.Domain.Master;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Indexing;
 using Errordite.Core.Notifications.EmailInfo;
@@ -12,12 +11,12 @@ using System.Linq;
 
 namespace Errordite.Tasks.Tasks
 {
-	public class TrialExpirationEmailSender : ComponentBase, ITask
+	public class TrialExpirationEmailSenderTask : ComponentBase, ITask
 	{
 		private readonly IAppSession _session;
 		private readonly ErrorditeConfiguration _configuration;
 
-		public TrialExpirationEmailSender(IAppSession session, 
+		public TrialExpirationEmailSenderTask(IAppSession session, 
 			ErrorditeConfiguration configuration)
 		{
 			_session = session;
@@ -27,7 +26,7 @@ namespace Errordite.Tasks.Tasks
 		public void Execute(string ravenInstanceId)
 		{
 			var organisations = _session.MasterRaven.Query<OrganisationDocument, Organisations>()
-			                            .Where(o => o.CreatedOnUtc == DateTime.UtcNow.AddDays(-_configuration.TrialLengthInDays).Date)
+			                            .Where(o => o.CreatedOnDate == DateTime.UtcNow.AddDays(-_configuration.TrialLengthInDays).Date)
 			                            .Where(o => o.SubscriptionStatus == SubscriptionStatus.Trial)
 			                            .As<Organisation>()
 			                            .ToList();
@@ -38,14 +37,21 @@ namespace Errordite.Tasks.Tasks
 
 				foreach (var organisation in organisations)
 				{
-					var users = _session.MasterRaven.Query<UserOrganisationMapping>().Where(m => m.OrganisationId == organisation.Id);
+                    using (_session.SwitchOrg(organisation))
+                    {
+                        var primaryUser = _session.Raven.Query<User>().FirstOrDefault(m => m.Id == organisation.PrimaryUserId);
 
-					_session.MessageSender.Send(new TrialExpiredEmailInfo
-					{
-						OrganisationName = organisation.Name,
-						To = string.Join(",", users.Select(u => u.EmailAddress))
-					},
-					_configuration.GetNotificationsQueueAddress(organisation.RavenInstanceId));
+                        if (primaryUser != null)
+                        {
+                            _session.MessageSender.Send(new TrialExpiredEmailInfo
+                            {
+                                OrganisationName = organisation.Name,
+                                To = primaryUser.Email,
+                                UserName = primaryUser.FirstName
+                            },
+                            _configuration.GetNotificationsQueueAddress(organisation.RavenInstanceId));
+                        }
+                    }
 				}
 			}
 		}

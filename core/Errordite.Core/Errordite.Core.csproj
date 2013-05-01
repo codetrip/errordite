@@ -347,6 +347,7 @@
     <Compile Include="Messaging\AmazonSQSMessageSender.cs" />
     <Compile Include="Messaging\AmazonSQSFactory.cs" />
     <Compile Include="Messaging\MessageEnvelope.cs" />
+    <Compile Include="Notifications\EmailInfo\AccountSuspendedEmailInfo.cs" />
     <Compile Include="Notifications\EmailInfo\TrialExpiredEmailInfo.cs" />
     <Compile Include="Notifications\EmailInfo\SignUpCompleteEmailInfo.cs" />
     <Compile Include="Notifications\Sending\AmazonSimpleEmailFactory.cs" />
@@ -399,6 +400,7 @@
     <Compile Include="Organisations\Commands\ActivateOrganisationCommand.cs" />
     <Compile Include="Organisations\Commands\CompleteSignUpCommand.cs" />
     <Compile Include="Organisations\Commands\CancelSubscriptionCommand.cs" />
+    <Compile Include="Organisations\Commands\ChangeSubscriptionCommand.cs" />
     <Compile Include="Organisations\Commands\DeleteOrganisationCommand.cs" />
     <Compile Include="Organisations\Commands\SuspendOrganisationCommand.cs" />
     <Compile Include="Organisations\Commands\SetOrganisationTimezoneCommand.cs" />
@@ -496,6 +498,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Notifications\Templates\AccountSuspendedEmailTemplate.html" />
     <Content Include="Notifications\Templates\SignUpCompleteEmailTemplate.html" />
     <Content Include="Notifications\Templates\TrialExpiredEmailTemplate.html" />
     <Content Include="Notifications\Templates\InstanceOfAlwaysNotifyIssueEmailTemplate.html" />

@@ -20,16 +20,16 @@ using Errordite.Core.Session.Actions;
 namespace Errordite.Core.Organisations.Commands
 {
     [Interceptor(CacheInvalidationInterceptor.IoCName)]
-    public class  CancelSubscriptionCommand : SessionAccessBase, ICancelSubscriptionCommand
+    public class  ChangeSubscriptionCommand : SessionAccessBase, IChangeSubscriptionCommand
     {
         private readonly ErrorditeConfiguration _configuration;
 
-        public CancelSubscriptionCommand(ErrorditeConfiguration configuration)
+        public ChangeSubscriptionCommand(ErrorditeConfiguration configuration)
         {
             _configuration = configuration;
         }
 
-        public CancelSubscriptionResponse Invoke(CancelSubscriptionRequest request)
+        public ChangeSubscriptionResponse Invoke(ChangeSubscriptionRequest request)
         {
 			Trace("Starting...");
 
@@ -37,17 +37,17 @@ namespace Errordite.Core.Organisations.Commands
 
 			if (organisation == null)
 			{
-				return new CancelSubscriptionResponse(ignoreCache: true)
+				return new ChangeSubscriptionResponse(ignoreCache: true)
 				{
-					Status = CancelSubscriptionStatus.OrganisationNotFound
+					Status = ChangeSubscriptionStatus.OrganisationNotFound
 				};
 			}
 
 			if (!organisation.Subscription.ChargifyId.HasValue)
 			{
-				return new CancelSubscriptionResponse(ignoreCache: true)
+				return new ChangeSubscriptionResponse(ignoreCache: true)
 				{
-					Status = CancelSubscriptionStatus.SubscriptionNotFound
+					Status = ChangeSubscriptionStatus.SubscriptionNotFound
 				};
 			}  
 
@@ -56,26 +56,17 @@ namespace Errordite.Core.Organisations.Commands
 
             if (subscription == null)
             {
-                return new CancelSubscriptionResponse(ignoreCache:true)
+                return new ChangeSubscriptionResponse(ignoreCache:true)
                 {
-                    Status = CancelSubscriptionStatus.SubscriptionNotFound
+                    Status = ChangeSubscriptionStatus.SubscriptionNotFound
                 };
-            }   
+            }
 
-	        var cancelled = connection.DeleteSubscription(organisation.Subscription.ChargifyId.Value, request.CancellationReason);
+            subscription = connection.CreateSubscription(request.NewPlanName.ToLowerInvariant(), subscription.Customer.ChargifyID);
 
-			if (!cancelled)
-			{
-				return new CancelSubscriptionResponse(ignoreCache: true)
-				{
-					Status = CancelSubscriptionStatus.CancellationFailed
-				};
-			}
-
+            organisation.PaymentPlanId = PaymentPlan.GetId(request.NewPlanId);
             organisation.Subscription.ChargifyId = subscription.SubscriptionID;
-            organisation.Subscription.Status = SubscriptionStatus.Cancelled;
-            organisation.Subscription.CancellationDate = DateTime.UtcNow.ToDateTimeOffset(organisation.TimezoneId);
-	        organisation.Subscription.CancellationReason = request.CancellationReason;
+            organisation.Subscription.Status = SubscriptionStatus.Active;
 
             Session.SynchroniseIndexes<Indexing.Organisations, Indexing.Users>();
 			//Session.AddCommitAction(new SendMessageCommitAction(
@@ -88,26 +79,24 @@ namespace Errordite.Core.Organisations.Commands
 			//	},
 			//	_configuration.GetNotificationsQueueAddress(organisation.RavenInstanceId)));
 
-            return new CancelSubscriptionResponse(organisation.Id, request.CurrentUser.Id, request.CurrentUser.Email)
+            return new ChangeSubscriptionResponse(organisation.Id, request.CurrentUser.Id, request.CurrentUser.Email)
             {
-                Status = CancelSubscriptionStatus.Ok,
-				AccountExpirationDate = organisation.Subscription.CurrentPeriodEndDate.Value
+                Status = ChangeSubscriptionStatus.Ok
             };
         }
     }
 
-    public interface ICancelSubscriptionCommand : ICommand<CancelSubscriptionRequest, CancelSubscriptionResponse>
+    public interface IChangeSubscriptionCommand : ICommand<ChangeSubscriptionRequest, ChangeSubscriptionResponse>
     { }
 
-    public class CancelSubscriptionResponse : CacheInvalidationResponseBase
+    public class ChangeSubscriptionResponse : CacheInvalidationResponseBase
     {
-		public DateTimeOffset AccountExpirationDate { get; set; }
 	    private readonly string _organisationId;
 		private readonly string _userId;
 		private readonly string _email;
-        public CancelSubscriptionStatus Status { get; set; }
+        public ChangeSubscriptionStatus Status { get; set; }
 
-        public CancelSubscriptionResponse(string organisationId = null, string userId = null, string email = null, bool ignoreCache = false)
+        public ChangeSubscriptionResponse(string organisationId = null, string userId = null, string email = null, bool ignoreCache = false)
             : base(ignoreCache)
         {
             _organisationId = organisationId;
@@ -122,16 +111,17 @@ namespace Errordite.Core.Organisations.Commands
         }
     }
 
-    public class CancelSubscriptionRequest : OrganisationRequestBase
+    public class ChangeSubscriptionRequest : OrganisationRequestBase
     {
-        public string CancellationReason { get; set; }
+        public string NewPlanId { get; set; }
+        public string NewPlanName { get; set; }
     }
 
-    public enum CancelSubscriptionStatus
+    public enum ChangeSubscriptionStatus
     {
         Ok,
         OrganisationNotFound,
         SubscriptionNotFound,
-		CancellationFailed
+		ChangelationFailed
     }
 }

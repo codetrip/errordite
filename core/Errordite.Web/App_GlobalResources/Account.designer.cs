@@ -169,6 +169,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You can&apos;t delete your own account..
+        /// </summary>
+        internal static string DeleteUserStatus_CantDeleteCurrentUser {
+            get {
+                return ResourceManager.GetString("DeleteUserStatus_CantDeleteCurrentUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The user has been deleted successfully..
         /// </summary>
         internal static string DeleteUserStatus_Ok {
