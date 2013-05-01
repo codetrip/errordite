@@ -347,6 +347,8 @@
     <Compile Include="Messaging\AmazonSQSMessageSender.cs" />
     <Compile Include="Messaging\AmazonSQSFactory.cs" />
     <Compile Include="Messaging\MessageEnvelope.cs" />
+    <Compile Include="Notifications\EmailInfo\SubscriptionCancelledEmailInfo.cs" />
+    <Compile Include="Notifications\EmailInfo\SubscriptionChangedEmailInfo.cs" />
     <Compile Include="Notifications\EmailInfo\TrialExpiredEmailInfo.cs" />
     <Compile Include="Notifications\EmailInfo\SignUpCompleteEmailInfo.cs" />
     <Compile Include="Notifications\Sending\AmazonSimpleEmailFactory.cs" />
@@ -496,6 +498,8 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Notifications\Templates\SubscriptionChangedEmailTemplate.html" />
+    <Content Include="Notifications\Templates\SubscriptionCancelledEmailTemplate.html" />
     <Content Include="Notifications\Templates\SignUpCompleteEmailTemplate.html" />
     <Content Include="Notifications\Templates\TrialExpiredEmailTemplate.html" />
     <Content Include="Notifications\Templates\InstanceOfAlwaysNotifyIssueEmailTemplate.html" />

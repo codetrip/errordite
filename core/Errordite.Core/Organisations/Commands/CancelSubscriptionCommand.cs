@@ -78,15 +78,14 @@ namespace Errordite.Core.Organisations.Commands
 	        organisation.Subscription.CancellationReason = request.CancellationReason;
 
             Session.SynchroniseIndexes<Indexing.Organisations, Indexing.Users>();
-			//Session.AddCommitAction(new SendMessageCommitAction(
-			//	new SignUpCompleteEmailInfo
-			//	{
-			//		OrganisationName = organisation.Name,
-			//		SubscriptionId = request.SubscriptionId.ToString(),
-			//		UserName = request.CurrentUser.FirstName,
-			//		BillingAmount = string.Format(CultureInfo.GetCultureInfo(1033), "{0:C}", organisation.PaymentPlan.Price)
-			//	},
-			//	_configuration.GetNotificationsQueueAddress(organisation.RavenInstanceId)));
+			Session.AddCommitAction(new SendMessageCommitAction(
+				new SubscriptionCancelledEmailInfo
+				{
+					OrganisationName = organisation.Name,
+					UserName = request.CurrentUser.FirstName,
+					AccountDisabledOn = organisation.Subscription.CurrentPeriodEndsDate.Value.ToLocalFormatted()
+				},
+				_configuration.GetNotificationsQueueAddress(organisation.RavenInstanceId)));
 
             return new CancelSubscriptionResponse(organisation.Id, request.CurrentUser.Id, request.CurrentUser.Email)
             {
