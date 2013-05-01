@@ -111,14 +111,15 @@ namespace Errordite.Web.Controllers
         }
 
         [HttpGet, ImportViewData, ExportViewData, GenerateBreadcrumbs(BreadcrumbId.ChangeSubscription)]
-        public ActionResult ChangeSubscription(string planId)
+        public ActionResult Change(string planId)
         {
             var plans = _getAvailablePaymentPlansQuery.Invoke(new GetAvailablePaymentPlansRequest()).Plans;
             var model = new ChangeSubscriptionViewModel
             {
                 CurrentPlan = Core.AppContext.CurrentUser.Organisation.PaymentPlan,
                 NewPlan = plans.FirstOrDefault(p => p.FriendlyId == planId.GetFriendlyId()),
-                NewPlanId = PaymentPlan.GetId(planId)
+                NewPlanId = PaymentPlan.GetId(planId),
+				CurrentBillingPeriodEnd = Core.AppContext.CurrentUser.Organisation.Subscription.CurrentPeriodEndDate.Value
             };
 
             if (model.NewPlan == null)
@@ -133,15 +134,23 @@ namespace Errordite.Web.Controllers
         }
 
         [HttpPost, ExportViewData]
-        public ActionResult DoChangeSubscription(ChangeSubscriptionPostModel model)
+        public ActionResult ChangeSubscription(ChangeSubscriptionPostModel model)
         {
-            _changeSubscriptionCommand.Invoke(new ChangeSubscriptionRequest
-                {
-                    CurrentUser = Core.AppContext.CurrentUser,
-                    NewPlanId = model.NewPlanId,
-                    NewPlanName = model.NewPlanName
-                });
-            return RedirectToAction("index");
+            var response = _changeSubscriptionCommand.Invoke(new ChangeSubscriptionRequest
+            {
+                CurrentUser = Core.AppContext.CurrentUser,
+                NewPlanId = model.NewPlanId,
+                NewPlanName = model.NewPlanName,
+				OldPlanName = model.OldPlanName
+            });
+
+			if (response.Status == ChangeSubscriptionStatus.Ok)
+			{
+				ConfirmationNotification("Your subscription has been changed successfully.");
+				return RedirectToAction("index");
+			}
+
+			return RedirectWithRoute("change", response.Status.MapToResource(Resources.Subscription.ResourceManager), routeValues: new {planId = model.NewPlanId});
         }
 
         [HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.CancelSubscription)]
@@ -160,7 +169,7 @@ namespace Errordite.Web.Controllers
 			return View(model);
         }
 
-		[HttpGet, ExportViewData]
+		[HttpPost, ExportViewData]
 		public ActionResult CancelSubscription(CancelSubscriptionPostModel model)
 		{
 			var response = _cancelSubscriptionCommand.Invoke(new CancelSubscriptionRequest

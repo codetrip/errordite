@@ -936,7 +936,7 @@
     <Content Include="Views\Subscription\BillingHistory.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Subscription\ChangeSubscription.cshtml" />
+    <Content Include="Views\Subscription\Change.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Subscription\Cancel.cshtml" />

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Errordite.Core.Domain.Organisation;
 
 namespace Errordite.Web.Models.Subscription
@@ -28,11 +29,13 @@ namespace Errordite.Web.Models.Subscription
     {
         public PaymentPlan CurrentPlan { get; set; }
         public PaymentPlan NewPlan { get; set; }
+		public DateTimeOffset CurrentBillingPeriodEnd { get; set; }
     }
 
     public class ChangeSubscriptionPostModel
     {
         public string NewPlanId { get; set; }
-        public string NewPlanName { get; set; }
+		public string NewPlanName { get; set; }
+		public string OldPlanName { get; set; }
     }
 }

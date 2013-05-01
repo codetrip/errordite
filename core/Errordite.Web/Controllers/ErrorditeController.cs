@@ -68,6 +68,14 @@ namespace Errordite.Web.Controllers
             return routeValues == null ? RedirectToAction(action) : RedirectToAction(action, routeValues);
         }
 
+		protected ActionResult RedirectWithRoute(string action, string message = null, bool error = true, object routeValues = null)
+		{
+			if (!message.IsNullOrEmpty())
+				ViewData.SetNotification(error ? UiNotification.Error(message) : UiNotification.Confirmation(message));
+
+			return routeValues == null ? RedirectToAction(action) : RedirectToAction(action, routeValues);
+		}
+
         protected void SetNotification(Enum status, ResourceManager rm)
         {
             if (status.ToString().ToLowerInvariant() == "ok")
