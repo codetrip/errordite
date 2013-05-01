@@ -74,7 +74,7 @@ namespace Errordite.Core.Organisations.Commands
             organisation.Subscription.Status = SubscriptionStatus.Active;
             organisation.Subscription.StartDate = DateTime.UtcNow.ToDateTimeOffset(organisation.TimezoneId);
             organisation.Subscription.Dispensation = false;
-	        organisation.Subscription.CurrentPeriodEndDate = subscription.CurrentPeriodEndsAt.ToDateTimeOffset(organisation.TimezoneId);
+	        organisation.Subscription.CurrentPeriodEndDate = subscription.CurrentPeriodEndsAt.ToUniversalTime().ToDateTimeOffset(organisation.TimezoneId);
             organisation.PaymentPlanId = "PaymentPlans/{0}".FormatWith(token[1]);
 
             Session.SynchroniseIndexes<Indexing.Organisations, Indexing.Users>();

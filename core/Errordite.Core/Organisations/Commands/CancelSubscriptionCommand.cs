@@ -83,7 +83,7 @@ namespace Errordite.Core.Organisations.Commands
 				{
 					OrganisationName = organisation.Name,
 					UserName = request.CurrentUser.FirstName,
-					AccountDisabledOn = organisation.Subscription.CurrentPeriodEndsDate.Value.ToLocalFormatted()
+					AccountDisabledOn = organisation.Subscription.CurrentPeriodEndDate.Value.ToLocalFormatted()
 				},
 				_configuration.GetNotificationsQueueAddress(organisation.RavenInstanceId)));
 
