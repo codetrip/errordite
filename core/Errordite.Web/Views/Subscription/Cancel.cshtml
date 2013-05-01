@@ -1,0 +1,56 @@
+﻿
+@using Errordite.Core.Domain.Organisation
+@using Errordite.Web.Extensions
+@using Errordite.Web.Models.Subscription
+@model CancelSubscriptionViewModel
+           
+@{
+    ViewBag.Title = "Cancel Subscription";
+}
+
+@section header
+{
+    @Html.Partial("Account/Tabs") 
+}
+
+<section class="centered">
+    <div class="content">
+        <div class="sidenav">
+            @Html.Partial("Subscription/SubscriptionTabs", SubscriptionTab.Cancel)
+            <div class="sidenav-content billing">
+                <div class="sidenav-tab active" id="cancel">
+					@if (Model.Subscription.Status == SubscriptionStatus.Trial)
+					{
+						<p>You are not currently signup to a paid subscription</p>
+					}
+					else
+					{
+						<p>
+							We are very sorry you have chosen to cancel your subscription with Errordite. When you cancel your subscription
+							we will stop any further payments immediately and your account will become inactive at the end of the current billing period.
+						</p>
+						<p>
+							We would really appreciate it if you could take a moment to tell us why you are cancelling.
+						</p>
+						using (Html.BeginForm("cancelsubscription", "subscription", FormMethod.Post, new {id = "cancel"}))
+						{
+							<div class="form">
+								<ul>
+									<li>
+										@Html.LabelFor(m => m.CancellationReason, "Reason")
+										@Html.TextAreaFor(m => m.CancellationReason, new {style="width:400px; height:80px"})
+									</li>
+									<li class="buttons">
+										<input class="btn btn-medium btn-blue" data-confirm="Are you sure you want to cancel your subscription, this action can only be undone by contacting support for assistance?" type="submit" value="Cancel" />
+									</li>
+								</ul>
+							</div>
+						}
+					}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+

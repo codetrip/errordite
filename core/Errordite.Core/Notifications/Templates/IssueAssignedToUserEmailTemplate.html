@@ -1,0 +1,11 @@
+﻿$(Master:EmailTemplateMasterPage)
+$(Placeholder:Subject)You have been assigned an Issue - $(IssueName)
+$(Placeholder:Body)
+
+<tr>
+    <td>
+        <p>Hi,</p>
+        <p>The issue "$(IssueName)" has been assigned to you.</p>
+        <p><a href="$(ErrorditeUrl)/issue/$(IssueId)" target="_blank">Click here to view the issue</a></p>
+    </td>
+</tr>

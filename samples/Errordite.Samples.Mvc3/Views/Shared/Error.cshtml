@@ -1,0 +1,17 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+
+@{
+    ViewBag.Title = "Error";
+}
+
+<h2>
+    Errored!
+</h2>
+
+    @using (Html.BeginForm("error", "home")) {
+        @:Preset Error (number from 1 to 4 or leave blank): @Html.TextBox("index")
+        <br/>
+        @:Message: @Html.TextBox("errorMessage")
+
+        <input type="submit" value="Create Error" />
+    }

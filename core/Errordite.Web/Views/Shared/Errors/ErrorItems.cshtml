@@ -1,0 +1,48 @@
+﻿@using Errordite.Core.Paging
+@model Errordite.Web.Models.Errors.ErrorCriteriaViewModel
+           
+<div class="errors">
+    @if (Model.Errors != null && Model.Errors.Any())
+    {
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+					<th></th>
+					@if (!Model.HideIssues)
+					{
+						<th>Issue #</th>
+					} 
+                    <th>Exception</th>            
+                    <th>Message</th>             
+                    <th>Version</th>     
+                    <th class="sort-header"><span>Received On</span> @Html.SortLinks(Model.Paging.PagingId, "Timestamp", "Received On")</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var error in Model.Errors)
+                {
+                    @Html.Partial("Errors/ErrorItem", error)
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="6">
+                        @Html.Partial("Pagination", Model.Paging) 
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    }
+    else if (Model.Errors != null)
+    {
+        <div class="clear"></div>
+        <p>No errors were returned from your query.</p>  
+        <div class="clear"></div>
+    }
+    else
+    {
+        <div class="clear"></div>
+        <p>Loading errors...</p>  
+        <div class="clear"></div>
+    }
+</div>

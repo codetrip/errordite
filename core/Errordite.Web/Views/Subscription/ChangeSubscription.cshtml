@@ -1,0 +1,27 @@
+﻿
+@using Errordite.Web.Models.Subscription
+@model SubscriptionViewModel
+           
+@{
+    ViewBag.Title = "Change Subsciption";
+}
+
+@section header
+{
+    @Html.Partial("Account/Tabs") 
+}
+
+<section class="centered">
+    <div class="content">
+        <div class="sidenav">
+            @Html.Partial("Subscription/SubscriptionTabs", SubscriptionTab.Change)
+            <div class="sidenav-content billing">
+                <div class="sidenav-tab active">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+

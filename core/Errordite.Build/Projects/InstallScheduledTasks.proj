@@ -1,0 +1,32 @@
+<Project
+	xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
+	ToolsVersion="4.0"
+	DefaultTargets="InstallScheduledTasks">
+
+  <Import Project="$(MSBuildProjectDirectory)\Global.imports" />
+  <Import Project="$(MSBuildProjectDirectory)\Configuration.target" />
+
+  <Target Name="InstallScheduledTasks" DependsOnTargets="GetBuildNumberAndInstallPaths;
+          CopyScheduledTasksFiles;
+          RunConfigFileChanger;">
+  </Target>
+
+  <Target Name="CopyScheduledTasksFiles" DependsOnTargets="GetBuildNumberAndInstallPaths">
+
+    <CreateItem Include="$(MSBuildProjectDirectory)\..\Errordite.ScheudledTasks\**\*.*;">
+      <Output TaskParameter="Include" ItemName="ScheudledTasksFiles" />
+    </CreateItem>
+
+    <Copy SourceFiles="@(ScheudledTasksFiles)" DestinationFolder="$(InstallRoot)\Errordite.ScheudledTasks\%(RecursiveDir)" />
+  </Target>
+
+  <Target Name="GetBuildNumberAndInstallPaths">
+    <ReadLinesFromFile File="$(MSBuildProjectDirectory)\version.txt">
+      <Output TaskParameter="Lines" PropertyName="BuildNumber" />
+    </ReadLinesFromFile>
+
+    <CreateProperty Value="$(InstallRoot)\Errordite.ScheudledTasks">
+      <Output TaskParameter="Value" PropertyName="ConfigChangerRunLocation" />
+    </CreateProperty>
+  </Target>
+</Project>
