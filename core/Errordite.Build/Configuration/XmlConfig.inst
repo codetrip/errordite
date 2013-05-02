@@ -40,6 +40,7 @@ the config file.  If you wish to allow a choice of folders, they can be separate
         <ReceiveWebEndpoints theRest="$(ReceiveEndpoints)" />
         <RenderMinifiedContent theRest="true" />
         <DeveloperQueueSuffix theRest="" />
+		<SubscriptionsEnabled theRest="false" />
     </File>
 
     <File match="email.config">

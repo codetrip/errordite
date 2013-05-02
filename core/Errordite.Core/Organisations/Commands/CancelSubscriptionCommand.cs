@@ -76,6 +76,7 @@ namespace Errordite.Core.Organisations.Commands
             organisation.Subscription.Status = SubscriptionStatus.Cancelled;
             organisation.Subscription.CancellationDate = DateTime.UtcNow.ToDateTimeOffset(organisation.TimezoneId);
 	        organisation.Subscription.CancellationReason = request.CancellationReason;
+	        organisation.Subscription.LastModified = organisation.Subscription.CancellationDate.Value;
 
             Session.SynchroniseIndexes<Indexing.Organisations, Indexing.Users>();
 			Session.AddCommitAction(new SendMessageCommitAction(
@@ -83,14 +84,14 @@ namespace Errordite.Core.Organisations.Commands
 				{
 					OrganisationName = organisation.Name,
 					UserName = request.CurrentUser.FirstName,
-					AccountDisabledOn = organisation.Subscription.CurrentPeriodEndDate.Value.ToLocalFormatted()
+					AccountDisabledOn = organisation.Subscription.CurrentPeriodEndDate.ToLocalFormatted()
 				},
 				_configuration.GetNotificationsQueueAddress(organisation.RavenInstanceId)));
 
             return new CancelSubscriptionResponse(organisation.Id, request.CurrentUser.Id, request.CurrentUser.Email)
             {
                 Status = CancelSubscriptionStatus.Ok,
-				AccountExpirationDate = organisation.Subscription.CurrentPeriodEndDate.Value
+				AccountExpirationDate = organisation.Subscription.CurrentPeriodEndDate
             };
         }
     }

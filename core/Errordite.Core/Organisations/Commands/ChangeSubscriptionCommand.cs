@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using Castle.Core;
 using ChargifyNET;
@@ -67,6 +68,7 @@ namespace Errordite.Core.Organisations.Commands
 
             organisation.Subscription.ChargifyId = subscription.SubscriptionID;
             organisation.Subscription.Status = SubscriptionStatus.Active;
+			organisation.Subscription.LastModified = DateTime.UtcNow.ToDateTimeOffset(organisation.TimezoneId);
 
             Session.SynchroniseIndexes<Indexing.Organisations, Indexing.Users>();
 			Session.AddCommitAction(new SendMessageCommitAction(
@@ -76,7 +78,7 @@ namespace Errordite.Core.Organisations.Commands
 					SubscriptionId = subscription.SubscriptionID.ToString(),
 					UserName = request.CurrentUser.FirstName,
 					BillingAmount = string.Format(CultureInfo.GetCultureInfo(1033), "{0:C}", plan.Price),
-					BillingPeriodEndDate = organisation.Subscription.CurrentPeriodEndDate.Value.ToLocalFormatted(),
+					BillingPeriodEndDate = organisation.Subscription.CurrentPeriodEndDate.ToLocalFormatted(),
 					OldPlanName = request.OldPlanName,
 					NewPlanName = plan.Name
 				},

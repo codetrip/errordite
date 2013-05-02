@@ -8,7 +8,6 @@ using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using ProtoBuf;
-using Errordite.Core.Extensions;
 
 namespace Errordite.Core.Domain.Error
 {
@@ -70,7 +69,7 @@ namespace Errordite.Core.Domain.Error
         [ProtoMember(13)]
         public bool TestIssue { get; set; }
         [ProtoMember(14)]
-        public bool AlwaysNotify { get; set; }
+        public int NotifyFrequencyHours { get; set; }
         [ProtoMember(15)]
         public string Reference { get; set; }
         [ProtoMember(16)]

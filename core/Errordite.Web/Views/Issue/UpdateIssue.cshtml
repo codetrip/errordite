@@ -29,7 +29,6 @@
                 </li>
                 <li>
                     @Html.LabelFor(m => m.Status, "Status")
-                    @Html.DropDownListFor(m => m.Status, Model.Statuses)
                 </li>
                 <li>
                     @Html.LabelFor(m => m.Comment, "Add Comment")
@@ -43,11 +42,11 @@
                     @Html.TextBoxFor(m => m.Reference)
                     <i data-title="Add a reference to your bug tracking software or source control system, if appropriate" class="icon-info"></i>
                 </li>
-                <li class="inline">
-                    @Html.CheckBoxFor(m => m.AlwaysNotify)
-                    @Html.LabelFor(m => m.AlwaysNotify, "Always notify when errors occur")
-                    <i data-title="Check this box if you want to be notified whenever an instance of this issue is received (we will only notify you the first time this happens within any 12 hour period)." class="icon-info"></i>
-                </li>
+	            <li>
+		            @Html.LabelFor(m => m.Status, "Notification Frequency")
+		            @Html.DropDownListFor(m => m.NotifyFrequencyHours, Model.NotificationFrequencies)
+		            <i data-title="Select a value here if you want to be notified whenever an instance of this issue is received, we will notify you once within within the selected timeframe if an error has been received." class="icon-info"></i>
+	            </li>
             </ul>
         </div>
     </div>             

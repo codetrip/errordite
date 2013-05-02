@@ -88,8 +88,8 @@ namespace Errordite.Core.Reception.Commands
                 Store(request.Error);
 
                 //if the matching issue is solved, send an email and set it back to Acknowledged
-                if (issue.Status == IssueStatus.Solved || (issue.AlwaysNotify
-                    && issue.LastNotified.GetValueOrDefault() < DateTime.UtcNow.AddHours(-12)))
+				if  (issue.Status == IssueStatus.Solved || 
+					(issue.NotifyFrequencyHours > 0 && issue.LastNotified.GetValueOrDefault() < DateTime.UtcNow.AddHours(-issue.NotifyFrequencyHours)))
                 {
                     SendNotification(issue, request.Application, 
                         issue.Status == IssueStatus.Solved ?

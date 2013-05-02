@@ -70,12 +70,13 @@ namespace Errordite.Core.Organisations.Commands
             }
 
 			organisation.PaymentPlan = MasterLoad<PaymentPlan>(organisation.PaymentPlanId);
+			organisation.PaymentPlanId = "PaymentPlans/{0}".FormatWith(token[1]);
+
             organisation.Subscription.ChargifyId = subscription.SubscriptionID;
             organisation.Subscription.Status = SubscriptionStatus.Active;
             organisation.Subscription.StartDate = DateTime.UtcNow.ToDateTimeOffset(organisation.TimezoneId);
-            organisation.Subscription.Dispensation = false;
 	        organisation.Subscription.CurrentPeriodEndDate = subscription.CurrentPeriodEndsAt.ToUniversalTime().ToDateTimeOffset(organisation.TimezoneId);
-            organisation.PaymentPlanId = "PaymentPlans/{0}".FormatWith(token[1]);
+	        organisation.Subscription.CancellationDate = organisation.Subscription.StartDate;
 
             Session.SynchroniseIndexes<Indexing.Organisations, Indexing.Users>();
 			Session.AddCommitAction(new SendMessageCommitAction(

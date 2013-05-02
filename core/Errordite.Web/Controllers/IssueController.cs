@@ -34,7 +34,8 @@ namespace Errordite.Web.Controllers
 {
 	[Authorize, ValidateSubscriptionActionFilter]
     public class IssueController : ErrorditeController
-    {
+	{
+		private static int[] _frequencyHours = new[] { 1, 2, 4, 6, 12, 24 };
         private readonly IGetIssueQuery _getIssueQuery;
         private readonly IAdjustRulesCommand _adjustRulesCommand;
         private readonly IGetApplicationErrorsQuery _getApplicationErrorsQuery;
@@ -136,15 +137,15 @@ namespace Errordite.Web.Controllers
                 Statuses = issue.Status.ToSelectedList(IssueResources.ResourceManager, false, issue.Status == IssueStatus.Unacknowledged ? IssueStatus.Acknowledged.ToString() : issue.Status.ToString()),
                 UserId = issue.UserId,
                 Status = issue.Status == IssueStatus.Unacknowledged ? IssueStatus.Acknowledged : issue.Status,
-                AlwaysNotify = issue.AlwaysNotify,
+                NotifyFrequencyHours = issue.NotifyFrequencyHours,
                 Reference = issue.Reference,
+				NotificationFrequencies = _frequencyHours.ToSelectList(r => r, r => "Once every {0} hour{1}".FormatWith(r, r == 1 ? "" : "s"), r => r == issue.NotifyFrequencyHours, "Once when issue is created")
             };
 
             var viewModel = new IssueViewModel
             {
                 Details = new IssueDetailsViewModel
                 {
-
                     ErrorCount = issue.ErrorCount,
                     LastErrorUtc = issue.LastErrorUtc,
                     FirstErrorUtc = issue.CreatedOnUtc,
@@ -154,7 +155,7 @@ namespace Errordite.Web.Controllers
                     TestIssue = issue.TestIssue,
                     IssueId = issue.Id,
                     Status = issue.Status,
-                    AlwaysNotify = issue.AlwaysNotify,
+                    NotifyFrequencyHours = issue.NotifyFrequencyHours,
                     Reference = issue.Reference
                 },
                 Errors = GetErrorsViewModel(postModel, paging, extraDataKeys),
@@ -361,7 +362,7 @@ namespace Errordite.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return RedirectWithViewModel(postModel, "index", routeValues: new { id = postModel.IssueId.GetFriendlyId(), tab = IssueTab.Rules.ToString() }); 
+                return RedirectWithViewModel(postModel, "index", routeValues: new { id = postModel.IssueId.GetFriendlyId(), tab = IssueTab.Details.ToString() }); 
             }
 
             try
@@ -372,7 +373,7 @@ namespace Errordite.Web.Controllers
                     Status = postModel.Status,
                     Name = postModel.Name,
                     CurrentUser = Core.AppContext.CurrentUser,
-                    AlwaysNotify = postModel.AlwaysNotify,
+                    NotifyFrequencyHours = postModel.NotifyFrequencyHours,
                     Reference = postModel.Reference,
                     AssignedUserId = postModel.UserId,
                     Comment = postModel.Comment,
@@ -414,15 +415,15 @@ namespace Errordite.Web.Controllers
                             )));
                         break;
                     default:
-                        return RedirectWithViewModel(postModel, "index", "Issue details were updated successfully, the rules for this issue were not changed.", false, new { id = postModel.IssueId.GetFriendlyId(), tab = IssueTab.Rules.ToString() });
+                        return RedirectWithViewModel(postModel, "index", "Issue details were updated successfully, the rules for this issue were not changed.", false, new { id = postModel.IssueId.GetFriendlyId(), tab = IssueTab.Details.ToString() });
                 }
 
-                return RedirectToAction("index", new { id = result.IssueId.GetFriendlyId(), tab = IssueTab.Rules.ToString() });
+                return RedirectToAction("index", new { id = result.IssueId.GetFriendlyId(), tab = IssueTab.Details.ToString() });
             }
-            catch (ConcurrencyException e)
+            catch (ConcurrencyException)
             {
-                ErrorNotification("A background process modified this issues data at the same time as you requested to adjust the rules, please try again.");
-                return RedirectToAction("index", new { id = postModel.IssueId.GetFriendlyId(), tab = IssueTab.Rules.ToString() });
+                ErrorNotification("A background process modified this issue at the same time as you requested to adjust the rules which resulted in a failure, please try again.");
+				return RedirectToAction("index", new { id = postModel.IssueId.GetFriendlyId(), tab = IssueTab.Details.ToString() });
             }
         }
 

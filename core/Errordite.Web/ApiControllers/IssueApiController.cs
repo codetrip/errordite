@@ -37,7 +37,7 @@ namespace Errordite.Web.ApiControllers
             {
                 Id = issue.Id,
                 Name = issue.Name,
-                AlwaysNotify = issue.AlwaysNotify,
+                NotifyFrequencyHours = issue.NotifyFrequencyHours,
                 ApplicationId = issue.ApplicationId,
                 OrganisationId = issue.OrganisationId,
                 Status = issue.Status,
@@ -80,13 +80,13 @@ namespace Errordite.Web.ApiControllers
                 storedIssue.Reference = issue.Reference;
 
             storedIssue.Status = issue.Status;
-            storedIssue.AlwaysNotify = issue.AlwaysNotify;
+            storedIssue.NotifyFrequencyHours = issue.NotifyFrequencyHours;
 
             return Request.CreateResponse(HttpStatusCode.OK, new Issue
             {
                 Id = storedIssue.Id,
                 Name = storedIssue.Name,
-                AlwaysNotify = storedIssue.AlwaysNotify,
+                NotifyFrequencyHours = storedIssue.NotifyFrequencyHours,
                 ApplicationId = storedIssue.ApplicationId,
                 OrganisationId = storedIssue.OrganisationId,
                 Status = storedIssue.Status,

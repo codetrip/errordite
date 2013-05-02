@@ -64,15 +64,15 @@ namespace Errordite.Core.Domain.Organisation
 	public class Subscription
 	{
 		[ProtoMember(1)]
-		public bool Dispensation { get; set; }
-		[ProtoMember(2)]
 		public int? ChargifyId { get; set; }
-		[ProtoMember(3)]
+		[ProtoMember(2)]
 		public SubscriptionStatus Status { get; set; }
+		[ProtoMember(3)]
+		public DateTimeOffset StartDate { get; set; }
 		[ProtoMember(4)]
-		public DateTimeOffset? StartDate { get; set; }
+		public DateTimeOffset CurrentPeriodEndDate { get; set; }
 		[ProtoMember(5)]
-		public DateTimeOffset? CurrentPeriodEndDate { get; set; }
+		public DateTimeOffset LastModified { get; set; }
 		[ProtoMember(6)]
 		public string CancellationReason { get; set; }
 		[ProtoMember(7)]

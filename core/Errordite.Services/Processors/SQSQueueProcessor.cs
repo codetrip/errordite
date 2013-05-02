@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using System.Threading;
 using Amazon.SQS;
 using Amazon.SQS.Model;
+using Errordite.Client;
 using Errordite.Core;
 using Errordite.Core.Configuration;
+using Errordite.Core.Exceptions;
 using Errordite.Core.IoC;
 using Errordite.Core.Messaging;
 using System.Linq;
 using Errordite.Core.Messaging.Commands;
 using Errordite.Services.Throttlers;
 using Newtonsoft.Json;
+using Errordite.Core.Extensions;
 
 namespace Errordite.Services.Processors
 {
@@ -77,89 +80,98 @@ namespace Errordite.Services.Processors
 
             while (_serviceRunning)
             {
-                var request = new ReceiveMessageRequest
-                {
-                    QueueUrl = _queueUrl,
-                    MaxNumberOfMessages = _serviceConfiguration.MaxNumberOfMessagesPerReceive,
-                    WaitTimeSeconds = 20
-                };
+	            try
+	            {
+					var request = new ReceiveMessageRequest
+					{
+						QueueUrl = _queueUrl,
+						MaxNumberOfMessages = _serviceConfiguration.MaxNumberOfMessagesPerReceive,
+						WaitTimeSeconds = 20
+					};
 
-                Trace("Attmepting to receive message from queue '{0}'", _queueUrl);
+					Trace("Attmepting to receive message from queue '{0}'", _queueUrl);
 
-                ReceiveMessageResponse response;
+					ReceiveMessageResponse response;
 
-                try
-                {
-                    response = _amazonSQS.ReceiveMessage(request);
-                }
-                catch (AmazonSQSException e)
-                {
-                    if (_serviceConfiguration.Service != Service.Receive)
-                        throw;
+					try
+					{
+						response = _amazonSQS.ReceiveMessage(request);
+					}
+					catch (AmazonSQSException e)
+					{
+						if (_serviceConfiguration.Service != Service.Receive)
+							throw;
 
-                    //create the queue if the exception indicates the queue does not exist
-                    if (e.Message.ToLowerInvariant().StartsWith("the specified queue does not exist"))
-                    {
-                        _createSQSQueueCommand.Invoke(new CreateSQSQueueRequest
-                        {
-                            OrganisationId = OrganisationFriendlyId
-                        });
-                    }
+						//create the queue if the exception indicates the queue does not exist
+						if (e.Message.ToLowerInvariant().StartsWith("the specified queue does not exist"))
+						{
+							_createSQSQueueCommand.Invoke(new CreateSQSQueueRequest
+							{
+								OrganisationId = OrganisationFriendlyId
+							});
+						}
 
-                    emptyReceiptCount = 15; //equiv to 5 mins pause, the maximum we wait
-                    Thread.Sleep(_requestThrottler.GetDelayMilliseconds(emptyReceiptCount));
-                    continue;
-                }
-                
-                if (!response.IsSetReceiveMessageResult() || response.ReceiveMessageResult.Message.Count == 0)
-                {
-                    emptyReceiptCount++;
-                    Trace("No message returned from queue '{0}', zero message count:={1}", _queueUrl, emptyReceiptCount);
+						emptyReceiptCount = 15; //equiv to 5 mins pause, the maximum we wait
+						Thread.Sleep(_requestThrottler.GetDelayMilliseconds(emptyReceiptCount));
+						continue;
+					}
 
-                    //sleep for delay as specified by throttler (unless instructed to poll now)
-                    int delay = _requestThrottler.GetDelayMilliseconds(emptyReceiptCount);
-                    const int sleepPeriod = 100;
-                    int sleepCount = 0;
-                    while (sleepPeriod*++sleepCount < delay)
-                    {
-                        if (_pollNow)
-                        {
-                            emptyReceiptCount = 0;
-                            _pollNow = false;
-                            break;
-                        }
-                        Thread.Sleep(sleepPeriod);
-                    }
-                    continue;
-                }
+					if (!response.IsSetReceiveMessageResult() || response.ReceiveMessageResult.Message.Count == 0)
+					{
+						emptyReceiptCount++;
+						Trace("No message returned from queue '{0}', zero message count:={1}", _queueUrl, emptyReceiptCount);
 
-                //reset the zero message count
-                emptyReceiptCount = 0;
+						//sleep for delay as specified by throttler (unless instructed to poll now)
+						int delay = _requestThrottler.GetDelayMilliseconds(emptyReceiptCount);
+						const int sleepPeriod = 100;
+						int sleepCount = 0;
+						while (sleepPeriod * ++sleepCount < delay)
+						{
+							if (_pollNow)
+							{
+								emptyReceiptCount = 0;
+								_pollNow = false;
+								break;
+							}
+							Thread.Sleep(sleepPeriod);
+						}
+						continue;
+					}
 
-                Trace("Received {0} messages from queue '{1}'", response.ReceiveMessageResult.Message.Count, _queueUrl);
-                  
-                foreach (var message in response.ReceiveMessageResult.Message)
-                {
-                    var envelope = GetEnvelope(message);
+					//reset the zero message count
+					emptyReceiptCount = 0;
 
-                    Trace("Receiving message for organisation:={0}", envelope.OrganisationId);
+					Trace("Received {0} messages from queue '{1}'", response.ReceiveMessageResult.Message.Count, _queueUrl);
 
-                    try
-                    {
-                        ObjectFactory.GetObject<IMessageProcessor>().Process(_serviceConfiguration, envelope);
+					foreach (var message in response.ReceiveMessageResult.Message)
+					{
+						var envelope = GetEnvelope(message);
 
-                        _amazonSQS.DeleteMessage(new DeleteMessageRequest
-                        {
-                            QueueUrl = _queueUrl,
-                            ReceiptHandle = envelope.ReceiptHandle
-                        });
-                    }
-                    catch (Exception e)
-                    {
-                        //TODO: how do we handle failures here?
-                        Error(e);
-                    }
-                }
+						Trace("Receiving message for organisation:={0}", envelope.OrganisationId);
+
+						try
+						{
+							ObjectFactory.GetObject<IMessageProcessor>().Process(_serviceConfiguration, envelope);
+
+							_amazonSQS.DeleteMessage(new DeleteMessageRequest
+							{
+								QueueUrl = _queueUrl,
+								ReceiptHandle = envelope.ReceiptHandle
+							});
+						}
+						catch (Exception e)
+						{
+							var de = new ErrorditeDeleteSQSMessageException("Failed to delete message with receipt handle:={0}".FormatWith(envelope.ReceiptHandle), true, e);
+							Error(de);
+							ErrorditeClient.ReportException(de);
+						}
+					}
+	            }
+	            catch (Exception e)
+	            {
+					Error(e);
+					ErrorditeClient.ReportException(e);
+	            }
             }
         }
 
