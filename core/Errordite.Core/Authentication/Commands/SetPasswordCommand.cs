@@ -1,13 +1,11 @@
 ﻿using System;
-using Errordite.Core;
 using Errordite.Core.Encryption;
 using Errordite.Core.Interfaces;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Extensions;
-using Errordite.Core.Indexing;
 using System.Linq;
 using Errordite.Core.Organisations.Queries;
-using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
+using Errordite.Core.Session;
 
 namespace Errordite.Core.Authentication.Commands
 {
@@ -42,7 +40,7 @@ namespace Errordite.Core.Authentication.Commands
                 };
             }
 
-            var token = tokenstring.Split(new char[] {'|'}, StringSplitOptions.RemoveEmptyEntries);
+            var token = tokenstring.Split(new [] {'|'}, StringSplitOptions.RemoveEmptyEntries);
             
             Guid userToken;
             if (Guid.TryParse(token[0], out userToken))
