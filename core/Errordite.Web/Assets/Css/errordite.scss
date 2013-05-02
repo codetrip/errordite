@@ -2223,6 +2223,12 @@ nav {
 }
 
 .errors {
+	th.version {
+		min-width:58px
+	}
+	th.received-on{
+		min-width:128px;
+	}
     .toggle {
         padding:0 18px;
         cursor:pointer;

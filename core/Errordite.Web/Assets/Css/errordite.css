@@ -1758,6 +1758,10 @@ nav {
     float: right;
     margin: 8px 5px 0 0; }
 
+.errors th.version {
+  min-width: 58px; }
+.errors th.received-on {
+  min-width: 128px; }
 .errors .toggle {
   padding: 0 18px;
   cursor: pointer; }
