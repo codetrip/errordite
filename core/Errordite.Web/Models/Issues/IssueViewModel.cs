@@ -19,6 +19,7 @@ namespace Errordite.Web.Models.Issues
     {
         public IEnumerable<SelectListItem> Users { get; set; }
         public IEnumerable<SelectListItem> Statuses { get; set; }
+		public IEnumerable<SelectListItem> NotificationFrequencies { get; set; }
     }
 
     public class UpdateIssuePostModel : IssueDetailsPostModel
@@ -33,7 +34,7 @@ namespace Errordite.Web.Models.Issues
         public string UserId { get; set; }
         public string Comment { get; set; }
         public IssueStatus Status { get; set; }
-        public bool AlwaysNotify { get; set; }
+        public int NotifyFrequencyHours { get; set; }
     }
 
     public class IssueDetailsViewModel : UpdateIssuePostModel

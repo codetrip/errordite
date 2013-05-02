@@ -232,6 +232,7 @@
     <Compile Include="ErrorditeCore.cs" />
     <Compile Include="Errors\Commands\MakeExceededErrorsUnloggedCommand.cs" />
     <Compile Include="Errors\Commands\MoveErrorsToNewIssueCommand.cs" />
+    <Compile Include="Exceptions\ErrorditeDeleteSQSMessageException.cs" />
     <Compile Include="Exceptions\ErrorditeAuditException.cs" />
     <Compile Include="Exceptions\ErrorditeCacheException.cs" />
     <Compile Include="Exceptions\ErrorditeCacheInvalidationException.cs" />
@@ -403,6 +404,7 @@
     <Compile Include="Organisations\Commands\ActivateOrganisationCommand.cs" />
     <Compile Include="Organisations\Commands\CompleteSignUpCommand.cs" />
     <Compile Include="Organisations\Commands\CancelSubscriptionCommand.cs" />
+    <Compile Include="Organisations\Commands\ValidatePlanQuotasCommand.cs" />
     <Compile Include="Organisations\Commands\CreateInvoiceCommand.cs" />
     <Compile Include="Organisations\Commands\ChangeSubscriptionCommand.cs" />
     <Compile Include="Organisations\Commands\DeleteOrganisationCommand.cs" />

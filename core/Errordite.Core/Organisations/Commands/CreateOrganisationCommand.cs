@@ -71,6 +71,8 @@ namespace Errordite.Core.Organisations.Commands
             }
 
             var freeTrialPlan = _getAvailablePaymentPlansQuery.Invoke(new GetAvailablePaymentPlansRequest()).Plans.First(p => p.IsTrial && p.IsAvailable);
+	        var timezone = request.TimezoneId ?? "UTC";
+	        var date = DateTime.UtcNow.ToDateTimeOffset(timezone);
 
             var organisation = new Organisation
             {
@@ -78,13 +80,15 @@ namespace Errordite.Core.Organisations.Commands
                 Status = OrganisationStatus.Active,
                 PaymentPlanId = freeTrialPlan.Id,
                 CreatedOnUtc = DateTime.UtcNow,
-                TimezoneId = request.TimezoneId ?? "UTC",
+				TimezoneId = timezone,
                 PaymentPlan = freeTrialPlan,
                 ApiKeySalt = Membership.GeneratePassword(8, 1),
 				Subscription = new Subscription
 				{
-					Dispensation = true,
-					Status = SubscriptionStatus.Trial
+					Status = SubscriptionStatus.Trial,
+					StartDate = date,
+					CurrentPeriodEndDate = date.AddMonths(1),
+					LastModified = date
 				}
             };
 

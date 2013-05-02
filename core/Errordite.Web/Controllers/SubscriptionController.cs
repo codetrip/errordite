@@ -65,6 +65,12 @@ namespace Errordite.Web.Controllers
 		[HttpGet, Authorize, GenerateBreadcrumbs(BreadcrumbId.SubscriptionSignUp)]
         public ActionResult SignUp(bool expired = false)
         {
+			if (!Core.Configuration.SubscriptionsEnabled)
+			{
+				ConfirmationNotification("Errordite subscriptions are not currently enabled, you may continue using the free trial until subscriptions become active.");
+				return RedirectToAction("index");
+			}
+
             var paymentPlans = _getAvailablePaymentPlansQuery.Invoke(new GetAvailablePaymentPlansRequest()).Plans.Where(p => !p.IsTrial);
 		    var model = new SubscriptionSignUpViewModel
 		    {
@@ -82,7 +88,13 @@ namespace Errordite.Web.Controllers
 		[HttpGet, Authorize, ExportViewData]
 		public ActionResult Complete(SubscriptionCompleteViewModel model)
 		{
-		    var status = _completeSignUpCommand.Invoke(new CompleteSignUpRequest
+			if (!Core.Configuration.SubscriptionsEnabled)
+			{
+				ConfirmationNotification("Errordite subscriptions are not currently enabled, you may continue using the free trial until subscriptions become active.");
+				return RedirectToAction("index");
+			}
+
+			var status = _completeSignUpCommand.Invoke(new CompleteSignUpRequest
 		    {
 		        CurrentUser = Core.AppContext.CurrentUser,
 		        Reference = model.Reference,
@@ -113,13 +125,19 @@ namespace Errordite.Web.Controllers
         [HttpGet, ImportViewData, ExportViewData, GenerateBreadcrumbs(BreadcrumbId.ChangeSubscription)]
         public ActionResult Change(string planId)
         {
+			if (!Core.Configuration.SubscriptionsEnabled)
+			{
+				ConfirmationNotification("Errordite subscriptions are not currently enabled, you may continue using the free trial until subscriptions become active.");
+				return RedirectToAction("index");
+			}
+
             var plans = _getAvailablePaymentPlansQuery.Invoke(new GetAvailablePaymentPlansRequest()).Plans;
             var model = new ChangeSubscriptionViewModel
             {
                 CurrentPlan = Core.AppContext.CurrentUser.Organisation.PaymentPlan,
                 NewPlan = plans.FirstOrDefault(p => p.FriendlyId == planId.GetFriendlyId()),
                 NewPlanId = PaymentPlan.GetId(planId),
-				CurrentBillingPeriodEnd = Core.AppContext.CurrentUser.Organisation.Subscription.CurrentPeriodEndDate.Value
+				CurrentBillingPeriodEnd = Core.AppContext.CurrentUser.Organisation.Subscription.CurrentPeriodEndDate
             };
 
             if (model.NewPlan == null)
@@ -136,6 +154,12 @@ namespace Errordite.Web.Controllers
         [HttpPost, ExportViewData]
         public ActionResult ChangeSubscription(ChangeSubscriptionPostModel model)
         {
+			if (!Core.Configuration.SubscriptionsEnabled)
+			{
+				ConfirmationNotification("Errordite subscriptions are not currently enabled, you may continue using the free trial until subscriptions become active.");
+				return RedirectToAction("index");
+			}
+
             var response = _changeSubscriptionCommand.Invoke(new ChangeSubscriptionRequest
             {
                 CurrentUser = Core.AppContext.CurrentUser,
@@ -172,7 +196,13 @@ namespace Errordite.Web.Controllers
 		[HttpPost, ExportViewData]
 		public ActionResult CancelSubscription(CancelSubscriptionPostModel model)
 		{
-			var response = _cancelSubscriptionCommand.Invoke(new CancelSubscriptionRequest
+			if (!Core.Configuration.SubscriptionsEnabled)
+			{
+				ConfirmationNotification("Errordite subscriptions are not currently enabled, you may continue using the free trial until subscriptions become active.");
+				return RedirectToAction("index");
+			}
+
+            var response = _cancelSubscriptionCommand.Invoke(new CancelSubscriptionRequest
 			{
 				CurrentUser = Core.AppContext.CurrentUser,
 				CancellationReason = model.CancellationReason

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.Composition.Hosting;
+﻿using System;
+using System.ComponentModel.Composition.Hosting;
 using System.Web.Mvc;
 using Errordite.Core;
 using Errordite.Core.Caching.Interfaces;
@@ -67,10 +68,13 @@ namespace Errordite.Web.Controllers
 
 			foreach (var organisation in session.MasterRaven.Query<Organisation>())
 			{
+				var date = DateTime.UtcNow.ToDateTimeOffset(organisation.TimezoneId);
 				organisation.Subscription = new Subscription
 				{
-					Dispensation = true,
-					Status = SubscriptionStatus.Trial
+					Status = SubscriptionStatus.Trial,
+					StartDate = date,
+					LastModified = date,
+					CurrentPeriodEndDate = date.AddMonths(1),
 				};
 				organisation.PaymentPlanId = "PaymentPlans/1";
 			}
