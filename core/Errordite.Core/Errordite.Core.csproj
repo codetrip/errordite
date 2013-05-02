@@ -404,7 +404,6 @@
     <Compile Include="Organisations\Commands\ActivateOrganisationCommand.cs" />
     <Compile Include="Organisations\Commands\CompleteSignUpCommand.cs" />
     <Compile Include="Organisations\Commands\CancelSubscriptionCommand.cs" />
-    <Compile Include="Organisations\Commands\ValidatePlanQuotasCommand.cs" />
     <Compile Include="Organisations\Commands\CreateInvoiceCommand.cs" />
     <Compile Include="Organisations\Commands\ChangeSubscriptionCommand.cs" />
     <Compile Include="Organisations\Commands\DeleteOrganisationCommand.cs" />
@@ -418,6 +417,7 @@
     <Compile Include="Organisations\Queries\GetOrganisationStatisticsQuery.cs" />
     <Compile Include="Organisations\Queries\GetOrganisationQuery.cs" />
     <Compile Include="Issues\ReceptionServiceIssueCache.cs" />
+    <Compile Include="Domain\Organisation\PlanQuotas.cs" />
     <Compile Include="Paging\Page.cs" />
     <Compile Include="Paging\PageRequest.cs" />
     <Compile Include="Paging\PagingConfiguration.cs" />

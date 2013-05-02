@@ -13,7 +13,8 @@ namespace Errordite.Core.Indexing
         public SubscriptionStatus SubscriptionStatus { get; set; }
         public OrganisationStatus OrganisationStatus { get; set; }
         public DateTime CreatedOnDate { get; set; }
-        public DateTime? CurrentPeriodEndDate { get; set; }
+		public DateTime? CurrentPeriodEndDate { get; set; }
+		public int QuotasExceededReminders { get; set; }
 	}
 
 	public class Organisations : AbstractIndexCreationTask<Organisation, OrganisationDocument>

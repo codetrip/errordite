@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using Errordite.Core.Domain.Organisation;
@@ -132,19 +133,22 @@ namespace Errordite.Web.Controllers
 			}
 
             var plans = _getAvailablePaymentPlansQuery.Invoke(new GetAvailablePaymentPlansRequest()).Plans;
-            var model = new ChangeSubscriptionViewModel
-            {
-                CurrentPlan = Core.AppContext.CurrentUser.Organisation.PaymentPlan,
-                NewPlan = plans.FirstOrDefault(p => p.FriendlyId == planId.GetFriendlyId()),
-                NewPlanId = PaymentPlan.GetId(planId),
-				CurrentBillingPeriodEnd = Core.AppContext.CurrentUser.Organisation.Subscription.CurrentPeriodEndDate
-            };
+	        var newPlan = plans.FirstOrDefault(p => p.FriendlyId == planId.GetFriendlyId());
 
-            if (model.NewPlan == null)
+            if (newPlan == null)
             {
                 ErrorNotification("Unrecognised payment plan id {0}, cannot change your subscription.".FormatWith(planId));
                 return RedirectToAction("index");
             }
+
+            var model = new ChangeSubscriptionViewModel
+            {
+                CurrentPlan = Core.AppContext.CurrentUser.Organisation.PaymentPlan,
+                NewPlan = newPlan,
+                NewPlanId = PaymentPlan.GetId(planId),
+				CurrentBillingPeriodEnd = Core.AppContext.CurrentUser.Organisation.Subscription.CurrentPeriodEndDate,
+                Downgrading = newPlan.Rank < Core.AppContext.CurrentUser.Organisation.PaymentPlan.Rank
+            };
 
             model.NewPlanName = model.NewPlan.Name;
 
@@ -165,7 +169,8 @@ namespace Errordite.Web.Controllers
                 CurrentUser = Core.AppContext.CurrentUser,
                 NewPlanId = model.NewPlanId,
                 NewPlanName = model.NewPlanName,
-				OldPlanName = model.OldPlanName
+				OldPlanName = model.OldPlanName,
+                Downgrading = model.Downgrading
             });
 
 			if (response.Status == ChangeSubscriptionStatus.Ok)
@@ -173,6 +178,22 @@ namespace Errordite.Web.Controllers
 				ConfirmationNotification("Your subscription has been changed successfully.");
 				return RedirectToAction("index");
 			}
+
+            if (response.Status == ChangeSubscriptionStatus.QuotasExceeded)
+            {
+                var message = new StringBuilder();
+                if (response.Quotas.ApplicationsExceededBy > 0)
+                    message.Append(" Applications by {0}".FormatWith(response.Quotas.ApplicationsExceededBy));
+
+                if (response.Quotas.UsersExceededBy > 0)
+                    message.Append(" Users by {0}".FormatWith(response.Quotas.UsersExceededBy));
+
+                if (response.Quotas.IssuesExceededBy > 0)
+                    message.Append(" Issues by {0}".FormatWith(response.Quotas.IssuesExceededBy));
+
+                ConfirmationNotification("Cannot downgrade subscription you have exceeded your plan limits.{0}".FormatWith(message.ToString()));
+                return RedirectToAction("index");
+            }
 
 			return RedirectWithRoute("change", response.Status.MapToResource(Resources.Subscription.ResourceManager), routeValues: new {planId = model.NewPlanId});
         }

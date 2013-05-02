@@ -26,7 +26,7 @@ namespace Errordite.Core.Session
         private readonly object _syncLock = new object();
         private readonly IShardedRavenDocumentStoreFactory _documentStoreFactory;
         private readonly IComponentAuditor _auditor;
-        private readonly List<SessionCommitAction> _sessionCommitActions;
+        private List<SessionCommitAction> _sessionCommitActions;
         private HttpClient _receiveServiceHttpClient;
         private IDocumentSession _organisationSession;
         private Organisation _organisation;
@@ -216,26 +216,29 @@ namespace Errordite.Core.Session
         {
             private readonly IDocumentSession _oldSession;
             private readonly AppSession _appSession;
-            private readonly Organisation _oldOrganisation;
+			private readonly Organisation _oldOrganisation;
+			private readonly List<SessionCommitAction> _oldSessionCommitActions;
 
             public SwitchOrgBack(AppSession appSession, Organisation tempOrg)
             {
                 _oldSession = appSession._organisationSession;
 				_oldOrganisation = appSession._organisation;
+	            _oldSessionCommitActions = appSession._sessionCommitActions;
 
-                appSession._organisationSession = null;
-				appSession._organisation = tempOrg;
-                _appSession = appSession;
+				_appSession = appSession;
+				_appSession._organisationSession = null;
+				_appSession._organisation = tempOrg;
+				_appSession._sessionCommitActions = new List<SessionCommitAction>();
             }
 
             public void Dispose()
             {
-                //temp session does not get committed - just disposed.  If / when we need r/w access we'll have to change this.
-                if (_appSession._organisationSession != null)
-                    _appSession._organisationSession.Dispose();
+                _appSession._organisationSession.SaveChanges();
+				_appSession._organisationSession.Dispose();
 
                 _appSession._organisationSession = _oldSession;
                 _appSession._organisation = _oldOrganisation;
+				_appSession._sessionCommitActions = _oldSessionCommitActions;
             }
         }
 

@@ -10,6 +10,7 @@ using Errordite.Core.Interfaces;
 using Errordite.Core.Caching;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Notifications.EmailInfo;
+using Errordite.Core.Organisations.Queries;
 using Errordite.Core.Session;
 using System.Linq;
 using Errordite.Core.Session.Actions;
@@ -21,10 +22,16 @@ namespace Errordite.Core.Organisations.Commands
     public class  ChangeSubscriptionCommand : SessionAccessBase, IChangeSubscriptionCommand
     {
         private readonly ErrorditeConfiguration _configuration;
+        private readonly IGetOrganisationStatisticsQuery _getOrganisationStatisticsQuery;
+        private readonly IGetAvailablePaymentPlansQuery _getAvailablePaymentPlansQuery;
 
-        public ChangeSubscriptionCommand(ErrorditeConfiguration configuration)
+        public ChangeSubscriptionCommand(ErrorditeConfiguration configuration, 
+            IGetOrganisationStatisticsQuery getOrganisationStatisticsQuery, 
+            IGetAvailablePaymentPlansQuery getAvailablePaymentPlansQuery)
         {
             _configuration = configuration;
+            _getOrganisationStatisticsQuery = getOrganisationStatisticsQuery;
+            _getAvailablePaymentPlansQuery = getAvailablePaymentPlansQuery;
         }
 
         public ChangeSubscriptionResponse Invoke(ChangeSubscriptionRequest request)
@@ -47,7 +54,30 @@ namespace Errordite.Core.Organisations.Commands
 				{
 					Status = ChangeSubscriptionStatus.SubscriptionNotFound
 				};
-			}  
+			}
+
+            var plans = _getAvailablePaymentPlansQuery.Invoke(new GetAvailablePaymentPlansRequest()).Plans;
+            var stats = _getOrganisationStatisticsQuery.Invoke(new GetOrganisationStatisticsRequest()).Statistics;
+
+            //if we are downgrading check the organisations stats to make sure they can
+            if (request.Downgrading)
+            {
+                var plan = plans.FirstOrDefault(p => p.Id == organisation.PaymentPlanId && !p.IsTrial);
+
+                if (plan != null)
+                {
+                    var quotas = PlanQuotas.FromStats(stats, plan);
+
+                    if (quotas.ApplicationsExceededBy > 0 || quotas.UsersExceededBy > 0 || quotas.IssuesExceededBy > 0)
+                    {
+                        return new ChangeSubscriptionResponse(ignoreCache: true)
+                        {
+                            Status = ChangeSubscriptionStatus.QuotasExceeded,
+                            Quotas = quotas
+                        };
+                    }
+                }
+            }
 
             var connection = new ChargifyConnect(_configuration.ChargifyUrl, _configuration.ChargifyApiKey, _configuration.ChargifyPassword);
 			var subscription = connection.LoadSubscription(organisation.Subscription.ChargifyId.Value);
@@ -60,15 +90,27 @@ namespace Errordite.Core.Organisations.Commands
                 };
             }
 
+            var newPlan = plans.First(p => p.Id == PaymentPlan.GetId(request.NewPlanId));
+
 			subscription = connection.EditSubscriptionProduct(organisation.Subscription.ChargifyId.Value, request.NewPlanName.ToLowerInvariant());
 
             organisation.PaymentPlanId = PaymentPlan.GetId(request.NewPlanId);
-
-	        var plan = MasterLoad<PaymentPlan>(organisation.PaymentPlanId);
-
+	        organisation.PaymentPlan = newPlan;
             organisation.Subscription.ChargifyId = subscription.SubscriptionID;
             organisation.Subscription.Status = SubscriptionStatus.Active;
 			organisation.Subscription.LastModified = DateTime.UtcNow.ToDateTimeOffset(organisation.TimezoneId);
+
+            //if status is quotas exceeded, check again and update if necessary
+            if (organisation.Status == OrganisationStatus.PlanQuotaExceeded)
+            {
+                var quotas = PlanQuotas.FromStats(stats, newPlan);
+
+                if (quotas.ApplicationsExceededBy <= 0 && quotas.UsersExceededBy <= 0 && quotas.IssuesExceededBy <= 0)
+                {
+                    organisation.Status = OrganisationStatus.Active;
+                    organisation.QuotasExceededReminders = 0;
+                }
+            }
 
             Session.SynchroniseIndexes<Indexing.Organisations, Indexing.Users>();
 			Session.AddCommitAction(new SendMessageCommitAction(
@@ -77,10 +119,10 @@ namespace Errordite.Core.Organisations.Commands
 					OrganisationName = organisation.Name,
 					SubscriptionId = subscription.SubscriptionID.ToString(),
 					UserName = request.CurrentUser.FirstName,
-					BillingAmount = string.Format(CultureInfo.GetCultureInfo(1033), "{0:C}", plan.Price),
+                    BillingAmount = string.Format(CultureInfo.GetCultureInfo(1033), "{0:C}", newPlan.Price),
 					BillingPeriodEndDate = organisation.Subscription.CurrentPeriodEndDate.ToLocalFormatted(),
 					OldPlanName = request.OldPlanName,
-					NewPlanName = plan.Name
+                    NewPlanName = newPlan.Name
 				},
 				_configuration.GetNotificationsQueueAddress(organisation.RavenInstanceId)));
 
@@ -100,6 +142,7 @@ namespace Errordite.Core.Organisations.Commands
 		private readonly string _userId;
 		private readonly string _email;
         public ChangeSubscriptionStatus Status { get; set; }
+        public PlanQuotas Quotas { get; set; }
 
         public ChangeSubscriptionResponse(string organisationId = null, string userId = null, string email = null, bool ignoreCache = false)
             : base(ignoreCache)
@@ -120,7 +163,8 @@ namespace Errordite.Core.Organisations.Commands
     {
         public string NewPlanId { get; set; }
 		public string NewPlanName { get; set; }
-		public string OldPlanName { get; set; }
+        public string OldPlanName { get; set; }
+        public bool Downgrading { get; set; }
     }
 
     public enum ChangeSubscriptionStatus
@@ -128,6 +172,6 @@ namespace Errordite.Core.Organisations.Commands
         Ok,
         OrganisationNotFound,
         SubscriptionNotFound,
-		ChangelationFailed
+		QuotasExceeded
     }
 }
