@@ -1,23 +1,23 @@
 ﻿using System;
+using System.Collections.Generic;
+using Errordite.Core.Caching.Entities;
+using Errordite.Core.Domain.Master;
+using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Encryption;
 using Errordite.Core.Interfaces;
-using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Extensions;
 using System.Linq;
-using Errordite.Core.Organisations.Queries;
 using Errordite.Core.Session;
 
 namespace Errordite.Core.Authentication.Commands
 {
     public class SetPasswordCommand : SessionAccessBase, ISetPasswordCommand
     {
-        private readonly IGetOrganisationQuery _getOrganisationQuery;
         private readonly IEncryptor _encryptor;
 
-        public SetPasswordCommand(IEncryptor encryptor, IGetOrganisationQuery getOrganisationQuery)
+        public SetPasswordCommand(IEncryptor encryptor)
         {
             _encryptor = encryptor;
-            _getOrganisationQuery = getOrganisationQuery;
         }
 
         public SetPasswordResponse Invoke(SetPasswordRequest request)
@@ -34,7 +34,7 @@ namespace Errordite.Core.Authentication.Commands
             }
             catch
             {
-                return new SetPasswordResponse
+                return new SetPasswordResponse(true)
                 {
                     Status = SetPasswordStatus.InvalidToken
                 };
@@ -45,39 +45,53 @@ namespace Errordite.Core.Authentication.Commands
             Guid userToken;
             if (Guid.TryParse(token[0], out userToken))
             {
-                var organisation = _getOrganisationQuery.Invoke(new GetOrganisationRequest
+	            var email = token[0];
+				var mapping = Session.MasterRaven.Query<UserOrganisationMapping>().FirstOrDefault(m => m.EmailAddress == email);
+
+				if (mapping != null)
                 {
-                    OrganisationId = token[1]
-                }).Organisation;
-
-                if(organisation != null)
-                {
-                    Session.SetOrganisation(organisation);
-
-                    var user = Session.Raven.Query<User, Indexing.Users>().FirstOrDefault(u => u.PasswordToken == userToken);
-
-                    if (user == null || user.PasswordToken == default(Guid))
+					if (mapping.PasswordToken != userToken)
                     {
-                        return new SetPasswordResponse
+                        return new SetPasswordResponse(true)
                         {
                             Status = SetPasswordStatus.InvalidToken  
                         };
                     }
 
-                    user.Password = request.Password.Hash();
-                    user.PasswordToken = Guid.Empty;
-                    user.Status = UserStatus.Active;
+					mapping.Password = request.Password.Hash();
+					mapping.PasswordToken = Guid.Empty;
 
-                    Store(user);
+					if (mapping.Status == UserStatus.Inactive)
+					{
+						mapping.Status = UserStatus.Active;
 
-                    return new SetPasswordResponse
+						foreach (var organisationId in mapping.Organisations)
+						{
+							var organisation = Session.MasterRaven.Load<Organisation>(organisationId);
+
+							if (organisation != null)
+							{
+								using (Session.SwitchOrg(organisation))
+								{
+									var user = Session.Raven.Query<User, Indexing.Users>().FirstOrDefault(u => u.Email == mapping.EmailAddress);
+
+									if (user != null)
+									{
+										user.Status = UserStatus.Active;
+									}
+								}
+							}
+						}
+					}
+
+                    return new SetPasswordResponse(false, mapping.EmailAddress, mapping.Organisations)
                     {
                         Status = SetPasswordStatus.Ok
                     };
                 }
             }
 
-            return new SetPasswordResponse
+            return new SetPasswordResponse(true)
             {
                 Status = SetPasswordStatus.InvalidToken
             };
@@ -87,9 +101,24 @@ namespace Errordite.Core.Authentication.Commands
     public interface ISetPasswordCommand : ICommand<SetPasswordRequest, SetPasswordResponse>
     { }
 
-    public class SetPasswordResponse
+    public class SetPasswordResponse : CacheInvalidationResponseBase
     {
-        public SetPasswordStatus Status { get; set; }
+	    private readonly string _email;
+	    private readonly IEnumerable<string> _organisationIds;
+
+		public SetPasswordResponse(bool ignoreCache = false, string email = null, IEnumerable<string> organisationIds = null)
+			: base(ignoreCache)
+	    {
+		    _email = email;
+		    _organisationIds = organisationIds;
+	    }
+
+	    public SetPasswordStatus Status { get; set; }
+
+	    protected override IEnumerable<CacheInvalidationItem> GetCacheInvalidationItems()
+	    {
+		    return _organisationIds.SelectMany(organisationId => Caching.CacheInvalidation.GetUserInvalidationItems(organisationId, _email));
+	    }
     }
 
     public class SetPasswordRequest

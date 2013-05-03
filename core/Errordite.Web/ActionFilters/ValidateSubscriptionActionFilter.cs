@@ -20,8 +20,8 @@ namespace Errordite.Web.ActionFilters
 
             if(appContext.AuthenticationStatus == AuthenticationStatus.Authenticated &&
 			   controller.Core.Configuration.SubscriptionsEnabled &&
-			   appContext.CurrentUser.Organisation.Subscription.Status == SubscriptionStatus.Trial &&
-               appContext.CurrentUser.Organisation.Subscription.CurrentPeriodEndDate.Date <= DateTime.UtcNow.Date)
+			   appContext.CurrentUser.ActiveOrganisation.Subscription.Status == SubscriptionStatus.Trial &&
+               appContext.CurrentUser.ActiveOrganisation.Subscription.CurrentPeriodEndDate.Date <= DateTime.UtcNow.Date)
             {
                 filterContext.HttpContext.Response.Redirect(new UrlHelper(filterContext.RequestContext).SignUpExpired());
                 filterContext.Result = new EmptyResult();

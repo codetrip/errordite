@@ -48,8 +48,14 @@ namespace Errordite.Services
 
             var processor = _queueProcessors.FirstOrDefault(q => q.OrganisationFriendlyId == organisationFriendlyId);
 
-            if(processor != null)
-                processor.PollNow();
+            if (processor != null)
+            {
+				processor.PollNow();
+            }   
+            else
+            {
+				AddProcessor(organisationFriendlyId, null);
+            }
         }
 
         public void Start(string ravenInstanceId)

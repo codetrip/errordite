@@ -56,7 +56,7 @@ namespace Errordite.Core.Issues.Commands
 
                         Store(new IssueHistory
                         {
-                            DateAddedUtc = DateTime.UtcNow.ToDateTimeOffset(request.CurrentUser.Organisation.TimezoneId),
+                            DateAddedUtc = DateTime.UtcNow.ToDateTimeOffset(request.CurrentUser.ActiveOrganisation.TimezoneId),
                             UserId = request.CurrentUser.Id,
                             AssignedToUserId = request.AssignToUserId,
                             Type = HistoryItemType.AssignedUserChanged,
@@ -67,7 +67,7 @@ namespace Errordite.Core.Issues.Commands
 
                     Store(new IssueHistory
                     {
-                        DateAddedUtc = DateTime.UtcNow.ToDateTimeOffset(request.CurrentUser.Organisation.TimezoneId),
+                        DateAddedUtc = DateTime.UtcNow.ToDateTimeOffset(request.CurrentUser.ActiveOrganisation.TimezoneId),
                         UserId = request.CurrentUser.Id,
                         PreviousStatus = issue.Status,
                         NewStatus = request.Status,

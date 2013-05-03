@@ -196,7 +196,7 @@ namespace Errordite.Web.Controllers
                 return new IssueHistoryItemViewModel
                 {
                     Message = h.GetMessage(users.Items, issueMemoizer, GetIssueLink),
-                    VerbalTime = h.DateAddedUtc.ToVerbalTimeSinceUtc(Core.AppContext.CurrentUser.Organisation.TimezoneId, true),
+                    VerbalTime = h.DateAddedUtc.ToVerbalTimeSinceUtc(Core.AppContext.CurrentUser.ActiveOrganisation.TimezoneId, true),
                     UserEmail = user != null ? user.Email : string.Empty,
                     Username = user != null ? user.FullName : string.Empty,
                     SystemMessage = h.SystemMessage,

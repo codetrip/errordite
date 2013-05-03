@@ -82,7 +82,7 @@ namespace Errordite.Core.Issues.Commands
             {
                 if (nonMatchingErrorsResponse.NonMatches.Count > 0)
                 {
-                    var dateTimeOffset = DateTime.UtcNow.ToDateTimeOffset(request.CurrentUser.Organisation.TimezoneId);
+                    var dateTimeOffset = DateTime.UtcNow.ToDateTimeOffset(request.CurrentUser.ActiveOrganisation.TimezoneId);
 
                     //if errors on the original issue did not match the new rules, store the temp issue and move the non matching errors to it
                     Session.AddCommitAction(new RaiseIssueCreatedEvent(tempIssue));
@@ -101,7 +101,7 @@ namespace Errordite.Core.Issues.Commands
                         IssueId = currentIssue.Id,
                         OrganisationId = request.CurrentUser.OrganisationId,
                         TriggerEventUtc = DateTime.UtcNow,
-                    }, _configuration.GetEventsQueueAddress(request.CurrentUser.Organisation.RavenInstance.FriendlyId)));
+                    }, _configuration.GetEventsQueueAddress(request.CurrentUser.ActiveOrganisation.RavenInstance.FriendlyId)));
 
                     Store(new IssueHistory
                     {
@@ -127,7 +127,7 @@ namespace Errordite.Core.Issues.Commands
                 {
                     Store(new IssueHistory
                     {
-                        DateAddedUtc = DateTime.UtcNow.ToDateTimeOffset(request.CurrentUser.Organisation.TimezoneId),
+                        DateAddedUtc = DateTime.UtcNow.ToDateTimeOffset(request.CurrentUser.ActiveOrganisation.TimezoneId),
                         Type = HistoryItemType.RulesAdjustedNoNewIssue,
                         UserId = request.CurrentUser.Id,
                         IssueId = currentIssue.Id,
@@ -164,7 +164,7 @@ namespace Errordite.Core.Issues.Commands
         
         private Issue CreateTempIssue(Issue currentIssue, AdjustRulesRequest request)
         {
-            var dateTimeOffset = DateTime.UtcNow.ToDateTimeOffset(request.CurrentUser.Organisation.TimezoneId);
+            var dateTimeOffset = DateTime.UtcNow.ToDateTimeOffset(request.CurrentUser.ActiveOrganisation.TimezoneId);
 
             return new Issue
             {

@@ -61,7 +61,7 @@ namespace Errordite.Core.Issues.Commands
 
             Store(new IssueHistory
             {
-                DateAddedUtc = DateTime.UtcNow.ToDateTimeOffset(request.CurrentUser.Organisation.TimezoneId),
+                DateAddedUtc = DateTime.UtcNow.ToDateTimeOffset(request.CurrentUser.ActiveOrganisation.TimezoneId),
                 SpawningIssueId = mergeFromIssue.Id,
                 SystemMessage = true,
                 Type = HistoryItemType.MergedTo,
@@ -77,7 +77,7 @@ namespace Errordite.Core.Issues.Commands
                 IssueId = request.MergeToIssueId,
                 OrganisationId = request.CurrentUser.OrganisationId,
                 TriggerEventUtc = DateTime.UtcNow,
-            }, _configuration.GetEventsQueueAddress(request.CurrentUser.Organisation.RavenInstance.FriendlyId)));
+            }, _configuration.GetEventsQueueAddress(request.CurrentUser.ActiveOrganisation.RavenInstance.FriendlyId)));
 
             return new MergeIssuesResponse
             {

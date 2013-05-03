@@ -61,7 +61,7 @@ namespace Errordite.Core.Issues.Commands
 						IssueName = request.Name
 					},
 					OrganisationId = issue.OrganisationId,
-                    Organisation = request.CurrentUser.Organisation
+                    Organisation = request.CurrentUser.ActiveOrganisation
 				});
 			}
 
@@ -69,7 +69,7 @@ namespace Errordite.Core.Issues.Commands
             {
                 Store(new IssueHistory
                 {
-					DateAddedUtc = DateTime.UtcNow.ToDateTimeOffset(request.CurrentUser.Organisation.TimezoneId),
+					DateAddedUtc = DateTime.UtcNow.ToDateTimeOffset(request.CurrentUser.ActiveOrganisation.TimezoneId),
                     IssueId = issue.Id,
                     NewStatus = request.Status,
                     PreviousStatus = issue.Status,
@@ -84,7 +84,7 @@ namespace Errordite.Core.Issues.Commands
             {
                 Store(new IssueHistory
                 {
-					DateAddedUtc = DateTime.UtcNow.ToDateTimeOffset(request.CurrentUser.Organisation.TimezoneId),
+					DateAddedUtc = DateTime.UtcNow.ToDateTimeOffset(request.CurrentUser.ActiveOrganisation.TimezoneId),
                     IssueId = issue.Id,
                     SystemMessage = true,
                     UserId = request.CurrentUser.Id,
@@ -103,7 +103,7 @@ namespace Errordite.Core.Issues.Commands
             {
 				Store(new IssueHistory
 				{
-					DateAddedUtc = DateTime.UtcNow.ToDateTimeOffset(request.CurrentUser.Organisation.TimezoneId),
+					DateAddedUtc = DateTime.UtcNow.ToDateTimeOffset(request.CurrentUser.ActiveOrganisation.TimezoneId),
 					IssueId = issue.Id,
 					UserId = request.CurrentUser.Id,
 					AssignedToUserId = request.AssignedUserId,

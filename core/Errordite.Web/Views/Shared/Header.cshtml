@@ -21,14 +21,14 @@
                 var selectedApplicationName = selectedApplication == null ? null : selectedApplication.Name;
             
                 <input type="hidden" value="@(selectedApplication == null ? string.Empty : selectedApplication.FriendlyId)" name="ApplicationId" id="ApplicationId" />
-	            <input type="hidden" value="@appContext.CurrentUser.Organisation.Id" name="OrganisationId" id="OrganisationId" />
+	            <input type="hidden" value="@appContext.CurrentUser.ActiveOrganisation.Id" name="OrganisationId" id="OrganisationId" />
 				
 				if (appContext.CurrentUser.Organisations.Count > 1)
 				{
 					 <ul class="popup popup-pills">
                          <li class="dropdown" id="organisations">
                              <a class="dropdown-toggle" data-toggle="dropdown" href="#organisations">
-                                 @appContext.CurrentUser.Organisation.Name
+                                 @appContext.CurrentUser.ActiveOrganisation.Name
                                  <b class="caret"></b>
                              </a>
                              <ul class="dropdown-menu">
@@ -44,7 +44,7 @@
 				}
 				else
 				{
-					<span class="header-org">@appContext.CurrentUser.Organisation.Name</span>
+					<span class="header-org">@appContext.CurrentUser.ActiveOrganisation.Name</span>
 				}
                  
                  if (applications.Count > 1)

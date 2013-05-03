@@ -21,8 +21,8 @@ namespace Errordite.Web.Controllers
         {
             return View(new OrganisationSettingsViewModel
             {
-                TimezoneId = Core.AppContext.CurrentUser.Organisation.TimezoneId,
-                ApiKey = Core.AppContext.CurrentUser.Organisation.ApiKey
+                TimezoneId = Core.AppContext.CurrentUser.ActiveOrganisation.TimezoneId,
+                ApiKey = Core.AppContext.CurrentUser.ActiveOrganisation.ApiKey
             });
         }
 
@@ -31,8 +31,8 @@ namespace Errordite.Web.Controllers
 		{
 			return View(new OrganisationSettingsViewModel
 			{
-				TimezoneId = Core.AppContext.CurrentUser.Organisation.TimezoneId,
-				ApiKey = Core.AppContext.CurrentUser.Organisation.ApiKey
+				TimezoneId = Core.AppContext.CurrentUser.ActiveOrganisation.TimezoneId,
+				ApiKey = Core.AppContext.CurrentUser.ActiveOrganisation.ApiKey
 			});
 		}
 

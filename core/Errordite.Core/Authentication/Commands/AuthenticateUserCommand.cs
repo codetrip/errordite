@@ -56,7 +56,7 @@ namespace Errordite.Core.Authentication.Commands
 
             if (user != null)
             {
-                if(!user.Status.Equals(UserStatus.Active))
+				if (!response.UserMapping.Status.Equals(UserStatus.Active))
                 {
                     Trace("account inactive");
                     return new AuthenticateUserResponse
