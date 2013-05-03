@@ -17,7 +17,7 @@ namespace Errordite.Core.Domain.Organisation
 
         [ProtoMember(1)]
         public string Id { get; set; }
-        [ProtoMember(2)]
+        [ProtoMember(2), JsonIgnore]
         public string OrganisationId { get; set; }
         [ProtoMember(3)]
         public List<string> GroupIds { get; set; }
@@ -40,8 +40,10 @@ namespace Errordite.Core.Domain.Organisation
         public string FriendlyId { get { return Id == null ? string.Empty : Id.Split('/')[1]; } }
 
         [JsonIgnore, ProtoMember(11)]
-        public Organisation Organisation { get; set; }
-        [JsonIgnore, ProtoMember(12)]
+		public Organisation Organisation { get; set; }
+		[JsonIgnore, ProtoMember(12)]
+		public List<Organisation> Organisations { get; set; }
+        [JsonIgnore, ProtoMember(13)]
         public List<Group> Groups { get; set; }
         [JsonIgnore]
         public string FullName

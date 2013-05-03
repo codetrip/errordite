@@ -5,6 +5,7 @@ using System.Web.Security;
 using Errordite.Core.IoC;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Identity;
+using Errordite.Web.Extensions;
 
 namespace Errordite.Web.ActionFilters
 {
@@ -31,8 +32,16 @@ namespace Errordite.Web.ActionFilters
 
             if (appContext.CurrentUser == null || !IsUserInRole(appContext.CurrentUser.Role))
             {
-                FormsAuthentication.RedirectToLoginPage();
-                filterContext.Result = new EmptyResult();
+				if (appContext.AuthenticationStatus == AuthenticationStatus.Authenticated)
+				{
+					var url = new UrlHelper(filterContext.RequestContext);
+					filterContext.Result = new RedirectResult(url.Dashboard());
+				}
+				else
+				{
+					FormsAuthentication.RedirectToLoginPage();
+					filterContext.Result = new EmptyResult();
+				}
             }
         }
 

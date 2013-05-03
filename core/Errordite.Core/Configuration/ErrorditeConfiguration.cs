@@ -50,21 +50,21 @@ namespace Errordite.Core.Configuration
         public string GetNotificationsQueueAddress(string ravenInstanceId = "1")
         {
 			return "{0}{1}{2}".FormatWith(NotificationsQueueAddress, ravenInstanceId.GetFriendlyId(), DeveloperQueueSuffix);
-        }
+		}
 
-        public string GetQueueForService(Service service, string organisationId = null, string ravenInstanceId = null)
-        {
-            switch (service)
-            {
-                case Service.Receive:
-                    return GetReceiveQueueAddress(organisationId);
-                case Service.Notifications:
-                    return GetNotificationsQueueAddress(ravenInstanceId);
-                case Service.Events:
-                    return GetEventsQueueAddress(ravenInstanceId);
-            }
+	    public string GetQueueForService(Service service, string organisationId = null, string ravenInstanceId = null)
+	    {
+		    switch (service)
+		    {
+			    case Service.Receive:
+				    return GetReceiveQueueAddress(organisationId);
+			    case Service.Notifications:
+				    return GetNotificationsQueueAddress(ravenInstanceId);
+			    case Service.Events:
+				    return GetEventsQueueAddress(ravenInstanceId);
+		    }
 
-            throw new InvalidOperationException("Invalid service name:={0}".FormatWith(service.ToString()));
-        }
+		    throw new InvalidOperationException("Invalid service name:={0}".FormatWith(service.ToString()));
+	    }
     }
 }

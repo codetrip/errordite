@@ -506,7 +506,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Notifications\Templates\AccountSuspendedEmailTemplate.html" />
-    <Content Include="Notifications\Templates\UserAddedToOrganisationEmailTemplate.html" />
+    <Content Include="Notifications\Templates\AddedToOrganisationEmailTemplate.html" />
     <Content Include="Notifications\Templates\SubscriptionChangedEmailTemplate.html" />
     <Content Include="Notifications\Templates\SubscriptionCancelledEmailTemplate.html" />
     <Content Include="Notifications\Templates\SignUpCompleteEmailTemplate.html" />

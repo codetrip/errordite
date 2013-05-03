@@ -5,9 +5,9 @@ namespace Errordite.Core.Caching.Entities
 {
     public abstract class CacheableRequestBase<T> : ICacheable
     {
-        bool ICacheable.IgnoreCache { get; set; }
+		bool ICacheable.IgnoreCache { get; set; }
 
-        string ICacheable.CacheItemKey
+	    string ICacheable.CacheItemKey
         {
             get { return GetCacheKey(); }
         }

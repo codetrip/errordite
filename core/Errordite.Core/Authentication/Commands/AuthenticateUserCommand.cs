@@ -37,18 +37,16 @@ namespace Errordite.Core.Authentication.Commands
 			}
 
 	        var organisations = response.Organisations.ToList();
+	        Organisation organisation;
 
 			if (organisations.Count > 1 && request.OrganisationId.IsNullOrEmpty())
 			{
-				return new AuthenticateUserResponse
-				{
-					Status = AuthenticateUserStatus.MultipleOrganisations
-				};
+				organisation = organisations.First();
 			}
-
-	        var organisation = request.OrganisationId.IsNullOrEmpty() ? 
-				organisations.First() : 
-				organisations.FirstOrDefault(o => o.Id == Organisation.GetId(request.OrganisationId)) ?? organisations.First();
+			else
+			{
+				organisation = organisations.FirstOrDefault(o => o.Id == Organisation.GetId(request.OrganisationId)) ?? organisations.First();
+			}
 
             Session.SetOrganisation(organisation);
 

@@ -7,6 +7,7 @@ using Errordite.Core.Session;
 using Errordite.Core.Users.Queries;
 using System.Linq;
 using Errordite.Core.Web;
+using Errordite.Core.Extensions;
 
 namespace Errordite.Core.Identity
 {
@@ -18,23 +19,23 @@ namespace Errordite.Core.Identity
     public class AppContextFactory : ComponentBase, IAppContextFactory, IWantToBeProfiled, IImpersonationManager
     {
         private readonly IAuthenticationManager _authenticationManager;
-        private readonly IGetUserQuery _getUserQuery;
         private readonly IImpersonationManager _impersonationManager;
         private readonly IAppSession _session;
         private readonly IGetOrganisationsByEmailAddressCommand _getOrganisationsByEmailAddressCommand;
 	    private readonly ICookieManager _cookieManager;
+	    private readonly IGetUserByEmailAddressQuery _getUserByEmailAddressQuery;
 
         public AppContextFactory(IAuthenticationManager authenticationManager, 
-            IGetUserQuery getUserQuery, 
             IGetOrganisationsByEmailAddressCommand getOrganisationsByEmailAddressCommand, 
             IAppSession session, 
-			ICookieManager cookieManager)
+			ICookieManager cookieManager, 
+			IGetUserByEmailAddressQuery getUserByEmailAddressQuery)
         {
             _authenticationManager = authenticationManager;
-            _getUserQuery = getUserQuery;
             _getOrganisationsByEmailAddressCommand = getOrganisationsByEmailAddressCommand;
             _session = session;
 	        _cookieManager = cookieManager;
+	        _getUserByEmailAddressQuery = getUserByEmailAddressQuery;
 	        _impersonationManager = this;
         }
 
@@ -97,27 +98,47 @@ namespace Errordite.Core.Identity
                 EmailAddress = authenticationIdentity.Email,
             }).Organisations.ToList();
 
-	        //var sessionOrganisationId = _cookieManager.Get("");
-	        var organisation = organisations.First();
+	        var sessionOrganisationId = _cookieManager.Get(CoreConstants.OrganisationIdCookieKey);
+
+			var organisation = sessionOrganisationId.IsNullOrEmpty() ? 
+				organisations.FirstOrDefault() : 
+				organisations.FirstOrDefault(o => o.Id == Organisation.GetId(sessionOrganisationId));
+
+			if (organisation == null)
+			{
+				_cookieManager.Set(CoreConstants.OrganisationIdCookieKey, string.Empty, DateTime.UtcNow.AddDays(-1));
+				organisation = organisations.FirstOrDefault();
+			}
 
             User user = null;
             if (organisation != null)
             {
+				if (sessionOrganisationId.IsNullOrEmpty())
+				{
+					_cookieManager.Set(CoreConstants.OrganisationIdCookieKey, organisation.FriendlyId, DateTime.UtcNow.AddYears(1));
+				}
+
                 _session.SetOrganisation(organisation);
-                user = _getUserQuery.Invoke(new GetUserRequest
-                {
-                    OrganisationId = organisation.Id, 
-                    UserId = User.GetId(authenticationIdentity.UserId)
-                }).User;
-                user.Organisation = organisation;
+
+				user = _getUserByEmailAddressQuery.Invoke(new GetUserByEmailAddressRequest
+				{
+					EmailAddress = authenticationIdentity.Email,
+					OrganisationId = organisation.Id
+				}).User;
+
+				if (user != null)
+				{
+					user.Organisation = organisation;
+					user.OrganisationId = organisation.Id;
+					user.Organisations = organisations;
+				}
             }
 
             var appContext = new AppContext();
 
             if (user == null || user.Organisation == null || user.Organisation.Status == OrganisationStatus.Suspended)
             {
-                _authenticationManager.SignInGuest();
-                return CreateAnonymousUser(_authenticationManager.GetCurrentUser());
+                return CreateAnonymousUser(_authenticationManager.SignInGuest());
             }
 
             appContext.Authentication = _authenticationManager;

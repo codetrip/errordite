@@ -23,6 +23,12 @@ namespace Errordite.Core.Extensions
             return result;
         }
 
+		public static string GetQueueName(this string destination)
+		{
+			var parts = destination.Split(new[] {'/'}, StringSplitOptions.RemoveEmptyEntries);
+			return parts[parts.Length - 1];
+		}
+
         public static string StripCss(this string input)
         {
             if (input.IsNullOrEmpty())

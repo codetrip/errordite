@@ -41,14 +41,13 @@ namespace Errordite.Web.Areas.System.Controllers
                 using (SwitchOrgScope(status.OrganisationId))
                 {
                     var user = _getUserQuery.Invoke(new GetUserRequest
-                        {
-                            UserId = status.UserId,
-                            OrganisationId = status.OrganisationId
-                        }).User;
+                    {
+                        UserId = status.UserId,
+                        OrganisationId = status.OrganisationId
+                    }).User;
 
                     if (user == null)
-                        return RedirectWithViewModel(status, "index",
-                                                     "Failed to find user with Id {0}".FormatWith(status.UserId));
+                        return RedirectWithViewModel(status, "index", "Failed to find user with Id {0}".FormatWith(status.UserId));
 
                     status.ExpiryUtc = DateTime.Now.AddMinutes(30);
                     status.EmailAddress = user.Email;

@@ -18,7 +18,7 @@ ul {
 
 input[type='text'], input[type='password'], textarea, select {
   display: inline-block;
-  width: 340px;
+  width: 300px;
   height: 24px;
   padding: 4px;
   font-size: 13px;
@@ -40,7 +40,7 @@ input[type='text'], input[type='password'], textarea, select {
 select {
   height: 34px;
   line-height: 34px;
-  width: 350px;
+  width: 310px;
   padding: 6px 5px; }
   select[multiple], select[size] {
     height: auto; }
@@ -128,16 +128,16 @@ p {
 pre.prettyprint {
   font-size: 12px;
   font-family: Consolas, Menlo, Monaco, Lucida Console;
-  padding: 12px 0 0 15px !important;
+  padding: 12px 0 0 15px!important;
   line-height: 14px;
-  border: 1px solid #d8dee2 !important;
+  border: 1px solid #D8DEE2!important;
   border-radius: 0;
   float: left;
   width: 800px; }
   pre.prettyprint.nested {
     width: 760px; }
   pre.prettyprint.textonly {
-    padding: 12px 0 12px 15px !important; }
+    padding: 12px 0 12px 15px!important; }
 pre.lang-xml .tag {
   color: maroon; }
 pre.lang-xml .att, pre.lang-xml .atn {
@@ -268,14 +268,14 @@ table {
       background-color: #414650;
       border: 0;
       padding: 7px 8px;
-      width: 250px; }
+      width: 200px; }
       .welcome-bar-container .welcome-bar a.dropdown-toggle:hover {
         text-decoration: none; }
     .welcome-bar-container .welcome-bar .caret {
       margin: 8px 10px 0 0;
       border-top: 4px solid #fff; }
     .welcome-bar-container .welcome-bar ul.dropdown-menu {
-      width: 265px;
+      width: 215px;
       background-color: #92c7e7; }
       .welcome-bar-container .welcome-bar ul.dropdown-menu a {
         color: #fff; }
@@ -759,7 +759,7 @@ section {
   background-position: -108px -18px; }
 
 .icon-arrow-left {
-  background-position: -0 -36px; }
+  background-position: 0 -36px; }
 
 .icon-arrow-right {
   background-position: -165px -18px; }
@@ -795,7 +795,7 @@ section {
         display: inline-block;
         cursor: pointer; }
     .form li.sublist {
-      width: 350px; }
+      width: 310px; }
       .form li.sublist input {
         display: inline-block; }
       .form li.sublist label {
@@ -834,7 +834,7 @@ section {
     margin-top: 2px; }
   .form.double {
     display: inline;
-    width: 40%;
+    width: 42%;
     float: left; }
     .form.double .field-validation-error {
       display: block; }

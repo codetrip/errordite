@@ -45,7 +45,7 @@
 				<ul>
 				    <li>
 					    @Html.LabelFor(m => m.OrganisationName, "Organisation Name")
-					    @Html.TextBoxFor(m => m.OrganisationName)
+					    @Html.TextBoxFor(m => m.OrganisationName, new {maxlength = "30"})
 					    @Html.ValidationMessageFor(m => m.OrganisationName)
 				    </li>
 					<li>

@@ -28,14 +28,12 @@ namespace Errordite.Web.Controllers
         private readonly IGetDashboardReportQuery _getDashboardReportQuery;
         private readonly IGetIssueQuery _getIssueQuery;
         private readonly IGetActivityLogQuery _getActivityLogQuery;
-        private readonly IPagingViewModelGenerator _pagingViewModelGenerator;
 
         public DashboardController(IGetOrganisationStatisticsQuery getOrganisationStatisticsQuery, 
             IGetApplicationIssuesQuery getApplicationIssuesQuery, 
             IGetApplicationErrorsQuery getApplicationErrorsQuery, 
             IGetDashboardReportQuery getDashboardReportQuery, 
-            IGetIssueQuery getIssueQuery, IGetActivityLogQuery getActivityLogQuery, 
-            IPagingViewModelGenerator pagingViewModelGenerator)
+            IGetIssueQuery getIssueQuery, IGetActivityLogQuery getActivityLogQuery)
         {
             _getOrganisationStatisticsQuery = getOrganisationStatisticsQuery;
             _getApplicationIssuesQuery = getApplicationIssuesQuery;
@@ -43,7 +41,6 @@ namespace Errordite.Web.Controllers
             _getDashboardReportQuery = getDashboardReportQuery;
             _getIssueQuery = getIssueQuery;
             _getActivityLogQuery = getActivityLogQuery;
-            _pagingViewModelGenerator = pagingViewModelGenerator;
         }
 
         [ImportViewData]

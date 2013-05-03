@@ -15,7 +15,7 @@ namespace Errordite.Core.Messaging
         public string MessageType { get; set; }
         public string OrganisationId { get; set; }
         public string QueueUrl { get; set; }
-        public string ReceiptHandle { get; set; }
+		public string ReceiptHandle { get; set; }
         public Service Service { get; set; }
 
 		[JsonIgnore]

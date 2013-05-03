@@ -14,7 +14,6 @@
   <Target Name="InstallWeb" DependsOnTargets="GetBuildNumberAndInstallPaths;
           CopyWebFiles;
           RunConfigFileChanger;
-          CreateNServiceBusSubscriptionsQueue
           UpdateIISDirectoryPathAndPermissions;
           RecycleWebAppPool;">
   </Target>
@@ -30,15 +29,15 @@
   </Target>
 
   <Target Name="UpdateIISDirectoryPathAndPermissions">
+	  
+	  <ItemGroup>
+		  <Allow Include="$(Domain)\$(ErrorditeWebUser)">
+			  <Permission>FullControl</Permission>
+		  </Allow>
+	  </ItemGroup>
 
-    <ItemGroup>
-      <Allow Include="$(Domain)\$(ErrorditeWebUser)">
-        <Permission>FullControl</Permission>
-      </Allow>
-    </ItemGroup>
-
-    <MSBuild.ExtensionPack.FileSystem.Folder TaskAction="AddSecurity" AccessType="Allow" Path="$(WebInstallPath)" Users="@(Allow)" Recursive="true" />
-    <MSBuild.ExtensionPack.Web.Iis7Website TaskAction="ModifyPath" Name="$(ErrorditeWebsiteHostName)" Path="$(WebInstallPath)" AppPool="$(ErrorditeWebsiteHostName)"/>
+	  <MSBuild.ExtensionPack.FileSystem.Folder TaskAction="AddSecurity" AccessType="Allow" Path="$(WebInstallPath)" Users="@(Allow)" Recursive="true" />
+	  <MSBuild.ExtensionPack.Web.Iis7Website TaskAction="ModifyPath" Name="$(ErrorditeWebsiteHostName)" Path="$(WebInstallPath)" AppPool="$(ErrorditeWebsiteHostName)"/>
 
   </Target>
 

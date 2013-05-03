@@ -62,7 +62,10 @@ namespace Errordite.Core.Users.Commands
 
             if (userOrgMapping != null)
             {
-                Session.MasterRaven.Delete(userOrgMapping);
+	            userOrgMapping.Organisations.Remove(organisation.Id);
+
+				if(userOrgMapping.Organisations.Count == 0)
+					Session.MasterRaven.Delete(userOrgMapping);
             } 
 
 			Session.RavenDatabaseCommands.UpdateByIndex(CoreConstants.IndexNames.Issues,
@@ -84,7 +87,7 @@ namespace Errordite.Core.Users.Commands
 
             Session.SynchroniseIndexes<Indexing.Users, Indexing.Issues>();
 
-            return new DeleteUserResponse(userId: request.UserId, organisationId: request.CurrentUser.OrganisationId, email: existingUser.Email)
+            return new DeleteUserResponse(organisationId: request.CurrentUser.OrganisationId, email: existingUser.Email)
             {
                 Status = DeleteUserStatus.Ok
             };
@@ -96,22 +99,20 @@ namespace Errordite.Core.Users.Commands
 
     public class DeleteUserResponse : CacheInvalidationResponseBase
     {
-        private readonly string _userId;
         private readonly string _email;
         private readonly string _organisationId;
         public DeleteUserStatus Status { get; set; }
 
-        public DeleteUserResponse(bool ignoreCache = false, string userId = "", string organisationId = "", string email = "")
+        public DeleteUserResponse(bool ignoreCache = false, string organisationId = "", string email = "")
             : base(ignoreCache)
         {
-            _userId = userId;
             _organisationId = organisationId;
             _email = email;
         }
 
         protected override IEnumerable<CacheInvalidationItem> GetCacheInvalidationItems()
         {
-            return CacheInvalidation.GetUserInvalidationItems(_organisationId, _userId, _email);
+            return CacheInvalidation.GetUserInvalidationItems(_organisationId, _email);
         }
     }
 

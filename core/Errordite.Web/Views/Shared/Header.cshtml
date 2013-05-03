@@ -20,12 +20,36 @@
                 var selectedApplication = applications.FirstOrDefault(a => a.FriendlyId == ViewData.GetSelectedApplication());
                 var selectedApplicationName = selectedApplication == null ? null : selectedApplication.Name;
             
-                <span class="header-org">@appContext.CurrentUser.Organisation.Name</span>
                 <input type="hidden" value="@(selectedApplication == null ? string.Empty : selectedApplication.FriendlyId)" name="ApplicationId" id="ApplicationId" />
+	            <input type="hidden" value="@appContext.CurrentUser.Organisation.Id" name="OrganisationId" id="OrganisationId" />
+				
+				if (appContext.CurrentUser.Organisations.Count > 1)
+				{
+					 <ul class="popup popup-pills">
+                         <li class="dropdown" id="organisations">
+                             <a class="dropdown-toggle" data-toggle="dropdown" href="#organisations">
+                                 @appContext.CurrentUser.Organisation.Name
+                                 <b class="caret"></b>
+                             </a>
+                             <ul class="dropdown-menu">
+                                 @foreach (var organisation in appContext.CurrentUser.Organisations)
+                                 {
+                                     <li>
+                                         <a href="@Url.CurrentRequest("{0}={1}".FormatWith(WebConstants.RouteValues.SetOrganisation, organisation.FriendlyId))">@organisation.Name</a>
+                                     </li>
+                                 }
+                             </ul>
+                         </li>
+                     </ul>
+				}
+				else
+				{
+					<span class="header-org">@appContext.CurrentUser.Organisation.Name</span>
+				}
                  
-                if (applications.Count > 1)
+                 if (applications.Count > 1)
                  {
-                     <ul class="popup popup-pills">
+                     <ul class="popup popup-pills" style="margin-left:15px">
                          <li class="dropdown" id="applications">
                              <a class="dropdown-toggle" data-toggle="dropdown" href="#applications">
                                  @if (selectedApplicationName.IsNullOrEmpty())
@@ -37,7 +61,6 @@
                                      @selectedApplicationName
                                  }
                                  <b class="caret"></b>
-                                 
                              </a>
                              <ul class="dropdown-menu">
                                  <li>
@@ -67,7 +90,7 @@
             else
             {
                 <text>
-                    Welcome back <strong>@appContext.CurrentUser.FirstName
+                    Welcome <strong>@appContext.CurrentUser.FirstName
                                      @if (appContext.Impersonated)
                                      {
                                          <a href="@Url.Impersonate()">(IMP)</a>

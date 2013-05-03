@@ -61,14 +61,9 @@ namespace Errordite.Core.Caching
                 return "u-{0}".FormatWith(Organisation.GetId(organisationId));
             }
 
-            public static string Key(string organisationId, string userId)
+            public static string Email(string organisationId, string email)
             {
-                return "{0}-{1}".FormatWith(PerOrganisationPrefix(organisationId), User.GetId(userId));
-            }
-
-            public static string Email(string email)
-            {
-                return "{0}".FormatWith(email);
+				return "{0}-{1}".FormatWith(organisationId, email);
             }
         }
     }

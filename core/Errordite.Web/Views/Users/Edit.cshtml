@@ -25,6 +25,11 @@
 						<div class="form double">
 							<ul>
 								<li>
+									@Html.LabelFor(m => m.Email, "Email")
+									@Html.TextBoxFor(m => m.Email)
+									@Html.ValidationMessageFor(m => m.Email)
+								</li>
+								<li>
 									@Html.LabelFor(m => m.FirstName, "First name")
 									@Html.TextBoxFor(m => m.FirstName)
 									@Html.ValidationMessageFor(m => m.FirstName)
@@ -33,11 +38,6 @@
 									@Html.LabelFor(m => m.LastName, "Last name")
 									@Html.TextBoxFor(m => m.LastName)
 									@Html.ValidationMessageFor(m => m.LastName)
-								</li>
-								<li>
-									@Html.LabelFor(m => m.Email, "Email")
-									@Html.TextBoxFor(m => m.Email)
-									@Html.ValidationMessageFor(m => m.Email)
 								</li>
 								@if (Model.IsAdministrator && !Model.CurrentUser)
 								{
