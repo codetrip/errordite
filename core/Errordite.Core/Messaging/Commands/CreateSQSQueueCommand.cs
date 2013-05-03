@@ -1,8 +1,10 @@
-﻿using Amazon.SQS;
+﻿using System;
+using Amazon.SQS;
 using Amazon.SQS.Model;
 using Errordite.Core.Configuration;
 using Errordite.Core.Interfaces;
 using Errordite.Core.Session;
+using System.Linq;
 
 namespace Errordite.Core.Messaging.Commands
 {

@@ -14,8 +14,8 @@
 					} 
                     <th>Exception</th>            
                     <th>Message</th>             
-                    <th>Version</th>     
-                    <th class="sort-header"><span>Received On</span> @Html.SortLinks(Model.Paging.PagingId, "Timestamp", "Received On")</th>
+                    <th class="version">Version</th>     
+                    <th class="sort-header received-on"><span>Received On</span> @Html.SortLinks(Model.Paging.PagingId, "Timestamp", "Received On")</th>
                 </tr>
             </thead>
             <tbody>
@@ -26,7 +26,7 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="6">
+                    <td colspan="@(Model.HideIssues ? 5 : 6)">
                         @Html.Partial("Pagination", Model.Paging) 
                     </td>
                 </tr>

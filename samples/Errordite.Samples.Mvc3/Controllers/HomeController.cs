@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using System.Web.Mvc;
+using Very.Long.Namespace.Meaning.We.Get.A.Nice.Long;
 using log4net;
 
 namespace Errordite.Samples.Mvc3.Controllers
@@ -41,7 +42,7 @@ namespace Errordite.Samples.Mvc3.Controllers
             {
                 case 1:
                     {
-						logger.Debug("Case 1");
+                        logger.Debug("Case 1");
                         try
                         {
                             int zero = 0;
@@ -54,30 +55,35 @@ namespace Errordite.Samples.Mvc3.Controllers
                     }
                     break;
                 case 2:
-					{
-						logger.Debug("Case 2");
+                    {
+                        logger.Debug("Case 2");
                         if (index == 2)
                             throw new ArgumentException(errorMessage + "The argument cannot be 2", "index");
                     }
                     break;
                 case 3:
-					{
-						logger.Debug("Case 3");
+                    {
+                        logger.Debug("Case 3");
                         throw new ArgumentNullException("index", errorMessage + "parameter index cannot be null");
                     }
                 case 4:
-					{
-						logger.Debug("Case 4");
+                    {
+                        logger.Debug("Case 4");
                         throw new ConfigurationErrorsException(errorMessage + "Some config was invalid, cannot continue");
                     }
                 case 5:
-					{
-						logger.Debug("Case 5");
+                    {
+                        logger.Debug("Case 5");
                         throw new IOException("with an inner excepstion", new EventLogException("inner message"));
                     }
+                case 6:
+                    {
+                        logger.Debug("Case 6");
+                        throw new ExceptionNameAlsoHavingALongNameItself("Really long and tediously boring message giving an extremely large amount of detail about the problem we saw here.  If all exceptions had a message like this would Errordite be redundant?");
+                    }
                 default:
-					{
-						logger.Debug("Case Default");
+                    {
+                        logger.Debug("Case Default");
                         throw new Exception(errorMessage);
                     }
             }
@@ -88,6 +94,16 @@ namespace Errordite.Samples.Mvc3.Controllers
         public ActionResult Product()
         {
             return View();
+        }
+    }
+}
+
+namespace Very.Long.Namespace.Meaning.We.Get.A.Nice.Long
+{
+    public class ExceptionNameAlsoHavingALongNameItself : Exception
+    {
+        public ExceptionNameAlsoHavingALongNameItself(string message) : base(message)
+        {
         }
     }
 }

@@ -17,9 +17,9 @@
         </span><br />
         <span class="table-info">@Model.Error.MachineName</span>
     </td>
-    <td class="word-break">@(Model.Error.ExceptionInfos.First().Message.IfPoss(m => m.Length) > 200 ? Model.Error.ExceptionInfos.First().Message.Substring(0, 200) + "..." : Model.Error.ExceptionInfos.First().Message) </td>
-    <td class="word-break">@(Model.Error.Version.IsNullOrEmpty() ? new HtmlString("Unknown") : new HtmlString(Model.Error.Version))</td>
-    <td class="word-break">@Model.Error.TimestampUtc.ToLocalTimeFormatted()</td>
+    <td>@(Model.Error.ExceptionInfos.First().Message.IfPoss(m => m.Length) > 200 ? Model.Error.ExceptionInfos.First().Message.Substring(0, 200) + "..." : Model.Error.ExceptionInfos.First().Message) </td>
+    <td>@(Model.Error.Version.IsNullOrEmpty() ? new HtmlString("Unknown") : new HtmlString(Model.Error.Version))</td>
+    <td>@Model.Error.TimestampUtc.ToLocalTimeFormatted()</td>
     
 </tr>
 <tr style="display:none;">
