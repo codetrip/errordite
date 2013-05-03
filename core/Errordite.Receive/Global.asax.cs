@@ -2,9 +2,7 @@
 using System.Web.Mvc;
 using System.Web.Routing;
 using Errordite.Core.IoC;
-using Errordite.Core.Misc;
 using Errordite.Client;
-using Errordite.Client.Mvc;
 using Errordite.Core.Session;
 using Errordite.Receive.Binders;
 using Errordite.Receive.IoC;
@@ -47,9 +45,6 @@ namespace Errordite.Receive
             XmlConfigurator.ConfigureAndWatch(new FileInfo(Server.MapPath(@"bin\config\log4net.config")));
 
             ObjectFactory.Container.Install(new ReceiveInstaller());
-
-            ErrorditeClient.ConfigurationAugmenter = ErrorditeClientOverrideHelper.Augment;
-            ErrorditeClient.SetErrorNotificationAction(e => System.Diagnostics.Trace.Write(e.ToString()));
 
             var controllerFactory = new WindsorControllerFactory(ObjectFactory.Container.Kernel);
             ControllerBuilder.Current.SetControllerFactory(controllerFactory);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition.Hosting;
 using System.Web.Mvc;
 using Errordite.Core;
@@ -19,6 +20,8 @@ using Errordite.Web.Models.Home;
 using Errordite.Core.Extensions;
 using Errordite.Web.Extensions;
 using Raven.Client.Indexes;
+using Raven.Client.Linq;
+using System.Linq;
 
 namespace Errordite.Web.Controllers
 {
@@ -79,9 +82,57 @@ namespace Errordite.Web.Controllers
 				organisation.PaymentPlanId = "PaymentPlans/1";
 			}
 
+			foreach (var mapping in session.MasterRaven.Query<UserOrganisationMapping>())
+			{
+				mapping.Organisations = new List<string> {mapping.OrganisationId};
+
+				foreach (var organisation in session.MasterRaven.Query<Organisation>())
+				{
+					using (_session.SwitchOrg(organisation))
+					{
+						var user = _session.Raven.Query<User, Users>().FirstOrDefault(u => u.Email == mapping.EmailAddress);
+						if (user != null)
+						{
+							mapping.Password = user.Password;
+							mapping.PasswordToken = user.PasswordToken;
+						}
+					}
+				}
+			}
+
             session.Commit();
             return Content("Done");
         }
+
+		[HttpGet, ImportViewData]
+		public ActionResult Mapping()
+		{
+			var session = ObjectFactory.GetObject<IAppSession>();
+			var ravenInstances = session.MasterRaven.Query<RavenInstance>().ToList();
+
+			foreach (var mapping in session.MasterRaven.Query<UserOrganisationMapping>())
+			{
+				mapping.Organisations = new List<string> { mapping.OrganisationId };
+
+				foreach (var organisation in session.MasterRaven.Query<Organisation>())
+				{
+					organisation.RavenInstance = ravenInstances.First(r => r.Id == organisation.RavenInstanceId);
+
+					using (_session.SwitchOrg(organisation))
+					{
+						var user = _session.Raven.Query<User, Users>().FirstOrDefault(u => u.Email == mapping.EmailAddress);
+						if (user != null)
+						{
+							mapping.Password = user.Password;
+							mapping.PasswordToken = user.PasswordToken;
+						}
+					}
+				}
+			}
+
+			session.Commit();
+			return Content("Done");
+		}
 
 		[HttpGet, ExportViewData]
 		public ActionResult SyncIndexes()

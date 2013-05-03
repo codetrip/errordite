@@ -1,4 +1,5 @@
-﻿using Castle.Core;
+﻿using System.Collections.Generic;
+using Castle.Core;
 using Errordite.Core.Caching.Entities;
 using Errordite.Core.Caching.Interceptors;
 using Errordite.Core.Domain.Master;
@@ -6,48 +7,56 @@ using Errordite.Core.Interfaces;
 using Errordite.Core.Caching;
 using Errordite.Core.Domain.Organisation;
 using System.Linq;
-using Errordite.Core.Extensions;
 using Errordite.Core.Session;
 using ProtoBuf;
 
 namespace Errordite.Core.Organisations.Queries
 {
     [Interceptor(CacheInterceptor.IoCName)]
-    public class GetOrganisationByEmailAddressCommand : ComponentBase, IGetOrganisationByEmailAddressCommand
+    public class GetOrganisationsByEmailAddressCommand : ComponentBase, IGetOrganisationsByEmailAddressCommand
     {
         private readonly IGetOrganisationQuery _getOrganisationQuery;
         private readonly IAppSession _session;
 
-        public GetOrganisationByEmailAddressCommand(IGetOrganisationQuery getOrganisationQuery, IAppSession session)
+        public GetOrganisationsByEmailAddressCommand(IGetOrganisationQuery getOrganisationQuery, IAppSession session)
         {
             _getOrganisationQuery = getOrganisationQuery;
             _session = session;
         }
 
-        public GetOrganisationByEmailAddressResponse Invoke(GetOrganisationByEmailAddressRequest request)
+        public GetOrganisationsByEmailAddressResponse Invoke(GetOrganisationsByEmailAddressRequest request)
         {
             var mapping = _session.MasterRaven.Query<UserOrganisationMapping>().FirstOrDefault(m => m.EmailAddress == request.EmailAddress);
 
-            var org = mapping.IfPoss(m => _getOrganisationQuery.Invoke(new GetOrganisationRequest
-            {
-                OrganisationId = m.OrganisationId
-            }).Organisation);
+			if (mapping == null)
+			{
+				return new GetOrganisationsByEmailAddressResponse
+				{
+					Organisations = new List<Organisation>()
+				};
+			}
 
-            return new GetOrganisationByEmailAddressResponse
+	        var organisations = mapping.Organisations.Select(id => _getOrganisationQuery.Invoke(new GetOrganisationRequest
+		    {
+			    OrganisationId = id
+		    }).Organisation);
+
+            return new GetOrganisationsByEmailAddressResponse
             {
-                Organisation = org,
+				Organisations = organisations,
+				UserMapping = mapping
             };
         }
     }
 
-    public interface IGetOrganisationByEmailAddressCommand : ICommand<GetOrganisationByEmailAddressRequest, GetOrganisationByEmailAddressResponse>
+    public interface IGetOrganisationsByEmailAddressCommand : ICommand<GetOrganisationsByEmailAddressRequest, GetOrganisationsByEmailAddressResponse>
     { }
 
-    public class GetOrganisationByEmailAddressRequest : CacheableRequestBase<GetOrganisationByEmailAddressResponse>
+    public class GetOrganisationsByEmailAddressRequest : CacheableRequestBase<GetOrganisationsByEmailAddressResponse>
     {
         public string EmailAddress { get; set; }
 
-        protected override string GetCacheKey()
+	    protected override string GetCacheKey()
         {
             return CacheKeys.Organisations.Email(EmailAddress);
         }
@@ -59,9 +68,11 @@ namespace Errordite.Core.Organisations.Queries
     }
 
     [ProtoContract]
-    public class GetOrganisationByEmailAddressResponse
+    public class GetOrganisationsByEmailAddressResponse
     {
         [ProtoMember(1)]
-        public Organisation Organisation { get; set; }
+        public IEnumerable<Organisation> Organisations { get; set; }
+		[ProtoMember(2)]
+		public UserOrganisationMapping UserMapping { get; set; }
     }
 }

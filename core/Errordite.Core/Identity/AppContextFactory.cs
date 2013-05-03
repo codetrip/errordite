@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Web;
-using Errordite.Core;
 using Errordite.Core.Interfaces;
 using Errordite.Core.Domain.Organisation;
-using Errordite.Core.Organisations.Commands;
 using Errordite.Core.Organisations.Queries;
 using Errordite.Core.Session;
 using Errordite.Core.Users.Queries;
+using System.Linq;
+using Errordite.Core.Web;
 
 namespace Errordite.Core.Identity
 {
@@ -21,18 +21,21 @@ namespace Errordite.Core.Identity
         private readonly IGetUserQuery _getUserQuery;
         private readonly IImpersonationManager _impersonationManager;
         private readonly IAppSession _session;
-        private readonly IGetOrganisationByEmailAddressCommand _getOrganisationByEmailAddressCommand;
+        private readonly IGetOrganisationsByEmailAddressCommand _getOrganisationsByEmailAddressCommand;
+	    private readonly ICookieManager _cookieManager;
 
         public AppContextFactory(IAuthenticationManager authenticationManager, 
             IGetUserQuery getUserQuery, 
-            IGetOrganisationByEmailAddressCommand getOrganisationByEmailAddressCommand, 
-            IAppSession session)
+            IGetOrganisationsByEmailAddressCommand getOrganisationsByEmailAddressCommand, 
+            IAppSession session, 
+			ICookieManager cookieManager)
         {
             _authenticationManager = authenticationManager;
             _getUserQuery = getUserQuery;
-            _getOrganisationByEmailAddressCommand = getOrganisationByEmailAddressCommand;
+            _getOrganisationsByEmailAddressCommand = getOrganisationsByEmailAddressCommand;
             _session = session;
-            _impersonationManager = this;
+	        _cookieManager = cookieManager;
+	        _impersonationManager = this;
         }
 
         public AppContext Create()
@@ -65,7 +68,7 @@ namespace Errordite.Core.Identity
                     }
                     else
                     {
-                        AuthenticationIdentity currentAuthenticationIdentity = _authenticationManager.GetCurrentUser();
+                        var currentAuthenticationIdentity = _authenticationManager.GetCurrentUser();
 
                         appContext = currentAuthenticationIdentity.HasUserProfile ?
                             CreateKnownUser(currentAuthenticationIdentity) :
@@ -89,10 +92,13 @@ namespace Errordite.Core.Identity
 
         private AppContext CreateKnownUser(AuthenticationIdentity authenticationIdentity)
         {
-            var organisation = _getOrganisationByEmailAddressCommand.Invoke(new GetOrganisationByEmailAddressRequest
-                {
-                    EmailAddress = authenticationIdentity.Email,
-                }).Organisation;
+            var organisations = _getOrganisationsByEmailAddressCommand.Invoke(new GetOrganisationsByEmailAddressRequest
+            {
+                EmailAddress = authenticationIdentity.Email,
+            }).Organisations.ToList();
+
+	        //var sessionOrganisationId = _cookieManager.Get("");
+	        var organisation = organisations.First();
 
             User user = null;
             if (organisation != null)

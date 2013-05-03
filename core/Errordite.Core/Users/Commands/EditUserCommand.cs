@@ -55,7 +55,8 @@ namespace Errordite.Core.Users.Commands
             if (existingUser.Email != request.Email)
             {
                 var userMapping = Session.MasterRaven.Query<UserOrganisationMapping>().First(u => u.EmailAddress == existingUser.Email);
-                userMapping.EmailAddress = request.Email;
+				userMapping.EmailAddress = request.Email;
+				Session.SynchroniseIndexes<UserOrganisationMappings>(true);
             }
 
             existingUser.FirstName = request.FirstName;
@@ -69,7 +70,6 @@ namespace Errordite.Core.Users.Commands
                 existingUser.GroupIds = request.GroupIds.Select(Group.GetId).ToList();
 
             Session.SynchroniseIndexes<Indexing.Users, Indexing.Groups>();
-            Session.SynchroniseIndexes<UserOrganisationMappings>(true);
 
             return new EditUserResponse(false, request.UserId, request.CurrentUser.OrganisationId, email)
             {

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Specialized;
 using System.Web;
-using Errordite.Core;
 using Errordite.Core.Extensions;
 
 namespace Errordite.Core.Identity
@@ -40,7 +39,7 @@ namespace Errordite.Core.Identity
                 cookieValues.Get(CoreConstants.Authentication.Email) != null &&
                 cookieValues.Get(CoreConstants.Authentication.OrganisationId) != null)
             {
-                AuthenticationIdentity identity = new AuthenticationIdentity
+                var identity = new AuthenticationIdentity
                 {
                     HasUserProfile = cookieValues[CoreConstants.Authentication.HasUserProfile] == "true",
                     RememberMe = cookieValues[CoreConstants.Authentication.RememberMe] == "true",

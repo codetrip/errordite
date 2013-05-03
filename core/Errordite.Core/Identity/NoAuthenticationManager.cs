@@ -27,9 +27,9 @@ namespace Errordite.Core.Identity
             throw new System.NotImplementedException();
         }
 
-        public void UpdateIdentity(string emailAddress)
-        {
-            throw new System.NotImplementedException();
-        }
+	    public void UpdateIdentity(string emailAddress, string organisationId, string userId)
+	    {
+		    throw new System.NotImplementedException();
+	    }
     }
 }

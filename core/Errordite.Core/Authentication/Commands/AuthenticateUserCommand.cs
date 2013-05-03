@@ -1,22 +1,19 @@
-﻿using Errordite.Core;
-using Errordite.Core.Interfaces;
+﻿using Errordite.Core.Interfaces;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Extensions;
-using Errordite.Core.Indexing;
 using System.Linq;
-using Errordite.Core.Organisations.Commands;
 using Errordite.Core.Organisations.Queries;
-using SessionAccessBase = Errordite.Core.Session.SessionAccessBase;
+using Errordite.Core.Session;
 
 namespace Errordite.Core.Authentication.Commands
 {
     public class AuthenticateUserCommand : SessionAccessBase, IAuthenticateUserCommand
     {
-        private readonly IGetOrganisationByEmailAddressCommand _getOrganisationByEmailAddressCommand;
+        private readonly IGetOrganisationsByEmailAddressCommand _getOrganisationsByEmailAddressCommand;
 
-        public AuthenticateUserCommand(IGetOrganisationByEmailAddressCommand getOrganisationByEmailAddressCommand)
+        public AuthenticateUserCommand(IGetOrganisationsByEmailAddressCommand getOrganisationsByEmailAddressCommand)
         {
-            _getOrganisationByEmailAddressCommand = getOrganisationByEmailAddressCommand;
+            _getOrganisationsByEmailAddressCommand = getOrganisationsByEmailAddressCommand;
         }
 
         public AuthenticateUserResponse Invoke(AuthenticateUserRequest request)
@@ -26,19 +23,38 @@ namespace Errordite.Core.Authentication.Commands
             ArgumentValidation.NotEmpty(request.Email, "request.Email");
             ArgumentValidation.NotEmpty(request.Password, "request.Password");
 
-            var organisation = _getOrganisationByEmailAddressCommand.Invoke(new GetOrganisationByEmailAddressRequest
-                {
-                    EmailAddress = request.Email,
-                }).Organisation;
+            var response = _getOrganisationsByEmailAddressCommand.Invoke(new GetOrganisationsByEmailAddressRequest
+            {
+                EmailAddress = request.Email,
+            });
 
-            if (organisation == null)
-                return new AuthenticateUserResponse{Status = AuthenticateUserStatus.LoginFailed};
+			if (response.UserMapping == null || response.UserMapping.Password != request.Password.Hash() || response.Organisations == null)
+			{
+				return new AuthenticateUserResponse
+				{
+					Status = AuthenticateUserStatus.LoginFailed
+				};
+			}
+
+	        var organisations = response.Organisations.ToList();
+
+			if (organisations.Count > 1 && request.OrganisationId.IsNullOrEmpty())
+			{
+				return new AuthenticateUserResponse
+				{
+					Status = AuthenticateUserStatus.MultipleOrganisations
+				};
+			}
+
+	        var organisation = request.OrganisationId.IsNullOrEmpty() ? 
+				organisations.First() : 
+				organisations.FirstOrDefault(o => o.Id == Organisation.GetId(request.OrganisationId)) ?? organisations.First();
 
             Session.SetOrganisation(organisation);
 
             Trace("Getting user {0} from org {1} with pwdhash {2}", request.Email, organisation.Id, request.Password.Hash());
-            var user = Session.Raven.Query<User, Indexing.Users>()
-                .FirstOrDefault(u => u.Email == request.Email.ToLowerInvariant() && u.Password == request.Password.Hash());
+
+            var user = Session.Raven.Query<User, Indexing.Users>().FirstOrDefault(u => u.Email == request.Email.ToLowerInvariant());
 
             if (user != null)
             {
@@ -88,7 +104,8 @@ namespace Errordite.Core.Authentication.Commands
     public class AuthenticateUserRequest
     {
         public string Email { get; set; }
-        public string Password { get; set; }
+		public string Password { get; set; }
+		public string OrganisationId { get; set; }
     }
 
     public enum AuthenticateUserStatus
@@ -96,6 +113,7 @@ namespace Errordite.Core.Authentication.Commands
         Ok,
         AccountInactive,
         OrganisationInactive,
-        LoginFailed
+        LoginFailed,
+		MultipleOrganisations
     }
 }

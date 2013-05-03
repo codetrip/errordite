@@ -9,7 +9,11 @@ namespace Errordite.Core.Indexing
          public UserOrganisationMappings()
          {
              Map = mappings => from u in mappings
-                               select new {u.EmailAddress, u.OrganisationId};
+                               select new
+	                               {
+		                               u.EmailAddress, 
+									   u.Organisations
+	                               };
          }
     }
 }
