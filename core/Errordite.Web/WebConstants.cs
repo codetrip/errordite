@@ -12,12 +12,13 @@ namespace Errordite.Web
         {
             public const string IssueSearchCookieKey = "isck";
             public const string ErrorSearchCookieKey = "esck";
-            public const string ApplicationIdCookieKey = "appid";
+			public const string ApplicationIdCookieKey = "appid";
         }
 
         public static class RouteValues
         {
-            public const string SetApplication = "setapp";
+			public const string SetApplication = "setapp";
+			public const string SetOrganisation = "setorg";
         }
     }
 }

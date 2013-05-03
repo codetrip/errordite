@@ -21,7 +21,7 @@ namespace Errordite.Core.Caching.Interfaces
         /// <summary>
         /// Allows commands/queries to override the caching behaviour, items will not be cached or decached if set to true
         /// </summary>
-        bool IgnoreCache { get; set; }
+		bool IgnoreCache { get; set; }
         /// <summary>
         /// Method to retrieve the item from the cache engine, required as we need type parameters on the ICacheEngine.Get
         /// </summary>

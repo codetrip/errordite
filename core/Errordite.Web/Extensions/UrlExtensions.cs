@@ -1,7 +1,5 @@
 ﻿
 using System;
-using System.Collections.Specialized;
-using System.Web;
 using System.Web.Mvc;
 using Errordite.Core.Configuration;
 using Errordite.Core.Domain;
@@ -10,7 +8,6 @@ using Errordite.Core.Extensions;
 using Errordite.Core.Identity;
 using Errordite.Web.Models.Issues;
 using System.Linq;
-using Errordite.Core.Extensions;
 
 namespace Errordite.Web.Extensions
 {

@@ -26,7 +26,7 @@ namespace Errordite.Web
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
-            filters.Add(new SelectApplicationActionFilter());
+            filters.Add(new SelectApplicationOrOrganisationActionFilter());
             filters.Add(new ViewDataActionFilter());
             filters.Add(new SessionActionFilterAttribute());
         }

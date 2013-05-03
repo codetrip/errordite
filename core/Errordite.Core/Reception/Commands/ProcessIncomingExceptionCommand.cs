@@ -106,7 +106,7 @@ namespace Errordite.Core.Reception.Commands
                     Error = error,
                     ApplicationId = applicationId,
                     OrganisationId = organisationId,
-                    Token = request.Error.Token
+                    Token = request.Error.Token,
                 },
                 _configuration.GetReceiveQueueAddress(organisation.FriendlyId));
                 Session.AddCommitAction(new PollNowCommitAction(organisation));

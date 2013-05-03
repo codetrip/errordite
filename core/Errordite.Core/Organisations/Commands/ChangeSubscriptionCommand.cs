@@ -126,7 +126,7 @@ namespace Errordite.Core.Organisations.Commands
 				},
 				_configuration.GetNotificationsQueueAddress(organisation.RavenInstanceId)));
 
-            return new ChangeSubscriptionResponse(organisation.Id, request.CurrentUser.Id, request.CurrentUser.Email)
+            return new ChangeSubscriptionResponse(organisation.Id, request.CurrentUser.Email)
             {
                 Status = ChangeSubscriptionStatus.Ok
             };
@@ -139,23 +139,21 @@ namespace Errordite.Core.Organisations.Commands
     public class ChangeSubscriptionResponse : CacheInvalidationResponseBase
     {
 	    private readonly string _organisationId;
-		private readonly string _userId;
 		private readonly string _email;
         public ChangeSubscriptionStatus Status { get; set; }
         public PlanQuotas Quotas { get; set; }
 
-        public ChangeSubscriptionResponse(string organisationId = null, string userId = null, string email = null, bool ignoreCache = false)
+        public ChangeSubscriptionResponse(string organisationId = null, string email = null, bool ignoreCache = false)
             : base(ignoreCache)
         {
             _organisationId = organisationId;
-            _userId = userId;
             _email = email;
         }
 
         protected override IEnumerable<CacheInvalidationItem> GetCacheInvalidationItems()
         {
             return CacheInvalidation.GetOrganisationInvalidationItems(_organisationId, _email).Union(
-                   CacheInvalidation.GetUserInvalidationItems(_organisationId, _userId, _email));
+                   CacheInvalidation.GetUserInvalidationItems(_organisationId, _email));
         }
     }
 

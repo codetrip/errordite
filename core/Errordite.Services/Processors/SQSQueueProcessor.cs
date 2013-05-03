@@ -20,7 +20,7 @@ namespace Errordite.Services.Processors
     public class SQSQueueProcessor : ComponentBase, IQueueProcessor
     {
         private Thread _worker;
-        private string _queueUrl;
+		private string _queueUrl;
         private bool _serviceRunning;
         private readonly ServiceConfiguration _serviceConfiguration;
         private readonly AmazonSQS _amazonSQS;
@@ -99,15 +99,12 @@ namespace Errordite.Services.Processors
 					}
 					catch (AmazonSQSException e)
 					{
-						if (_serviceConfiguration.Service != Service.Receive)
-							throw;
-
 						//create the queue if the exception indicates the queue does not exist
-						if (e.Message.ToLowerInvariant().StartsWith("the specified queue does not exist"))
+						if (e.Message.ToLowerInvariant().Contains("the specified queue does not exist"))
 						{
 							_createSQSQueueCommand.Invoke(new CreateSQSQueueRequest
 							{
-								OrganisationId = OrganisationFriendlyId
+								QueueName = _queueUrl.GetQueueName()
 							});
 						}
 

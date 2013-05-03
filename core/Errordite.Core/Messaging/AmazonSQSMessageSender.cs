@@ -42,13 +42,11 @@ namespace Errordite.Core.Messaging
             {
                 //if we are attempting to send a message to a receive queue which does not exist for an organisation
                 //craete the queue and try to send the message again
-                if (message.OrganisationId.IsNotNullOrEmpty() && 
-					destination.Contains("errordite-receive-") && 
-                    e.Message.ToLowerInvariant().StartsWith("the specified queue does not exist"))
+                if (e.Message.ToLowerInvariant().Contains("the specified queue does not exist"))
                 {
 	                _createSQSQueueCommand.Invoke(new CreateSQSQueueRequest
 					{
-						OrganisationId = message.OrganisationId
+						QueueName = destination.GetQueueName()
 					});
 
 					_amazonSQS.SendMessage(new SendMessageRequest

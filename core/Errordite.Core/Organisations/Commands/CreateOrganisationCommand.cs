@@ -5,6 +5,7 @@ using System.Web.Security;
 using Castle.Core;
 using Errordite.Core.Caching.Entities;
 using Errordite.Core.Caching.Interceptors;
+using Errordite.Core.Configuration;
 using Errordite.Core.Domain.Master;
 using Errordite.Core.Encryption;
 using Errordite.Core.Interfaces;
@@ -30,18 +31,21 @@ namespace Errordite.Core.Organisations.Commands
         private readonly IEncryptor _encryptor;
         private readonly IGetRavenInstancesQuery _getRavenInstancesQuery;
         private readonly ICreateSQSQueueCommand _createSQSQueueCommand;
+	    private readonly ErrorditeConfiguration _configuration;
 
         public CreateOrganisationCommand(IGetAvailablePaymentPlansQuery getAvailablePaymentPlansQuery, 
             IAddApplicationCommand addApplicationCommand, 
             IEncryptor encryptor, 
             IGetRavenInstancesQuery getRavenInstancesQuery, 
-            ICreateSQSQueueCommand createSqsQueueCommand)
+            ICreateSQSQueueCommand createSqsQueueCommand, 
+			ErrorditeConfiguration configuration)
         {
             _getAvailablePaymentPlansQuery = getAvailablePaymentPlansQuery;
             _addApplicationCommand = addApplicationCommand;
             _encryptor = encryptor;
             _getRavenInstancesQuery = getRavenInstancesQuery;
             _createSQSQueueCommand = createSqsQueueCommand;
+	        _configuration = configuration;
         }
 
         public CreateOrganisationResponse Invoke(CreateOrganisationRequest request)
@@ -114,7 +118,9 @@ namespace Errordite.Core.Organisations.Commands
 				MasterStore(new UserOrganisationMapping
 				{
 					EmailAddress = request.Email,
-					Organisations = new List<string>{ organisation.Id }
+					Organisations = new List<string>{ organisation.Id },
+					Password = request.Password.Hash(),
+					PasswordToken = Guid.Empty
 				});
 			}
 
@@ -138,8 +144,6 @@ namespace Errordite.Core.Organisations.Commands
                 Email = request.Email,
                 FirstName = request.FirstName,
                 LastName = request.LastName,
-                Password = request.Password.Hash(),
-                OrganisationId = organisation.Id,
                 Role = UserRole.Administrator,
                 Status = UserStatus.Active,
                 GroupIds = new List<string> { group.Id },
@@ -166,7 +170,7 @@ namespace Errordite.Core.Organisations.Commands
                 //create the SQS queue for this organisation
                 _createSQSQueueCommand.Invoke(new CreateSQSQueueRequest
                 {
-                    OrganisationId = organisation.Id
+					QueueName = _configuration.GetReceiveQueueAddress(organisation.FriendlyId).GetQueueName()
                 });
 
                 //add organisation to receive service so we can start receiving errors from the organisations queue

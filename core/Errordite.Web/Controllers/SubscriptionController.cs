@@ -63,7 +63,7 @@ namespace Errordite.Web.Controllers
             return View(model);
         }
 
-		[HttpGet, Authorize, GenerateBreadcrumbs(BreadcrumbId.SubscriptionSignUp)]
+		[HttpGet, Authorize, ExportViewData, GenerateBreadcrumbs(BreadcrumbId.SubscriptionSignUp)]
         public ActionResult SignUp(bool expired = false)
         {
 			if (!Core.Configuration.SubscriptionsEnabled)

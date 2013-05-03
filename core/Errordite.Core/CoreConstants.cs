@@ -7,7 +7,8 @@ namespace Errordite.Core
     {
         public const string ErrorditeMasterDatabaseName = "Errordite";
         public const string MatchRuleFactoryIdFormat = "mf-{0}";
-        public const string QueryDateFormat = "yyyy-MM-ddTHH:mm:ss.fff";
+		public const string QueryDateFormat = "yyyy-MM-ddTHH:mm:ss.fff";
+		public const string OrganisationIdCookieKey = "orgid";
 
         public static class Auditing
         {

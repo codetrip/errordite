@@ -41,7 +41,7 @@
 								</tr>
 								<tr>
 									<td style="width:225px"><b>Account Deactivated On</b></td>
-									<td>@Model.Organisation.Subscription.CurrentPeriodEndDate.Value.ToLocalFormatted()</td>
+									<td>@Model.Organisation.Subscription.CurrentPeriodEndDate.ToLocalFormatted()</td>
 								</tr>
 							}
 							else
@@ -56,11 +56,11 @@
 								</tr>
 								<tr>
 									<td style="width:225px"><b>Subscription Start Date</b></td>
-									<td>@Model.Organisation.Subscription.StartDate.Value.ToLocalFormatted()</td>
+									<td>@Model.Organisation.Subscription.StartDate.ToLocalFormatted()</td>
 								</tr>
 								<tr>
 									<td style="width:225px"><b>Current Billing Period Ends</b></td>
-									<td>@Model.Organisation.Subscription.CurrentPeriodEndDate.Value.ToLocalFormatted()</td>
+									<td>@Model.Organisation.Subscription.CurrentPeriodEndDate.ToLocalFormatted()</td>
 								</tr>
 							}
 							

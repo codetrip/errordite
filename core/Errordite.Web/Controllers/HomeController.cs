@@ -84,20 +84,7 @@ namespace Errordite.Web.Controllers
 
 			foreach (var mapping in session.MasterRaven.Query<UserOrganisationMapping>())
 			{
-				mapping.Organisations = new List<string> {mapping.OrganisationId};
-
-				foreach (var organisation in session.MasterRaven.Query<Organisation>())
-				{
-					using (_session.SwitchOrg(organisation))
-					{
-						var user = _session.Raven.Query<User, Users>().FirstOrDefault(u => u.Email == mapping.EmailAddress);
-						if (user != null)
-						{
-							mapping.Password = user.Password;
-							mapping.PasswordToken = user.PasswordToken;
-						}
-					}
-				}
+				_session.MasterRaven.Delete(mapping);
 			}
 
             session.Commit();
@@ -105,27 +92,27 @@ namespace Errordite.Web.Controllers
         }
 
 		[HttpGet, ImportViewData]
-		public ActionResult Mapping()
+		public ActionResult Users()
 		{
 			var session = ObjectFactory.GetObject<IAppSession>();
+
 			var ravenInstances = session.MasterRaven.Query<RavenInstance>().ToList();
 
-			foreach (var mapping in session.MasterRaven.Query<UserOrganisationMapping>())
+			foreach (var organisation in session.MasterRaven.Query<Organisation, Organisations>())
 			{
-				mapping.Organisations = new List<string> { mapping.OrganisationId };
+				organisation.RavenInstance = ravenInstances.First(r => r.Id == organisation.RavenInstanceId);
 
-				foreach (var organisation in session.MasterRaven.Query<Organisation>())
+				using (_session.SwitchOrg(organisation))
 				{
-					organisation.RavenInstance = ravenInstances.First(r => r.Id == organisation.RavenInstanceId);
-
-					using (_session.SwitchOrg(organisation))
+					foreach (var user in _session.Raven.Query<User, Users>())
 					{
-						var user = _session.Raven.Query<User, Users>().FirstOrDefault(u => u.Email == mapping.EmailAddress);
-						if (user != null)
+						_session.MasterRaven.Store(new UserOrganisationMapping
 						{
-							mapping.Password = user.Password;
-							mapping.PasswordToken = user.PasswordToken;
-						}
+							EmailAddress = user.Email,
+							Password = user.Password,
+							PasswordToken = user.PasswordToken,
+							Organisations = new List<string> { organisation.Id}
+						});
 					}
 				}
 			}

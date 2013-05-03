@@ -28,14 +28,23 @@ using Newtonsoft.Json;
 using Raven.Abstractions.Exceptions;
 using Raven.Client;
 using Resources;
-using History = Errordite.Core.Indexing.History;
 
 namespace Errordite.Web.Controllers
 {
 	[Authorize, ValidateSubscriptionActionFilter]
     public class IssueController : ErrorditeController
 	{
-		private static int[] _frequencyHours = new[] { 1, 2, 4, 6, 12, 24 };
+		private static readonly IEnumerable<SelectListItem> _frequencyHours = new List<SelectListItem>
+		{
+			new SelectListItem {Text = "Once when the issue is created", Value = "0"},
+			new SelectListItem {Text = "Every Hour an error occurs", Value = "1"},
+			new SelectListItem {Text = "Every 3 Hours an error occurs", Value = "3"},
+			new SelectListItem {Text = "Every 6 Hours an error occurs", Value = "6"},
+			new SelectListItem {Text = "Every 12 Hours an error occurs", Value = "12"},
+			new SelectListItem {Text = "Every 24 Hours an error occurs", Value = "24"},
+			new SelectListItem {Text = "Every Week an error occurs", Value = "168"},
+		};
+
         private readonly IGetIssueQuery _getIssueQuery;
         private readonly IAdjustRulesCommand _adjustRulesCommand;
         private readonly IGetApplicationErrorsQuery _getApplicationErrorsQuery;
@@ -139,7 +148,7 @@ namespace Errordite.Web.Controllers
                 Status = issue.Status == IssueStatus.Unacknowledged ? IssueStatus.Acknowledged : issue.Status,
                 NotifyFrequencyHours = issue.NotifyFrequencyHours,
                 Reference = issue.Reference,
-				NotificationFrequencies = _frequencyHours.ToSelectList(r => r, r => "Once every {0} hour{1}".FormatWith(r, r == 1 ? "" : "s"), r => r == issue.NotifyFrequencyHours, "Once when issue is created")
+				NotificationFrequencies = _frequencyHours
             };
 
             var viewModel = new IssueViewModel
@@ -269,10 +278,12 @@ namespace Errordite.Web.Controllers
 
         public ActionResult History(string issueId)
         {
-            var issueMemoizer = new LocalMemoizer<string, Issue>(id =>
-                    _getIssueQuery.Invoke(new GetIssueRequest { CurrentUser = Core.AppContext.CurrentUser, IssueId = id }).Issue);
+            var issueMemoizer = new LocalMemoizer<string, Issue>(id => _getIssueQuery.Invoke(new GetIssueRequest
+	        {
+		        CurrentUser = Core.AppContext.CurrentUser, IssueId = id
+	        }).Issue);
 
-            var history = Core.Session.Raven.Query<HistoryDocument, History>()
+			var history = Core.Session.Raven.Query<HistoryDocument, Core.Indexing.History>()
                 .Where(h => h.IssueId == Issue.GetId(issueId))
                 .As<IssueHistory>()
                 .ToList();

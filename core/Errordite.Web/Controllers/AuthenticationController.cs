@@ -1,8 +1,10 @@
 ﻿
 using System.Web.Mvc;
+using Errordite.Core;
 using Errordite.Core.Authentication.Commands;
 using Errordite.Core.Identity;
 using Errordite.Core.Organisations.Commands;
+using Errordite.Core.Web;
 using Errordite.Web.ActionFilters;
 using Errordite.Web.Models.Authentication;
 using Errordite.Web.Extensions;
@@ -18,18 +20,21 @@ namespace Errordite.Web.Controllers
         private readonly ISetPasswordCommand _setPasswordCommand;
         private readonly IResetPasswordCommand _resetPasswordCommand;
         private readonly ICreateOrganisationCommand _createOrganisationCommand;
+	    private readonly ICookieManager _cookieManager;
 
         public AuthenticationController(IAuthenticateUserCommand authenticateUserCommand, 
             IAuthenticationManager authenticationManager, 
             ISetPasswordCommand setPasswordCommand, 
             IResetPasswordCommand resetPasswordCommand, 
-            ICreateOrganisationCommand createOrganisationCommand)
+            ICreateOrganisationCommand createOrganisationCommand, 
+			ICookieManager cookieManager)
         {
             _authenticateUserCommand = authenticateUserCommand;
             _authenticationManager = authenticationManager;
             _setPasswordCommand = setPasswordCommand;
             _resetPasswordCommand = resetPasswordCommand;
             _createOrganisationCommand = createOrganisationCommand;
+	        _cookieManager = cookieManager;
         }
 
         [HttpGet]
@@ -89,7 +94,8 @@ namespace Errordite.Web.Controllers
             var result = _authenticateUserCommand.Invoke(new AuthenticateUserRequest
             {
                 Email = viewModel.Email,
-                Password = viewModel.Password
+                Password = viewModel.Password,
+				OrganisationId = _cookieManager.Get(CoreConstants.OrganisationIdCookieKey)
             });
 
             if(result.Status != AuthenticateUserStatus.Ok)

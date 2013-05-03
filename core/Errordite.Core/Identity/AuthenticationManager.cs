@@ -3,7 +3,6 @@ using System.Web;
 using System.Web.Security;
 using Errordite.Core.Web;
 using Errordite.Core.Extensions;
-using Errordite.Core.Organisations.Commands;
 using Errordite.Core.Organisations.Queries;
 using Errordite.Core.Session;
 using Errordite.Core.Users.Queries;
@@ -15,7 +14,6 @@ namespace Errordite.Core.Identity
     {
         private readonly ICookieManager _cookieManager;
         private readonly IGetOrganisationsByEmailAddressCommand _getOrganisationsByEmailAddressCommand;
-        private readonly IGetUserByEmailAddressQuery _getUserByEmailAddressQuery;
         private readonly IAppSession _session;
 
         public AuthenticationManager(ICookieManager cookieManager, 
@@ -25,7 +23,6 @@ namespace Errordite.Core.Identity
         {
             _cookieManager = cookieManager;
             _getOrganisationsByEmailAddressCommand = getOrganisationsByEmailAddressCommand;
-            _getUserByEmailAddressQuery = getUserQuery;
             _session = session;
         }
 
@@ -127,7 +124,7 @@ namespace Errordite.Core.Identity
             {
 				Email = name,
                 HasUserProfile = true,
-                RememberMe = true,
+                RememberMe = true
             };
 
             return currentUser;

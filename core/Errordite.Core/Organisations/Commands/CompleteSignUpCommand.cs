@@ -90,7 +90,7 @@ namespace Errordite.Core.Organisations.Commands
 				},
 				_configuration.GetNotificationsQueueAddress(organisation.RavenInstanceId)));
 
-            return new CompleteSignUpResponse(organisation.Id, request.CurrentUser.Id, request.CurrentUser.Email)
+            return new CompleteSignUpResponse(organisation.Id, request.CurrentUser.Email)
             {
                 Status = CompleteSignUpStatus.Ok
             };
@@ -103,22 +103,20 @@ namespace Errordite.Core.Organisations.Commands
     public class CompleteSignUpResponse : CacheInvalidationResponseBase
     {
 	    private readonly string _organisationId;
-		private readonly string _userId;
 		private readonly string _email;
         public CompleteSignUpStatus Status { get; set; }
 
-        public CompleteSignUpResponse(string organisationId = null, string userId = null, string email = null, bool ignoreCache = false)
+        public CompleteSignUpResponse(string organisationId = null, string email = null, bool ignoreCache = false)
             : base(ignoreCache)
         {
             _organisationId = organisationId;
-            _userId = userId;
             _email = email;
         }
 
         protected override IEnumerable<CacheInvalidationItem> GetCacheInvalidationItems()
         {
             return CacheInvalidation.GetOrganisationInvalidationItems(_organisationId, _email).Union(
-                   CacheInvalidation.GetUserInvalidationItems(_organisationId, _userId, _email));
+                   CacheInvalidation.GetUserInvalidationItems(_organisationId, _email));
         }
     }
 

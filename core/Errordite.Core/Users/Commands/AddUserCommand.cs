@@ -12,6 +12,7 @@ using Errordite.Core.Notifications.Commands;
 using Errordite.Core.Notifications.EmailInfo;
 using System.Linq;
 using Errordite.Core.Extensions;
+using Errordite.Core.Organisations.Queries;
 using Errordite.Core.Session;
 using Raven.Client;
 
@@ -22,12 +23,15 @@ namespace Errordite.Core.Users.Commands
     {
         private readonly ISendNotificationCommand _sendNotificationCommand;
         private readonly IEncryptor _encryptor;
+	    private readonly IGetRavenInstancesQuery _getRavenInstancesQuery;
 
         public AddUserCommand(IEncryptor encryptor, 
-            ISendNotificationCommand sendNotificationCommand)
+            ISendNotificationCommand sendNotificationCommand, 
+			IGetRavenInstancesQuery getRavenInstancesQuery)
         {
             _encryptor = encryptor;
             _sendNotificationCommand = sendNotificationCommand;
+	        _getRavenInstancesQuery = getRavenInstancesQuery;
         }
 
         public AddUserResponse Invoke(AddUserRequest request)
@@ -70,48 +74,94 @@ namespace Errordite.Core.Users.Commands
                 };
             }
 
+			Session.SynchroniseIndexes<Indexing.Users, Indexing.Groups>();
+			Session.SynchroniseIndexes<UserOrganisationMappings>(true);
+
 			if (existingUserOrgMap != null)
 			{
-				return new AddUserResponse(true)
+				var ravenInstances = _getRavenInstancesQuery.Invoke(new GetRavenInstancesRequest()).RavenInstances;
+
+				foreach (var organisationId in existingUserOrgMap.Organisations)
 				{
-					Status = AddUserStatus.EmailExistsInAnotherOrganisation
-				};
+					var organisation = MasterLoad<Organisation>(organisationId);
+					if (organisation == null)
+					{
+						existingUserOrgMap.Organisations.Remove(organisationId);
+					}
+					else
+					{
+						organisation.RavenInstance = ravenInstances.First(r => r.Id == organisation.RavenInstanceId);
 
-				//existingUserOrgMap.Organisations.Add(request.Organisation.Id);
+						using (Session.SwitchOrg(organisation))
+						{
+							existingUser = Session.Raven.Query<User, Indexing.Users>().FirstOrDefault(u => u.Email == request.Email);
 
-				//_sendNotificationCommand.Invoke(new SendNotificationRequest
-				//{
-				//	EmailInfo = new NewUserEmailInfo
-				//	{
-				//		To = user.Email,
-				//		Token = _encryptor.Encrypt("{0}|{1}".FormatWith(user.PasswordToken.ToString(), request.Organisation.FriendlyId)).Base64Encode(),
-				//		UserName = user.FirstName
-				//	},
-				//	OrganisationId = request.Organisation.Id,
-				//	Organisation = request.Organisation
-				//});
+							if (existingUser == null)
+							{
+								existingUserOrgMap.Organisations.Remove(organisationId);
+							}
+							else
+							{
+								break;
+							}
+						}
+					}
+				}
+
+				if (existingUser != null)
+				{
+					var newUser = new User
+					{
+						Email = existingUser.Email,
+						FirstName = existingUser.FirstName,
+						LastName = existingUser.LastName,
+						Status = UserStatus.Active,
+						Role = request.Administrator ? UserRole.Administrator : UserRole.User,
+						GroupIds = request.GroupIds.Select(Group.GetId).ToList(),
+					};
+
+					Store(newUser);
+
+					existingUserOrgMap.Organisations.Add(request.Organisation.Id);
+
+					_sendNotificationCommand.Invoke(new SendNotificationRequest
+					{
+						EmailInfo = new AddedToOrganisationEmailInfo
+						{
+							To = existingUser.Email,
+							OrganisationName = request.Organisation.Name,
+							Organisation = request.Organisation,
+							OrganisationId = request.Organisation.Id,
+							UserName = newUser.FirstName
+						},
+						OrganisationId = request.Organisation.Id,
+						Organisation = request.Organisation
+					});
+
+					return new AddUserResponse(false, request.Organisation.Id)
+					{
+						Status = AddUserStatus.Ok
+					};
+				}
 			}
 
-            var user = new User
-            {
-                Email = request.Email,
-                FirstName = request.FirstName,
-                LastName = request.LastName,
-                Status = UserStatus.Inactive,
-                Role = request.Administrator ? UserRole.Administrator : UserRole.User,
-                OrganisationId = request.Organisation.Id,
-                GroupIds = request.GroupIds.Select(Group.GetId).ToList(),
-                PasswordToken = Guid.NewGuid()
-            };
+			var user = new User
+			{
+				Email = request.Email,
+				FirstName = request.FirstName,
+				LastName = request.LastName,
+				Status = UserStatus.Inactive,
+				Role = request.Administrator ? UserRole.Administrator : UserRole.User,
+				GroupIds = request.GroupIds.Select(Group.GetId).ToList(),
+			};
 
-            Store(user);
+			Store(user);
 
 			var userOrgMapping = new UserOrganisationMapping
 			{
 				EmailAddress = request.Email,
 				Organisations = new List<string> { request.Organisation.Id },
-				Password = user.Password,
-				PasswordToken = user.PasswordToken
+				PasswordToken = Guid.NewGuid()
 			};
 
 			MasterStore(userOrgMapping);
@@ -121,21 +171,17 @@ namespace Errordite.Core.Users.Commands
 				EmailInfo = new NewUserEmailInfo
 				{
 					To = user.Email,
-					Token = _encryptor.Encrypt("{0}|{1}".FormatWith(user.PasswordToken.ToString(), request.Organisation.FriendlyId)).Base64Encode(),
+					Token = _encryptor.Encrypt("{0}|{1}".FormatWith(userOrgMapping.PasswordToken.ToString(), request.Organisation.FriendlyId)).Base64Encode(),
 					UserName = user.FirstName
 				},
 				OrganisationId = request.Organisation.Id,
 				Organisation = request.Organisation
 			});
-			
 
-			Session.SynchroniseIndexes<Indexing.Users, Indexing.Groups>();
-            Session.SynchroniseIndexes<UserOrganisationMappings>(true);
-
-            return new AddUserResponse(false, request.Organisation.Id)
-            {
-                Status = AddUserStatus.Ok
-            };
+			return new AddUserResponse(false, request.Organisation.Id)
+			{
+				Status = AddUserStatus.Ok
+			};
         }
     }
 
