@@ -1,4 +1,4 @@
-﻿using System.Net;
+﻿using System;
 using System.Web.Mvc;
 using Errordite.Core.Auditing;
 using Errordite.Core.Reception.Commands;
@@ -18,22 +18,27 @@ namespace Errordite.Receive.Controllers
         [HttpPost]
         public ActionResult Index(Client.ClientError clientError)
         {
-            var response = _processIncomingException.Invoke(new ProcessIncomingExceptionRequest
-            {
-                Error = clientError
-            });
+	        try
+	        {
+				var response = _processIncomingException.Invoke(new ProcessIncomingExceptionRequest
+				{
+					Error = clientError
+				});
 
+				Response.StatusCode = response.ResponseCode.HasValue ? (int)response.ResponseCode.Value : response.SpecialResponseCode ?? 200;
 
-            Response.StatusCode = response.ResponseCode.HasValue
-                                      ? (int) response.ResponseCode.Value
-                                      : response.SpecialResponseCode ?? 200;
+				if (response.ResponseMessage.IsNotNullOrEmpty())
+				{
+					return Content(response.ResponseMessage);
+				}
 
-            if (response.ResponseMessage.IsNotNullOrEmpty())
-            {
-                return Content(response.ResponseMessage);
-            }
-
-            return Content("Received error");
+				return Content("Received error");
+	        }
+	        catch (Exception e)
+	        {
+		        Response.StatusCode = 500;
+		        return Content(e.Message);
+	        }
         }
     }
 }

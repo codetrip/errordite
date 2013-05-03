@@ -834,7 +834,7 @@ section {
     margin-top: 2px; }
   .form.double {
     display: inline;
-    width: 46%;
+    width: 40%;
     float: left; }
     .form.double .field-validation-error {
       display: block; }

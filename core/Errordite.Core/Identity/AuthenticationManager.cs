@@ -7,23 +7,24 @@ using Errordite.Core.Organisations.Commands;
 using Errordite.Core.Organisations.Queries;
 using Errordite.Core.Session;
 using Errordite.Core.Users.Queries;
+using System.Linq;
 
 namespace Errordite.Core.Identity
 {
     public class AuthenticationManager : IAuthenticationManager
     {
         private readonly ICookieManager _cookieManager;
-        private readonly IGetOrganisationByEmailAddressCommand _getOrganisationByEmailAddressCommand;
+        private readonly IGetOrganisationsByEmailAddressCommand _getOrganisationsByEmailAddressCommand;
         private readonly IGetUserByEmailAddressQuery _getUserByEmailAddressQuery;
         private readonly IAppSession _session;
 
         public AuthenticationManager(ICookieManager cookieManager, 
-            IGetOrganisationByEmailAddressCommand getOrganisationByEmailAddressCommand, 
+            IGetOrganisationsByEmailAddressCommand getOrganisationsByEmailAddressCommand, 
             IGetUserByEmailAddressQuery getUserQuery, 
             IAppSession session)
         {
             _cookieManager = cookieManager;
-            _getOrganisationByEmailAddressCommand = getOrganisationByEmailAddressCommand;
+            _getOrganisationsByEmailAddressCommand = getOrganisationsByEmailAddressCommand;
             _getUserByEmailAddressQuery = getUserQuery;
             _session = session;
         }
@@ -32,11 +33,13 @@ namespace Errordite.Core.Identity
         /// If the user changes his email address we need to update the identity cookie or we won't know
         /// who he is on the next request.
         /// </summary>
-        public void UpdateIdentity(string emailAddress)
+        public void UpdateIdentity(string emailAddress, string organisationId, string userId)
         {
             var authenticationIdentity = GetCurrentUser();
 
             authenticationIdentity.Email = emailAddress;
+	        authenticationIdentity.OrganisationId = organisationId;
+	        authenticationIdentity.UserId = userId;
 
             SetIdentityCookie(authenticationIdentity);
         }
@@ -109,32 +112,23 @@ namespace Errordite.Core.Identity
         {
             var name = HttpContext.Current.User.Identity.Name;
 
-            var organisation = _getOrganisationByEmailAddressCommand.Invoke(new GetOrganisationByEmailAddressRequest
-                {
-                    EmailAddress = name,
-                }).Organisation;
+	        if (name.IsNullOrEmpty())
+		        return SignInGuest();
 
-            if (organisation == null)
-                return SignInGuest();
-
-            _session.SetOrganisation(organisation);
-
-            var user = _getUserByEmailAddressQuery.Invoke(new GetUserByEmailAddressRequest
+            var organisations = _getOrganisationsByEmailAddressCommand.Invoke(new GetOrganisationsByEmailAddressRequest
             {
                 EmailAddress = name,
-            }).User;
+            }).Organisations;
 
-            if (user == null)
+            if (!organisations.Any())
                 return SignInGuest();
 
             var currentUser = new AuthenticationIdentity
-                {
-                    Email = user.Email,
-                    HasUserProfile = true,
-                    OrganisationId = user.OrganisationId,
-                    RememberMe = true,
-                    UserId = user.Id, //TODO get rid of all the pointless stuff here
-                };
+            {
+				Email = name,
+                HasUserProfile = true,
+                RememberMe = true,
+            };
 
             return currentUser;
         }

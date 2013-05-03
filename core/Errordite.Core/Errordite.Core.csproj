@@ -350,6 +350,7 @@
     <Compile Include="Messaging\AmazonSQSFactory.cs" />
     <Compile Include="Messaging\MessageEnvelope.cs" />
     <Compile Include="Notifications\EmailInfo\AccountSuspendedEmailInfo.cs" />
+    <Compile Include="Notifications\EmailInfo\AddedToOrganisationEmailInfo.cs" />
     <Compile Include="Notifications\EmailInfo\SubscriptionCancelledEmailInfo.cs" />
     <Compile Include="Notifications\EmailInfo\SubscriptionChangedEmailInfo.cs" />
     <Compile Include="Notifications\EmailInfo\TrialExpiredEmailInfo.cs" />
@@ -505,6 +506,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Notifications\Templates\AccountSuspendedEmailTemplate.html" />
+    <Content Include="Notifications\Templates\UserAddedToOrganisationEmailTemplate.html" />
     <Content Include="Notifications\Templates\SubscriptionChangedEmailTemplate.html" />
     <Content Include="Notifications\Templates\SubscriptionCancelledEmailTemplate.html" />
     <Content Include="Notifications\Templates\SignUpCompleteEmailTemplate.html" />

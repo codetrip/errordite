@@ -8,6 +8,6 @@ namespace Errordite.Core.Identity
         void SignOut();
         AuthenticationIdentity SignInGuest();
         AuthenticationIdentity GetCurrentUser();
-        void UpdateIdentity(string emailAddress);
+		void UpdateIdentity(string emailAddress, string organisationId, string userId);
     }
 }

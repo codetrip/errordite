@@ -233,8 +233,11 @@ namespace Errordite.Core.Session
 
             public void Dispose()
             {
-                _appSession._organisationSession.SaveChanges();
-				_appSession._organisationSession.Dispose();
+				if (_appSession._organisationSession != null)
+				{
+					_appSession._organisationSession.SaveChanges();
+					_appSession._organisationSession.Dispose();
+				}
 
                 _appSession._organisationSession = _oldSession;
                 _appSession._organisation = _oldOrganisation;

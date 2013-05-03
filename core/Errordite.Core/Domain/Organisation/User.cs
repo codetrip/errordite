@@ -27,9 +27,9 @@ namespace Errordite.Core.Domain.Organisation
         public string LastName { get; set; }
         [ProtoMember(6)]
         public string Email { get; set; }
-        [ProtoMember(7)]
+        [ProtoMember(7), Obsolete("Now on OrgasnisationUserMapping")]
         public string Password { get; set; }
-        [ProtoMember(8)]
+		[ProtoMember(8), Obsolete("Now on OrgasnisationUserMapping")]
         public Guid PasswordToken { get; set; }
         [ProtoMember(9)]
         public UserRole Role { get; set; }

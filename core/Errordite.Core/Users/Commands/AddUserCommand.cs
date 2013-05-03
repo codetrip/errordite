@@ -38,19 +38,11 @@ namespace Errordite.Core.Users.Commands
                 .Query<UserOrganisationMapping, UserOrganisationMappings>()
                 .FirstOrDefault(u => u.EmailAddress == request.Email);
 
-            //TODO: consider staleness?
-
-            if (existingUserOrgMap != null)
+            if (existingUserOrgMap != null && existingUserOrgMap.Organisations.Contains(request.Organisation.Id))
             {
-                if (existingUserOrgMap.OrganisationId == request.Organisation.Id)
-                    return new AddUserResponse(true)
-                        {
-                            Status = AddUserStatus.EmailExists,
-                        };
-                
-                return new AddUserResponse(true)
+	            return new AddUserResponse(true)
                 {
-                    Status = AddUserStatus.EmailExistsInAnotherOrganisation,
+                    Status = AddUserStatus.EmailExists,
                 };
             }
 
@@ -78,14 +70,27 @@ namespace Errordite.Core.Users.Commands
                 };
             }
 
-            var userOrgMapping = new UserOrganisationMapping
-            {
-                EmailAddress = request.Email,
-                OrganisationId = request.Organisation.Id,
-            };
+			if (existingUserOrgMap != null)
+			{
+				return new AddUserResponse(true)
+				{
+					Status = AddUserStatus.EmailExistsInAnotherOrganisation
+				};
 
-            //TODO: sync index
-            MasterStore(userOrgMapping);
+				//existingUserOrgMap.Organisations.Add(request.Organisation.Id);
+
+				//_sendNotificationCommand.Invoke(new SendNotificationRequest
+				//{
+				//	EmailInfo = new NewUserEmailInfo
+				//	{
+				//		To = user.Email,
+				//		Token = _encryptor.Encrypt("{0}|{1}".FormatWith(user.PasswordToken.ToString(), request.Organisation.FriendlyId)).Base64Encode(),
+				//		UserName = user.FirstName
+				//	},
+				//	OrganisationId = request.Organisation.Id,
+				//	Organisation = request.Organisation
+				//});
+			}
 
             var user = new User
             {
@@ -101,19 +106,30 @@ namespace Errordite.Core.Users.Commands
 
             Store(user);
 
-            _sendNotificationCommand.Invoke(new SendNotificationRequest
-            {
-                EmailInfo = new NewUserEmailInfo
-                {
-                    To = user.Email,
-                    Token = _encryptor.Encrypt("{0}|{1}".FormatWith(user.PasswordToken.ToString(), request.Organisation.FriendlyId)).Base64Encode(),
-                    UserName = user.FirstName
-                },
-                OrganisationId = request.Organisation.Id,
-                Organisation = request.Organisation
-            });
-            
-            Session.SynchroniseIndexes<Indexing.Users, Indexing.Groups>();
+			var userOrgMapping = new UserOrganisationMapping
+			{
+				EmailAddress = request.Email,
+				Organisations = new List<string> { request.Organisation.Id },
+				Password = user.Password,
+				PasswordToken = user.PasswordToken
+			};
+
+			MasterStore(userOrgMapping);
+
+			_sendNotificationCommand.Invoke(new SendNotificationRequest
+			{
+				EmailInfo = new NewUserEmailInfo
+				{
+					To = user.Email,
+					Token = _encryptor.Encrypt("{0}|{1}".FormatWith(user.PasswordToken.ToString(), request.Organisation.FriendlyId)).Base64Encode(),
+					UserName = user.FirstName
+				},
+				OrganisationId = request.Organisation.Id,
+				Organisation = request.Organisation
+			});
+			
+
+			Session.SynchroniseIndexes<Indexing.Users, Indexing.Groups>();
             Session.SynchroniseIndexes<UserOrganisationMappings>(true);
 
             return new AddUserResponse(false, request.Organisation.Id)

@@ -100,7 +100,23 @@ namespace Errordite.Core.Organisations.Commands
             organisation.RavenInstanceId = ravenInstance.Id;
 
             MasterStore(organisation);
-            MasterStore(new UserOrganisationMapping{EmailAddress = request.Email, OrganisationId = organisation.Id});
+
+			var existingUserOrgMap = Session.MasterRaven
+				.Query<UserOrganisationMapping, UserOrganisationMappings>()
+				.FirstOrDefault(u => u.EmailAddress == request.Email);
+
+			if (existingUserOrgMap != null)
+			{
+				existingUserOrgMap.Organisations.Add(organisation.Id);
+			}
+			else
+			{
+				MasterStore(new UserOrganisationMapping
+				{
+					EmailAddress = request.Email,
+					Organisations = new List<string>{ organisation.Id }
+				});
+			}
 
             organisation.ApiKey = Convert.ToBase64String(
                 Encoding.UTF8.GetBytes(
