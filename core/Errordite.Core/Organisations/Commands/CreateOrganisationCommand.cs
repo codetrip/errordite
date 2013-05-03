@@ -19,7 +19,6 @@ using Errordite.Core.Matching;
 using Errordite.Core.Messaging.Commands;
 using Errordite.Core.Organisations.Queries;
 using Errordite.Core.Session;
-using Errordite.Core.Web;
 
 namespace Errordite.Core.Organisations.Commands
 {
@@ -61,16 +60,6 @@ namespace Errordite.Core.Organisations.Commands
                 return new CreateOrganisationResponse
                 {
                     Status = CreateOrganisationStatus.OrganisationExists
-                };
-            }
-
-            var existingUserMap = Session.MasterRaven.Query<UserOrganisationMapping>().FirstOrDefault(m => m.EmailAddress == request.Email);
-
-            if (existingUserMap != null)
-            {
-                return new CreateOrganisationResponse
-                {
-                    Status = CreateOrganisationStatus.UserExists
                 };
             }
 
@@ -120,7 +109,8 @@ namespace Errordite.Core.Organisations.Commands
 					EmailAddress = request.Email,
 					Organisations = new List<string>{ organisation.Id },
 					Password = request.Password.Hash(),
-					PasswordToken = Guid.Empty
+					PasswordToken = Guid.Empty,
+					Status = UserStatus.Active,
 				});
 			}
 
@@ -145,9 +135,8 @@ namespace Errordite.Core.Organisations.Commands
                 FirstName = request.FirstName,
                 LastName = request.LastName,
                 Role = UserRole.Administrator,
-                Status = UserStatus.Active,
                 GroupIds = new List<string> { group.Id },
-                Organisation = organisation
+                ActiveOrganisation = organisation
             };
 
             Store(user);
@@ -164,26 +153,6 @@ namespace Errordite.Core.Organisations.Commands
                 NotificationGroups = new List<string> { group.Id },
                 UserId = user.Id,
             });
-
-            try
-            {
-                //TODO: leave polling to do queue creation for now but prob better to do here too
-                //create the SQS queue for this organisation
-                //_createSQSQueueCommand.Invoke(new CreateSQSQueueRequest
-                //{
-		//			QueueName = _configuration.GetReceiveQueueAddress(organisation.FriendlyId).GetQueueName()
-                //    OrganisationId = organisation.Id
-                //});
-
-                //add organisation to receive service so we can start receiving errors from the organisations queue
-                Session.ReceiveHttpClient.PostJsonAsync("Organisation", organisation);
-            }
-            catch (Exception e)
-            {
-                //dont fail the creation of org is service is not running, hope the service starts up soon 
-                //when it does it will pick up this org and start processing its errors
-                Error(e);
-            }
 
             //TODO: sync indexes
             Session.SynchroniseIndexes<Indexing.Organisations, Indexing.Users>();

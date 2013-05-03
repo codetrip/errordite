@@ -49,7 +49,7 @@ namespace Errordite.Core.Organisations.Commands
 
             var token = _encryptor.Decrypt(HttpUtility.UrlDecode(request.Reference).Base64Decode()).Split('|');
 
-            if (token[0] != request.CurrentUser.Organisation.FriendlyId)
+            if (token[0] != request.CurrentUser.ActiveOrganisation.FriendlyId)
             {
                 return new CompleteSignUpResponse(ignoreCache: true)
                 {
@@ -59,7 +59,7 @@ namespace Errordite.Core.Organisations.Commands
 
             var organisation = Session.MasterRaven
                     .Include<Organisation>(o => o.PaymentPlanId)
-					.Load<Organisation>(request.CurrentUser.Organisation.Id);
+					.Load<Organisation>(request.CurrentUser.ActiveOrganisation.Id);
 
             if (organisation == null)
             {

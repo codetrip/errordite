@@ -81,7 +81,7 @@ namespace Errordite.Web.Controllers
             var result = _addGroupCommand.Invoke(new AddGroupRequest
             {
                 Name = viewModel.Name,
-                Organisation = Core.AppContext.CurrentUser.Organisation,
+                Organisation = Core.AppContext.CurrentUser.ActiveOrganisation,
                 Users = viewModel.Users.Where(user => user.Selected).Select(user => user.Id).ToList()
             });
 

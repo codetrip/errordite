@@ -84,7 +84,7 @@ namespace Errordite.Web.Controllers
             var applications = Core.GetApplications();
             var groups = Core.GetGroups();
 
-            if (applications.PagingStatus.TotalItems >= Core.AppContext.CurrentUser.Organisation.PaymentPlan.MaximumApplications)
+            if (applications.PagingStatus.TotalItems >= Core.AppContext.CurrentUser.ActiveOrganisation.PaymentPlan.MaximumApplications)
             {
                 SetNotification(AddApplicationStatus.PlanThresholdReached, Resources.Application.ResourceManager);
                 return RedirectToAction("upgrade", "admin");
@@ -268,7 +268,7 @@ namespace Errordite.Web.Controllers
                     Version = application.Version
                 },
                 ApplicationId = application.Id,
-                Organisation = AppContext.CurrentUser.Organisation,
+                Organisation = AppContext.CurrentUser.ActiveOrganisation,
             }).ContinueWith(t =>
                 {
                     t.Result.EnsureSuccessStatusCode();

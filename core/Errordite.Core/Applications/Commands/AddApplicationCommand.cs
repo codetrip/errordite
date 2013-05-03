@@ -45,7 +45,7 @@ namespace Errordite.Core.Applications.Commands
                 .Customize(x => x.WaitForNonStaleResultsAsOfLastWrite())
                 .Take(0);
 
-            if (stats.TotalResults >= request.CurrentUser.Organisation.PaymentPlan.MaximumApplications)
+            if (stats.TotalResults >= request.CurrentUser.ActiveOrganisation.PaymentPlan.MaximumApplications)
             {
                 return new AddApplicationResponse(true)
                 {
@@ -65,7 +65,7 @@ namespace Errordite.Core.Applications.Commands
                 HipChatAuthToken = request.HipChatAuthToken,
                 TokenSalt = Membership.GeneratePassword(4, 0).Replace("|", "^"),
                 Version = request.Version,
-                TimezoneId = request.CurrentUser.Organisation.TimezoneId
+                TimezoneId = request.CurrentUser.ActiveOrganisation.TimezoneId
             };
 
             Store(application);

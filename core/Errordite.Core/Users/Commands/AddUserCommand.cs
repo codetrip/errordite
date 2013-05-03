@@ -115,9 +115,9 @@ namespace Errordite.Core.Users.Commands
 						Email = existingUser.Email,
 						FirstName = existingUser.FirstName,
 						LastName = existingUser.LastName,
-						Status = UserStatus.Active,
 						Role = request.Administrator ? UserRole.Administrator : UserRole.User,
 						GroupIds = request.GroupIds.Select(Group.GetId).ToList(),
+						Status = UserStatus.Active
 					};
 
 					Store(newUser);
@@ -138,7 +138,7 @@ namespace Errordite.Core.Users.Commands
 						Organisation = request.Organisation
 					});
 
-					return new AddUserResponse(false, request.Organisation.Id)
+					return new AddUserResponse(false, request.Organisation.Id, request.Email)
 					{
 						Status = AddUserStatus.Ok
 					};
@@ -150,9 +150,9 @@ namespace Errordite.Core.Users.Commands
 				Email = request.Email,
 				FirstName = request.FirstName,
 				LastName = request.LastName,
-				Status = UserStatus.Inactive,
 				Role = request.Administrator ? UserRole.Administrator : UserRole.User,
 				GroupIds = request.GroupIds.Select(Group.GetId).ToList(),
+				Status = UserStatus.Inactive
 			};
 
 			Store(user);
@@ -161,7 +161,8 @@ namespace Errordite.Core.Users.Commands
 			{
 				EmailAddress = request.Email,
 				Organisations = new List<string> { request.Organisation.Id },
-				PasswordToken = Guid.NewGuid()
+				PasswordToken = Guid.NewGuid(),
+				Status = UserStatus.Inactive
 			};
 
 			MasterStore(userOrgMapping);
@@ -171,7 +172,7 @@ namespace Errordite.Core.Users.Commands
 				EmailInfo = new NewUserEmailInfo
 				{
 					To = user.Email,
-					Token = _encryptor.Encrypt("{0}|{1}".FormatWith(userOrgMapping.PasswordToken.ToString(), request.Organisation.FriendlyId)).Base64Encode(),
+					Token = _encryptor.Encrypt("{0}|{1}".FormatWith(userOrgMapping.PasswordToken.ToString(), user.Email)).Base64Encode(),
 					UserName = user.FirstName
 				},
 				OrganisationId = request.Organisation.Id,
@@ -190,18 +191,20 @@ namespace Errordite.Core.Users.Commands
 
     public class AddUserResponse : CacheInvalidationResponseBase
     {
-        private readonly string _organisationId;
+		private readonly string _organisationId;
+		private readonly string _email;
         public AddUserStatus Status { get; set; }
 
-        public AddUserResponse(bool ignoreCache, string organisationId = "")
+        public AddUserResponse(bool ignoreCache, string organisationId = "", string email = null)
             : base(ignoreCache)
         {
             _organisationId = organisationId;
+	        _email = email;
         }
 
         protected override IEnumerable<CacheInvalidationItem> GetCacheInvalidationItems()
         {
-            return Caching.CacheInvalidation.GetUserInvalidationItems(_organisationId);
+			return Caching.CacheInvalidation.GetUserInvalidationItems(_organisationId, _email);
         }
     }
 

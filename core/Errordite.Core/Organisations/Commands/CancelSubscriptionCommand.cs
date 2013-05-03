@@ -33,7 +33,7 @@ namespace Errordite.Core.Organisations.Commands
         {
 			Trace("Starting...");
 
-			var organisation = Session.MasterRaven.Load<Organisation>(request.CurrentUser.Organisation.Id);
+			var organisation = Session.MasterRaven.Load<Organisation>(request.CurrentUser.ActiveOrganisation.Id);
 
 			if (organisation == null)
 			{

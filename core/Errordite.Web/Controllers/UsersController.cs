@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
 using AutoMapper;
+using Errordite.Core.Domain.Master;
 using Errordite.Core.Encryption;
 using Errordite.Core.Extensions;
 using Errordite.Core.Paging;
@@ -71,7 +72,7 @@ namespace Errordite.Web.Controllers
                 return View(ViewData.Model);
 
             var users = Core.GetUsers();
-            if (users.PagingStatus.TotalItems >= Core.AppContext.CurrentUser.Organisation.PaymentPlan.MaximumUsers)
+            if (users.PagingStatus.TotalItems >= Core.AppContext.CurrentUser.ActiveOrganisation.PaymentPlan.MaximumUsers)
             {
                 SetNotification(AddUserStatus.PlanThresholdReached, Resources.Account.ResourceManager);
                 return RedirectToAction("index", "subscription");
@@ -94,18 +95,23 @@ namespace Errordite.Web.Controllers
 
 			if(user != null)
 			{
-				_sendNotificationCommand.Invoke(new SendNotificationRequest
-				{
-					EmailInfo = new NewUserEmailInfo
-					{
-						To = user.Email,
-						Token = _encryptor.Encrypt("{0}|{1}".FormatWith(user.PasswordToken.ToString(), Core.AppContext.CurrentUser.Organisation.FriendlyId)).Base64Encode(),
-						UserName = user.FirstName
-					},
-					OrganisationId = Core.AppContext.CurrentUser.OrganisationId
-				});
+				var mapping = Core.Session.Raven.Query<UserOrganisationMapping>().FirstOrDefault(m => m.EmailAddress == user.Email);
 
-				ConfirmationNotification("A new invite has been sent to {0}".FormatWith(user.Email));
+				if (mapping != null)
+				{
+					_sendNotificationCommand.Invoke(new SendNotificationRequest
+					{
+						EmailInfo = new NewUserEmailInfo
+						{
+							To = user.Email,
+							Token = _encryptor.Encrypt("{0}|{1}".FormatWith(mapping.PasswordToken.ToString(), mapping.EmailAddress)).Base64Encode(),
+							UserName = user.FirstName
+						},
+						OrganisationId = Core.AppContext.CurrentUser.OrganisationId
+					});
+
+					ConfirmationNotification("A new invite has been sent to {0}".FormatWith(user.Email));
+				}
 			}
 			else
 			{
@@ -128,7 +134,7 @@ namespace Errordite.Web.Controllers
                 FirstName = viewModel.FirstName,
                 LastName = viewModel.LastName,
                 Administrator = viewModel.IsAdministrator,
-                Organisation = Core.AppContext.CurrentUser.Organisation,
+                Organisation = Core.AppContext.CurrentUser.ActiveOrganisation,
                 Email = viewModel.Email,
                 GroupIds = viewModel.Groups.Where(g => g.Selected).Select(g => g.Id.GetFriendlyId()).ToList(),
             });

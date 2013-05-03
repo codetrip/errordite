@@ -30,7 +30,7 @@ namespace Errordite.Core.Issues.Commands
             Trace("Starting...");
 
             var applicationId = Application.GetId(request.ApplicationId);
-            var dateTimeOffset = DateTime.UtcNow.ToDateTimeOffset(request.CurrentUser.Organisation.TimezoneId);
+            var dateTimeOffset = DateTime.UtcNow.ToDateTimeOffset(request.CurrentUser.ActiveOrganisation.TimezoneId);
 
             var issue = new Issue
             {

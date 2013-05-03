@@ -128,15 +128,15 @@ namespace Errordite.Core.Identity
 
 				if (user != null)
 				{
-					user.Organisation = organisation;
-					user.OrganisationId = organisation.Id;
+					user.ActiveOrganisation = organisation;
 					user.Organisations = organisations;
+					user.OrganisationId = organisation.Id;
 				}
             }
 
             var appContext = new AppContext();
 
-            if (user == null || user.Organisation == null || user.Organisation.Status == OrganisationStatus.Suspended)
+            if (user == null || user.ActiveOrganisation == null || user.ActiveOrganisation.Status == OrganisationStatus.Suspended)
             {
                 return CreateAnonymousUser(_authenticationManager.SignInGuest());
             }

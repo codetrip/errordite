@@ -99,7 +99,7 @@ namespace Errordite.Core.Users.Commands
 							user.FirstName = request.FirstName;
 							user.LastName = request.LastName;
 
-							if (organisation.Id == request.CurrentUser.Organisation.Id)
+							if (organisation.Id == request.CurrentUser.ActiveOrganisation.Id)
 							{
 								if (request.Administrator.HasValue && existingUser.Role != UserRole.SuperUser)
 									user.Role = request.Administrator.Value ? UserRole.Administrator : UserRole.User;
@@ -140,7 +140,7 @@ namespace Errordite.Core.Users.Commands
 
         protected override IEnumerable<CacheInvalidationItem> GetCacheInvalidationItems()
         {
-			return _cacheInvalidationItems;
+			return _cacheInvalidationItems ?? new List<CacheInvalidationItem>();
         }
     }
 

@@ -76,7 +76,7 @@ namespace Errordite.Core.Authentication.Commands
                 EmailInfo = new ResetPasswordEmailInfo
                 {
                     To = user.Email,
-                    Token = _encryptor.Encrypt("{0}|{1}".FormatWith(mapping.PasswordToken, organisation.FriendlyId)).Base64Encode(),
+					Token = _encryptor.Encrypt("{0}|{1}".FormatWith(mapping.PasswordToken, user.Email)).Base64Encode(),
                     UserName = user.FirstName
                 },
 				OrganisationId = organisation.Id

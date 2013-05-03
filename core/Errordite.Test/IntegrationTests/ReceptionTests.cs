@@ -39,16 +39,16 @@ namespace Errordite.Test.IntegrationTests
                         Password = "password"
                     });
 
-            var matchRuleFactory = Get<IMatchRuleFactoryFactory>().Create().First();
+            //var matchRuleFactory = Get<IMatchRuleFactoryFactory>().Create().First();
 
-            var appInfo = Get<IAddApplicationCommand>().Invoke(new AddApplicationRequest
-            {
-                IsActive = true,
-                MatchRuleFactoryId = matchRuleFactory.Id,
-                Name = "UnitTestApp1",
-                CurrentUser = new User { OrganisationId = orgInfo.OrganisationId },
-                UserId = orgInfo.UserId,
-            });
+			//var appInfo = Get<IAddApplicationCommand>().Invoke(new AddApplicationRequest
+			//{
+			//	IsActive = true,
+			//	MatchRuleFactoryId = matchRuleFactory.Id,
+			//	Name = "UnitTestApp1",
+			//	CurrentUser = new User { ActiveOrganisation = new Organisation { Id = orgInfo.OrganisationId } },
+			//	UserId = orgInfo.UserId,
+			//});
 
             var app = ravenSession.Query<Application, Applications>().First(a => a.OrganisationId == orgInfo.OrganisationId && a.Name == "UnitTestApp1");
 

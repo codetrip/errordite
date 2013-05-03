@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Errordite.Core.Extensions;
 using Errordite.Core.Authorisation;
+using Errordite.Core.Extensions;
 using ProtoBuf;
 using Raven.Imports.Newtonsoft.Json;
 
@@ -17,33 +17,29 @@ namespace Errordite.Core.Domain.Organisation
 
         [ProtoMember(1)]
         public string Id { get; set; }
-        [ProtoMember(2), JsonIgnore]
-        public string OrganisationId { get; set; }
-        [ProtoMember(3)]
+        [ProtoMember(2)]
         public List<string> GroupIds { get; set; }
-        [ProtoMember(4)]
+        [ProtoMember(3)]
         public string FirstName { get; set; }
-        [ProtoMember(5)]
+        [ProtoMember(4)]
         public string LastName { get; set; }
-        [ProtoMember(6)]
+        [ProtoMember(5)]
         public string Email { get; set; }
-        [ProtoMember(7), Obsolete("Now on OrgasnisationUserMapping")]
-        public string Password { get; set; }
-		[ProtoMember(8), Obsolete("Now on OrgasnisationUserMapping")]
-        public Guid PasswordToken { get; set; }
-        [ProtoMember(9)]
+        [ProtoMember(6)]
         public UserRole Role { get; set; }
-        [ProtoMember(10)]
-        public UserStatus Status { get; set; }
+        [ProtoMember(7)]
+		public UserStatus Status { get; set; }
+		[ProtoMember(8)]
+		public string OrganisationId { get; set; }
 
         [JsonIgnore]
         public string FriendlyId { get { return Id == null ? string.Empty : Id.Split('/')[1]; } }
 
-        [JsonIgnore, ProtoMember(11)]
-		public Organisation Organisation { get; set; }
-		[JsonIgnore, ProtoMember(12)]
+        [JsonIgnore, ProtoMember(8)]
+		public Organisation ActiveOrganisation { get; set; }
+		[JsonIgnore, ProtoMember(9)]
 		public List<Organisation> Organisations { get; set; }
-        [JsonIgnore, ProtoMember(13)]
+        [JsonIgnore, ProtoMember(10)]
         public List<Group> Groups { get; set; }
         [JsonIgnore]
         public string FullName

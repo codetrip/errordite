@@ -20,7 +20,6 @@ using Errordite.Web.Models.Home;
 using Errordite.Core.Extensions;
 using Errordite.Web.Extensions;
 using Raven.Client.Indexes;
-using Raven.Client.Linq;
 using System.Linq;
 
 namespace Errordite.Web.Controllers
@@ -91,6 +90,32 @@ namespace Errordite.Web.Controllers
             return Content("Done");
         }
 
+
+
+		[HttpGet, ImportViewData]
+		public ActionResult SetOrg()
+		{
+			var session = ObjectFactory.GetObject<IAppSession>();
+
+			var ravenInstances = session.MasterRaven.Query<RavenInstance>().ToList();
+
+			foreach (var organisation in session.MasterRaven.Query<Organisation, Organisations>())
+			{
+				organisation.RavenInstance = ravenInstances.First(r => r.Id == organisation.RavenInstanceId);
+
+				using (_session.SwitchOrg(organisation))
+				{
+					foreach (var user in _session.Raven.Query<User, Users>())
+					{
+						user.OrganisationId = organisation.Id;
+					}
+				}
+			}
+
+			session.Commit();
+			return Content("Done");
+		}
+
 		[HttpGet, ImportViewData]
 		public ActionResult Users()
 		{
@@ -109,8 +134,6 @@ namespace Errordite.Web.Controllers
 						_session.MasterRaven.Store(new UserOrganisationMapping
 						{
 							EmailAddress = user.Email,
-							Password = user.Password,
-							PasswordToken = user.PasswordToken,
 							Organisations = new List<string> { organisation.Id}
 						});
 					}

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Errordite.Core.Domain.Organisation;
 using ProtoBuf;
 
 namespace Errordite.Core.Domain.Master
@@ -14,9 +15,8 @@ namespace Errordite.Core.Domain.Master
 		[ProtoMember(3)]
 		public Guid PasswordToken { get; set; }
 		[ProtoMember(4)]
-        public IList<string> Organisations { get; set; }
-
-		[ProtoMember(5), Obsolete("Now stored in Organisations list to support multiple orgs per user")]
-		public string OrganisationId { get; set; }
+		public IList<string> Organisations { get; set; }
+		[ProtoMember(5)]
+		public UserStatus Status { get; set; }
     }
 }

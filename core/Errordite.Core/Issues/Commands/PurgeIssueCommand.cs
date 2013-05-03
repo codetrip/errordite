@@ -76,7 +76,7 @@ namespace Errordite.Core.Issues.Commands
 
             Store(new IssueHistory
             {
-                DateAddedUtc = DateTime.UtcNow.ToDateTimeOffset(request.CurrentUser.Organisation.TimezoneId),
+                DateAddedUtc = DateTime.UtcNow.ToDateTimeOffset(request.CurrentUser.ActiveOrganisation.TimezoneId),
                 UserId = request.CurrentUser.Id,
                 Type = HistoryItemType.ErrorsPurged,
                 IssueId = issue.Id,

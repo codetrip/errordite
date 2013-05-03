@@ -78,7 +78,7 @@ namespace Errordite.Core.Issues.Commands
                 ApplicationId = issue.ApplicationId,
                 Error = error,
                 ExistingIssueId = issue.Id,
-                Organisation = request.CurrentUser.Organisation,
+                Organisation = request.CurrentUser.ActiveOrganisation,
                 WhatIf = request.WhatIf,
             })).ToList();
 
@@ -94,7 +94,7 @@ namespace Errordite.Core.Issues.Commands
 
             Store(new IssueHistory
             {
-                DateAddedUtc = DateTime.UtcNow.ToDateTimeOffset(request.CurrentUser.Organisation.TimezoneId),
+                DateAddedUtc = DateTime.UtcNow.ToDateTimeOffset(request.CurrentUser.ActiveOrganisation.TimezoneId),
                 UserId = request.CurrentUser.Id,
                 Type = HistoryItemType.ErrorsReprocessed,
                 ReprocessingResult = response.AttachedIssueIds,
@@ -114,7 +114,7 @@ namespace Errordite.Core.Issues.Commands
                         IssueId = issue.Id,
                         OrganisationId = request.CurrentUser.OrganisationId,
                         TriggerEventUtc = DateTime.UtcNow,
-                    }, _configuration.GetEventsQueueAddress(request.CurrentUser.Organisation.RavenInstance.FriendlyId)));
+                    }, _configuration.GetEventsQueueAddress(request.CurrentUser.ActiveOrganisation.RavenInstance.FriendlyId)));
                 }
             }
             else

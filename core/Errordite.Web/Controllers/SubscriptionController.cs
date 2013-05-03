@@ -40,7 +40,7 @@ namespace Errordite.Web.Controllers
         {
             var plans = _getAvailablePaymentPlansQuery.Invoke(new GetAvailablePaymentPlansRequest()).Plans;
 
-            var currentPlan = Core.AppContext.CurrentUser.Organisation.PaymentPlan;
+            var currentPlan = Core.AppContext.CurrentUser.ActiveOrganisation.PaymentPlan;
 
             var model = new SubscriptionViewModel
             {
@@ -52,7 +52,7 @@ namespace Errordite.Web.Controllers
                     SignUp = currentPlan.IsTrial && !p.IsTrial,
                     Plan = p
                 }).ToList(),
-                Organisation = Core.AppContext.CurrentUser.Organisation
+                Organisation = Core.AppContext.CurrentUser.ActiveOrganisation
             };
 
             if (!model.Organisation.PaymentPlan.IsTrial)
@@ -143,11 +143,11 @@ namespace Errordite.Web.Controllers
 
             var model = new ChangeSubscriptionViewModel
             {
-                CurrentPlan = Core.AppContext.CurrentUser.Organisation.PaymentPlan,
+                CurrentPlan = Core.AppContext.CurrentUser.ActiveOrganisation.PaymentPlan,
                 NewPlan = newPlan,
                 NewPlanId = PaymentPlan.GetId(planId),
-				CurrentBillingPeriodEnd = Core.AppContext.CurrentUser.Organisation.Subscription.CurrentPeriodEndDate,
-                Downgrading = newPlan.Rank < Core.AppContext.CurrentUser.Organisation.PaymentPlan.Rank
+				CurrentBillingPeriodEnd = Core.AppContext.CurrentUser.ActiveOrganisation.Subscription.CurrentPeriodEndDate,
+                Downgrading = newPlan.Rank < Core.AppContext.CurrentUser.ActiveOrganisation.PaymentPlan.Rank
             };
 
             model.NewPlanName = model.NewPlan.Name;
@@ -203,7 +203,7 @@ namespace Errordite.Web.Controllers
         {
 	        var model = new CancelSubscriptionViewModel
 		    {
-			    Subscription = Core.AppContext.CurrentUser.Organisation.Subscription
+			    Subscription = Core.AppContext.CurrentUser.ActiveOrganisation.Subscription
 		    };
 
 			if (ViewData.Model != null)
@@ -249,9 +249,9 @@ namespace Errordite.Web.Controllers
 				Core.AppContext.CurrentUser.FirstName,
 				Core.AppContext.CurrentUser.LastName,
 				Core.AppContext.CurrentUser.Email,
-				Core.AppContext.CurrentUser.Organisation.Name,
+				Core.AppContext.CurrentUser.ActiveOrganisation.Name,
 				HttpUtility.UrlEncode(_encryptor.Encrypt("{0}|{1}".FormatWith(
-					Core.AppContext.CurrentUser.Organisation.FriendlyId,
+					Core.AppContext.CurrentUser.ActiveOrganisation.FriendlyId,
 					planId)).Base64Encode()));
 		}
     }
