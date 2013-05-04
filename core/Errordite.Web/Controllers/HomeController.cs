@@ -151,18 +151,22 @@ namespace Errordite.Web.Controllers
 
 			var masterDocumentStore = _storeFactory.Create(RavenInstance.Master());
 
+			Trace("Syncing Errordite Indexes");
 			IndexCreation.CreateIndexes(new CompositionContainer(
 				new AssemblyCatalog(typeof(Issues).Assembly), new ExportProvider[0]),
 				masterDocumentStore.DatabaseCommands.ForDatabase(CoreConstants.ErrorditeMasterDatabaseName),
 				masterDocumentStore.Conventions);
 
+			Trace("Done Syncing Errordite Indexes");
 			foreach (var organisation in Core.Session.MasterRaven.Query<Organisation>().GetAllItemsAsList(100))
 			{
 				organisation.RavenInstance = Core.Session.MasterRaven.Load<RavenInstance>(organisation.RavenInstanceId);
 
 				using (_session.SwitchOrg(organisation))
 				{
+					Trace("Done Syncing {0} Indexes", organisation.Name);
 					_session.BootstrapOrganisation(organisation);
+					Trace("Syncing {0} Indexes", organisation.Name);
 				}
 			}
 
