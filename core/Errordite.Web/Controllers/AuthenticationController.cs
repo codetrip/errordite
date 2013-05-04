@@ -71,6 +71,7 @@ namespace Errordite.Web.Controllers
 
             if (result.Status != SetPasswordStatus.Ok)
             {
+				ConfirmationNotification("You password has been reset successfully, please login with your new password");
                 return RedirectWithViewModel(viewModel, "password", result.Status.MapToResource(Authentication.ResourceManager));
             }
 

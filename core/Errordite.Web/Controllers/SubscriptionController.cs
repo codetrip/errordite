@@ -14,6 +14,7 @@ using Errordite.Web.Extensions;
 
 namespace Errordite.Web.Controllers
 {
+	[RoleAuthorize(UserRole.Administrator)]
     public class SubscriptionController : ErrorditeController
     {
         private readonly IGetAvailablePaymentPlansQuery _getAvailablePaymentPlansQuery;

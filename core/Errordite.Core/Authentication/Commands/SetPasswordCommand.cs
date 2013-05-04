@@ -45,7 +45,7 @@ namespace Errordite.Core.Authentication.Commands
             Guid userToken;
             if (Guid.TryParse(token[0], out userToken))
             {
-	            var email = token[0];
+	            var email = token[1];
 				var mapping = Session.MasterRaven.Query<UserOrganisationMapping>().FirstOrDefault(m => m.EmailAddress == email);
 
 				if (mapping != null)
@@ -67,10 +67,14 @@ namespace Errordite.Core.Authentication.Commands
 
 						foreach (var organisationId in mapping.Organisations)
 						{
-							var organisation = Session.MasterRaven.Load<Organisation>(organisationId);
+							var organisation = Session.MasterRaven
+								.Include<Organisation>(o => o.RavenInstanceId)
+								.Load<Organisation>(organisationId);
 
 							if (organisation != null)
 							{
+								organisation.RavenInstance = Session.MasterRaven.Load<RavenInstance>(organisation.RavenInstanceId);
+
 								using (Session.SwitchOrg(organisation))
 								{
 									var user = Session.Raven.Query<User, Indexing.Users>().FirstOrDefault(u => u.Email == mapping.EmailAddress);

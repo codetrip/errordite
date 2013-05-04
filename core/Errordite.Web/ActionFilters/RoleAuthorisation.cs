@@ -5,6 +5,7 @@ using System.Web.Security;
 using Errordite.Core.IoC;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Identity;
+using Errordite.Web.Controllers;
 using Errordite.Web.Extensions;
 
 namespace Errordite.Web.ActionFilters
@@ -25,14 +26,17 @@ namespace Errordite.Web.ActionFilters
         /// <param name="filterContext"></param>
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            var appContext = ObjectFactory.GetObject<AppContext>();
+			var controller = filterContext.Controller as ErrorditeController;
 
-            if (appContext.Impersonated)
-                return;
+			if (controller == null)
+				return;
 
-            if (appContext.CurrentUser == null || !IsUserInRole(appContext.CurrentUser.Role))
+			if (controller.Core.AppContext.CurrentUser == null || !IsUserInRole(controller.Core.AppContext.CurrentUser.Role))
             {
-				if (appContext.AuthenticationStatus == AuthenticationStatus.Authenticated)
+				controller.ErrorNotification("You are not authorised to view the requested page");
+				controller.TempData[ImportViewData.ViewDataKey] = controller.ViewData;
+
+				if (controller.Core.AppContext.AuthenticationStatus == AuthenticationStatus.Authenticated)
 				{
 					var url = new UrlHelper(filterContext.RequestContext);
 					filterContext.Result = new RedirectResult(url.Dashboard());
