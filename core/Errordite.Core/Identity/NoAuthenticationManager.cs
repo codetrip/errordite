@@ -2,12 +2,7 @@ namespace Errordite.Core.Identity
 {
     public class NoAuthenticationManager : IAuthenticationManager
     {
-        public void SignIn(string id, string name)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void SignIn(string id, string organisationId, string name)
+        public void SignIn(string email)
         {
             throw new System.NotImplementedException();
         }
@@ -26,10 +21,5 @@ namespace Errordite.Core.Identity
         {
             throw new System.NotImplementedException();
         }
-
-	    public void UpdateIdentity(string emailAddress, string organisationId, string userId)
-	    {
-		    throw new System.NotImplementedException();
-	    }
     }
 }

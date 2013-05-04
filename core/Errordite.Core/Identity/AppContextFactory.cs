@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Web;
 using Errordite.Core.Interfaces;
 using Errordite.Core.Domain.Organisation;
@@ -59,8 +60,6 @@ namespace Errordite.Core.Identity
                         var impersonatedIdentity = new AuthenticationIdentity
                         {
                             HasUserProfile = true,
-                            UserId = impersonationStatus.UserId,
-                            OrganisationId = impersonationStatus.OrganisationId,
                             Email = impersonationStatus.EmailAddress,
                         };
                         
@@ -73,7 +72,7 @@ namespace Errordite.Core.Identity
 
                         appContext = currentAuthenticationIdentity.HasUserProfile ?
                             CreateKnownUser(currentAuthenticationIdentity) :
-                            CreateAnonymousUser(currentAuthenticationIdentity);    
+                            CreateAnonymousUser();    
                     }
 
                     AppContext.AddToHttpContext(appContext);
@@ -93,34 +92,14 @@ namespace Errordite.Core.Identity
 
         private AppContext CreateKnownUser(AuthenticationIdentity authenticationIdentity)
         {
-            var organisations = _getOrganisationsByEmailAddressCommand.Invoke(new GetOrganisationsByEmailAddressRequest
+	        List<Organisation> organisations;
+			var organisation = GetActiveOrganisation(authenticationIdentity.Email, out organisations);
+
+	        if (organisation != null)
             {
-                EmailAddress = authenticationIdentity.Email,
-            }).Organisations.ToList();
-
-	        var sessionOrganisationId = _cookieManager.Get(CoreConstants.OrganisationIdCookieKey);
-
-			var organisation = sessionOrganisationId.IsNullOrEmpty() ? 
-				organisations.FirstOrDefault() : 
-				organisations.FirstOrDefault(o => o.Id == Organisation.GetId(sessionOrganisationId));
-
-			if (organisation == null)
-			{
-				_cookieManager.Set(CoreConstants.OrganisationIdCookieKey, string.Empty, DateTime.UtcNow.AddDays(-1));
-				organisation = organisations.FirstOrDefault();
-			}
-
-            User user = null;
-            if (organisation != null)
-            {
-				if (sessionOrganisationId.IsNullOrEmpty())
-				{
-					_cookieManager.Set(CoreConstants.OrganisationIdCookieKey, organisation.FriendlyId, DateTime.UtcNow.AddYears(1));
-				}
-
                 _session.SetOrganisation(organisation);
 
-				user = _getUserByEmailAddressQuery.Invoke(new GetUserByEmailAddressRequest
+				var user = _getUserByEmailAddressQuery.Invoke(new GetUserByEmailAddressRequest
 				{
 					EmailAddress = authenticationIdentity.Email,
 					OrganisationId = organisation.Id
@@ -128,35 +107,54 @@ namespace Errordite.Core.Identity
 
 				if (user != null)
 				{
+					var appContext = new AppContext();
+
 					user.ActiveOrganisation = organisation;
 					user.Organisations = organisations;
 					user.OrganisationId = organisation.Id;
+
+					appContext.Authentication = _authenticationManager;
+					appContext.CurrentUser = user;
+					appContext.AuthenticationStatus = HttpContext.Current.Request.IsAuthenticated
+						? AuthenticationStatus.Authenticated
+						: AuthenticationStatus.NotAuthenticated;
+
+					return appContext;
 				}
             }
 
-            var appContext = new AppContext();
-
-            if (user == null || user.ActiveOrganisation == null || user.ActiveOrganisation.Status == OrganisationStatus.Suspended)
-            {
-                return CreateAnonymousUser(_authenticationManager.SignInGuest());
-            }
-
-            appContext.Authentication = _authenticationManager;
-            appContext.CurrentUser = user;
-            appContext.AuthenticationStatus = HttpContext.Current.Request.IsAuthenticated
-                ? AuthenticationStatus.Authenticated
-                : AuthenticationStatus.NotAuthenticated;
-
-            return appContext;
+            return CreateAnonymousUser();
         }
 
-        private AppContext CreateAnonymousUser(AuthenticationIdentity authenticationIdentity)
+		private Organisation GetActiveOrganisation(string email, out List<Organisation> organisations)
+		{
+			organisations = _getOrganisationsByEmailAddressCommand.Invoke(new GetOrganisationsByEmailAddressRequest
+			{
+				EmailAddress = email,
+			}).Organisations.ToList();
+
+			var sessionOrganisationId = _cookieManager.Get(CoreConstants.OrganisationIdCookieKey);
+
+			var organisation = sessionOrganisationId.IsNullOrEmpty() ?
+				organisations.FirstOrDefault() :
+				organisations.FirstOrDefault(o => o.Id == Organisation.GetId(sessionOrganisationId));
+
+			if (organisation == null)
+			{
+				_cookieManager.Set(CoreConstants.OrganisationIdCookieKey, string.Empty, DateTime.UtcNow.AddDays(-1));
+				return organisations.FirstOrDefault();
+			}
+
+			_cookieManager.Set(CoreConstants.OrganisationIdCookieKey, organisation.FriendlyId, DateTime.UtcNow.AddDays(-1));
+			return organisation;
+		}
+
+        private AppContext CreateAnonymousUser()
         {
             var appContext = new AppContext
             {
                 CurrentUser = new User
                 {
-                    Id = authenticationIdentity.UserId,
                     Role = UserRole.Guest
                 },
                 AuthenticationStatus = AuthenticationStatus.Anonymous,
@@ -173,7 +171,7 @@ namespace Errordite.Core.Identity
                 var status = HttpContext.Current.Session["ImpersonationStatus"] as ImpersonationStatus;
                 if (status != null && status.ExpiryUtc < DateTime.UtcNow)
                 {
-                    StopImpersonating(true);
+                    StopImpersonating();
                     status = null;
                 }
                 return status ?? new ImpersonationStatus { Impersonating = false };
@@ -188,10 +186,10 @@ namespace Errordite.Core.Identity
 
         void IImpersonationManager.StopImpersonating()
         {
-            StopImpersonating(false);
+            StopImpersonating();
         }
 
-        private void StopImpersonating(bool expired)
+        private void StopImpersonating()
         {
             var impersonationStatus = HttpContext.Current.Session["ImpersonationStatus"] as ImpersonationStatus;
 

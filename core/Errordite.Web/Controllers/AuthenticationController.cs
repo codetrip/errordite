@@ -103,7 +103,7 @@ namespace Errordite.Web.Controllers
                 return RedirectWithViewModel(viewModel, "signin", result.Status.MapToResource(Authentication.ResourceManager));
             }
 
-            _authenticationManager.SignIn(result.UserId, result.OrganisationId, viewModel.Email);
+            _authenticationManager.SignIn(viewModel.Email);
             return Redirect(viewModel.ReturnUrl.IsNullOrEmpty() ? Url.Dashboard() : viewModel.ReturnUrl);
         }
 
@@ -161,7 +161,7 @@ namespace Errordite.Web.Controllers
                 return RedirectWithViewModel(viewModel, "signup", response.Status.MapToResource(Account.ResourceManager));
             }
 
-            _authenticationManager.SignIn(response.UserId, response.OrganisationId, viewModel.Email);
+            _authenticationManager.SignIn(viewModel.Email);
             return Redirect(Url.Dashboard());
         }
 

@@ -4,10 +4,9 @@ namespace Errordite.Core.Identity
 {
     public interface IAuthenticationManager : IWantToBeProfiled
     {
-        void SignIn(string id, string organisationId, string name);
+        void SignIn(string name);
         void SignOut();
         AuthenticationIdentity SignInGuest();
         AuthenticationIdentity GetCurrentUser();
-		void UpdateIdentity(string emailAddress, string organisationId, string userId);
     }
 }
