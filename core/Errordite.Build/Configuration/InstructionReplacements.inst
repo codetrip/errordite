@@ -27,7 +27,7 @@ In time we hope to use this for replacing values in sql files as well, but we ar
 		<RavenPort theRest="80" />
 		<SiteBaseUrl dev="http://dev-site.errordite.com" test="http://test.errordite.com" production="https://www.errordite.com" />
 		<ReceiveEndpoints dev="http://dev-receive.errordite.com" test="http://test-receive.errordite.com" production="http://internal-receive.errordite.com:8001" />
-        <InternalReceiveEndpoint dev="http://dev-receive.errordite.com/receiveerror" test="http://receive.errordite.com/receiveerror" production="http://internal-receive.errordite.com:8001/receiveerror" />
+        <InternalReceiveEndpoint dev="http://dev-receive.errordite.com/receiveerror" test="http://receive.errordite.com/receiveerror" production="http://receive.errordite.com:8001/receiveerror" />
 
 		<Domain theRest="" />
 

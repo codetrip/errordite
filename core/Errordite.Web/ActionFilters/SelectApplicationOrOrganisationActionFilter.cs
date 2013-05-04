@@ -40,15 +40,7 @@ namespace Errordite.Web.ActionFilters
 			if (orgId != null)
 			{
 				cookieManager.Set(CoreConstants.OrganisationIdCookieKey, orgId, DateTime.UtcNow.AddYears(1));
-
-				var url = new UrlHelper(filterContext.RequestContext).CurrentRequest();
-
-				if (url != null)
-				{
-					filterContext.Result = new RedirectResult(url.Replace("{0}={1}".FormatWith(
-						WebConstants.RouteValues.SetOrganisation,
-						orgId), string.Empty));
-				}
+				filterContext.Result = new RedirectResult(new UrlHelper(filterContext.RequestContext).Dashboard());
 			}
         }
     }
