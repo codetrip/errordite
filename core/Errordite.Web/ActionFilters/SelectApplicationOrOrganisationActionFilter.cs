@@ -18,12 +18,8 @@ namespace Errordite.Web.ActionFilters
             if (controller == null)
                 return;
 
-			var cookieManager = controller.CookieManager;
-
-	        if (cookieManager == null)
-				cookieManager = ObjectFactory.GetObject<ICookieManager>();
-
-            var appId = filterContext.RequestContext.HttpContext.Request.QueryString.Get(WebConstants.RouteValues.SetApplication);
+			var cookieManager = controller.CookieManager ?? ObjectFactory.GetObject<ICookieManager>();
+	        var appId = filterContext.RequestContext.HttpContext.Request.QueryString.Get(WebConstants.RouteValues.SetApplication);
 
             if (appId != null)
             {

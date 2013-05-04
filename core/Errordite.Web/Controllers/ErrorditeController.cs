@@ -109,7 +109,7 @@ namespace Errordite.Web.Controllers
             ViewData.SetNotification(UiNotification.Error(message));
         }
 
-        protected void ErrorNotification(string unencodedMessage)
+        public void ErrorNotification(string unencodedMessage)
         {
             ViewData.SetNotification(UiNotification.Error(unencodedMessage));
         }

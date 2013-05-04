@@ -117,7 +117,8 @@ namespace Errordite.Core.Users.Commands
 						LastName = existingUser.LastName,
 						Role = request.Administrator ? UserRole.Administrator : UserRole.User,
 						GroupIds = request.GroupIds.Select(Group.GetId).ToList(),
-						Status = UserStatus.Active
+						Status = UserStatus.Active,
+						OrganisationId = request.Organisation.Id
 					};
 
 					Store(newUser);
@@ -152,7 +153,8 @@ namespace Errordite.Core.Users.Commands
 				LastName = request.LastName,
 				Role = request.Administrator ? UserRole.Administrator : UserRole.User,
 				GroupIds = request.GroupIds.Select(Group.GetId).ToList(),
-				Status = UserStatus.Inactive
+				Status = UserStatus.Inactive,
+				OrganisationId = request.Organisation.Id
 			};
 
 			Store(user);

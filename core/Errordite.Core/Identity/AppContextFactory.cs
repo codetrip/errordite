@@ -145,7 +145,7 @@ namespace Errordite.Core.Identity
 				return organisations.FirstOrDefault();
 			}
 
-			_cookieManager.Set(CoreConstants.OrganisationIdCookieKey, organisation.FriendlyId, DateTime.UtcNow.AddDays(-1));
+			_cookieManager.Set(CoreConstants.OrganisationIdCookieKey, organisation.FriendlyId, DateTime.UtcNow.AddMonths(1));
 			return organisation;
 		}
 
