@@ -173,7 +173,7 @@ namespace Errordite.Web.Controllers
             if (Core.AppContext.CurrentUser.FriendlyId == viewModel.UserId.GetFriendlyId() &&
                 Core.AppContext.CurrentUser.Email.ToLowerInvariant() != viewModel.Email.ToLowerInvariant())
             {
-                _authenticationManager.SignIn(Core.AppContext.CurrentUser.Id, Core.AppContext.CurrentUser.OrganisationId, viewModel.Email);
+                _authenticationManager.SignIn(viewModel.Email);
             }
 
             if (viewModel.CurrentUser)
