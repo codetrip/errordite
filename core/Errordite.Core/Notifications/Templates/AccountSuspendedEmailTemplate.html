@@ -1,0 +1,13 @@
+﻿$(Master:EmailTemplateMasterPage)
+$(Placeholder:Subject)Errordite organisation suspended
+$(Placeholder:Body)
+
+<tr>
+    <td>
+        <p>Hi $(UserName),</p>
+	    <p>Your organisation <b>$(OrganisationName)</b> has been suspended, this is because $(SuspendedReason).</p>
+	    <p>You will no longer be billed by Errordite.</p>
+	    <p>Should you want to reactivate your account, plese contact support <a href="$(ErrorditeUrl)/contact" target="_blank">here</a>.</p>
+        <p>Sorry to see you go!</p>
+    </td>
+</tr>

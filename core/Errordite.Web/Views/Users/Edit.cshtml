@@ -1,0 +1,70 @@
+﻿@using Errordite.Web.Extensions
+@using Errordite.Web.Models.Shared
+@using Errordite.Web.Models.Users
+@model EditUserViewModel
+
+@{
+    ViewBag.Title = "Edit Details";
+}
+
+@section header
+{
+    @Html.Partial("Account/Tabs")
+}
+    
+<section class="centered">
+	<div class="content">
+		<div class="sidenav">
+			@Html.Partial("Users/UserTabs", SharedTab.Edit)
+			<div class="sidenav-content billing">
+				<div class="sidenav-tab active">
+					@using (Html.BeginForm("edit", "users", FormMethod.Post, new { id = "editUserForm" }))
+					{
+						@Html.HiddenFor(m => m.CurrentUser)
+						@Html.HiddenFor(m => m.UserId)
+						<div class="form double">
+							<ul>
+								<li>
+									@Html.LabelFor(m => m.Email, "Email")
+									@Html.TextBoxFor(m => m.Email)
+									@Html.ValidationMessageFor(m => m.Email)
+								</li>
+								<li>
+									@Html.LabelFor(m => m.FirstName, "First name")
+									@Html.TextBoxFor(m => m.FirstName)
+									@Html.ValidationMessageFor(m => m.FirstName)
+								</li>
+								<li>
+									@Html.LabelFor(m => m.LastName, "Last name")
+									@Html.TextBoxFor(m => m.LastName)
+									@Html.ValidationMessageFor(m => m.LastName)
+								</li>
+								@if (Model.IsAdministrator && !Model.CurrentUser)
+								{
+									<li class="inline">
+										@Html.CheckBoxFor(m => m.IsAdministrator) @Html.LabelFor(m => m.IsAdministrator, "User is administrator?")
+										<i data-title="Only administrators can manage your organisation (managing users, groups and applications)." class="icon-info"></i>
+									</li>
+								}
+								<li class="buttons">
+									<input type="submit" class="btn btn-medium btn-blue" value="Save" />
+									<a href="@Url.Users()" class="btn btn-grey btn-medium">Cancel</a>
+								</li>
+							</ul>
+						</div>
+						<div class="form double">
+							<ul>
+								<li class="sublist pushed-up">
+									<label>Group Membership</label>
+									<ul class="tall">
+										@Html.EditorFor(m => m.Groups)
+									</ul>
+								</li>
+							</ul>
+						</div>
+					}
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

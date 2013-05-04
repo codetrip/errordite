@@ -1,0 +1,62 @@
+﻿
+@using Errordite.Web.Extensions
+@using Errordite.Web.Models.Groups
+@using Errordite.Web.Models.Shared
+@using Errordite.Web.Models.Subscription
+@model GroupsViewModel
+           
+@{
+    ViewBag.Title = "Groups";
+}
+
+@section header
+{
+    @Html.Partial("Account/Tabs") 
+}
+
+<section id="groups" class="centered">
+	<div class="content">
+		<div class="sidenav">
+            @Html.Partial("Groups/GroupTabs", SharedTab.List)
+            <div class="sidenav-content billing">
+                <div class="sidenav-tab active">
+                    <table class="table table-bordered">
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th>Users</th>
+								<th></th>
+							</tr> 
+						</thead>      
+						<tbody>
+							@foreach (var group in Model.Groups)
+							{
+								<tr>  
+									<td style="width:75%">@group.Name</td>
+									<td>
+										<a href="@Url.Users(group.Id)">Users</a>
+									</td>  
+									<td>
+										<a href="@Url.EditGroup(group.Id)"><img src="@Url.Content("~/assets/images/edit.png")" alt="Edit this group" title="Edit this group" width="24" height="24" /></a>
+										@using (Html.BeginForm("delete", "groups", new { groupId = group.Id }, FormMethod.Post, new { style = "display:inline" }))
+										{
+											<a class="delete" href="#"><img src="@Url.Content("~/assets/images/trash.png")" alt="Delete this group" title="Delete this group" width="24" height="24" /></a>
+										}
+									</td>             
+								</tr>
+							}
+						</tbody>
+						<tfoot>
+							<tr>
+								<td colspan="3">
+									@Html.Partial("Pagination", Model.Paging)
+								</td>
+							</tr>
+						</tfoot>
+					</table>
+                </div>
+            </div>
+        </div>
+	</div>
+</section>
+

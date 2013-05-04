@@ -1,0 +1,32 @@
+﻿@using Errordite.Web.Models.Applications
+@using Errordite.Web.Models.Shared
+@model ApplicationsViewModel
+           
+@{
+    ViewBag.Title = "Applications";
+}
+
+@section header
+{
+    @Html.Partial("Account/Tabs") 
+}
+
+<section id="applications" class="centered">
+	<div class="content">
+		<div class="sidenav">
+            @Html.Partial("Applications/ApplicationTabs", SharedTab.List)
+            <div class="sidenav-content billing">
+                <div class="sidenav-tab active">
+                    @if (Model.Applications.Count > 0)
+					{
+						@Html.Partial("Applications/List")
+					}
+					else
+					{
+						<p>You have no applications.</p>
+					}
+                </div>
+            </div>
+        </div>
+	</div>
+</section>

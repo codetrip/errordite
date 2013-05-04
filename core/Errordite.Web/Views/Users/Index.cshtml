@@ -1,0 +1,34 @@
+﻿
+@using Errordite.Web.Models.Shared
+@using Errordite.Web.Models.Users
+@model UsersViewModel
+           
+@{
+    ViewBag.Title = "Users";
+}
+
+@section header
+{
+    @Html.Partial("Account/Tabs") 
+}
+
+<section id="users" class="centered">
+	<div class="content">
+		<div class="sidenav">
+            @Html.Partial("Users/UserTabs", SharedTab.List)
+            <div class="sidenav-content billing">
+                <div class="sidenav-tab active">
+					@if (Model.Users != null && Model.Users.Any())
+					{
+						@Html.Partial("Users/List", Model)
+					}
+					else
+					{
+						<p>No users were found.</p>
+					}
+                </div>
+            </div>
+        </div>
+		
+	</div>
+</section>
