@@ -34,15 +34,15 @@ namespace Errordite.Web.Controllers
 	[Authorize, ValidateSubscriptionActionFilter]
     public class IssueController : ErrorditeController
 	{
-		private static readonly IEnumerable<SelectListItem> _frequencyHours = new List<SelectListItem>
+		private static readonly IEnumerable<SelectListItem> _frequencyHours = new []
 		{
-			new SelectListItem {Text = "Once when the issue is created", Value = "0"},
-			new SelectListItem {Text = "Every Hour an error occurs", Value = "1"},
-			new SelectListItem {Text = "Every 3 Hours an error occurs", Value = "3"},
-			new SelectListItem {Text = "Every 6 Hours an error occurs", Value = "6"},
-			new SelectListItem {Text = "Every 12 Hours an error occurs", Value = "12"},
-			new SelectListItem {Text = "Every 24 Hours an error occurs", Value = "24"},
-			new SelectListItem {Text = "Every Week an error occurs", Value = "168"},
+			new SelectListItem {Text = "Never", Value = "0"},
+			new SelectListItem {Text = "Hourly", Value = new Duration(hours: 1).ToString()},
+			new SelectListItem {Text = "Every 4 hours", Value = new Duration(hours: 4).ToString()},
+			new SelectListItem {Text = "Daily", Value = new Duration(days: 1).ToString()},
+			new SelectListItem {Text = "Weekly", Value = new Duration(weeks: 1).ToString()},
+            new SelectListItem {Text = "Monthly", Value = new Duration(months: 1).ToString()},
+            new SelectListItem {Text = "Every 3 months", Value = new Duration(months: 3).ToString()},
 		};
 
         private readonly IGetIssueQuery _getIssueQuery;
@@ -146,7 +146,7 @@ namespace Errordite.Web.Controllers
                 Statuses = issue.Status.ToSelectedList(IssueResources.ResourceManager, false, issue.Status == IssueStatus.Unacknowledged ? IssueStatus.Acknowledged.ToString() : issue.Status.ToString()),
                 UserId = issue.UserId,
                 Status = issue.Status == IssueStatus.Unacknowledged ? IssueStatus.Acknowledged : issue.Status,
-                NotifyFrequencyHours = issue.NotifyFrequencyHours,
+                NotifyFrequency = issue.NotifyFrequency,
                 Reference = issue.Reference,
 				NotificationFrequencies = _frequencyHours
             };
@@ -164,7 +164,7 @@ namespace Errordite.Web.Controllers
                     TestIssue = issue.TestIssue,
                     IssueId = issue.Id,
                     Status = issue.Status,
-                    NotifyFrequencyHours = issue.NotifyFrequencyHours,
+                    NotifyFrequency = issue.NotifyFrequency,
                     Reference = issue.Reference
                 },
                 Errors = GetErrorsViewModel(postModel, paging, extraDataKeys),
@@ -384,7 +384,7 @@ namespace Errordite.Web.Controllers
                     Status = postModel.Status,
                     Name = postModel.Name,
                     CurrentUser = Core.AppContext.CurrentUser,
-                    NotifyFrequencyHours = postModel.NotifyFrequencyHours,
+                    NotifyFrequency = postModel.NotifyFrequency,
                     Reference = postModel.Reference,
                     AssignedUserId = postModel.UserId,
                     Comment = postModel.Comment,

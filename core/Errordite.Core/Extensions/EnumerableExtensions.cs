@@ -36,14 +36,77 @@ namespace Errordite.Core.Extensions
             return "({0})".FormatWith(source.Aggregate(string.Empty, (current, id) => current + ("{0}:\"{1}\" OR ".FormatWith(fieldName, id))).TrimEnd(new[] { ' ', 'O', 'R' }));
         }
 
-        public static string StringConcat<T>(this IEnumerable<T> source, Func<T, string> toString)
+        /// <summary>
+        /// Turn some sequence of stuff into a string.
+        /// </summary>
+        /// <param name="toString">How we turn some arbitrary element into a string.</param>
+        /// <param name="toStringLast">How we turn the last element into a string.  If not specified uses toString</param>
+        /// <param name="toStringFirst">How we turn the first element into a string.  If not specified uses toString</param>
+        /// <returns></returns>
+        public static string StringConcat<T>(this IEnumerable<T> source, Func<T, string> toString, Func<T, string> toStringLast = null, Func<T, string> toStringFirst = null)
         {
-            return source.Aggregate(new StringBuilder(), (acc, member) => acc.Append(toString(member)), x => x.ToString());
+            toStringLast = toStringLast ?? toString;
+            toStringFirst = toStringFirst ?? toString;
+
+            var lsource = source.ToList();
+            int total = lsource.Count;
+
+            int ii = 0;
+            return lsource.Aggregate(
+                new StringBuilder(),
+                (acc, member) =>
+                {
+                    ii++;
+                    var ret = acc.Append(ii == total
+                                             ? toStringLast(member)
+                                             : ii == 1 ? toStringFirst(member) : toString(member));
+                    return ret;
+                },
+                x => x.ToString());
         }
 
-        public static string StringConcat(this IEnumerable<string> source, string delimiter)
+        /// <summary>
+        /// Concatenates some strings.
+        /// </summary>
+        /// <param name="delimiter">What to put between the strings.</param>
+        /// <param name="trimEnd">Do we want to not put the delimiter at the end?  Defaults to false (i.e. leave trailing delimiter)</param>
+        /// <param name="lastDelimiter">Do we want a different last delimiter.  This is with respect to trim end so will appear before last element
+        /// if trimEnd; at the end otherwise.</param>
+        /// <returns></returns>
+        public static string StringConcat(this IEnumerable<string> source, string delimiter, bool trimEnd = false, string lastDelimiter = null)
         {
-            return StringConcat(source, x => x + delimiter);
+            //just deal with the special case of only one item with end trimmed as it was getting too hairy trying to 
+            //work it out otherwise!
+            if (source.Count() == 1 && trimEnd)
+                return source.First();
+
+            if (lastDelimiter == null)
+            {
+                return StringConcat(
+                    source,
+                    x => x + delimiter,
+                    trimEnd ? x => x : (Func<string, string>)null);
+            }
+            else
+            {
+                if (trimEnd)
+                {
+                    return StringConcat(
+                        source,
+                        x => delimiter + x,
+                        toStringLast: x => lastDelimiter + x,
+                        toStringFirst: x => x
+                        );
+                }
+                else
+                {
+                    return StringConcat(
+                        source,
+                        x => x + delimiter,
+                        toStringLast: x => x + lastDelimiter);
+                }
+            }
+
         }
 
         public static IEnumerable<T> OrIfNoneThen<T>(this IEnumerable<T> enumerable, params T[] ifNone)

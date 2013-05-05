@@ -96,7 +96,7 @@ namespace Errordite.Core.Issues.Commands
 			issue.Status = request.Status;
 			issue.UserId = request.AssignedUserId;
 			issue.Name = request.Name;
-			issue.NotifyFrequencyHours = request.NotifyFrequencyHours;
+			issue.NotifyFrequency = request.NotifyFrequency;
 			issue.Reference = request.Reference;
 
             if (request.Comment.IsNotNullOrEmpty())
@@ -134,7 +134,7 @@ namespace Errordite.Core.Issues.Commands
         public string IssueId { get; set; }
         public string Name { get; set; }
         public string AssignedUserId { get; set; }
-        public int NotifyFrequencyHours { get; set; }
+        public string NotifyFrequency { get; set; }
         public IssueStatus Status { get; set; }
         public string Reference { get; set; }
         public string Comment { get; set; }

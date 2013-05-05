@@ -29,6 +29,7 @@
                 </li>
                 <li>
                     @Html.LabelFor(m => m.Status, "Status")
+                    @Html.DropDownListFor(m => m.Status, Model.Statuses)
                 </li>
                 <li>
                     @Html.LabelFor(m => m.Comment, "Add Comment")
@@ -44,7 +45,7 @@
                 </li>
 	            <li>
 		            @Html.LabelFor(m => m.Status, "Notification Frequency")
-		            @Html.DropDownListFor(m => m.NotifyFrequencyHours, Model.NotificationFrequencies)
+		            @Html.DropDownListFor(m => m.NotifyFrequency, Model.NotificationFrequencies)
 		            <i data-title="Select a value here if you want to be notified whenever an instance of this issue is received, we will notify you once within within the selected timeframe if an error has been received." class="icon-info"></i>
 	            </li>
             </ul>
