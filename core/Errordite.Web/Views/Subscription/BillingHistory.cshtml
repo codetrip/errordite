@@ -1,7 +1,6 @@
 ﻿
-@using Errordite.Web.Models.Account
 @using Errordite.Web.Models.Subscription
-@model Errordite.Web.Models.Subscription.SubscriptionViewModel
+@model SubscriptionViewModel
            
 @{
     ViewBag.Title = "Billing History";
@@ -16,8 +15,8 @@
 	<div class="content">
 		<div class="sidenav">
 			@Html.Partial("Subscription/SubscriptionTabs", SubscriptionTab.BillingHistory)
-			<div class="sidenav-content billing">
-				<div class="sidenav-tab active" id="billinghistory">
+			<div class="sidenav-content">
+				<div class="sidenav-tab active">
 					You do not currently have any billing history.
 				</div>
 			</div>

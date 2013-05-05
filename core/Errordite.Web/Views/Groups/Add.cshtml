@@ -16,7 +16,7 @@
 	<div class="content">
 		<div class="sidenav">
             @Html.Partial("Groups/GroupTabs", SharedTab.Add)
-            <div class="sidenav-content billing">
+            <div class="sidenav-content">
                 <div class="sidenav-tab active">
                     @using (Html.BeginForm("add", "groups", FormMethod.Post, new {id = "addGroupForm"}))
 					{

@@ -32,7 +32,10 @@ namespace Errordite.Web.ActionFilters
 				return;
 
 			if (controller.Core.AppContext.CurrentUser == null || !IsUserInRole(controller.Core.AppContext.CurrentUser.Role))
-            {
+			{
+				if (controller.Core.AppContext.Impersonated)
+					return;
+
 				controller.ErrorNotification("You are not authorised to view the requested page");
 				controller.TempData[ImportViewData.ViewDataKey] = controller.ViewData;
 

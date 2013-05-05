@@ -20,14 +20,16 @@ namespace Errordite.Web.Controllers
         private readonly ISetPasswordCommand _setPasswordCommand;
         private readonly IResetPasswordCommand _resetPasswordCommand;
         private readonly ICreateOrganisationCommand _createOrganisationCommand;
-	    private readonly ICookieManager _cookieManager;
+		private readonly ICookieManager _cookieManager;
+		private readonly IImpersonationManager _impersonationManager;
 
         public AuthenticationController(IAuthenticateUserCommand authenticateUserCommand, 
             IAuthenticationManager authenticationManager, 
             ISetPasswordCommand setPasswordCommand, 
             IResetPasswordCommand resetPasswordCommand, 
             ICreateOrganisationCommand createOrganisationCommand, 
-			ICookieManager cookieManager)
+			ICookieManager cookieManager, 
+			IImpersonationManager impersonationManager)
         {
             _authenticateUserCommand = authenticateUserCommand;
             _authenticationManager = authenticationManager;
@@ -35,11 +37,13 @@ namespace Errordite.Web.Controllers
             _resetPasswordCommand = resetPasswordCommand;
             _createOrganisationCommand = createOrganisationCommand;
 	        _cookieManager = cookieManager;
+	        _impersonationManager = impersonationManager;
         }
 
         [HttpGet]
         public ActionResult Signout()
         {
+			_impersonationManager.StopImpersonating();
             _authenticationManager.SignOut();
             return Redirect(Url.Home());
         }
