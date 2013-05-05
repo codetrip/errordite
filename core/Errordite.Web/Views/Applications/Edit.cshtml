@@ -16,7 +16,7 @@
 	<div class="content">
 		<div class="sidenav">
             @Html.Partial("Applications/ApplicationTabs", SharedTab.Edit)
-            <div class="sidenav-content billing">
+            <div class="sidenav-content">
                 <div class="sidenav-tab active">
                     @using (Html.BeginForm("edit", "applications", FormMethod.Post, new { id = "editapplicationForm" }))
 					{

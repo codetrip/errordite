@@ -90,8 +90,6 @@ namespace Errordite.Web.Controllers
             return Content("Done");
         }
 
-
-
 		[HttpGet, ImportViewData]
 		public ActionResult SetOrg()
 		{
