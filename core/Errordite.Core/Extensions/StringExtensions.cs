@@ -142,5 +142,18 @@ namespace Errordite.Core.Extensions
             var nvc2 = HttpUtility.ParseQueryString(query2);
             return nvc1.MergeWith(nvc2).ToQueryString();
         }
+
+        public static string Quantity(this string singularForm, int qty, string irregularPluralForm = null)
+        {
+            return qty + " " + Pluralise(singularForm, qty, irregularPluralForm);
+        }
+
+        public static string Pluralise(this string singularForm, int qty, string irregularPluralForm = null)
+        {
+            if (qty == 1)
+                return singularForm;
+
+            return irregularPluralForm ?? (singularForm + "s");
+        }
     }
 }

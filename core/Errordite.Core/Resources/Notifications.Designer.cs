@@ -97,7 +97,7 @@ namespace Errordite.Core.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A new error has been received which matches a solved issue named {0}, &lt;a href=&quot;{1}/issue/{2}&quot;  target=&quot;_blank&quot;&gt;click here to view the issue&lt;/a&gt;..
+        ///   Looks up a localized string similar to {0}: recurrence of solved issue &lt;a href=&quot;{1}/issue/{2}&quot;  target=&quot;_blank&quot;&gt;{3}&lt;/a&gt;..
         /// </summary>
         internal static string SimpleMessage_SolvedIssueOccurance {
             get {

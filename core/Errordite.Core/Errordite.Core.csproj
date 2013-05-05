@@ -59,8 +59,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Errordite.Client.1.3.31.0\lib\net40\Errordite.Client.dll</HintPath>
     </Reference>
-    <Reference Include="HipChat.Net">
-      <HintPath>..\..\lib\HipChat.Net\HipChat.Net.dll</HintPath>
+    <Reference Include="HipChat.Net, Version=1.2.0.0, Culture=neutral, PublicKeyToken=85d27803db462816, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\HipChat.Net.1.2\lib\HipChat.Net.dll</HintPath>
     </Reference>
     <Reference Include="HtmlAgilityPack">
       <HintPath>..\..\lib\HtmlAgilityPack\HtmlAgilityPack.dll</HintPath>
@@ -217,6 +218,7 @@
     <Compile Include="Domain\Exceptions\ErrorditeAuthorisationException.cs" />
     <Compile Include="Domain\Organisation\Notification.cs" />
     <Compile Include="Domain\Organisation\Statistics.cs" />
+    <Compile Include="Duration.cs" />
     <Compile Include="Dynamic\AssembliesInBinDirectoryLocator.cs" />
     <Compile Include="Dynamic\DynamicCodeGeneratorHelper.cs" />
     <Compile Include="Dynamic\DynamicJsonConverter.cs" />
@@ -366,10 +368,10 @@
     <Compile Include="Notifications\Commands\SendHipChatMessageCommand.cs" />
     <Compile Include="Notifications\Commands\SendEmailCommand.cs" />
     <Compile Include="Notifications\Commands\SendNotificationsCommand.cs" />
-    <Compile Include="Notifications\EmailInfo\InstanceOfAlwaysNotifyIssueEmailInfo.cs" />
+    <Compile Include="Notifications\EmailInfo\PeriodicIssueNotificationEmailInfo.cs" />
     <Compile Include="Notifications\EmailInfo\IssueAssignedToUserEmailInfo.cs" />
     <Compile Include="Notifications\EmailInfo\IssueEmailInfoBase.cs" />
-    <Compile Include="Notifications\EmailInfo\NewInstanceofSolvedIssueEmailInfo.cs" />
+    <Compile Include="Notifications\EmailInfo\SolvedIssueRecurrenceEMailInfo.cs" />
     <Compile Include="Notifications\EmailInfo\IssueErrorCountExceededEmailInfo.cs" />
     <Compile Include="Notifications\EmailInfo\IssueErrorCountWarningEmailInfo.cs" />
     <Compile Include="Notifications\EmailInfo\NewIssueReceivedEmailInfo.cs" />
@@ -511,9 +513,9 @@
     <Content Include="Notifications\Templates\SubscriptionCancelledEmailTemplate.html" />
     <Content Include="Notifications\Templates\SignUpCompleteEmailTemplate.html" />
     <Content Include="Notifications\Templates\TrialExpiredEmailTemplate.html" />
-    <Content Include="Notifications\Templates\InstanceOfAlwaysNotifyIssueEmailTemplate.html" />
+    <Content Include="Notifications\Templates\PeriodicIssueNotificationEmailTemplate.html" />
     <Content Include="Notifications\Templates\IssueAssignedToUserEmailTemplate.html" />
-    <Content Include="Notifications\Templates\NewInstanceofSolvedIssueEmailTemplate.html" />
+    <Content Include="Notifications\Templates\SolvedIssueRecurrenceEmailTemplate.html" />
     <Content Include="Notifications\Templates\IssueErrorCountExceededEmailTemplate.html" />
     <Content Include="Notifications\Templates\IssueErrorCountWarningEmailTemplate.html" />
     <Content Include="Notifications\Templates\NewIssueReceivedEmailTemplate.html" />
