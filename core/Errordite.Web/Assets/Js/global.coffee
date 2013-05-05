@@ -41,15 +41,27 @@ class Initialisation
 				success: (data) ->
 					alert data
 				failure: ->
-                    'failed'
+					'failed'
 
 		$('body').on 'click', '[data-confirm]', (e) ->
 			e.preventDefault()
+
 			$this = $ this
-			Errordite.Confirm.show($this.data('confirm'), {
-				okCallBack: -> 
-					$this.closest('form').submit()
-				})
+			$form = $this.closest('form')
+
+			Errordite.Confirm.show $this.data('confirm'), 
+				okCallBack: =>
+					#if the name of the clicked input is needed on the server, we need to hack it into the form
+					if this.name?
+						$form.find('.input-shim').remove()
+						hiddenInput = $('<input/>')
+							.attr('name', this.name)
+							.attr('value', this.value)
+							.attr('type', 'hidden')
+							.addClass('input-shim')
+						$form.append hiddenInput
+					$form.submit() 
+				
 
 		$('body').on 'click', 'a#hide-notification', ->
 			$(this).closest('#notifications').hide('fast')
@@ -247,5 +259,5 @@ window.Initalisation = Initialisation
 window.Errordite.Spinner = new Spinner();
 
 jQuery ->
-    init = new Initialisation()
-    init.init(false)
+	init = new Initialisation()
+	init.init(false)
