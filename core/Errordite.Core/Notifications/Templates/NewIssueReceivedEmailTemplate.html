@@ -1,11 +1,11 @@
 ﻿$(Master:EmailTemplateMasterPage)
-$(Placeholder:Subject)New issue created - $(IssueName)
+$(Placeholder:Subject)$(ApplicationName): New issue $(IssueId) $(IssueName)
 $(Placeholder:Body)
 
 <tr>
     <td>
         <p>Hi,</p>
-        <p>We have received an error which resulted in the creation of a new issue named $(IssueName).</p>
+        <p>We have received an error which resulted in the creation of a new issue $(IssueId) - $(IssueName).</p>
         <p><a href="$(ErrorditeUrl)/issue/$(IssueId)" target="_blank">Click here to view the issue</a></p>
     </td>
 </tr>

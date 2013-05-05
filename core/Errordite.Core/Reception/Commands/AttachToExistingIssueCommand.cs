@@ -88,19 +88,21 @@ namespace Errordite.Core.Reception.Commands
                 Store(request.Error);
 
                 //if the matching issue is solved, send an email and set it back to Acknowledged
-				if  (issue.Status == IssueStatus.Solved || 
-					(issue.NotifyFrequencyHours > 0 && issue.LastNotified.GetValueOrDefault() < DateTime.UtcNow.AddHours(-issue.NotifyFrequencyHours)))
+				if (issue.Status == IssueStatus.Solved)
+				{
+				    issue.LastNotified = DateTime.UtcNow;
+
+				    issue.Status = IssueStatus.Acknowledged;
+				    SendNotification(issue, request.Application,
+				                     NotificationType.NotifyOnNewInstanceOfSolvedIssue
+				                     , request.Error, request.Organisation);
+				} else if ((issue.NotifyFrequency ?? "0") != "0" && issue.LastNotified.GetValueOrDefault() < DateTime.UtcNow - new Duration(issue.NotifyFrequency))
                 {
-                    SendNotification(issue, request.Application, 
-                        issue.Status == IssueStatus.Solved ?
-                        NotificationType.NotifyOnNewInstanceOfSolvedIssue :
-                        NotificationType.AlwaysNotifyOnInstanceOfIssue
-                    , request.Error, request.Organisation);
-
                     issue.LastNotified = DateTime.UtcNow;
+                    SendNotification(issue, request.Application, NotificationType.AlwaysNotifyOnInstanceOfIssue,
+                                     request.Error, request.Organisation, new Duration(issue.NotifyFrequency));
 
-                    if (issue.Status == IssueStatus.Solved)
-                        issue.Status = IssueStatus.Acknowledged;
+
                 }
             }
 
@@ -123,13 +125,13 @@ namespace Errordite.Core.Reception.Commands
             }
         }
 
-        private void SendNotification(Issue issue, Application application, NotificationType notificationType, Error instance, Organisation organisation)
+        private void SendNotification(Issue issue, Application application, NotificationType notificationType, Error instance, Organisation organisation, Duration duration = null)
         {
             _sendNotificationCommand.Invoke(new SendNotificationRequest
             {
                 OrganisationId = application.OrganisationId,
                 Groups = application.NotificationGroups ?? new List<string>(),
-                EmailInfo = issue.ToEmailInfo(notificationType, instance, application),
+                EmailInfo = issue.ToEmailInfo(notificationType, instance, application, duration),
                 Application = application,
                 Organisation = organisation
             });
