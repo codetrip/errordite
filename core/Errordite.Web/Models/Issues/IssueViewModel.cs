@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
+using Errordite.Core;
 using Errordite.Core.Domain.Error;
 using Errordite.Web.Models.Errors;
 
@@ -34,7 +35,7 @@ namespace Errordite.Web.Models.Issues
         public string UserId { get; set; }
         public string Comment { get; set; }
         public IssueStatus Status { get; set; }
-        public int NotifyFrequencyHours { get; set; }
+        public string NotifyFrequency { get; set; }
     }
 
     public class IssueDetailsViewModel : UpdateIssuePostModel

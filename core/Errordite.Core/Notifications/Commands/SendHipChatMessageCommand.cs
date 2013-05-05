@@ -15,7 +15,7 @@ namespace Errordite.Core.Notifications.Commands
         {
             if(request.HipChatRoomId > 0 && request.HipChatAuthToken.IsNotNullOrEmpty())
             {
-                HipChatClient.SendMessage(request.HipChatAuthToken, request.HipChatRoomId, "Errordite", request.Message);
+                HipChatClient.SendMessage(request.HipChatAuthToken, request.HipChatRoomId, "Errordite", request.Message, HipChatClient.BackgroundColor.red);
             }
             
             return new SendHipChatMessageResponse();

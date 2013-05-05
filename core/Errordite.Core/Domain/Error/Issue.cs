@@ -69,7 +69,7 @@ namespace Errordite.Core.Domain.Error
         [ProtoMember(13)]
         public bool TestIssue { get; set; }
         [ProtoMember(14)]
-        public int NotifyFrequencyHours { get; set; }
+        public string NotifyFrequency { get; set; }
         [ProtoMember(15)]
         public string Reference { get; set; }
         [ProtoMember(16)]

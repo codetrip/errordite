@@ -8,7 +8,7 @@ namespace Errordite.Core.Extensions
 {
     public static class IssueExtensions
     {
-        public static IssueEmailInfoBase ToEmailInfo(this Issue issue, NotificationType notificationType, Error instance, Application application)
+        public static IssueEmailInfoBase ToEmailInfo(this Issue issue, NotificationType notificationType, Error instance, Application application, Duration duration = null)
         {
             IssueEmailInfoBase emailInfo;
 
@@ -18,10 +18,13 @@ namespace Errordite.Core.Extensions
                     emailInfo = new NewIssueReceivedEmailInfo();
                     break;
                 case NotificationType.NotifyOnNewInstanceOfSolvedIssue:
-                    emailInfo = new NewInstanceOfSolvedIssueEmailInfo();
+                    emailInfo = new SolvedIssueRecurrenceEMailInfo();
                     break;
                 case NotificationType.AlwaysNotifyOnInstanceOfIssue:
-                    emailInfo = new InstanceOfAlwaysNotifyIssueEmailInfo();
+                    emailInfo = new PeriodicIssueNotificationEmailInfo()
+                        {
+                            NotificationFrequency = duration.Description,
+                        };
                     break;
                 default:
                     throw new ErrorditeUnexpectedValueException("NotificationType", notificationType.ToString());
