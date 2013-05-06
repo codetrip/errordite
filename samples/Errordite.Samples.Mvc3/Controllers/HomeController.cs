@@ -81,6 +81,11 @@ namespace Errordite.Samples.Mvc3.Controllers
                         logger.Debug("Case 6");
                         throw new ExceptionNameAlsoHavingALongNameItself("Really long and tediously boring message giving an extremely large amount of detail about the problem we saw here.  If all exceptions had a message like this would Errordite be redundant?");
                     }
+                case 7:
+                    {
+                        logger.Debug("Case 7");
+                        throw new Exception("<b>HTML in message</b><i>italics</i>");
+                    }
                 default:
                     {
                         logger.Debug("Case Default");

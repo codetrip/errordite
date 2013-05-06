@@ -79,30 +79,35 @@ jQuery ->
 				#sort by position, working backwards (this means we can modify the string starting at the right 
 				#without affecting the position required for subsequent (i.e. "earlier") matches)
 				matchInfos = _.sortBy matchInfos, (matchInfo) -> -matchInfo.start
+				
+				#todo:filter out overlaps
 
 				propValText = this.$propEl.find('.prop-val').text()
-				visualisedHtml = propValText
 
 				prevMatchInfo = null								
 
+				visualisedHtml = if matchInfos.length == 0 then _.escape propValText else propValText
+				 
+				i = 0
 				for matchInfo in matchInfos		
-					#if the previous match info overlaps with the current one at all, we will just display
-					#the portion of the current one that comes before the previous one.  This is not ideal 
-					#but at least it works for us 				
-					if !prevMatchInfo? or prevMatchInfo.start > matchInfo.end 
-						length = matchInfo.length 
-					else 
-						length = prevMatchInfo.start - matchInfo.start
+					
+					length = matchInfo.length
+					gapToPrev = if prevMatchInfo? then prevMatchInfo.start - matchInfo.end else visualisedHtml.length - matchInfo.end
 					
 					#see http://stackoverflow.com/questions/1068280/javascript-regex-multiline-flag-doesnt-work
 					#[\S\s] is a hack to allow us to match newline characters (class of characters or its negation)
-					regex = ///^([\S\s]{#{matchInfo.start}})([\S\s]{#{length}})([\S\s]*)///					
-					visualisedHtml = visualisedHtml.replace(regex, 
-							"""
-							$1<span data-rule-id='#{matchInfo.rule.counter}' 
-							class='ruletip #{if matchInfo.rule.status == 'new' then 'new-' else ''}rule-match' 
-							title='#{matchInfo.rule.description()}'>$2</span>$3
-							""") 
+					regex = ///^([\S\s]{#{matchInfo.start}})([\S\s]{#{length}})([\S\s]{#{gapToPrev}})([\S\s]*)///	
+
+					#we need to make sure we only escape each bit of the text once, so divide into chunks and process
+					#only works if we've ensured there are no overlaps
+					visualisedHtml = visualisedHtml.replace(regex, (m, beforeMatch, matchedBit, gapToPrev, prevAndAfter, offset) ->
+						first = i == 0 #i.e. first processed - last if reading left-to-right
+						last = ++i == matchInfos.length #vice versa
+						"""
+						#{if last then _.escape beforeMatch else beforeMatch}<span data-rule-id='#{matchInfo.rule.counter}' 
+						class='ruletip #{if matchInfo.rule.status == 'new' then 'new-' else ''}rule-match' 
+						title='#{matchInfo.rule.description()}'>#{_.escape(matchedBit)}</span>#{_.escape gapToPrev}#{prevAndAfter}
+						""")	
 					prevMatchInfo = matchInfo					
 				
 				this.$propEl.find('.prop-val').html(visualisedHtml)

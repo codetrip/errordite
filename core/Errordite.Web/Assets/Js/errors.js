@@ -98,7 +98,7 @@
         };
 
         ErrorProp.prototype.visualiseRules = function() {
-          var length, matchInfo, matchInfos, prevMatchInfo, propValText, regex, rule, visualisedHtml, _i, _len;
+          var gapToPrev, i, length, matchInfo, matchInfos, prevMatchInfo, propValText, regex, rule, visualisedHtml, _i, _len;
 
           if (!this.propName) {
             return null;
@@ -120,17 +120,21 @@
             return -matchInfo.start;
           });
           propValText = this.$propEl.find('.prop-val').text();
-          visualisedHtml = propValText;
           prevMatchInfo = null;
+          visualisedHtml = matchInfos.length === 0 ? _.escape(propValText) : propValText;
+          i = 0;
           for (_i = 0, _len = matchInfos.length; _i < _len; _i++) {
             matchInfo = matchInfos[_i];
-            if ((prevMatchInfo == null) || prevMatchInfo.start > matchInfo.end) {
-              length = matchInfo.length;
-            } else {
-              length = prevMatchInfo.start - matchInfo.start;
-            }
-            regex = RegExp("^([\\S\\s]{" + matchInfo.start + "})([\\S\\s]{" + length + "})([\\S\\s]*)");
-            visualisedHtml = visualisedHtml.replace(regex, "$1<span data-rule-id='" + matchInfo.rule.counter + "' \nclass='ruletip " + (matchInfo.rule.status === 'new' ? 'new-' : '') + "rule-match' \ntitle='" + (matchInfo.rule.description()) + "'>$2</span>$3");
+            length = matchInfo.length;
+            gapToPrev = prevMatchInfo != null ? prevMatchInfo.start - matchInfo.end : visualisedHtml.length - matchInfo.end;
+            regex = RegExp("^([\\S\\s]{" + matchInfo.start + "})([\\S\\s]{" + length + "})([\\S\\s]{" + gapToPrev + "})([\\S\\s]*)");
+            visualisedHtml = visualisedHtml.replace(regex, function(m, beforeMatch, matchedBit, gapToPrev, prevAndAfter, offset) {
+              var first, last;
+
+              first = i === 0;
+              last = ++i === matchInfos.length;
+              return "" + (last ? _.escape(beforeMatch) : beforeMatch) + "<span data-rule-id='" + matchInfo.rule.counter + "' \nclass='ruletip " + (matchInfo.rule.status === 'new' ? 'new-' : '') + "rule-match' \ntitle='" + (matchInfo.rule.description()) + "'>" + (_.escape(matchedBit)) + "</span>" + (_.escape(gapToPrev)) + prevAndAfter;
+            });
             prevMatchInfo = matchInfo;
           }
           return this.$propEl.find('.prop-val').html(visualisedHtml);
