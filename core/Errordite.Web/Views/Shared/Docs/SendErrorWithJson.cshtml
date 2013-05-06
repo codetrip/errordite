@@ -1,0 +1,41 @@
+﻿@using Errordite.Web.Extensions
+
+<h1>Send errors with JSON</h1>
+        
+<p>
+    Errordite can work with any language or technology.  Simply post the JSON below to
+</p>
+<p>
+    <span style="color:#729db7">https://www.errordite.com/receiveerror</span>
+</p>
+<p>
+    If you would like to create a client plug-in for your favoured technology, we'd love to <a href="@Url.Contact()">hear from you</a>.
+</p>
+
+<pre class="prettyprint">
+{
+    "Token" : &lt;string>,              //your application token, taken from Errordite
+    "MachineName" : &lt;string>,        //the machine that generated the error
+    "Url" : &lt;string>,                //the url of the request that caused the error if a webapp
+    "UserAgent" : &lt;string>,          //the user-agent from the request that caused the error if a web app
+    "TimestampUtc" : &lt;datetime>,     //the timestamp of the error (in UTC). Use ISO format yyyy-MM-dd hh:mm:ss
+    "Version" : &lt;string>,            //the version of your application when the error was raised
+    "ExceptionInfo" : {
+        "Message" : &lt;string>,        //the message of the exception
+        "Source" : &lt;string>,         //the programmatic module that threw the exception 
+                                        //(exact definition depends on technology stack)
+        "ExceptionType" : &lt;string>,  //the type of the exception
+        "StackTrace" : &lt;string>,     //the stack trace - formatting already done (i.e. indents & newlines)
+        "MethodName" : &lt;string>,     //the name of the method / function that threw the error
+        "Data" : {                  //bag of extra information
+            "PropertyName1" : &lt;string>,
+            ...
+            "PropertyName2" : &lt;string>
+        },
+        "InnerExceptionInfo" : {        //recursive definition - same as ExceptionInfo above
+            "Message" : &lt;string>
+            ...
+        }
+    }
+}
+</pre>

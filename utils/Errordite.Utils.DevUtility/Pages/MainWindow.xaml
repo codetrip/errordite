@@ -1,0 +1,48 @@
+﻿<Window x:Class="Errordite.Utils.DevUtility.Pages.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="Harmony Dev Utility" Height="725" Width="1000" Background="#D6D3CE" Icon="../Life-Saver.ico" FontSize="12">
+    <!-- Getting a reference to the task bar -->
+    <Window.TaskbarItemInfo>
+        <TaskbarItemInfo/>
+    </Window.TaskbarItemInfo>
+
+    <Window.Resources>
+        <!-- Each image has to be declared inside a DrawingImage resource. An identifier must be provided via x:Key-->
+        <DrawingImage x:Key="WarningImage">
+            <!-- The required image is declared 
+                 inside the DrawingImage.Drawing 
+                 property definition -->
+            <DrawingImage.Drawing>
+                <!-- The actual image is specified via an ImageDrawing
+                     element. Particularly the ImageSource property
+                     points to the image path whereas Rect
+                     specifies the image size-->
+                <ImageDrawing Rect="0,0,16,16" ImageSource="/WpfApplication1;component/Images/109_AllAnnotations_Warning_16x16_72.png" />
+            </DrawingImage.Drawing>
+        </DrawingImage>
+
+        <DrawingImage x:Key="OkImage">
+            <DrawingImage.Drawing>
+                <ImageDrawing Rect="0,0,16,16" ImageSource="/WpfApplication1;component/Images/109_AllAnnotations_Default_16x16_72.png" />
+            </DrawingImage.Drawing>
+        </DrawingImage>
+    </Window.Resources>
+    <Viewbox Stretch="Fill">
+        <Grid Background="WhiteSmoke">
+            <Menu Background="WhiteSmoke" Height="23" FontSize="12"  Name="menu1" Width="1000" Margin="0,2,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+                <MenuItem Name="IisManager" Header="_IIS Manager" Click="MenuItem_Click" IsCheckable="False">
+                    <MenuItem.ToolTip>
+                        <ToolTip>Manage IIS Configuration</ToolTip>
+                    </MenuItem.ToolTip>
+                </MenuItem>
+                <MenuItem Name="ServiceManager" Header="_Service Manager" Click="MenuItem_Click" IsCheckable="False">
+                    <MenuItem.ToolTip>
+                        <ToolTip>Manage Services</ToolTip>
+                    </MenuItem.ToolTip>
+                </MenuItem>
+            </Menu>
+            <Frame Source="Home.xaml" HorizontalAlignment="Left" Margin="0,25,0,0" Name="MainFrame" Width="1000" Height="700" Background="WhiteSmoke" NavigationUIVisibility="Hidden" />
+        </Grid>
+    </Viewbox>
+</Window>
