@@ -28,7 +28,7 @@
 			<ul class="tabs inner" style="margin-left:0;">
 				<li class="active">
 					<a href="#" data-val="exception" data-title="@Model.Error.ExceptionInfos.First().Type">
-						@(Model.Error.ExceptionInfos.Length == 1 ? "" :  "Outer: ")@Model.Error.ExceptionInfos.First().Type.LastElement('.')
+						@Model.Error.ExceptionInfos.First().Type.LastElement('.')
 					</a>
 				</li>
 				@{
@@ -36,6 +36,7 @@
 					foreach (var inner in Model.Error.ExceptionInfos.Skip(1))
 					{
 						count++;
+						
 						<li>
 							<a href="#" data-val="inner-@count" data-title="@inner.Type">Inner @count: @inner.Type.LastElement('.')</a>
 						</li>

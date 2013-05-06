@@ -13,7 +13,7 @@ using Errordite.Core.Messaging;
 using Errordite.Core.Session;
 using Errordite.Core.Session.Actions;
 
-namespace Errordite.Core.Reception.Commands
+namespace Errordite.Core.Receive.Commands
 {
     public class ProcessIncomingExceptionCommand : SessionAccessBase, IProcessIncomingExceptionCommand
     {
@@ -180,8 +180,8 @@ namespace Errordite.Core.Reception.Commands
         {
             var exceptionInfo = new Domain.Error.ExceptionInfo
             {
-                StackTrace = clientExceptionInfo.StackTrace.StripCss(),
-                Message = clientExceptionInfo.Message.StripCss(),
+                StackTrace = clientExceptionInfo.StackTrace.RemoveHtml(),
+                Message = clientExceptionInfo.Message.RemoveHtml(),
                 Type = clientExceptionInfo.ExceptionType,
                 ExtraData = clientExceptionInfo.Data == null ? null : clientExceptionInfo.Data.ToDictionary(kvp => kvp.Key, kvp => kvp.Value),
                 Module = clientExceptionInfo.Source,

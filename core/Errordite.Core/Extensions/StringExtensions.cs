@@ -3,16 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
+using HtmlAgilityPack;
 
 namespace Errordite.Core.Extensions
 {
     public static class StringExtensions
     {
-        private static readonly Regex StripCssRegex = new Regex(@"(.*)(\<style\>.*\<\/style\>)(.*)", RegexOptions.Compiled | RegexOptions.Multiline);
-        private static readonly Regex StripCommentsRegex = new Regex(@"(.*)(\<!.*-\>)(.*)", RegexOptions.Compiled | RegexOptions.Multiline);
+        
 
         public static int SafeParseInt(this string s)
         {
@@ -29,13 +28,14 @@ namespace Errordite.Core.Extensions
 			return parts[parts.Length - 1];
 		}
 
-        public static string StripCss(this string input)
+        public static string RemoveHtml(this string input)
         {
             if (input.IsNullOrEmpty())
                 return null;
 
-            var result = StripCssRegex.Replace(input, "$1$3");
-            return StripCommentsRegex.Replace(result, "$1$3");
+			var doc = new HtmlDocument();
+			doc.LoadHtml(input);
+			return doc.DocumentNode.InnerText;
         }
 
         public static Dictionary<string, T> ToDictionary<T>(this string s, Func<string, T> valueAction)

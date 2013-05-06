@@ -14,16 +14,6 @@ namespace Errordite.Receive.Binders
         {
             var contentType = controllerContext.HttpContext.Request.ContentType;
 
-            if (contentType.Trim().ToLowerInvariant().StartsWith("application/json", StringComparison.OrdinalIgnoreCase))
-            {
-                string requestBody = GetRequestBody(controllerContext);
-
-                if (string.IsNullOrEmpty(requestBody))
-                    return base.BindModel(controllerContext, bindingContext);
-
-                return JsonConvert.DeserializeObject<ClientError>(requestBody);
-            }
-
             if (contentType.Trim().ToLowerInvariant().StartsWith("application/xml", StringComparison.OrdinalIgnoreCase))
             {
                 string requestBody = GetRequestBody(controllerContext);
@@ -34,7 +24,12 @@ namespace Errordite.Receive.Binders
                 return DeserializeXml(requestBody);
             }
 
-            return base.BindModel(controllerContext, bindingContext);
+			var jsonBody = GetRequestBody(controllerContext);
+
+			if (string.IsNullOrEmpty(jsonBody))
+				return base.BindModel(controllerContext, bindingContext);
+
+			return JsonConvert.DeserializeObject<ClientError>(jsonBody);
         }
 
         private string GetRequestBody(ControllerContext controllerContext)

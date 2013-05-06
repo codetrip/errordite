@@ -11,10 +11,9 @@ using Errordite.Core.Domain.Error;
 using Errordite.Core.Domain.Exceptions;
 using Errordite.Core.Errors.Queries;
 using Errordite.Core.Extensions;
-using Errordite.Core.Indexing;
 using Errordite.Core.Organisations;
-using Errordite.Core.Reception.Commands;
 using System.Linq;
+using Errordite.Core.Receive.Commands;
 using Errordite.Core.Session;
 using Errordite.Core.Session.Actions;
 
