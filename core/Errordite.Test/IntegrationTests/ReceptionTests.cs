@@ -5,7 +5,7 @@ using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Indexing;
 using Errordite.Core.Matching;
 using Errordite.Core.Organisations.Commands;
-using Errordite.Core.Reception.Commands;
+using Errordite.Core.Receive.Commands;
 using Errordite.Core.Session;
 using NUnit.Framework;
 using System.Linq;

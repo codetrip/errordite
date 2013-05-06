@@ -4,7 +4,7 @@ using Errordite.Core.Interfaces;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Organisations;
 using Errordite.Core.Organisations.Queries;
-using Errordite.Core.Reception.Commands;
+using Errordite.Core.Receive.Commands;
 using Errordite.Core.Session;
 
 namespace Errordite.Core.Applications.Queries

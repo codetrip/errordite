@@ -5,13 +5,12 @@ using Errordite.Core.Extensions;
 using Errordite.Core.Interfaces;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Domain.Organisation;
-using Errordite.Core.Extensions;
 using Errordite.Core.Issues;
 using Errordite.Core.Matching;
 using Errordite.Core.Notifications.Commands;
 using Errordite.Core.Session;
 
-namespace Errordite.Core.Reception.Commands
+namespace Errordite.Core.Receive.Commands
 {
     public class AttachToNewIssueCommand : SessionAccessBase, IAttachToNewIssueCommand
     {

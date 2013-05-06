@@ -1,6 +1,6 @@
 ﻿using Errordite.Core;
 using Errordite.Core.Messaging;
-using Errordite.Core.Reception.Commands;
+using Errordite.Core.Receive.Commands;
 
 namespace Errordite.Services.Consumers
 {

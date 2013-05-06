@@ -8,7 +8,7 @@ using Errordite.Core.Issues;
 using Errordite.Core.Organisations.Queries;
 using Errordite.Core.Session;
 
-namespace Errordite.Core.Reception.Commands
+namespace Errordite.Core.Receive.Commands
 {
     public class ReceiveErrorCommand : SessionAccessBase, IReceiveErrorCommand
     {
