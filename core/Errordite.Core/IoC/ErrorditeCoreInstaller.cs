@@ -21,7 +21,7 @@ using Errordite.Core.Notifications.Rendering;
 using Errordite.Core.Notifications.Sending;
 using Errordite.Core.Extensions;
 using Errordite.Core.Paging;
-using Errordite.Core.Reception;
+using Errordite.Core.Receive;
 using Errordite.Core.Web;
 
 namespace Errordite.Core.IoC

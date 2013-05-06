@@ -11,7 +11,7 @@ using Errordite.Core.Domain;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Matching;
-using Errordite.Core.Reception.Commands;
+using Errordite.Core.Receive.Commands;
 using Errordite.Core.Web;
 using Errordite.Web.ActionFilters;
 using Errordite.Web.Extensions;

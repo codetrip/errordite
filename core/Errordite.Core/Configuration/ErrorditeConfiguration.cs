@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using Errordite.Core.Extensions;
 using Errordite.Core.IoC;
-using Errordite.Core.Reception;
+using Errordite.Core.Receive;
 
 namespace Errordite.Core.Configuration
 {

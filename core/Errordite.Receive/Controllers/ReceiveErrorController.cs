@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web.Mvc;
 using Errordite.Core.Auditing;
-using Errordite.Core.Reception.Commands;
+using Errordite.Core.Receive.Commands;
 using Errordite.Core.Extensions;
 
 namespace Errordite.Receive.Controllers
