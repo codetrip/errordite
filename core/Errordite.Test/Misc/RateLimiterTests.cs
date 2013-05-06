@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using Errordite.Core.Configuration;
-using Errordite.Core.Reception;
+using Errordite.Core.Receive;
 using NUnit.Framework;
 
 namespace Errordite.Test.Misc

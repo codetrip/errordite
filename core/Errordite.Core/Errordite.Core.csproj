@@ -434,10 +434,10 @@
     <Compile Include="Misc\OwnThreadQueueProcessor.cs" />
     <Compile Include="Raven\ShardedRavenDocumentStoreFactory.cs" />
     <Compile Include="Raven\RavenDocumentStoreFactory.cs" />
-    <Compile Include="Reception\Commands\AttachToExistingIssueCommand.cs" />
-    <Compile Include="Reception\Commands\AttachToNewIssueCommand.cs" />
-    <Compile Include="Reception\Commands\ProcessIncomingExceptionCommand.cs" />
-    <Compile Include="Reception\ExceptionRateLimiter.cs" />
+    <Compile Include="Receive\Commands\AttachToExistingIssueCommand.cs" />
+    <Compile Include="Receive\Commands\AttachToNewIssueCommand.cs" />
+    <Compile Include="Receive\Commands\ProcessIncomingExceptionCommand.cs" />
+    <Compile Include="Receive\ExceptionRateLimiter.cs" />
     <Compile Include="Redis\RedisConfiguration.cs" />
     <Compile Include="Redis\RedisSession.cs" />
     <Compile Include="Resources\CoreResources.Designer.cs">
@@ -481,7 +481,7 @@
     <Compile Include="Users\Queries\GetUsersQuery.cs" />
     <Compile Include="Users\Queries\GetUserQuery.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Reception\Commands\ReceiveErrorCommand.cs" />
+    <Compile Include="Receive\Commands\ReceiveErrorCommand.cs" />
     <Compile Include="Web\HttpClientExtensions.cs" />
     <Compile Include="Web\WebApiSettings.cs" />
     <Compile Include="Web\BaseController.cs" />

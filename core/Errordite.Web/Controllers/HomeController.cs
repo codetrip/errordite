@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition.Hosting;
+using System.Diagnostics;
+using System.Text;
 using System.Web.Mvc;
 using Errordite.Core;
 using Errordite.Core.Caching.Interfaces;
@@ -19,6 +21,8 @@ using Errordite.Web.ActionFilters;
 using Errordite.Web.Models.Home;
 using Errordite.Core.Extensions;
 using Errordite.Web.Extensions;
+using HtmlAgilityPack;
+using Raven.Client;
 using Raven.Client.Indexes;
 using System.Linq;
 
@@ -134,6 +138,71 @@ namespace Errordite.Web.Controllers
 							EmailAddress = user.Email,
 							Organisations = new List<string> { organisation.Id}
 						});
+					}
+				}
+			}
+
+			session.Commit();
+			return Content("Done");
+		}
+
+		[HttpGet, ImportViewData]
+		public ActionResult Html()
+		{
+			Server.ScriptTimeout = 7200; //timeout in 2 hours
+
+			var session = ObjectFactory.GetObject<IAppSession>();
+
+			var ravenInstances = session.MasterRaven.Query<RavenInstance>().ToList();
+
+			foreach (var organisation in session.MasterRaven.Query<Organisation, Organisations>())
+			{
+				organisation.RavenInstance = ravenInstances.First(r => r.Id == organisation.RavenInstanceId);
+
+				using (_session.SwitchOrg(organisation))
+				{
+					RavenQueryStatistics stats;
+
+					foreach(var error in _session.Raven.Query<Core.Domain.Error.Error, Errors>().Statistics(out stats)
+						.Skip(0)
+						.Take(25)
+						.As<Core.Domain.Error.Error>()
+						.ToList())
+					{
+						Trace("Processing Error:={0}", error.Id);
+						foreach (var info in error.ExceptionInfos)
+						{
+							info.Message = info.Message.RemoveHtml();
+							info.StackTrace = info.StackTrace.RemoveHtml();
+						}
+					}
+
+					_session.Commit();
+					_session.Close();
+
+					if (stats.TotalResults > 25)
+					{
+						int pageNumber = stats.TotalResults / 25;
+
+						for (int i = 1; i < pageNumber; i++)
+						{
+							foreach(var error in _session.Raven.Query<Core.Domain.Error.Error, Errors>()
+								.Skip(i * 25)
+								.Take(25)
+								.As<Core.Domain.Error.Error>())
+							{
+								Trace("Processing Error:={0}", error.Id);
+
+								foreach (var info in error.ExceptionInfos)
+								{
+									info.Message = info.Message.RemoveHtml();
+									info.StackTrace = info.StackTrace.RemoveHtml();
+								}
+							}
+
+							_session.Commit();
+							_session.Close();
+						}
 					}
 				}
 			}

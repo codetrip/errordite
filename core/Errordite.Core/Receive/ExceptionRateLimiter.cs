@@ -1,10 +1,9 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Errordite.Core.Configuration;
 using System.Linq;
 
-namespace Errordite.Core.Reception
+namespace Errordite.Core.Receive
 {
     public class RateLimiterRule
     {

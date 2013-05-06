@@ -7,7 +7,7 @@ using Castle.Windsor;
 using Errordite.Core.IoC;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Organisations.Commands;
-using Errordite.Core.Reception.Commands;
+using Errordite.Core.Receive.Commands;
 using NUnit.Framework;
 using Raven.Client;
 using System.Linq;

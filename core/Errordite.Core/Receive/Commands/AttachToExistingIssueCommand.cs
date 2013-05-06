@@ -9,7 +9,7 @@ using Errordite.Core.Errors.Commands;
 using Errordite.Core.Notifications.Commands;
 using Errordite.Core.Session;
 
-namespace Errordite.Core.Reception.Commands
+namespace Errordite.Core.Receive.Commands
 {
     public class AttachToExistingIssueCommand : SessionAccessBase, IAttachToExistingIssueCommand
     {
