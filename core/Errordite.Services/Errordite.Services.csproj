@@ -55,6 +55,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Errordite.Client.1.3.31.0\lib\net40\Errordite.Client.dll</HintPath>
     </Reference>
+    <Reference Include="HipChat.Net, Version=1.2.0.0, Culture=neutral, PublicKeyToken=85d27803db462816, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\HipChat.Net.1.2\lib\HipChat.Net.dll</HintPath>
+    </Reference>
     <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>

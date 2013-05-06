@@ -19,7 +19,8 @@ namespace Errordite.Services.Consumers
             {
                 HipChatRoomId = message.HipChatRoomId,
                 HipChatAuthToken = message.HipChatAuthToken,
-                Message = message.Message
+                Message = message.Message,
+                Colour = message.Colour,
             });
         }
     }
