@@ -113,7 +113,8 @@ namespace Errordite.Core.Notifications.Commands
                 {
                     HipChatRoomId = request.Application.HipChatRoomId.Value,
                     HipChatAuthToken = request.Application.HipChatAuthToken,
-                    Message = request.EmailInfo.ConvertToSimpleMessage(_configuration)
+                    Message = request.EmailInfo.ConvertToSimpleMessage(_configuration),
+                    Colour = request.EmailInfo.HipChatColour,
                 });
             }
             else
@@ -122,7 +123,8 @@ namespace Errordite.Core.Notifications.Commands
                 {
                     HipChatRoomId = request.Application.HipChatRoomId.Value,
                     HipChatAuthToken = request.Application.HipChatAuthToken,
-                    Message = request.EmailInfo.ConvertToSimpleMessage(_configuration)
+                    Message = request.EmailInfo.ConvertToSimpleMessage(_configuration),
+                    Colour = request.EmailInfo.HipChatColour,
                 };
 
                 Session.AddCommitAction(new SendMessageCommitAction(hipChatMessage,

@@ -1,6 +1,7 @@
 ﻿using System;
 using Errordite.Core.Configuration;
 using Errordite.Core.Messaging;
+using HipChat;
 
 namespace Errordite.Core.Notifications.EmailInfo
 {
@@ -17,6 +18,8 @@ namespace Errordite.Core.Notifications.EmailInfo
         {
             get { return DateTime.UtcNow.Year.ToString(); }
         }
+
+        public virtual HipChatClient.BackgroundColor? HipChatColour { get { return null; } }
 
         public virtual string ConvertToSimpleMessage(ErrorditeConfiguration configuration)
         {

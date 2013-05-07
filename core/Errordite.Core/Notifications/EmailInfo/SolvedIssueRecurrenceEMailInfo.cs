@@ -1,4 +1,5 @@
 ﻿using Errordite.Core.Configuration;
+using HipChat;
 
 namespace Errordite.Core.Notifications.EmailInfo
 {
@@ -10,6 +11,14 @@ namespace Errordite.Core.Notifications.EmailInfo
                 @"<b>{0}:</b> solved issue <a href=""{1}/issue/{2}""  target=""_blank"">{2}: {3}</a> has recurred",
                 ApplicationName, configuration.SiteBaseUrl, IssueId, IssueName
                 );
+        }
+
+        public override HipChatClient.BackgroundColor? HipChatColour
+        {
+            get
+            {
+                return HipChatClient.BackgroundColor.red;
+            }
         }
     }
 }
