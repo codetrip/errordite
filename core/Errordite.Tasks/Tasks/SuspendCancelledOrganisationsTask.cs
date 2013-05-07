@@ -1,6 +1,5 @@
 ﻿using System;
 using Errordite.Core;
-using Errordite.Core.Configuration;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Indexing;
 using Errordite.Core.Organisations.Commands;
@@ -11,18 +10,15 @@ using System.Linq;
 
 namespace Errordite.Tasks.Tasks
 {
-	public class TrialExpirationEmailSender : ComponentBase, ITask
+	public class SuspendCancelledOrganisationsTask : ComponentBase, ITask
 	{
 		private readonly IAppSession _session;
-		private readonly ErrorditeConfiguration _configuration;
 	    private readonly ISuspendOrganisationCommand _suspendOrganisationCommand;
 
-		public TrialExpirationEmailSender(IAppSession session, 
-			ErrorditeConfiguration configuration, 
+		public SuspendCancelledOrganisationsTask(IAppSession session, 
             ISuspendOrganisationCommand suspendOrganisationCommand)
 		{
 			_session = session;
-			_configuration = configuration;
 		    _suspendOrganisationCommand = suspendOrganisationCommand;
 		}
 
@@ -43,7 +39,8 @@ namespace Errordite.Tasks.Tasks
 				    _suspendOrganisationCommand.Invoke(new SuspendOrganisationRequest
 				    {
 				        Reason = SuspendedReason.SubscriptionCancelled,
-				        OrganisationId = organisation.Id
+				        OrganisationId = organisation.Id,
+						Message = "Subscription cancelled by user"
 				    });
 				}
 			}

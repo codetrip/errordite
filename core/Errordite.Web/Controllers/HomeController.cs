@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition.Hosting;
-using System.Diagnostics;
-using System.Text;
 using System.Web.Mvc;
 using Errordite.Core;
 using Errordite.Core.Caching.Interfaces;
@@ -21,7 +19,6 @@ using Errordite.Web.ActionFilters;
 using Errordite.Web.Models.Home;
 using Errordite.Core.Extensions;
 using Errordite.Web.Extensions;
-using HtmlAgilityPack;
 using Raven.Client;
 using Raven.Client.Indexes;
 using System.Linq;
@@ -39,59 +36,6 @@ namespace Errordite.Web.Controllers
 	        _configuration = configuration;
 	        _storeFactory = storeFactory;
 	        _session = session;
-        }
-
-	    [HttpGet, ImportViewData]
-        public ActionResult Test()
-        {
-	        var session = ObjectFactory.GetObject<IAppSession>();
-
-			foreach (var plan in session.MasterRaven.Query<PaymentPlan>())
-			{
-				if(plan.IsTrial)
-					continue;
-
-				if (plan.Name.ToLowerInvariant() == "small")
-				{
-					plan.SignUpUrl = "https://code-trip-ltd.chargify.com/h/1182474/subscriptions/new";
-					plan.MaximumUsers = 5;
-                    plan.MaximumApplications = 2;
-                    plan.Price = 19.00m;
-				}
-				else if (plan.Name.ToLowerInvariant() == "medium")
-				{
-                    plan.SignUpUrl = "https://code-trip-ltd.chargify.com/h/1182475/subscriptions/new";
-                    plan.Price = 79.00m;
-				}
-				else if (plan.Name.ToLowerInvariant() == "large")
-				{
-					plan.SignUpUrl = "https://code-trip-ltd.chargify.com/h/1182476/subscriptions/new";
-					plan.MaximumUsers = 100;
-					plan.MaximumApplications = 25;
-				    plan.Price = 199.00m;
-				}
-			}
-
-			foreach (var organisation in session.MasterRaven.Query<Organisation>())
-			{
-				var date = DateTime.UtcNow.ToDateTimeOffset(organisation.TimezoneId);
-				organisation.Subscription = new Subscription
-				{
-					Status = SubscriptionStatus.Trial,
-					StartDate = date,
-					LastModified = date,
-					CurrentPeriodEndDate = date.AddMonths(1),
-				};
-				organisation.PaymentPlanId = "PaymentPlans/1";
-			}
-
-			foreach (var mapping in session.MasterRaven.Query<UserOrganisationMapping>())
-			{
-				_session.MasterRaven.Delete(mapping);
-			}
-
-            session.Commit();
-            return Content("Done");
         }
 
 		[HttpGet, ImportViewData]

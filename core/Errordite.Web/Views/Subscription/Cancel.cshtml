@@ -20,7 +20,20 @@
                 <div class="sidenav-tab active">
 					@if (Model.Subscription.Status == SubscriptionStatus.Trial)
 					{
-						<p>You are not currently signup to a paid subscription</p>
+						<p>
+							You can cancel your Errordite trial at any time from this screen. All you data will be removed from our
+							systems in 15 days time, should you want to reactivate your trial please contact us within 15 days to do so.
+						</p>
+						using (Html.BeginForm("canceltrial", "subscription", FormMethod.Post, new {id = "canceltrial"}))
+						{
+							<div class="form">
+								<ul>
+									<li class="buttons">
+										<input class="btn btn-medium btn-blue" data-confirm="Are you sure you want to cancel your trial, this action can only be undone by contacting support for assistance?" type="submit" value="Cancel Trial" />
+									</li>
+								</ul>
+							</div>
+						}
 					}
 					else
 					{
