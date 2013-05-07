@@ -1,4 +1,5 @@
 ﻿using Errordite.Core.Configuration;
+using HipChat;
 
 namespace Errordite.Core.Notifications.EmailInfo
 {
@@ -13,5 +14,13 @@ namespace Errordite.Core.Notifications.EmailInfo
         }
 
         public string NotificationFrequency { get; set; }
+
+        public override HipChatClient.BackgroundColor? HipChatColour
+        {
+            get
+            {
+                return HipChatClient.BackgroundColor.purple;
+            }
+        }
     }
 }

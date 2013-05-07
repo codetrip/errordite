@@ -14,8 +14,11 @@ namespace Errordite.Core.Notifications.Commands
         public SendHipChatMessageResponse Invoke(SendHipChatMessageRequest request)
         {
             if(request.HipChatRoomId > 0 && request.HipChatAuthToken.IsNotNullOrEmpty())
-            {
-                HipChatClient.SendMessage(request.HipChatAuthToken, request.HipChatRoomId, "Errordite", request.Message, HipChatClient.BackgroundColor.red);
+            { 
+                if (request.Colour.HasValue)
+                    HipChatClient.SendMessage(request.HipChatAuthToken, request.HipChatRoomId, "Errordite", request.Message, request.Colour.Value);
+                else
+                    HipChatClient.SendMessage(request.HipChatAuthToken, request.HipChatRoomId, "Errordite", request.Message);
             }
             
             return new SendHipChatMessageResponse();
@@ -30,6 +33,7 @@ namespace Errordite.Core.Notifications.Commands
         public string Message { get; set; }
         public int HipChatRoomId { get; set; }
         public string HipChatAuthToken { get; set; }
+        public HipChatClient.BackgroundColor? Colour { get; set; }
     }
 
     public class SendHipChatMessageResponse
