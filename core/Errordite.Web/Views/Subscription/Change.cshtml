@@ -1,0 +1,50 @@
+﻿
+@using System.Globalization
+@using Errordite.Web.Models.Subscription
+@using Errordite.Core.Extensions
+@model ChangeSubscriptionViewModel
+           
+@{
+    ViewBag.Title = "Change Subsciption";
+}
+
+@section header
+{
+    @Html.Partial("Account/Tabs") 
+}
+
+<section class="centered">
+    <div class="content">
+        <div class="sidenav">
+            @Html.Partial("Subscription/SubscriptionTabs", SubscriptionTab.Change)
+            <div class="sidenav-content">
+                <div class="sidenav-tab active">
+	                <p>
+		                You have opted to change your subscriptipn from the <b>@Model.CurrentPlan.Name</b> plan to the <b>@Model.NewPlan.Name</b> plan. 
+		                You new monthly subscription bill will be <b>@string.Format(CultureInfo.GetCultureInfo(1033), "{0:C}", Model.NewPlan.Price)</b>. 
+	                </p>
+	                <p>
+		                We will process your subscription change immediately, 
+		                however you will not pay the new subscription price until the end of your current billing period, @Model.CurrentBillingPeriodEnd.ToLocalFormatted()
+	                </p>
+					@using (Html.BeginForm("changesubscription", "subscription", FormMethod.Post, new {id = "change"}))
+					{
+						@Html.HiddenFor(m => m.NewPlanId)
+                        @Html.HiddenFor(m => m.NewPlanName)
+                        @Html.HiddenFor(m => m.OldPlanName)
+                        @Html.HiddenFor(m => m.Downgrading)
+						<div class="form">
+							<ul>
+								<li class="buttons">
+									<input class="btn btn-medium btn-blue" data-confirm="Are you sure you want to change your subscription?" type="submit" value="Change Subscription" />
+								</li>
+							</ul>
+						</div>
+					}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+

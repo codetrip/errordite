@@ -1,0 +1,26 @@
+﻿@model Errordite.Web.Areas.System.Models.Monitoring.MessageFailuresViewModel
+
+@{
+    ViewBag.Title = "Message Failures";
+}
+
+@section footerassets
+{
+    <script type='text/javascript' src="@Url.Content("~/assets/js/monitoring.js")"></script>
+}
+           
+<section class="centered" id="monitoring">
+    <div class="content">
+         @Html.Partial("Monitoring/MessageFailuresCriteria", Model)
+
+        @if (Model.Envelopes != null && Model.Envelopes.Any())
+        {
+            @Html.Partial("Monitoring/MessageFailures", Model)
+        }
+        else
+        {
+            <p>No message failures were returned from your query.</p>  
+        }
+    </div>
+    
+</section>
