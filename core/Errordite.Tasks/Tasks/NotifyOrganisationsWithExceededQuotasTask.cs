@@ -26,25 +26,25 @@ namespace Errordite.Tasks.Tasks
 
 	    public void Execute(string ravenInstanceId)
 		{
-			var organisations = _session.MasterRaven.Query<OrganisationDocument, Organisations>()
-			                            .Where(o => o.OrganisationStatus == OrganisationStatus.PlanQuotaExceeded && o.QuotasExceededReminders < 3)
-			                            .As<Organisation>()
-			                            .ToList();
+			//var organisations = _session.MasterRaven.Query<OrganisationDocument, Organisations>()
+			//							.Where(o => o.OrganisationStatus == OrganisationStatus.PlanQuotaExceeded && o.QuotasExceededReminders < 3)
+			//							.As<Organisation>()
+			//							.ToList();
 
-			if (organisations.Any())
-			{
-				Trace("Found {0} active organisations", organisations.Count);
+			//if (organisations.Any())
+			//{
+			//	Trace("Found {0} active organisations", organisations.Count);
 
-			    var plans = _getAvailablePaymentPlansQuery.Invoke(new GetAvailablePaymentPlansRequest()).Plans;
+			//	var plans = _getAvailablePaymentPlansQuery.Invoke(new GetAvailablePaymentPlansRequest()).Plans;
 
-				foreach (var organisation in organisations)
-				{
-                    using (_session.SwitchOrg(organisation))
-                    {
+			//	foreach (var organisation in organisations)
+			//	{
+			//		using (_session.SwitchOrg(organisation))
+			//		{
                         
-                    }
-				}
-			}
+			//		}
+			//	}
+			//}
 		}
 	}
 }

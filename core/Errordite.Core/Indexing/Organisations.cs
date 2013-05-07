@@ -14,6 +14,7 @@ namespace Errordite.Core.Indexing
         public OrganisationStatus OrganisationStatus { get; set; }
         public DateTime CreatedOnDate { get; set; }
 		public DateTime? CurrentPeriodEndDate { get; set; }
+		public DateTime? SuspendedOnUtc { get; set; }
 		public int QuotasExceededReminders { get; set; }
 	}
 
@@ -30,7 +31,8 @@ namespace Errordite.Core.Indexing
 					SubscriptionStatus = o.Subscription.Status,
 					CreatedOnDate = o.CreatedOnUtc.Date,
                     OrganisationStatus = o.Status,
-                    o.Subscription.CurrentPeriodEndDate
+                    o.Subscription.CurrentPeriodEndDate,
+					o.SuspendedOnUtc,
                 };
         }
     }
