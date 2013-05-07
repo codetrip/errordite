@@ -58,7 +58,7 @@
           if ($match.hasClass('rule-match')) {
             _results.push($match.addClass('old-rule-match').removeClass('rule-match').attr('title', 'REMOVED: ' + $match.attr('title')));
           } else {
-            _results.push($match.replaceWith($match.text()));
+            _results.push($match.replaceWith(_.escape($match.text())));
           }
         }
         return _results;

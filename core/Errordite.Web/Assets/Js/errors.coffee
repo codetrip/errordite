@@ -41,7 +41,7 @@ jQuery ->
 						.removeClass('rule-match')
 						.attr('title', 'REMOVED: ' + $match.attr 'title')							
 				else					
-					$match.replaceWith $match.text()
+					$match.replaceWith _.escape $match.text()
 
 		###
 		Represents a property on an error.
