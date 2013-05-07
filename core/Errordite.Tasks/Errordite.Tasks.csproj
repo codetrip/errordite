@@ -76,6 +76,7 @@
     <Compile Include="IoC\TasksMasterInstaller.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tasks\DeleteSuspendedOrganisationsTask.cs" />
     <Compile Include="Tasks\NotifyOrganisationsWithExceededQuotasTask.cs" />
     <Compile Include="Tasks\IdentifyOrganisationsWithExceededQuotasTask.cs" />
     <Compile Include="Tasks\SuspendCancelledOrganisationsTask.cs" />
@@ -90,6 +91,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Errordite.Build\Configuration\cache.config">
+      <Link>Config\cache.config</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="..\Errordite.Build\Configuration\email.config">
       <Link>Config\email.config</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

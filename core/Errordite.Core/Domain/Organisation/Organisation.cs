@@ -42,7 +42,9 @@ namespace Errordite.Core.Domain.Organisation
         [ProtoMember(15)]
         public string PrimaryUserId { get; set; }
         [ProtoMember(16)]
-        public int QuotasExceededReminders { get; set; }
+		public int QuotasExceededReminders { get; set; }
+		[ProtoMember(17)]
+		public DateTime? SuspendedOnUtc { get; set; }
 
         [JsonIgnore]
         public string FriendlyId { get { return Id == null ? string.Empty : Id.Split('/')[1]; } }

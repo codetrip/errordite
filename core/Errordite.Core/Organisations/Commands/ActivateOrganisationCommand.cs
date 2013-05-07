@@ -46,6 +46,7 @@ namespace Errordite.Core.Organisations.Commands
             }
 
             organisation.Status = OrganisationStatus.Active;
+	        organisation.SuspendedOnUtc = null;
 
             using (Session.SwitchOrg(organisation))
             {
