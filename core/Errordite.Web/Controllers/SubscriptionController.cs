@@ -4,6 +4,7 @@ using System.Web;
 using System.Web.Mvc;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Encryption;
+using Errordite.Core.Identity;
 using Errordite.Core.Organisations.Commands;
 using Errordite.Core.Organisations.Queries;
 using Errordite.Web.ActionFilters;
@@ -22,18 +23,24 @@ namespace Errordite.Web.Controllers
 	    private readonly ICancelSubscriptionCommand _cancelSubscriptionCommand;
         private readonly IEncryptor _encryptor;
         private readonly IChangeSubscriptionCommand _changeSubscriptionCommand;
+		private readonly ISuspendOrganisationCommand _suspendOrganisationCommand;
+		private readonly IAuthenticationManager _authenticationManager;
 
         public SubscriptionController(IGetAvailablePaymentPlansQuery getAvailablePaymentPlansQuery, 
 			ICompleteSignUpCommand completeSignUpCommand, 
             IEncryptor encryptor, 
 			ICancelSubscriptionCommand cancelSubscriptionCommand, 
-            IChangeSubscriptionCommand changeSubscriptionCommand)
+            IChangeSubscriptionCommand changeSubscriptionCommand,
+			ISuspendOrganisationCommand suspendOrganisationCommand, 
+			IAuthenticationManager authenticationManager)
         {
             _getAvailablePaymentPlansQuery = getAvailablePaymentPlansQuery;
             _completeSignUpCommand = completeSignUpCommand;
             _encryptor = encryptor;
 	        _cancelSubscriptionCommand = cancelSubscriptionCommand;
             _changeSubscriptionCommand = changeSubscriptionCommand;
+	        _suspendOrganisationCommand = suspendOrganisationCommand;
+	        _authenticationManager = authenticationManager;
         }
 
         [HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.Subscription)]
@@ -214,6 +221,19 @@ namespace Errordite.Web.Controllers
 
 			return View(model);
         }
+
+		[HttpPost, ExportViewData]
+		public ActionResult CancelTrial(CancelSubscriptionPostModel model)
+		{
+			_suspendOrganisationCommand.Invoke(new SuspendOrganisationRequest
+			{
+				OrganisationId = Core.AppContext.CurrentUser.OrganisationId,
+				Reason = SuspendedReason.SubscriptionCancelled,
+				Message = "Trial cancelled by user"
+			});
+
+			return Redirect(Url.SignOut());
+		}
 
 		[HttpPost, ExportViewData]
 		public ActionResult CancelSubscription(CancelSubscriptionPostModel model)

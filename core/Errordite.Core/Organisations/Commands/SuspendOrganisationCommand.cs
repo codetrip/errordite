@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Globalization;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Castle.Core;
 using Errordite.Core.Caching.Entities;
@@ -54,6 +54,7 @@ namespace Errordite.Core.Organisations.Commands
                 organisation.Status = OrganisationStatus.Suspended;
                 organisation.SuspendedReason = request.Reason;
                 organisation.SuspendedMessage = request.Message;
+	            organisation.SuspendedOnUtc = DateTime.UtcNow;
 
                 var applications = _getApplicationsQuery.Invoke(new GetApplicationsRequest
                 {
@@ -69,7 +70,7 @@ namespace Errordite.Core.Organisations.Commands
 
                 Session.AddCommitAction(new FlushOrganisationCacheCommitAction(_configuration, organisation));
 
-                var primaryUser = Session.Raven.Query<User>().FirstOrDefault(m => m.Id == organisation.PrimaryUserId);
+                var primaryUser = Session.Raven.Load<User>(organisation.PrimaryUserId);
 
                 if (primaryUser != null)
                 {
