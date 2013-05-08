@@ -5,11 +5,11 @@
 
   jQuery(function() {
     var $body, ruleValTimeout, whatifresult;
+
     if ($('section#issue, section#addissue').length > 0) {
       $body = $('body');
       whatifresult = null;
       Errordite.Rule = (function() {
-
         function Rule($rule) {
           this.$rule = $rule;
           if (this.$rule != null) {
@@ -40,12 +40,13 @@
 
       })();
       Errordite.RuleManager = (function() {
-
         function RuleManager() {
           var ruleEl;
+
           this.counter = 0;
           this.rules = (function() {
             var _i, _len, _ref, _results;
+
             _ref = $('#rules-table tr.rule');
             _results = [];
             for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -59,6 +60,7 @@
 
         RuleManager.prototype.addRule = function(name, op, val) {
           var $newRow, rule;
+
           if (this.rules.length > 0) {
             $newRow = $('table#rules-table tr.rule:first').clone();
             $newRow.insertAfter('table#rules-table tr.rule:last');
@@ -89,11 +91,12 @@
 
         RuleManager.prototype.removeRule = function($rule) {
           var rule;
+
           if (isFinite($rule)) {
             rule = _(this.rules).find(function(rule) {
               return rule.counter === $rule;
             });
-            if (!(rule != null)) {
+            if (rule == null) {
               return false;
             }
             $rule = rule.$rule;
@@ -101,6 +104,7 @@
           this.parseRulesForm();
           this.rules = (function() {
             var _i, _len, _ref, _results;
+
             _ref = this.rules;
             _results = [];
             for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -114,16 +118,17 @@
           $rule.trigger('remove');
           if (this.rules.length > 1) {
             $rule.remove();
-            this.showRuleUpdatesPanel();
           }
           if (this.rules.length === 1) {
             $body.find('a.delete').hide();
           }
+          this.showRuleUpdatesPanel();
           return this.reindex();
         };
 
         RuleManager.prototype.parseRulesForm = function() {
           var $form;
+
           $form = $('form#rulesForm', 'form#addIssue');
           $form.removeData("validator");
           $form.removeData("unobtrusiveValidation");
@@ -132,12 +137,14 @@
 
         RuleManager.prototype.reindex = function() {
           var index, nameToId;
+
           index = 0;
           nameToId = function(name) {
             return name.replace(/\.|\[|\]/g, '_');
           };
           return $('table#rules-table tbody tr').each(function(idx, itm) {
             var $item, input, oldName, valmsg, _i, _j, _len, _len1, _ref, _ref1;
+
             $item = $(itm);
             _ref = $item.find(':input');
             for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -160,6 +167,7 @@
 
         RuleManager.prototype.showRuleUpdatesPanel = function() {
           var messageHolder;
+
           $('#rules-adjusted').show();
           messageHolder = $('#rules-adjusted .what-if-message');
           messageHolder.css({
@@ -193,6 +201,7 @@
       Errordite.ruleManager = new Errordite.RuleManager();
       $body.delegate('button#apply-rule-updates, button#update-details', 'click', function(e) {
         var $errormessage, $form, $message, $modal, $name;
+
         $form = $('form#rulesForm');
         $form.validate();
         if ($form.valid()) {
@@ -235,6 +244,7 @@
       });
       $body.delegate('tr.rule :input', 'change', function() {
         var $rule;
+
         $rule = $(this).closest('tr.rule');
         $rule.data('rule').update();
         $rule.addClass('changed-rule');

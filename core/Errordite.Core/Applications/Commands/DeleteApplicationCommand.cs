@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Castle.Core;
 using Errordite.Core.Caching.Entities;
 using Errordite.Core.Caching.Interceptors;
@@ -7,7 +8,6 @@ using Errordite.Core.Interfaces;
 using Errordite.Core.Authorisation;
 using Errordite.Core.Caching;
 using Errordite.Core.Domain.Organisation;
-using Errordite.Core.Indexing;
 using Errordite.Core.Organisations;
 using Errordite.Core.Session;
 using Errordite.Core.Session.Actions;
@@ -45,25 +45,11 @@ namespace Errordite.Core.Applications.Commands
 
             _authorisationManager.Authorise(application, request.CurrentUser);
 
-			Session.RavenDatabaseCommands.DeleteByIndex(CoreConstants.IndexNames.Errors, new IndexQuery
-            {
-                Query = "ApplicationId:{0}".FormatWith(applicationId)
-            }, true);
-
-			Session.RavenDatabaseCommands.DeleteByIndex(CoreConstants.IndexNames.Issues, new IndexQuery
-            {
-                Query = "ApplicationId:{0}".FormatWith(applicationId)
-            }, true);
-
-            Session.RavenDatabaseCommands.DeleteByIndex(CoreConstants.IndexNames.IssueDailyCount, new IndexQuery
-            {
-                Query = "ApplicationId:{0}".FormatWith(applicationId)
-            }, true);
-
-            Session.RavenDatabaseCommands.DeleteByIndex(CoreConstants.IndexNames.OrganisationIssueDailyCount, new IndexQuery
-            {
-                Query = "ApplicationId:{0}".FormatWith(applicationId)
-            }, true);
+			DeleteByIndex(CoreConstants.IndexNames.Errors, applicationId);
+			DeleteByIndex(CoreConstants.IndexNames.Issues, applicationId);
+			DeleteByIndex(CoreConstants.IndexNames.IssueDailyCount, applicationId);
+			DeleteByIndex(CoreConstants.IndexNames.OrganisationIssueDailyCount, applicationId);
+			DeleteByIndex(CoreConstants.IndexNames.IssueHistory, applicationId);
 
             if (!request.JustDeleteErrors)
                 Delete(application);
@@ -76,6 +62,19 @@ namespace Errordite.Core.Applications.Commands
                 Status = DeleteApplicationStatus.Ok
             };
         }
+
+		/// <summary>
+		/// aseems that if there are no documents in a index we get an invalid operation exception, swollowing it
+		/// </summary>
+		/// <param name="indexName"></param>
+		/// <param name="applicationId"></param>
+		private void DeleteByIndex(string indexName, string applicationId)
+		{
+			Session.RavenDatabaseCommands.DeleteByIndex(indexName, new IndexQuery
+			{
+				Query = "ApplicationId:{0}".FormatWith(applicationId)
+			}, true);
+		}
     }
 
     public interface IDeleteApplicationCommand : ICommand<DeleteApplicationRequest, DeleteApplicationResponse>
