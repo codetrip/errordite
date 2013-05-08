@@ -4,7 +4,6 @@ using Errordite.Core.Authorisation;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Extensions;
 using Errordite.Core.Organisations;
-using Errordite.Core.Extensions;
 using Errordite.Core.Session;
 using Errordite.Core.Session.Actions;
 

@@ -180,8 +180,8 @@ namespace Errordite.Core.Receive.Commands
         {
             var exceptionInfo = new Domain.Error.ExceptionInfo
             {
-                StackTrace = clientExceptionInfo.StackTrace.RemoveHtml(),
-                Message = clientExceptionInfo.Message.RemoveHtml(),
+                StackTrace = clientExceptionInfo.StackTrace,
+                Message = clientExceptionInfo.Message,
                 Type = clientExceptionInfo.ExceptionType,
                 ExtraData = clientExceptionInfo.Data == null ? null : clientExceptionInfo.Data.ToDictionary(kvp => kvp.Key, kvp => kvp.Value),
                 Module = clientExceptionInfo.Source,

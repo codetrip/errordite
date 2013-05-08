@@ -114,12 +114,23 @@ namespace Errordite.Web.Controllers
 						.As<Issue>()
 						.ToList())
 					{
-						Trace("Processing Error:={0}", error.Id);
-						foreach (var info in error.ExceptionInfos)
-						{
-							info.Message = info.Message.RemoveHtml();
-							info.StackTrace = info.StackTrace.RemoveHtml();
-						}
+					    var count = _session.Raven.Load<IssueHourlyCount>("IssueHourlyCount/{0}".FormatWith(issue.FriendlyId));
+                        if (count == null)
+                        {
+                            var issueHourlyCount = new IssueHourlyCount
+                            {
+                                IssueId = issue.Id,
+                                Id = "IssueHourlyCount/{0}".FormatWith(issue.FriendlyId),
+                                ApplicationId = issue.ApplicationId
+                            };
+
+                            issueHourlyCount.Initialise();
+                            _session.Raven.Store(issueHourlyCount);
+                        }
+                        else
+                        {
+                            count.ApplicationId = issue.ApplicationId;
+                        }
 					}
 
 					_session.Commit();
@@ -131,18 +142,28 @@ namespace Errordite.Web.Controllers
 
 						for (int i = 1; i < pageNumber; i++)
 						{
-							foreach(var error in _session.Raven.Query<Core.Domain.Error.Error, Errors>()
+                            foreach (var issue in _session.Raven.Query<Issue, Issues>()
 								.Skip(i * 25)
 								.Take(25)
-								.As<Core.Domain.Error.Error>())
+								.As<Issue>())
 							{
-								Trace("Processing Error:={0}", error.Id);
+                                var count = _session.Raven.Load<IssueHourlyCount>("IssueHourlyCount/{0}".FormatWith(issue.FriendlyId));
+                                if (count == null)
+                                {
+                                    var issueHourlyCount = new IssueHourlyCount
+                                    {
+                                        IssueId = issue.Id,
+                                        Id = "IssueHourlyCount/{0}".FormatWith(issue.FriendlyId),
+                                        ApplicationId = issue.ApplicationId
+                                    };
 
-								foreach (var info in error.ExceptionInfos)
-								{
-									info.Message = info.Message.RemoveHtml();
-									info.StackTrace = info.StackTrace.RemoveHtml();
-								}
+                                    issueHourlyCount.Initialise();
+                                    _session.Raven.Store(issueHourlyCount);
+                                }
+                                else
+                                {
+                                    count.ApplicationId = issue.ApplicationId;
+                                }
 							}
 
 							_session.Commit();
