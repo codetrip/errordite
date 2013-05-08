@@ -1,17 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Castle.Core;
-using Errordite.Core.Caching.Entities;
-using Errordite.Core.Caching.Interceptors;
 using Errordite.Core.Extensions;
 using Errordite.Core.Interfaces;
-using Errordite.Core.Caching;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Indexing;
 using Errordite.Core.Session;
-using Errordite.Core.Extensions;
 
 namespace Errordite.Core.Issues.Queries
 {   

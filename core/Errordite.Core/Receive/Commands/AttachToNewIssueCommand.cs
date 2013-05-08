@@ -67,7 +67,8 @@ namespace Errordite.Core.Receive.Commands
 			var issueHourlyCount = new IssueHourlyCount
 			{
 				IssueId = issue.Id,
-				Id = "IssueHourlyCount/{0}".FormatWith(issue.FriendlyId)
+				Id = "IssueHourlyCount/{0}".FormatWith(issue.FriendlyId),
+				ApplicationId = issue.ApplicationId
 			};
 
 			issueHourlyCount.Initialise();
