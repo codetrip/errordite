@@ -95,13 +95,20 @@ namespace Errordite.Core.Issues.Commands
                         CurrentUser = request.CurrentUser
                     });
 
-                    //re-sync the error counts only if we have moved errors
+                    //re-sync the error counts only if we have moved errors (do it for both issues)
                     Session.AddCommitAction(new SendMessageCommitAction(new SyncIssueErrorCountsMessage
                     {
                         IssueId = currentIssue.Id,
                         OrganisationId = request.CurrentUser.OrganisationId,
                         TriggerEventUtc = DateTime.UtcNow,
-                    }, _configuration.GetEventsQueueAddress(request.CurrentUser.ActiveOrganisation.RavenInstance.FriendlyId)));
+					}, _configuration.GetEventsQueueAddress(request.CurrentUser.ActiveOrganisation.RavenInstance.FriendlyId)));
+
+					Session.AddCommitAction(new SendMessageCommitAction(new SyncIssueErrorCountsMessage
+					{
+						IssueId = tempIssue.Id,
+						OrganisationId = request.CurrentUser.OrganisationId,
+						TriggerEventUtc = DateTime.UtcNow,
+					}, _configuration.GetEventsQueueAddress(request.CurrentUser.ActiveOrganisation.RavenInstance.FriendlyId)));
 
                     Store(new IssueHistory
                     {
