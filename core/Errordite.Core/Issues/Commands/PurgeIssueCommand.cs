@@ -4,7 +4,6 @@ using Errordite.Core.Authorisation;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Extensions;
 using Errordite.Core.Organisations;
-using Errordite.Core.Extensions;
 using Errordite.Core.Session;
 using Errordite.Core.Session.Actions;
 
@@ -42,7 +41,8 @@ namespace Errordite.Core.Issues.Commands
                 hourlyCount = new IssueHourlyCount
                 {
                     IssueId = issue.Id,
-                    Id = "IssueHourlyCount/{0}".FormatWith(issue.FriendlyId)
+					Id = "IssueHourlyCount/{0}".FormatWith(issue.FriendlyId),
+					ApplicationId = issue.ApplicationId
                 };
                 hourlyCount.Initialise();
                 Store(hourlyCount);
