@@ -70,7 +70,16 @@ namespace Errordite.Web.Controllers
 
             foreach (var application in applicationsViewModel.Applications)
             {
-                var user = users.Items.First(u => u.Id == application.DefaultUserId);
+                var user = users.Items.FirstOrDefault(u => u.Id == application.DefaultUserId);
+
+				//if the default user has been deleted, update it here to the current user
+				if (user == null)
+				{
+					var app = Core.Session.Raven.Load<Application>(application.Id);
+					app.DefaultUserId = Core.AppContext.CurrentUser.Id;
+					user = Core.AppContext.CurrentUser;
+				}
+
                 application.RuleMatchFactory = _matchRuleFactoryFactory.Create(application.RuleMatchFactory).Name;
                 application.DefaultUser = "{0} {1}".FormatWith(user.FirstName, user.LastName);
             } 
@@ -87,7 +96,7 @@ namespace Errordite.Web.Controllers
             if (applications.PagingStatus.TotalItems >= Core.AppContext.CurrentUser.ActiveOrganisation.PaymentPlan.MaximumApplications)
             {
                 SetNotification(AddApplicationStatus.PlanThresholdReached, Resources.Application.ResourceManager);
-                return RedirectToAction("upgrade", "admin");
+                return RedirectToAction("index", "subscription");
             }
 
             var viewModel = ViewData.Model == null ? new AddApplicationViewModel{Active = true} : (AddApplicationViewModel)ViewData.Model;
