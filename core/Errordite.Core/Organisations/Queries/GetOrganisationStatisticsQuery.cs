@@ -7,7 +7,6 @@ using Errordite.Core.Indexing;
 using Errordite.Core.Session;
 using Raven.Client;
 using Errordite.Core.Extensions;
-using Errordite.Core.Extensions;
 
 namespace Errordite.Core.Organisations.Queries
 {

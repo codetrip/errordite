@@ -3,6 +3,7 @@ using Castle.Core;
 using Errordite.Core.Caching.Entities;
 using Errordite.Core.Caching.Interceptors;
 using Errordite.Core.Domain.Master;
+using Errordite.Core.Indexing;
 using Errordite.Core.Interfaces;
 using Errordite.Core.Caching;
 using Errordite.Core.Domain.Organisation;
@@ -26,7 +27,8 @@ namespace Errordite.Core.Organisations.Queries
 
         public GetOrganisationsByEmailAddressResponse Invoke(GetOrganisationsByEmailAddressRequest request)
         {
-            var mapping = _session.MasterRaven.Query<UserOrganisationMapping>().FirstOrDefault(m => m.EmailAddress == request.EmailAddress);
+            var mapping = _session.MasterRaven.Query<UserOrganisationMapping, UserOrganisationMappings>()
+				.FirstOrDefault(m => m.EmailAddress == request.EmailAddress);
 
 			if (mapping == null)
 			{
