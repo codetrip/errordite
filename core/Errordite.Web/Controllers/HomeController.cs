@@ -108,7 +108,7 @@ namespace Errordite.Web.Controllers
 				{
 					RavenQueryStatistics stats;
 
-					foreach(var error in _session.Raven.Query<Issue, Issues>().Statistics(out stats)
+					foreach (var issue in _session.Raven.Query<Issue, Issues>().Statistics(out stats)
 						.Skip(0)
 						.Take(25)
 						.As<Issue>()

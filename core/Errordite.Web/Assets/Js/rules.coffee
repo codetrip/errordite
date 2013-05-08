@@ -38,7 +38,10 @@ jQuery ->
 				this.counter = 0
 				this.rules = for ruleEl in $ '#rules-table tr.rule'
 					new Errordite.Rule $ ruleEl		
-				this.whatIfResult = null						
+				this.whatIfResult = null	
+				
+				if this.rules.length == 1
+					$body.find('a.delete').hide();					
 
 			addRule: (name, op, val) ->
 				
