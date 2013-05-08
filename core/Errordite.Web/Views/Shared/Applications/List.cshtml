@@ -1,0 +1,57 @@
+﻿@using Errordite.Web.Extensions
+@model Errordite.Web.Models.Applications.ApplicationsViewModel
+           
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Id</th>   
+            <th>Name</th>
+            <th>Version</th>
+            <th>Active</th>
+            <th>Default User</th> 
+            <th>Token</th> 
+            @if (!Model.SystemView)
+            {
+                <th></th>
+            }  
+            
+        </tr>  
+    </thead>   
+    <tbody>
+    @foreach (var application in Model.Applications)
+    {
+        <tr>
+            <td>@application.Id</td>  
+            <td>@application.Name</td>
+            <td>@application.Version</td>
+            <td>@application.IsActive</td>
+            <td>@application.DefaultUser</td>
+            <td>@application.Token</td>
+
+            @if (!Model.SystemView)
+            {
+	            <td>
+		            <a href="@Url.EditApplication(application.Id)"><img src="@Url.Content("~/assets/images/edit.png")" alt="Edit this application" title="Edit this application" width="24" height="24" /></a>
+		            @using (Html.BeginForm("delete", "applications", new { applicationId = application.Id }, FormMethod.Post, new { style = "display:inline" }))
+		            {
+			            <a class="confirm delete-application" href="#"><img src="@Url.Content("~/assets/images/trash.png")" alt="Delete this application" title="Delete this application" width="24" height="24" /></a>
+		            }
+		            @using (Html.BeginForm("generateerror", "applications", new { applicationId = application.Id }, FormMethod.Post, new { style = "display:inline" }))
+		            {
+			            <input type="hidden" name="returnUrl" value="@Url.CurrentRequest()"/>
+			            <a class="generate-error" href="#"><img src="@Url.Content("~/assets/images/error.png")" alt="Generate test error" title="Generate test error" width="24" height="24" /></a>
+		            }
+	            </td>
+            }
+                       
+        </tr>
+    }
+    </tbody>  
+    <tfoot>
+        <tr>
+            <td @(Model.SystemView ? "colspan=9" : "colspan=10")>
+                @Html.Partial("Pagination", Model.Paging)
+            </td>
+        </tr>
+    </tfoot>
+</table>

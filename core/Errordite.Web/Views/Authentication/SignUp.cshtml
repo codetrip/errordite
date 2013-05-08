@@ -1,0 +1,67 @@
+﻿@using Errordite.Web.Models.Authentication
+@using Errordite.Web.Extensions
+@model RegisterViewModel
+
+@{
+    ViewBag.Title = "Sign Up";
+}
+
+<section class="centered">
+    <div class="content">
+	    <h1>Sign Up In Seconds...</h1>
+	    <h3>* No credit card required, @ViewData.GetConfiguration().TrialLengthInDays day free trial</h3>
+		@using (Html.BeginForm("signup", "authentication", FormMethod.Post, new { id = "signupForm" }))
+		{
+			<div class="form double">
+			    <ul>
+				    <li>
+					    @Html.LabelFor(m => m.FirstName, "First Name")
+					    @Html.TextBoxFor(m => m.FirstName)
+					    @Html.ValidationMessageFor(m => m.FirstName)
+				    </li>
+				    <li>
+					    @Html.LabelFor(m => m.LastName, "Last Name")
+					    @Html.TextBoxFor(m => m.LastName)
+					    @Html.ValidationMessageFor(m => m.LastName)
+				    </li>
+				    <li>
+					    @Html.LabelFor(m => m.Email, "Email (Primary contact for organisation)")
+					    @Html.TextBoxFor(m => m.Email)
+					    @Html.ValidationMessageFor(m => m.Email)
+				    </li>
+				    <li>
+					    @Html.LabelFor(m => m.Password, "Password")
+					    @Html.PasswordFor(m => m.Password)
+					    @Html.ValidationMessageFor(m => m.Password)
+				    </li>
+				    <li>
+					    @Html.LabelFor(m => m.ConfirmPassword, "Confirm Password")
+					    @Html.PasswordFor(m => m.ConfirmPassword)
+					    @Html.ValidationMessageFor(m => m.ConfirmPassword)
+				    </li>
+			    </ul>
+			</div>
+			<div class="form double">
+				<ul>
+				    <li>
+					    @Html.LabelFor(m => m.OrganisationName, "Organisation Name")
+					    @Html.TextBoxFor(m => m.OrganisationName, new {maxlength = "30"})
+					    @Html.ValidationMessageFor(m => m.OrganisationName)
+				    </li>
+					<li>
+						@Html.LabelFor(m => m.TimezoneId, "Organisation Timezone")
+						@Html.DropDownListFor(m => m.TimezoneId, TimeZoneInfo.GetSystemTimeZones().Select(t => new SelectListItem
+							{
+								Value = t.Id, 
+								Text = t.DisplayName,
+								Selected = t.Id == "UTC"
+							}))
+					</li>
+				    <li class="buttons">
+					    <input class="btn btn-medium btn-blue" type="submit" value="Sign Up" />
+				    </li>
+				</ul>
+			</div>
+		}
+    </div>
+</section>

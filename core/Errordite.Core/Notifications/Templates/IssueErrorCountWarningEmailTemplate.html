@@ -1,0 +1,12 @@
+﻿$(Master:EmailTemplateMasterPage)
+$(Placeholder:Subject)Issue is nearing its error limit - $(IssueName)
+$(Placeholder:Body)
+
+<tr>
+    <td>
+        <p>Hi,</p>
+        <p>The issue $(IssueName) is nearing its error threshold. Currently this issue has $(ErrorCount) errors.</p>
+        <p>Once the number of errors reaches $(ErrorLimitCount) Errordite will stop recording errors that match this issue.</p>
+        <p><a href="$(ErrorditeUrl)/issue/$(IssueId)" target="_blank">Click here to view the issue</a></p>
+    </td>
+</tr>

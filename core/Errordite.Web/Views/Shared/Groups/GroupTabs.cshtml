@@ -1,0 +1,10 @@
+﻿@using Errordite.Web.Extensions
+@using Errordite.Web.Models.Shared
+<ul class="sidenav-tabs">
+    <li @(Model == SharedTab.List ? " class=active" : "")><a href="@Url.Groups()" >View</a></li>
+	<li @(Model == SharedTab.Add ? " class=active" : "")><a href="@Url.AddGroup()">Add</a></li>
+	@if(Model == SharedTab.Edit)
+	{
+		<li class="active"><a href="#">Edit</a></li>
+	}
+</ul>
