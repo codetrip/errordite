@@ -83,11 +83,11 @@ jQuery ->
 
 				if this.rules.length > 1
 					$rule.remove()
-					this.showRuleUpdatesPanel()		
 
 				if this.rules.length == 1
 					$body.find('a.delete').hide();
 					
+				this.showRuleUpdatesPanel()	
 				this.reindex()
 
 			parseRulesForm: () ->

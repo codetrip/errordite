@@ -17,6 +17,7 @@ namespace Errordite.Core.Domain.Error
 	{
 		public string Id { get; set; }
 		public string IssueId { get; set; }
+		public string ApplicationId { get; set; }
 		public Dictionary<int, int> HourlyCount { get; set; }
 
         public void IncrementHourlyCount(DateTimeOffset time)

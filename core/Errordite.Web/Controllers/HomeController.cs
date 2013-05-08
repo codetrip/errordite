@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using Errordite.Core;
 using Errordite.Core.Caching.Interfaces;
 using Errordite.Core.Caching.Resources;
+using Errordite.Core.Domain.Error;
 using Errordite.Core.Domain.Master;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Indexing;
@@ -91,7 +92,7 @@ namespace Errordite.Web.Controllers
 		}
 
 		[HttpGet, ImportViewData]
-		public ActionResult Html()
+		public ActionResult CountsFix()
 		{
 			Server.ScriptTimeout = 7200; //timeout in 2 hours
 
@@ -107,10 +108,10 @@ namespace Errordite.Web.Controllers
 				{
 					RavenQueryStatistics stats;
 
-					foreach(var error in _session.Raven.Query<Core.Domain.Error.Error, Errors>().Statistics(out stats)
+					foreach(var error in _session.Raven.Query<Issue, Issues>().Statistics(out stats)
 						.Skip(0)
 						.Take(25)
-						.As<Core.Domain.Error.Error>()
+						.As<Issue>()
 						.ToList())
 					{
 						Trace("Processing Error:={0}", error.Id);
