@@ -108,7 +108,7 @@ namespace Errordite.Services.Processors
 							});
 						}
 
-						emptyReceiptCount = 15; //equiv to 5 mins pause, the maximum we wait
+						emptyReceiptCount = 9; //equiv to 3 mins pause, the maximum we wait
 						Thread.Sleep(_requestThrottler.GetDelayMilliseconds(emptyReceiptCount));
 						continue;
 					}

@@ -7,11 +7,21 @@ namespace Errordite.Core.Notifications.EmailInfo
     {
         public override string ConvertToSimpleMessage(ErrorditeConfiguration configuration)
         {
-            return string.Format(
-                @"<b>{0}:</b> solved issue <a href=""{1}/issue/{2}""  target=""_blank"">{2}: {3}</a> has recurred",
-                ApplicationName, configuration.SiteBaseUrl, IssueId, IssueName
-                );
+            return string.Format(@"<b>{0}:</b> solved issue <a href=""{1}/issue/{2}""  target=""_blank"">{2}: {3}</a> has recurred",
+                ApplicationName, 
+				configuration.SiteBaseUrl,
+				IssueId, 
+				IssueName);
         }
+
+		public override string ConvertToNonHtmlMessage(ErrorditeConfiguration configuration)
+		{
+			return string.Format(@"{0}: solved issue named '{3}' has recurred, view the issue here... {1}/issue/{2}",
+				ApplicationName,
+				configuration.SiteBaseUrl,
+				IssueId,
+				IssueName);
+		}
 
         public override HipChatClient.BackgroundColor? HipChatColour
         {

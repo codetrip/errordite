@@ -1553,7 +1553,8 @@ nav {
     .sidenav .sidenav-content form {
       margin-top: -10px; }
     .sidenav .sidenav-content > .sidenav-tab {
-      display: none; }
+      display: none;
+      margin-top: 7px; }
     .sidenav .sidenav-content > .active {
       display: block; }
   .sidenav > .sidenav-tabs {

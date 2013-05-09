@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.Composition.Hosting;
+﻿using System;
+using System.ComponentModel.Composition.Hosting;
+using System.Web;
 using System.Web.Mvc;
 using Errordite.Core;
 using Errordite.Core.Caching.Interfaces;
@@ -9,6 +11,7 @@ using Errordite.Core.Indexing;
 using Errordite.Core.IoC;
 using Errordite.Core.Configuration;
 using Errordite.Core.Identity;
+using Errordite.Core.Notifications.Commands;
 using Errordite.Core.Notifications.EmailInfo;
 using Errordite.Core.Raven;
 using Errordite.Core.Session;
@@ -26,13 +29,35 @@ namespace Errordite.Web.Controllers
 		private readonly ErrorditeConfiguration _configuration;
 		private readonly IAppSession _session;
 		private readonly IShardedRavenDocumentStoreFactory _storeFactory;
+	    private readonly ISendCampfireMessageCommand _sendCampfireMessageCommand;
 
-        public HomeController(ErrorditeConfiguration configuration, IShardedRavenDocumentStoreFactory storeFactory, IAppSession session)
+        public HomeController(ErrorditeConfiguration configuration, 
+			IShardedRavenDocumentStoreFactory storeFactory, 
+			IAppSession session, 
+			ISendCampfireMessageCommand sendCampfireMessageCommand)
         {
 	        _configuration = configuration;
 	        _storeFactory = storeFactory;
 	        _session = session;
+	        _sendCampfireMessageCommand = sendCampfireMessageCommand;
         }
+
+		[HttpGet, ExportViewData]
+		public ActionResult Campfire()
+		{
+			_sendCampfireMessageCommand.Invoke(new SendCampfireMessageRequest
+				{
+					CampfireDetails = new CampfireDetails
+						{
+							Company = "codetrip",
+							Token = "b025b3a703e95f3d78aee10322981f74d508a9ba"
+						},
+					RoomId = 562402,
+					Message = HttpUtility.HtmlDecode("<b>test</b>")
+				});
+
+			return Content("Ok");
+		}
 
 		[HttpGet, ExportViewData]
 		public ActionResult SyncIndexes()

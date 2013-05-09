@@ -60,16 +60,31 @@
 						<div class="form double">
 							<ul>
 								<li>
-									@Html.LabelFor(m => m.HipChatRoomId, "HipChat room number")
-									@Html.TextBoxFor(m => m.HipChatRoomId)
-									<i data-title="Tell us the HipChat room number you want notifications for this application to go to." class="icon-info"></i>
+									@if (Model.HipChatEnabled)
+									{
+										@Html.LabelFor(m => m.HipChatRoomId, "HipChat Room Id")
+									}
+									else
+									{
+										<label><a href="@Url.HipChat()">Enable HipChat integration</a></label>
+									}
+									@Html.TextBoxFor(m => m.HipChatRoomId, Model.HipChatEnabled ? null : new {disabled="disabled"})
+									<i data-title="This is the numeric Id found in the URL of the room you want Errordite to post to." class="icon-info"></i>
 									@Html.ValidationMessageFor(m => m.HipChatRoomId)
 								</li>
 								<li>
-									@Html.LabelFor(m => m.HipChatAuthToken, "HipChat auth token")
-									@Html.TextBoxFor(m => m.HipChatAuthToken)
-									<i data-title="We need your HipChat auth token to allow us to post to your room." class="icon-info"></i>
-									@Html.ValidationMessageFor(m => m.HipChatAuthToken)
+									@if (Model.CampfireEnabled)
+									{
+										@Html.LabelFor(m => m.CampfireRoomId, "Campfire Room Id")
+									}
+									else
+									{
+										<label><a href="@Url.Campfire()">Enable Campfire integration</a></label>
+									}
+									
+									@Html.TextBoxFor(m => m.CampfireRoomId, Model.CampfireEnabled ? null : new {disabled="disabled"})
+									<i data-title="This is the numeric Id found in the URL of the room you want Errordite to post to." class="icon-info"></i>
+									@Html.ValidationMessageFor(m => m.CampfireRoomId)
 								</li>
 							</ul>
 						</div>
