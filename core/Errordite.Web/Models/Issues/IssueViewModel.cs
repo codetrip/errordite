@@ -64,6 +64,7 @@ namespace Errordite.Web.Models.Issues
         public bool SystemMessage { get; set; }
         public string Reference { get; set; }
         public string IssueLink { get; set; }
+        public string IssueId { get; set; }
     }
 
     public class IssueHistoryPostModel
