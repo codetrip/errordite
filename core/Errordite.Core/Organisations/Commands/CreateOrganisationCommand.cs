@@ -44,7 +44,7 @@ namespace Errordite.Core.Organisations.Commands
             Trace("Starting...");
 
             var existingOrganisation = Session.MasterRaven
-				.Query<OrganisationDocument, Indexing.Organisations>()
+				.Query<Organisation, Indexing.Organisations>()
 				.FirstOrDefault(o => o.Name == request.OrganisationName);
 
             if(existingOrganisation != null)
