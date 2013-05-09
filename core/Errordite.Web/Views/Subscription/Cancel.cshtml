@@ -1,0 +1,68 @@
+﻿
+@using Errordite.Core.Domain.Organisation
+@using Errordite.Web.Models.Subscription
+@model CancelSubscriptionViewModel
+           
+@{
+    ViewBag.Title = "Cancel Subscription";
+}
+
+@section header
+{
+    @Html.Partial("Account/Tabs") 
+}
+
+<section class="centered">
+    <div class="content">
+        <div class="sidenav">
+            @Html.Partial("Subscription/SubscriptionTabs", SubscriptionTab.Cancel)
+            <div class="sidenav-content">
+                <div class="sidenav-tab active">
+					@if (Model.Subscription.Status == SubscriptionStatus.Trial)
+					{
+						<p>
+							You can cancel your Errordite trial at any time from this screen. All you data will be removed from our
+							systems in 15 days time, should you want to reactivate your trial please contact us within 15 days to do so.
+						</p>
+						using (Html.BeginForm("canceltrial", "subscription", FormMethod.Post, new {id = "canceltrial"}))
+						{
+							<div class="form">
+								<ul>
+									<li class="buttons">
+										<input class="btn btn-medium btn-blue" data-confirm="Are you sure you want to cancel your trial, this action can only be undone by contacting support for assistance?" type="submit" value="Cancel Trial" />
+									</li>
+								</ul>
+							</div>
+						}
+					}
+					else
+					{
+						<p>
+							You can cancel your Errordite subscription at any time from this screen. When you cancel your subscription
+							we will stop any further payments immediately and your account will become inactive at the end of your current billing period.
+						</p>
+						<p>
+							We would really appreciate it if you could take a moment to tell us why you are cancelling.
+						</p>
+						using (Html.BeginForm("cancelsubscription", "subscription", FormMethod.Post, new {id = "cancel"}))
+						{
+							<div class="form">
+								<ul>
+									<li>
+										@Html.LabelFor(m => m.CancellationReason, "Reason")
+										@Html.TextAreaFor(m => m.CancellationReason, new {style="width:400px; height:80px"})
+									</li>
+									<li class="buttons">
+										<input class="btn btn-medium btn-blue" data-confirm="Are you sure you want to cancel your subscription, this action can only be undone by contacting support for assistance?" type="submit" value="Cancel Subscription" />
+									</li>
+								</ul>
+							</div>
+						}
+					}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
