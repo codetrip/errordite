@@ -1,0 +1,54 @@
+<Project
+	xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
+	ToolsVersion="4.0"
+	DefaultTargets="InstallReceiveService">
+
+  <UsingTask TaskName="Sleep" AssemblyFile="$(MSBuildProjectDirectory)\Errordite.Build.dll" />
+  
+  <Import Project="$(MSBuildProjectDirectory)\Global.imports" />
+  <Import Project="$(MSBuildProjectDirectory)\Configuration.target" />
+  <Import Project="$(MSBuildProjectDirectory)\ServiceControl.target" />
+
+  <PropertyGroup>
+    <ServiceName>Errordite.Services$Receive</ServiceName>
+    <ServiceDomain>$(Domain)</ServiceDomain>
+    <ServiceUser>$(ErrorditeReceiveServiceUser)</ServiceUser>
+    <ServicePassword>$(ErrorditeReceiveServicePassword)</ServicePassword>
+    <DeployedApplicationPath>$(InstallRoot)\Errordite.Services.Receive</DeployedApplicationPath>
+    <ServicePath>$(DeployedApplicationPath)\Errordite.Services.exe</ServicePath>
+    <ServiceInstance>Receive</ServiceInstance>
+  </PropertyGroup>
+
+  <Target Name="InstallReceiveService" DependsOnTargets="GetBuildNumberAndInstallPaths;
+          StopService;
+          CopyServiceFiles; 
+          RunConfigFileChanger;
+          InstallService;
+          SetServiceAutomatic;
+          StartService;">
+  </Target>
+
+  <Target Name="CopyServiceFiles" DependsOnTargets="GetBuildNumberAndInstallPaths" >
+    <CreateItem Include="$(MSBuildProjectDirectory)\..\Errordite.Services\**\*.*;">
+      <Output TaskParameter="Include" ItemName="ErrorditeReceiveServiceFiles" />
+    </CreateItem>
+
+    <Copy SourceFiles="@(ErrorditeReceiveServiceFiles)" DestinationFolder="$(ReceiveServiceInstallPath)\%(RecursiveDir)" />
+  </Target>
+
+  <Target Name="GetBuildNumberAndInstallPaths">
+    <ReadLinesFromFile File="$(MSBuildProjectDirectory)\version.txt">
+      <Output TaskParameter="Lines" PropertyName="BuildNumber" />
+    </ReadLinesFromFile>
+
+    <CreateProperty Value="$(InstallRoot)\Errordite.Services.Receive">
+      <Output TaskParameter="Value" PropertyName="ReceiveServiceInstallPath" />
+    </CreateProperty>
+
+    <CreateProperty Value="$(ReceiveServiceInstallPath)">
+      <Output TaskParameter="Value" PropertyName="ConfigChangerRunLocation" />
+    </CreateProperty>
+
+    <Message Text="$(TasksPath)" />
+  </Target>
+</Project>

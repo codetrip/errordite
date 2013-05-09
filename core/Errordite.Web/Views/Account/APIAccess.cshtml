@@ -1,0 +1,33 @@
+﻿
+@using Errordite.Web.Models.Shared
+@model Errordite.Web.Models.Account.OrganisationSettingsViewModel
+           
+@{
+    ViewBag.Title = "Settings";
+}
+
+@section header
+{
+    @Html.Partial("Account/Tabs") 
+}
+
+<section class="centered">
+	<div class="content">
+		<div class="sidenav">
+            @Html.Partial("Account/SettingTabs", SettingTab.Api)
+            <div class="sidenav-content">
+                <div class="sidenav-tab active">
+					<p>
+						Use the key below to authenticate against the Errordite API.
+					</p>
+					<div class="clear"></div>
+					<div class="textbox">
+						Your API key is <b>@Model.ApiKey</b>
+					</div>
+                </div>
+            </div>
+        </div>
+	</div>
+</section>
+
+

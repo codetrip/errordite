@@ -1,0 +1,49 @@
+﻿@using Errordite.Web.Extensions
+@model Errordite.Web.Models.Subscription.SubscriptionSignUpViewModel
+
+@{
+    ViewBag.Title = "Sign Up";
+}
+
+<section class="centered">
+    <div class="content">
+        @if (Model.Expired)
+        {
+            <h1>Your Trial has Expired</h1>
+            <p>
+                Thank you for trying out Errordite, your free trial has now expired. In order to continue to use Errordite you need to sign up to one of our payment plans.
+            </p>
+        }
+        else
+        {
+            <h1>Sign up for Errordite</h1>
+        }
+        
+        <p>
+            When you sign up we will create a subscription on the credit / debit card supplied and will bill you monthly for the amount specified for your selected plan.
+            Billing history will be available in your <a href="@Url.BillingHistory()" target="_blank">subscription</a> area. 
+        </p>
+        <p>
+            Errordite uses a 3rd party called <a href="http://www.chargify.com">Chargify</a> to manage subscription payments, you will be taken to chargify
+            to create your Errordite subscription when you select a plan below.
+        </p>
+        <p>
+            If you do not sign up to a plan within 30 days of your trial expiring your organisation and all associated data may be deleted from our systems.
+        </p>
+        <p>
+            If you have any questions regarding our pricing or billing please <a href="@Url.Contact()">contact Us</a>.
+        </p>
+        <div class="clear" style="height:20px;"></div>
+
+        @foreach (var paymentPlan in Model.Plans)
+        {
+            @Html.Partial("Docs/PaymentPlan", paymentPlan)
+        }
+		
+        <div class="clear"></div>
+
+        <p>
+            If you needs are not met by what is here, please <a href="@Url.Contact()">contact us</a>.
+        </p>
+    </div>
+</section>
