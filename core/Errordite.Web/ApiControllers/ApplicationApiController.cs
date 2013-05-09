@@ -31,10 +31,10 @@ namespace Errordite.Web.ApiControllers
                 Name = application.Name,
                 Version = application.Version,
                 IsActive = application.IsActive,
-                HipChatAuthToken = application.HipChatAuthToken,
                 OrganisationId = application.OrganisationId,
                 Token = application.Token,
-                HipChatRoomId = application.HipChatRoomId
+				HipChatRoomId = application.HipChatRoomId,
+				CampfireRoomId = application.CampfireRoomId
             };
         }
 
@@ -70,10 +70,10 @@ namespace Errordite.Web.ApiControllers
                 Name = storedApplication.Name,
                 Version = storedApplication.Version,
                 IsActive = storedApplication.IsActive,
-                HipChatAuthToken = storedApplication.HipChatAuthToken,
+				HipChatRoomId = storedApplication.HipChatRoomId,
                 OrganisationId = storedApplication.OrganisationId,
                 Token = storedApplication.Token,
-                HipChatRoomId = storedApplication.HipChatRoomId
+                CampfireRoomId = storedApplication.CampfireRoomId
             });
         }
     }

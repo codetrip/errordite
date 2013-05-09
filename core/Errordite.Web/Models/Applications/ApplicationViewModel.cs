@@ -20,7 +20,7 @@ namespace Errordite.Web.Models.Applications
         public string Version { get; set; }
         public string DefaultUserId { get; set; }
         public bool IsActive { get; set; }
-        public int HipChatRoomId { get; set; }
-        public string HipChatAuthToken { get; set; }
+        public int? HipChatRoomId { get; set; }
+		public int? CampfireRoomId { get; set; }
     }
 }

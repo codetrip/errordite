@@ -45,6 +45,10 @@ namespace Errordite.Core.Domain.Organisation
 		public int QuotasExceededReminders { get; set; }
 		[ProtoMember(17)]
 		public DateTime? SuspendedOnUtc { get; set; }
+		[ProtoMember(18)]
+		public string HipChatAuthToken { get; set; }
+		[ProtoMember(19)]
+		public CampfireDetails CampfireDetails { get; set; }
 
         [JsonIgnore]
         public string FriendlyId { get { return Id == null ? string.Empty : Id.Split('/')[1]; } }
@@ -63,7 +67,15 @@ namespace Errordite.Core.Domain.Organisation
         {
             get { return "null"; }
         }
-    }
+	}
+
+	public class CampfireDetails
+	{
+		[ProtoMember(1)]
+		public string Token { get; set; }
+		[ProtoMember(2)]
+		public string Company { get; set; }
+	}
 
 	public class Subscription
 	{

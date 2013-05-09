@@ -1,17 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.Composition.Hosting;
+using System.Web;
 using System.Web.Mvc;
 using Errordite.Core;
 using Errordite.Core.Caching.Interfaces;
 using Errordite.Core.Caching.Resources;
-using Errordite.Core.Domain.Error;
 using Errordite.Core.Domain.Master;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Indexing;
 using Errordite.Core.IoC;
 using Errordite.Core.Configuration;
 using Errordite.Core.Identity;
+using Errordite.Core.Notifications.Commands;
 using Errordite.Core.Notifications.EmailInfo;
 using Errordite.Core.Raven;
 using Errordite.Core.Session;
@@ -20,9 +20,7 @@ using Errordite.Web.ActionFilters;
 using Errordite.Web.Models.Home;
 using Errordite.Core.Extensions;
 using Errordite.Web.Extensions;
-using Raven.Client;
 using Raven.Client.Indexes;
-using System.Linq;
 
 namespace Errordite.Web.Controllers
 {
@@ -31,150 +29,34 @@ namespace Errordite.Web.Controllers
 		private readonly ErrorditeConfiguration _configuration;
 		private readonly IAppSession _session;
 		private readonly IShardedRavenDocumentStoreFactory _storeFactory;
+	    private readonly ISendCampfireMessageCommand _sendCampfireMessageCommand;
 
-        public HomeController(ErrorditeConfiguration configuration, IShardedRavenDocumentStoreFactory storeFactory, IAppSession session)
+        public HomeController(ErrorditeConfiguration configuration, 
+			IShardedRavenDocumentStoreFactory storeFactory, 
+			IAppSession session, 
+			ISendCampfireMessageCommand sendCampfireMessageCommand)
         {
 	        _configuration = configuration;
 	        _storeFactory = storeFactory;
 	        _session = session;
+	        _sendCampfireMessageCommand = sendCampfireMessageCommand;
         }
 
-		[HttpGet, ImportViewData]
-		public ActionResult SetOrg()
+		[HttpGet, ExportViewData]
+		public ActionResult Campfire()
 		{
-			var session = ObjectFactory.GetObject<IAppSession>();
-
-			var ravenInstances = session.MasterRaven.Query<RavenInstance>().ToList();
-
-			foreach (var organisation in session.MasterRaven.Query<Organisation, Organisations>())
-			{
-				organisation.RavenInstance = ravenInstances.First(r => r.Id == organisation.RavenInstanceId);
-
-				using (_session.SwitchOrg(organisation))
+			_sendCampfireMessageCommand.Invoke(new SendCampfireMessageRequest
 				{
-					foreach (var user in _session.Raven.Query<User, Users>())
-					{
-						user.OrganisationId = organisation.Id;
-					}
-				}
-			}
-
-			session.Commit();
-			return Content("Done");
-		}
-
-		[HttpGet, ImportViewData]
-		public ActionResult Users()
-		{
-			var session = ObjectFactory.GetObject<IAppSession>();
-
-			var ravenInstances = session.MasterRaven.Query<RavenInstance>().ToList();
-
-			foreach (var organisation in session.MasterRaven.Query<Organisation, Organisations>())
-			{
-				organisation.RavenInstance = ravenInstances.First(r => r.Id == organisation.RavenInstanceId);
-
-				using (_session.SwitchOrg(organisation))
-				{
-					foreach (var user in _session.Raven.Query<User, Users>())
-					{
-						_session.MasterRaven.Store(new UserOrganisationMapping
+					CampfireDetails = new CampfireDetails
 						{
-							EmailAddress = user.Email,
-							Organisations = new List<string> { organisation.Id}
-						});
-					}
-				}
-			}
+							Company = "codetrip",
+							Token = "b025b3a703e95f3d78aee10322981f74d508a9ba"
+						},
+					RoomId = 562402,
+					Message = HttpUtility.HtmlDecode("<b>test</b>")
+				});
 
-			session.Commit();
-			return Content("Done");
-		}
-
-		[HttpGet, ImportViewData]
-		public ActionResult CountsFix()
-		{
-			Server.ScriptTimeout = 7200; //timeout in 2 hours
-
-			var session = ObjectFactory.GetObject<IAppSession>();
-
-			var ravenInstances = session.MasterRaven.Query<RavenInstance>().ToList();
-
-			foreach (var organisation in session.MasterRaven.Query<Organisation, Organisations>())
-			{
-				organisation.RavenInstance = ravenInstances.First(r => r.Id == organisation.RavenInstanceId);
-
-				using (_session.SwitchOrg(organisation))
-				{
-					RavenQueryStatistics stats;
-
-					foreach (var issue in _session.Raven.Query<Issue, Issues>().Statistics(out stats)
-						.Skip(0)
-						.Take(25)
-						.As<Issue>()
-						.ToList())
-					{
-					    var count = _session.Raven.Load<IssueHourlyCount>("IssueHourlyCount/{0}".FormatWith(issue.FriendlyId));
-                        if (count == null)
-                        {
-                            var issueHourlyCount = new IssueHourlyCount
-                            {
-                                IssueId = issue.Id,
-                                Id = "IssueHourlyCount/{0}".FormatWith(issue.FriendlyId),
-                                ApplicationId = issue.ApplicationId
-                            };
-
-                            issueHourlyCount.Initialise();
-                            _session.Raven.Store(issueHourlyCount);
-                        }
-                        else
-                        {
-                            count.ApplicationId = issue.ApplicationId;
-                        }
-					}
-
-					_session.Commit();
-					_session.Close();
-
-					if (stats.TotalResults > 25)
-					{
-						int pageNumber = stats.TotalResults / 25;
-
-						for (int i = 1; i < pageNumber; i++)
-						{
-                            foreach (var issue in _session.Raven.Query<Issue, Issues>()
-								.Skip(i * 25)
-								.Take(25)
-								.As<Issue>())
-							{
-                                var count = _session.Raven.Load<IssueHourlyCount>("IssueHourlyCount/{0}".FormatWith(issue.FriendlyId));
-                                if (count == null)
-                                {
-                                    var issueHourlyCount = new IssueHourlyCount
-                                    {
-                                        IssueId = issue.Id,
-                                        Id = "IssueHourlyCount/{0}".FormatWith(issue.FriendlyId),
-                                        ApplicationId = issue.ApplicationId
-                                    };
-
-                                    issueHourlyCount.Initialise();
-                                    _session.Raven.Store(issueHourlyCount);
-                                }
-                                else
-                                {
-                                    count.ApplicationId = issue.ApplicationId;
-                                }
-							}
-
-							_session.Commit();
-							_session.Close();
-						}
-					}
-				}
-			}
-
-			session.Commit();
-			return Content("Done");
+			return Content("Ok");
 		}
 
 		[HttpGet, ExportViewData]
@@ -189,17 +71,17 @@ namespace Errordite.Web.Controllers
 				new AssemblyCatalog(typeof(Issues).Assembly), new ExportProvider[0]),
 				masterDocumentStore.DatabaseCommands.ForDatabase(CoreConstants.ErrorditeMasterDatabaseName),
 				masterDocumentStore.Conventions);
-
 			Trace("Done Syncing Errordite Indexes");
+
 			foreach (var organisation in Core.Session.MasterRaven.Query<Organisation>().GetAllItemsAsList(100))
 			{
 				organisation.RavenInstance = Core.Session.MasterRaven.Load<RavenInstance>(organisation.RavenInstanceId);
 
 				using (_session.SwitchOrg(organisation))
 				{
-					Trace("Done Syncing {0} Indexes", organisation.Name);
-					_session.BootstrapOrganisation(organisation);
 					Trace("Syncing {0} Indexes", organisation.Name);
+					_session.BootstrapOrganisation(organisation);
+					Trace("Done Syncing {0} Indexes", organisation.Name);
 				}
 			}
 

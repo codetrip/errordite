@@ -59,6 +59,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Errordite.Client.1.3.31.0\lib\net40\Errordite.Client.dll</HintPath>
     </Reference>
+    <Reference Include="GrayHills.Matches">
+      <HintPath>..\packages\Matches.NET.1.0.2\lib\GrayHills.Matches.dll</HintPath>
+    </Reference>
     <Reference Include="HipChat.Net, Version=1.2.0.0, Culture=neutral, PublicKeyToken=85d27803db462816, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\HipChat.Net.1.2\lib\HipChat.Net.dll</HintPath>
@@ -268,6 +271,7 @@
     <Compile Include="Indexing\IssueHourlyCounts.cs" />
     <Compile Include="Indexing\MessageEnvelopes.cs" />
     <Compile Include="Messaging\Commands\CreateSQSQueueCommand.cs" />
+    <Compile Include="Messaging\SendCampfireMessage.cs" />
     <Compile Include="Misc\RepositoryPathHelper.cs" />
     <Compile Include="Identity\IImpersonationManager.cs" />
     <Compile Include="Indexing\Applications.cs" />
@@ -351,6 +355,7 @@
     <Compile Include="Messaging\AmazonSQSMessageSender.cs" />
     <Compile Include="Messaging\AmazonSQSFactory.cs" />
     <Compile Include="Messaging\MessageEnvelope.cs" />
+    <Compile Include="Notifications\Commands\SendCampfireMessageCommand.cs" />
     <Compile Include="Notifications\EmailInfo\AccountSuspendedEmailInfo.cs" />
     <Compile Include="Notifications\EmailInfo\AddedToOrganisationEmailInfo.cs" />
     <Compile Include="Notifications\EmailInfo\SubscriptionCancelledEmailInfo.cs" />
@@ -372,8 +377,6 @@
     <Compile Include="Notifications\EmailInfo\IssueAssignedToUserEmailInfo.cs" />
     <Compile Include="Notifications\EmailInfo\IssueEmailInfoBase.cs" />
     <Compile Include="Notifications\EmailInfo\SolvedIssueRecurrenceEMailInfo.cs" />
-    <Compile Include="Notifications\EmailInfo\IssueErrorCountExceededEmailInfo.cs" />
-    <Compile Include="Notifications\EmailInfo\IssueErrorCountWarningEmailInfo.cs" />
     <Compile Include="Notifications\EmailInfo\NewIssueReceivedEmailInfo.cs" />
     <Compile Include="Notifications\EmailInfo\NewUserEmailInfo.cs" />
     <Compile Include="Notifications\EmailInfo\EmailInfoBase.cs" />
@@ -407,6 +410,8 @@
     <Compile Include="Organisations\Commands\ActivateOrganisationCommand.cs" />
     <Compile Include="Organisations\Commands\CompleteSignUpCommand.cs" />
     <Compile Include="Organisations\Commands\CancelSubscriptionCommand.cs" />
+    <Compile Include="Organisations\Commands\SetOrganisationHipChatSettingsCommand.cs" />
+    <Compile Include="Organisations\Commands\SetOrganisationCampfireSettingsCommand.cs" />
     <Compile Include="Organisations\Commands\CreateInvoiceCommand.cs" />
     <Compile Include="Organisations\Commands\ChangeSubscriptionCommand.cs" />
     <Compile Include="Organisations\Commands\DeleteOrganisationCommand.cs" />
@@ -516,8 +521,6 @@
     <Content Include="Notifications\Templates\PeriodicIssueNotificationEmailTemplate.html" />
     <Content Include="Notifications\Templates\IssueAssignedToUserEmailTemplate.html" />
     <Content Include="Notifications\Templates\SolvedIssueRecurrenceEmailTemplate.html" />
-    <Content Include="Notifications\Templates\IssueErrorCountExceededEmailTemplate.html" />
-    <Content Include="Notifications\Templates\IssueErrorCountWarningEmailTemplate.html" />
     <Content Include="Notifications\Templates\NewIssueReceivedEmailTemplate.html" />
     <Content Include="Notifications\Templates\NewUserEmailTemplate.html" />
     <Content Include="Notifications\Templates\EmailTemplateMasterPage.html" />

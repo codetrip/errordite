@@ -1,0 +1,49 @@
+﻿
+@using Errordite.Web.Models.Shared
+@model Errordite.Web.Models.Account.CampfireSettingsViewModel
+           
+@{
+    ViewBag.Title = "Campfire Integration";
+}
+
+@section header
+{
+    @Html.Partial("Account/Tabs") 
+}
+
+<section class="centered">
+	<div class="content">
+		<div class="sidenav">
+            @Html.Partial("Account/SettingTabs", SettingTab.Campfire)
+            <div class="sidenav-content">
+	            <div class="sidenav-tab active">
+		            <p style="padding-bottom:10px">Set your Campfire account credentials here to enable notifications to be sent to Campfire rooms for your applications.</p>
+		            <div class="form">
+			            @using (Html.BeginForm("setcampfire", "account"))
+			            {
+				            <ul>
+								<li>
+									@Html.LabelFor(m => m.CampfireCompany, "Campfire Company (this is the sub domain from your Campfire URL)")
+									@Html.TextBoxFor(m => m.CampfireCompany)
+									<i data-title="This is the name found in your campfire URL i.e. for 'codetrip.campfirenow.com' you should enter 'codetrip'" class="icon-info"></i>
+									@Html.ValidationMessageFor(m => m.CampfireCompany)
+								</li>
+								<li>
+									@Html.LabelFor(m => m.CampfireToken, "Campfire API Token")
+									@Html.TextBoxFor(m => m.CampfireToken)
+									<i data-title="The API authentication token for the user you want Errordite to post messages as (found in the 'my info' section of Campfire) ." class="icon-info"></i>
+									@Html.ValidationMessageFor(m => m.CampfireToken)
+								</li>
+					            <li class="buttons">
+						            <input type="submit" value="Save Changes" class="btn btn-medium btn-blue"/>
+					            </li>
+				            </ul>
+			            }
+		            </div>
+	            </div>
+            </div>
+        </div>
+	</div>
+</section>
+
+

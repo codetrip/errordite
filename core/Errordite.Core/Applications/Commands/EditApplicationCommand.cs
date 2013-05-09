@@ -7,11 +7,9 @@ using Errordite.Core.Interfaces;
 using Errordite.Core.Authorisation;
 using Errordite.Core.Domain.Organisation;
 using System.Linq;
-using Errordite.Core.Indexing;
 using Errordite.Core.Organisations;
 using Errordite.Core.Session;
 using Errordite.Core.Session.Actions;
-using Errordite.Core.Extensions;
 
 namespace Errordite.Core.Applications.Commands
 {
@@ -61,9 +59,17 @@ namespace Errordite.Core.Applications.Commands
             application.DefaultUserId = User.GetId(request.UserId);
             application.MatchRuleFactoryId = request.MatchRuleFactoryId;
             application.NotificationGroups = request.NotificationGroups;
-            application.HipChatRoomId = request.HipChatRoomId;
-            application.HipChatAuthToken = request.HipChatAuthToken;
             application.Version = request.Version;
+
+			if (request.HipChatRoomId > 0)
+			{
+				application.HipChatRoomId = request.HipChatRoomId;
+			}
+
+			if (request.CampfireRoomId > 0)
+			{
+				application.CampfireRoomId = request.CampfireRoomId;
+			}
 
             Session.SynchroniseIndexes<Indexing.Applications>();
             Session.AddCommitAction(new FlushApplicationCacheCommitAction(_configuration, request.CurrentUser.ActiveOrganisation, application.FriendlyId));
@@ -104,11 +110,11 @@ namespace Errordite.Core.Applications.Commands
         public string MatchRuleFactoryId { get; set; }
         public string Name { get; set; }
         public string UserId { get; set; }
-        public int? HipChatRoomId { get; set; }
-        public string HipChatAuthToken { get; set; }
+        public int HipChatRoomId { get; set; }
         public string Version { get; set; }
         public bool IsActive { get; set; }
-        public List<string> NotificationGroups { get; set; }
+		public List<string> NotificationGroups { get; set; }
+		public int CampfireRoomId { get; set; }
     }
 
     public enum EditApplicationStatus

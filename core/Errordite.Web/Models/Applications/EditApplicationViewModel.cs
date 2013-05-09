@@ -8,7 +8,9 @@ namespace Errordite.Web.Models.Applications
     public class EditApplicationViewModel : EditApplicationPostModel
     {
         public IEnumerable<SelectListItem> ErrorConfigurations { get; set; }
-        public IEnumerable<SelectListItem> Users { get; set; }
+		public IEnumerable<SelectListItem> Users { get; set; }
+		public bool CampfireEnabled { get; set; }
+		public bool HipChatEnabled { get; set; }
     }
 
     public class EditApplicationPostModel
@@ -22,7 +24,7 @@ namespace Errordite.Web.Models.Applications
         public string Version { get; set; }
         public bool IsActive { get; set; }
         public int? HipChatRoomId { get; set; }
-        public string HipChatAuthToken { get; set; }
+		public int? CampfireRoomId { get; set; }
         public List<GroupViewModel> NotificationGroups { get; set; }
     }
 }

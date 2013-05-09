@@ -130,6 +130,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Consumers\SendCampfireMessageConsumer.cs" />
     <Compile Include="Consumers\SendEmailConsumer.cs" />
     <Compile Include="Consumers\SendHipChatMessageConsumer.cs" />
     <Compile Include="Consumers\ReceiveErrorConsumer.cs" />
