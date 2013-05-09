@@ -148,14 +148,14 @@ class Tabs
 		first = true
 
 		#GT: this popstate stuff is pretty close to being correct now I think.  Please don't change it drastically without a lot of caution!
-
-		window.onpopstate = (evt) =>				
-			#we don't want to handle the popstate that fires on first entering a page - as the server will have put us on the right tab			
-			if first 
-				first = false
-			else	
-				#if there is a state, show that tab; if not, show the first tab
-				this.show evt.state || this.node.find('li a[data-val]:first').data 'val'
+		if this.node.find('li a.tablink').length
+			window.onpopstate = (evt) =>				
+				#we don't want to handle the popstate that fires on first entering a page - as the server will have put us on the right tab			
+				if first 
+					first = false
+				else	
+					#if there is a state, show that tab; if not, show the first tab
+					this.show evt.state || this.node.find('li a[data-val]:first').data 'val'
 
 		
 		this.node.delegate 'li a.tablink', 'click', (e) => 
