@@ -12,12 +12,12 @@ namespace Errordite.Core.Identity
             throw new System.NotImplementedException();
         }
 
-        public AuthenticationIdentity SignInGuest()
+        public CookieIdentity SignInGuest()
         {
             throw new System.NotImplementedException();
         }
 
-        public AuthenticationIdentity GetCurrentUser()
+        public CookieIdentity GetCurrentUser()
         {
             throw new System.NotImplementedException();
         }

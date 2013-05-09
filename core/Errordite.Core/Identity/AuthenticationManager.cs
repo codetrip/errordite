@@ -23,7 +23,7 @@ namespace Errordite.Core.Identity
         {
             FormsAuthentication.SetAuthCookie(email, true);
 
-            var authenticationIdentity = new AuthenticationIdentity
+            var authenticationIdentity = new CookieIdentity
             {
                 RememberMe = true,
                 Email = email,
@@ -32,7 +32,7 @@ namespace Errordite.Core.Identity
 
 			_cookieManager.Set(
 				CoreConstants.Authentication.IdentityCookieName, 
-				authenticationIdentity.CookieEncode(), 
+				authenticationIdentity.Encode(), 
 				authenticationIdentity.RememberMe ? DateTime.MaxValue : (DateTime?)null);
             
             //remove the current user from the http context
@@ -43,10 +43,10 @@ namespace Errordite.Core.Identity
         /// Creates an identity cookie for our guest and returns their new identity
         /// </summary>
         /// <returns></returns>
-        public AuthenticationIdentity SignInGuest()
+        public CookieIdentity SignInGuest()
         {
             //create the new anonymous identity
-            var authenticationIdentity = new AuthenticationIdentity
+            var authenticationIdentity = new CookieIdentity
             {
                 RememberMe = false,
                 Email = CoreConstants.Authentication.GuestUserName,
@@ -54,7 +54,7 @@ namespace Errordite.Core.Identity
             };
 
             //update the identity cookie
-            _cookieManager.Set(CoreConstants.Authentication.IdentityCookieName, authenticationIdentity.CookieEncode(), DateTime.MaxValue);
+            _cookieManager.Set(CoreConstants.Authentication.IdentityCookieName, authenticationIdentity.Encode(), DateTime.MaxValue);
 
             //remove the current user from the http context
             AppContext.RemoveFromHttpContext();
@@ -71,7 +71,7 @@ namespace Errordite.Core.Identity
             SignInGuest();
         }
 
-        public AuthenticationIdentity GetCurrentUser()
+        public CookieIdentity GetCurrentUser()
         {
             var name = HttpContext.Current.User.Identity.Name;
 	        var authCookie = _cookieManager.Get(CoreConstants.Authentication.IdentityCookieName);
@@ -79,7 +79,7 @@ namespace Errordite.Core.Identity
 	        if (name.IsNullOrEmpty() || authCookie.IsNullOrEmpty())
 		        return SignInGuest();
 
-			var authIdentity = AuthenticationIdentity.CookieDecode(authCookie);
+			var authIdentity = CookieIdentity.Decode(authCookie);
 
 			//make sure the identity cookie has not been hacked
 	        if (authIdentity.Email.ToLowerInvariant().Trim() == name.ToLowerInvariant().Trim())

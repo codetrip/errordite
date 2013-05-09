@@ -6,7 +6,7 @@ namespace Errordite.Core.Identity
     {
         void SignIn(string name);
         void SignOut();
-        AuthenticationIdentity SignInGuest();
-        AuthenticationIdentity GetCurrentUser();
+        CookieIdentity SignInGuest();
+        CookieIdentity GetCurrentUser();
     }
 }
