@@ -14,7 +14,12 @@
           }
         });
       });
+      $('th :checkbox').on('click', function() {
+        return $(this).closest('table').find('td :checkbox').prop('checked', $(this).is(':checked'));
+      });
       Monitoring = (function() {
+
+        Monitoring.name = 'Monitoring';
 
         function Monitoring() {}
 
