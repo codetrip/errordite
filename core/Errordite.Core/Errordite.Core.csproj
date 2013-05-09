@@ -335,7 +335,7 @@
     <Compile Include="Groups\Queries\GetGroupQuery.cs" />
     <Compile Include="Identity\AppContext.cs" />
     <Compile Include="Identity\AppContextFactory.cs" />
-    <Compile Include="Identity\AuthenticationIdentity.cs" />
+    <Compile Include="Identity\CookieIdentity.cs" />
     <Compile Include="Identity\AuthenticationManager.cs" />
     <Compile Include="Identity\IAuthenticationManager.cs" />
     <Compile Include="CoreConstants.cs" />

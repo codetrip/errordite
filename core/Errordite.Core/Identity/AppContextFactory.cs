@@ -57,7 +57,7 @@ namespace Errordite.Core.Identity
                     //    when starting the impersonation
                     if (impersonationStatus.Impersonating)
                     {
-                        var impersonatedIdentity = new AuthenticationIdentity
+                        var impersonatedIdentity = new CookieIdentity
                         {
                             HasUserProfile = true,
                             Email = impersonationStatus.EmailAddress,
@@ -90,10 +90,10 @@ namespace Errordite.Core.Identity
             }
         }
 
-        private AppContext CreateKnownUser(AuthenticationIdentity authenticationIdentity)
+        private AppContext CreateKnownUser(CookieIdentity cookieIdentity)
         {
 	        List<Organisation> organisations;
-			var organisation = GetActiveOrganisation(authenticationIdentity.Email, out organisations);
+			var organisation = GetActiveOrganisation(cookieIdentity.Email, out organisations);
 
 	        if (organisation != null)
             {
@@ -101,7 +101,7 @@ namespace Errordite.Core.Identity
 
 				var user = _getUserByEmailAddressQuery.Invoke(new GetUserByEmailAddressRequest
 				{
-					EmailAddress = authenticationIdentity.Email,
+					EmailAddress = cookieIdentity.Email,
 					OrganisationId = organisation.Id
 				}).User;
 
