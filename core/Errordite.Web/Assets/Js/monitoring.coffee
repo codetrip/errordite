@@ -13,6 +13,9 @@ jQuery ->
 					monitoring.performAction $this.data('action')
 			)
 
+		$('th :checkbox').on 'click', () -> 
+			$(this).closest('table').find('td :checkbox').prop('checked', $(this).is(':checked'))
+
 		class Monitoring
 
 			performAction: (action)->
