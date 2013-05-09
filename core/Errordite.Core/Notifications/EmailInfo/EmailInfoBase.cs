@@ -25,6 +25,11 @@ namespace Errordite.Core.Notifications.EmailInfo
         {
             return string.Empty;
         }
+
+		public virtual string ConvertToNonHtmlMessage(ErrorditeConfiguration configuration)
+		{
+			return string.Empty;
+		}
     }
 
     public class NonTemplatedEmailInfo : EmailInfoBase

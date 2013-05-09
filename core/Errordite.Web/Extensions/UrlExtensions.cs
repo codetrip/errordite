@@ -313,6 +313,16 @@ namespace Errordite.Web.Extensions
             return helper.Action("timezone", "account", new { Area = string.Empty });
         }
 
+		public static string HipChat(this UrlHelper helper)
+		{
+			return helper.Action("hipchat", "account", new { Area = string.Empty });
+		}
+
+		public static string Campfire(this UrlHelper helper)
+		{
+			return helper.Action("campfire", "account", new { Area = string.Empty });
+		}
+
 		public static string ApiAccess(this UrlHelper helper)
 		{
 			return helper.Action("apiaccess", "account", new { Area = string.Empty });

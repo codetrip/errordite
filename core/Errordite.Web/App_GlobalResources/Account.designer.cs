@@ -115,6 +115,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Campfire settings have been updated successfully, you can now set Campfire rooms for each of your applications ..
+        /// </summary>
+        internal static string CampfireSettingsUpdated {
+            get {
+                return ResourceManager.GetString("CampfireSettingsUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please confirm your password..
         /// </summary>
         internal static string ConfirmPassword_Required {
@@ -282,6 +291,15 @@ namespace Resources {
         internal static string Group_Updated {
             get {
                 return ResourceManager.GetString("Group_Updated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to HipChat settings have been updated successfully, you can now set HipChat rooms for each of your applications ..
+        /// </summary>
+        internal static string HipChatSettingsUpdated {
+            get {
+                return ResourceManager.GetString("HipChatSettingsUpdated", resourceCulture);
             }
         }
         

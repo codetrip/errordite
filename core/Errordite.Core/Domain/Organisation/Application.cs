@@ -14,6 +14,7 @@ namespace Errordite.Core.Domain.Organisation
         {
             NotificationGroups = new List<string>();
         }
+
         [ProtoMember(1)]
         public string Id { get; set; }
         [ProtoMember(2)]
@@ -29,15 +30,11 @@ namespace Errordite.Core.Domain.Organisation
         [ProtoMember(7)]
         public string MatchRuleFactoryId { get; set; }
         [ProtoMember(8)]
-        public List<string> NotificationGroups { get; set; }
-        [ProtoMember(9)]
-        public int? HipChatRoomId { get; set; }
-        [ProtoMember(10)]
-        public string HipChatAuthToken { get; set; }
-
-        [JsonIgnore]
-        public string FriendlyId { get { return Id == null ? string.Empty : Id.Split('/')[1]; } }
-
+		public List<string> NotificationGroups { get; set; }
+		[ProtoMember(9)]
+		public int HipChatRoomId { get; set; }
+		[ProtoMember(10)]
+		public int CampfireRoomId { get; set; }
         [ProtoMember(11)]
         public string TokenSalt { get; set; }
         [ProtoMember(12)]
@@ -50,9 +47,7 @@ namespace Errordite.Core.Domain.Organisation
             return friendlyId.Contains("/") ? friendlyId : "applications/{0}".FormatWith(friendlyId);
         }
 
-        public bool SendNonEmailNotifications()
-        {
-            return HipChatAuthToken.IsNotNullOrEmpty() && HipChatRoomId > 0;
-        }
+		[JsonIgnore]
+		public string FriendlyId { get { return Id == null ? string.Empty : Id.Split('/')[1]; } }
     }
 }

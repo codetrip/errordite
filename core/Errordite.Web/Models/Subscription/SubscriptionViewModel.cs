@@ -10,12 +10,6 @@ namespace Errordite.Web.Models.Subscription
 	    public Organisation Organisation { get; set; }
     }
 
-    public class OrganisationSettingsViewModel
-    {
-        public string TimezoneId { get; set; }
-        public string ApiKey { get; set; }
-    }
-
     public class ChangePaymentPlanViewModel
     {
         public PaymentPlan Plan { get; set; }

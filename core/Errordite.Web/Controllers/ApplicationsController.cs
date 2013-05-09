@@ -118,6 +118,8 @@ namespace Errordite.Web.Controllers
                 viewModel.NewOrganisation = true;
 
             viewModel.Version = "1.0.0.0";
+	        viewModel.HipChatEnabled = Core.AppContext.CurrentUser.ActiveOrganisation.HipChatAuthToken.IsNotNullOrEmpty();
+	        viewModel.CampfireEnabled = Core.AppContext.CurrentUser.ActiveOrganisation.CampfireDetails != null;
 
             return View(viewModel);
         }
@@ -137,9 +139,9 @@ namespace Errordite.Web.Controllers
                 CurrentUser = Core.AppContext.CurrentUser,
                 MatchRuleFactoryId = new MethodAndTypeMatchRuleFactory().Id,
                 UserId = viewModel.UserId,
-                HipChatAuthToken = viewModel.HipChatAuthToken,
-                HipChatRoomId = viewModel.HipChatRoomId,
+                HipChatRoomId = viewModel.HipChatRoomId.HasValue ? viewModel.HipChatRoomId.Value : 0,
                 NotificationGroups = viewModel.NotificationGroups.Where(n => n.Selected).Select(g => g.Id).ToList(),
+				CampfireRoomId = viewModel.CampfireRoomId.HasValue ? viewModel.CampfireRoomId.Value : 0,
                 Version = viewModel.Version
             });
 
@@ -184,6 +186,9 @@ namespace Errordite.Web.Controllers
                 .Items
                 .ToSelectList(u => u.FriendlyId, u => "{0} {1}".FormatWith(u.FirstName, u.LastName), u => u.FriendlyId == viewModel.UserId, sortListBy: SortSelectListBy.Text);
 
+			viewModel.HipChatEnabled = Core.AppContext.CurrentUser.ActiveOrganisation.HipChatAuthToken.IsNotNullOrEmpty();
+			viewModel.CampfireEnabled = Core.AppContext.CurrentUser.ActiveOrganisation.CampfireDetails != null;
+
             return View(viewModel);
         }
 
@@ -202,11 +207,11 @@ namespace Errordite.Web.Controllers
                 CurrentUser = Core.AppContext.CurrentUser,
                 ApplicationId = viewModel.Id,
                 MatchRuleFactoryId = viewModel.MatchRuleFactoryId,
-                HipChatAuthToken = viewModel.HipChatAuthToken,
-                HipChatRoomId = viewModel.HipChatRoomId,
+				HipChatRoomId = viewModel.HipChatRoomId.HasValue ? viewModel.HipChatRoomId.Value : 0,
                 UserId = Errordite.Core.Domain.Organisation.User.GetId(viewModel.UserId),
                 NotificationGroups = viewModel.NotificationGroups.Where(n => n.Selected).Select(g => g.Id).ToList(),
-                Version = viewModel.Version,
+				Version = viewModel.Version,
+				CampfireRoomId = viewModel.CampfireRoomId.HasValue ? viewModel.CampfireRoomId.Value : 0,
             });
 
             if (response.Status != EditApplicationStatus.Ok)
