@@ -363,7 +363,7 @@ table {
 		background-color: $searchbackground;
 		border:0;
 		padding:7px 8px;
-		width:200px;
+		width:225px;
 		&:hover {
 			text-decoration: none;
 		}
@@ -373,7 +373,7 @@ table {
 		border-top: 4px solid #fff;
 	}
 	ul.dropdown-menu {
-		width:215px;
+		width:240px;
 		background-color: $mediumblue;
 		a {
 			color:#fff;
@@ -703,7 +703,7 @@ section {
     font-weight: $normalfontweight;
   }
   &.btn-small {
-    padding: 7px 18px 7px 18px;
+    padding: 9px 18px 8px 18px;
     font-size: 13px;
 	line-height:15px;
     font-weight: $normalfontweight;

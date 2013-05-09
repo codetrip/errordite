@@ -4,7 +4,6 @@ using System.Web;
 using System.Web.Mvc;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Encryption;
-using Errordite.Core.Identity;
 using Errordite.Core.Organisations.Commands;
 using Errordite.Core.Organisations.Queries;
 using Errordite.Web.ActionFilters;
@@ -24,15 +23,13 @@ namespace Errordite.Web.Controllers
         private readonly IEncryptor _encryptor;
         private readonly IChangeSubscriptionCommand _changeSubscriptionCommand;
 		private readonly ISuspendOrganisationCommand _suspendOrganisationCommand;
-		private readonly IAuthenticationManager _authenticationManager;
 
         public SubscriptionController(IGetAvailablePaymentPlansQuery getAvailablePaymentPlansQuery, 
 			ICompleteSignUpCommand completeSignUpCommand, 
             IEncryptor encryptor, 
 			ICancelSubscriptionCommand cancelSubscriptionCommand, 
             IChangeSubscriptionCommand changeSubscriptionCommand,
-			ISuspendOrganisationCommand suspendOrganisationCommand, 
-			IAuthenticationManager authenticationManager)
+			ISuspendOrganisationCommand suspendOrganisationCommand)
         {
             _getAvailablePaymentPlansQuery = getAvailablePaymentPlansQuery;
             _completeSignUpCommand = completeSignUpCommand;
@@ -40,7 +37,6 @@ namespace Errordite.Web.Controllers
 	        _cancelSubscriptionCommand = cancelSubscriptionCommand;
             _changeSubscriptionCommand = changeSubscriptionCommand;
 	        _suspendOrganisationCommand = suspendOrganisationCommand;
-	        _authenticationManager = authenticationManager;
         }
 
         [HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.Subscription)]
