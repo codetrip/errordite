@@ -477,9 +477,6 @@
     <Content Include="Assets\Js\monitoring.js">
       <DependentUpon>monitoring.coffee</DependentUpon>
     </Content>
-    <Content Include="Assets\Js\monitoring.min.js">
-      <DependentUpon>monitoring.coffee</DependentUpon>
-    </Content>
     <Content Include="Assets\Js\organisations.js">
       <DependentUpon>organisations.coffee</DependentUpon>
     </Content>
@@ -968,12 +965,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Account\APIAccess.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Account\Campfire.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Account\HipChat.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

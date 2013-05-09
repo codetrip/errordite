@@ -60,16 +60,8 @@ namespace Errordite.Core.Applications.Commands
             application.MatchRuleFactoryId = request.MatchRuleFactoryId;
             application.NotificationGroups = request.NotificationGroups;
             application.Version = request.Version;
-
-			if (request.HipChatRoomId > 0)
-			{
-				application.HipChatRoomId = request.HipChatRoomId;
-			}
-
-			if (request.CampfireRoomId > 0)
-			{
-				application.CampfireRoomId = request.CampfireRoomId;
-			}
+			application.HipChatRoomId = request.HipChatRoomId;
+			application.CampfireRoomId = request.CampfireRoomId;
 
             Session.SynchroniseIndexes<Indexing.Applications>();
             Session.AddCommitAction(new FlushApplicationCacheCommitAction(_configuration, request.CurrentUser.ActiveOrganisation, application.FriendlyId));
@@ -110,11 +102,11 @@ namespace Errordite.Core.Applications.Commands
         public string MatchRuleFactoryId { get; set; }
         public string Name { get; set; }
         public string UserId { get; set; }
-        public int HipChatRoomId { get; set; }
+        public int? HipChatRoomId { get; set; }
         public string Version { get; set; }
         public bool IsActive { get; set; }
 		public List<string> NotificationGroups { get; set; }
-		public int CampfireRoomId { get; set; }
+		public int? CampfireRoomId { get; set; }
     }
 
     public enum EditApplicationStatus
