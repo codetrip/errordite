@@ -17,8 +17,8 @@ namespace Errordite.Services.Consumers
         {
             _sendHipChatCommand.Invoke(new SendHipChatMessageRequest
             {
-                HipChatRoomId = message.HipChatRoomId,
                 HipChatAuthToken = message.HipChatAuthToken,
+				HipChatRoomId = message.HipChatRoomId,
                 Message = message.Message,
                 Colour = message.Colour,
             });

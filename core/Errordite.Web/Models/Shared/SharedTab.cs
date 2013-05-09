@@ -10,6 +10,8 @@ namespace Errordite.Web.Models.Shared
 
 	public enum SettingTab
 	{
+		HipChat,
+		Campfire,
 		Timezone,
 		Api,
 	}

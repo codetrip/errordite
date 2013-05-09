@@ -135,6 +135,9 @@
   <data name="AddUserStatus_PlanThresholdReached" xml:space="preserve">
     <value>You have reached the maximum number of users allowed under your current billing plan, you can upgrade using the page below.</value>
   </data>
+  <data name="CampfireSettingsUpdated" xml:space="preserve">
+    <value>Campfire settings have been updated successfully, you can now set Campfire rooms for each of your applications .</value>
+  </data>
   <data name="ConfirmPassword_Required" xml:space="preserve">
     <value>Please confirm your password.</value>
   </data>
@@ -191,6 +194,9 @@
   </data>
   <data name="Group_Updated" xml:space="preserve">
     <value>The group has been updated successfully.</value>
+  </data>
+  <data name="HipChatSettingsUpdated" xml:space="preserve">
+    <value>HipChat settings have been updated successfully, you can now set HipChat rooms for each of your applications .</value>
   </data>
   <data name="LastName_Required" xml:space="preserve">
     <value>Please enter your last name.</value>

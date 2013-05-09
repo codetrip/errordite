@@ -10,6 +10,7 @@
             <th>Active</th>
             <th>Default User</th> 
             <th>Token</th> 
+            <th>Settings</th> 
             @if (!Model.SystemView)
             {
                 <th></th>
@@ -27,6 +28,20 @@
             <td>@application.IsActive</td>
             <td>@application.DefaultUser</td>
             <td>@application.Token</td>
+	        <td>
+		        @if (application.CampfireRoomId.HasValue)
+		        {
+					<text>Campfire: </text>@application.CampfireRoomId.Value
+		        }
+				@if (application.HipChatRoomId.HasValue)
+		        {
+					 if (application.CampfireRoomId.HasValue)
+					 {
+						 <br />
+					 }
+					<text>HipChat: </text>@application.HipChatRoomId.Value
+		        }
+	        </td>
 
             @if (!Model.SystemView)
             {

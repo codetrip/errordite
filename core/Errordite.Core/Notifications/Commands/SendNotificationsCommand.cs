@@ -17,17 +17,11 @@ namespace Errordite.Core.Notifications.Commands
     {
         private readonly ErrorditeConfiguration _configuration;
         private readonly IGetUsersQuery _getUsersQuery;
-        private readonly ISendEmailCommand _sendEmailCommand;
-        private readonly ISendHipChatMessageCommand _sendHipChatMessageCommand;
 
         public SendNotificationsCommand(ErrorditeConfiguration configuration, 
-            ISendEmailCommand sendEmailCommand, 
-            IGetUsersQuery getUsersQuery, 
-            ISendHipChatMessageCommand sendHipChatMessageCommand) 
+            IGetUsersQuery getUsersQuery) 
         {
-            _sendEmailCommand = sendEmailCommand;
             _getUsersQuery = getUsersQuery;
-            _sendHipChatMessageCommand = sendHipChatMessageCommand;
             _configuration = configuration;
         }
 
@@ -36,6 +30,7 @@ namespace Errordite.Core.Notifications.Commands
             MaybeSendIndividualEmailNotification(request);
             MaybeSendHipChatNotification(request);
             MaybeSendGroupEmailNotification(request);
+	        MaybeSendCampfireNotification(request);
 
             return new SendNotificationResponse();
         }
@@ -45,16 +40,9 @@ namespace Errordite.Core.Notifications.Commands
             if (request.EmailInfo == null || request.EmailInfo.To.IsNullOrEmpty())
                 return;
 
-            if (!_configuration.ServiceBusEnabled)
-            {
-                _sendEmailCommand.Invoke(new SendEmailRequest { EmailInfo = request.EmailInfo });
-            }
-            else
-            {
-                Session.AddCommitAction(new SendMessageCommitAction(
-					request.EmailInfo,
-                    _configuration.GetNotificationsQueueAddress(request.Organisation == null ? "1" : request.Organisation.RavenInstance.FriendlyId)));
-            }
+            Session.AddCommitAction(new SendMessageCommitAction(
+				request.EmailInfo,
+                _configuration.GetNotificationsQueueAddress(request.Organisation == null ? "1" : request.Organisation.RavenInstance.FriendlyId)));
         }
 
         private void MaybeSendGroupEmailNotification(SendNotificationRequest request)
@@ -84,22 +72,39 @@ namespace Errordite.Core.Notifications.Commands
 
             request.EmailInfo.To = usersToSendTo.Aggregate(string.Empty, (current, u) => current + (u.Email + ';')).TrimEnd(';');
 
-            if (!_configuration.ServiceBusEnabled)
-            {
-                _sendEmailCommand.Invoke(new SendEmailRequest { EmailInfo = request.EmailInfo });
-            }
-            else
-            {
-                Session.AddCommitAction(new SendMessageCommitAction(request.EmailInfo, 
+            Session.AddCommitAction(new SendMessageCommitAction(request.EmailInfo, 
                     _configuration.GetNotificationsQueueAddress(request.Organisation == null ? 
                         "1" :
                         request.Organisation.RavenInstance.FriendlyId)));
-            }
         }
+
+		private void MaybeSendCampfireNotification(SendNotificationRequest request)
+		{
+			if (request.Application == null || 
+				request.Application.CampfireRoomId == 0|| 
+				request.Organisation.CampfireDetails == null ||
+				request.Organisation.CampfireDetails.Token.IsNullOrEmpty() ||
+				request.Organisation.CampfireDetails.Company.IsNullOrEmpty())
+				return;
+
+			string message = request.EmailInfo.ConvertToNonHtmlMessage(_configuration);
+
+			if (message.IsNullOrEmpty())
+				return;
+
+			var campfireMessage = new SendCampfireMessage
+			{
+				CampfireDetails = request.Organisation.CampfireDetails,
+				RoomId = request.Application.CampfireRoomId,
+				Message = message
+			};
+
+			Session.AddCommitAction(new SendMessageCommitAction(campfireMessage, _configuration.GetNotificationsQueueAddress(request.Organisation == null ? "1" : request.Organisation.RavenInstance.FriendlyId)));
+		}
 
         private void MaybeSendHipChatNotification(SendNotificationRequest request)
         {
-            if (request.Application == null || request.Application.HipChatAuthToken.IsNullOrEmpty() || !request.Application.HipChatRoomId.HasValue)
+			if (request.Application == null || request.Application.HipChatRoomId == 0 || request.Organisation.HipChatAuthToken.IsNullOrEmpty())
                 return;
 
             string message = request.EmailInfo.ConvertToSimpleMessage(_configuration);
@@ -107,31 +112,18 @@ namespace Errordite.Core.Notifications.Commands
             if (message.IsNullOrEmpty())
                 return;
 
-            if (!_configuration.ServiceBusEnabled)
-            {
-                _sendHipChatMessageCommand.Invoke(new SendHipChatMessageRequest
-                {
-                    HipChatRoomId = request.Application.HipChatRoomId.Value,
-                    HipChatAuthToken = request.Application.HipChatAuthToken,
-                    Message = request.EmailInfo.ConvertToSimpleMessage(_configuration),
-                    Colour = request.EmailInfo.HipChatColour,
-                });
-            }
-            else
-            {
-                var hipChatMessage = new SendHipChatMessage
-                {
-                    HipChatRoomId = request.Application.HipChatRoomId.Value,
-                    HipChatAuthToken = request.Application.HipChatAuthToken,
-                    Message = request.EmailInfo.ConvertToSimpleMessage(_configuration),
-                    Colour = request.EmailInfo.HipChatColour,
-                };
+            var hipChatMessage = new SendHipChatMessage
+			{
+				HipChatRoomId = request.Application.HipChatRoomId,
+				HipChatAuthToken = request.Organisation.HipChatAuthToken,
+				Message = message,
+                Colour = request.EmailInfo.HipChatColour,
+            };
 
-                Session.AddCommitAction(new SendMessageCommitAction(hipChatMessage,
-                    _configuration.GetNotificationsQueueAddress(request.Organisation == null ? 
-                        "1" :
-                        request.Organisation.RavenInstance.FriendlyId)));
-            }
+            Session.AddCommitAction(new SendMessageCommitAction(hipChatMessage,
+                _configuration.GetNotificationsQueueAddress(request.Organisation == null ? 
+                    "1" :
+                    request.Organisation.RavenInstance.FriendlyId)));
         }
     }
 
