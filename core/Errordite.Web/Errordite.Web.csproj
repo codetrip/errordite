@@ -357,9 +357,6 @@
     <Content Include="Assets\Css\errordite.css">
       <DependentUpon>errordite.scss</DependentUpon>
     </Content>
-    <Content Include="Assets\Css\errordite.min.css">
-      <DependentUpon>errordite.scss</DependentUpon>
-    </Content>
     <Content Include="Assets\Css\img\ajax-loader.gif" />
     <Content Include="Assets\Css\fonts.css" />
     <Content Include="Assets\Css\img\glyphicons-halflings.png" />
@@ -989,7 +986,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>4752</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

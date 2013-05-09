@@ -48,8 +48,8 @@ namespace Errordite.Core.Applications.Commands
 			DeleteByIndex(CoreConstants.IndexNames.Errors, applicationId);
 			DeleteByIndex(CoreConstants.IndexNames.Issues, applicationId);
 			DeleteByIndex(CoreConstants.IndexNames.IssueDailyCount, applicationId);
-			DeleteByIndex(CoreConstants.IndexNames.OrganisationIssueDailyCount, applicationId);
-			DeleteByIndex(CoreConstants.IndexNames.IssueHistory, applicationId);
+            DeleteByIndex(CoreConstants.IndexNames.IssueHistory, applicationId);
+            DeleteByIndex(CoreConstants.IndexNames.IssueHourlyCounts, applicationId);
 
             if (!request.JustDeleteErrors)
                 Delete(application);

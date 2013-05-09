@@ -75,7 +75,7 @@ namespace Errordite.Web.Controllers
 				//if the default user has been deleted, update it here to the current user
 				if (user == null)
 				{
-					var app = Core.Session.Raven.Load<Application>(application.Id);
+					var app = Core.Session.Raven.Load<Application>(Application.GetId(application.Id));
 					app.DefaultUserId = Core.AppContext.CurrentUser.Id;
 					user = Core.AppContext.CurrentUser;
 				}
