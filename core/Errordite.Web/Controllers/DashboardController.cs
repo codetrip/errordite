@@ -194,6 +194,7 @@ namespace Errordite.Web.Controllers
             var items = activity.Items.Select(h =>
             {
                 var user = users.Items.FirstOrDefault(u => u.Id == h.UserId);
+
                 return new IssueHistoryItemViewModel
                 {
                     Message = h.GetMessage(users.Items, issueMemoizer, GetIssueLink),
@@ -201,7 +202,8 @@ namespace Errordite.Web.Controllers
                     UserEmail = user != null ? user.Email : string.Empty,
                     Username = user != null ? user.FullName : string.Empty,
                     SystemMessage = h.SystemMessage,
-                    IssueLink = issueMemoizer.Get(h.IssueId).IfPoss(i => "<a href=\"{0}\">{1}</a>".FormatWith(Url.Issue(i.Id), i.Name), "DELETED")
+                    IssueLink = issueMemoizer.Get(h.IssueId).IfPoss(i => "<a href=\"{0}\">{1}</a>".FormatWith(Url.Issue(i.Id), i.Name), "DELETED"),
+                    IssueId = IdHelper.GetFriendlyId(h.IssueId),
                 };
             });
 

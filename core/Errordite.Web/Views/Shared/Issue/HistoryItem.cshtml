@@ -8,7 +8,7 @@
 	<td>
 		@if (Model.IssueLink.IsNotNullOrEmpty())
 		{
-			<span class="bold">Issue:</span> @Html.Raw(Model.IssueLink) <br />
+			<span class="bold">Issue @Model.IssueId:</span> @Html.Raw(Model.IssueLink) <br />
 		}
 		@Html.Raw(Model.Message)
 	</td>
