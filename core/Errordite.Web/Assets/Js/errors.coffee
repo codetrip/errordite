@@ -89,7 +89,9 @@ jQuery ->
 				visualisedHtml = if matchInfos.length == 0 then _.escape propValText else propValText
 				 
 				i = 0
-				for matchInfo in matchInfos		
+				
+				#filter out any matchInfos that have an overlap
+				for matchInfo in matchInfos	when !prevMatchInfo? or matchInfo.end < prevMatchInfo.start
 					
 					length = matchInfo.length
 					gapToPrev = if prevMatchInfo? then prevMatchInfo.start - matchInfo.end else visualisedHtml.length - matchInfo.end

@@ -125,6 +125,9 @@
           i = 0;
           for (_i = 0, _len = matchInfos.length; _i < _len; _i++) {
             matchInfo = matchInfos[_i];
+            if (!((prevMatchInfo == null) || matchInfo.end < prevMatchInfo.start)) {
+              continue;
+            }
             length = matchInfo.length;
             gapToPrev = prevMatchInfo != null ? prevMatchInfo.start - matchInfo.end : visualisedHtml.length - matchInfo.end;
             regex = RegExp("^([\\S\\s]{" + matchInfo.start + "})([\\S\\s]{" + length + "})([\\S\\s]{" + gapToPrev + "})([\\S\\s]*)");
