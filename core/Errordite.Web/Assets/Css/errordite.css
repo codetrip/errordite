@@ -268,14 +268,14 @@ table {
       background-color: #414650;
       border: 0;
       padding: 7px 8px;
-      width: 200px; }
+      width: 225px; }
       .welcome-bar-container .welcome-bar a.dropdown-toggle:hover {
         text-decoration: none; }
     .welcome-bar-container .welcome-bar .caret {
       margin: 8px 10px 0 0;
       border-top: 4px solid #fff; }
     .welcome-bar-container .welcome-bar ul.dropdown-menu {
-      width: 215px;
+      width: 240px;
       background-color: #92c7e7; }
       .welcome-bar-container .welcome-bar ul.dropdown-menu a {
         color: #fff; }
@@ -536,7 +536,7 @@ section {
     line-height: 19px;
     font-weight: 400; }
   .btn.btn-small {
-    padding: 7px 18px 7px 18px;
+    padding: 9px 18px 8px 18px;
     font-size: 13px;
     line-height: 15px;
     font-weight: 400;

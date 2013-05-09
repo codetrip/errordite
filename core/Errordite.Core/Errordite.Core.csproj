@@ -265,6 +265,7 @@
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\TypeReflectionExtensions.cs" />
     <Compile Include="Extensions\XElementExtensions.cs" />
+    <Compile Include="Indexing\IssueHourlyCounts.cs" />
     <Compile Include="Indexing\MessageEnvelopes.cs" />
     <Compile Include="Messaging\Commands\CreateSQSQueueCommand.cs" />
     <Compile Include="Misc\RepositoryPathHelper.cs" />

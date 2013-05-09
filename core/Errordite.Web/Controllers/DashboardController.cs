@@ -56,7 +56,7 @@ namespace Errordite.Web.Controllers
             return new PlainJsonNetResult(data, true);
         }
 
-        [ImportViewData]
+        [ImportViewData, ExportViewData]
         public ActionResult Index()
         {
             var curentApplication = CurrentApplication;
@@ -119,7 +119,8 @@ namespace Errordite.Web.Controllers
             }
             else
             {
-                viewModel.Stats = _getOrganisationStatisticsQuery.Invoke(new GetOrganisationStatisticsRequest { ApplicationId = Core.AppContext.CurrentUser.OrganisationId }).Statistics ?? new Statistics();
+                ConfirmationNotification("You do not currently have any applications, please create an application to begin using Errordite.");
+                return Redirect(Url.AddApplication(false));
             }
 
             return View(viewModel);
