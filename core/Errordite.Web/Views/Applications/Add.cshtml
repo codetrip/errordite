@@ -60,30 +60,23 @@
 						<div class="form double">
 							<ul>
 								<li>
-									@if (Model.HipChatEnabled)
-									{
-										@Html.LabelFor(m => m.HipChatRoomId, "HipChat Room Id")
-									}
-									else
-									{
-										<label><a href="@Url.HipChat()">Enable HipChat integration</a></label>
-									}
+								    @Html.LabelFor(m => m.HipChatRoomId, "HipChat Room Id", new {style="display:inline-block;"}) 
+                                    @if (!Model.HipChatEnabled)
+                                    {
+                                        <text>(</text><a href="@Url.HipChat()">Configure HipChat</a><text>)</text>
+                                    }
 									@Html.TextBoxFor(m => m.HipChatRoomId, Model.HipChatEnabled ? null : new {disabled="disabled"})
-									<i data-title="This is the numeric Id found in the URL of the room you want Errordite to post to." class="icon-info"></i>
+									<i data-title="This is the numeric Id found in the URL of the HipChat room you want Errordite to post to." class="icon-info"></i>
 									@Html.ValidationMessageFor(m => m.HipChatRoomId)
 								</li>
 								<li>
-									@if (Model.CampfireEnabled)
-									{
-										@Html.LabelFor(m => m.CampfireRoomId, "Campfire Room Id")
-									}
-									else
-									{
-										<label><a href="@Url.Campfire()">Enable Campfire integration</a></label>
-									}
-									
-									@Html.TextBoxFor(m => m.CampfireRoomId, Model.CampfireEnabled ? null : new {disabled="disabled"})
-									<i data-title="This is the numeric Id found in the URL of the room you want Errordite to post to." class="icon-info"></i>
+								    @Html.LabelFor(m => m.CampfireRoomId, "Campfire Room Id", new {style="display:inline-block;"}) 
+                                    @if (!Model.CampfireEnabled)
+                                    {                       
+                                        <text>(</text><a href="@Url.Campfire()">Configure Campfire</a><text>)</text>
+                                    }
+                                    @Html.TextBoxFor(m => m.CampfireRoomId, Model.CampfireEnabled ? null : new {disabled="disabled"})
+									<i data-title="This is the numeric Id found in the URL of the Campfire room you want Errordite to post to." class="icon-info"></i>
 									@Html.ValidationMessageFor(m => m.CampfireRoomId)
 								</li>
 							</ul>
