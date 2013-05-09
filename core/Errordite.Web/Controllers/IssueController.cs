@@ -113,6 +113,14 @@ namespace Errordite.Web.Controllers
             var applications = Core.GetApplications();
             var assignedUser = users.Items.FirstOrDefault(u => u.Id == issue.UserId);
 
+            //if the assigned user has been deleted, update it to the current user
+            if (assignedUser == null)
+            {
+                var updateIssue = Core.Session.Raven.Load<Issue>(issue.Id);
+                updateIssue.UserId = Core.AppContext.CurrentUser.Id;
+                assignedUser = Core.AppContext.CurrentUser;
+            }
+
             int ii = 0;
 
             var extraDataKeys = _getExtraDataKeysForIssueQuery.Invoke(new GetExtraDataKeysForIssueRequest
@@ -135,7 +143,7 @@ namespace Errordite.Web.Controllers
                                             })),
             }).ToList();
 
-            var rulesViewModel = new UpdateIssueViewModel
+            var updateViewModel = new UpdateIssueViewModel
             {
                 ApplicationId = issue.ApplicationId,
                 Rules = ruleViewModels,
@@ -168,7 +176,7 @@ namespace Errordite.Web.Controllers
                     Reference = issue.Reference
                 },
                 Errors = GetErrorsViewModel(postModel, paging, extraDataKeys),
-                Update = rulesViewModel,
+                Update = updateViewModel,
                 Tab = postModel.Tab
             };
 

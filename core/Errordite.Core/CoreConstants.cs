@@ -28,6 +28,7 @@ namespace Errordite.Core
             public static string OrganisationIssueDailyCount = new OrganisationDailyCounts().IndexName;
             public static string UserOrganisationMappings = new UserOrganisationMappings().IndexName;
 			public static string Organisations = new Indexing.Organisations().IndexName;
+            public static string IssueHourlyCounts = new Indexing.IssueHourlyCounts().IndexName;
 			public static string IssueHistory = new History().IndexName;
         }
 
