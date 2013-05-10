@@ -97,9 +97,10 @@ namespace Errordite.Core.Matching
                 return new[] {TreatValue(otherValue)};
             }
 
-            return error.ExceptionInfos
-                        .Where(ei => ei.ExtraData.IfPoss(d => d.ContainsKey(ErrorProperty)))
-                        .Select(ei => TreatValue(ei.ExtraData[ErrorProperty]));
+            return new[] {error.ContextData}
+                .Union(error.ExceptionInfos.Select(ei => ei.ExtraData))
+                .Where(d => d.ContainsKey(ErrorProperty))
+                .Select(d => TreatValue(d[ErrorProperty]));
         }
 
         public override string GetDescription()

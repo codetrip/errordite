@@ -19,7 +19,12 @@ namespace Errordite.Core.Indexing
                             select new
                                 {
                                     doc.IssueId,
-                                    Keys = doc.ExceptionInfos.SelectMany(i => i.ExtraData.Select(d => d.Key)).Union(doc.ContextData.Select(c => c.Key)).Distinct()
+                                    Keys =
+                                        doc.ContextData.Select(d => d.Key)
+                                           .Union(
+                                               doc.ExceptionInfos.SelectMany(i => i.ExtraData.Select(d => d.Key))
+                                                  .Union(doc.ContextData.Select(c => c.Key))
+                                                  .Distinct()),
                                 };
 
             Reduce = keysPerIssue => from k in keysPerIssue
