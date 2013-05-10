@@ -33,6 +33,9 @@ namespace Errordite.Core.Domain.Error
         public ExceptionInfo[] ExceptionInfos { get; set; }
         [ProtoMember(12)]
         public string Version { get; set; }
+        [ProtoMember(12)]
+        public Dictionary<string, string> ContextData { get; set; }
+
 
         [JsonIgnore]
         public string FriendlyId { get { return Id == null ? string.Empty : Id.Split('/')[1]; } }

@@ -44,7 +44,8 @@ namespace Errordite.Core.Indexing
                                         i.Module,
                                         i.StackTrace,
                                         i.ExtraData.Select(x => x.Value),
-                                    })
+                                    }),
+                                    error.ContextData.Select(d => d.Value)
                                 },
                                 error.TimestampUtc,
                                 error.ApplicationId,
