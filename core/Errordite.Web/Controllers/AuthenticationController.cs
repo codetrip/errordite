@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Web.Mvc;
 using Errordite.Core;
 using Errordite.Core.Authentication.Commands;
@@ -167,6 +168,7 @@ namespace Errordite.Web.Controllers
             }
 
             _authenticationManager.SignIn(viewModel.Email);
+            _cookieManager.Set(CoreConstants.OrganisationIdCookieKey, response.OrganisationId.GetFriendlyId(), DateTime.UtcNow.AddYears(1));
             return Redirect(Url.Dashboard());
         }
 

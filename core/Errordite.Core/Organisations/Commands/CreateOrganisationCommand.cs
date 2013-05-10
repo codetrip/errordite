@@ -150,7 +150,7 @@ namespace Errordite.Core.Organisations.Commands
             //TODO: sync indexes
             Session.SynchroniseIndexes<Indexing.Organisations, Indexing.Users>();
 
-            return new CreateOrganisationResponse
+            return new CreateOrganisationResponse(request.Email)
             {
                 OrganisationId = organisation.Id,
                 UserId = user.Id,
@@ -164,15 +164,24 @@ namespace Errordite.Core.Organisations.Commands
 
     public class CreateOrganisationResponse : CacheInvalidationResponseBase
     {
+        private readonly string _email;
+
+        public CreateOrganisationResponse(string email = null)
+        {
+            _email = email;
+        }
+
         public string UserId { get; set; }
         public string OrganisationId { get; set; }
-        public CreateOrganisationStatus Status { get; set; }
-
         public string ApplicationId { get; set; }
+        public CreateOrganisationStatus Status { get; set; }
 
         protected override IEnumerable<CacheInvalidationItem> GetCacheInvalidationItems()
         {
             yield return new CacheInvalidationItem(CacheProfiles.Organisations, CacheKeys.Organisations.Key());
+
+            if(_email != null)
+                yield return new CacheInvalidationItem(CacheProfiles.Organisations, CacheKeys.Organisations.Email(_email));
         }
     }
 
