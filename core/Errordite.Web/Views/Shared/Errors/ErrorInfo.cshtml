@@ -3,19 +3,12 @@
 @model Errordite.Web.Models.Errors.ExceptionViewModel
            
 <div class="info" @(Model.DisplayInfoTable() ? string.Empty : "style=display:none")>
-	<table class="table table-bordered table-condensed">
+	<table class="table table-bordered table-condensed" style="margin-bottom:0">
 		@if (Model.Info.Type.IsNotNullOrEmpty())
 		{
 			<tr>
 				<td>Exception Type</td>
 				<td class="word-break" data-error-attr="Type">@Model.Info.Type</td>
-			</tr>
-		}
-		@if (Model.Info.Message.IsNotNullOrEmpty())
-		{
-			<tr>
-				<td>Message</td>
-				<td class="word-break" data-error-attr="Message">@Model.Info.Message</td>
 			</tr>
 		}
 		@if(Model.Info.MethodName.IsNotNullOrEmpty())
@@ -78,7 +71,6 @@
 	</table>
 </div>
 <div class="stacktrace-area">
-	<pre>
-		<div data-error-attr="StackTrace" class="stacktrace">@Model.Info.StackTrace</div>
-	</pre>
+    <pre><span data-error-attr="Message" class="st-message">@Model.Info.Message</span>
+<span data-error-attr="StackTrace" class="stacktrace">@Model.Info.StackTrace</span></pre>
 </div> 
