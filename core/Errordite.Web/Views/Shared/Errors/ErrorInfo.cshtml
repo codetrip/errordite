@@ -18,28 +18,35 @@
 				<td class="word-break" data-error-attr="Module">@Model.Info.Module</td>
 			</tr>
 		}
-        @if (Model.MachineName.IsNotNullOrEmpty())
-        {
-            <tr>
-                <td>Machine Name</td>
-                <td class="word-break" data-error-attr="MachineName">@Model.MachineName</td>
-            </tr>   
-        }        
-
-	    @if (!Model.InnerException)
+		@if (!Model.InnerException)
 		{
-			if (Model.Url.IsNotNullOrEmpty())
+			if (Model.Error.Url.IsNotNullOrEmpty())
 			{
 				<tr>
 					<td>Url</td>
-					<td class="word-break" data-error-attr="Url">@Model.Url</td>
+					<td class="word-break" data-error-attr="Url">@Model.Error.Url</td>
 				</tr>
 			}
-			if (Model.UserAgent.IsNotNullOrEmpty())
+			if (Model.Error.UserAgent.IsNotNullOrEmpty())
 			{
 				<tr>
 					<td>User Agent</td>
-					<td class="word-break" data-error-attr="UserAgent">@Model.UserAgent</td>
+					<td class="word-break" data-error-attr="UserAgent">@Model.Error.UserAgent</td>
+				</tr>
+			}
+			if (Model.Error.MachineName.IsNotNullOrEmpty())
+			{
+				<tr>
+					<td>Machine Name</td>
+					<td class="word-break" data-error-attr="MachineName">@Model.Error.MachineName</td>
+				</tr>   
+			}  
+		
+			foreach (var kvp in Model.Error.ContextData)
+			{
+				<tr>
+					<td class="nobreak" >@kvp.Key</td>
+					<td class="word-break" data-error-attr="@kvp.Key">@kvp.Value</td>
 				</tr>
 			}
 		}

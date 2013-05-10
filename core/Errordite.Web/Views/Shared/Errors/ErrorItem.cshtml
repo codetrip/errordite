@@ -26,7 +26,7 @@
 		<div class="error-content">
 			<ul class="tabs inner" style="margin-left:0;">
 				<li class="active">
-					<a href="#" data-val="exception" data-title="@Model.Error.ExceptionInfos.First().Type">
+					<a href="#" data-val="exception">
 						@Model.Error.ExceptionInfos.First().Type.LastElement('.')
 					</a>
 				</li>
@@ -37,13 +37,13 @@
 						count++;
 						
 						<li>
-							<a href="#" data-val="inner-@count" data-title="@inner.Type">Inner @count: @inner.Type.LastElement('.')</a>
+							<a href="#" data-val="inner-@count">@inner.Type.LastElement('.')</a>
 						</li>
 					}
-					if (Model.Error.Messages != null)
+					if (Model.Error.Messages != null && Model.Error.Messages.Count > 0)
 					{
 						<li>
-							<a href="#" data-val="messages" data-title="Messages">Log Messages</a>
+							<a href="#" data-val="messages">Log4Net</a>
 						</li>
 					}
 				}
