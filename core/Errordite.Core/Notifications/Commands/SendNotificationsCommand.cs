@@ -81,7 +81,7 @@ namespace Errordite.Core.Notifications.Commands
 		private void MaybeSendCampfireNotification(SendNotificationRequest request)
 		{
 			if (request.Application == null || 
-				request.Application.CampfireRoomId == 0|| 
+				!request.Application.CampfireRoomId.HasValue || 
 				request.Organisation.CampfireDetails == null ||
 				request.Organisation.CampfireDetails.Token.IsNullOrEmpty() ||
 				request.Organisation.CampfireDetails.Company.IsNullOrEmpty())
@@ -95,7 +95,7 @@ namespace Errordite.Core.Notifications.Commands
 			var campfireMessage = new SendCampfireMessage
 			{
 				CampfireDetails = request.Organisation.CampfireDetails,
-				RoomId = request.Application.CampfireRoomId,
+				RoomId = request.Application.CampfireRoomId.Value,
 				Message = message
 			};
 
@@ -104,7 +104,7 @@ namespace Errordite.Core.Notifications.Commands
 
         private void MaybeSendHipChatNotification(SendNotificationRequest request)
         {
-			if (request.Application == null || request.Application.HipChatRoomId == 0 || request.Organisation.HipChatAuthToken.IsNullOrEmpty())
+			if (request.Application == null || !request.Application.HipChatRoomId.HasValue || request.Organisation.HipChatAuthToken.IsNullOrEmpty())
                 return;
 
             string message = request.EmailInfo.ConvertToSimpleMessage(_configuration);
@@ -114,7 +114,7 @@ namespace Errordite.Core.Notifications.Commands
 
             var hipChatMessage = new SendHipChatMessage
 			{
-				HipChatRoomId = request.Application.HipChatRoomId,
+				HipChatRoomId = request.Application.HipChatRoomId.Value,
 				HipChatAuthToken = request.Organisation.HipChatAuthToken,
 				Message = message,
                 Colour = request.EmailInfo.HipChatColour,

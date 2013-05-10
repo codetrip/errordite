@@ -32,9 +32,9 @@ namespace Errordite.Core.Domain.Organisation
         [ProtoMember(8)]
 		public List<string> NotificationGroups { get; set; }
 		[ProtoMember(9)]
-		public int HipChatRoomId { get; set; }
+		public int? HipChatRoomId { get; set; }
 		[ProtoMember(10)]
-		public int CampfireRoomId { get; set; }
+		public int? CampfireRoomId { get; set; }
         [ProtoMember(11)]
         public string TokenSalt { get; set; }
         [ProtoMember(12)]

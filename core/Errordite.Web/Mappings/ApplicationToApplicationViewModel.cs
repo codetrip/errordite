@@ -18,8 +18,8 @@ namespace Errordite.Web.Mappings
                 .ForMember(ci => ci.DefaultUserId, opt => opt.MapFrom(i => i.DefaultUserId))
                 .ForMember(ci => ci.Name, opt => opt.MapFrom(i => i.Name))
 				.ForMember(ci => ci.Version, opt => opt.MapFrom(i => i.Version))
-				.ForMember(ci => ci.HipChatRoomId, opt => opt.MapFrom(i => i.HipChatRoomId == 0 ? (int?)null : i.HipChatRoomId))
-				.ForMember(ci => ci.CampfireRoomId, opt => opt.MapFrom(i => i.CampfireRoomId == 0 ? (int?)null : i.CampfireRoomId));
+				.ForMember(ci => ci.HipChatRoomId, opt => opt.MapFrom(i => i.HipChatRoomId))
+				.ForMember(ci => ci.CampfireRoomId, opt => opt.MapFrom(i => i.CampfireRoomId));
         }
     }
 }

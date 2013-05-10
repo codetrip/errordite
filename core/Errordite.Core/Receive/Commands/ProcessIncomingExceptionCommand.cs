@@ -166,6 +166,7 @@ namespace Errordite.Core.Receive.Commands
                 Version = clientError.Version,
                 OrganisationId = application.OrganisationId,
                 ExceptionInfos = GetErrorInfo(clientError.ExceptionInfo).ToArray(),
+                ContextData = clientError.ContextData,
                 Messages = clientError.Messages == null ? null : clientError.Messages.Select(m => new TraceMessage
                 {
                     Message = m.Message,

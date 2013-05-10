@@ -139,9 +139,9 @@ namespace Errordite.Web.Controllers
                 CurrentUser = Core.AppContext.CurrentUser,
                 MatchRuleFactoryId = new MethodAndTypeMatchRuleFactory().Id,
                 UserId = viewModel.UserId,
-                HipChatRoomId = viewModel.HipChatRoomId.HasValue ? viewModel.HipChatRoomId.Value : 0,
+                HipChatRoomId = viewModel.HipChatRoomId,
                 NotificationGroups = viewModel.NotificationGroups.Where(n => n.Selected).Select(g => g.Id).ToList(),
-				CampfireRoomId = viewModel.CampfireRoomId.HasValue ? viewModel.CampfireRoomId.Value : 0,
+				CampfireRoomId = viewModel.CampfireRoomId,
                 Version = viewModel.Version
             });
 
@@ -207,11 +207,11 @@ namespace Errordite.Web.Controllers
                 CurrentUser = Core.AppContext.CurrentUser,
                 ApplicationId = viewModel.Id,
                 MatchRuleFactoryId = viewModel.MatchRuleFactoryId,
-				HipChatRoomId = viewModel.HipChatRoomId.HasValue ? viewModel.HipChatRoomId.Value : 0,
+				HipChatRoomId = viewModel.HipChatRoomId,
                 UserId = Errordite.Core.Domain.Organisation.User.GetId(viewModel.UserId),
                 NotificationGroups = viewModel.NotificationGroups.Where(n => n.Selected).Select(g => g.Id).ToList(),
 				Version = viewModel.Version,
-				CampfireRoomId = viewModel.CampfireRoomId.HasValue ? viewModel.CampfireRoomId.Value : 0,
+				CampfireRoomId = viewModel.CampfireRoomId,
             });
 
             if (response.Status != EditApplicationStatus.Ok)
