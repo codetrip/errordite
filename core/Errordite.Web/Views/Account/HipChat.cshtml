@@ -1,0 +1,43 @@
+﻿
+@using Errordite.Web.Models.Shared
+@model Errordite.Web.Models.Account.HipChatSettingsViewModel
+           
+@{
+    ViewBag.Title = "HipChat Integration";
+}
+
+@section header
+{
+    @Html.Partial("Account/Tabs") 
+}
+
+<section class="centered">
+	<div class="content">
+		<div class="sidenav">
+            @Html.Partial("Account/SettingTabs", SettingTab.HipChat)
+            <div class="sidenav-content">
+	            <div class="sidenav-tab active">
+		            <p style="padding-bottom:10px">Set your HipChat account credentials here to enable notifications to be sent to HipChat rooms for your applications.</p>
+		            <div class="form">
+			            @using (Html.BeginForm("sethipchat", "account"))
+			            {
+				            <ul>
+					            <li>
+									@Html.LabelFor(m => m.HipChatAuthToken, "HipChat Authentication Token")
+									@Html.TextBoxFor(m => m.HipChatAuthToken)
+									<i data-title="We need your HipChat authentication token to allow us to post to your room." class="icon-info"></i>
+									@Html.ValidationMessageFor(m => m.HipChatAuthToken)
+								</li>
+					            <li class="buttons">
+						            <input type="submit" value="Save Changes" class="btn btn-medium btn-blue"/>
+					            </li>
+				            </ul>
+			            }
+		            </div>
+	            </div>
+            </div>
+        </div>
+	</div>
+</section>
+
+

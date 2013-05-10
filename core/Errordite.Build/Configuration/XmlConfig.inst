@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+All XML config file updates are done with this file.  
+
+This file is used by the ConfigFileChanger via ApplyEnvironmentConfiguration.cmd.  It walks the destination directory and sets the value matching the xpath in all files
+that match the value of the match attribute.  Multiple matches can be entered and separated with a pipe.  The value that matches the environment being deployed will be set.  
+"theRest" can be used for all environments that are not specifically mentioned.  
+
+If no xpath value is specified, it defaults to "//<element name>" (e.g. //FtpServer).  If you wish to set an attribute value, just use the @ syntax - e.g. //configsettingX/@attributeValue.
+
+If you wish to be more choosy about which file to modify than just specifying the filename, use ancestor-folder to specify the name of some folder that has to be in the ancestor tree of
+the config file.  If you wish to allow a choice of folders, they can be separated with a pipe.
+-->
+<Files>
+    <File match="web.config">
+        <param xpath="//system.web/customErrors/@mode" theRest="On" />
+        <param xpath="//system.web/authentication/forms/@timeout" theRest="1440" />
+        <param xpath="//errordite/@endpoint" theRest="$(InternalReceiveEndpoint)" />
+        <param xpath="//errordite/@token" theRest="$(ErrorditeToken)"/>
+        <param xpath="//errordite/@enabled" theRest="true"/>
+        <param xpath="//connectionStrings/add[@name='RavenDB']/@connectionString" theRest="$(RavenConnectionString)" />
+    </File>
+
+    <File match="app.config">
+        <param xpath="//errordite/@endpoint" theRest="$(InternalReceiveEndpoint)" />
+        <param xpath="//errordite/@token" theRest="$(ErrorditeToken)"/>
+        <param xpath="//errordite/@enabled" theRest="true"/>
+        <param xpath="//connectionStrings/add[@name='RavenDB']/@connectionString" theRest="$(RavenConnectionString)" />
+    </File>
+
+    <File match="Errordite.Services.exe.config">
+        <param xpath="//errordite/@endpoint" theRest="$(InternalReceiveEndpoint)" />
+        <param xpath="//errordite/@token" theRest="$(ErrorditeToken)"/>
+        <param xpath="//errordite/@enabled" theRest="true" />
+        <param xpath="//connectionStrings/add[@name='RavenDB']/@connectionString" theRest="$(RavenConnectionString)" />
+    </File>
+
+    <File match="errordite.config">
+        <SiteBaseUrl theRest="$(SiteBaseUrl)" />
+        <ReceiveWebEndpoints theRest="$(ReceiveEndpoints)" />
+        <RenderMinifiedContent theRest="true" />
+        <DeveloperQueueSuffix theRest="" />
+		<SubscriptionsEnabled theRest="false" />
+    </File>
+
+    <File match="email.config">
+        <ErrorditeUrl theRest="$(SiteBaseUrl)" />
+        <TemplateLocation theRest="$(EmailTemplateLocation)" />
+    </File>
+</Files>
