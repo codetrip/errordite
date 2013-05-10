@@ -52,7 +52,7 @@ namespace Errordite.Samples.Mvc3
                     c.DataCollectors.Insert(0, new AcmeDataCollectorFactory());
                 };
             ErrorditeClient.SetErrorNotificationAction(e => System.Diagnostics.Trace.Write(e));
-			Errordite.Client.Log4net.ErrorditeLogger.Initialise(true, "Errordite.Samples");
+			Errordite.Client.Log4net.ErrorditeLogger.Initialise(true);
 
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
@@ -69,7 +69,7 @@ namespace Errordite.Samples.Mvc3
         }
 
         public string Prefix { get { return "ACME"; } }
-        public ErrorData Collect(Exception e, IErrorditeConfiguration configuration)
+        public ErrorData Collect(Exception e)
         {
             var loginCookie = HttpContext.Current.Request.Cookies["login"];
             

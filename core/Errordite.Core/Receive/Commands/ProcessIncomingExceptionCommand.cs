@@ -161,8 +161,8 @@ namespace Errordite.Core.Receive.Commands
                 ApplicationId = application.Id,
                 TimestampUtc = clientError.TimestampUtc.ToDateTimeOffset(application.TimezoneId),
                 MachineName = clientError.MachineName,
-                Url = GetUrl(clientError),
-                UserAgent = GetUserAgent(clientError),
+				Url = clientError.Url,
+				UserAgent = clientError.UserAgent,
                 Version = clientError.Version,
                 OrganisationId = application.OrganisationId,
                 ExceptionInfos = GetErrorInfo(clientError.ExceptionInfo).ToArray(),
@@ -174,8 +174,32 @@ namespace Errordite.Core.Receive.Commands
                 }).ToList()
             };
 
+			//temp thing to move context data to error for clients not updated to latest build
+			if (instance.ContextData == null || instance.ContextData.Count == 0)
+			{
+				MoveContextData(instance);
+			}
+
             return instance;
         }
+
+		private void MoveContextData(Error error)
+		{
+			if (error.ExceptionInfos == null || error.ExceptionInfos.Length == 0 || error.ExceptionInfos[0].ExtraData == null)
+				return;
+
+			error.ContextData = new Dictionary<string, string>();
+
+			var exceptionData = error.ExceptionInfos[0].ExtraData.Where(s => s.Key.StartsWith("Exception"));
+			var contextData = error.ExceptionInfos[0].ExtraData.Where(s => !s.Key.StartsWith("Exception"));
+
+			foreach (var dataItem in contextData)
+			{
+				error.ContextData.Add(dataItem.Key, dataItem.Value);
+			}
+
+			error.ExceptionInfos[0].ExtraData = exceptionData.ToDictionary(s => s.Key, s => s.Value);
+		}
 
         private IEnumerable<Domain.Error.ExceptionInfo> GetErrorInfo(Client.ExceptionInfo clientExceptionInfo)
         {
@@ -194,41 +218,6 @@ namespace Errordite.Core.Receive.Commands
             if (clientExceptionInfo.InnerExceptionInfo != null)
                 foreach (var innerExceptionInfo in GetErrorInfo(clientExceptionInfo.InnerExceptionInfo))
                     yield return innerExceptionInfo;
-        }
-
-        /// <summary>
-        /// NOTE: Temp until marketplace client is updated
-        /// </summary>
-        /// <param name="clientError"></param>
-        /// <returns></returns>
-        private string GetUrl(ClientError clientError)
-        {
-            if (clientError.Url.IsNotNullOrEmpty())
-                return clientError.Url;
-
-            if (clientError.ExceptionInfo == null || clientError.ExceptionInfo.Data == null)
-                return null;
-
-            string url;
-            return clientError.ExceptionInfo.Data.TryGetValue("HttpContext.Url", out url) ? url : null;
-        }
-
-        /// <summary>
-        /// NOTE: Temp until marketplace client is updated
-        /// </summary>
-        /// <param name="clientError"></param>
-        /// <returns></returns>
-        private string GetUserAgent(ClientError clientError)
-        {
-            if (clientError.UserAgent.IsNotNullOrEmpty())
-                return clientError.UserAgent;
-
-            string userAgent = null;
-
-            return clientError.ExceptionInfo.IfPoss(
-                e => e.Data.IfPoss(d => d.TryGetValue("HttpContext.UserAgent", out userAgent)))
-                       ? userAgent
-                       : null;
         }
     }
 
