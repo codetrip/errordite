@@ -35,9 +35,7 @@ if "%ERRORLEVEL%" == "3" (
 )
 goto DEPLOYMENTMENU
 
-
 :DEPLOYMENTMENU
-if "%MSBUILDTARGET%" neq "" goto STARTDEPLOY
 
 set AUTO=false
 cls

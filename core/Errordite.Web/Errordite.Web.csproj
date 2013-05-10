@@ -71,13 +71,13 @@
     <Reference Include="ChargifyNET">
       <HintPath>..\packages\chargify.1.0.4864.27267\lib\net35\ChargifyNET.dll</HintPath>
     </Reference>
-    <Reference Include="Errordite.Client, Version=1.3.0.0, Culture=neutral, PublicKeyToken=0c2d28c225f773ee, processorArchitecture=MSIL">
+    <Reference Include="Errordite.Client, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Errordite.Client.1.3.31.0\lib\net40\Errordite.Client.dll</HintPath>
+      <HintPath>..\packages\Errordite.Client.1.3.36.0\lib\net40\Errordite.Client.dll</HintPath>
     </Reference>
-    <Reference Include="Errordite.Client.Mvc4, Version=1.3.0.0, Culture=neutral, PublicKeyToken=0c2d28c225f773ee, processorArchitecture=MSIL">
+    <Reference Include="Errordite.Client.Mvc4, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Errordite.Client.Mvc4.1.3.31.0\lib\net40\Errordite.Client.Mvc4.dll</HintPath>
+      <HintPath>..\packages\Errordite.Client.Mvc4.1.3.36.0\lib\net40\Errordite.Client.Mvc4.dll</HintPath>
     </Reference>
     <Reference Include="HtmlAgilityPack, Version=1.4.0.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -475,9 +475,6 @@
       <Minify>False</Minify>
     </Content>
     <Content Include="Assets\Js\monitoring.js">
-      <DependentUpon>monitoring.coffee</DependentUpon>
-    </Content>
-    <Content Include="Assets\Js\monitoring.min.js">
       <DependentUpon>monitoring.coffee</DependentUpon>
     </Content>
     <Content Include="Assets\Js\organisations.js">
@@ -968,12 +965,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Account\APIAccess.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Account\Campfire.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Account\HipChat.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

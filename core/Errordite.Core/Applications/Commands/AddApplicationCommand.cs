@@ -62,18 +62,10 @@ namespace Errordite.Core.Applications.Commands
                 NotificationGroups = request.NotificationGroups,
                 TokenSalt = Membership.GeneratePassword(4, 0).Replace("|", "^"),
                 Version = request.Version,
-                TimezoneId = request.CurrentUser.ActiveOrganisation.TimezoneId
+                TimezoneId = request.CurrentUser.ActiveOrganisation.TimezoneId,
+                HipChatRoomId = request.HipChatRoomId,
+                CampfireRoomId = request.CampfireRoomId
             };
-
-			if (request.HipChatRoomId > 0)
-			{
-				application.HipChatRoomId = request.HipChatRoomId;
-			}
-
-			if (request.CampfireRoomId > 0)
-			{
-				application.CampfireRoomId = request.CampfireRoomId;
-			}
 
             Store(application);
 
@@ -118,12 +110,12 @@ namespace Errordite.Core.Applications.Commands
         public string MatchRuleFactoryId { get; set; }
         public string Name { get; set; }
         public string UserId { get; set; }
-        public int HipChatRoomId { get; set; }
+        public int? HipChatRoomId { get; set; }
         public string WebHookUri { get; set; }
         public bool IsActive { get; set; }
         public string Version { get; set; }
 		public List<string> NotificationGroups { get; set; }
-		public int CampfireRoomId { get; set; }
+		public int? CampfireRoomId { get; set; }
     }
 
     public enum AddApplicationStatus
