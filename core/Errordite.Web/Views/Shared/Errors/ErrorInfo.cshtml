@@ -4,6 +4,20 @@
            
 <div class="info" @(Model.DisplayInfoTable() ? string.Empty : "style=display:none")>
 	<table class="table table-bordered table-condensed">
+		@if (Model.Info.Type.IsNotNullOrEmpty())
+		{
+			<tr>
+				<td>Exception Type</td>
+				<td class="word-break" data-error-attr="Type">@Model.Info.Type</td>
+			</tr>
+		}
+		@if (Model.Info.Message.IsNotNullOrEmpty())
+		{
+			<tr>
+				<td>Message</td>
+				<td class="word-break" data-error-attr="Message">@Model.Info.Message</td>
+			</tr>
+		}
 		@if(Model.Info.MethodName.IsNotNullOrEmpty())
 		{
 			<tr>
@@ -64,6 +78,7 @@
 	</table>
 </div>
 <div class="stacktrace-area">
-    <pre><span class="st-type" data-error-attr="Type">@Model.Info.Type</span>: <span data-error-attr="Message" class="st-message">@Model.Info.Message</span>
-        <div data-error-attr="StackTrace" class="stacktrace">@Model.Info.StackTrace</div></pre>
+	<pre>
+		<div data-error-attr="StackTrace" class="stacktrace">@Model.Info.StackTrace</div>
+	</pre>
 </div> 
