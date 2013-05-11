@@ -66,6 +66,7 @@ namespace Errordite.Web.Controllers
 						.Skip(0)
 						.Take(25)
 						.As<Error>()
+                        .OrderBy(e => e.FriendlyId)
 						.ToList())
 					{
 						if (_session.Raven.Load<Issue>(error.IssueId) == null)
@@ -80,7 +81,8 @@ namespace Errordite.Web.Controllers
 					}
 
 					_session.Commit();
-					_session.Close();
+                    _session.Close();
+                    new SynchroniseIndexCommitAction<Errors>().Execute(_session);
 					Trace("Committed page 1, processed {0}, ignored {1}, deleted {2}", _errorCount, _errorIgnoredCount, _errorDeletedCount);
 
 					if (stats.TotalResults > 25)
@@ -91,7 +93,8 @@ namespace Errordite.Web.Controllers
 						{
 							foreach (var error in _session.Raven.Query<ErrorDocument, Errors>()
 								.Skip(i * 25)
-								.Take(25)
+                                .Take(25)
+                                .OrderBy(e => e.FriendlyId)
 								.As<Error>())
 							{
 								if (_session.Raven.Load<Issue>(error.IssueId) == null)
@@ -107,6 +110,7 @@ namespace Errordite.Web.Controllers
 
 							_session.Commit();
 							_session.Close();
+                            new SynchroniseIndexCommitAction<Errors>().Execute(_session);
 							Trace("Committed page {0}, processed {1}, ignored {2}, deleted {3}", i, _errorCount, _errorIgnoredCount, _errorDeletedCount);
 						}
 					}
