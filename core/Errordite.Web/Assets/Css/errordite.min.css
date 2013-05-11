@@ -428,7 +428,7 @@ nav .nav div.pointer::before{border-color:rgba(255,255,255,0) rgba(255,255,255,0
 .errors .toggle{padding:0 18px;cursor:pointer}
 .errors .toggle.collapsed{background:url("img/plus.png") no-repeat center}
 .errors .toggle.expanded{background:url("img/minus.png") no-repeat center}
-.errors .info{max-height:300px;overflow-x:auto;margin:0 5px 0 0;padding-right:5px}
+.errors .info{max-height:300px;overflow-x:auto;margin:0 2px 0 0}
 .errors .info td.nobreak{width:300px}
 .errors .messages{max-height:500px;overflow-x:auto;padding-right:5px}
 .errors .messages .table{margin-bottom:0}
