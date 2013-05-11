@@ -19,7 +19,8 @@
             @if(Model.IssueTotal > 0)
             {
                 <div class="search-status">
-                    Viewing 1 - @Model.Issues.Count() of @Model.IssueTotal issues @(Model.IssueTotal > 10 ? Html.Raw("<a href='" + @Url.IssueSearch(Model.Query) + "'>View all issues</a>") : new HtmlString(""))
+                    Viewing 1 - @Model.Issues.Count() of @Model.IssueTotal issues 
+                    <a href='@Url.IssueSearch(Model.Query)'>Issue search</a>
                 </div>
                 foreach(var issue in Model.Issues)
                 {
@@ -38,7 +39,8 @@
             @if(Model.ErrorTotal > 0)
             {
                 <div class="search-status">
-                    Viewing 1 - @Model.Errors.Count() of @Model.ErrorTotal errors @(Model.ErrorTotal > 10 ? Html.Raw("<a href='" + Url.ErrorSearch(Model.Query) + "'>View all errors</a>") : new HtmlString(""))
+                    Viewing 1 - @Model.Errors.Count() of @Model.ErrorTotal errors 
+                    <a href='@Url.ErrorSearch(Model.Query)'>Error search</a>
                 </div>
                 foreach (var error in Model.Errors)
                 {
