@@ -419,7 +419,7 @@ namespace Errordite.Web.Controllers
                         return RedirectToAction("notfound", new { FriendlyId = postModel.IssueId.GetFriendlyId() });
                     case AdjustRulesStatus.Ok:
                         ConfirmationNotification(new MvcHtmlString("Issue details updated successfully, of {0}, {1} still match{2} and remain{3} attached to the issue.{4}".FormatWith(
-                            "error".Pluralise(result.ErrorsMatched + result.ErrorsNotMatched),
+                            "error".Quantity(result.ErrorsMatched + result.ErrorsNotMatched),
                             result.ErrorsMatched == 1 ? "1" : result.ErrorsNotMatched == 0 ? "all" : result.ErrorsMatched.ToString(),
                             result.ErrorsMatched == 1 ? "es" : "",
                             result.ErrorsMatched == 1 ? "s" : "",
