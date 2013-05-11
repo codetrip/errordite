@@ -256,6 +256,7 @@ table {
 
 .issue-title-container {
     width: 100%;
+	overflow-x:hidden;
     color:$superdarkblue;
     background-color: $extralightblue;
     .centered {
@@ -1370,7 +1371,10 @@ section {
 
 .modal {
   position: fixed;
-  top: 50%;
+  &#apply-rules-confirmation{
+	position: absolute;
+  }
+  top: 85%;
   left: 50%;
   z-index: 1050;
   overflow-y: visible;
@@ -1398,7 +1402,7 @@ section {
     transition: opacity .3s linear, top .3s ease-out;
     top: -25%;
     &.in {
-      top: 50%;
+      top: 80%;
     }
   }
 }

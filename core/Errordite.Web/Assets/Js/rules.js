@@ -213,7 +213,7 @@
             $message.show();
           }
           $modal = $('#apply-rules-confirmation');
-          $modal.css("top", "35%");
+          $modal.css("top", "265px");
           return $modal.modal();
         } else {
           return (Tabs.get($('#issue-tabs'))).show('rules');
