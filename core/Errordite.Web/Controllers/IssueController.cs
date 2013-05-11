@@ -418,12 +418,11 @@ namespace Errordite.Web.Controllers
                     case AdjustRulesStatus.IssueNotFound:
                         return RedirectToAction("notfound", new { FriendlyId = postModel.IssueId.GetFriendlyId() });
                     case AdjustRulesStatus.Ok:
-                        ConfirmationNotification(new MvcHtmlString("Issue details updated successfully, of {0} error{1}, {2} still match{3} and remain{4} attached to the issue.{5}".FormatWith(
-                            result.ErrorsMatched + result.ErrorsNotMatched,
-                            result.ErrorsNotMatched + result.ErrorsNotMatched == 1 ? "" : "s",
-                            result.ErrorsNotMatched == 0 ? "all" : result.ErrorsMatched.ToString(),
+                        ConfirmationNotification(new MvcHtmlString("Issue details updated successfully, of {0}, {1} still match{3} and remain{4} attached to the issue.{5}".FormatWith(
+                            "error".Pluralise(result.ErrorsMatched + result.ErrorsNotMatched),
+                            result.ErrorsMatched == 1 ? "1" : result.ErrorsNotMatched == 0 ? "all" : result.ErrorsMatched.ToString(),
                             result.ErrorsMatched == 1 ? "es" : "",
-                            result.ErrorsMatched == 1 && result.ErrorsNotMatched > 0 ? "s" : "",
+                            result.ErrorsMatched == 1 ? "s" : "",
                             result.ErrorsNotMatched > 0
                                 ? " The {0} that did not match {1} been attached to newly created issue # <a href='{2}'>{3}</a>".FormatWith(
                                     result.ErrorsNotMatched,
