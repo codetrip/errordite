@@ -245,7 +245,7 @@ jQuery ->
 									$buttons.removeClass 'hide'
 									$buttons.addClass 'floating'
 									$buttons.css 
-										top: e.offsetY - 35 #need to be careful not to be too far down here as the click on the "buffer" div causes odd behaviour reappears in top left as "offset" is much smaller.  Must be a nice way to fix this but doesn't immediately leap to mind!
+										top: e.offsetY - 80 #need to be careful not to be too far down here as the click on the "buffer" div causes odd behaviour reappears in top left as "offset" is much smaller.  Must be a nice way to fix this but doesn't immediately leap to mind!
 										left: e.offsetX - 48		
 							else
 								$buttons.addClass 'inline'
