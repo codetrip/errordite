@@ -17,7 +17,7 @@
       $('.tool-tip').tooltip();
       $('div.search-box').tooltip();
       $('.dropdown-toggle').dropdown();
-      $tabHolders = $('.tabs');
+      $tabHolders = $('.tabs, .sidenav-tabs');
       new Paging().init();
       prettyPrint();
       for (_i = 0, _len = $tabHolders.length; _i < _len; _i++) {
@@ -130,7 +130,7 @@
     Tabs.get = function(anyNodeInside) {
       var $tabHolder, tabManager;
 
-      $tabHolder = $(anyNodeInside).closest('.tabs');
+      $tabHolder = $(anyNodeInside).closest('.tabs, .sidenav-tabs');
       if (!$tabHolder.length) {
         return null;
       }
@@ -164,8 +164,8 @@
       $activeNode = $("li:has(a[data-val=" + tabName + "])");
       $activeNode.addClass('active');
       $activeNode.removeClass('inactive');
-      this.parentNode.find('div.tab').addClass('hidden');
-      $tab.removeClass('hidden');
+      this.parentNode.find('div.tab, .sidenav-tab').addClass('hidden').addClass('inactive').removeClass('active');
+      $tab.addClass('active').removeClass('inactive').removeClass('hidden');
       return $activeNode.find('.tablink').trigger('shown');
     };
 

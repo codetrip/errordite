@@ -42,9 +42,9 @@ namespace Errordite.Web.Controllers
         }
 
         [GenerateBreadcrumbs(BreadcrumbId.Clients)]
-        public ActionResult Clients()
+        public ActionResult Clients(ClientsTab? tab)
         {
-            return View();
+            return View(tab.GetValueOrDefault());
         }
 
         [GenerateBreadcrumbs(BreadcrumbId.Privacy)]
@@ -64,5 +64,13 @@ namespace Errordite.Web.Controllers
         {
             return View();
         }
+    }
+
+    public enum ClientsTab
+    {
+        DotNet,
+        Python,
+        Ruby,
+        Other
     }
 }

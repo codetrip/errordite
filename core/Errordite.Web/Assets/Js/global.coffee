@@ -15,7 +15,7 @@ class Initialisation
 		$('div.search-box').tooltip()
 		$('.dropdown-toggle').dropdown()
 
-		$tabHolders = $('.tabs')
+		$tabHolders = $('.tabs, .sidenav-tabs')
 
 		#init paging for non-async case.  Any async cases do their own init which (should) override this (bit of a hack)
 		new Paging().init();
@@ -102,7 +102,7 @@ that the tabs get initialised and then we use events for anything instance-speci
 class Tabs	
 	
 	@get: (anyNodeInside) ->
-		$tabHolder = $(anyNodeInside).closest '.tabs'
+		$tabHolder = $(anyNodeInside).closest '.tabs, .sidenav-tabs'
 		return null if not $tabHolder.length
 		tabManager = $tabHolder.data 'controller'
 		if not tabManager?
@@ -129,8 +129,11 @@ class Tabs
 		$activeNode = $("li:has(a[data-val=#{tabName}])")
 		$activeNode.addClass('active')
 		$activeNode.removeClass('inactive')		
-		this.parentNode.find('div.tab').addClass('hidden')			
-		$tab.removeClass('hidden')
+		this.parentNode.find('div.tab, .sidenav-tab').addClass('hidden').addClass('inactive').removeClass('active')			
+		$tab
+			.addClass('active')
+			.removeClass('inactive')
+			.removeClass('hidden')
 
 		$activeNode.find('.tablink').trigger 'shown'
 

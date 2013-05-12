@@ -398,12 +398,6 @@
     <Content Include="Assets\Js\dashboard.js">
       <DependentUpon>dashboard.coffee</DependentUpon>
     </Content>
-    <Content Include="Assets\Js\docs.js">
-      <DependentUpon>docs.coffee</DependentUpon>
-    </Content>
-    <Content Include="Assets\Js\docs.min.js">
-      <DependentUpon>docs.coffee</DependentUpon>
-    </Content>
     <Content Include="Assets\Js\errors.js">
       <DependentUpon>errors.coffee</DependentUpon>
     </Content>
@@ -907,13 +901,7 @@
     <Content Include="Views\Docs\Clients.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\Js\docs.coffee" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Docs\Terms.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shared\Docs\DjangoClient.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Js\activity.coffee" />

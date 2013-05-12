@@ -145,7 +145,7 @@ namespace Errordite.Web.Extensions
 
         public static string DjangoClientGitHub(this UrlHelper helper)
         {
-            return "https://github.com/errordite/django-errordite";
+            return "https://github.com/hugorodgerbrown/django-errordite";
         }
 
         public static string PythonClientGitHub(this UrlHelper helper)

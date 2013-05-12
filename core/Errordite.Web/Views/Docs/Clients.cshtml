@@ -1,4 +1,6 @@
-﻿@using Errordite.Web.Models.Docs
+﻿@using Errordite.Web.Controllers
+@using Errordite.Web.Models.Docs
+@model Errordite.Web.Controllers.ClientsTab
 
 @{
     ViewBag.Title = "Errordite Clients";
@@ -9,30 +11,29 @@
     @Html.Partial("Docs/Tabs", DocsTab.Clients) 
 }
 
+@{
+    Func<ClientsTab, string> cls = tab => Model == tab ? "active" : "";
+}
 <section id="clients" class="centered">
     <div class="content" >
         <div class="sidenav">
             <ul class="sidenav-tabs">
-                <li class="active"><a href="#dotnet" data-tab="dotnet" data-toggle="tab">.NET</a></li>
-                <li class=""><a href="#python" data-tab="python" data-toggle="tab">Python</a></li>
-                <li class=""><a href="#django" data-tab="django" data-toggle="tab">Django</a></li>
-                <li class=""><a href="#ruby" data-tab="ruby" data-toggle="tab">Ruby</a></li>
-                <li class=""><a href="#other" data-tab="other" data-toggle="tab">Other</a></li>
+                <li class="@cls(ClientsTab.DotNet)"><a href="?tab=dotnet" data-val="dotnet" data-toggle="tab" class="tablink">.NET</a></li>
+                <li class="@cls(ClientsTab.Python)"><a href="?tab=python" data-val="python" data-toggle="tab" class="tablink">Python</a></li>
+                <li class="@cls(ClientsTab.Ruby)"><a href="?tab=ruby" data-val="ruby" data-toggle="tab" class="tablink">Ruby</a></li>
+                <li class="@cls(ClientsTab.Other)"><a href="?tab=other" data-val="other" data-toggle="tab" class="tablink">Other</a></li>
             </ul>
             <div class="sidenav-content help">
-                <div class="sidenav-tab active" id="dotnet">
+                <div class="sidenav-tab @cls(ClientsTab.DotNet)" id="dotnet">
                     @Html.Partial("Docs/DotNetClient")
                 </div>
-                <div class="sidenav-tab" id="python">
+                <div class="sidenav-tab @cls(ClientsTab.Python)" id="python">
                     @Html.Partial("Docs/PythonClient")
                 </div>
-                <div class="sidenav-tab" id="django">
-                    @Html.Partial("Docs/DjangoClient")
-                </div>
-                <div class="sidenav-tab" id="ruby">
+                <div class="sidenav-tab @cls(ClientsTab.Ruby)" id="ruby">
                     @Html.Partial("Docs/RubyClient")
                 </div>
-                <div class="sidenav-tab" id="other">
+                <div class="sidenav-tab @cls(ClientsTab.Other)" id="other">
                     @Html.Partial("Docs/SendErrorWithJson")
                 </div>
             </div>

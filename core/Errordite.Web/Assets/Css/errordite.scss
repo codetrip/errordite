@@ -1934,6 +1934,7 @@ nav {
 
 .sidenav {
 	*zoom: 1;
+	padding-left: 20px;
 	&:before {
 		display: table;
 		line-height: 0;
@@ -1974,6 +1975,7 @@ nav {
 		border-bottom: 0;
 		> li {
 			float: none;
+			margin-top:4px;
 		}
 		> li > a {
 			min-width: 85px;

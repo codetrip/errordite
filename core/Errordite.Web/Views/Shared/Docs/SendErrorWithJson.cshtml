@@ -18,21 +18,26 @@
     "MachineName" : &lt;string>,        //the machine that generated the error
     "Url" : &lt;string>,                //the url of the request that caused the error if a webapp
     "UserAgent" : &lt;string>,          //the user-agent from the request that caused the error if a web app
+    "ContextData" : {                //bag of extra information about the context of the error occuring (web
+        "PropertyName1" : &lt;string>,  //request info, current user information, thread info, anything that 
+            ...                      //might be useful)
+        "PropertyName2" : &lt;string>
+    },
     "TimestampUtc" : &lt;datetime>,     //the timestamp of the error (in UTC). Use ISO format yyyy-MM-dd hh:mm:ss
     "Version" : &lt;string>,            //the version of your application when the error was raised
     "ExceptionInfo" : {
         "Message" : &lt;string>,        //the message of the exception
         "Source" : &lt;string>,         //the programmatic module that threw the exception 
-                                        //(exact definition depends on technology stack)
+                                     //(exact definition depends on technology stack)
         "ExceptionType" : &lt;string>,  //the type of the exception
         "StackTrace" : &lt;string>,     //the stack trace - formatting already done (i.e. indents & newlines)
         "MethodName" : &lt;string>,     //the name of the method / function that threw the error
-        "Data" : {                  //bag of extra information
-            "PropertyName1" : &lt;string>,
-            ...
+        "Data" : {                   //bag of extra information specifically related to *this* exception (rather 
+            "PropertyName1" : &lt;string>, //than its inner exception, for example). In many languages this may 
+            ...                         //make no sense so just omit
             "PropertyName2" : &lt;string>
         },
-        "InnerExceptionInfo" : {        //recursive definition - same as ExceptionInfo above
+        "InnerExceptionInfo" : {     //recursive definition - same as ExceptionInfo above
             "Message" : &lt;string>
             ...
         }
