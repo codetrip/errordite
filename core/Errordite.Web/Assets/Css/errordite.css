@@ -1536,7 +1536,8 @@ nav {
       border-bottom-color: transparent; }
 
 .sidenav {
-  *zoom: 1; }
+  *zoom: 1;
+  padding-left: 20px; }
   .sidenav:before {
     display: table;
     line-height: 0;
@@ -1566,7 +1567,8 @@ nav {
     border-right: 1px solid #ddd;
     border-bottom: 0; }
     .sidenav > .sidenav-tabs > li {
-      float: none; }
+      float: none;
+      margin-top: 4px; }
     .sidenav > .sidenav-tabs > li > a {
       min-width: 85px;
       margin-right: 0;
