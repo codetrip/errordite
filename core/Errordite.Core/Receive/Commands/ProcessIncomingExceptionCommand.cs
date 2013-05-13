@@ -188,16 +188,10 @@ namespace Errordite.Core.Receive.Commands
 			if (error.ExceptionInfos == null || error.ExceptionInfos.Length == 0 || error.ExceptionInfos[0].ExtraData == null)
 				return;
 
-			error.ContextData = new Dictionary<string, string>();
-
 			var exceptionData = error.ExceptionInfos[0].ExtraData.Where(s => s.Key.StartsWith("Exception"));
 			var contextData = error.ExceptionInfos[0].ExtraData.Where(s => !s.Key.StartsWith("Exception"));
 
-			foreach (var dataItem in contextData)
-			{
-				error.ContextData.Add(dataItem.Key, dataItem.Value);
-			}
-
+            error.ContextData = contextData.ToDictionary(s => s.Key, s => s.Value);
 			error.ExceptionInfos[0].ExtraData = exceptionData.ToDictionary(s => s.Key, s => s.Value);
 		}
 
