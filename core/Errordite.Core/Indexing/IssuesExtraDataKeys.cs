@@ -19,11 +19,9 @@ namespace Errordite.Core.Indexing
                             select new
                                 {
                                     doc.IssueId,
-                                    Keys =
-                                        doc.ContextData.Select(d => d.Key)
-                                           .Union(
+                                    Keys = doc.ContextData.Select(d => d.Key)
+                                            .Union(
                                                doc.ExceptionInfos.SelectMany(i => i.ExtraData.Select(d => d.Key))
-                                                  .Union(doc.ContextData.Select(c => c.Key))
                                                   .Distinct()),
                                 };
 
