@@ -55,7 +55,7 @@ namespace Errordite.Web.Controllers
         private readonly IDeleteIssueCommand _deleteIssueCommand;
         private readonly IGetIssueReportDataQuery _getIssueReportDataQuery;
         private readonly IGetExtraDataKeysForIssueQuery _getExtraDataKeysForIssueQuery;
-		private readonly ISetIssueStatusCommand _setIssueStatusCommand;
+		private readonly IAddCommentCommand _addCommentCommand;
 
         public IssueController(IGetIssueQuery getIssueQuery, 
             IAdjustRulesCommand adjustRulesCommand, 
@@ -67,7 +67,7 @@ namespace Errordite.Web.Controllers
             IDeleteIssueCommand deleteIssueCommand,
             IGetIssueReportDataQuery getIssueReportDataQuery, 
             IGetExtraDataKeysForIssueQuery getExtraDataKeysForIssueQuery, 
-			ISetIssueStatusCommand setIssueStatusCommand)
+			IAddCommentCommand addCommentCommand)
         {
             _getIssueQuery = getIssueQuery;
             _adjustRulesCommand = adjustRulesCommand;
@@ -79,7 +79,7 @@ namespace Errordite.Web.Controllers
             _deleteIssueCommand = deleteIssueCommand;
             _getIssueReportDataQuery = getIssueReportDataQuery;
             _getExtraDataKeysForIssueQuery = getExtraDataKeysForIssueQuery;
-	        _setIssueStatusCommand = setIssueStatusCommand;
+	        _addCommentCommand = addCommentCommand;
         }
 
         [
@@ -159,7 +159,8 @@ namespace Errordite.Web.Controllers
                 Status = issue.Status == IssueStatus.Unacknowledged ? IssueStatus.Acknowledged : issue.Status,
                 NotifyFrequency = issue.NotifyFrequency,
                 Reference = issue.Reference,
-				NotificationFrequencies = _frequencyHours
+				NotificationFrequencies = _frequencyHours,
+				Comment = null
             };
 
             var viewModel = new IssueViewModel
@@ -192,12 +193,6 @@ namespace Errordite.Web.Controllers
             }
 
             return viewModel;
-        }
-
-        private string GetUsername(IEnumerable<User> users, string id)
-        {
-            var user = users.FirstOrDefault(u => u.Id == id);
-            return user == null ? "Unknown User" : user.FullName;
         }
 
         [ImportViewData]
@@ -448,31 +443,6 @@ namespace Errordite.Web.Controllers
             }
         }
 
-		[HttpPost]
-		public ActionResult SetStatus(UpdateIssuePostModel postModel)
-		{
-			try
-			{
-				var updateResult = _setIssueStatusCommand.Invoke(new SetIssueStatusRequest
-				{
-					IssueId = postModel.IssueId,
-					Status = postModel.Status,
-					CurrentUser = Core.AppContext.CurrentUser,
-				});
-
-				if (updateResult.Status == SetIssueStatusStatus.IssueNotFound)
-				{
-					return new JsonErrorResult(redirect: Url.IssueNotFound(postModel.IssueId));
-				}
-
-				return new JsonSuccessResult(message:"Status successfully updated to '{0}'".FormatWith(postModel.Status));
-			}
-			catch (ConcurrencyException)
-			{
-				return new JsonErrorResult(errorMessage: "A background process modified this issue at the same time as you requested to adjust the rules which resulted in a failure, please try again");
-			}
-		}
-
         [HttpPost, ExportViewData]
         public ActionResult Purge(string issueId)
         {
@@ -529,6 +499,30 @@ namespace Errordite.Web.Controllers
             return Content(response.GetMessage(Issue.GetId(issueId)).ToString());
         }
 
+		[HttpPost, ExportViewData]
+		public ActionResult AddComment(AddCommentViewModel postModel)
+		{
+			if (!ModelState.IsValid)
+			{
+				return RedirectWithViewModel(postModel, "index", routeValues: new { id = postModel.IssueId.GetFriendlyId(), tab = IssueTab.Details.ToString() });
+			}
+
+			var result = _addCommentCommand.Invoke(new AddCommentRequest
+			{
+				IssueId = postModel.IssueId,
+				CurrentUser = Core.AppContext.CurrentUser,
+				Comment = postModel.Comment
+			});
+
+			if (result.Status == AddCommentStatus.IssueNotFound)
+			{
+				return RedirectToAction("notfound", new { FriendlyId = postModel.IssueId.GetFriendlyId() });
+			}
+
+			ConfirmationNotification("Comment was added to this issue successfully");
+			return RedirectToAction("index", new { id = postModel.IssueId.GetFriendlyId(), tab = IssueTab.History.ToString() });
+		}
+
         [HttpPost, ExportViewData]
         [ActionName("Reprocess"), IfButtonClicked("Reprocess")]
         public ActionResult Reprocess(string issueId)
@@ -557,6 +551,17 @@ namespace Errordite.Web.Controllers
                 {
                     throw new ErrorditeAuthorisationException(new Issue { Id = issueId }, Core.AppContext.CurrentUser);
                 }
+
+				//getting consistent concurrency exceptions when this is executed in the service, so moved it to here
+				Core.Session.Raven.Store(new IssueHistory
+				{
+					DateAddedUtc = DateTime.UtcNow.ToDateTimeOffset(request.CurrentUser.ActiveOrganisation.TimezoneId),
+					UserId = request.CurrentUser.Id,
+					Type = HistoryItemType.ErrorsReprocessed,
+					ReprocessingResult = response.AttachedIssueIds,
+					IssueId = Issue.GetId(issueId),
+					ApplicationId = response.ApplicationId,
+				});
 
                 ConfirmationNotification(response.GetMessage(Errordite.Core.Domain.Error.Issue.GetId(issueId)));
             }

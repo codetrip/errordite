@@ -89,7 +89,8 @@ namespace Errordite.Core.Issues.Commands
                     SystemMessage = true,
                     UserId = request.CurrentUser.Id,
                     AssignedToUserId = request.AssignedUserId,
-                    Type = HistoryItemType.AssignedUserChanged
+					Type = HistoryItemType.AssignedUserChanged,
+					ApplicationId = issue.ApplicationId
                 });
             }
 
@@ -109,7 +110,8 @@ namespace Errordite.Core.Issues.Commands
 					UserId = request.CurrentUser.Id,
 					AssignedToUserId = request.AssignedUserId,
 					Type = HistoryItemType.Comment,
-					Comment = request.Comment
+					Comment = request.Comment,
+					ApplicationId = issue.ApplicationId
 				});
             }
 

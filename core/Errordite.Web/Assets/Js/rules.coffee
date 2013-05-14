@@ -174,6 +174,7 @@ jQuery ->
 
 				$modal = $('#apply-rules-confirmation')
 				$modal.css("top", "35%");
+				$modal.find('#Comment').val('');
 				$modal.modal()
 			else
 				(Tabs.get $ '#issue-tabs').show 'rules'

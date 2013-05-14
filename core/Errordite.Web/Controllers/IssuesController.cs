@@ -56,7 +56,6 @@ namespace Errordite.Web.Controllers
         PagingView(DefaultSort = CoreConstants.SortFields.LastErrorUtc, DefaultSortDescending = true), 
         ExportViewData, 
         ImportViewData,
-        //StoreQueryInCookie(WebConstants.CookieSettings.IssueSearchCookieKey),
         GenerateBreadcrumbs(BreadcrumbId.Issues)
         ]
         public ActionResult Index(IssueCriteriaPostModel postModel)
@@ -70,7 +69,7 @@ namespace Errordite.Web.Controllers
 
                 if(postModel.Status == null || postModel.Status.Length == 0)
                 {
-                    postModel.Status = Enum.GetNames(typeof (IssueStatus)).Where(s => s != IssueStatus.Solved.ToString()).ToArray();
+                    postModel.Status = Enum.GetNames(typeof (IssueStatus)).ToArray();
                 }
                 else if(postModel.Status.Length == 1 && postModel.Status[0].Contains(","))
                 {

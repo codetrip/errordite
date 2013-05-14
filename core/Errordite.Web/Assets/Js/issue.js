@@ -1,7 +1,7 @@
 (function() {
 
   jQuery(function() {
-    var $issue, clearErrors, loadTabData, paging, renderHistory, renderReports, setStatus;
+    var $issue, clearErrors, loadTabData, paging, renderHistory, renderReports;
     $issue = $('section#issue');
     if ($issue.length > 0) {
       paging = new window.Paging('/issue/errors?Id=' + $issue.find('#IssueId').val() + '&');
@@ -61,46 +61,6 @@
       clearErrors = function() {
         return $('div#error-items').clear();
       };
-      setStatus = function(status) {
-        return $.post('/issue/setstatus', {
-          issueId: $issue.find('input#IssueId').val(),
-          status: status
-        }, function(data) {
-          if (data.redirect !== '') {
-            return window.location.href = data.redirect;
-          } else if (data.success) {
-            $issue.find('div#status').text(status);
-            Errordite.Notification.show(data.message);
-            $issue.find('select#Status').val(status);
-            switch (status) {
-              case 'Solved':
-                $issue.find('li#solved').hide();
-                $issue.find('li#ignored').show();
-                $issue.find('li#acknowledged').hide();
-                return $issue.find('li#fixready').hide();
-              case 'Acknowledged':
-                $issue.find('li#acknowledged').hide();
-                $issue.find('li#ignored').show();
-                $issue.find('li#solved').show();
-                return $issue.find('li#fixready').show();
-              case 'FixReady':
-                $issue.find('li#acknowledged').hide();
-                $issue.find('li#fixready').hide();
-                $issue.find('li#ignored').show();
-                return $issue.find('li#solved').show();
-              case 'Ignored':
-                $issue.find('li#acknowledged').hide();
-                $issue.find('li#fixready').hide();
-                $issue.find('li#ignored').hide();
-                return $issue.find('li#solved').show();
-            }
-          } else {
-            return Errordite.Alert.show('An error occured while trying to update the issue, please try again');
-          }
-        }).error(function(e) {
-          return Errordite.Alert.show('An error occured while trying to update the issue, please try again');
-        });
-      };
       renderHistory = function() {
         var $node, url;
         $node = $issue.find('table.history tbody');
@@ -113,7 +73,6 @@
         });
       };
       loadTabData($('ul#issue-tabs li.active a.tablink'));
-      $issue.delegate('form#reportform', 'submit', function(e) {});
       $issue.delegate('form#reportform', 'submit', function(e) {
         e.preventDefault();
         return renderReports();
@@ -126,9 +85,9 @@
           },
           success: function(data) {
             var msg;
-            $('.reprocess-what-if-msg').remove();
+            $('p#reprocess-result').empty();
             msg = $('<span/>').addClass('reprocess-what-if-msg').html(data);
-            return $(e.currentTarget).after(msg);
+            return $('p#reprocess-result').append(msg);
           },
           error: function() {
             return Errordite.Alert.show('An error has occured, please try again.');
@@ -136,25 +95,33 @@
         });
       });
       $issue.delegate('ul#action-list a.action', 'click', function(e) {
-        var $this;
+        var $modal, $reprocess, $this, action;
         e.preventDefault();
         $this = $(this);
-        return setStatus($this.data('val'));
-      });
-      $issue.delegate('ul#action-list a.form', 'click', function(e) {
-        var $this;
-        e.preventDefault();
-        $this = $(this);
-        return Errordite.Confirm.show($this.data('confirmtext'), {
-          okCallBack: function() {
-            $this.closest('form').submit();
+        action = $this.data('action');
+        switch (action) {
+          case "delete":
+          case "purge":
+            Errordite.Confirm.show($this.data('confirmtext'), {
+              okCallBack: function() {
+                $this.closest('form').submit();
+                return true;
+              }
+            }, {
+              cancelCallBack: function() {
+                return false;
+              }
+            });
             return true;
-          }
-        }, {
-          cancelCallBack: function() {
-            return false;
-          }
-        });
+          case "reprocess":
+            $reprocess = $('div#reprocess-modal');
+            $reprocess.modal();
+            return true;
+          case "comment":
+            $modal = $('div#add-comment');
+            $modal.modal();
+            return true;
+        }
       });
       $issue.delegate('select#Status', 'change', function() {
         var $this;

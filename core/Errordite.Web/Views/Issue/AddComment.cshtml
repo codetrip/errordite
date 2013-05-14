@@ -1,0 +1,21 @@
+﻿@model Errordite.Web.Models.Issues.IssueDetailsViewModel
+
+<div id="add-comment" class="modal hide">
+	@using (Html.BeginForm("addcomment", "issue", FormMethod.Post, new {id = "comment"}))
+	{
+		@Html.HiddenFor(m => m.IssueId)
+		<div class="modal-header">
+			<h4 class="formodal">Add Comment</h4>
+		</div>
+		<div class="modal-body">
+			<div class="form" style="margin-bottom: 5px">
+				@Html.ValidationMessageFor(m => m.Comment)   
+				@Html.TextAreaFor(m => m.Comment, new {style="height: 90px; width: 520px", placeholder="Add a comment to this issue"})
+			</div>
+		</div>  
+		<div class="modal-footer">
+			<input type="submit" class="btn btn-small btn-blue" value="Add Comment" />
+			<button class="btn btn-small btn-grey" data-dismiss="modal">Cancel</button>
+		</div>
+	}
+</div>

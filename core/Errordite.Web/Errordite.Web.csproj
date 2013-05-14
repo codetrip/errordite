@@ -492,6 +492,7 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="google06c34901e78e12bd.html" />
+    <Content Include="holding.html" />
     <Content Include="robots.txt" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -953,6 +954,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Account\APIAccess.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Issue\AddComment.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
