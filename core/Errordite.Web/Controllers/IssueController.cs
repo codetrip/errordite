@@ -352,6 +352,9 @@ namespace Errordite.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
+                if (Request.IsAjaxRequest())
+                    return new JsonErrorResult();
+
                 return RedirectWithViewModel(postModel, "index", routeValues: new { id = postModel.IssueId.GetFriendlyId(), tab = IssueTab.Rules.ToString() });
             }
 
