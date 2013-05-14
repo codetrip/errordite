@@ -96,6 +96,11 @@ namespace Errordite.Web.Extensions
             return helper.Action("index", "issue", tab != null ? (object)new { id, tab = tab.ToString().ToLowerInvariant(), Area = string.Empty } : new { id, Area = string.Empty });
         }
 
+		public static string IssueNotFound(this UrlHelper helper, string id)
+		{
+			return helper.Action("notfound", "issue", new { id = id.GetFriendlyId(), Area = string.Empty });
+		}
+
         public static string BaseIssueUrl(this UrlHelper helper)
         {
             return helper.Action("index", "issue", new {id = "{0}", Area = string.Empty});

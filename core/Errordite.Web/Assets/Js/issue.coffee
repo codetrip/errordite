@@ -50,6 +50,42 @@ jQuery ->
 
 		clearErrors = () ->
 			$('div#error-items').clear();
+
+		setStatus = (status) ->
+			$.post('/issue/setstatus', {issueId: $issue.find('input#IssueId').val(), status:status}, (data) -> 
+				if data.redirect != ''
+					window.location.href = data.redirect
+				else if data.success
+					$issue.find('div#status').text(status)
+					Errordite.Notification.show(data.message)
+					$issue.find('select#Status').val(status)
+
+					switch status
+						when 'Solved'
+							$issue.find('li#solved').hide()
+							$issue.find('li#ignored').show()
+							$issue.find('li#acknowledged').hide()
+							$issue.find('li#fixready').hide()
+						when 'Acknowledged'
+							$issue.find('li#acknowledged').hide()
+							$issue.find('li#ignored').show()
+							$issue.find('li#solved').show()
+							$issue.find('li#fixready').show()
+						when 'FixReady'
+							$issue.find('li#acknowledged').hide()
+							$issue.find('li#fixready').hide()
+							$issue.find('li#ignored').show()
+							$issue.find('li#solved').show()
+						when 'Ignored'
+							$issue.find('li#acknowledged').hide()
+							$issue.find('li#fixready').hide()
+							$issue.find('li#ignored').hide()
+							$issue.find('li#solved').show()
+				else
+					Errordite.Alert.show('An error occured while trying to update the issue, please try again')
+			).error((e) -> 
+				Errordite.Alert.show('An error occured while trying to update the issue, please try again')
+			)	
 						
 		renderHistory = () -> 
 			$node = $issue.find('table.history tbody')
@@ -64,6 +100,7 @@ jQuery ->
 		
 		loadTabData($ 'ul#issue-tabs li.active a.tablink')
 
+		$issue.delegate 'form#reportform', 'submit', (e) ->
 		$issue.delegate 'form#reportform', 'submit', (e) ->
 			e.preventDefault()
 			renderReports()
@@ -81,6 +118,11 @@ jQuery ->
 #					5000 
 				error: ->
 					Errordite.Alert.show('An error has occured, please try again.')
+
+		$issue.delegate 'ul#action-list a.action', 'click', (e) ->
+			e.preventDefault()
+			$this = $ this
+			setStatus($this.data('val'))
 
 		$issue.delegate 'select#Status', 'change', () -> 
 			$this = $ this

@@ -1189,28 +1189,33 @@ section {
   border-left: 4px solid transparent;
   border-right: 4px solid transparent;
   border-top: 4px solid #000000;
-  opacity: 0.3;
-  filter: alpha(opacity = 30);
+  opacity: 1;
+  filter: alpha(opacity = 100);
   content: "";
 }
 
 .dropdown {
   .caret {
-    margin: 8px 10px 0 0;
+    margin: 8px 6px 0 0;
     float: right;
-  }
-  &:hover .caret {
-    opacity: 1;
-    filter: alpha(opacity = 100);
   }
   &.blue {
     background-color: $tablealternatecolor;
   }
-}
-
-.open.dropdown .caret {
-  opacity: 1;
-  filter: alpha(opacity = 100);
+  &.blue-pills {
+    background-color: $buttonblue;
+	.caret {
+      border-top: 4px solid #fff;
+    }
+	a.dropdown-toggle {
+		background-color: $buttonblue;
+		border:0;
+		color:#fff;
+	}
+	a.dropdown-toggle:hover {
+		background-color: #1A87C8;
+	}
+  }
 }
 
 .dropdown-menu {
@@ -1358,13 +1363,6 @@ section {
   left: 0;
   z-index: 1040;
   background-color: #000000;
-  &.fade {
-    opacity: 0;
-    &.in {
-      opacity: 0.8;
-      filter: alpha(opacity = 80);
-    }
-  }
   opacity: 0.8;
   filter: alpha(opacity = 80);
 }
@@ -1374,7 +1372,7 @@ section {
   &#apply-rules-confirmation{
 	position: absolute;
   }
-  top: 85%;
+  top: 50%;
   left: 50%;
   z-index: 1050;
   overflow-y: visible;
@@ -1394,17 +1392,6 @@ section {
   -webkit-background-clip: padding-box;
   -moz-background-clip: padding-box;
   background-clip: padding-box;
-  &.fade {
-    -webkit-transition: opacity .3s linear, top .3s ease-out;
-    -moz-transition: opacity .3s linear, top .3s ease-out;
-    -ms-transition: opacity .3s linear, top .3s ease-out;
-    -o-transition: opacity .3s linear, top .3s ease-out;
-    transition: opacity .3s linear, top .3s ease-out;
-    top: -25%;
-    &.in {
-      top: 80%;
-    }
-  }
 }
 
 .modal-header {

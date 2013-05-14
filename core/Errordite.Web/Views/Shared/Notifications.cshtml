@@ -1,22 +1,24 @@
 ﻿@using Errordite.Web.Extensions   
-    
-@if (ViewData.HasNotification())
-{
-	var notification = ViewData.GetNotification();
 
-	<div id="notifications" class="@notification.Type.ToString().ToLowerInvariant()-container">
-	    <section class="centered"> 
-	        <div class="notification-container">
-	            <div class="notification-icon">
-	                <i class="icon-@notification.Type.ToString().ToLowerInvariant()"></i>
-	            </div>
-	            <div class="notification-text">
-	                @Html.Raw(notification.Message.ToString())
-	            </div>
-	            <div class="notification-close">
-	                <a href="#" id="hide-notification" title="Close notification"><i class="icon-close"></i></a>
-	            </div>
-	        </div>
-	    </section> 
-	</div>
-}
+<div id="notifications-container">
+	@if (ViewData.HasNotification())
+	{
+		var notification = ViewData.GetNotification();
+
+		<div id="notifications" class="@notification.Type.ToString().ToLowerInvariant()-container">
+			<section class="centered"> 
+				<div class="notification-container">
+					<div class="notification-icon">
+						<i class="icon-@notification.Type.ToString().ToLowerInvariant()"></i>
+					</div>
+					<div class="notification-text">
+						@Html.Raw(notification.Message.ToString())
+					</div>
+					<div class="notification-close">
+						<a href="#" id="hide-notification" title="Close notification"><i class="icon-close"></i></a>
+					</div>
+				</div>
+			</section> 
+		</div>
+	}
+</div>

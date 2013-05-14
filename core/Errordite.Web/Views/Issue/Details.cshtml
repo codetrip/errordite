@@ -1,4 +1,5 @@
 ﻿@using Errordite.Core
+@using Errordite.Core.Domain.Error
 @using Errordite.Web.Models.Issues
 @using Errordite.Core.Extensions
 @model IssueViewModel
@@ -24,7 +25,7 @@
         <div class="item-info divider" style="width:200px;margin-bottom:5px;">
             @Model.Details.ApplicationName
         </div>
-        <div class="item-info divider" style="width:175px;margin-bottom:5px;">
+        <div id="status" class="item-info divider" style="width:175px;margin-bottom:5px;">
             @Model.Details.Status
         </div>
         <div class="item-info divider" style="margin-bottom:5px;width:175px">
@@ -40,9 +41,25 @@
             </div>
         }
     </div>
-    <div class="update-details">
-        <button id="update-details" type="button" class="btn btn-medium btn-blue">Edit Details</button>
-    </div>
+	<div class="update-details">
+		<ul id="action-list" class="popup popup-pills">
+            <li class="dropdown blue-pills" id="actions">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#actions">
+                    Issue Actions
+                    <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu pull-right" style="width: 208px;">
+	                <li><a href="#" data-val="Edit" id="edit-details" data-val-modal="Edit">Edit details</a></li>
+                    <li id="acknowledged" @(Model.Details.Status == IssueStatus.Unacknowledged ? "" : "style=display:none")><a href="#" class="action" data-val="Acknowledged">Mark as acknowledged</a></li>
+	                <li id="fixready" @(Model.Details.Status.IsIn(IssueStatus.FixReady, IssueStatus.Ignored, IssueStatus.Solved) ? "style=display:none" : "")><a href="#" class="action" data-val="FixReady">Mark as fix ready</a></li>
+					<li id="solved" @(Model.Details.Status == IssueStatus.Solved ? "style=display:none" : "")><a href="#" class="action" data-val="Solved">Mark as solved</a></li>
+	                <li id="ignored" @(Model.Details.Status == IssueStatus.Ignored ? "style=display:none" : "")><a href="#" class="action" data-val="Ignored">Mark as ignored</a></li>
+	               @*<li><a href="#" data-val-modal="Fogbugz">Create Fogbugz Issue</a></li>
+                    <li><a href="#" data-val-modal="Jira">Create Jira Issue</a></li>*@
+                </ul>
+            </li>
+        </ul>
+	</div>
 </div>
 
 <h2 class="section-header border"><i class="icon-file"></i>Issue Errors</h2>

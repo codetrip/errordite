@@ -8,11 +8,12 @@ namespace Errordite.Core.Domain.Error
         [ProtoMember(1)]
         Unacknowledged,
         [ProtoMember(2)]
-        Acknowledged,
+		Acknowledged,
+		[ProtoMember(3)]
         FixReady,
-        [ProtoMember(3)]
-        Solved,
         [ProtoMember(4)]
+        Solved,
+        [ProtoMember(5)]
         Ignored
     }
 }

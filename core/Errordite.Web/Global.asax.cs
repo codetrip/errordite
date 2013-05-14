@@ -64,7 +64,7 @@ namespace Errordite.Web
                 "IssueSpecial",
                 "{controller}/{action}",
                 null,
-                new { controller = "issue", action = "getreportdata|errors|adjustrules|purge|reprocess|delete|addcomment|history|whatifreprocess" });
+				new { controller = "issue", action = "getreportdata|errors|adjustrules|purge|reprocess|delete|addcomment|history|whatifreprocess|setstatus" });
 
 
             routes.MapRoute(
