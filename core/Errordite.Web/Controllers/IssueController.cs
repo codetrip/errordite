@@ -55,6 +55,7 @@ namespace Errordite.Web.Controllers
         private readonly IDeleteIssueCommand _deleteIssueCommand;
         private readonly IGetIssueReportDataQuery _getIssueReportDataQuery;
         private readonly IGetExtraDataKeysForIssueQuery _getExtraDataKeysForIssueQuery;
+		private readonly ISetIssueStatusCommand _setIssueStatusCommand;
 
         public IssueController(IGetIssueQuery getIssueQuery, 
             IAdjustRulesCommand adjustRulesCommand, 
@@ -65,7 +66,8 @@ namespace Errordite.Web.Controllers
             IDeleteIssueErrorsCommand deleteIssueErrorsCommand, 
             IDeleteIssueCommand deleteIssueCommand,
             IGetIssueReportDataQuery getIssueReportDataQuery, 
-            IGetExtraDataKeysForIssueQuery getExtraDataKeysForIssueQuery)
+            IGetExtraDataKeysForIssueQuery getExtraDataKeysForIssueQuery, 
+			ISetIssueStatusCommand setIssueStatusCommand)
         {
             _getIssueQuery = getIssueQuery;
             _adjustRulesCommand = adjustRulesCommand;
@@ -77,12 +79,13 @@ namespace Errordite.Web.Controllers
             _deleteIssueCommand = deleteIssueCommand;
             _getIssueReportDataQuery = getIssueReportDataQuery;
             _getExtraDataKeysForIssueQuery = getExtraDataKeysForIssueQuery;
+	        _setIssueStatusCommand = setIssueStatusCommand;
         }
 
         [
         ImportViewData, 
         GenerateBreadcrumbs(BreadcrumbId.Issue, BreadcrumbId.Issues, WebConstants.CookieSettings.IssueSearchCookieKey),
-        PagingView(DefaultSort = Errordite.Core.CoreConstants.SortFields.TimestampUtc, DefaultSortDescending = true)
+        PagingView(DefaultSort = CoreConstants.SortFields.TimestampUtc, DefaultSortDescending = true)
         ]
         public ActionResult Index(IssueErrorsPostModel postModel)
         {
@@ -444,6 +447,31 @@ namespace Errordite.Web.Controllers
 				return RedirectToAction("index", new { id = postModel.IssueId.GetFriendlyId(), tab = IssueTab.Details.ToString() });
             }
         }
+
+		[HttpPost]
+		public ActionResult SetStatus(UpdateIssuePostModel postModel)
+		{
+			try
+			{
+				var updateResult = _setIssueStatusCommand.Invoke(new SetIssueStatusRequest
+				{
+					IssueId = postModel.IssueId,
+					Status = postModel.Status,
+					CurrentUser = Core.AppContext.CurrentUser,
+				});
+
+				if (updateResult.Status == SetIssueStatusStatus.IssueNotFound)
+				{
+					return new JsonErrorResult(redirect: Url.IssueNotFound(postModel.IssueId));
+				}
+
+				return new JsonSuccessResult(message:"Status successfully updated to '{0}'".FormatWith(postModel.Status));
+			}
+			catch (ConcurrencyException)
+			{
+				return new JsonErrorResult(errorMessage: "A background process modified this issue at the same time as you requested to adjust the rules which resulted in a failure, please try again");
+			}
+		}
 
         [HttpPost, ExportViewData]
         public ActionResult Purge(string issueId)

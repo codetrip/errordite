@@ -26,7 +26,7 @@
             }
 
             var id = Errordite.Guid.newGuid();
-            var markup = '<div id="' + id + '" class="modal hide fade" data-backdrop="static">';
+            var markup = '<div id="' + id + '" class="modal hide" data-backdrop="static">';
             markup += '<div class="modal-header">';
             markup += '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
             markup += '<h4 class="formodal">';
@@ -77,7 +77,7 @@
             }
 
             var id = Errordite.Guid.newGuid();
-            var markup = '<div id="' + id + '" class="modal hide fade" data-backdrop="static" data-keyboard="false">';
+            var markup = '<div id="' + id + '" class="modal hide" data-backdrop="static" data-keyboard="false">';
             markup += '<div class="modal-header">';
             markup += '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
             markup += '<h4 class="formodal">';
@@ -115,6 +115,43 @@
         };
     };
 
+    var Notification = function () {
+    	var self = this;
+    	self.show = function (message, args) {
+    		var defaultArgs = {
+    			message: message,
+    			type: 'confirmation'
+    		};
+
+    		if (typeof args == "undefined") {
+    			args = defaultArgs;
+    		} else {
+    			for (var i in defaultArgs)
+    				if (typeof args[i] === "undefined")
+    					args[i] = defaultArgs[i];
+    		}
+
+    		var markup = '<div id="notifications" class="' + args["type"] + '-container">';
+    		markup += '	<section class="centered">';
+    		markup += '		<div class="notification-container">';
+    		markup += '			<div class="notification-icon">';
+    		markup += '				<i class="icon-' + args["type"] + '"></i>';
+    		markup += '			</div>';
+    		markup += '			<div class="notification-text">';
+    		markup +=args["message"];
+    		markup += '			</div>';
+    		markup += '			<div class="notification-close">';
+    		markup += '				<a href="#" id="hide-notification" title="Close notification"><i class="icon-close"></i></a>';
+    		markup += '			</div>';
+    		markup += '		</div>';
+    		markup += '	</section> ';
+    		markup += '</div>';
+
+    		$('div#notifications-container').empty();
+    		$('div#notifications-container').append(markup);
+    	};
+    };
+
     var Prompt = function () {
         var self = this;
         self.show = function (message, args) {
@@ -140,7 +177,7 @@
             }
 
             var id = Errordite.Guid.newGuid();
-            var markup = '<div id="' + id + '" class="modal hide fade" data-backdrop="static" data-keyboard="false">';
+            var markup = '<div id="' + id + '" class="modal hide" data-backdrop="static" data-keyboard="false">';
             markup += '<div class="modal-header">';
             markup += '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>';
             markup += '<h4 class="formodal">';
@@ -208,5 +245,6 @@
     window.Errordite.Alert = new Alert();
     window.Errordite.Confirm = new Confirm();
     window.Errordite.Prompt = new Prompt();
+	window.Errordite.Notification = new Notification();
 
 })(jQuery);

@@ -270,6 +270,7 @@
     <Compile Include="Extensions\XElementExtensions.cs" />
     <Compile Include="Indexing\IssueHourlyCounts.cs" />
     <Compile Include="Indexing\MessageEnvelopes.cs" />
+    <Compile Include="Issues\Commands\SetIssueStatusCommand.cs" />
     <Compile Include="Messaging\Commands\CreateSQSQueueCommand.cs" />
     <Compile Include="Messaging\SendCampfireMessage.cs" />
     <Compile Include="Misc\RepositoryPathHelper.cs" />

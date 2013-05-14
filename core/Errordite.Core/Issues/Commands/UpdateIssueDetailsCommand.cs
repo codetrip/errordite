@@ -98,6 +98,7 @@ namespace Errordite.Core.Issues.Commands
 			issue.Name = request.Name;
 			issue.NotifyFrequency = request.NotifyFrequency;
 			issue.Reference = request.Reference;
+			issue.LastModifiedUtc = DateTime.UtcNow;
 
             if (request.Comment.IsNotNullOrEmpty())
             {

@@ -946,22 +946,25 @@ section {
   border-left: 4px solid transparent;
   border-right: 4px solid transparent;
   border-top: 4px solid #000000;
-  opacity: 0.3;
-  filter: alpha(opacity=30);
+  opacity: 1;
+  filter: alpha(opacity=100);
   content: ""; }
 
 .dropdown .caret {
-  margin: 8px 10px 0 0;
+  margin: 8px 6px 0 0;
   float: right; }
-.dropdown:hover .caret {
-  opacity: 1;
-  filter: alpha(opacity=100); }
 .dropdown.blue {
   background-color: #ecf4f7; }
-
-.open.dropdown .caret {
-  opacity: 1;
-  filter: alpha(opacity=100); }
+.dropdown.blue-pills {
+  background-color: #1570a6; }
+  .dropdown.blue-pills .caret {
+    border-top: 4px solid #fff; }
+  .dropdown.blue-pills a.dropdown-toggle {
+    background-color: #1570a6;
+    border: 0;
+    color: #fff; }
+  .dropdown.blue-pills a.dropdown-toggle:hover {
+    background-color: #1A87C8; }
 
 .dropdown-menu {
   position: absolute;
@@ -1076,15 +1079,10 @@ section {
   background-color: #000000;
   opacity: 0.8;
   filter: alpha(opacity=80); }
-  .modal-backdrop.fade {
-    opacity: 0; }
-    .modal-backdrop.fade.in {
-      opacity: 0.8;
-      filter: alpha(opacity=80); }
 
 .modal {
   position: fixed;
-  top: 85%;
+  top: 50%;
   left: 50%;
   z-index: 1050;
   overflow-y: visible;
@@ -1107,15 +1105,6 @@ section {
   background-clip: padding-box; }
   .modal#apply-rules-confirmation {
     position: absolute; }
-  .modal.fade {
-    -webkit-transition: opacity .3s linear, top .3s ease-out;
-    -moz-transition: opacity .3s linear, top .3s ease-out;
-    -ms-transition: opacity .3s linear, top .3s ease-out;
-    -o-transition: opacity .3s linear, top .3s ease-out;
-    transition: opacity .3s linear, top .3s ease-out;
-    top: -25%; }
-    .modal.fade.in {
-      top: 80%; }
 
 .modal-header {
   padding: 2px 15px;
