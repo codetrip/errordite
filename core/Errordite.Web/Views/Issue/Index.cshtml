@@ -6,8 +6,8 @@
 @model IssueViewModel
 
 @{
-    ViewBag.Title = "Issue {0} ({1}) | {2}".FormatWith(IdHelper.GetFriendlyId( Model.Update.IssueId), Model.Tab, Model.Update.Name);
-    ViewBag.FinalBreadcrumb = "Issue {0}".FormatWith(IdHelper.GetFriendlyId(Model.Update.IssueId));
+	ViewBag.Title = "Issue {0} ({1}) | {2}".FormatWith(IdHelper.GetFriendlyId(Model.Update.IssueId), Model.Tab, Model.Update.Name);
+	ViewBag.FinalBreadcrumb = "Issue {0}".FormatWith(IdHelper.GetFriendlyId(Model.Update.IssueId));
 }
 
 @section header
@@ -42,9 +42,6 @@
             <li @(Model.Tab == IssueTab.Reports ? " class=active" : " class=inactive") >
                 <a href="@Url.Issue(Model.Update.IssueId, IssueTab.Reports)" class="tablink" data-val="reports"><span>Reports</span></a> 
             </li>
-            <li @(Model.Tab == IssueTab.Reprocess ? " class=active" : " class=inactive") >
-                <a href="@Url.Issue(Model.Update.IssueId, IssueTab.Reprocess)" class="tablink" data-val="reprocess"><span>Reprocess</span></a>
-            </li>
             <li @(Model.Tab == IssueTab.History ? " class=active" : " class=inactive") >
                 <a href="@Url.Issue(Model.Update.IssueId, IssueTab.History)" class="tablink" data-val="history"><span>History</span></a>
             </li>
@@ -64,17 +61,14 @@
             @Html.Partial("Details", Model)
         </div>
         @using (Html.BeginForm("AdjustRules", "issue", FormMethod.Post, new { id = "rulesForm" }))
-        {
+		{
             <div id="rules" class="tab @(Model.Tab == IssueTab.Rules ? "" : "hidden")">
                 @Html.Partial("Rules", Model.Update)
             </div>
             @Html.Partial("UpdateIssue", Model.Update)
-        }
+		}
         <div id="reports" class="tab @(Model.Tab == IssueTab.Reports ? "" : "hidden")">
             @Html.Partial("Reports", Model.Details)
-        </div>
-        <div id="reprocess" class="tab @(Model.Tab == IssueTab.Reprocess ? "" : "hidden")">
-            @Html.Partial("Reprocess", Model.Details)
         </div>
 	    <div id="history" class="tab @(Model.Tab == IssueTab.History ? "" : "hidden")">
 		    <table class="table table-condensed history" id="history-items">
@@ -89,6 +83,8 @@
 		    </table>
 	    </div>
     </div>
+    @Html.Partial("Reprocess", Model.Details)
+    @Html.Partial("AddComment", Model.Details)
 </section>
 
 

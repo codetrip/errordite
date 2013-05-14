@@ -214,6 +214,7 @@
           }
           $modal = $('#apply-rules-confirmation');
           $modal.css("top", "35%");
+          $modal.find('#Comment').val('');
           return $modal.modal();
         } else {
           return (Tabs.get($('#issue-tabs'))).show('rules');

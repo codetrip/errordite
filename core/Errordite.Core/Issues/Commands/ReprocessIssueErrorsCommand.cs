@@ -86,20 +86,11 @@ namespace Errordite.Core.Issues.Commands
                 AttachedIssueIds = responses.GroupBy(r => r.IssueId).ToDictionary(g => g.Key, g => g.Count()),
                 Status = ReprocessIssueErrorsStatus.Ok,
                 WhatIf = request.WhatIf,
+				ApplicationId = issue.ApplicationId,
             };
 
             if (request.WhatIf)
                 return response;
-
-            Store(new IssueHistory
-            {
-                DateAddedUtc = DateTime.UtcNow.ToDateTimeOffset(request.CurrentUser.ActiveOrganisation.TimezoneId),
-                UserId = request.CurrentUser.Id,
-                Type = HistoryItemType.ErrorsReprocessed,
-                ReprocessingResult = response.AttachedIssueIds,
-                IssueId = issue.Id,
-                ApplicationId = issue.ApplicationId,
-            });
 
             if (response.AttachedIssueIds.Any(i => i.Key == issue.Id))
             {
@@ -143,8 +134,8 @@ namespace Errordite.Core.Issues.Commands
     {
         public ReprocessIssueErrorsStatus Status { get; set; }
         public IDictionary<string, int> AttachedIssueIds { get; set; }
-        public bool WhatIf { get; set; }
-
+		public bool WhatIf { get; set; }
+		public string ApplicationId { get; set; }
 
         public MvcHtmlString GetMessage(string issueId)
         {

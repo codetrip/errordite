@@ -48,30 +48,25 @@
                     Issue Actions
                     <b class="caret"></b>
                 </a>
-                <ul class="dropdown-menu pull-right" style="width: 208px;">
-	                <li><a href="#" data-val="Edit" id="edit-details" data-val-modal="Edit">Edit Details / Add Comment</a></li>
+                <ul id="issue-actions" class="dropdown-menu pull-right" style="width: 208px;">
+	                <li><a href="#" id="edit-details">Edit Details</a></li>
+	                <li><a href="#" class="action" data-action="comment">Add Comment</a></li>
 					<li class="divider"></li>
-                    <li id="acknowledged" @(Model.Details.Status == IssueStatus.Unacknowledged ? "" : "style=display:none")><a href="#" class="action" data-val="Acknowledged">Mark as Acknowledged</a></li>
-	                <li id="fixready" @(Model.Details.Status.IsIn(IssueStatus.FixReady, IssueStatus.Ignored, IssueStatus.Solved) ? "style=display:none" : "")><a href="#" class="action" data-val="FixReady">Mark as Fix Ready</a></li>
-					<li id="solved" @(Model.Details.Status == IssueStatus.Solved ? "style=display:none" : "")><a href="#" class="action" data-val="Solved">Mark as Solved</a></li>
-	                <li id="ignored" @(Model.Details.Status == IssueStatus.Ignored ? "style=display:none" : "")><a href="#" class="action" data-val="Ignored">Mark as Ignored</a></li>	                
-	                <li class="divider"></li>
 					<li>
 		                @using (Html.BeginForm("delete", "issue", FormMethod.Post, new {style = "display:inline-block;width:95%"}))
 		                {
 							@Html.Hidden("IssueId", Model.Details.IssueId)
-			                <a href="#" class="form" data-val="Delete" data-confirmtext="Are you sure you wish to delete this issue?">Delete Issue</a>
+			                <a href="#" class="action" data-action="delete" data-confirmtext="Are you sure you wish to delete this issue?">Delete Issue</a>
 		                }
 	                </li> 
 	                <li>
 		                @using (Html.BeginForm("purge", "issue", FormMethod.Post, new { style = "display:inline-block;width:95%" }))
 						{
 							@Html.Hidden("IssueId", Model.Details.IssueId)
-							<a href="#" class="form" data-val="Purge" data-confirmtext="Are you sure you wish to delete all the errors associated with this issue?">Delete Errors</a>
+							<a href="#" class="action" data-action="purge" data-confirmtext="Are you sure you wish to delete all the errors associated with this issue?">Delete Errors</a>
 						}
 	                </li>
-					@*<li><a href="#" data-val-modal="Fogbugz">Create Fogbugz Issue</a></li>
-                    <li><a href="#" data-val-modal="Jira">Create Jira Issue</a></li>*@
+	                <li><a href="#" class="action" data-action="reprocess">Reprocess Errors</a></li>
                 </ul>
             </li>
         </ul>

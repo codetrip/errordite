@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
-using Errordite.Core;
 using Errordite.Core.Domain.Error;
 using Errordite.Web.Models.Errors;
 
@@ -33,9 +32,10 @@ namespace Errordite.Web.Models.Issues
         [Required(ErrorMessage = "Please enter a name for the new issue that will be created")]
         public string AdjustmentName { get; set; }
         public string UserId { get; set; }
-        public string Comment { get; set; }
         public IssueStatus Status { get; set; }
-        public string NotifyFrequency { get; set; }
+		public string NotifyFrequency { get; set; }
+		[Required(ErrorMessage = "Please enter a comment.")]
+		public string Comment { get; set; }
     }
 
     public class IssueDetailsViewModel : UpdateIssuePostModel
@@ -66,6 +66,12 @@ namespace Errordite.Web.Models.Issues
         public string IssueLink { get; set; }
         public string IssueId { get; set; }
     }
+
+	public class AddCommentViewModel
+	{
+		public string Comment { get; set; }
+		public string IssueId { get; set; }
+	}
 
     public class IssueHistoryPostModel
     {
