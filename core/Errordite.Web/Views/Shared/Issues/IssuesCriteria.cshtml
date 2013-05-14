@@ -7,7 +7,7 @@
     <div class="form form-inline criteria">
         <ul>
             <li>
-                @Html.TextBoxFor(m => m.Name, new { autocomplete = "off", placeholder = "Search issue name & rules", style="width:440px" })
+                @Html.TextBoxFor(m => m.Name, new { autocomplete = "off", placeholder = "Search issue name & rules", style="width:350px" })
             </li>
             <li>
                 @Html.DropDownListFor(m => m.AssignedTo, new[] { new SelectListItem { Text = Resources.IssueResources.AssignedUser, Value = Resources.Shared.DefaultSelectValue } }.Union(Model.Users))
@@ -34,14 +34,14 @@
             <li>
                 <input type="submit" class="btn btn-small btn-blue btn-inline" value="Search" />
             </li>
-            <li class="pull-right">
+            <li>
                 <ul id="action-list" class="popup popup-pills">
-                    <li class="dropdown blue" id="actions">
+                    <li class="dropdown blue-pills" id="actions">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#actions">
                             Issue Actions
                             <b class="caret"></b>
                         </a>
-                        <ul class="dropdown-menu pull-right" style="width: 208px;">
+                        <ul class="dropdown-menu" style="width: 208px;">
                             @foreach (var status in Enum.GetNames(typeof(IssueStatus)).Where(name => name != IssueStatus.Unacknowledged.ToString()))
                             {
                                 <li><a href="#" data-val-modal="StatusUpdate" data-val-status="@Regex.Replace(status, "([a-z])([A-Z])", "$1 $2")">Change status: @status</a></li>

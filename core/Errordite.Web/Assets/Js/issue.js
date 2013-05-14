@@ -141,6 +141,21 @@
         $this = $(this);
         return setStatus($this.data('val'));
       });
+      $issue.delegate('ul#action-list a.form', 'click', function(e) {
+        var $this;
+        e.preventDefault();
+        $this = $(this);
+        return Errordite.Confirm.show($this.data('confirmtext'), {
+          okCallBack: function() {
+            $this.closest('form').submit();
+            return true;
+          }
+        }, {
+          cancelCallBack: function() {
+            return false;
+          }
+        });
+      });
       $issue.delegate('select#Status', 'change', function() {
         var $this;
         $this = $(this);

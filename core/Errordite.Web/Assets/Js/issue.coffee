@@ -124,6 +124,16 @@ jQuery ->
 			$this = $ this
 			setStatus($this.data('val'))
 
+		$issue.delegate 'ul#action-list a.form', 'click', (e) ->
+			e.preventDefault()
+			$this = $ this
+			Errordite.Confirm.show($this.data('confirmtext'), { okCallBack: () -> 
+				$this.closest('form').submit();
+				true
+			}, cancelCallBack: () -> 
+				false
+			)
+
 		$issue.delegate 'select#Status', 'change', () -> 
 			$this = $ this
 

@@ -1234,9 +1234,6 @@ section {
   border-color: rgba(0, 0, 0, 0.2);
   border-style: solid;
   border-width: 1px;
-  -webkit-border-radius: $borderradius;
-  -moz-border-radius: $borderradius;
-  border-radius: $borderradius;
   -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
@@ -1253,7 +1250,7 @@ section {
   }
   .divider {
     height: 1px;
-    margin: 0px 1px 8px 0;
+    margin: 1px 1px 0px 0;
     overflow: hidden;
     background-color: #e5e5e5;
     border-bottom: 1px solid #ffffff;
@@ -2227,7 +2224,7 @@ nav {
         width:210px;
     }
     .popup {
-        width:210px;
+        width:150px;
     }
     ul {
         padding:0;

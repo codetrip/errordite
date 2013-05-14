@@ -982,9 +982,6 @@ section {
   border-color: rgba(0, 0, 0, 0.2);
   border-style: solid;
   border-width: 1px;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
   -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
@@ -1000,7 +997,7 @@ section {
     left: auto; }
   .dropdown-menu .divider {
     height: 1px;
-    margin: 0px 1px 8px 0;
+    margin: 1px 1px 0px 0;
     overflow: hidden;
     background-color: #e5e5e5;
     border-bottom: 1px solid #ffffff;
@@ -1759,7 +1756,7 @@ nav {
   .criteria select {
     width: 210px; }
   .criteria .popup {
-    width: 210px; }
+    width: 150px; }
   .criteria ul {
     padding: 0;
     margin: 0; }
