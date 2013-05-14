@@ -871,7 +871,7 @@
     <Content Include="Views\Search\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Issue\Actions.cshtml" />
+    <Content Include="Views\Issue\Reprocess.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Js\search.coffee" />

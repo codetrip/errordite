@@ -1,5 +1,5 @@
 (function() {
-  var Initialisation, Paging, Spinner, Tabs;
+  var Initialisation, Paging, Tabs;
 
   window.Errordite = {};
 
@@ -7,12 +7,13 @@
 	return s.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
 };;
 
+
   Initialisation = (function() {
+
     function Initialisation() {}
 
     Initialisation.prototype.init = function(ajax) {
       var $tabHolders, controller, tabHolder, _i, _len;
-
       $('.icon-info').tooltip();
       $('.tool-tip').tooltip();
       $('div.search-box').tooltip();
@@ -26,7 +27,6 @@
         $(tabHolder).data('controller', controller);
         controller.init();
       }
-      Errordite.Spinner.enable();
       $('body').on('click', 'a.ajax', function(e) {
         e.preventDefault();
         return $.ajax({
@@ -43,14 +43,12 @@
       $('body').on('click', '[data-confirm]', function(e) {
         var $form, $this,
           _this = this;
-
         e.preventDefault();
         $this = $(this);
         $form = $this.closest('form');
         return Errordite.Confirm.show($this.data('confirm'), {
           okCallBack: function() {
             var hiddenInput;
-
             if (_this.name != null) {
               $form.find('.input-shim').remove();
               hiddenInput = $('<input/>').attr('name', _this.name).attr('value', _this.value).attr('type', 'hidden').addClass('input-shim');
@@ -92,27 +90,6 @@
 
   })();
 
-  Spinner = (function() {
-    function Spinner() {}
-
-    Spinner.prototype.disable = function() {
-      $('.spinner').unbind('ajaxStart');
-      return $('.spinner').unbind('ajaxStop');
-    };
-
-    Spinner.prototype.enable = function() {
-      $('.spinner').ajaxStart(function() {
-        return $(this).show();
-      });
-      return $('.spinner').ajaxStop(function() {
-        return $(this).hide();
-      });
-    };
-
-    return Spinner;
-
-  })();
-
   /*
   The idea with Tabs is as follows:
    1. each set of tabs headers (identified by a container having the class "tabs") gets initialised with a Tab Manager (instance of "Tabs" class)
@@ -127,15 +104,15 @@
 
 
   Tabs = (function() {
+
     Tabs.get = function(anyNodeInside) {
       var $tabHolder, tabManager;
-
       $tabHolder = $(anyNodeInside).closest('.tabs, .sidenav-tabs');
       if (!$tabHolder.length) {
         return null;
       }
       tabManager = $tabHolder.data('controller');
-      if (tabManager == null) {
+      if (!(tabManager != null)) {
         tabManager = new Tabs($tabHolder);
         tabManager.init();
         $tabHolder.data('controller', tabManager);
@@ -150,7 +127,6 @@
 
     Tabs.prototype.show = function(tabName) {
       var $activeNode, $tab, inactiveNode;
-
       if (this.parentNode.length === 0) {
         return;
       }
@@ -172,7 +148,6 @@
     Tabs.prototype.init = function() {
       var first,
         _this = this;
-
       if (this.node.data('init') === true) {
         return;
       }
@@ -192,12 +167,11 @@
       }
       return this.node.delegate('li a.tablink', 'click', function(e) {
         var $a, tabName;
-
         e.preventDefault();
         $a = $(e.currentTarget);
         tabName = $a.data('val');
         _this.show(tabName);
-        if (window.history.pushState == null) {
+        if (!(window.history.pushState != null)) {
           return;
         }
         return window.history.pushState(tabName, '', $a.attr('href'));
@@ -217,9 +191,9 @@
 
 
   Paging = (function() {
+
     function Paging(baseUrl) {
       var paging;
-
       paging = this;
       this.currentPage = 0;
       this.currentSize = 0;
@@ -234,7 +208,6 @@
 
       this.navigate = function($paging, url) {
         var $ajaxContainer;
-
         $ajaxContainer = $paging.closest('.ajax-container');
         if ($ajaxContainer.length) {
           if (paging.baseUrl !== void 0) {
@@ -256,7 +229,6 @@
       this.init = function() {
         this.rootNode.delegate('input#pgno', 'blur', function(e) {
           var $paging, $this;
-
           e.preventDefault();
           $this = $(this);
           $paging = $this.closest('.paging');
@@ -272,14 +244,12 @@
         });
         this.rootNode.delegate('input#pgno', 'focus', function(e) {
           var $this;
-
           e.preventDefault();
           $this = $(this);
           return $this.data('currentPage', $this.val());
         });
         this.rootNode.delegate('select#pgsz', 'change', function(e) {
           var $paging, $this, firstItemNumber, newPageNumber;
-
           e.preventDefault();
           $this = $(this);
           $paging = $this.closest('.paging');
@@ -289,7 +259,6 @@
         });
         this.rootNode.delegate('div.pagination a', 'click', function(e) {
           var $paging, $this;
-
           e.preventDefault();
           $this = $(this);
           $paging = $this.closest('.paging');
@@ -300,7 +269,6 @@
         });
         return this.contentNode.delegate('th.sort a', 'click', function(e) {
           var $paging, $this;
-
           e.preventDefault();
           $this = $(this);
           $paging = $this.closest('.paging');
@@ -319,11 +287,8 @@
 
   window.Initalisation = Initialisation;
 
-  window.Errordite.Spinner = new Spinner();
-
   jQuery(function() {
     var init;
-
     init = new Initialisation();
     return init.init(false);
   });

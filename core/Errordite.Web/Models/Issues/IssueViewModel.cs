@@ -93,6 +93,6 @@ namespace Errordite.Web.Models.Issues
         Rules,
         Debug,
         History,
-		Actions,
+		Reprocess,
     }
 }

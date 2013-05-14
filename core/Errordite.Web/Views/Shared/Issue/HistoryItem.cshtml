@@ -2,7 +2,7 @@
 @using Errordite.Core.Extensions
 @model Errordite.Web.Models.Issues.IssueHistoryItemViewModel
 
-<tr>
+<tr @(Model.SystemMessage ? "" : "class=comment")>
 	<td style="width:125px">@(Model.SystemMessage ? "System" : Model.Username)</td>
 	<td style="width:125px">@Html.Raw(Model.VerbalTime)</td>
 	<td>
