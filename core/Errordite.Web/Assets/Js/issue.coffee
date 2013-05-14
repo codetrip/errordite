@@ -114,8 +114,6 @@ jQuery ->
 					$('.reprocess-what-if-msg').remove()
 					msg = $('<span/>').addClass('reprocess-what-if-msg').html(data)
 					$(e.currentTarget).after msg
-#					setTimeout -> msg.fadeOut(500), 
-#					5000 
 				error: ->
 					Errordite.Alert.show('An error has occured, please try again.')
 

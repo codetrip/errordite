@@ -28,8 +28,6 @@ class Initialisation
 			#but it seems if we're going to create a class we should put it somewhere accessible
 			$(tabHolder).data 'controller', controller
 			controller.init()
-		
-		Errordite.Spinner.enable()
 
 		#GT: this code isn't actually used yet, so feel free to modify.  Just planning
 		#some default ajax code that can handle simple situations.
@@ -78,15 +76,6 @@ class Initialisation
 				$('#daterange span').html start.toString('MMMM d, yyyy') + ' - ' + end.toString('MMMM d, yyyy')
 				$('#daterange input').val start.toString('u') + '|' + end.toString('u')
 
-
-class Spinner
-
-	disable: () -> 
-		$('.spinner').unbind('ajaxStart')
-		$('.spinner').unbind('ajaxStop')
-	enable: () ->
-		$('.spinner').ajaxStart(() -> $(this).show())
-		$('.spinner').ajaxStop(() -> $(this).hide())
 
 ###
 The idea with Tabs is as follows:
@@ -258,8 +247,6 @@ class Paging
 window.Tabs = Tabs
 window.Paging = Paging
 window.Initalisation = Initialisation
-
-window.Errordite.Spinner = new Spinner();
 
 jQuery ->
 	init = new Initialisation()

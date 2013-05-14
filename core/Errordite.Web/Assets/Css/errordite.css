@@ -1022,7 +1022,7 @@ section {
     color: #fff; }
     .dropdown-menu li:hover a {
       color: #fff; }
-  .dropdown-menu li > a:hover {
+  .dropdown-menu li a:hover {
     text-decoration: none; }
   .dropdown-menu .active > a {
     text-decoration: none; }
@@ -1344,6 +1344,21 @@ section {
     background-position: -129px -18px; }
   .sort-header a.sort.sort-desc-selected {
     background-position: -147px -18px; }
+
+.spinner {
+  display: none;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1080;
+  background-color: #000;
+  opacity: 0.3;
+  filter: alpha(opacity=30);
+  background-image: url("img/ajax-loader.gif");
+  background-repeat: no-repeat;
+  background-position: center; }
 
 /*-----------------------------------------------------------------------------------*/
 /* SPECIFICS
@@ -1900,4 +1915,6 @@ table.history td {
   table.history td span.bold {
     font-weight: 400;
     color: #000; }
+table.history tr.comment {
+  background-color: #e7f0f5; }
 

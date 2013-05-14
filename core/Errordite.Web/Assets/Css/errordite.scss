@@ -1281,7 +1281,7 @@ section {
         color:#fff;
     }
   }
-  li > a:hover {
+  li a:hover {
     text-decoration: none;
   }
   .active > a {
@@ -1697,6 +1697,22 @@ section {
 	}
 }
 
+.spinner
+{
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1080;
+    background-color: #000;
+    opacity: 0.3;
+    filter: alpha(opacity=30);
+    background-image: url('img/ajax-loader.gif');
+    background-repeat: no-repeat;
+    background-position: center;
+}
 /*-----------------------------------------------------------------------------------*/
 /* SPECIFICS
 /*-----------------------------------------------------------------------------------*/
@@ -2434,5 +2450,8 @@ table.history {
 			font-weight:$normalfontweight;
 			color:#000;
 		}
+	}
+	tr.comment {
+		background-color:#e7f0f5;
 	}
 }

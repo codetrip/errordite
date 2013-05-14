@@ -42,8 +42,8 @@
             <li @(Model.Tab == IssueTab.Reports ? " class=active" : " class=inactive") >
                 <a href="@Url.Issue(Model.Update.IssueId, IssueTab.Reports)" class="tablink" data-val="reports"><span>Reports</span></a> 
             </li>
-            <li @(Model.Tab == IssueTab.Actions ? " class=active" : " class=inactive") >
-                <a href="@Url.Issue(Model.Update.IssueId, IssueTab.Actions)" class="tablink" data-val="actions"><span>Actions</span></a>
+            <li @(Model.Tab == IssueTab.Reprocess ? " class=active" : " class=inactive") >
+                <a href="@Url.Issue(Model.Update.IssueId, IssueTab.Reprocess)" class="tablink" data-val="reprocess"><span>Reprocess</span></a>
             </li>
             <li @(Model.Tab == IssueTab.History ? " class=active" : " class=inactive") >
                 <a href="@Url.Issue(Model.Update.IssueId, IssueTab.History)" class="tablink" data-val="history"><span>History</span></a>
@@ -73,8 +73,8 @@
         <div id="reports" class="tab @(Model.Tab == IssueTab.Reports ? "" : "hidden")">
             @Html.Partial("Reports", Model.Details)
         </div>
-        <div id="actions" class="tab @(Model.Tab == IssueTab.Actions ? "" : "hidden")">
-            @Html.Partial("Actions", Model.Details)
+        <div id="reprocess" class="tab @(Model.Tab == IssueTab.Reprocess ? "" : "hidden")">
+            @Html.Partial("Reprocess", Model.Details)
         </div>
 	    <div id="history" class="tab @(Model.Tab == IssueTab.History ? "" : "hidden")">
 		    <table class="table table-condensed history" id="history-items">
