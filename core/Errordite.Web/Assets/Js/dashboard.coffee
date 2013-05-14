@@ -12,6 +12,7 @@ jQuery ->
 				this.lastError = $('input#LastErrorDisplayed').val()
 				this.lastIssue = $('input#LastIssueDisplayed').val()
 				this.showItems()
+				Errordite.Spinner.disable();
 			poll: ->
 				$.ajax
 					url: "/dashboard/update?lastErrorDisplayed=" + dashboard.lastError + '&lastIssueDisplayed=' + dashboard.lastIssue + '&applicationId=' + $('input#ApplicationId').val()
@@ -26,7 +27,7 @@ jQuery ->
 						dashboard.error()
 					dataType: "json"
 					complete: ->
-						setTimeout dashboard.poll, 10000
+						setTimeout dashboard.poll, 15000
 				true
 			rendergraph: ->
 				$.ajax
@@ -81,5 +82,5 @@ jQuery ->
 		dashboard = new Dashboard();
 		dashboard.rendergraph();
 
-		setTimeout dashboard.poll, 10000
+		setTimeout dashboard.poll, 15000
 		true

@@ -1,6 +1,5 @@
 ﻿@using Errordite.Core.Extensions
 @using Errordite.Core.Domain
-@using Errordite.Core.Extensions
 @using Errordite.Web.Models.Issues
 @using Errordite.Web.Extensions
 @model IssueViewModel
@@ -84,7 +83,7 @@
 	    </div>
     </div>
     @Html.Partial("Reprocess", Model.Details)
-    @Html.Partial("AddComment", Model.Details)
+    @Html.Partial("AddComment", new AddCommentViewModel(Model.Details.IssueId))
 </section>
 
 
