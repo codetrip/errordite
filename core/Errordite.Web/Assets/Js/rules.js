@@ -10,6 +10,8 @@
       whatifresult = null;
       Errordite.Rule = (function() {
 
+        Rule.name = 'Rule';
+
         function Rule($rule) {
           this.$rule = $rule;
           if (this.$rule != null) {
@@ -40,6 +42,8 @@
 
       })();
       Errordite.RuleManager = (function() {
+
+        RuleManager.name = 'RuleManager';
 
         function RuleManager() {
           var ruleEl;
@@ -195,7 +199,7 @@
       })();
       Errordite.ruleManager = new Errordite.RuleManager();
       $body.delegate('button#apply-rule-updates, a#edit-details', 'click', function(e) {
-        var $errormessage, $form, $message, $modal, $name;
+        var $errormessage, $form, $message, $modal, $name, tabs;
         $form = $('form#rulesForm');
         $form.validate();
         if ($form.valid()) {
@@ -217,7 +221,8 @@
           $modal.find('#Comment').val('');
           return $modal.modal();
         } else {
-          return (Tabs.get($('#issue-tabs'))).show('rules');
+          tabs = Tabs.get($('#issue-tabs'));
+          return tabs.show('rules');
         }
       });
       $body.delegate('div#rules a.add', 'click', function(e) {

@@ -92,7 +92,10 @@ namespace Errordite.Web.Controllers
             //this is a bit of a hack but the paging URL is generated based on the page URL so if we get
             //an ajax call just assume it's error page
             if (Request.IsAjaxRequest())
-                return Errors(new ErrorCriteriaPostModel());
+                return Errors(new ErrorCriteriaPostModel
+                    {
+                        Id = postModel.Id,
+                    });
 
             var viewModel = GetViewModel(postModel, GetSinglePagingRequest());
 
@@ -349,7 +352,7 @@ namespace Errordite.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return RedirectWithViewModel(postModel, "index", routeValues: new { id = postModel.IssueId, tab = IssueTab.Rules.ToString() });
+                return RedirectWithViewModel(postModel, "index", routeValues: new { id = postModel.IssueId.GetFriendlyId(), tab = IssueTab.Rules.ToString() });
             }
 
             var result = _adjustRulesCommand.Invoke(new AdjustRulesRequest

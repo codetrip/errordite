@@ -33,8 +33,7 @@ namespace Errordite.Web.Models.Issues
         public string AdjustmentName { get; set; }
         public string UserId { get; set; }
         public IssueStatus Status { get; set; }
-		public string NotifyFrequency { get; set; }
-		[Required(ErrorMessage = "Please enter a comment.")]
+        public string NotifyFrequency { get; set; }
 		public string Comment { get; set; }
     }
 
@@ -68,9 +67,18 @@ namespace Errordite.Web.Models.Issues
     }
 
 	public class AddCommentViewModel
-	{
+    {
+        [Required(ErrorMessage = "Please enter a comment.")]
 		public string Comment { get; set; }
-		public string IssueId { get; set; }
+        public string IssueId { get; set; }
+
+        public AddCommentViewModel()
+        {}
+
+        public AddCommentViewModel(string issueId)
+        {
+            IssueId = issueId;
+        }
 	}
 
     public class IssueHistoryPostModel

@@ -177,7 +177,8 @@ jQuery ->
 				$modal.find('#Comment').val('');
 				$modal.modal()
 			else
-				(Tabs.get $ '#issue-tabs').show 'rules'
+				tabs = Tabs.get $ '#issue-tabs'
+				tabs.show 'rules'
 
 		$body.delegate 'div#rules a.add', 'click', (e) -> 			
 			Errordite.ruleManager.addRule()

@@ -6,12 +6,15 @@
     if ($root.length > 0) {
       Dashboard = (function() {
 
+        Dashboard.name = 'Dashboard';
+
         function Dashboard() {
           this.issueContainer = $('div#issues');
           this.errorContainer = $('div#errors');
           this.lastError = $('input#LastErrorDisplayed').val();
           this.lastIssue = $('input#LastIssueDisplayed').val();
           this.showItems();
+          Errordite.Spinner.disable();
         }
 
         Dashboard.prototype.poll = function() {
@@ -31,7 +34,7 @@
             },
             dataType: "json",
             complete: function() {
-              return setTimeout(dashboard.poll, 10000);
+              return setTimeout(dashboard.poll, 15000);
             }
           });
           return true;
@@ -121,7 +124,7 @@
       })();
       dashboard = new Dashboard();
       dashboard.rendergraph();
-      setTimeout(dashboard.poll, 10000);
+      setTimeout(dashboard.poll, 15000);
       return true;
     }
   });
