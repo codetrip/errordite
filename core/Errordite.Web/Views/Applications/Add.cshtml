@@ -1,0 +1,89 @@
+﻿@using Errordite.Web.Extensions
+@using Errordite.Web.Models.Applications
+@using Errordite.Web.Models.Shared
+@model AddApplicationViewModel
+           
+@{
+    ViewBag.Title = "Add Application";
+}
+
+@section header
+{
+    @Html.Partial("Account/Tabs")
+}
+
+<section class="centered">
+	<div class="content">
+		<div class="sidenav">
+            @Html.Partial("Applications/ApplicationTabs", SharedTab.Add)
+            <div class="sidenav-content">
+                <div class="sidenav-tab active">
+                    @using (Html.BeginForm("add", "applications", FormMethod.Post, new { id = "addapplicationForm" }))
+					{
+						@Html.HiddenFor(m => m.MatchRuleFactoryId)
+						<div class="form double">
+							<ul>
+								<li>
+									@Html.LabelFor(m => m.Name, "Name")
+									@Html.TextBoxFor(m => m.Name, new {maxlength = "30"})
+									@Html.ValidationMessageFor(m => m.Name)
+								</li>
+								<li>
+									@Html.LabelFor(m => m.Version, "Version")
+									@Html.TextBoxFor(m => m.Version)
+									<i data-title="All errors received into this application will be tagged with this version number, update it when you deploy a new build." class="icon-info"></i>
+									@Html.ValidationMessageFor(m => m.Version)
+								</li>
+								<li>
+									@Html.LabelFor(m => m.UserId, "Default assigned user")
+									@Html.DropDownListFor(m => m.UserId, Model.Users)
+									<i data-title="Who will the default assignee be for issues created within this application?" class="icon-info"></i>
+									@Html.ValidationMessageFor(m => m.UserId)
+								</li>
+								<li class="sublist">
+									@Html.LabelFor(m => m.NotificationGroups, "Send notifications to these groups")
+									<ul>
+										@Html.EditorFor(m => m.NotificationGroups)
+									</ul>
+								</li>
+								<li class="inline">
+									@Html.CheckBoxFor(m => m.Active) 
+									@Html.LabelFor(m => m.Active, "Activate application")
+									<i data-title="Only active applications will receive errors and have issues created." class="icon-info"></i>
+								</li>
+								<li class="buttons">
+									<input type="submit" class="btn btn-medium btn-blue" value="Add" />
+									<a href="@Url.Applications()" class="btn btn-grey btn-medium">Cancel</a>
+								</li>
+							</ul>
+						</div>
+						<div class="form double">
+							<ul>
+								<li>
+								    @Html.LabelFor(m => m.HipChatRoomId, "HipChat Room Id", new {style="display:inline-block;"}) 
+                                    @if (!Model.HipChatEnabled)
+                                    {
+                                        <text>(</text><a href="@Url.HipChat()">Configure HipChat</a><text>)</text>
+                                    }
+									@Html.TextBoxFor(m => m.HipChatRoomId, Model.HipChatEnabled ? null : new {disabled="disabled"})
+									<i data-title="This is the numeric Id found in the URL of the HipChat room you want Errordite to post to." class="icon-info"></i>
+									@Html.ValidationMessageFor(m => m.HipChatRoomId)
+								</li>
+								<li>
+								    @Html.LabelFor(m => m.CampfireRoomId, "Campfire Room Id", new {style="display:inline-block;"}) 
+                                    @if (!Model.CampfireEnabled)
+                                    {                       
+                                        <text>(</text><a href="@Url.Campfire()">Configure Campfire</a><text>)</text>
+                                    }
+                                    @Html.TextBoxFor(m => m.CampfireRoomId, Model.CampfireEnabled ? null : new {disabled="disabled"})
+									<i data-title="This is the numeric Id found in the URL of the Campfire room you want Errordite to post to." class="icon-info"></i>
+									@Html.ValidationMessageFor(m => m.CampfireRoomId)
+								</li>
+							</ul>
+						</div>
+					}
+                </div>
+            </div>
+        </div>
+	</div>
+</section>

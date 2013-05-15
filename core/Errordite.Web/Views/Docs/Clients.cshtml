@@ -1,0 +1,42 @@
+﻿@using Errordite.Web.Controllers
+@using Errordite.Web.Models.Docs
+@model Errordite.Web.Controllers.ClientsTab
+
+@{
+    ViewBag.Title = "Errordite Clients";
+}
+
+@section header
+{
+    @Html.Partial("Docs/Tabs", DocsTab.Clients) 
+}
+
+@{
+    Func<ClientsTab, string> cls = tab => Model == tab ? "active" : "";
+}
+<section id="clients" class="centered">
+    <div class="content" >
+        <div class="sidenav">
+            <ul class="sidenav-tabs">
+                <li class="@cls(ClientsTab.DotNet)"><a href="?tab=dotnet" data-val="dotnet" data-toggle="tab" class="tablink">.NET</a></li>
+                <li class="@cls(ClientsTab.Python)"><a href="?tab=python" data-val="python" data-toggle="tab" class="tablink">Python</a></li>
+                <li class="@cls(ClientsTab.Ruby)"><a href="?tab=ruby" data-val="ruby" data-toggle="tab" class="tablink">Ruby</a></li>
+                <li class="@cls(ClientsTab.Other)"><a href="?tab=other" data-val="other" data-toggle="tab" class="tablink">Other</a></li>
+            </ul>
+            <div class="sidenav-content help">
+                <div class="sidenav-tab @cls(ClientsTab.DotNet)" id="dotnet">
+                    @Html.Partial("Docs/DotNetClient")
+                </div>
+                <div class="sidenav-tab @cls(ClientsTab.Python)" id="python">
+                    @Html.Partial("Docs/PythonClient")
+                </div>
+                <div class="sidenav-tab @cls(ClientsTab.Ruby)" id="ruby">
+                    @Html.Partial("Docs/RubyClient")
+                </div>
+                <div class="sidenav-tab @cls(ClientsTab.Other)" id="other">
+                    @Html.Partial("Docs/SendErrorWithJson")
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

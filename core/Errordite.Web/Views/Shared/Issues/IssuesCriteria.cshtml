@@ -1,0 +1,58 @@
+﻿@using System.Text.RegularExpressions
+@using Errordite.Core.Domain.Error
+@model Errordite.Web.Models.Issues.IssueCriteriaViewModel
+           
+@using (Html.BeginForm("index", "issues", FormMethod.Get, new { id = "issuesForm" }))
+{
+    <div class="form form-inline criteria">
+        <ul>
+            <li>
+                @Html.TextBoxFor(m => m.Name, new { autocomplete = "off", placeholder = "Search issue name & rules", style="width:350px" })
+            </li>
+            <li>
+                @Html.DropDownListFor(m => m.AssignedTo, new[] { new SelectListItem { Text = Resources.IssueResources.AssignedUser, Value = Resources.Shared.DefaultSelectValue } }.Union(Model.Users))
+            </li>
+            <li>
+                <ul class="popup popup-pills">
+                    <li class="dropdown" id="status">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#status">
+                            Issue Status
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu" style="width: 208px;">
+                            @foreach (var status in Model.Statuses)
+                            {
+                                <li class="inline">
+                                    <input type="checkbox" name="Status" id="@status.Text" value="@status.Value" @(status.Selected ? "checked=checked" : string.Empty) />
+                                    <label for="@status.Text">@status.Text</label>
+                                </li>
+                            }
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <input type="submit" class="btn btn-small btn-blue btn-inline" value="Search" />
+            </li>
+            <li>
+                <ul id="action-list" class="popup popup-pills">
+                    <li class="dropdown blue-pills" id="actions">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#actions">
+                            Issue Actions
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu" style="width: 208px;">
+                            @foreach (var status in Enum.GetNames(typeof(IssueStatus)).Where(name => name != IssueStatus.Unacknowledged.ToString()))
+                            {
+                                <li><a href="#" data-val-modal="StatusUpdate" data-val-status="@Regex.Replace(status, "([a-z])([A-Z])", "$1 $2")">Change status: @status</a></li>
+                            }
+                
+                            <li class="divider"></li>
+                            <li><a href="#" data-val-modal="Delete">Batch Delete</a></li>
+                        </ul>
+                    </li>
+                </ul>  
+            </li>
+        </ul>
+    </div>
+}
