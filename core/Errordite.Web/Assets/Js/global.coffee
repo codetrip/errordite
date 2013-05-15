@@ -103,7 +103,7 @@ class Tabs
 	constructor: (tabHolder) -> 
 		this.node = $(tabHolder)
 		#the parent node is one that contains both the tab header and the tab content
-		this.parentNode = this.node.closest(':has(.tab)')
+		this.parentNode = this.node.closest(':has(.tab,.sidenav-tab)')
 		
 	show : (tabName) -> 
 		if this.parentNode.length == 0
