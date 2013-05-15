@@ -111,12 +111,6 @@ namespace Errordite.Web.Extensions
                 Selected = property == selectedValue
             }));
 
-            selectList.Insert(0, new SelectListItem
-            {
-                Text = Resources.Shared.PleaseSelect,
-                Value = Resources.Shared.DefaultSelectValue
-            });
-
             return selectList;
         }
     }

@@ -27,7 +27,7 @@ namespace Errordite.Web.Models.Issues
         public IList<RuleViewModel> Rules { get; set; }
         public string ApplicationId { get; set; }
         public string Reference { get; set; }
-        [Required(ErrorMessage = "Please enter a name")]
+        [Required(ErrorMessage = "Please enter a name for this issue")]
         public string Name { get; set; }
         [Required(ErrorMessage = "Please enter a name for the new issue that will be created")]
         public string AdjustmentName { get; set; }

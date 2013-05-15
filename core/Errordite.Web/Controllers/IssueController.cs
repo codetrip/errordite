@@ -385,7 +385,7 @@ namespace Errordite.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return RedirectWithViewModel(postModel, "index", routeValues: new { id = postModel.IssueId.GetFriendlyId(), tab = IssueTab.Details.ToString() }); 
+                return RedirectWithViewModel(postModel, "index", routeValues: new { id = postModel.IssueId.GetFriendlyId(), tab = IssueTab.Rules.ToString() }); 
             }
 
             try

@@ -8,7 +8,7 @@
         @Html.ValidationMessageFor(m => m.ErrorProperty)
     </td>
     <td>
-        @Html.DropDownListForEnum(m => m.StringOperator, Resources.Rules.ResourceManager, htmlAttributes: new { @class = "rule-operator"}, sortByLabel:true)
+        @Html.DropDownListForEnum(m => m.StringOperator, Resources.Rules.ResourceManager, htmlAttributes: new { @class = "rule-operator"}, sortByLabel:true, defaultValue:"Equals")
     </td>
     <td>
         @Html.TextAreaFor(m => m.Value, new {@class="rule-val"})<br />
