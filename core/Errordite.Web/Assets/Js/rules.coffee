@@ -61,11 +61,11 @@ jQuery ->
 				
 				$newRow.find(':input').val('')
 				$newRow.find('.rule-prop').val(name) if name?
-				$newRow.find('.rule-operator').val(op) if op?
+				$newRow.find('.rule-operator').val("Equals")
 				$newRow.find('.rule-val').val(val) if val?
 
 				this.parseRulesForm()
-				this.showRuleUpdatesPanel()
+				this.showRuleUpdatesPanel()	
 				rule = new Errordite.Rule($newRow)
 				this.rules.push rule
 				rule.$rule.trigger 'ruleadded'
@@ -90,8 +90,8 @@ jQuery ->
 				if this.rules.length == 1
 					$body.find('a.delete').hide();
 					
-				this.showRuleUpdatesPanel()	
 				this.reindex()
+				this.showRuleUpdatesPanel()	
 
 			parseRulesForm: () ->
 				$form = $('form#rulesForm', 'form#addIssue')
@@ -120,6 +120,13 @@ jQuery ->
 				messageHolder = $ '#rules-adjusted .what-if-message'
 				messageHolder.css	
 					visibility: 'hidden'
+
+				$form = $('form#rulesForm')
+				$form.validate()
+
+				if !$form.valid()
+					false
+
 				this.whatIf (response) -> 
 					messageHolder.html (
 						if response.data.notmatched > 0 

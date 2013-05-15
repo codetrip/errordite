@@ -80,9 +80,7 @@
           if (name != null) {
             $newRow.find('.rule-prop').val(name);
           }
-          if (op != null) {
-            $newRow.find('.rule-operator').val(op);
-          }
+          $newRow.find('.rule-operator').val("Equals");
           if (val != null) {
             $newRow.find('.rule-val').val(val);
           }
@@ -125,8 +123,8 @@
           if (this.rules.length === 1) {
             $body.find('a.delete').hide();
           }
-          this.showRuleUpdatesPanel();
-          return this.reindex();
+          this.reindex();
+          return this.showRuleUpdatesPanel();
         };
 
         RuleManager.prototype.parseRulesForm = function() {
@@ -166,12 +164,18 @@
         };
 
         RuleManager.prototype.showRuleUpdatesPanel = function() {
-          var messageHolder;
+          var $form, messageHolder;
           $('#rules-adjusted').show();
           messageHolder = $('#rules-adjusted .what-if-message');
           messageHolder.css({
             visibility: 'hidden'
           });
+          $form = $('form#rulesForm');
+          $form.validate();
+          if (!$form.valid()) {
+            false;
+
+          }
           return this.whatIf(function(response) {
             messageHolder.html((response.data.notmatched > 0 ? "<div class='notmatched'>\n" + response.data.notmatched + " of " + response.data.total + " do not match\n</div>" : "<div class='matched'>\nAll errors match\n</div>"));
             whatifresult = response.data;

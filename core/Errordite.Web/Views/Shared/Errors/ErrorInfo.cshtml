@@ -49,13 +49,16 @@
 				</tr>   
 			}  
 		
-			foreach (var kvp in Model.Error.ContextData)
-			{
-				<tr>
-					<td class="nobreak" >@kvp.Key</td>
-					<td class="word-break" data-error-attr="@kvp.Key">@kvp.Value</td>
-				</tr>
-			}
+            if (Model.Error.ContextData != null)
+            {
+                foreach (var kvp in Model.Error.ContextData)
+			    {
+				    <tr>
+					    <td class="nobreak" >@kvp.Key</td>
+					    <td class="word-break" data-error-attr="@kvp.Key">@kvp.Value</td>
+				    </tr>
+			    }
+            }
 		}
         
 		@if (Model.Info.ExtraData != null)
