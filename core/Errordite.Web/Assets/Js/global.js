@@ -7,13 +7,12 @@
 	return s.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
 };;
 
-
   Initialisation = (function() {
-
     function Initialisation() {}
 
     Initialisation.prototype.init = function(ajax) {
       var $tabHolders, controller, tabHolder, _i, _len;
+
       $('.icon-info').tooltip();
       $('.tool-tip').tooltip();
       $('div.search-box').tooltip();
@@ -43,12 +42,14 @@
       $('body').on('click', '[data-confirm]', function(e) {
         var $form, $this,
           _this = this;
+
         e.preventDefault();
         $this = $(this);
         $form = $this.closest('form');
         return Errordite.Confirm.show($this.data('confirm'), {
           okCallBack: function() {
             var hiddenInput;
+
             if (_this.name != null) {
               $form.find('.input-shim').remove();
               hiddenInput = $('<input/>').attr('name', _this.name).attr('value', _this.value).attr('type', 'hidden').addClass('input-shim');
@@ -104,15 +105,15 @@
 
 
   Tabs = (function() {
-
     Tabs.get = function(anyNodeInside) {
       var $tabHolder, tabManager;
+
       $tabHolder = $(anyNodeInside).closest('.tabs, .sidenav-tabs');
       if (!$tabHolder.length) {
         return null;
       }
       tabManager = $tabHolder.data('controller');
-      if (!(tabManager != null)) {
+      if (tabManager == null) {
         tabManager = new Tabs($tabHolder);
         tabManager.init();
         $tabHolder.data('controller', tabManager);
@@ -122,11 +123,12 @@
 
     function Tabs(tabHolder) {
       this.node = $(tabHolder);
-      this.parentNode = this.node.closest(':has(.tab)');
+      this.parentNode = this.node.closest(':has(.tab,.sidenav-tab)');
     }
 
     Tabs.prototype.show = function(tabName) {
       var $activeNode, $tab, inactiveNode;
+
       if (this.parentNode.length === 0) {
         return;
       }
@@ -148,6 +150,7 @@
     Tabs.prototype.init = function() {
       var first,
         _this = this;
+
       if (this.node.data('init') === true) {
         return;
       }
@@ -167,11 +170,12 @@
       }
       return this.node.delegate('li a.tablink', 'click', function(e) {
         var $a, tabName;
+
         e.preventDefault();
         $a = $(e.currentTarget);
         tabName = $a.data('val');
         _this.show(tabName);
-        if (!(window.history.pushState != null)) {
+        if (window.history.pushState == null) {
           return;
         }
         return window.history.pushState(tabName, '', $a.attr('href'));
@@ -191,9 +195,9 @@
 
 
   Paging = (function() {
-
     function Paging(baseUrl) {
       var paging;
+
       paging = this;
       this.currentPage = 0;
       this.currentSize = 0;
@@ -208,6 +212,7 @@
 
       this.navigate = function($paging, url) {
         var $ajaxContainer;
+
         $ajaxContainer = $paging.closest('.ajax-container');
         if ($ajaxContainer.length) {
           if (paging.baseUrl !== void 0) {
@@ -229,6 +234,7 @@
       this.init = function() {
         this.rootNode.delegate('input#pgno', 'blur', function(e) {
           var $paging, $this;
+
           e.preventDefault();
           $this = $(this);
           $paging = $this.closest('.paging');
@@ -244,12 +250,14 @@
         });
         this.rootNode.delegate('input#pgno', 'focus', function(e) {
           var $this;
+
           e.preventDefault();
           $this = $(this);
           return $this.data('currentPage', $this.val());
         });
         this.rootNode.delegate('select#pgsz', 'change', function(e) {
           var $paging, $this, firstItemNumber, newPageNumber;
+
           e.preventDefault();
           $this = $(this);
           $paging = $this.closest('.paging');
@@ -259,6 +267,7 @@
         });
         this.rootNode.delegate('div.pagination a', 'click', function(e) {
           var $paging, $this;
+
           e.preventDefault();
           $this = $(this);
           $paging = $this.closest('.paging');
@@ -269,6 +278,7 @@
         });
         return this.contentNode.delegate('th.sort a', 'click', function(e) {
           var $paging, $this;
+
           e.preventDefault();
           $this = $(this);
           $paging = $this.closest('.paging');
@@ -289,6 +299,7 @@
 
   jQuery(function() {
     var init;
+
     init = new Initialisation();
     return init.init(false);
   });
