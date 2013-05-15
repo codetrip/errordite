@@ -1,0 +1,57 @@
+<Project
+	xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
+	ToolsVersion="4.0"
+	DefaultTargets="InstallWeb">
+
+  <Import Project="$(MSBuildProjectDirectory)\Global.imports" />
+  <Import Project="$(MSBuildProjectDirectory)\Configuration.target" />
+  <Import Project="$(MSBuildProjectDirectory)\IIS.target" />
+
+  <PropertyGroup>
+    <CacheEngine>${redis-memory-hybrid}</CacheEngine>
+  </PropertyGroup>
+
+  <Target Name="InstallWeb" DependsOnTargets="GetBuildNumberAndInstallPaths;
+          CopyWebFiles;
+          RunConfigFileChanger;
+          UpdateIISDirectoryPathAndPermissions;
+          RecycleWebAppPool;">
+  </Target>
+
+  <Target Name="CopyWebFiles">
+
+    <CreateItem Include="$(MSBuildProjectDirectory)\..\Errordite.Web\**\*.*;">
+      <Output TaskParameter="Include" ItemName="ErrorditeWebFiles" />
+    </CreateItem>
+
+    <Copy SourceFiles="@(ErrorditeWebFiles)" DestinationFolder="$(InstallRoot)\Errordite.Web\$(BuildNumber)\%(RecursiveDir)" />
+
+  </Target>
+
+  <Target Name="UpdateIISDirectoryPathAndPermissions">
+	  
+	  <ItemGroup>
+		  <Allow Include="$(Domain)\$(ErrorditeWebUser)">
+			  <Permission>FullControl</Permission>
+		  </Allow>
+	  </ItemGroup>
+
+	  <MSBuild.ExtensionPack.FileSystem.Folder TaskAction="AddSecurity" AccessType="Allow" Path="$(WebInstallPath)" Users="@(Allow)" Recursive="true" />
+	  <MSBuild.ExtensionPack.Web.Iis7Website TaskAction="ModifyPath" Name="$(ErrorditeWebsiteHostName)" Path="$(WebInstallPath)" AppPool="$(ErrorditeWebsiteHostName)"/>
+
+  </Target>
+
+  <Target Name="GetBuildNumberAndInstallPaths">
+    <ReadLinesFromFile File="$(MSBuildProjectDirectory)\version.txt">
+      <Output TaskParameter="Lines" PropertyName="BuildNumber" />
+    </ReadLinesFromFile>
+
+    <CreateProperty Value="$(InstallRoot)\Errordite.Web\$(BuildNumber)">
+      <Output TaskParameter="Value" PropertyName="WebInstallPath" />
+    </CreateProperty>
+
+    <CreateProperty Value="$(WebInstallPath)">
+      <Output TaskParameter="Value" PropertyName="ConfigChangerRunLocation" />
+    </CreateProperty>
+  </Target>
+</Project>
