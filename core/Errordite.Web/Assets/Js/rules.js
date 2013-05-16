@@ -10,8 +10,6 @@
       whatifresult = null;
       Errordite.Rule = (function() {
 
-        Rule.name = 'Rule';
-
         function Rule($rule) {
           this.$rule = $rule;
           if (this.$rule != null) {
@@ -42,8 +40,6 @@
 
       })();
       Errordite.RuleManager = (function() {
-
-        RuleManager.name = 'RuleManager';
 
         function RuleManager() {
           var ruleEl;
@@ -80,7 +76,7 @@
           if (name != null) {
             $newRow.find('.rule-prop').val(name);
           }
-          $newRow.find('.rule-operator').val("Equals");
+          $newRow.find('.rule-operator').val(op != null ? op : 'Equals');
           if (val != null) {
             $newRow.find('.rule-val').val(val);
           }
@@ -174,7 +170,6 @@
           $form.validate();
           if (!$form.valid()) {
             false;
-
           }
           return this.whatIf(function(response) {
             messageHolder.html((response.data.notmatched > 0 ? "<div class='notmatched'>\n" + response.data.notmatched + " of " + response.data.total + " do not match\n</div>" : "<div class='matched'>\nAll errors match\n</div>"));

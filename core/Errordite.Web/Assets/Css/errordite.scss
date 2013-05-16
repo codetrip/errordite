@@ -320,7 +320,7 @@ table {
     .links {
 	  height: 32px;
       float: right;
-      width: 440px;
+      width: 480px;
       margin:4px 8px 0 0;
 	  border-bottom:2px solid $darkestbrown;
 	  margin-top: 16px;
@@ -334,7 +334,7 @@ table {
 	}
 	.applications {
 		height:48px;
-		width:524px;
+		width:485px;
 		border-bottom:2px solid $darkestbrown;
 		float:left;
 		.dropdown-menu li{
@@ -364,7 +364,7 @@ table {
 		background-color: $searchbackground;
 		border:0;
 		padding:7px 8px;
-		width:225px;
+		width:210px;
 		&:hover {
 			text-decoration: none;
 		}
@@ -374,7 +374,7 @@ table {
 		border-top: 4px solid #fff;
 	}
 	ul.dropdown-menu {
-		width:240px;
+		width:225px;
 		background-color: $mediumblue;
 		a {
 			color:#fff;

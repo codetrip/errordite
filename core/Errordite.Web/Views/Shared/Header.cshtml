@@ -81,11 +81,11 @@
         <nav class="links">
             @if (appContext.AuthenticationStatus == AuthenticationStatus.Anonymous)
             {
-                @: Welcome to Errordite &nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.SignIn()">Sign In</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.SignUp()">Sign Up</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.Contact()">Contact Us</a>
+                @: Welcome to Errordite &nbsp;|&nbsp; <a href="@Url.SignIn()">Sign In</a> &nbsp;|&nbsp; <a href="@Url.SignUp()">Sign Up</a> &nbsp;|&nbsp; <a href="@Url.About()">About</a> &nbsp;|&nbsp; <a href="@Url.Pricing()">Pricing</a> &nbsp;|&nbsp; <a href="@Url.Contact()">Contact Us</a>
             }
             else if (appContext.AuthenticationStatus == AuthenticationStatus.NotAuthenticated)
             {
-                @: Welcome back <strong>@appContext.CurrentUser.FirstName</strong> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.SignIn()">Sign In</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.SignOut()">Not @appContext.CurrentUser.FirstName?</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.Contact()">Contact Us</a>
+	            @: Welcome back <strong>@appContext.CurrentUser.FirstName</strong> &nbsp;|&nbsp; <a href="@Url.SignIn()">Sign In</a> &nbsp;|&nbsp; <a href="@Url.SignOut()">Not @appContext.CurrentUser.FirstName?</a> &nbsp;|&nbsp; <a href="@Url.About()">About</a> &nbsp;|&nbsp; <a href="@Url.Pricing()">Pricing</a> &nbsp;|&nbsp; <a href="@Url.Contact()">Contact Us</a>
             }
             else
             {
@@ -95,8 +95,8 @@
                                      {
                                          <a href="@Url.Impersonate()">(IMP)</a>
                                      }
-                                 </strong>&nbsp;&nbsp;|&nbsp;&nbsp; 
-                    <a href="@Url.YourDetails()">Your Details</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.SignOut()">Sign Out</a> &nbsp;&nbsp;|&nbsp;&nbsp; <a href="@Url.Contact()">Contact Us</a>
+                                 </strong>&nbsp;|&nbsp; 
+                    <a href="@Url.YourDetails()">Your Details</a> &nbsp;|&nbsp; <a href="@Url.SignOut()">Sign Out</a> &nbsp;|&nbsp; <a href="@Url.About()">About</a> &nbsp;|&nbsp; <a href="@Url.Pricing()">Pricing</a> &nbsp;|&nbsp; <a href="@Url.Contact()">Contact Us</a>
                 </text> 
             }
         </nav>

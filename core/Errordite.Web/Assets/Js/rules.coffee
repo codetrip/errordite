@@ -61,7 +61,7 @@ jQuery ->
 				
 				$newRow.find(':input').val('')
 				$newRow.find('.rule-prop').val(name) if name?
-				$newRow.find('.rule-operator').val("Equals")
+				$newRow.find('.rule-operator').val(if op? then op else 'Equals') 
 				$newRow.find('.rule-val').val(val) if val?
 
 				this.parseRulesForm()
