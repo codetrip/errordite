@@ -234,7 +234,7 @@ table {
     .welcome-bar-container .welcome-bar .links {
       height: 32px;
       float: right;
-      width: 440px;
+      width: 480px;
       margin: 4px 8px 0 0;
       border-bottom: 2px solid #393a3b;
       margin-top: 16px; }
@@ -246,7 +246,7 @@ table {
       font-size: 16px; }
     .welcome-bar-container .welcome-bar .applications {
       height: 48px;
-      width: 524px;
+      width: 485px;
       border-bottom: 2px solid #393a3b;
       float: left; }
       .welcome-bar-container .welcome-bar .applications .dropdown-menu li {
@@ -269,14 +269,14 @@ table {
       background-color: #414650;
       border: 0;
       padding: 7px 8px;
-      width: 225px; }
+      width: 210px; }
       .welcome-bar-container .welcome-bar a.dropdown-toggle:hover {
         text-decoration: none; }
     .welcome-bar-container .welcome-bar .caret {
       margin: 8px 10px 0 0;
       border-top: 4px solid #fff; }
     .welcome-bar-container .welcome-bar ul.dropdown-menu {
-      width: 240px;
+      width: 225px;
       background-color: #92c7e7; }
       .welcome-bar-container .welcome-bar ul.dropdown-menu a {
         color: #fff; }
