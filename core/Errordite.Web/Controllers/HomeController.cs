@@ -225,6 +225,10 @@ namespace Errordite.Web.Controllers
             };
 
             Core.Session.AddCommitAction(new SendMessageCommitAction(emailInfo, _configuration.GetNotificationsQueueAddress()));
+			Core.Session.AddCommitAction(new SendMessageCommitAction(new ContactUsEmailInfo
+				{
+					To = viewModel.Email,
+				}, _configuration.GetNotificationsQueueAddress()));
 
             ConfirmationNotification(Resources.Home.MessageReceived);
             return RedirectToAction("contact");
