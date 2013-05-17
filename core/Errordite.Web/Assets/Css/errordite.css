@@ -1413,18 +1413,20 @@ section {
 nav {
   float: left; }
   nav.main-nav {
-    float: right; }
+    float: right;
+    border-bottom: 2px solid #393a3b;
+    width: 489px; }
   nav .nav {
     list-style: none;
     margin: 0;
     padding: 0;
-    float: left;
+    float: right;
     width: 100%; }
     nav .nav li.nav-item {
-      float: left;
+      float: right;
       margin-left: 14px;
       position: relative;
-      line-height: 48px; }
+      line-height: 38px; }
       nav .nav li.nav-item.system {
         margin-left: 0; }
       nav .nav li.nav-item > a {
@@ -1445,10 +1447,10 @@ nav {
       margin: 0 0 9px 25px;
       list-style: none;
       position: absolute;
-      left: -9999px;
-      z-index: 9999;
+      z-index: 9998;
       padding: 10px;
-      width: 150px; }
+      width: 150px;
+      display: none; }
       nav .nav ul li {
         padding-top: 0px;
         float: none;
@@ -1462,34 +1464,49 @@ nav {
         text-decoration: none; }
         nav .nav ul a:hover {
           color: #525252; }
-    nav .nav li.dashboard:hover ul {
+    nav .nav li.dashboard ul {
       left: -25px; }
-    nav .nav li.sysadmin:hover ul {
+    nav .nav li.sysadmin ul {
       left: -45px; }
-    nav .nav li.admin:hover ul {
+    nav .nav li.admin ul {
       left: -80px; }
-    nav .nav li.docs:hover ul {
+    nav .nav li.docs ul {
       left: -137px; }
-    nav .nav li.dashboard:hover div.pointer::before {
+    nav .nav li.dashboard div.pointer::before {
       left: 35px; }
-    nav .nav li.admin:hover div.pointer::before {
+    nav .nav li.admin div.pointer::before {
       left: 28px; }
-    nav .nav li.sysadmin:hover div.pointer::before {
+    nav .nav li.sysadmin div.pointer::before {
       left: 30px; }
-    nav .nav li.docs:hover div.pointer::before {
+    nav .nav li.docs div.pointer::before {
       left: 18px; }
-    nav .nav li:hover ul a:hover {
-      color: #555; }
+    nav .nav li.dashboard:hover ul {
+      display: block; }
+    nav .nav li.sysadmin:hover ul {
+      display: block; }
+    nav .nav li.admin:hover ul {
+      display: block; }
+    nav .nav li.docs:hover ul {
+      display: block; }
+    nav .nav li.dashboard:hover div.pointer::before {
+      display: block; }
+    nav .nav li.admin:hover div.pointer::before {
+      display: block; }
+    nav .nav li.sysadmin:hover div.pointer::before {
+      display: block; }
+    nav .nav li.docs:hover div.pointer::before {
+      display: block; }
     nav .nav div.pointer::before {
       border-color: rgba(255, 255, 255, 0) rgba(255, 255, 255, 0) #92c7e7;
       border-style: solid;
       border-width: 5px;
       content: " ";
       height: 0;
-      left: -9999px;
       position: absolute;
       top: 48px;
-      width: 0; }
+      width: 0;
+      z-index: 9999;
+      display: none; }
 
 .sidenav-tabs {
   *zoom: 1;
