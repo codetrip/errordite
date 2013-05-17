@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Web;
+using System.Web.Mvc;
 using Errordite.Core.Identity;
 using Errordite.Web.Controllers;
 using Errordite.Web.Extensions;
@@ -20,6 +21,9 @@ namespace Errordite.Web.ActionFilters
             var controller = filterContext.Controller as ErrorditeController;
             if (controller == null)
                 return;
+
+	        var browser = FiftyOne.Foundation.Mobile.Detection.FiftyOneBrowserCapabilities.BrowserCapabilitiesProvider.GetBrowserCapabilities(HttpContext.Current.Request);
+	        controller.Core.AppContext.IsMobileDevice = browser.IsMobileDevice;
 
             result.ViewData.SetCookieManager(controller.CookieManager);
             result.ViewData.SetCore(controller.Core);

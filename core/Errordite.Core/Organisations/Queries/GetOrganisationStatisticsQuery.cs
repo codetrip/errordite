@@ -39,7 +39,7 @@ namespace Errordite.Core.Organisations.Queries
                 if(facetValue != null)
                 {
                     var propertyInfo = statsType.GetProperty(status);
-                    if(propertyInfo != null)
+                    if (propertyInfo != null)
                         propertyInfo.SetValue(stats, facetValue.Hits, null);
                 }
             }

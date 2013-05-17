@@ -64,6 +64,20 @@ class Initialisation
 		$('body').on 'click', 'a#hide-notification', ->
 			$(this).closest('#notifications').hide('fast')
 
+#		$('body').on 'mouseenter', 'li.submenu', (e) ->
+#			e.preventDefault()
+#			$(this).find('ul').show()
+#
+#		$('body').on 'mouseleave', 'li.submenu', (e) ->
+#			e.preventDefault()
+#			$(this).find('ul').hide()
+#
+#		$('body').on 'touchstart', 'li.submenu', (e) ->	
+#			$(this).find('ul').show()
+#
+#		$('body').on 'touchend', 'li.submenu', (e) ->	
+#			$(this).find('ul').hide()
+
 	datepicker: ($root) ->
 		$root.find('div#daterange').daterangepicker
 			ranges:

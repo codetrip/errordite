@@ -280,9 +280,9 @@ namespace Errordite.Web.Extensions
             return helper.Action("add", "users", new { Area = string.Empty });
         }
 
-        public static string YourDetails(this UrlHelper helper)
+        public static string Profile(this UrlHelper helper)
         {
-            return helper.Action("yourdetails", "users", new { Area = string.Empty });
+            return helper.Action("profile", "users", new { Area = string.Empty });
         }
 
         public static string EditUser(this UrlHelper helper, string userId)
