@@ -1775,18 +1775,21 @@ nav {
   float: left;
   &.main-nav{
 	float:right;
+    border-bottom:2px solid $darkestbrown; 
+    width:489px;
   }
   .nav {
       list-style: none;
       margin: 0;
       padding: 0;
-      float: left;
+      float: right;
       width: 100%;
       li.nav-item {
-        float: left;
+        float: right;
         margin-left: 14px;
         position: relative;
-        line-height: 48px;
+        line-height: 38px;
+       
 		&.system{
 			margin-left:0;
 		}
@@ -1812,10 +1815,10 @@ nav {
     margin: 0 0 9px 25px;
     list-style: none;
     position: absolute;
-    left: -9999px;
-    z-index: 9999;
+    z-index: 9998;
     padding: 10px;
     width: 150px;
+    display:none;
     li {
       padding-top: 0px;
       float: none;
@@ -1834,32 +1837,53 @@ nav {
     }
   }
   li {
-    &.dashboard:hover ul {
+    &.dashboard ul {
       left: -25px;
     }
-    &.sysadmin:hover ul {
+    &.sysadmin ul {
       left: -45px;
     }
-    &.admin:hover ul {
+    &.admin ul {
       left: -80px;
     }
-    &.docs:hover ul {
+    &.docs ul {
       left: -137px;
     }
-    &.dashboard:hover div.pointer::before {
+    &.dashboard div.pointer::before {
       left: 35px;
     }
-    &.admin:hover div.pointer::before {
+    &.admin div.pointer::before {
       left: 28px;
     }
-    &.sysadmin:hover div.pointer::before {
+    &.sysadmin div.pointer::before {
       left: 30px;
     }
-    &.docs:hover div.pointer::before {
+    &.docs div.pointer::before {
       left: 18px;
     }
-    &:hover ul a:hover {
-      color: #555;
+    &.dashboard:hover ul {
+      display:block;
+    }
+    &.sysadmin:hover ul {
+      display:block;
+    }
+    &.admin:hover ul {
+      display:block;
+    }
+    &.docs:hover ul {
+      display:block;
+    }
+    &.dashboard:hover div.pointer::before {
+      display:block;
+    }
+    &.admin:hover div.pointer::before {
+      display:block;
+    }
+    &.sysadmin:hover div.pointer::before {
+      display:block;
+    }
+    &.docs:hover div.pointer::before {
+      display:block;
     }
   }
 
@@ -1869,10 +1893,11 @@ nav {
     border-width: 5px;
     content: " ";
     height: 0;
-    left: -9999px;
     position: absolute;
     top: 48px;
     width: 0;
+    z-index: 9999;
+    display:none;
   }
 }
 }
