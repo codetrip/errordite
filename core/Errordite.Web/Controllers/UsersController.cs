@@ -183,7 +183,7 @@ namespace Errordite.Web.Controllers
         }
 
 		[HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.EditYourDetails)]
-        public ActionResult YourDetails()
+        public ActionResult Profile()
         {
             return EditUser(Core.AppContext.CurrentUser, true);
         }

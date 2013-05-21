@@ -18,7 +18,7 @@ $tableborder:#CDD4DA;
 $tablealternatecolor:#ECF4F7;
 $tableheadercolor:#D7E5EE;
 $font: 'Open Sans', sans-serif;
-$minwidth: 974px;
+$minwidth: 980px;
 $lightfontweight: 300;
 $normalfontweight: 400;
 $boldfontweight: 600;
@@ -112,6 +112,7 @@ h2 {
         font-weight:$extraboldfontweight;
         font-size:16px;
 		color:#6B94AC;
+		margin-left: 5px;
         &.border {
             padding-bottom:10px;
             border-bottom:1px solid $verylightbrown;
@@ -317,35 +318,12 @@ table {
     font-family: $font;
     font-weight:$lightfontweight;
 	font-size:13px;
-    .links {
-	  height: 32px;
-      float: right;
-      width: 440px;
-      margin:4px 8px 0 0;
-	  border-bottom:2px solid $darkestbrown;
-	  margin-top: 16px;
-    }
 	.header-org {
 		float: left;
 		margin: 8px 0 0 0;
 		padding: 7px 10px 5px 2px;
 		font-weight: $boldfontweight;
 		font-size:16px;
-	}
-	.applications {
-		height:48px;
-		width:524px;
-		border-bottom:2px solid $darkestbrown;
-		float:left;
-		.dropdown-menu li{
-			padding: 0;
-			a {
-				padding: 5px 5px;
-			}
-		}
-		.popup-pills {
-			float:left;
-		}
 	}
     a {
       color: #fff;
@@ -355,6 +333,23 @@ table {
         text-decoration: underline;
       }
     }
+  }
+}
+
+.applications {
+	height:48px;
+	width:440px;
+	border-bottom:2px solid $darkestbrown;
+	float:left;
+	.dropdown-menu li{
+		padding: 0;
+		a {
+			padding: 5px 5px;
+		}
+	}
+	.popup-pills {
+		float:left;
+	}
 	ul.popup {
 		margin-bottom:0;
 		padding:0;
@@ -364,7 +359,7 @@ table {
 		background-color: $searchbackground;
 		border:0;
 		padding:7px 8px;
-		width:225px;
+		width:200px;
 		&:hover {
 			text-decoration: none;
 		}
@@ -374,7 +369,7 @@ table {
 		border-top: 4px solid #fff;
 	}
 	ul.dropdown-menu {
-		width:240px;
+		width:215px;
 		background-color: $mediumblue;
 		a {
 			color:#fff;
@@ -389,7 +384,6 @@ table {
 			}
 		}
 	}
-  }
 }
 
 .header-container {
@@ -522,8 +516,8 @@ section {
 }
 
 .content {
-    width: 974px;
-    padding: 10px 0px;
+    width: 960px;
+    padding: 10px;
     float:left;
 }
 
@@ -715,6 +709,13 @@ section {
     background-color:$buttonblue;
     &:hover {
         background-color:#1A87C8;
+    }
+  }
+  &.btn-pink {
+    color:#fff;
+    background-color:#FD4A8D;
+    &:hover {
+        background-color:#FD77A9;
     }
   }
   &.btn-grey {
@@ -1731,7 +1732,7 @@ section {
     background: $searchbackground;
     border: 0;
     height: 26px;
-    width: 247px;
+    width: 325px;
     color: #fff;
     padding:4px 4px 4px 0;
     &:focus {
@@ -1756,7 +1757,7 @@ section {
   }
   .search-box {
     background: $searchbackground;
-    width: 322px;
+    width: 400px;
     height: 35px;
 	margin-top:-2px;
     -moz-box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.6);
@@ -1773,33 +1774,38 @@ section {
 
 nav {
   float: left;
-  &.main-nav{
+  z-index:9980;
+  &.main-nav {
 	float:right;
+    border-bottom:2px solid $darkestbrown; 
+    width:540px;
+	z-index:9985;
   }
   .nav {
       list-style: none;
       margin: 0;
       padding: 0;
-      float: left;
+      float: right;
       width: 100%;
+	  z-index:9990;
+	  position:relative;
       li.nav-item {
-        float: left;
+        float: right;
         margin-left: 14px;
         position: relative;
-        line-height: 48px;
-		&.system{
-			margin-left:0;
-		}
+        line-height: 38px;
         > a {
           background: $verydarkbrown;
           display: block;
           padding: 5px;
           color: #fff;
-          font-size: 14px;
+          font-size: 13px;
           font-weight: $lightfontweight;
           text-decoration:none;
-          &:hover {
+          position: relative;
+		  &:hover {
             color: $mediumblue;
+			text-decoration:none;
           }
           small {
             margin-left:4px;
@@ -1807,59 +1813,53 @@ nav {
         }
   }
   ul {
-    background: rgba(255, 255, 255, 0); 
-    background: $mediumblue;
-    margin: 0 0 9px 25px;
+    margin: 0 0 9px 0px;
     list-style: none;
     position: absolute;
-    left: -9999px;
-    z-index: 9999;
     padding: 10px;
-    width: 150px;
+    width: 140px;
+    display:none;
+    background: $mediumblue;
+	z-index:9999;
     li {
       padding-top: 0px;
       float: none;
       padding: 4px;
-      line-height:20px;
+	  position: relative;
+	  text-align:left;
     }
     a {
-      white-space: nowrap;
       color: #fff;
       font-size: 14px;
       font-weight: $lightfontweight;
       text-decoration:none;
-      &:hover {
+	  height:auto;
+	  line-height:18px;
+	  display:block;
+	  &:hover {
         color:$mediumbrown;
+		text-decoration:none;
       }
     }
   }
   li {
-    &.dashboard:hover ul {
-      left: -25px;
+	&.dashboard div.pointer::before {
+		margin-left:32px;
     }
-    &.sysadmin:hover ul {
-      left: -45px;
+    &.admin div.pointer::before {
+		margin-left:25px;
     }
-    &.admin:hover ul {
-      left: -80px;
+    &.sysadmin div.pointer::before {
+		margin-left:22px;
     }
-    &.docs:hover ul {
-      left: -137px;
+    &.docs div.pointer::before {
+		margin-left:15px;
     }
-    &.dashboard:hover div.pointer::before {
-      left: 35px;
+    &:hover ul {
+      display:block;
     }
-    &.admin:hover div.pointer::before {
-      left: 28px;
-    }
-    &.sysadmin:hover div.pointer::before {
-      left: 30px;
-    }
-    &.docs:hover div.pointer::before {
-      left: 18px;
-    }
-    &:hover ul a:hover {
-      color: #555;
+	&:hover div.pointer::before {
+      display:block;
     }
   }
 
@@ -1869,12 +1869,68 @@ nav {
     border-width: 5px;
     content: " ";
     height: 0;
-    left: -9999px;
     position: absolute;
-    top: 48px;
+    top: 38px;
     width: 0;
+    z-index: 9999;
+    display:none;
   }
 }
+}
+
+.mobile-nav {
+	
+	ul.popup {
+		margin-bottom:0;
+		padding:0;
+		margin-top: 8px;
+		float: right;
+		height: 40px;
+		li.dropdown {
+			float:right;
+			margin-left:14px;
+		}
+	}
+	a.dropdown-toggle, a.dropdown-no-toggle {
+		background: $verydarkbrown;
+		display: block;
+		padding: 5px;
+		color: #fff;
+		font-size: 13px;
+		font-weight: $lightfontweight;
+		text-decoration:none;
+		position: relative;
+		border:0;
+		&:hover {
+			color: $mediumblue;
+			text-decoration:none;
+		}
+		small {
+			margin-left:4px;
+		}
+	}
+	.caret {
+		margin: 8px 0 0 5px;
+		border-top: 4px solid #fff;
+		float:none;
+	}
+	ul.dropdown-menu {
+		width:145px;
+		margin-top:8px;
+		background-color: $mediumblue;
+		a {
+			color:#fff;
+			&:hover {
+				text-decoration: none;
+			}
+		}
+		li:hover {
+			background-color: $lightblue;
+			a { 
+				color:$darkbrown;
+			}
+		}
+	}
 }
 
 .sidenav-tabs {
@@ -1934,7 +1990,7 @@ nav {
 
 .sidenav {
 	*zoom: 1;
-	padding-left: 20px;
+	padding-left: 10px;
 	&:before {
 		display: table;
 		line-height: 0;
@@ -2010,8 +2066,8 @@ nav {
 
 .help {
 	&.content{
-		padding-left: 20px;
-		/*width: 864px;*/
+		margin: 0 20px 0 20px;
+		width: 940px;
 	}
 	p {
 		float:left;
@@ -2037,11 +2093,10 @@ nav {
 	}
 	ol {
 		float:left;
-		width:100%;
 	}
 	li {
-			float:left;
-			width:100%;
+		float:left;
+		width:100%;
 		font-weight: $lightfontweight;
 			span.heading {
 				font-weight:$boldfontweight;

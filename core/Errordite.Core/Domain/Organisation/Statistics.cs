@@ -4,7 +4,8 @@ namespace Errordite.Core.Domain.Organisation
     public class Statistics
     {
         public int Issues { get; set; }
-        public int Unacknowledged { get; set; }
+		public int Unacknowledged { get; set; }
+		public int FixReady { get; set; }
         public int Ignored { get; set; }
         public int Acknowledged { get; set; }
         public int Solved { get; set; }
@@ -17,7 +18,7 @@ namespace Errordite.Core.Domain.Organisation
         {
             get
             {
-                return Unacknowledged + Ignored + Acknowledged + Solved;
+				return Unacknowledged + Ignored + Acknowledged + Solved + FixReady;
             }
         }
     }
