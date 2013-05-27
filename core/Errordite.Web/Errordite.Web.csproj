@@ -280,6 +280,8 @@
       <DependentUpon>activity.coffee</DependentUpon>
     </Content>
     <Content Include="Assets\Js\components.js" />
+    <Compile Include="Basic401Module.cs" />
+    <Compile Include="Controllers\AppHarborController.cs" />
     <Compile Include="Controllers\ApplicationsController.cs" />
     <Compile Include="Areas\System\Controllers\CacheController.cs" />
     <Compile Include="Areas\System\Controllers\OrganisationsController.cs" />
