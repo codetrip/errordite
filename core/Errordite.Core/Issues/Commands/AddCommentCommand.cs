@@ -42,7 +42,8 @@ namespace Errordite.Core.Issues.Commands
 					UserId = request.CurrentUser.Id,
 					Type = HistoryItemType.Comment,
 					Comment = request.Comment,
-					ApplicationId = issue.ApplicationId
+					ApplicationId = issue.ApplicationId,
+					SystemMessage = false
 				});
 			}
 

@@ -567,6 +567,7 @@ namespace Errordite.Web.Controllers
 					ReprocessingResult = response.AttachedIssueIds,
 					IssueId = Issue.GetId(issueId),
 					ApplicationId = response.ApplicationId,
+					SystemMessage = true
 				});
 
                 ConfirmationNotification(response.GetMessage(Errordite.Core.Domain.Error.Issue.GetId(issueId)));
