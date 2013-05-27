@@ -5,7 +5,6 @@ jQuery ->
 	if $('section#issue, section#addissue').length > 0
 		$body = $ 'body'	
 		whatifresult = null;	
-
 		class Errordite.Rule			
 
 			constructor: ($rule) ->
@@ -126,6 +125,8 @@ jQuery ->
 
 				if !$form.valid()
 					false
+					
+				Errordite.Spinner.disable();
 
 				this.whatIf (response) -> 
 					messageHolder.html (
@@ -147,6 +148,7 @@ jQuery ->
 					messageHolder.css
 						visibility: 'visible'
 
+					Errordite.Spinner.enable();
 			
 			hideRuleUpdatesPanel: () -> 
 				$('#rules-adjusted').hide()

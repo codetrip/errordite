@@ -67,7 +67,8 @@ namespace Errordite.Core.Issues.Commands
                 IssueId = issue.Id,
                 AssignedToUserId = request.AssignedUserId,
                 PreviousStatus = request.Status,
-                ApplicationId = issue.ApplicationId
+				ApplicationId = issue.ApplicationId,
+				SystemMessage = true
             });
 
             var issueHourlyCount = new IssueHourlyCount

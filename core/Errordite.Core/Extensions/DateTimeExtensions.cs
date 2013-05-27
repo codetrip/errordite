@@ -22,7 +22,7 @@ namespace Errordite.Core.Extensions
 
         public static string ToLocalFormatted(this DateTimeOffset datetimeUtc)
         {
-            return datetimeUtc.ToString("dd MMM yyyy");
+			return datetimeUtc.ToString("dd MMM yyyy");
         }
 
         public static string ToLocalTimeFormatted(this DateTime datetimeUtc)
@@ -40,7 +40,7 @@ namespace Errordite.Core.Extensions
             var timeZone = TimeZoneInfo.FindSystemTimeZoneById(timeZoneId ?? "UTC");
             var localDate = TimeZoneInfo.ConvertTimeFromUtc(datetimeUtc, timeZone);
             var utcOffset = timeZone.GetUtcOffset(datetimeUtc);
-            return new DateTimeOffset(localDate, utcOffset);
+            return new DateTimeOffset(localDate, utcOffset).ToLocalTime(); //use ToLocatTime here so its adjusted for daylight savings
         }
 
         /// <summary>
