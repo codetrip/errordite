@@ -358,7 +358,7 @@ table {
 	a.dropdown-toggle {
 		background-color: $searchbackground;
 		border:0;
-		padding:7px 8px;
+		padding:6px 7px;
 		width:200px;
 		&:hover {
 			text-decoration: none;
@@ -369,7 +369,7 @@ table {
 		border-top: 4px solid #fff;
 	}
 	ul.dropdown-menu {
-		width:215px;
+		width:213px;
 		background-color: $mediumblue;
 		a {
 			color:#fff;
@@ -598,6 +598,14 @@ section {
     text-transform:uppercase;
     font-size:11px;
     white-space: nowrap;
+	&.action-icons-wide {
+		min-width:80px;
+		width:80px;
+	}
+	&.action-icons {
+		min-width:55px;
+		width:55px;
+	}
   }
   .table-info-header {
     color:#000;
@@ -1359,7 +1367,7 @@ section {
   right: 0;
   bottom: 0;
   left: 0;
-  z-index: 1040;
+  z-index: 11000;
   background-color: #000000;
   opacity: 0.8;
   filter: alpha(opacity = 80);
@@ -1372,7 +1380,7 @@ section {
   }
   top: 50%;
   left: 50%;
-  z-index: 1050;
+  z-index: 11001;
   overflow-y: visible;
   overflow-x: visible; /*if not visible it screws up our fancy tooltips - needs both x & y I don't know why*/
   width: 560px;
@@ -1938,7 +1946,7 @@ nav {
   margin-bottom: 20px;
   margin-left: 0;
   list-style: none;
-  padding-left:5px;
+  padding-left:0px;
   min-height:350px;
   &:before {
     display: table;
@@ -1990,7 +1998,6 @@ nav {
 
 .sidenav {
 	*zoom: 1;
-	padding-left: 10px;
 	&:before {
 		display: table;
 		line-height: 0;
@@ -2499,10 +2506,10 @@ table.history {
 		padding-right:10px;
 		height:45px;
 		font-size:13px;
-		font-weight: $lightfontweight;
+		font-weight: $normalfontweight;
 		color:$lightbrown;
 		span.bold {
-			font-weight:$normalfontweight;
+			font-weight:$boldfontweight;
 			color:#000;
 		}
 	}

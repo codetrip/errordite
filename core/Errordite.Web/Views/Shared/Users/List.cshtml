@@ -16,7 +16,7 @@
             }   
             else
             {
-                <th></th>
+				<th class="action-icons"></th>
             }
         </tr>  
     </thead>
@@ -47,7 +47,7 @@
                 }
                 else
                 {
-                    <td style="width:60px">
+                    <td>
 	                    <a href="@Url.EditUser(user.Id)"><img src="@Url.Content("~/assets/images/edit.png")" alt="Edit this user" title="Edit this user" width="24" height="24" /></a>
 						@using (Html.BeginForm("delete", "users", new { userId = user.Id }, FormMethod.Post, new {style="display:inline-block"}))
                         {

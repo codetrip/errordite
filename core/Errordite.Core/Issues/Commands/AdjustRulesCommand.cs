@@ -117,7 +117,8 @@ namespace Errordite.Core.Issues.Commands
                         SpawnedIssueId = tempIssue.Id,
                         UserId = request.CurrentUser.Id,
                         IssueId = currentIssue.Id,
-                        ApplicationId = currentIssue.ApplicationId
+						ApplicationId = currentIssue.ApplicationId,
+						SystemMessage = true
                     });
 
                     Store(new IssueHistory
@@ -127,7 +128,8 @@ namespace Errordite.Core.Issues.Commands
                         SpawningIssueId = currentIssue.Id,
                         UserId = request.CurrentUser.Id,
                         IssueId = tempIssue.Id,
-                        ApplicationId = tempIssue.ApplicationId
+						ApplicationId = tempIssue.ApplicationId,
+						SystemMessage = true
                     });
                 }
                 else
@@ -138,7 +140,8 @@ namespace Errordite.Core.Issues.Commands
                         Type = HistoryItemType.RulesAdjustedNoNewIssue,
                         UserId = request.CurrentUser.Id,
                         IssueId = currentIssue.Id,
-                        ApplicationId = currentIssue.ApplicationId
+                        ApplicationId = currentIssue.ApplicationId,
+						SystemMessage = true
                     });
 
                     Delete(tempIssue);
