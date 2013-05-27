@@ -171,12 +171,14 @@
           if (!$form.valid()) {
             false;
           }
+          Errordite.Spinner.disable();
           return this.whatIf(function(response) {
             messageHolder.html((response.data.notmatched > 0 ? "<div class='notmatched'>\n" + response.data.notmatched + " of " + response.data.total + " do not match\n</div>" : "<div class='matched'>\nAll errors match\n</div>"));
             whatifresult = response.data;
-            return messageHolder.css({
+            messageHolder.css({
               visibility: 'visible'
             });
+            return Errordite.Spinner.enable();
           });
         };
 

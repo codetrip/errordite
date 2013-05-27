@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Castle.Core;
 using Errordite.Core.Caching.Entities;
+using Errordite.Core.Caching.Interceptors;
 using Errordite.Core.Domain.Master;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Encryption;
@@ -11,6 +13,7 @@ using Errordite.Core.Session;
 
 namespace Errordite.Core.Authentication.Commands
 {
+	[Interceptor(CacheInvalidationInterceptor.IoCName)]
     public class SetPasswordCommand : SessionAccessBase, ISetPasswordCommand
     {
         private readonly IEncryptor _encryptor;

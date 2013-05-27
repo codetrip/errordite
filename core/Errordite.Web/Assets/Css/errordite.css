@@ -263,7 +263,7 @@ table {
   .applications a.dropdown-toggle {
     background-color: #414650;
     border: 0;
-    padding: 7px 8px;
+    padding: 6px 7px;
     width: 200px; }
     .applications a.dropdown-toggle:hover {
       text-decoration: none; }
@@ -271,7 +271,7 @@ table {
     margin: 8px 10px 0 0;
     border-top: 4px solid #fff; }
   .applications ul.dropdown-menu {
-    width: 215px;
+    width: 213px;
     background-color: #92c7e7; }
     .applications ul.dropdown-menu a {
       color: #fff; }
@@ -457,6 +457,12 @@ section {
     text-transform: uppercase;
     font-size: 11px;
     white-space: nowrap; }
+    .table th.action-icons-wide {
+      min-width: 80px;
+      width: 80px; }
+    .table th.action-icons {
+      min-width: 55px;
+      width: 55px; }
   .table .table-info-header {
     color: #000;
     font-weight: 600;
@@ -1072,7 +1078,7 @@ section {
   right: 0;
   bottom: 0;
   left: 0;
-  z-index: 1040;
+  z-index: 11000;
   background-color: #000000;
   opacity: 0.8;
   filter: alpha(opacity=80); }
@@ -1081,7 +1087,7 @@ section {
   position: fixed;
   top: 50%;
   left: 50%;
-  z-index: 1050;
+  z-index: 11001;
   overflow-y: visible;
   overflow-x: visible;
   /*if not visible it screws up our fancy tooltips - needs both x & y I don't know why*/
@@ -1541,7 +1547,7 @@ nav {
   margin-bottom: 20px;
   margin-left: 0;
   list-style: none;
-  padding-left: 5px;
+  padding-left: 0px;
   min-height: 350px; }
   .sidenav-tabs:before {
     display: table;
@@ -1582,8 +1588,7 @@ nav {
       border-bottom-color: transparent; }
 
 .sidenav {
-  *zoom: 1;
-  padding-left: 10px; }
+  *zoom: 1; }
   .sidenav:before {
     display: table;
     line-height: 0;
@@ -1954,10 +1959,10 @@ table.history td {
   padding-right: 10px;
   height: 45px;
   font-size: 13px;
-  font-weight: 300;
+  font-weight: 400;
   color: #3d3d3d; }
   table.history td span.bold {
-    font-weight: 400;
+    font-weight: 600;
     color: #000; }
 table.history tr.comment {
   background-color: #e7f0f5; }
