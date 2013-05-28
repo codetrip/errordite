@@ -5,7 +5,6 @@ using Errordite.Core.Applications.Queries;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Issues;
-using Errordite.Core.Organisations.Queries;
 using Errordite.Core.Session;
 
 namespace Errordite.Core.Receive.Commands
@@ -17,21 +16,18 @@ namespace Errordite.Core.Receive.Commands
         private readonly IGetApplicationByTokenQuery _getApplicationByTokenQuery;
 		private readonly IAttachToNewIssueCommand _attachToNewIssueCommand;
 		private readonly IAttachToExistingIssueCommand _attachToExistingIssueCommand;
-        private readonly IGetOrganisationQuery _getOrganisationQuery;
 
         public ReceiveErrorCommand(IGetApplicationQuery getApplicationQuery, 
             IReceptionServiceIssueCache receptionServiceIssueCache, 
             IGetApplicationByTokenQuery getApplicationByTokenQuery,
 			IAttachToNewIssueCommand attachToNewIssueCommand,
-			IAttachToExistingIssueCommand attachToExistingIssueCommand, 
-            IGetOrganisationQuery getOrganisationQuery)
+			IAttachToExistingIssueCommand attachToExistingIssueCommand)
         {
             _getApplicationQuery = getApplicationQuery;
             _receptionServiceIssueCache = receptionServiceIssueCache;
             _getApplicationByTokenQuery = getApplicationByTokenQuery;
 			_attachToNewIssueCommand = attachToNewIssueCommand;
 			_attachToExistingIssueCommand = attachToExistingIssueCommand;
-            _getOrganisationQuery = getOrganisationQuery;
         }
 
         public ReceiveErrorResponse Invoke(ReceiveErrorRequest request)

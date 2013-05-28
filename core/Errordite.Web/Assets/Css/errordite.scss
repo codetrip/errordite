@@ -228,6 +228,9 @@ table {
   float:left;
 }
 
+.bluetext{
+	color:$darkblue;
+}
 /*-----------------------------------------------------------------------------------*/
 /*	LAYOUT
 /*-----------------------------------------------------------------------------------*/
@@ -390,6 +393,9 @@ table {
   width: 100%;
   background: $verydarkbrown;
   height: 60px;
+  &.tall{
+	height:90px;
+  }
   .header {
     margin: 0 auto;
     width: $minwidth;
@@ -490,12 +496,12 @@ section {
 }
 
 .four-col {
-    width:25%;
+    width:235px;
     float:left;
 }
 
 .three-col {
-    width:33%;
+    width:316px;
     float:left;
 }
 
@@ -1095,7 +1101,7 @@ section {
 
 .tooltip {
   position: absolute;
-  z-index: 1020;
+  z-index:9995;
   display: block;
   visibility: visible;
   padding: 5px;
@@ -1601,7 +1607,7 @@ section {
 	}
 	.notification-icon {
 		float:left;
-		width:30px;
+		width:25px;
 		margin: 2px 0;
 	}
 	.notification-text {
@@ -2073,8 +2079,8 @@ nav {
 
 .help {
 	&.content{
-		margin: 0 20px 0 20px;
-		width: 940px;
+		width: 960px;
+		padding: 10px 20px;
 	}
 	p {
 		float:left;
@@ -2168,6 +2174,7 @@ nav {
 	}
     div {
         background-color:$darkblue;
+		min-height: 22px;
         padding:7px 8px 8px 8px;
         a {
             color:#fff;

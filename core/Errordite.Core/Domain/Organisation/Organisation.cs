@@ -41,13 +41,11 @@ namespace Errordite.Core.Domain.Organisation
         public Subscription Subscription { get; set; }
         [ProtoMember(15)]
         public string PrimaryUserId { get; set; }
-        [ProtoMember(16)]
-		public int QuotasExceededReminders { get; set; }
-		[ProtoMember(17)]
+		[ProtoMember(16)]
 		public DateTime? SuspendedOnUtc { get; set; }
-		[ProtoMember(18)]
+		[ProtoMember(17)]
 		public string HipChatAuthToken { get; set; }
-		[ProtoMember(19)]
+		[ProtoMember(18)]
 		public CampfireDetails CampfireDetails { get; set; }
 
         [JsonIgnore]

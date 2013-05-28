@@ -14,7 +14,6 @@ using System.Linq;
 using Errordite.Core.Extensions;
 using Errordite.Core.Organisations.Queries;
 using Errordite.Core.Session;
-using Raven.Client;
 
 namespace Errordite.Core.Users.Commands
 {
@@ -57,20 +56,6 @@ namespace Errordite.Core.Users.Commands
                 return new AddUserResponse(true)
                 {
                     Status = AddUserStatus.EmailExists
-                };
-            }
-
-            RavenQueryStatistics stats;
-            var users = Session.Raven.Query<User, Indexing.Users>()
-                .Statistics(out stats)
-                .Customize(x => x.WaitForNonStaleResultsAsOfLastWrite())
-                .Take(0);
-
-            if(stats.TotalResults >= request.Organisation.PaymentPlan.MaximumUsers)
-            {
-                return new AddUserResponse(true)
-                {
-                    Status = AddUserStatus.PlanThresholdReached
                 };
             }
 

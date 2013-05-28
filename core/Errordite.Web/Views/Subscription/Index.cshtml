@@ -21,7 +21,7 @@
             <div class="sidenav-content">
                 <div class="sidenav-tab active">
                 
-                    @if (!Model.Organisation.PaymentPlan.IsTrial)
+                    @if (!Model.Organisation.PaymentPlan.IsFreeTier)
                     {
                         <h2>Subscription Info</h2>
                         <table class="table table-condensed">
@@ -78,9 +78,9 @@
                             <tr>
                                 <th>Plan</th>
                                 <th>Monthly Cost (USD)</th>
+                                <th>Issues</th>
                                 <th>Users</th>
                                 <th>Applications</th>
-                                <th>Issues</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -90,23 +90,23 @@
                                 <tr @(plan.CurrentPlan ? "class=current-plan" : "")>
                                     <td>@plan.Plan.Name</td>
                                     <td>
-                                        @(plan.Plan.IsTrial ? "-" : string.Format("${0:0}", plan.Plan.Price))
+                                        @string.Format("${0:0}", plan.Plan.Price)
                                     </td>
-                                    <td>@(plan.Plan.MaximumUsers.ToString())</td>
-                                    <td>@(plan.Plan.MaximumApplications.ToString())</td>
-                                    <td>@(plan.Plan.MaximumIssues.ToString())</td>
+                                    <td>@(plan.Plan.MaximumIssues == int.MaxValue ? "Unlimited" : plan.Plan.MaximumIssues.ToString())</td>
+                                    <td>Unlimited</td>
+                                    <td>@(plan.Plan.IsFreeTier ? "1" : "Unlimited")</td>
                                     <td>
-                                        @if(plan.Upgrade)
+                                        @if (plan.SignUp && !plan.CurrentPlan)
+                                        {
+											<a href="@Url.SubscriptionSignUp()">Sign Up</a>
+                                        }
+										else if (plan.Upgrade && !plan.CurrentPlan)
                                         {
                                             <a href="@Url.ChangeSubscription(plan.Plan.FriendlyId)">Upgrade</a>
-                                        } 
-                                        else if (plan.Downgrade)
+                                        }
+										else if (plan.Downgrade && !plan.CurrentPlan)
                                         {
                                             <a href="@Url.ChangeSubscription(plan.Plan.FriendlyId)">Downgrade</a>
-                                        }
-                                        else if (plan.SignUp)
-                                        {
-                                            <a href="@Url.SignUpNotExpired()">Sign Up</a>
                                         }
                                         @if(plan.CurrentPlan)
                                         {

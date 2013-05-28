@@ -7,18 +7,7 @@
 
 <section class="centered">
     <div class="content">
-        @if (Model.Expired)
-        {
-            <h1>Your Trial has Expired</h1>
-            <p>
-                Thank you for trying out Errordite, your free trial has now expired. In order to continue to use Errordite you need to sign up to one of our payment plans.
-            </p>
-        }
-        else
-        {
-            <h1>Sign up for Errordite</h1>
-        }
-        
+        <h1>Sign up for Errordite</h1>
         <p>
             When you sign up we will create a subscription on the credit / debit card supplied and will bill you monthly for the amount specified for your selected plan.
             Billing history will be available in your <a href="@Url.BillingHistory()" target="_blank">subscription</a> area. 

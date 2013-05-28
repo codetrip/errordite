@@ -14,7 +14,7 @@ using Errordite.Core.Extensions;
 
 namespace Errordite.Web.Controllers
 {
-	[Authorize, ValidateSubscriptionActionFilter]
+	[Authorize]
     public class SearchController : ErrorditeController
     {
 		private readonly IGetApplicationIssuesQuery _getApplicationIssuesQuery;

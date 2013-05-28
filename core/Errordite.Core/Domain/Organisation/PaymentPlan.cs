@@ -14,20 +14,16 @@ namespace Errordite.Core.Domain.Organisation
         [ProtoMember(2)]
         public string Name { get; set; }
         [ProtoMember(3)]
-        public int MaximumUsers { get; set; }
-        [ProtoMember(4)]
-        public int MaximumApplications { get; set; }
-        [ProtoMember(5)]
         public int MaximumIssues { get; set; }
-        [ProtoMember(6)]
+        [ProtoMember(4)]
         public decimal Price { get; set; }
-        [ProtoMember(7)]
+        [ProtoMember(5)]
         public int Rank { get; set; }
-        [ProtoMember(8)]
+        [ProtoMember(6)]
         public bool IsAvailable { get; set; }
-        [ProtoMember(9)]
-		public bool IsTrial { get; set; }
-		[ProtoMember(10)]
+        [ProtoMember(7)]
+		public bool IsFreeTier { get; set; }
+		[ProtoMember(8)]
 		public string SignUpUrl { get; set; }
 
 		[JsonIgnore]
@@ -41,7 +37,7 @@ namespace Errordite.Core.Domain.Organisation
 
     public static class PaymentPlanNames
     {
-        public const string Trial = "Trial";
+        public const string Free = "Free";
         public const string Small = "Small";
         public const string Medium = "Medium";
         public const string Large = "Large";

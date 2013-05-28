@@ -42,16 +42,15 @@ namespace Errordite.Tasks.Tasks
                     using (_session.SwitchOrg(organisation))
                     {
                         var stats = _getOrganisationStatisticsQuery.Invoke(new GetOrganisationStatisticsRequest()).Statistics;
-                        var plan = plans.FirstOrDefault(p => p.Id == organisation.PaymentPlanId && !p.IsTrial);
+                        var plan = plans.FirstOrDefault(p => p.Id == organisation.PaymentPlanId && !p.IsFreeTier);
 
                         if (plan != null)
                         {
                             var quotas = PlanQuotas.FromStats(stats, plan);
 
-                            if (quotas.ApplicationsExceededBy > 0 || quotas.UsersExceededBy > 0 || quotas.IssuesExceededBy > 0)
+                            if (quotas.IssuesExceededBy > 0)
                             {
                                 organisation.Status = OrganisationStatus.PlanQuotaExceeded;
-                                organisation.QuotasExceededReminders = 0;
                             }
                         }
                     }

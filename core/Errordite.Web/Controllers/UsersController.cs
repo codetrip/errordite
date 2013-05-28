@@ -19,7 +19,7 @@ using Errordite.Web.Models.Users;
 
 namespace Errordite.Web.Controllers
 {
-	[Authorize, ValidateSubscriptionActionFilter]
+	[Authorize]
     public class UsersController : ErrorditeController
     {
         private readonly IGetUserQuery _getUserQuery;
@@ -70,13 +70,6 @@ namespace Errordite.Web.Controllers
         {
             if (ViewData.Model != null)
                 return View(ViewData.Model);
-
-            var users = Core.GetUsers();
-            if (users.PagingStatus.TotalItems >= Core.AppContext.CurrentUser.ActiveOrganisation.PaymentPlan.MaximumUsers)
-            {
-                SetNotification(AddUserStatus.PlanThresholdReached, Resources.Account.ResourceManager);
-                return RedirectToAction("index", "subscription");
-            }
 
             var groups = Core.GetGroups();
 
@@ -183,7 +176,7 @@ namespace Errordite.Web.Controllers
         }
 
 		[HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.EditYourDetails)]
-        public ActionResult Profile()
+        public ActionResult MyProfile()
         {
             return EditUser(Core.AppContext.CurrentUser, true);
         }

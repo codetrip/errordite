@@ -12,7 +12,7 @@ namespace Errordite.Web.Models.Shared
 	{
 		HipChat,
 		Campfire,
-		Timezone,
+		Organisation,
 		Api,
 	}
 }

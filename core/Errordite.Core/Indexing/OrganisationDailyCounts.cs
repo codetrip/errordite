@@ -11,6 +11,7 @@ namespace Errordite.Core.Indexing
 		{
             Map = docs => 
                from dailyCount in docs
+			   where !dailyCount.Hidden
                select new
                {
                    dailyCount.ApplicationId,

@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace Errordite.Core.Domain.Error
 {
-    [ProtoContract]
+	[ProtoContract]
     public class IssueHistory
     {
         [ProtoMember(1)]
@@ -44,7 +44,7 @@ namespace Errordite.Core.Domain.Error
         [ProtoMember(15)]
         public string ExceptionMachine { get; set; }
         [ProtoMember(16)]
-        public string ApplicationId { get; set; }
+		public string ApplicationId { get; set; }
 
         public string GetMessage(IEnumerable<User> users, LocalMemoizer<string, Issue> issueMemoizer, Func<string, string> issueUrlGetter)
         {

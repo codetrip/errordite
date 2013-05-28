@@ -8,7 +8,7 @@ namespace Errordite.Core.Indexing
     public class IssueExtraDataKeys
     {
         public string IssueId { get; set; }
-        public List<string> Keys { get; set; }
+		public List<string> Keys { get; set; }
     }
 
     public class IssuesExtraDataKeys : AbstractIndexCreationTask<Error, IssueExtraDataKeys>

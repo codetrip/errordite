@@ -15,7 +15,6 @@ namespace Errordite.Core.Indexing
         public DateTime CreatedOnDate { get; set; }
 		public DateTime? CurrentPeriodEndDate { get; set; }
 		public DateTime? SuspendedOnUtc { get; set; }
-		public int QuotasExceededReminders { get; set; }
 	}
 
 	public class Organisations : AbstractIndexCreationTask<Organisation, OrganisationDocument>

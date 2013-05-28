@@ -14,25 +14,25 @@ using Errordite.Core.Session.Actions;
 namespace Errordite.Core.Organisations.Commands
 {
     [Interceptor(CacheInvalidationInterceptor.IoCName)]
-    public class SetOrganisationTimezoneCommand : SessionAccessBase, ISetOrganisationTimezoneCommand
+    public class UpdateOrganisationCommand : SessionAccessBase, IUpdateOrganisationCommand
     {
         private readonly IAuthorisationManager _authorisationManager;
         private readonly ErrorditeConfiguration _configuration;
 
-        public SetOrganisationTimezoneCommand(IAuthorisationManager authorisationManager, ErrorditeConfiguration configuration)
+        public UpdateOrganisationCommand(IAuthorisationManager authorisationManager, ErrorditeConfiguration configuration)
         {
             _authorisationManager = authorisationManager;
             _configuration = configuration;
         }
 
-        public SetOrganisationTimezoneResponse Invoke(SetOrganisationTimezoneRequest request)
+        public UpdateOrganisationResponse Invoke(UpdateOrganisationRequest request)
         {
             var organisation = Session.MasterRaven
                     .Include<Organisation>(o => o.RavenInstanceId)
                     .Load<Organisation>(request.OrganisationId);
 
             if (organisation == null)
-                return new SetOrganisationTimezoneResponse(request.OrganisationId, true);
+                return new UpdateOrganisationResponse(request.OrganisationId, null, true);
 
             organisation.RavenInstance = MasterLoad<RavenInstance>(organisation.RavenInstanceId);
 
@@ -40,37 +40,40 @@ namespace Errordite.Core.Organisations.Commands
             _authorisationManager.Authorise(organisation, request.CurrentUser);
 
             organisation.TimezoneId = request.TimezoneId;
+	        organisation.Name = request.Name;
 
             Session.AddCommitAction(new FlushOrganisationCacheCommitAction(_configuration, organisation));
 
-            return new SetOrganisationTimezoneResponse(organisation.Id);
+            return new UpdateOrganisationResponse(organisation.Id, request.CurrentUser.Email);
         }
     }
 
-    public interface ISetOrganisationTimezoneCommand : ICommand<SetOrganisationTimezoneRequest, SetOrganisationTimezoneResponse>
+    public interface IUpdateOrganisationCommand : ICommand<UpdateOrganisationRequest, UpdateOrganisationResponse>
     { }
 
-    public class SetOrganisationTimezoneRequest
+    public class UpdateOrganisationRequest
     {
         public string OrganisationId { get; set; }
         public User CurrentUser { get; set; }
-        public string TimezoneId { get; set; }
+		public string TimezoneId { get; set; }
+		public string Name { get; set; }
     }
 
-    public class SetOrganisationTimezoneResponse : CacheInvalidationResponseBase
+    public class UpdateOrganisationResponse : CacheInvalidationResponseBase
     {
-        private readonly string _organisationId;
+		private readonly string _organisationId;
+		private readonly string _email;
 
-        public SetOrganisationTimezoneResponse(string organisationId, bool ignoreCache = false)
+        public UpdateOrganisationResponse(string organisationId, string email, bool ignoreCache = false)
             : base(ignoreCache)
         {
             _organisationId = organisationId;
+	        _email = email;
         }
 
         protected override IEnumerable<CacheInvalidationItem> GetCacheInvalidationItems()
         {
-            return CacheInvalidation.GetOrganisationInvalidationItems(_organisationId);
+			return CacheInvalidation.GetOrganisationInvalidationItems(_organisationId, _email);
         }
     }
-
 }

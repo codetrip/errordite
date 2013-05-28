@@ -173,7 +173,6 @@
     <Compile Include="..\Errordite.Build\Assembly\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="ActionFilters\ValidateSubscriptionActionFilter.cs" />
     <Compile Include="ActionFilters\SelectApplicationOrOrganisationActionFilter.cs" />
     <Compile Include="ActionFilters\StoreQueryInCookie.cs" />
     <Compile Include="ActionFilters\ViewDataActionFilter.cs" />
@@ -830,7 +829,7 @@
     <Content Include="Views\Subscription\Index.cshtml" />
     <Content Include="Views\EmailTest\List.cshtml" />
     <Content Include="Views\EmailTest\Index.cshtml" />
-    <Content Include="Views\Account\Timezone.cshtml" />
+    <Content Include="Views\Account\Organisation.cshtml" />
     <Content Include="Views\Shared\Docs\DotNetClient.cshtml" />
     <Content Include="Views\Shared\Users\List.cshtml" />
     <Content Include="Areas\System\Views\Organisations\Users.cshtml" />
@@ -971,6 +970,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\MobileNav.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Account\Campfire.cshtml" />
+    <Content Include="Views\Account\HipChat.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\QuotasNotification.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

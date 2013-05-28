@@ -11,7 +11,7 @@ namespace Errordite.Core.Indexing
         public string UserId { get; set; }
         public string IssueId { get; set; }
         public string ApplicationId { get; set; }
-        public DateTime DateAddedUtc { get; set; }
+		public DateTime DateAddedUtc { get; set; }
     }
 
     public class History : AbstractIndexCreationTask<IssueHistory, HistoryDocument>

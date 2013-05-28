@@ -236,14 +236,9 @@ namespace Errordite.Web.Extensions
             return helper.Action("complete", "subscription", new { Area = string.Empty, subscriptionId, reference });
         }
 
-        public static string SignUpExpired(this UrlHelper helper)
+        public static string SubscriptionSignUp(this UrlHelper helper)
         {
-            return helper.Action("signup", "subscription", new { Area = string.Empty, expired = true });
-        }
-
-        public static string SignUpNotExpired(this UrlHelper helper)
-        {
-            return helper.Action("signup", "subscription", new { Area = string.Empty, expired = false });
+            return helper.Action("signup", "subscription", new { Area = string.Empty });
         }
 
 		public static string ChangeSubscription(this UrlHelper helper, string planId)
@@ -282,7 +277,7 @@ namespace Errordite.Web.Extensions
 
         public static string Profile(this UrlHelper helper)
         {
-            return helper.Action("profile", "users", new { Area = string.Empty });
+            return helper.Action("myprofile", "users", new { Area = string.Empty });
         }
 
         public static string EditUser(this UrlHelper helper, string userId)
@@ -313,9 +308,9 @@ namespace Errordite.Web.Extensions
 
         #region Admin
 
-        public static string Timezone(this UrlHelper helper)
+		public static string Organisation(this UrlHelper helper)
         {
-            return helper.Action("timezone", "account", new { Area = string.Empty });
+			return helper.Action("organisation", "account", new { Area = string.Empty });
         }
 
 		public static string HipChat(this UrlHelper helper)

@@ -200,9 +200,9 @@
     <Compile Include="Caching\Resources\CacheEngines.cs" />
     <Compile Include="ComponentBase.cs" />
     <Compile Include="Configuration\ServiceConfiguration.cs" />
+    <Compile Include="Domain\Error\IssueHourlyCount.cs" />
     <Compile Include="Domain\Master\RavenInstance.cs" />
     <Compile Include="Domain\Master\UserOrganisationMapping.cs" />
-    <Compile Include="Domain\Error\IssueComment.cs" />
     <Compile Include="Domain\Error\IssueDailyCount.cs" />
     <Compile Include="Domain\IdHelper.cs" />
     <Compile Include="Domain\Organisation\Invoice.cs" />
