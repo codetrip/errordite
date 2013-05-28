@@ -7,29 +7,30 @@ using Errordite.Web.Models.Navigation;
 
 namespace Errordite.Web.Controllers
 {
-	[Authorize, ValidateSubscriptionActionFilter]
+	[Authorize]
     public class AccountController : ErrorditeController
     {
-        private readonly ISetOrganisationTimezoneCommand _setOrganisationTimezoneCommand;
+        private readonly IUpdateOrganisationCommand _updateOrganisationCommand;
 		private readonly ISetOrganisationHipChatSettingsCommand _setOrganisationHipChatSettingsCommand;
 		private readonly ISetOrganisationCampfireSettingsCommand _setOrganisationCampfireSettingsCommand;
 
-        public AccountController(ISetOrganisationTimezoneCommand setOrganisationTimezoneCommand, 
+        public AccountController(IUpdateOrganisationCommand updateOrganisationCommand, 
 			ISetOrganisationHipChatSettingsCommand setOrganisationHipChatSettingsCommand, 
 			ISetOrganisationCampfireSettingsCommand setOrganisationCampfireSettingsCommand)
         {
-	        _setOrganisationTimezoneCommand = setOrganisationTimezoneCommand;
+	        _updateOrganisationCommand = updateOrganisationCommand;
 	        _setOrganisationHipChatSettingsCommand = setOrganisationHipChatSettingsCommand;
 	        _setOrganisationCampfireSettingsCommand = setOrganisationCampfireSettingsCommand;
         }
 
 		[HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.Settings)]
-        public ActionResult Timezone()
+        public ActionResult Organisation()
         {
             return View(new OrganisationSettingsViewModel
             {
                 TimezoneId = Core.AppContext.CurrentUser.ActiveOrganisation.TimezoneId,
-                ApiKey = Core.AppContext.CurrentUser.ActiveOrganisation.ApiKey
+                ApiKey = Core.AppContext.CurrentUser.ActiveOrganisation.ApiKey,
+				OrganisationName = Core.AppContext.CurrentUser.ActiveOrganisation.Name
             });
         }
 
@@ -100,18 +101,19 @@ namespace Errordite.Web.Controllers
 		}
 
         [HttpPost, ExportViewData]
-        public ActionResult SetTimezone(string timezoneId)
+		public ActionResult UpdateOrganisation(string timezoneId, string organisationName)
         {
-            _setOrganisationTimezoneCommand.Invoke(new SetOrganisationTimezoneRequest
+            _updateOrganisationCommand.Invoke(new UpdateOrganisationRequest
             {
                 CurrentUser = AppContext.CurrentUser,
                 OrganisationId = AppContext.CurrentUser.OrganisationId,
-                TimezoneId = timezoneId
+                TimezoneId = timezoneId,
+				Name = organisationName
             });
 
             ConfirmationNotification(Resources.Admin.OrganisationSettingsUpdated);
 
-            return RedirectToAction("timezone");
+            return RedirectToAction("organisation");
         }
     }
 }

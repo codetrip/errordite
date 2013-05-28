@@ -9,7 +9,7 @@
 			Exception Type
 		</div>
 		<div class="item-info full" style="margin-bottom:5px;">
-			<a href="@Url.Issue(Model.Error.IssueId)" data-title="@Model.Error.ExceptionInfos.First().Type" @(Model.Error.ExceptionInfos.First().Type.Length > 60 ? "class=tool-tip" : "")>@(@Model.Error.ExceptionInfos.First().Type.Length > 60 ?@Model.Error.ExceptionInfos.First().Type.Substring(0, 60) + "..." : @Model.Error.ExceptionInfos.First().Type)</a>
+			<a href="@Url.Issue(Model.Error.IssueId)" data-title="@Model.Error.ExceptionInfos.First().Type" @(Model.Error.ExceptionInfos.First().Type.Length > 55 ? "class=tool-tip" : "")>@(@Model.Error.ExceptionInfos.First().Type.Length > 55 ?@Model.Error.ExceptionInfos.First().Type.Substring(0, 55) + "..." : @Model.Error.ExceptionInfos.First().Type)</a>
 		</div>
 		<div class="item-info heading">
 			Application

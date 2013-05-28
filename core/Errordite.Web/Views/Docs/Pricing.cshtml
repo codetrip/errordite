@@ -14,10 +14,17 @@
 <section class="centered">
     <div class="content help">
         <h1>Pricing</h1>
-        <p>
-            Errordite is a subscription-based service, with payments made monthly. The first @ViewData.GetConfiguration().TrialLengthInDays days is a free trial, after which you may select
-            from one of 3 different plans - details below.
-        </p>
+	    <p>
+		    When you sign up to Errordite you get a free, limited usage account, 
+		    if you like what you see and you need more than the free usage account provides, 
+		    you have the option to upgrade to one of our paid subscriptions. With a paid 
+			subscription we will take your credit card details and bill you monthly based on your selected plan, 
+			you can upgrade or downgrade between plans at any time.
+	    </p>
+	    <p>
+		    * An issue is a group of errors, defined by a set of rules. Each time a new error is received by Errordite
+			which does ot match an existing issues rules we will create a new issue. You can delete an issue at any time if it is no longer relevant to you.
+	    </p>
     
         @foreach (var paymentPlan in Model)
         {

@@ -1,10 +1,12 @@
-﻿@using Errordite.Core.Identity
+﻿@using Errordite.Core.Domain.Organisation
+@using Errordite.Core.Identity
 @using Errordite.Web
 @using Errordite.Web.Extensions
 @using System.Linq
 @using Errordite.Core.Extensions
 @{
    var appContext = ViewData.GetAppContext();
+   var activeOrganisation = appContext.CurrentUser.ActiveOrganisation;
 }
 
 <div class="welcome-bar-container">
@@ -78,7 +80,7 @@
 	    @(appContext.IsMobileDevice ? Html.Partial("MobileNav") : Html.Partial("DesktopNav"))
     </div>
 </div>
-<div class="header-container">
+<div class="header-container @(activeOrganisation != null && activeOrganisation.Status == OrganisationStatus.PlanQuotaExceeded ? "tall" : "")">
     <div class="header">
         <div class="logo">
             <a href="@Url.Home(ViewData.GetAppContext())"><img alt="Errordite: Home" src="@Url.Content("~/Assets/Images/header-logo.png")"/></a>
@@ -93,10 +95,10 @@
 			    </div>
 		    }
 	    </div>
-		@if (appContext.AuthenticationStatus == AuthenticationStatus.Anonymous && Request.Url.AbsolutePath != Url.Home())
+		@if (appContext.AuthenticationStatus == AuthenticationStatus.Anonymous && Request.Url != null && !Request.Url.AbsolutePath.IsIn(Url.Home(), Url.SignUp()))
 		{
 			<div class="pull-right" style="margin-top:17px">
-				<a href="@Url.SignUp()" class="btn btn-pink btn-small">Sign Up</a>
+				<a href="@Url.SignUp()" class="btn btn-pink btn-small">Sign Up For Free</a>
 			</div>
 		}
         

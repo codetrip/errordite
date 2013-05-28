@@ -29,7 +29,7 @@
 							<div class="form">
 								<ul>
 									<li class="buttons">
-										<input class="btn btn-medium btn-blue" data-confirm="Are you sure you want to cancel your trial, this action can only be undone by contacting support for assistance?" type="submit" value="Cancel Trial" />
+										<input class="btn btn-medium btn-blue" data-confirm="Are you sure you want to cancel your trial, this action can only be undone by contacting support for assistance?" type="submit" value="Cancel" />
 									</li>
 								</ul>
 							</div>
@@ -49,7 +49,6 @@
 							<div class="form">
 								<ul>
 									<li>
-										@Html.LabelFor(m => m.CancellationReason, "Reason")
 										@Html.TextAreaFor(m => m.CancellationReason, new {style="width:400px; height:80px"})
 									</li>
 									<li class="buttons">

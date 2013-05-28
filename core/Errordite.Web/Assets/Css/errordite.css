@@ -157,6 +157,9 @@ table {
   background-color: transparent;
   float: left; }
 
+.bluetext {
+  color: #95c0df; }
+
 /*-----------------------------------------------------------------------------------*/
 /*	LAYOUT
 /*-----------------------------------------------------------------------------------*/
@@ -286,6 +289,8 @@ table {
   width: 100%;
   background: #292c31;
   height: 60px; }
+  .header-container.tall {
+    height: 90px; }
   .header-container .header {
     margin: 0 auto;
     width: 980px; }
@@ -368,11 +373,11 @@ section {
   width: 980px; }
 
 .four-col {
-  width: 25%;
+  width: 235px;
   float: left; }
 
 .three-col {
-  width: 33%;
+  width: 316px;
   float: left; }
 
 .two-col {
@@ -865,7 +870,7 @@ section {
 
 .tooltip {
   position: absolute;
-  z-index: 1020;
+  z-index: 9995;
   display: block;
   visibility: visible;
   padding: 5px;
@@ -1271,7 +1276,7 @@ section {
     margin-top: 4px; }
   .notification-container .notification-icon {
     float: left;
-    width: 30px;
+    width: 25px;
     margin: 2px 0; }
   .notification-container .notification-text {
     float: left;
@@ -1643,8 +1648,8 @@ nav {
   font-weight: 300; }
 
 .help.content {
-  margin: 0 20px 0 20px;
-  width: 940px; }
+  width: 960px;
+  padding: 10px 20px; }
 .help p {
   float: left;
   margin: 0 0 10px 0;
@@ -1719,6 +1724,7 @@ nav {
     padding: 4spx 0; }
   .payment-plan div {
     background-color: #95c0df;
+    min-height: 22px;
     padding: 7px 8px 8px 8px; }
     .payment-plan div a {
       color: #fff;

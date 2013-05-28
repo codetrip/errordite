@@ -6,7 +6,7 @@ using Raven.Imports.Newtonsoft.Json;
 
 namespace Errordite.Core.Domain.Error
 {
-    [ProtoContract]
+	[ProtoContract]
     public class Error
     {
         [ProtoMember(1)]
@@ -34,8 +34,7 @@ namespace Errordite.Core.Domain.Error
         [ProtoMember(12)]
         public string Version { get; set; }
         [ProtoMember(12)]
-        public Dictionary<string, string> ContextData { get; set; }
-
+		public Dictionary<string, string> ContextData { get; set; }
 
         [JsonIgnore]
         public string FriendlyId { get { return Id == null ? string.Empty : Id.Split('/')[1]; } }

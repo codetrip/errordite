@@ -62,13 +62,13 @@ namespace Errordite.Core.Organisations.Commands
             //if we are downgrading check the organisations stats to make sure they can
             if (request.Downgrading)
             {
-                var plan = plans.FirstOrDefault(p => p.Id == organisation.PaymentPlanId && !p.IsTrial);
+				var plan = plans.FirstOrDefault(p => p.Id == PaymentPlan.GetId(request.NewPlanId));
 
                 if (plan != null)
                 {
                     var quotas = PlanQuotas.FromStats(stats, plan);
 
-                    if (quotas.ApplicationsExceededBy > 0 || quotas.UsersExceededBy > 0 || quotas.IssuesExceededBy > 0)
+                    if (quotas.IssuesExceededBy > 0)
                     {
                         return new ChangeSubscriptionResponse(ignoreCache: true)
                         {
@@ -92,12 +92,21 @@ namespace Errordite.Core.Organisations.Commands
 
             var newPlan = plans.First(p => p.Id == PaymentPlan.GetId(request.NewPlanId));
 
-			subscription = connection.EditSubscriptionProduct(organisation.Subscription.ChargifyId.Value, request.NewPlanName.ToLowerInvariant());
+			if (newPlan.IsFreeTier)
+			{
+				connection.DeleteSubscription(organisation.Subscription.ChargifyId.Value, "Downgrade");
+				organisation.Subscription.ChargifyId = null;
+				organisation.Subscription.Status = SubscriptionStatus.Trial;
+			}
+			else
+			{
+				subscription = connection.EditSubscriptionProduct(organisation.Subscription.ChargifyId.Value, request.NewPlanName.ToLowerInvariant());
+				organisation.Subscription.ChargifyId = subscription.SubscriptionID;
+				organisation.Subscription.Status = SubscriptionStatus.Active;
+			}
 
-            organisation.PaymentPlanId = PaymentPlan.GetId(request.NewPlanId);
-	        organisation.PaymentPlan = newPlan;
-            organisation.Subscription.ChargifyId = subscription.SubscriptionID;
-            organisation.Subscription.Status = SubscriptionStatus.Active;
+			organisation.PaymentPlanId = PaymentPlan.GetId(request.NewPlanId);
+			organisation.PaymentPlan = newPlan;
 			organisation.Subscription.LastModified = DateTime.UtcNow.ToDateTimeOffset(organisation.TimezoneId);
 
             //if status is quotas exceeded, check again and update if necessary
@@ -105,10 +114,9 @@ namespace Errordite.Core.Organisations.Commands
             {
                 var quotas = PlanQuotas.FromStats(stats, newPlan);
 
-                if (quotas.ApplicationsExceededBy <= 0 && quotas.UsersExceededBy <= 0 && quotas.IssuesExceededBy <= 0)
+                if (quotas.IssuesExceededBy <= 0)
                 {
                     organisation.Status = OrganisationStatus.Active;
-                    organisation.QuotasExceededReminders = 0;
                 }
             }
 

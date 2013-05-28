@@ -16,7 +16,7 @@ namespace Errordite.Core.Indexing
         public string ApplicationId { get; set; }
         public string IssueId { get; set; }
         public string Id { get; set; }
-        public int FriendlyId { get; set; }
+		public int FriendlyId { get; set; }
     }
 
     public class Errors : AbstractIndexCreationTask<Error, ErrorDocument>

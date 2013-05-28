@@ -8,8 +8,13 @@
 
 <section class="centered">
     <div class="content">
-	    <h1>Sign Up In Seconds...</h1>
-	    <h3>* No credit card required, @ViewData.GetConfiguration().TrialLengthInDays day free trial</h3>
+	    <h1>Sign up for a free account in seconds...</h1>
+	    <h3 class="bluetext">* No credit card required</h3>
+	    <h3>
+		    When you sign up to Errordite you get a free, limited usage account, 
+		    if you like what you see and you need more than the free usage account provides, 
+			you have the option to upgrade to one of our paid subscriptions.
+	    </h3>
 		@using (Html.BeginForm("signup", "authentication", FormMethod.Post, new { id = "signupForm" }))
 		{
 			<div class="form double">

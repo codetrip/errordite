@@ -77,11 +77,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tasks\DeleteSuspendedOrganisationsTask.cs" />
-    <Compile Include="Tasks\NotifyOrganisationsWithExceededQuotasTask.cs" />
     <Compile Include="Tasks\IdentifyOrganisationsWithExceededQuotasTask.cs" />
     <Compile Include="Tasks\SuspendCancelledOrganisationsTask.cs" />
     <Compile Include="Tasks\ITask.cs" />
-    <Compile Include="Tasks\TrialExpirationEmailSenderTask.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

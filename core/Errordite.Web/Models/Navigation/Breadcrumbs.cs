@@ -112,7 +112,7 @@ namespace Errordite.Web.Models.Navigation
                         new Breadcrumb(BreadcrumbId.AddGroup, string.Empty, "Add Group"),
                         new Breadcrumb(BreadcrumbId.EditGroup, string.Empty, "Edit Group")
                     }),
-                    new Breadcrumb(BreadcrumbId.Settings, urlHelper.Campfire(), "Settings"),
+                    new Breadcrumb(BreadcrumbId.Settings, urlHelper.Organisation(), "Settings"),
                 }),
                 new Breadcrumb(BreadcrumbId.SysAdmin, urlHelper.SystemAdmin(), "System Admin", new []
                 {

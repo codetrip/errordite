@@ -31,7 +31,7 @@ using Resources;
 
 namespace Errordite.Web.Controllers
 {
-	[Authorize, ValidateSubscriptionActionFilter]
+	[Authorize]
     public class IssueController : ErrorditeController
 	{
 		private static readonly IEnumerable<SelectListItem> _frequencyHours = new []

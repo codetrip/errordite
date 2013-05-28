@@ -51,24 +51,19 @@ namespace Errordite.Web.Controllers
                 Plans = plans.Select(p => new ChangePaymentPlanViewModel
                 {
                     CurrentPlan = p.Id == currentPlan.Id,
-                    Upgrade = p.Rank > currentPlan.Rank && !currentPlan.IsTrial,
-                    Downgrade = p.Rank < currentPlan.Rank && !p.IsTrial,
-                    SignUp = currentPlan.IsTrial && !p.IsTrial,
+                    Upgrade = p.Rank > currentPlan.Rank,
+                    Downgrade = p.Rank < currentPlan.Rank,
+                    SignUp = currentPlan.IsFreeTier,
                     Plan = p
                 }).ToList(),
                 Organisation = Core.AppContext.CurrentUser.ActiveOrganisation
             };
 
-            if (!model.Organisation.PaymentPlan.IsTrial)
-            {
-                model.Plans.Remove(model.Plans.First(p => p.Plan.IsTrial));
-            }
-
             return View(model);
         }
 
 		[HttpGet, Authorize, ExportViewData, GenerateBreadcrumbs(BreadcrumbId.SubscriptionSignUp)]
-        public ActionResult SignUp(bool expired = false)
+        public ActionResult SignUp()
         {
 			if (!Core.Configuration.SubscriptionsEnabled)
 			{
@@ -76,16 +71,16 @@ namespace Errordite.Web.Controllers
 				return RedirectToAction("index");
 			}
 
-            var paymentPlans = _getAvailablePaymentPlansQuery.Invoke(new GetAvailablePaymentPlansRequest()).Plans.Where(p => !p.IsTrial);
+            var paymentPlans = _getAvailablePaymentPlansQuery.Invoke(new GetAvailablePaymentPlansRequest()).Plans.Where(p => !p.IsFreeTier);
 		    var model = new SubscriptionSignUpViewModel
 		    {
 		        Plans = paymentPlans.Select(p => new PaymentPlanViewModel
 		        {
 		            Plan = p,
 		            Status = PaymentPlanStatus.SubscriptionSignUp,
-		            SignUpUrl = "{0}{1}".FormatWith(p.SignUpUrl, GetSignUpToken(p.FriendlyId))
+					SignUpUrl = "{0}{1}".FormatWith(p.SignUpUrl, GetSignUpToken(p.FriendlyId)),
+					ViewFreeTier = false
 		        }),
-		        Expired = expired
 		    };
             return View(model);
         }
@@ -186,14 +181,8 @@ namespace Errordite.Web.Controllers
             if (response.Status == ChangeSubscriptionStatus.QuotasExceeded)
             {
                 var message = new StringBuilder();
-                if (response.Quotas.ApplicationsExceededBy > 0)
-                    message.Append(" Applications by {0}".FormatWith(response.Quotas.ApplicationsExceededBy));
-
-                if (response.Quotas.UsersExceededBy > 0)
-                    message.Append(" Users by {0}".FormatWith(response.Quotas.UsersExceededBy));
-
                 if (response.Quotas.IssuesExceededBy > 0)
-                    message.Append(" Issues by {0}".FormatWith(response.Quotas.IssuesExceededBy));
+                    message.Append(" Issues exceeded by {0}".FormatWith(response.Quotas.IssuesExceededBy));
 
                 ConfirmationNotification("Cannot downgrade subscription you have exceeded your plan limits.{0}".FormatWith(message.ToString()));
                 return RedirectToAction("index");

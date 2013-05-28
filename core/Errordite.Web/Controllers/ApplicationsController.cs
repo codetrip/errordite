@@ -23,7 +23,7 @@ using Application = Errordite.Core.Domain.Organisation.Application;
 
 namespace Errordite.Web.Controllers
 {
-	[Authorize, RoleAuthorize(UserRole.Administrator), ValidateSubscriptionActionFilter]
+	[Authorize, RoleAuthorize(UserRole.Administrator)]
     public class ApplicationsController : ErrorditeController
     {
         private readonly IAddApplicationCommand _addApplicationCommand;
@@ -90,15 +90,7 @@ namespace Errordite.Web.Controllers
         [HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.AddApplication)]
         public ActionResult Add(bool? newOrganisation)
         {
-            var applications = Core.GetApplications();
             var groups = Core.GetGroups();
-
-            if (applications.PagingStatus.TotalItems >= Core.AppContext.CurrentUser.ActiveOrganisation.PaymentPlan.MaximumApplications)
-            {
-                SetNotification(AddApplicationStatus.PlanThresholdReached, Resources.Application.ResourceManager);
-                return RedirectToAction("index", "subscription");
-            }
-
             var viewModel = ViewData.Model == null ? new AddApplicationViewModel{Active = true} : (AddApplicationViewModel)ViewData.Model;
 
             viewModel.ErrorConfigurations = _matchRuleFactoryFactory

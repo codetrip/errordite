@@ -10,7 +10,6 @@ using System.Linq;
 using Errordite.Core.Organisations;
 using Errordite.Core.Session;
 using Errordite.Core.Extensions;
-using Raven.Client;
 
 namespace Errordite.Core.Applications.Commands
 {
@@ -38,13 +37,8 @@ namespace Errordite.Core.Applications.Commands
                 };
             }
 
-            RavenQueryStatistics stats;
-            var applications = Session.Raven.Query<Application, Indexing.Applications>()
-                .Statistics(out stats)
-                .Customize(x => x.WaitForNonStaleResultsAsOfLastWrite())
-                .Take(0);
-
-            if (stats.TotalResults >= request.CurrentUser.ActiveOrganisation.PaymentPlan.MaximumApplications)
+			//only allow single application for free tier
+            if (request.CurrentUser.ActiveOrganisation.PaymentPlan.IsFreeTier && !request.IsSignUp)
             {
                 return new AddApplicationResponse(true)
                 {
@@ -111,11 +105,11 @@ namespace Errordite.Core.Applications.Commands
         public string Name { get; set; }
         public string UserId { get; set; }
         public int? HipChatRoomId { get; set; }
-        public string WebHookUri { get; set; }
         public bool IsActive { get; set; }
         public string Version { get; set; }
 		public List<string> NotificationGroups { get; set; }
 		public int? CampfireRoomId { get; set; }
+		public bool IsSignUp { get; set; }
     }
 
     public enum AddApplicationStatus

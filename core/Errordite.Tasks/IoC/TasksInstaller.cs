@@ -12,11 +12,6 @@ namespace Errordite.Tasks.IoC
         {
             base.Install(container, store);
 
-	        container.Register(Component.For<ITask>()
-		        .ImplementedBy<TrialExpirationEmailSenderTask>()
-		        .Named("trialexpirations")
-				.LifestyleTransient());
-
 			container.Register(Component.For<ITask>()
 				.ImplementedBy<DeleteSuspendedOrganisationsTask>()
 				.Named("deletesuspendedorganisations")
@@ -25,11 +20,6 @@ namespace Errordite.Tasks.IoC
 			container.Register(Component.For<ITask>()
 				.ImplementedBy<SuspendCancelledOrganisationsTask>()
 				.Named("suspendcancelledorganisations")
-				.LifestyleTransient());
-
-			container.Register(Component.For<ITask>()
-				.ImplementedBy<NotifyOrganisationsWithExceededQuotasTask>()
-				.Named("notifyexceededquotas")
 				.LifestyleTransient());
 
 			container.Register(Component.For<ITask>()

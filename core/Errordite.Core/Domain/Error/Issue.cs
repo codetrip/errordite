@@ -11,7 +11,7 @@ using ProtoBuf;
 
 namespace Errordite.Core.Domain.Error
 {
-    public class IssueBase : IOrganisationEntity
+	public class IssueBase : IOrganisationEntity
     {
         [ProtoMember(1)]
         public string Id { get; set; }
@@ -75,7 +75,7 @@ namespace Errordite.Core.Domain.Error
         [ProtoMember(16)]
         public DateTimeOffset LastErrorUtc { get; set; }
         [ProtoMember(17)]
-        public DateTimeOffset? LastNotified { get; set; }
+		public DateTimeOffset? LastNotified { get; set; }
 
         [JsonIgnore]
         public string FriendlyId { get { return Id == null ? string.Empty : Id.Split('/')[1]; } }

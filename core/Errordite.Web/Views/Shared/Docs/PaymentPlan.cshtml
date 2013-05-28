@@ -1,35 +1,59 @@
-﻿@using Errordite.Web.Extensions
+﻿@using Errordite.Core.Identity
+@using Errordite.Web.Extensions
 @using Errordite.Web.Models.Subscription
 @model PaymentPlanViewModel
            
-<div class="three-col">
-    <div class="payment-plan">
-        <h2>@Model.Plan.Name<span>$@Model.Plan.Price.ToString("0") / Month</span></h2>
-        <ul>
-	        <li>
-		        <h4>Issues<span>@Model.Plan.MaximumIssues</span></h4>
-	        </li>
-	        <li>
-		        <h4>Users<span>@Model.Plan.MaximumUsers</span></h4>
-	        </li>
-	        <li>
-		        <h4>Applications<span>@Model.Plan.MaximumApplications</span></h4>
-	        </li>
-	        <li>
-		        <h4>Data Retention<span>Indefinite</span></h4>
-	        </li>
-        </ul>
-		@if (Model.Status == PaymentPlanStatus.SubscriptionSignUp)
+<div class="@(Model.ViewFreeTier ? "four-col" : "three-col")">
+	<div class="payment-plan">
+		@if (Model.Plan.IsFreeTier)
 		{
-			<div>
-				<a href="@Model.SignUpUrl">Sign up to the '@Model.Plan.Name' Plan ›</a>
-			</div>
+			<h2>Free Plan<span>$0.00 / Month</span></h2>
 		}
-		else if (Model.Status == PaymentPlanStatus.FirstSignUp)
+		else
 		{
-			<div>
-				<a href="@Url.SignUp()">Sign Up Now ›</a>
-			</div>
+			<h2>@Model.Plan.Name<span>$@Model.Plan.Price.ToString("0") / Month</span></h2>
 		}
-    </div>
+		
+		<ul>
+			<li>
+				<h4>Issues<span>@(Model.Plan.MaximumIssues == int.MaxValue ? "Unlimited" : Model.Plan.MaximumIssues.ToString())</span></h4>
+			</li>
+			<li>
+				<h4>Applications<span>@(Model.Plan.IsFreeTier ? "1" : "Unlimited")</span></h4>
+			</li>
+			<li>
+				<h4>Users<span>Unlimited</span></h4>
+			</li>
+		</ul>
+
+		@if (!Model.Plan.IsFreeTier)
+		{
+			if (Model.Status == PaymentPlanStatus.SubscriptionSignUp)
+			{
+				<div>
+					<a href="@Model.SignUpUrl">Sign up to the '@Model.Plan.Name' Plan ›</a>
+				</div>
+			}
+			else if (Model.Status == PaymentPlanStatus.FirstSignUp)
+			{
+				<div>
+					<a href="@Url.SignUp()">Sign Up Now ›</a>
+				</div>
+			}
+		}
+		else
+		{
+			if (ViewData.GetAppContext().AuthenticationStatus == AuthenticationStatus.Anonymous)
+			{
+				<div>
+					<a href="@Url.SignUp()">Sign Up Now ›</a>
+				</div>
+			}
+			else
+			{
+				<div></div>
+			}
+		}
+		
+	</div>
 </div>

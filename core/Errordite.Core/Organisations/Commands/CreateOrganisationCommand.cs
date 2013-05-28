@@ -55,7 +55,7 @@ namespace Errordite.Core.Organisations.Commands
                 };
             }
 
-            var freeTrialPlan = _getAvailablePaymentPlansQuery.Invoke(new GetAvailablePaymentPlansRequest()).Plans.First(p => p.IsTrial && p.IsAvailable);
+            var freeTrialPlan = _getAvailablePaymentPlansQuery.Invoke(new GetAvailablePaymentPlansRequest()).Plans.First(p => p.IsFreeTier && p.IsAvailable);
 	        var timezone = request.TimezoneId ?? "UTC";
 	        var date = DateTime.UtcNow.ToDateTimeOffset(timezone);
 
@@ -145,6 +145,7 @@ namespace Errordite.Core.Organisations.Commands
                 Name = request.OrganisationName,
                 NotificationGroups = new List<string> { group.Id },
                 UserId = user.Id,
+				IsSignUp = true,
             });
 
             //TODO: sync indexes

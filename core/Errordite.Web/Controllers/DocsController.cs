@@ -20,12 +20,13 @@ namespace Errordite.Web.Controllers
         public ActionResult Pricing()
         {
             var paymentPlans =
-                _getAvailablePaymentPlansQuery.Invoke(new GetAvailablePaymentPlansRequest()).Plans.Where(p => !p.IsTrial);
+                _getAvailablePaymentPlansQuery.Invoke(new GetAvailablePaymentPlansRequest()).Plans;
             
             return View(paymentPlans.Select(p => new PaymentPlanViewModel
 	        {
 		        Plan = p,
-				Status = PaymentPlanStatus.FirstSignUp
+				Status = PaymentPlanStatus.FirstSignUp,
+				ViewFreeTier = true
 	        }));
         }
 

@@ -56,7 +56,7 @@ namespace Errordite.Core.Issues.Queries
             if (request.Status != null && request.Status.Length > 0)
             {
                 query = query.Where(i => i.Status.In(request.Status));
-            }
+			}
 
             var issues = query
                 .Skip((request.Paging.PageNumber - 1)*request.Paging.PageSize)

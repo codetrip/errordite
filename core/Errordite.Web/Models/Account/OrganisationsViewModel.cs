@@ -20,6 +20,8 @@ namespace Errordite.Web.Models.Account
 		public string HipChatAuthToken { get; set; }
 		public string CampfireToken { get; set; }
 		public string CampfireCompany { get; set; }
+		[Required(ErrorMessage = "Please enter a name for your organisation")]
+		public string OrganisationName { get; set; }
 	}
 
 	public class CampfireSettingsViewModel

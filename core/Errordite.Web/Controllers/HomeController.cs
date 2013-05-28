@@ -20,7 +20,6 @@ using Errordite.Web.ActionFilters;
 using Errordite.Web.Models.Home;
 using Errordite.Core.Extensions;
 using Errordite.Web.Extensions;
-using Raven.Client;
 using Raven.Client.Indexes;
 
 namespace Errordite.Web.Controllers
@@ -30,9 +29,6 @@ namespace Errordite.Web.Controllers
 		private readonly ErrorditeConfiguration _configuration;
 		private readonly IAppSession _session;
 		private readonly IShardedRavenDocumentStoreFactory _storeFactory;
-		private int _errorCount = 0;
-		private int _errorIgnoredCount = 0;
-		private int _errorDeletedCount = 0;
 
         public HomeController(ErrorditeConfiguration configuration, 
 			IShardedRavenDocumentStoreFactory storeFactory, 
@@ -43,108 +39,31 @@ namespace Errordite.Web.Controllers
 	        _session = session;
         }
 
-		[HttpGet, ImportViewData]
-		public ActionResult Errors()
+		public ActionResult FreeTier()
 		{
-			Server.ScriptTimeout = 7200; //timeout in 2 hours
-			_errorCount = 0;
-			_errorIgnoredCount = 0;
-			_errorDeletedCount = 0;
-			var session = ObjectFactory.GetObject<IAppSession>();
+			var plans = _session.MasterRaven.Query<PaymentPlan>();
 
-			var ravenInstances = session.MasterRaven.Query<RavenInstance>().ToList();
-
-			foreach (var organisation in session.MasterRaven.Query<Organisation, Organisations>())
+			foreach (var plan in plans)
 			{
-				organisation.RavenInstance = ravenInstances.First(r => r.Id == organisation.RavenInstanceId);
-
-				using (_session.SwitchOrg(organisation))
+				if (plan.Price == 0m)
 				{
-					RavenQueryStatistics stats;
+					plan.IsFreeTier = true;
+					plan.Name = PaymentPlanNames.Free;
+					plan.MaximumIssues = 15;
+				}
+				else
+				{
+					plan.IsFreeTier = false;
+				}
 
-					foreach (var error in _session.Raven.Query<ErrorDocument, Errors>().Statistics(out stats)
-						.Skip(0)
-						.Take(25)
-						.As<Error>()
-                        .OrderBy(e => e.FriendlyId)
-						.ToList())
-					{
-						if (_session.Raven.Load<Issue>(error.IssueId) == null)
-						{
-							_errorDeletedCount++;
-							_session.Raven.Delete(error);
-						}
-						else
-						{
-							ProcessError(error);
-						}
-					}
-
-					_session.Commit();
-                    _session.Close();
-                    new SynchroniseIndexCommitAction<Errors>().Execute(_session);
-					Trace("Committed page 1, processed {0}, ignored {1}, deleted {2}", _errorCount, _errorIgnoredCount, _errorDeletedCount);
-
-					if (stats.TotalResults > 25)
-					{
-						int pageNumber = stats.TotalResults / 25;
-
-						for (int i = 1; i < pageNumber; i++)
-						{
-							foreach (var error in _session.Raven.Query<ErrorDocument, Errors>()
-								.Skip(i * 25)
-                                .Take(25)
-                                .OrderBy(e => e.FriendlyId)
-								.As<Error>())
-							{
-								if (_session.Raven.Load<Issue>(error.IssueId) == null)
-								{
-									_errorDeletedCount++;
-									_session.Raven.Delete(error);
-								}
-								else
-								{
-									ProcessError(error);
-								}
-							}
-
-							_session.Commit();
-							_session.Close();
-                            new SynchroniseIndexCommitAction<Errors>().Execute(_session);
-							Trace("Committed page {0}, processed {1}, ignored {2}, deleted {3}", i, _errorCount, _errorIgnoredCount, _errorDeletedCount);
-						}
-					}
+				if (plan.Name == PaymentPlanNames.Large)
+				{
+					plan.MaximumIssues = int.MaxValue;
+					plan.Price = 249.00m;
 				}
 			}
 
-			session.Commit();
-			return Content("Done");
-		}
-
-		private void ProcessError(Error error)
-		{
-			if (error.ExceptionInfos == null || 
-				error.ExceptionInfos.Length == 0 || 
-				error.ContextData != null || 
-				(error.ContextData != null && error.ContextData.Count > 0) ||
-				error.ExceptionInfos[0].ExtraData == null)
-			{
-				_errorIgnoredCount++;
-				return;
-			}
-
-			_errorCount++;
-			error.ContextData = new Dictionary<string, string>();
-
-			var exceptionData = error.ExceptionInfos[0].ExtraData.Where(s => s.Key.StartsWith("Exception"));
-			var contextData = error.ExceptionInfos[0].ExtraData.Where(s => !s.Key.StartsWith("Exception"));
-
-			foreach (var dataItem in contextData)
-			{
-				error.ContextData.Add(dataItem.Key, dataItem.Value);
-			}
-
-			error.ExceptionInfos[0].ExtraData = exceptionData.ToDictionary(s => s.Key, s => s.Value);
+			return Content("OK");
 		}
 
 		[HttpGet, ExportViewData]
