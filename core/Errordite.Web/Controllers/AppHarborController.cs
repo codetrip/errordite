@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
@@ -10,6 +11,8 @@ using Errordite.Core.Domain;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Organisations.Commands;
 using Errordite.Web.ActionResults;
+using Errordite.Core.Extensions;
+using Raven.Abstractions.Extensions;
 
 namespace Errordite.Web.Controllers
 {
@@ -60,7 +63,7 @@ namespace Errordite.Web.Controllers
 
             //create organisation & application with AppHarbor user
             var application = Core.Session.Raven.Load<Application>(org.ApplicationId);
-            return new PlainJsonNetResult(new{id = IdHelper.GetFriendlyId(org.OrganisationId), config = new {ERRORDITE_TOKEN = application.Token}});
+            return new PlainJsonNetResult(new{id = IdHelper.GetFriendlyId(org.OrganisationId), config = new {ERRORDITE_TOKEN = application.Token, ERRORDITE_URL = "https://www.errordite.com/receiveerror"}});
         }
 
         [HttpDelete, ActionName("Resources")]
@@ -107,5 +110,47 @@ namespace Errordite.Web.Controllers
             return credentials;
         }
 
+        public ActionResult Sso(string id, string timestamp, string token)
+        {
+            AuthenticateToken(id, token, timestamp);
+
+            var navData = Request.QueryString["nav-data"];
+            var cookie = new HttpCookie("appharbor-nav-data", navData);
+
+            Response.SetCookie(cookie);
+
+            return Content("id");
+        }
+
+        private void AuthenticateToken(string id, string token, string timeStamp)
+        {
+            var validToken = string.Join(":", id.ToString(), "3a31b4e7de2e95d545050da8b522571f", timeStamp);
+            var hash = ToHash<SHA1Managed>(validToken);
+            if (token != hash)
+            {
+                throw new HttpException(403, "Authentication failed");
+            }
+
+            var validTime = (DateTime.UtcNow.AddMinutes(-5) - new DateTime(1970, 1, 1)).TotalSeconds;
+            if (Convert.ToInt32(timeStamp) < validTime)
+            {
+                throw new HttpException(403, "Timestamp too old");
+            }
+        }
+
+        private static string ToHash<T>(string value) where T : HashAlgorithm, new()
+        {
+            using (HashAlgorithm hashAlgorithm = new T())
+            {
+                var valueBytes = Encoding.UTF8.GetBytes(value);
+
+                var hashBytes = hashAlgorithm.ComputeHash(valueBytes);
+
+                return BitConverter
+                    .ToString(hashBytes)
+                    .ToLower()
+                    .Replace("-", "");
+            }
+        }
     }
 }
