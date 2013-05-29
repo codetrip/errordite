@@ -381,6 +381,11 @@ namespace Errordite.Web.Extensions
             return helper.Action("index", "monitoring", new { Area = WebConstants.AreaNames.System });
         }
 
+		public static string StopPolling(this UrlHelper helper)
+		{
+			return helper.Action("stoppolling", "system", new { Area = WebConstants.AreaNames.System });
+		}
+
         public static string Impersonate(this UrlHelper helper, string userId = null, string organisationId = null)
         {
             return helper.Action("index", "impersonation", new { userId, organisationId, Area = WebConstants.AreaNames.System });

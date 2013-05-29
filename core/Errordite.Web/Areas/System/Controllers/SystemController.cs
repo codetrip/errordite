@@ -1,5 +1,7 @@
 ﻿using System;
 using System.ComponentModel.Composition.Hosting;
+using System.Net.Http;
+using System.Text;
 using System.Web.Mvc;
 using Errordite.Core.Domain.Master;
 using Errordite.Core.Encryption;
@@ -36,6 +38,47 @@ namespace Errordite.Web.Areas.System.Controllers
         {
             return View();
         }
+
+		[HttpGet]
+		public ActionResult StopPolling()
+		{
+			var result = new StringBuilder();
+
+			foreach(var instance in _session.MasterRaven.Query<RavenInstance>())
+			{
+				using (var eventsClient = new HttpClient
+				{
+					BaseAddress = new Uri("{0}:802/api/".FormatWith(instance.ServicesBaseUrl))
+				})
+				{
+					var task = eventsClient.PostAsync("stoppolling", new StringContent(""));
+					task.Wait(5000);
+					result.Append(task.Result.StatusCode + "<br />");
+				}
+
+				using (var notificationsClient = new HttpClient
+				{
+					BaseAddress = new Uri("{0}:801/api/".FormatWith(instance.ServicesBaseUrl))
+				})
+				{
+					var task = notificationsClient.PostAsync("stoppolling", new StringContent(""));
+					task.Wait(5000);
+					result.Append(task.Result.StatusCode + "<br />");
+				}
+
+				using (var receiveClient = new HttpClient
+				{
+					BaseAddress = new Uri("{0}:800/api/".FormatWith(instance.ServicesBaseUrl))
+				})
+				{
+					var task = receiveClient.PostAsync("stoppolling", new StringContent(""));
+					task.Wait(5000);
+					result.Append(task.Result.StatusCode + "<br />");
+				}
+			}
+
+			return Content(result.ToString());
+		}
 
         [HttpGet, ExportViewData]
         public ActionResult SyncIndexes()

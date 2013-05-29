@@ -1,11 +1,12 @@
-﻿@using Errordite.Core.Domain.Organisation
+﻿@using Errordite.Core.Configuration
+@using Errordite.Core.Domain.Organisation
 @using Errordite.Web.Extensions   
 
 @{
 	var activeOrganisation = ViewData.GetAppContext().CurrentUser.ActiveOrganisation;
 }
 
-@if (activeOrganisation != null && activeOrganisation.Status == OrganisationStatus.PlanQuotaExceeded)
+@if (activeOrganisation != null && activeOrganisation.Status == OrganisationStatus.PlanQuotaExceeded && ErrorditeConfiguration.Current.SubscriptionsEnabled)
 {
 	<div id="notifications" class="error-container">
 		<section class="centered"> 

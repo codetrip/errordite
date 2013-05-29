@@ -1,9 +1,12 @@
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using Errordite.Core.Caching;
 using Errordite.Core.Caching.Entities;
 using Errordite.Core.Caching.Interfaces;
 using Errordite.Core.Caching.Invalidation;
+using Errordite.Core.Domain.Error;
+using Errordite.Core.Issues;
 using Errordite.Core.Web;
 
 namespace Errordite.Services.Controllers
@@ -12,12 +15,21 @@ namespace Errordite.Services.Controllers
     {
         private readonly ICacheConfiguration _cacheConfiguration;
         private readonly ICacheEngine _cacheEngine;
+	    private readonly IReceptionServiceIssueCache _issueCache;
 
-        public CacheController(ICacheEngine cacheEngine, ICacheConfiguration cacheConfiguration)
+        public CacheController(ICacheEngine cacheEngine, 
+			ICacheConfiguration cacheConfiguration,
+			IReceptionServiceIssueCache issueCache)
         {
             _cacheEngine = cacheEngine;
             _cacheConfiguration = cacheConfiguration;
+	        _issueCache = issueCache;
         }
+
+		public IEnumerable<IssueBase> Get(string orgId, string appId)
+		{
+			return _issueCache.GetIssues(appId, orgId);
+		}
 
         public HttpResponseMessage Delete(string orgId)
         {

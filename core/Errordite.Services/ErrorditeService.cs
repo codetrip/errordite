@@ -25,7 +25,8 @@ namespace Errordite.Services
     public interface IErrorditeService
     {
         void Start(string ravenInstanceId);
-        void Stop();
+		void Stop();
+		void StopPolling();
         void Configure();
         void AddOrganisation(Organisation organisation);
         void RemoveOrganisation(string organisationId);
@@ -144,6 +145,18 @@ namespace Errordite.Services
             Trace("Stopped SQS Queue Processors");
         }
 
+		public void StopPolling()
+		{
+			Trace("Stopping Polling SQS Queue Processors");
+
+			foreach (var processor in _queueProcessors)
+			{
+				processor.StopPolling();
+			}
+
+			Trace("Stopped Polling SQS Queue Processors");
+		}
+
         public void Configure()
         {
             XmlConfigurator.ConfigureAndWatch(new FileInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"config\log4net.config")));
@@ -157,11 +170,16 @@ namespace Errordite.Services
             config.Formatters.XmlFormatter.SupportedMediaTypes.Clear();
             config.Formatters.JsonFormatter.SerializerSettings = WebApiSettings.JsonSerializerSettings;
 
+			config.Routes.MapHttpRoute(
+				name: "stoppolling",
+				routeTemplate: "api/{controller}"
+			);
+
             config.Routes.MapHttpRoute(
                 name: "api",
                 routeTemplate: "api/{orgid}/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
-            );
+			);
 
             var server = new HttpSelfHostServer(config);
             server.OpenAsync().Wait();

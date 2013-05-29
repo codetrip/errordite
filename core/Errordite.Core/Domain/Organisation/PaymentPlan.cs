@@ -19,12 +19,13 @@ namespace Errordite.Core.Domain.Organisation
         public decimal Price { get; set; }
         [ProtoMember(5)]
         public int Rank { get; set; }
-        [ProtoMember(6)]
-        public bool IsAvailable { get; set; }
-        [ProtoMember(7)]
-		public bool IsFreeTier { get; set; }
-		[ProtoMember(8)]
+		[ProtoMember(6)]
 		public string SignUpUrl { get; set; }
+		[JsonIgnore]
+	    public bool IsFreeTier
+	    {
+			get { return Price == 0; }
+	    }
 
 		[JsonIgnore]
 		public string FriendlyId { get { return Id == null ? string.Empty : Id.Split('/')[1]; } }

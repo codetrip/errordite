@@ -47,13 +47,8 @@ namespace Errordite.Web.Controllers
 			{
 				if (plan.Price == 0m)
 				{
-					plan.IsFreeTier = true;
 					plan.Name = PaymentPlanNames.Free;
 					plan.MaximumIssues = 15;
-				}
-				else
-				{
-					plan.IsFreeTier = false;
 				}
 
 				if (plan.Name == PaymentPlanNames.Large)

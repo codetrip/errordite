@@ -19,10 +19,9 @@
         <p>
             If you do not sign up to a plan within 30 days of your trial expiring your organisation and all associated data may be deleted from our systems.
         </p>
-        <p>
-            If you have any questions regarding our pricing or billing please <a href="@Url.Contact()">contact Us</a>.
+        <p style="margin-bottom:25px;">
+            If you have any questions regarding our pricing or your needs are not met by one of our plans please <a href="@Url.Contact()">contact us</a>.
         </p>
-        <div class="clear" style="height:20px;"></div>
 
         @foreach (var paymentPlan in Model.Plans)
         {
@@ -31,8 +30,9 @@
 		
         <div class="clear"></div>
 
-        <p>
-            If you needs are not met by what is here, please <a href="@Url.Contact()">contact us</a>.
-        </p>
+	    <p style="margin-top:15px;">
+		    * An issue is a group of errors, defined by a set of rules. Each time a new error is received by Errordite
+			which does not match an existing issues rules we will create a new issue. You can delete an issue at any time if it is no longer relevant to you.
+	    </p>
     </div>
 </section>

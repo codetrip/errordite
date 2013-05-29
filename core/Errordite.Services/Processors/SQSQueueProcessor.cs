@@ -64,10 +64,16 @@ namespace Errordite.Services.Processors
         {
             Trace("Stopping SQS Queue Processor for organisation:={0}", OrganisationFriendlyId ?? string.Empty);
             _serviceRunning = false;
-            _worker.Join(TimeSpan.FromSeconds(5));
             _worker.Abort();
             Trace("Stopped SQS Queue Processor");
         }
+
+		public void StopPolling()
+		{
+			Trace("Stopping Polling SQS Queue Processor for organisation:={0}", OrganisationFriendlyId ?? string.Empty);
+			_serviceRunning = false;
+			Trace("Stopped Polling SQS Queue Processor");
+		}
 
         public void PollNow()
         {
@@ -159,6 +165,10 @@ namespace Errordite.Services.Processors
 						catch (Exception e)
 						{
 							var de = new ErrorditeDeleteSQSMessageException("Failed to delete message with receipt handle:={0}".FormatWith(envelope.ReceiptHandle), true, e);
+
+							if (e is ThreadAbortException)
+								continue;
+
 							Error(de);
 							ErrorditeClient.ReportException(de);
 						}
@@ -166,6 +176,9 @@ namespace Errordite.Services.Processors
 	            }
 	            catch (Exception e)
 	            {
+		            if (e is ThreadAbortException)
+			            continue;
+
 					Error(e);
 					ErrorditeClient.ReportException(e);
 	            }

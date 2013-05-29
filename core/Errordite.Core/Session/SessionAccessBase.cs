@@ -1,6 +1,5 @@
 using System;
 using System.Linq.Expressions;
-using Errordite.Core;
 using Errordite.Core.Paging;
 using Raven.Client.Indexes;
 using Raven.Client.Linq;

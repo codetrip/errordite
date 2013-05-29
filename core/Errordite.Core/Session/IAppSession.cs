@@ -2,7 +2,6 @@
 using System.Net.Http;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Messaging;
-using Errordite.Core.Redis;
 using Errordite.Core.Session.Actions;
 using Raven.Client;
 using Raven.Client.Connection;
