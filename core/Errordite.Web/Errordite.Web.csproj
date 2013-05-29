@@ -269,8 +269,10 @@
       <DependentUpon>errordite.scss</DependentUpon>
     </Content>
     <Content Include="Assets\Css\img\nav-background.png" />
+    <Content Include="Assets\Images\application.png" />
     <Content Include="Assets\Images\edit.png" />
     <Content Include="Assets\Images\error.png" />
+    <Content Include="Assets\Images\person.png" />
     <Content Include="Assets\Images\trash.png" />
     <Content Include="Assets\Js\activity.js">
       <DependentUpon>activity.coffee</DependentUpon>
@@ -968,9 +970,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\QuotasNotification.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Areas\System\Views\Shared\Organisations\StatsModal.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

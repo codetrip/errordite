@@ -66,18 +66,20 @@ namespace Errordite.Web.Areas.System.Controllers
 
             return View(new OrganisationsViewModel
             {
-                Organisations = organisations,
+                Organisations = organisations.Items.Select(o =>
+                {
+                    using (SwitchOrgScope(o.Id))
+                    {
+                        var stats = _getOrganisationStatisticsQuery.Invoke(new GetOrganisationStatisticsRequest()).Statistics;
+                        return new OrganisationViewModel
+                        {
+                            Organisation = o,
+                            Stats = stats
+                        };
+                    }
+                }),
                 Paging = _pagingViewModelGenerator.Generate(PagingConstants.DefaultPagingId, organisations.PagingStatus, pagingRequest)
             });
-        }
-
-        [HttpGet]
-        public ActionResult Stats(string organisationId)
-        {
-            using (SwitchOrgScope(Organisation.GetId(organisationId)))
-            {
-                return new JsonSuccessResult(_getOrganisationStatisticsQuery.Invoke(new GetOrganisationStatisticsRequest()).Statistics, true);
-            }
         }
 
         [HttpPost, ExportViewData]

@@ -7,9 +7,9 @@ namespace Errordite.Core.Caching
     {
         public static class Organisations
         {
-            public static string Key()
+            public static string Key(int? pageNumber = null, int? pageSize = null)
             {
-                return "organisations";
+                return "organisations{0}{1}".FormatWith(pageNumber.HasValue ? pageNumber.Value.ToString() : string.Empty, pageSize.HasValue ? pageSize.Value.ToString() : string.Empty);
             }
 
             public static string Key(string organisationId)
