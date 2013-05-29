@@ -51,9 +51,9 @@
     <Reference Include="Castle.Windsor">
       <HintPath>..\packages\Castle.Windsor.3.1.0\lib\net40\Castle.Windsor.dll</HintPath>
     </Reference>
-    <Reference Include="Errordite.Client, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Errordite.Client, Version=1.3.0.0, Culture=neutral, PublicKeyToken=0c2d28c225f773ee, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Errordite.Client.1.3.36.0\lib\net40\Errordite.Client.dll</HintPath>
+      <HintPath>..\packages\Errordite.Client.1.3.41.0\lib\net40\Errordite.Client.dll</HintPath>
     </Reference>
     <Reference Include="HipChat.Net, Version=1.2.0.0, Culture=neutral, PublicKeyToken=85d27803db462816, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -136,6 +136,7 @@
     <Compile Include="Consumers\ReceiveErrorConsumer.cs" />
     <Compile Include="Consumers\SyncIssueCountsConsumer.cs" />
     <Compile Include="Controllers\CacheController.cs" />
+    <Compile Include="Controllers\StopPollingController.cs" />
     <Compile Include="Controllers\OrganisationController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\IssueController.cs" />

@@ -23,6 +23,7 @@ namespace Errordite.Core.Issues.Queries
         public GetAllApplicationIssuesResponse Invoke(GetAllApplicationIssuesRequest request)
         {
             Trace("Starting...");
+			Trace("Retrieving issues for organisation:={0}, application:={1}...", Session.OrganisationDatabaseName, request.ApplicationId);
 
             RavenQueryStatistics stats;
 
@@ -42,7 +43,7 @@ namespace Errordite.Core.Issues.Queries
             
             while(stats.TotalResults > issues.Count)
             {
-                issues.AddRange(Session.Raven.Query<IssueDocument, Indexing.Issues>().Statistics(out stats)
+				issues.AddRange(Session.Raven.Query<IssueDocument, Indexing.Issues>().Statistics(out stats)
                     .Where(issue => issue.ApplicationId == Application.GetId(request.ApplicationId))
                     .Skip(issues.Count)
                     .Take(_configuration.MaxPageSize)
@@ -76,6 +77,6 @@ namespace Errordite.Core.Issues.Queries
 
     public class GetAllApplicationIssuesRequest
     {
-        public string ApplicationId { get; set; }
+		public string ApplicationId { get; set; }
     }
 }

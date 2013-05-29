@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Errordite.Core;
 using Errordite.Core.Caching;
 using Errordite.Core.Configuration;
 using Errordite.Core.Domain.Error;
@@ -12,7 +11,7 @@ namespace Errordite.Core.Issues
 {
     public interface IReceptionServiceIssueCache
     {
-        IEnumerable<IssueBase> GetIssues(string applicationId, string organisationId);
+		IEnumerable<IssueBase> GetIssues(string applicationId, string organisationId);
         void Add(IssueBase issue);
         void Update(IssueBase issue);
         void Delete(string issueId, string applicationId, string organisationId);
@@ -116,7 +115,7 @@ namespace Errordite.Core.Issues
 
         private class ListHolder<T>
         {
-            public List<T> List { get; set; }
+			public List<T> List { get; set; }
             public object SyncLock { get { return _syncLock; } }
             private readonly object _syncLock = new object();
         }
@@ -147,14 +146,13 @@ namespace Errordite.Core.Issues
 
                 lock (_cacheSyncLock)
                 {
-                    issues =
-                        new ListHolder<IssueBase>()
-                            {
-                                List = _getIssues.Invoke(new GetAllApplicationIssuesRequest
-                                    {
-                                        ApplicationId = applicationId
-                                    }).Issues ?? new List<IssueBase>()
-                            };
+                    issues = new ListHolder<IssueBase>()
+                    {
+                        List = _getIssues.Invoke(new GetAllApplicationIssuesRequest
+                        {
+                            ApplicationId = applicationId
+                        }).Issues ?? new List<IssueBase>()
+                    };
 
                     orgCache.Add(applicationId, issues, DateTimeOffset.UtcNow.AddMinutes(_configuration.IssueCacheTimeoutMinutes));
 

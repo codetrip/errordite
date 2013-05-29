@@ -5,18 +5,11 @@
            
 <div class="@(Model.ViewFreeTier ? "four-col" : "three-col")">
 	<div class="payment-plan">
-		@if (Model.Plan.IsFreeTier)
-		{
-			<h2>Free Plan<span>$0.00 / Month</span></h2>
-		}
-		else
-		{
-			<h2>@Model.Plan.Name<span>$@Model.Plan.Price.ToString("0") / Month</span></h2>
-		}
+		<h2>@Model.Plan.Name<span>$@Model.Plan.Price.ToString("0") / Month</span></h2>
 		
 		<ul>
 			<li>
-				<h4>Issues<span>@(Model.Plan.MaximumIssues == int.MaxValue ? "Unlimited" : Model.Plan.MaximumIssues.ToString())</span></h4>
+				<h4>Issues *<span>@(Model.Plan.MaximumIssues == int.MaxValue ? "Unlimited" : Model.Plan.MaximumIssues.ToString())</span></h4>
 			</li>
 			<li>
 				<h4>Applications<span>@(Model.Plan.IsFreeTier ? "1" : "Unlimited")</span></h4>
