@@ -179,7 +179,7 @@ namespace Errordite.Core.Organisations.Commands
 
         protected override IEnumerable<CacheInvalidationItem> GetCacheInvalidationItems()
         {
-            yield return new CacheInvalidationItem(CacheProfiles.Organisations, CacheKeys.Organisations.Key());
+            yield return new CacheInvalidationItem(CacheProfiles.Organisations, CacheKeys.Organisations.Key(), true);
 
             if(_email != null)
                 yield return new CacheInvalidationItem(CacheProfiles.Organisations, CacheKeys.Organisations.Email(_email));

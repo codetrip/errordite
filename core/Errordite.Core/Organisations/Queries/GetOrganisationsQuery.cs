@@ -53,7 +53,7 @@ namespace Errordite.Core.Organisations.Queries
 
         protected override string GetCacheKey()
         {
-            return CacheKeys.Organisations.Key();
+            return CacheKeys.Organisations.Key(Paging.PageNumber, Paging.PageSize);
         }
 
         protected override CacheProfiles GetCacheProfile()

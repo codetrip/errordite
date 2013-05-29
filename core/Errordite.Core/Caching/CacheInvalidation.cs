@@ -42,7 +42,7 @@ namespace Errordite.Core.Caching
                 yield return new CacheInvalidationItem(CacheProfiles.Organisations, CacheKeys.Organisations.Email(email));
             }
 
-            yield return new CacheInvalidationItem(CacheProfiles.Organisations, CacheKeys.Organisations.Key());
+            yield return new CacheInvalidationItem(CacheProfiles.Organisations, CacheKeys.Organisations.Key(), true);
             yield return new CacheInvalidationItem(CacheProfiles.Organisations, CacheKeys.Organisations.Key(organisationId));
             foreach (var item in GetUserInvalidationItems(organisationId)
                 .Union(GetApplicationInvalidationItems(organisationId))

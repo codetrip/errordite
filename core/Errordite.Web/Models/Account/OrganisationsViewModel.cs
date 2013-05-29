@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Paging;
 using Errordite.Web.Models.Users;
 
@@ -6,8 +8,14 @@ namespace Errordite.Web.Models.Account
 {
     public class OrganisationsViewModel
     {
-        public Page<Core.Domain.Organisation.Organisation> Organisations { get; set; }
+        public IEnumerable<OrganisationViewModel> Organisations { get; set; }
         public PagingViewModel Paging { get; set; }
+    }
+
+    public class OrganisationViewModel
+    {
+        public Organisation Organisation { get; set; }
+        public Statistics Stats { get; set; }
     }
 
     public class OrganisationUsersViewModel : UsersViewModel
