@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel.Composition.Hosting;
 using System.Web.Mvc;
-using Errordite.Core.Domain;
 using Errordite.Core.Domain.Master;
 using Errordite.Core.Encryption;
 using Errordite.Core.Extensions;
@@ -13,7 +12,6 @@ using Errordite.Core.Session;
 using Errordite.Web.ActionFilters;
 using Errordite.Web.Models.Navigation;
 using Raven.Client.Indexes;
-using Raven.Client;
 
 namespace Errordite.Web.Areas.System.Controllers
 {

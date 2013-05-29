@@ -9,7 +9,6 @@ using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Matching;
 using Errordite.Core.Organisations.Commands;
 using Errordite.Core.Organisations.Queries;
-using Errordite.Core.Session;
 using Errordite.Core.Users.Queries;
 using Errordite.Web.ActionFilters;
 using Errordite.Web.ActionResults;
@@ -32,6 +31,7 @@ namespace Errordite.Web.Areas.System.Controllers
         private readonly IMatchRuleFactoryFactory _matchRuleFactoryFactory;
         private readonly IGetApplicationsQuery _getApplicationsQuery;
         private readonly IDeleteOrganisationCommand _deleteOrganisationCommand;
+        private readonly IGetOrganisationStatisticsQuery _getOrganisationStatisticsQuery;
 
         public OrganisationsController(IPagingViewModelGenerator pagingViewModelGenerator, 
             IGetOrganisationsQuery getOrganisationsQuery, 
@@ -40,7 +40,8 @@ namespace Errordite.Web.Areas.System.Controllers
             IActivateOrganisationCommand activateOrganisationCommand, 
             IMatchRuleFactoryFactory matchRuleFactoryFactory, 
             IGetApplicationsQuery getApplicationsQuery, 
-            IDeleteOrganisationCommand deleteOrganisationCommand, IGetOrganisationQuery getOrganisationQuery, IAppSession appSession)
+            IDeleteOrganisationCommand deleteOrganisationCommand,
+            IGetOrganisationStatisticsQuery getOrganisationStatisticsQuery)
         {
             _pagingViewModelGenerator = pagingViewModelGenerator;
             _getOrganisationsQuery = getOrganisationsQuery;
@@ -50,6 +51,7 @@ namespace Errordite.Web.Areas.System.Controllers
             _matchRuleFactoryFactory = matchRuleFactoryFactory;
             _getApplicationsQuery = getApplicationsQuery;
             _deleteOrganisationCommand = deleteOrganisationCommand;
+            _getOrganisationStatisticsQuery = getOrganisationStatisticsQuery;
         }
 
         [HttpGet, ImportViewData, PagingView, ExportViewData, GenerateBreadcrumbs(BreadcrumbId.AdminOrganisations)]
@@ -67,6 +69,15 @@ namespace Errordite.Web.Areas.System.Controllers
                 Organisations = organisations,
                 Paging = _pagingViewModelGenerator.Generate(PagingConstants.DefaultPagingId, organisations.PagingStatus, pagingRequest)
             });
+        }
+
+        [HttpGet]
+        public ActionResult Stats(string organisationId)
+        {
+            using (SwitchOrgScope(Organisation.GetId(organisationId)))
+            {
+                return new JsonSuccessResult(_getOrganisationStatisticsQuery.Invoke(new GetOrganisationStatisticsRequest()).Statistics, true);
+            }
         }
 
         [HttpPost, ExportViewData]
