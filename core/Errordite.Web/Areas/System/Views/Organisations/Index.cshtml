@@ -38,7 +38,7 @@
                     {
                         <tr>  
                             <td>@organisation.FriendlyId</td>
-                            <td>@organisation.Name</td>
+                            <td><a href="#" class="stats" data-orgid="@organisation.FriendlyId">@organisation.Name</a></td>
                             <td>@organisation.PaymentPlanId.GetFriendlyId()</td>
                             <td>@organisation.Status</td>
                             <td>@organisation.TimezoneId</td>
@@ -47,7 +47,7 @@
                             <td><a href="@Url.OrganisationApplications(organisation.FriendlyId)">Applications</a></td>
                             @if(organisation.Status == OrganisationStatus.Active)
                             {
-                                <td><a href="#" class="btn btn-small btn-blue suspend" data-val="@organisation.Id">Suspend</a></td>
+                                <td><a href="#" class="btn btn-mini btn-blue btn-minianchor suspend" data-val="@organisation.Id">Suspend</a></td>
                             }
                             else
                             {
@@ -55,7 +55,7 @@
                                     @using (Html.BeginForm("activateorganisation", "organisations", FormMethod.Post, new { name = "activateForm" }))
                                     {
                                         @Html.Hidden("OrganisationId", organisation.Id)
-                                        <input type="submit" class="btn btn-small btn-blue activate" value="Activate" />
+                                        <input type="submit" class="btn btn-mini btn-blue activate" value="Activate" />
                                     }
                                 </td>
                             }
@@ -63,7 +63,7 @@
                                 @using (Html.BeginForm("deleteorganisation", "organisations", FormMethod.Post, new { name = "deleteForm" }))
                                 {
                                     @Html.Hidden("OrganisationId", organisation.Id)
-                                    <input type="submit" class="btn btn-small btn-blue delete" value="Delete" />
+                                    <input type="submit" class="btn btn-mini btn-blue delete" value="Delete" />
                                 }
                             </td>
                         </tr>
@@ -78,6 +78,7 @@
                 </tfoot>
             </table>
             @Html.Partial("Organisations/SuspendModal", new SuspendOrganisationViewModel())
+            @Html.Partial("Organisations/StatsModal")
         }
         else
         {

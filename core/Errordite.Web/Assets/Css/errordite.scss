@@ -718,6 +718,16 @@ section {
     font-weight: $normalfontweight;
 	margin-bottom: -1px;
   }
+  &.btn-mini {
+    padding:6px 14px;
+    font-size: 13px;
+	line-height:13px;
+    font-weight: $normalfontweight;
+	margin-bottom: -1px;
+  }
+  &.btn-minianchor {
+    padding:4px 12px;
+  }
   &.btn-blue {
     color:#fff;
     background-color:$buttonblue;

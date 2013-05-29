@@ -476,9 +476,6 @@
     <Content Include="Assets\Js\monitoring.js">
       <DependentUpon>monitoring.coffee</DependentUpon>
     </Content>
-    <Content Include="Assets\Js\organisations.js">
-      <DependentUpon>organisations.coffee</DependentUpon>
-    </Content>
     <Content Include="Assets\Js\rules.js">
       <DependentUpon>rules.coffee</DependentUpon>
     </Content>
@@ -807,12 +804,6 @@
       <Bare>False</Bare>
       <Iced>False</Iced>
     </Content>
-    <Content Include="Assets\Js\organisations.coffee">
-      <Compile>True</Compile>
-      <Minify>False</Minify>
-      <Bare>False</Bare>
-      <Iced>False</Iced>
-    </Content>
     <Content Include="Assets\Js\global.coffee">
       <Compile>True</Compile>
       <Minify>False</Minify>
@@ -977,6 +968,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\QuotasNotification.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Areas\System\Views\Shared\Organisations\StatsModal.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

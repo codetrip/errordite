@@ -47,4 +47,34 @@ jQuery ->
 
 			e.preventDefault()
 			false
+
+		$orgroot.delegate 'a.stats', 'click', (e) -> 
+			e.preventDefault()
+			$this = $ this
+			$modal = $orgroot.find('div#stats-modal')
+			return null if $modal == null
+
+			$.ajax
+				url: "/system/organisations/stats?organisationId=" +  $this.data('orgid')
+				success: (result) ->
+					if result.success
+						$table = $modal.find('table#stats');
+						$table.empty();
+						$table.append('<tr><td>Issues</td><td>' + result.data.Issues + '</td></tr>')
+						$table.append('<tr><td>Acknowledged</td><td>' + result.data.Acknowledged + '</td></tr>')
+						$table.append('<tr><td>Unacknowledged</td><td>' + result.data.Unacknowledged + '</td></tr>')
+						$table.append('<tr><td>FixReady</td><td>' + result.data.FixReady + '</td></tr>')
+						$table.append('<tr><td>Ignored</td><td>' + result.data.Ignored + '</td></tr>')
+						$table.append('<tr><td>Solved</td><td>' + result.data.Solved + '</td></tr>')
+						$table.append('<tr><td>Applications</td><td>' + result.data.Applications + '</td></tr>')
+						$table.append('<tr><td>Users</td><td>' + result.data.Users + '</td></tr>')
+						$table.append('<tr><td>Groups</td><td>' + result.data.Groups + '</td></tr>')
+						$modal.modal()
+					else
+						alert result.message
+				error: ->
+					alert "error"
+				dataType: "json"
+
+			true
 			

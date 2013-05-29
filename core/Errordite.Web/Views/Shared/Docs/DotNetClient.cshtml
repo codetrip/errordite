@@ -33,18 +33,17 @@
 
 &lt;errordite token="**YOUR TOKEN HERE**" enabled="true"> 
     &lt;dataCollectors> &lt;!-- optional -->
-        &lt;dataCollector prefix="HttpContext" 
-                       type="Errordite.Client.DataCollectors.HttpContextDataCollector, Errordite.Client" />
-    &lt;/dataCollectors>
+        &lt;dataCollector prefix="HttpContext" type="YourDataCollectorClassName, YourAssembly" /&gt;
+    &lt;/dataCollectors&gt;
     &lt;sanitiseParams> &lt;!-- optional -->
-        &lt;param name="Password" match="Contains" />
-    &lt;/sanitiseParams>
+        &lt;param name="Password" match="Contains" /&gt;
+    &lt;/sanitiseParams&gt;
     &lt;unwrapExceptions> &lt;!-- optional -->
-        &lt;exception typeName="System.Web.HttpUnhandledException" />
-    &lt;/unwrapExceptions>
+        &lt;exception typeName="System.Web.HttpUnhandledException" /&gt;
+    &lt;/unwrapExceptions&gt;
     &lt;ignoreExceptions> &lt;!-- optional -->
-        &lt;exception typeName="System.Web.HttpException"/>
-    &lt;/ignoreExceptions>
+        &lt;exception typeName="System.Web.HttpException"/&gt;
+    &lt;/ignoreExceptions&gt;
 &lt;/errordite>
     </pre>
     <p>
@@ -52,11 +51,11 @@
     </p>
 
     <ul>
-        <li><span class="heading">Token</span><br />The token for the application. Take this from the <a href="@Url.Applications()">Applications page</a>.</li>
+        <li><span class="heading">Token</span><br />The token for the application. Take this from your <a href="@Url.Applications()">Applications page</a>.</li>
         <li><span class="heading">Enabled</span><br />This should normally be true; set to false to stop sending to Errordite.</li>
         <li><span class="heading">Data Collectors (optional)</span><br />
-            Data collectors allow you to send custom data with each exception in the form of a set of name-value pairs.  Add the built-in HttpContextDataCollector
-            here and write your own to collect custom application data, e.g. logged-in username.  To write your own, just implement the Errordite.Client.Interfaces.IDataCollector.
+            Data collectors allow you to send custom data with each exception in the form of a set of name-value pairs.
+            To write your own data collector, just implement the Errordite.Client.Interfaces.IDataCollector and add it to your configuration.
         </li>
         <li><span class="heading">Sanitise Params (optional)</span><br />
             Some data shouldn't be sent to Errordite.  For example you don't want an exception in a "login" form post to send the password to Errordite.  To avoid this, 
@@ -133,7 +132,7 @@ ErrorditeClient.SetErrorNotificationAction(exception => Trace.Write(exception.To
     </pre>
     <h2>5. Sync or Async</h2>
     <p>By default, the Errordite client sends errors to Errordite asynchronously, to ensure that your application is not affected by the sending of the error.  However, for applications that
-        do not continue running after an application (e.g. a console app) this may not work as the process will have finished before the error is sent.  In this case, you can specify synchronous
+        do not continue running after an error (e.g. a console app) this may not work as the process will have finished before the error is sent.  In this case, you can specify synchronous
         sending when calling ReportException:</p>
     <pre class="prettyprint lang-cs">
 ErrorditeClient.ReportException(exception, true);
