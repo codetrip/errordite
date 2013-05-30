@@ -131,7 +131,7 @@ namespace Errordite.Core.Identity
 			organisations = _getOrganisationsByEmailAddressCommand.Invoke(new GetOrganisationsByEmailAddressRequest
 			{
 				EmailAddress = email,
-			}).Organisations.ToList();
+			}).Organisations.Where(o => o.Status != OrganisationStatus.Suspended).ToList();
 
 			var sessionOrganisationId = _cookieManager.Get(CoreConstants.OrganisationIdCookieKey);
 

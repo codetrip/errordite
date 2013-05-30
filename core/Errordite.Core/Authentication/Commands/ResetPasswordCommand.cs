@@ -1,6 +1,4 @@
 ﻿using System;
-using Castle.Core;
-using Errordite.Core.Caching.Interceptors;
 using Errordite.Core.Domain.Master;
 using Errordite.Core.Encryption;
 using Errordite.Core.Extensions;
@@ -57,8 +55,15 @@ namespace Errordite.Core.Authentication.Commands
 				};
 			}
 
-	        var organisation = response.Organisations.First();
+            if (response.Organisations.All(o => o.Status == OrganisationStatus.Suspended))
+            {
+                return new ResetPasswordResponse
+                {
+                    Status = ResetPasswordStatus.OrganisationSuspended
+                };
+            }
 
+            var organisation = response.Organisations.First();
 			Session.SetOrganisation(organisation);
 
 			var user = Session.Raven.Query<User, Indexing.Users>().FirstOrDefault(u => u.Email == request.Email);
@@ -107,6 +112,7 @@ namespace Errordite.Core.Authentication.Commands
     public enum ResetPasswordStatus
     {
         Ok,
-        InvalidEmail
+        InvalidEmail,
+        OrganisationSuspended
     }
 }

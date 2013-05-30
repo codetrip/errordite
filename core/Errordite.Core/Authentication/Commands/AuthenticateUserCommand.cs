@@ -36,23 +36,27 @@ namespace Errordite.Core.Authentication.Commands
 				};
 			}
 
-	        var organisations = response.Organisations.ToList();
-	        Organisation organisation;
+	        var organisations = response.Organisations.Where(o => o.Status != OrganisationStatus.Suspended).ToList();
 
-			if (organisations.Count > 1 && request.OrganisationId.IsNullOrEmpty())
-			{
-				organisation = organisations.First();
-			}
-			else
-			{
-				organisation = organisations.FirstOrDefault(o => o.Id == Organisation.GetId(request.OrganisationId)) ?? organisations.First();
-			}
+            if (!organisations.Any())
+            {
+                Trace("org inactive");
+                return new AuthenticateUserResponse
+                {
+                    Status = AuthenticateUserStatus.OrganisationInactive
+                };
+            }
+
+            var organisation = organisations.Count > 1 && request.OrganisationId.IsNullOrEmpty()
+                ? organisations.First()
+                : organisations.FirstOrDefault(o => o.Id == Organisation.GetId(request.OrganisationId)) ?? organisations.First();
 
             Session.SetOrganisation(organisation);
 
             Trace("Getting user {0} from org {1} with pwdhash {2}", request.Email, organisation.Id, request.Password.Hash());
 
             var user = Session.Raven.Query<User, Indexing.Users>().FirstOrDefault(u => u.Email == request.Email.ToLowerInvariant());
+            ;
 
             if (user != null)
             {
@@ -62,15 +66,6 @@ namespace Errordite.Core.Authentication.Commands
                     return new AuthenticateUserResponse
                     {
                         Status = AuthenticateUserStatus.AccountInactive
-                    };
-                }
-
-                if (organisation.Status == OrganisationStatus.Suspended)
-                {
-                    Trace("org inactive");
-                    return new AuthenticateUserResponse
-                    {
-                        Status = AuthenticateUserStatus.OrganisationInactive
                     };
                 }
 
