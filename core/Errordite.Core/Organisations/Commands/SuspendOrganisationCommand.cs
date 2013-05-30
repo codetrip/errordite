@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Castle.Core;
 using Errordite.Core.Caching.Entities;
 using Errordite.Core.Caching.Interceptors;

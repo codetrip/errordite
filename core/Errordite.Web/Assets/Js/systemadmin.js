@@ -1,22 +1,8 @@
 (function() {
   jQuery(function() {
-    var $cacheroot, $orgroot;
+    var $orgroot;
 
     $orgroot = $('section#organisations');
-    $cacheroot = $('section#caching');
-    if ($cacheroot.length > 0) {
-      $cacheroot.delegate("select#CacheEngine", "change", function() {
-        var $this, index;
-
-        $this = $(this);
-        index = window.location.href.indexOf("?");
-        if (index === -1) {
-          return window.location = window.location.href + "?engine=" + $this.val();
-        } else {
-          return window.location = window.location.href.substring(0, index) + "?engine=" + $this.val();
-        }
-      });
-    }
     if ($orgroot.length > 0) {
       $orgroot.delegate('form#suspendForm', 'submit', function(e) {
         var $this;
@@ -43,7 +29,7 @@
         var $form, $this;
 
         $this = $(this);
-        if (confirm("are you sure you want to activate this organisation?")) {
+        if (confirm("Are you sure you want to activate this organisation?")) {
           $form = $this.closest('form');
           $form.submit();
         }
@@ -54,7 +40,7 @@
         var $form, $this;
 
         $this = $(this);
-        if (confirm("are you sure you want to delete this organisation, all data will be permenantly deleted?")) {
+        if (confirm("Are you sure you want to delete this organisation, all data will be permenantly deleted?")) {
           $form = $this.closest('form');
           $form.submit();
         }
