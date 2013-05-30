@@ -7,8 +7,10 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using Errordite.Core.Authorisation;
 using Errordite.Core.Domain;
 using Errordite.Core.Domain.Organisation;
+using Errordite.Core.Identity;
 using Errordite.Core.Organisations.Commands;
 using Errordite.Web.ActionResults;
 using Errordite.Core.Extensions;
@@ -29,8 +31,9 @@ namespace Errordite.Web.Controllers
     {
         private ICreateOrganisationCommand _createOrganisationCommand;
         private IDeleteOrganisationCommand _deleteOrganisationCommand;
+        private IAuthenticationManager _authenticationManager;
 
-        public AppHarborController(ICreateOrganisationCommand createOrganisationCommand, IDeleteOrganisationCommand deleteOrganisationCommand)
+        public AppHarborController(ICreateOrganisationCommand createOrganisationCommand, IDeleteOrganisationCommand deleteOrganisationCommand, IAuthorisationManager authorisationManager)
         {
             _createOrganisationCommand = createOrganisationCommand;
             _deleteOrganisationCommand = deleteOrganisationCommand;
@@ -119,7 +122,9 @@ namespace Errordite.Web.Controllers
 
             Response.SetCookie(cookie);
 
-            return Content("id");
+            _authenticationManager.SignIn(id);
+
+            return Redirect("/dashboard");
         }
 
         private void AuthenticateToken(string id, string token, string timeStamp)
