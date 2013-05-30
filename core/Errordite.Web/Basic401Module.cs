@@ -29,7 +29,7 @@ namespace Errordite.Web
         {
             var application = (HttpApplication) sender;
 
-            if (application.Response.StatusCode == 302 && application.Request.Url.PathAndQuery.Contains("/appharbor/"))
+            if (application.Response.StatusCode == 302 && true.Equals(application.Context.Items["302to401"]))
                 application.Response.StatusCode = 401;
 
         }
