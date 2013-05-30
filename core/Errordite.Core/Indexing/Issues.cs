@@ -40,7 +40,7 @@ namespace Errordite.Core.Indexing
                                 doc.ErrorCount,
                                 doc.RulesHash,
                                 FriendlyId = int.Parse(doc.Id.Split('/')[1]),
-                                Query = new[] { doc.Name }.Union(doc.Rules.Select(r => r.SearchString)),  
+                                Query = new[] { doc.Name, doc.FriendlyId }.Union(doc.Rules.Select(r => r.SearchString)),  
                             };
 
             Indexes = new Dictionary<Expression<Func<IssueDocument, object>>, FieldIndexing>

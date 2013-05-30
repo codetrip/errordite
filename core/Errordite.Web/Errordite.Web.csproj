@@ -321,7 +321,6 @@
     <Compile Include="Models\Common\IWizardViewModel.cs" />
     <Compile Include="Models\Dashboard\ActivityViewModel.cs" />
     <Compile Include="Models\Issues\MergeIssuesViewModel.cs" />
-    <Compile Include="Areas\System\Models\Cache\CacheViewModel.cs" />
     <Compile Include="Models\Errors\ExceptionViewModel.cs" />
     <Compile Include="Models\Issues\AddIssueViewModel.cs" />
     <Compile Include="Models\Issues\IssueItemViewModel.cs" />
@@ -636,9 +635,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Areas\System\Views\Cache\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="..\Errordite.Build\Configuration\errordite.config">
       <Link>Config\errordite.config</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -816,7 +812,6 @@
     <Content Include="Assets\Fonts\normal-800.woff" />
     <Content Include="Assets\icons.xcf" />
     <Content Include="Views\Issue\UpdateIssue.cshtml" />
-    <Content Include="Areas\System\Views\Cache\Item.cshtml" />
     <Content Include="Views\Shared\NotAuthorised.cshtml" />
     <Content Include="Views\Shared\NotFound.cshtml" />
     <Content Include="Views\Shared\Docs\PaymentPlan.cshtml" />
