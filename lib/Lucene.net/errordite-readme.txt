@@ -1,0 +1,1 @@
+lucene.net only here to allow strongly-typed access to Analyzer names when creating indexes.  Unnecessary really and one day may bite us.

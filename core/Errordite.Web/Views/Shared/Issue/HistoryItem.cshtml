@@ -1,0 +1,15 @@
+﻿
+@using Errordite.Core.Extensions
+@model Errordite.Web.Models.Issues.IssueHistoryItemViewModel
+
+<tr @(Model.SystemMessage ? "" : "class=comment")>
+	<td style="width:125px">@(Model.SystemMessage ? "System" : Model.Username)</td>
+	<td style="width:125px">@Html.Raw(Model.VerbalTime)</td>
+	<td>
+		@if (Model.IssueLink.IsNotNullOrEmpty())
+		{
+			<span class="bold">Issue @Model.IssueId:</span> @Html.Raw(Model.IssueLink) <br />
+		}
+		@Html.Raw(Model.Message)
+	</td>
+</tr>
