@@ -1,0 +1,8 @@
+﻿@using Errordite.Web.Extensions
+@using Errordite.Web.Models.Shared
+<ul class="sidenav-tabs">
+    <li @(Model == SettingTab.Organisation ? " class=active" : "")><a href="@Url.Organisation()" >Organisation</a></li>
+    <li @(Model == SettingTab.Campfire ? " class=active" : "")><a href="@Url.Campfire()" >Campfire</a></li>
+    <li @(Model == SettingTab.HipChat ? " class=active" : "")><a href="@Url.HipChat()" >HipChat</a></li>
+    <li @(Model == SettingTab.Api ? " class=active" : "")><a href="@Url.ApiAccess()">API Access</a></li>
+</ul>

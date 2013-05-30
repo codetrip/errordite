@@ -1,0 +1,61 @@
+﻿
+@using Errordite.Web.Extensions
+@model Errordite.Web.Models.Search.SearchViewModel
+           
+@{
+    ViewBag.Title = "Search";
+}
+
+<section id="search" class="centered">
+    <div class="content">
+        @if (Model.IssueWithMatchingId != null)
+        {
+            <a href="@Url.Issue(Model.IssueWithMatchingId.Id)">Go straight to Issue @Model.IssueWithMatchingId.FriendlyId</a>
+        }
+
+        <h3>Your search for "@Model.Query" returned the following results...</h3>
+        <div class="two-col">
+            <h2 class="section-header"><i class="icon-files"></i>Issues</h2>
+            @if(Model.IssueTotal > 0)
+            {
+                <div class="search-status">
+                    Viewing 1 - @Model.Issues.Count() of @Model.IssueTotal issues 
+                    <a href='@Url.IssueSearch(Model.Query)'>Issue search</a>
+                </div>
+                foreach(var issue in Model.Issues)
+                {
+                    @Html.Partial("Dashboard/Issue", issue)
+                }
+            }
+            else
+            {
+                <div class="search-status">
+                    No issues found
+                </div>
+            }
+        </div>
+        <div class="two-col">
+            <h2 class="section-header"><i class="icon-file"></i>Errors</h2>
+            @if(Model.ErrorTotal > 0)
+            {
+                <div class="search-status">
+                    Viewing 1 - @Model.Errors.Count() of @Model.ErrorTotal errors 
+                    <a href='@Url.ErrorSearch(Model.Query)'>Error search</a>
+                </div>
+                foreach (var error in Model.Errors)
+                {
+                    @Html.Partial("Dashboard/Error", error)
+                }	
+            }
+            else
+            {
+                <div class="search-status">
+                    No errors found
+                </div>
+            }
+        </div>
+        <div class="clear"></div>
+    </div>
+</section>
+
+

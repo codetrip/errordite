@@ -1,0 +1,21 @@
+﻿
+@model Errordite.Web.Models.Applications.ApplicationsViewModel
+                   
+@{
+    ViewBag.Title = "Applications";
+}
+
+<section id="applications" class="centered">
+    <div class="content">
+        @if (Model.Applications != null && Model.Applications.Any())
+        {
+            @Html.Partial("Applications/List", Model)
+        }
+        else
+        {
+            <div>
+                <p>No applications were found.</p>   
+            </div> 
+        }
+    </div>
+</section>

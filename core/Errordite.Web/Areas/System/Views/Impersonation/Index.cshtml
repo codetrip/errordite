@@ -1,0 +1,33 @@
+﻿@model Errordite.Core.Identity.ImpersonationStatus    
+@{
+    ViewBag.Title = "Impersonation";
+}
+
+<section class="centered">
+    <div class="content">
+        <h1>Impersonate User</h1>
+        <div class="form">
+            <p>Enter the users id below</p>
+            @using (Html.BeginForm("set", "impersonation", FormMethod.Post))
+            {
+                <ul>
+                    <li>
+                        @Html.LabelFor(m => m.UserId, "UserId")
+                        @Html.TextBoxFor(m => m.UserId)
+                    </li> 
+                    <li>
+                        @Html.LabelFor(m => m.OrganisationId, "OrganisationId")
+                        @Html.TextBoxFor(m => m.OrganisationId)
+                    </li>
+                    <li class="inline">
+                        @Html.LabelFor(m => m.Impersonating, "Impersonating?")
+                        @Html.CheckBoxFor(m => m.Impersonating)
+                    </li>
+                    <li>
+                        <input class="btn btn-medium btn-blue" type="submit" value="Impersonate" />
+                    </li>
+                </ul>
+            }
+        </div>
+    </div>
+</section> 
