@@ -18,5 +18,7 @@ namespace Errordite.Core.Domain.Master
 		public IList<string> Organisations { get; set; }
 		[ProtoMember(5)]
 		public UserStatus Status { get; set; }
+
+        public bool SsoUser { get; set; }
     }
 }

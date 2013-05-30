@@ -27,7 +27,7 @@ namespace Errordite.Core.Identity
             {
                 RememberMe = true,
                 Email = email,
-                HasUserProfile = true
+                HasUserProfile = true,
             };
 
 			_cookieManager.Set(

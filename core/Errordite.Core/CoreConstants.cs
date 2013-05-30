@@ -42,6 +42,7 @@ namespace Errordite.Core
             public const string HasUserProfile = "hp";
             public const string GuestUserName = "Guest User";
             public const string IsAuthenticated = "au";
+            public const string SpecialUser = "su";
         }
 
         public static class ExceptionKeys

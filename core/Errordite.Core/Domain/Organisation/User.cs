@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Errordite.Core.Authorisation;
 using Errordite.Core.Extensions;
+using Errordite.Core.Identity;
 using ProtoBuf;
 using Raven.Imports.Newtonsoft.Json;
 
@@ -47,6 +48,8 @@ namespace Errordite.Core.Domain.Organisation
             get { return "{0} {1}".FormatWith(FirstName, LastName); }
         }
 
+        public SpecialUser? SpecialUser { get; set; }
+
         public static string GetId(string friendlyId)
         {
             return friendlyId.Contains("/") ? friendlyId : "users/{0}".FormatWith(friendlyId);
@@ -71,5 +74,10 @@ namespace Errordite.Core.Domain.Organisation
         Active,
         [ProtoMember(2)]
         Inactive
+    }
+
+    public enum SpecialUser
+    {
+        AppHarbor
     }
 }

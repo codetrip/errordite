@@ -9,6 +9,11 @@
    var activeOrganisation = appContext.CurrentUser.ActiveOrganisation;
 }
 
+@if (appContext.CurrentUser.SpecialUser == SpecialUser.AppHarbor)
+{
+    Html.RenderPartial("AppHarborHeader");
+}
+
 <div class="welcome-bar-container">
     <div class="welcome-bar">
         
