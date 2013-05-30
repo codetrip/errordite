@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using Errordite.Core.Domain.Error;
 using Errordite.Core.Paging;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Errors.Queries;
 using Errordite.Core.Issues.Queries;
+using Errordite.Core.Session;
 using Errordite.Web.ActionFilters;
 using Errordite.Web.Models.Errors;
 using Errordite.Web.Models.Issues;
@@ -20,25 +22,40 @@ namespace Errordite.Web.Controllers
 		private readonly IGetApplicationIssuesQuery _getApplicationIssuesQuery;
 		private readonly IGetApplicationErrorsQuery _getApplicationErrorsQuery;
         private readonly IGetIssueQuery _getIssueQuery;
+	    private readonly IAppSession _session;
 
-	    public SearchController(IGetApplicationIssuesQuery getApplicationIssuesQuery, IGetApplicationErrorsQuery getApplicationErrorsQuery, IGetIssueQuery getIssueQuery)
+	    public SearchController(IGetApplicationIssuesQuery getApplicationIssuesQuery,
+            IGetApplicationErrorsQuery getApplicationErrorsQuery, 
+            IGetIssueQuery getIssueQuery, 
+            IAppSession session)
 	    {
 		    _getApplicationIssuesQuery = getApplicationIssuesQuery;
 		    _getApplicationErrorsQuery = getApplicationErrorsQuery;
 	        _getIssueQuery = getIssueQuery;
+	        _session = session;
 	    }
 
 	    public ActionResult Index(string q)
 	    {
 	        var viewModel = new SearchViewModel
-	            {
-	                Query = q
-	            };
+	        {
+	            Query = q
+	        };
 
 			var applications = Core.GetApplications();
 
 			if (applications.PagingStatus.TotalItems > 0)
 			{
+			    int searchedIssueId;
+                if (int.TryParse(q, out searchedIssueId))
+                {
+                    var issue = _session.Raven.Load<Issue>(searchedIssueId);
+                    if (issue != null)
+                    {
+                        return Redirect(Url.Issue(searchedIssueId.ToString()));
+                    }
+                }
+
 				var issues = _getApplicationIssuesQuery.Invoke(new GetApplicationIssuesRequest
 				{
 					Paging = new PageRequestWithSort(1, 10),
@@ -63,20 +80,6 @@ namespace Errordite.Web.Controllers
 					Error = e,
 					ApplicationName = GetApplicationName(applications.Items, e.ApplicationId)
 				}).ToList();
-
-			    int issueId;
-			    if (int.TryParse(q, out issueId))
-			    {
-			        var issue =
-			            _getIssueQuery.Invoke(new GetIssueRequest() {CurrentUser = Core.AppContext.CurrentUser, IssueId = issueId.ToString()}).Issue;
-			        if (issue != null && viewModel.IssueTotal == 0 && viewModel.ErrorTotal == 0)
-			            return Redirect(Url.Issue(issueId.ToString()));
-
-                    //as currently setup, the issues / errors are indexed with the SimpleAnalyzer, which just drops terms
-                    //with all non-alpha (e.g. all numeric) characters.  This is probably not a good thing but this
-                    //"click to go to issue" thing will never happen as currently set up
-			        viewModel.IssueWithMatchingId = issue;
-			    }
 			}
 
 			return View(viewModel);
