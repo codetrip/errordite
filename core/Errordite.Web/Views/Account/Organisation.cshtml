@@ -27,6 +27,12 @@
 									@Html.TextBoxFor(m => m.OrganisationName, new {maxlength = "30"})
 									@Html.ValidationMessageFor(m => m.OrganisationName)
 								</li>
+								<li>
+									@Html.LabelFor(m => m.PrimaryUserId, "Primary Contact")
+									@Html.DropDownListFor(m => m.PrimaryUserId, Model.Users)
+									<i data-title="Please select your organisations primary contact" class="icon-info"></i>
+									@Html.ValidationMessageFor(m => m.PrimaryUserId)
+								</li>
 					            <li>
 									@Html.LabelFor(m => m.OrganisationName, "Timezone") 
 						            @Html.DropDownListFor(m => m.TimezoneId, TimeZoneInfo.GetSystemTimeZones().Select(t => new SelectListItem {Selected = Model.TimezoneId == t.Id || (Model.TimezoneId == null && t.Id == "UTC"), Value = t.Id, Text = t.DisplayName}))									
