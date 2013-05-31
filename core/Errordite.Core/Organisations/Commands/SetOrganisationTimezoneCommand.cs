@@ -41,6 +41,7 @@ namespace Errordite.Core.Organisations.Commands
 
             organisation.TimezoneId = request.TimezoneId;
 	        organisation.Name = request.Name;
+            organisation.PrimaryUserId = User.GetId(request.PrimaryUserId);
 
             Session.AddCommitAction(new FlushOrganisationCacheCommitAction(_configuration, organisation));
 
@@ -56,7 +57,8 @@ namespace Errordite.Core.Organisations.Commands
         public string OrganisationId { get; set; }
         public User CurrentUser { get; set; }
 		public string TimezoneId { get; set; }
-		public string Name { get; set; }
+        public string Name { get; set; }
+        public string PrimaryUserId { get; set; }
     }
 
     public class UpdateOrganisationResponse : CacheInvalidationResponseBase
