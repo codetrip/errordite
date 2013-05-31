@@ -1,9 +1,12 @@
 ﻿using System.Web.Mvc;
 using Errordite.Core.Domain.Organisation;
+using Errordite.Core.Extensions;
 using Errordite.Core.Organisations.Commands;
 using Errordite.Web.ActionFilters;
+using Errordite.Web.Extensions;
 using Errordite.Web.Models.Account;
 using Errordite.Web.Models.Navigation;
+using System.Linq;
 
 namespace Errordite.Web.Controllers
 {
@@ -25,13 +28,21 @@ namespace Errordite.Web.Controllers
 
 		[HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.Settings)]
         public ActionResult Organisation()
-        {
-            return View(new OrganisationSettingsViewModel
-            {
-                TimezoneId = Core.AppContext.CurrentUser.ActiveOrganisation.TimezoneId,
-                ApiKey = Core.AppContext.CurrentUser.ActiveOrganisation.ApiKey,
-				OrganisationName = Core.AppContext.CurrentUser.ActiveOrganisation.Name
-            });
+		{
+		    var users = Core.GetUsers();
+		    var primaryUser =
+		        users.Items.First(u => u.Id == Core.AppContext.CurrentUser.ActiveOrganisation.PrimaryUserId);
+
+		    var model = new OrganisationSettingsViewModel
+		    {
+		        TimezoneId = Core.AppContext.CurrentUser.ActiveOrganisation.TimezoneId,
+		        OrganisationName = Core.AppContext.CurrentUser.ActiveOrganisation.Name,
+		        Users = users
+		            .Items
+		            .ToSelectList(u => u.FriendlyId, u => u.FullName, u => u.Id == primaryUser.Id, sortListBy: SortSelectListBy.Text),
+		    };
+
+            return View(model);
         }
 
 		[HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.Settings)]
@@ -101,14 +112,15 @@ namespace Errordite.Web.Controllers
 		}
 
         [HttpPost, ExportViewData]
-		public ActionResult UpdateOrganisation(string timezoneId, string organisationName)
+		public ActionResult UpdateOrganisation(OrganisationSettingsPostModel model)
         {
             _updateOrganisationCommand.Invoke(new UpdateOrganisationRequest
             {
                 CurrentUser = AppContext.CurrentUser,
                 OrganisationId = AppContext.CurrentUser.OrganisationId,
-                TimezoneId = timezoneId,
-				Name = organisationName
+                TimezoneId = model.TimezoneId,
+                Name = model.OrganisationName,
+                PrimaryUserId = model.PrimaryUserId
             });
 
             ConfirmationNotification(Resources.Admin.OrganisationSettingsUpdated);
