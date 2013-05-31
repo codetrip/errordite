@@ -8,7 +8,9 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using Errordite.Core.Domain;
+using Errordite.Core.Domain.Master;
 using Errordite.Core.Domain.Organisation;
+using Errordite.Core.Identity;
 using Errordite.Core.Organisations.Commands;
 using Errordite.Web.ActionResults;
 using Errordite.Core.Extensions;
@@ -29,11 +31,13 @@ namespace Errordite.Web.Controllers
     {
         private ICreateOrganisationCommand _createOrganisationCommand;
         private IDeleteOrganisationCommand _deleteOrganisationCommand;
+        private IAuthenticationManager _authenticationManager;
 
-        public AppHarborController(ICreateOrganisationCommand createOrganisationCommand, IDeleteOrganisationCommand deleteOrganisationCommand)
+        public AppHarborController(ICreateOrganisationCommand createOrganisationCommand, IDeleteOrganisationCommand deleteOrganisationCommand, IAuthenticationManager authenticationManager)
         {
             _createOrganisationCommand = createOrganisationCommand;
             _deleteOrganisationCommand = deleteOrganisationCommand;
+            _authenticationManager = authenticationManager;
         }
 
         [HttpPost, ActionName("Resources")]
@@ -52,6 +56,7 @@ namespace Errordite.Web.Controllers
                     LastName = "AppHarbor User",
                     OrganisationName = request.heroku_id,
                     Password = Membership.GeneratePassword(10, 5),
+                    SpecialUser = SpecialUser.AppHarbor,
                 });
 
             if (org.Status != CreateOrganisationStatus.Ok)
@@ -84,6 +89,8 @@ namespace Errordite.Web.Controllers
 
         private bool Authorize()
         {
+            HttpContext.Items["302to401"] = true;
+
             var authHeader = Request.Headers["Authorization"];
 
             if (authHeader == null)
@@ -114,17 +121,27 @@ namespace Errordite.Web.Controllers
         {
             AuthenticateToken(id, token, timestamp);
 
-            var navData = Request.QueryString["nav-data"];
+            var orgId = Organisation.GetId(id);
+
+            var mapping = Core.Session.MasterRaven.Query<UserOrganisationMapping>()
+                              .FirstOrDefault(m => m.Organisations.Any(o => o == orgId) && m.SsoUser);
+            
+            if (mapping == null)
+                throw new HttpException(403, "Organisation {0} not found".FormatWith(id));
+            
+            var navData = Request.Form["nav-data"];
             var cookie = new HttpCookie("appharbor-nav-data", navData);
 
             Response.SetCookie(cookie);
 
-            return Content("id");
+            _authenticationManager.SignIn(mapping.EmailAddress);
+
+            return Redirect("/dashboard");
         }
 
         private void AuthenticateToken(string id, string token, string timeStamp)
         {
-            var validToken = string.Join(":", id.ToString(), "3a31b4e7de2e95d545050da8b522571f", timeStamp);
+            var validToken = string.Join(":", id, "3a31b4e7de2e95d545050da8b522571f", timeStamp);
             var hash = ToHash<SHA1Managed>(validToken);
             if (token != hash)
             {

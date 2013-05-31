@@ -12,7 +12,8 @@ namespace Errordite.Core.Indexing
                                select new
 	                               {
 		                               u.EmailAddress, 
-									   u.Organisations
+									   u.Organisations,
+                                       u.SsoUser,
 	                               };
          }
     }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Paging;
 using Errordite.Web.Models.Users;
@@ -21,16 +22,19 @@ namespace Errordite.Web.Models.Account
     public class OrganisationUsersViewModel : UsersViewModel
     { }
 
-	public class OrganisationSettingsViewModel
+    public class OrganisationSettingsViewModel : OrganisationSettingsPostModel
 	{
-		public string TimezoneId { get; set; }
-		public string ApiKey { get; set; }
-		public string HipChatAuthToken { get; set; }
-		public string CampfireToken { get; set; }
-		public string CampfireCompany { get; set; }
-		[Required(ErrorMessage = "Please enter a name for your organisation")]
-		public string OrganisationName { get; set; }
+        public IEnumerable<SelectListItem> Users { get; set; }
+        public string ApiKey { get; set; }
 	}
+
+    public class OrganisationSettingsPostModel
+    {
+        public string TimezoneId { get; set; }
+        public string PrimaryUserId { get; set; }
+        [Required(ErrorMessage = "Please enter a name for your organisation")]
+        public string OrganisationName { get; set; }
+    }
 
 	public class CampfireSettingsViewModel
 	{

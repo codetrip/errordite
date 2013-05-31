@@ -7,6 +7,7 @@ using Errordite.Core.Caching.Entities;
 using Errordite.Core.Caching.Interceptors;
 using Errordite.Core.Domain.Master;
 using Errordite.Core.Encryption;
+using Errordite.Core.Identity;
 using Errordite.Core.Interfaces;
 using Errordite.Core.Applications.Commands;
 using Errordite.Core.Caching;
@@ -103,6 +104,7 @@ namespace Errordite.Core.Organisations.Commands
 					Password = request.Password.Hash(),
 					PasswordToken = Guid.Empty,
 					Status = UserStatus.Active,
+                    SsoUser = request.SpecialUser.IsIn(SpecialUser.AppHarbor),
 				});
 			}
 
@@ -130,6 +132,7 @@ namespace Errordite.Core.Organisations.Commands
                 GroupIds = new List<string> { group.Id },
                 ActiveOrganisation = organisation,
 				OrganisationId = organisation.Id,
+                SpecialUser = request.SpecialUser,
             };
 
             Store(user);
@@ -194,6 +197,7 @@ namespace Errordite.Core.Organisations.Commands
         public string Password { get; set; }
         public string OrganisationName { get; set; }
         public string TimezoneId { get; set; }
+        public SpecialUser? SpecialUser { get; set; }
     }
 
     public enum CreateOrganisationStatus
