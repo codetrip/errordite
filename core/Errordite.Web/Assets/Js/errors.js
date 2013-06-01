@@ -302,7 +302,7 @@
                     $buttons.removeClass('hide');
                     $buttons.addClass('floating');
                     return $buttons.css({
-                      top: e.offsetY - 80,
+                      top: e.offsetY - 35,
                       left: e.offsetX - 48
                     });
                   });
