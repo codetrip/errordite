@@ -17,7 +17,10 @@ namespace Errordite.Core.Organisations.Queries
         {
             Trace("Starting...");
 
-            var plans = Session.MasterRaven.Query<PaymentPlan>().ToList().OrderBy(p => p.Rank).ToList();
+            var plans = Session.MasterRaven
+                .Query<PaymentPlan>()
+                .Where(p => p.Type == request.Type)
+                .ToList().OrderBy(p => p.Rank).ToList();
 
             return new GetAvailablePaymentPlansResponse
             {
@@ -40,12 +43,14 @@ namespace Errordite.Core.Organisations.Queries
     {
         protected override string GetCacheKey()
         {
-            return "paymentplans";
+            return "paymentplans:" + Type;
         }
 
         protected override CacheProfiles GetCacheProfile()
         {
             return CacheProfiles.System;
         }
+
+        public PaymentPlanType Type { get; set; }
     }
 }
