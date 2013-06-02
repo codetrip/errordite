@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -27,8 +30,21 @@ namespace Errordite.Web.Controllers
         public dynamic options { get; set; }
     }
 
+    public class HerokuCallbackResponse
+    {
+        public string callback_url { get; set; }
+        public Dictionary<string, string> config { get; set; }
+        public string[] domains { get; set; }
+        public string id { get; set; }
+        public string name { get; set; }
+        public string owner_email { get; set; }
+        public string region { get; set; }
+    }
+
     public class AppHarborController : ErrorditeController
     {
+        private const string AuthUsername = "errordite";
+        private const string AuthPassword = "e882f2896c5eb768ba566f52ee2d80fa";
         private ICreateOrganisationCommand _createOrganisationCommand;
         private IDeleteOrganisationCommand _deleteOrganisationCommand;
         private IAuthenticationManager _authenticationManager;
@@ -49,14 +65,28 @@ namespace Errordite.Web.Controllers
                 return Content("Unauthorized");
             }
 
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization 
+                = new AuthenticationHeaderValue("basic", Convert.ToBase64String(Encoding.ASCII.GetBytes("{0}:{1}".FormatWith(AuthUsername, AuthPassword))));
+            
+            var httpTask = client.GetAsync(request.callback_url);
+            httpTask.Wait();
+            httpTask.Result.EnsureSuccessStatusCode();
+
+            var contentTask = httpTask.Result.Content.ReadAsAsync<HerokuCallbackResponse>();
+            contentTask.Wait();
+
+            var callbackResponse = contentTask.Result;
+
             var org = _createOrganisationCommand.Invoke(new CreateOrganisationRequest()
                 {
                     Email = request.heroku_id,
                     FirstName = "Root",
                     LastName = "AppHarbor User",
-                    OrganisationName = request.heroku_id,
+                    OrganisationName = callbackResponse.name, //TODO: allow for dup names
                     Password = Membership.GeneratePassword(10, 5),
                     SpecialUser = SpecialUser.AppHarbor,
+                    CallbackUrl = callbackResponse.callback_url,
                 });
 
             if (org.Status != CreateOrganisationStatus.Ok)
@@ -87,6 +117,20 @@ namespace Errordite.Web.Controllers
             return new PlainJsonNetResult(new {});
         }
 
+        [HttpPut, ActionName("Resources")]
+        public ActionResult Put(HerokuRequest request)
+        {
+            if (!Authorize())
+            {
+                Response.StatusCode = 401;
+                return Content("Unauthorized");
+            }
+
+            //TODO: implement plan change
+
+            return new PlainJsonNetResult(new{});
+        }
+
         private bool Authorize()
         {
             HttpContext.Items["302to401"] = true;
@@ -98,7 +142,7 @@ namespace Errordite.Web.Controllers
 
             var credentials = ParseAuthHeader(authHeader);
 
-            return credentials[0] == "errordite" && credentials[1] == "e882f2896c5eb768ba566f52ee2d80fa";
+            return credentials[0] == AuthUsername && credentials[1] == AuthPassword;
 
         }
 

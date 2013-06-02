@@ -294,6 +294,7 @@
     <Compile Include="Controllers\IssueController.cs" />
     <Compile Include="Controllers\DocsController.cs" />
     <Compile Include="Controllers\GroupsController.cs" />
+    <Compile Include="Controllers\MigrationsController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\SubscriptionController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
