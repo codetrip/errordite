@@ -92,7 +92,7 @@ namespace Errordite.Core.Dynamic
             CodeCompileUnit codeCompileUnit = new CodeCompileUnit();
             codeCompileUnit.Namespaces.Add(ns);
 
-            CompilerResults compilerResults = DynamicCodeGeneratorHelper.Compile(codeCompileUnit, KeepTempFiles);
+            CompilerResults compilerResults = DynamicCodeGeneratorHelper.Compile(codeCompileUnit, KeepTempFiles, "Microsoft.CSharp.dll", "System.Core.dll");
 
             Type summaryWriterType = compilerResults.CompiledAssembly.GetType(FQDynamicClassName);
 

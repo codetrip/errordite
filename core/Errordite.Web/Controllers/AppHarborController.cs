@@ -13,6 +13,7 @@ using System.Web.Security;
 using Errordite.Core.Domain;
 using Errordite.Core.Domain.Master;
 using Errordite.Core.Domain.Organisation;
+using Errordite.Core.Dynamic;
 using Errordite.Core.Identity;
 using Errordite.Core.Organisations.Commands;
 using Errordite.Web.ActionResults;
@@ -64,6 +65,8 @@ namespace Errordite.Web.Controllers
                 Response.StatusCode = 401;
                 return Content("Unauthorized");
             }
+
+            Trace(SummaryWriter.GetSummary(request));
 
             var client = new HttpClient();
             client.DefaultRequestHeaders.Authorization 
