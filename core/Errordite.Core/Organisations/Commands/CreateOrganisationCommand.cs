@@ -75,7 +75,8 @@ namespace Errordite.Core.Organisations.Commands
 					StartDate = date,
 					CurrentPeriodEndDate = date.AddMonths(1),
 					LastModified = date
-				}
+				},
+                CallbackUrl = request.CallbackUrl,
             };
 
             var ravenInstance = _getRavenInstancesQuery.Invoke(new GetRavenInstancesRequest())
@@ -198,6 +199,7 @@ namespace Errordite.Core.Organisations.Commands
         public string OrganisationName { get; set; }
         public string TimezoneId { get; set; }
         public SpecialUser? SpecialUser { get; set; }
+        public string CallbackUrl { get; set; }
     }
 
     public enum CreateOrganisationStatus

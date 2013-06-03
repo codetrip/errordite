@@ -34,6 +34,17 @@ namespace Errordite.Core.Domain.Organisation
         {
             return friendlyId.Contains("/") ? friendlyId : "PaymentPlans/{0}".FormatWith(friendlyId);
         }
+
+        public PaymentPlanType Type { get; set; }
+
+        public string SpecialId { get; set; }
+    }
+
+    public enum PaymentPlanType
+    {
+        Standard,
+        AppHarbor,
+        Custom
     }
 
     public static class PaymentPlanNames
