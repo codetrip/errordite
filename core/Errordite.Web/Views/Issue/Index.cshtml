@@ -32,58 +32,72 @@
 	</div>
     <div class="tabs-container">
         <ul id="issue-tabs" class="tabs">
-            <li @(Model.Tab == IssueTab.Details ? " class=active" : " class=inactive") >
-                <a href="@Url.Issue(Model.Update.IssueId, IssueTab.Details)" class="tablink" data-val="details"><span>Details</span></a> 
-            </li>
-            <li @(Model.Tab == IssueTab.Rules ? " class=active" : " class=inactive") >
-                <a href="@Url.Issue(Model.Update.IssueId, IssueTab.Rules)" class="tablink" data-val="rules"><span>Rules</span></a>
-            </li>
+	        <li @(Model.Tab == IssueTab.Details ? " class=active" : " class=inactive") >
+		        <a href="@Url.Issue(Model.Update.IssueId, IssueTab.Details)" class="tablink" data-val="details"><span>Details</span></a> 
+	        </li>
+			@if (!Model.ReadOnly)
+			{
+				<li @(Model.Tab == IssueTab.Rules ? " class=active" : " class=inactive") >
+					<a href="@Url.Issue(Model.Update.IssueId, IssueTab.Rules)" class="tablink" data-val="rules"><span>Rules</span></a>
+				</li>
+			}
             <li @(Model.Tab == IssueTab.Reports ? " class=active" : " class=inactive") >
                 <a href="@Url.Issue(Model.Update.IssueId, IssueTab.Reports)" class="tablink" data-val="reports"><span>Reports</span></a> 
             </li>
-            <li @(Model.Tab == IssueTab.History ? " class=active" : " class=inactive") >
-                <a href="@Url.Issue(Model.Update.IssueId, IssueTab.History)" class="tablink" data-val="history"><span>History</span></a>
-            </li>
-            <li class="button">
-                <div id="rules-adjusted" style="display:none;">
-                    <button id="apply-rule-updates" class="btn btn-small btn-blue tool-tip" data-title="You have made rule changes but not yet saved them. Click here to save.">Apply Rule Updates</button>
-                    <div class="what-if-message">&nbsp;</div>
-                </div>
-            </li>
+	        <li @(Model.Tab == IssueTab.History ? " class=active" : " class=inactive") >
+		        <a href="@Url.Issue(Model.Update.IssueId, IssueTab.History)" class="tablink" data-val="history"><span>History</span></a>
+	        </li>
+			@if (!Model.ReadOnly)
+			{
+				<li class="button">
+					<div id="rules-adjusted" style="display:none;">
+						<button id="apply-rule-updates" class="btn btn-small btn-blue tool-tip" data-title="You have made rule changes but not yet saved them. Click here to save.">Apply Rule Updates</button>
+						<div class="what-if-message">&nbsp;</div>
+					</div>
+				</li>
+			}
+            
         </ul>
     </div>
 }
            
 <section id="issue" class="centered">
-    <div class="content">
-        <div id="details" class="tab @(Model.Tab == IssueTab.Details ? "" : "hidden")">
-            @Html.Partial("Details", Model)
-        </div>
-        @using (Html.BeginForm("AdjustRules", "issue", FormMethod.Post, new { id = "rulesForm" }))
+	<div class="content">
+		<div id="details" class="tab @(Model.Tab == IssueTab.Details ? "" : "hidden")">
+			@Html.Partial("Details", Model)
+		</div>
+		@if (!Model.ReadOnly)
 		{
-            <div id="rules" class="tab @(Model.Tab == IssueTab.Rules ? "" : "hidden")">
-                @Html.Partial("Rules", Model.Update)
-            </div>
-            @Html.Partial("UpdateIssue", Model.Update)
+			using (Html.BeginForm("AdjustRules", "issue", FormMethod.Post, new { id = "rulesForm" }))
+			{
+				<div id="rules" class="tab @(Model.Tab == IssueTab.Rules ? "" : "hidden")">
+					@Html.Partial("Rules", Model.Update)
+				</div>
+				@Html.Partial("UpdateIssue", Model.Update)
+			}
 		}
-        <div id="reports" class="tab @(Model.Tab == IssueTab.Reports ? "" : "hidden")">
-            @Html.Partial("Reports", Model.Details)
-        </div>
-	    <div id="history" class="tab @(Model.Tab == IssueTab.History ? "" : "hidden")">
-		    <table class="table table-condensed history" id="history-items">
-			    <thead>
-				    <tr>
-					    <th>User</th>
-					    <th>Occured</th>
+        
+		<div id="reports" class="tab @(Model.Tab == IssueTab.Reports ? "" : "hidden")">
+			@Html.Partial("Reports", Model.Details)
+		</div>
+		<div id="history" class="tab @(Model.Tab == IssueTab.History ? "" : "hidden")">
+			<table class="table table-condensed history" id="history-items">
+				<thead>
+					<tr>
+						<th>User</th>
+						<th>Occured</th>
 						<th>Message</th>
-				    </tr>
-			    </thead>
+					</tr>
+				</thead>
 				<tbody></tbody>
-		    </table>
-	    </div>
-    </div>
-    @Html.Partial("Reprocess", Model.Details)
-    @Html.Partial("AddComment", new AddCommentViewModel(Model.Details.IssueId))
+			</table>
+		</div>
+	</div>
+	@if (!Model.ReadOnly)
+	{
+		@Html.Partial("Reprocess", Model.Details)
+		@Html.Partial("AddComment", new AddCommentViewModel(Model.Details.IssueId))
+	}
 </section>
 
 

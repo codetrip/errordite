@@ -10,7 +10,6 @@ namespace Errordite.Web.Models.Errors
     public class ErrorPageViewModel
     {
         public ErrorCriteriaViewModel ErrorsViewModel { get; set; }
-
         public bool NoApplications { get; set; }
     }
 
@@ -20,6 +19,7 @@ namespace Errordite.Web.Models.Errors
         public IList<ErrorInstanceViewModel> Errors { get; set; }
         public string Sort { get; set; }
 		public bool SortDescending { get; set; }
+		public bool ReadOnly { get; set; }
     }
 
     public class ErrorInstanceViewModel

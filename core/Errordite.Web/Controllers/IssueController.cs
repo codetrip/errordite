@@ -4,13 +4,15 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using Errordite.Core;
+using Errordite.Core.Domain.Organisation;
+using Errordite.Core.Encryption;
 using Errordite.Core.Extensions;
+using Errordite.Core.Organisations.Queries;
 using Errordite.Core.Paging;
 using Errordite.Core.Configuration;
 using Errordite.Core.Domain;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Domain.Exceptions;
-using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Errors.Queries;
 using Errordite.Core.Indexing;
 using Errordite.Core.Issues.Commands;
@@ -31,7 +33,6 @@ using Resources;
 
 namespace Errordite.Web.Controllers
 {
-	[Authorize]
     public class IssueController : ErrorditeController
 	{
 		private static readonly IEnumerable<SelectListItem> _frequencyHours = new []
@@ -56,6 +57,8 @@ namespace Errordite.Web.Controllers
         private readonly IGetIssueReportDataQuery _getIssueReportDataQuery;
         private readonly IGetExtraDataKeysForIssueQuery _getExtraDataKeysForIssueQuery;
 		private readonly IAddCommentCommand _addCommentCommand;
+	    private readonly IEncryptor _encryptor;
+		private readonly IGetOrganisationQuery _getOrganisationQuery;
 
         public IssueController(IGetIssueQuery getIssueQuery, 
             IAdjustRulesCommand adjustRulesCommand, 
@@ -67,7 +70,9 @@ namespace Errordite.Web.Controllers
             IDeleteIssueCommand deleteIssueCommand,
             IGetIssueReportDataQuery getIssueReportDataQuery, 
             IGetExtraDataKeysForIssueQuery getExtraDataKeysForIssueQuery, 
-			IAddCommentCommand addCommentCommand)
+			IAddCommentCommand addCommentCommand, 
+			IEncryptor encryptor,
+			IGetOrganisationQuery getOrganisationQuery)
         {
             _getIssueQuery = getIssueQuery;
             _adjustRulesCommand = adjustRulesCommand;
@@ -80,9 +85,56 @@ namespace Errordite.Web.Controllers
             _getIssueReportDataQuery = getIssueReportDataQuery;
             _getExtraDataKeysForIssueQuery = getExtraDataKeysForIssueQuery;
 	        _addCommentCommand = addCommentCommand;
+	        _encryptor = encryptor;
+	        _getOrganisationQuery = getOrganisationQuery;
         }
 
+		[
+		ImportViewData,
+		GenerateBreadcrumbs(BreadcrumbId.Issue, BreadcrumbId.Issues, WebConstants.CookieSettings.IssueSearchCookieKey)
+		]
+		public ActionResult Public(PublicIssuePostModel model)
+		{
+			var token = _encryptor.Decrypt(model.Token.Base64Decode()).Split(new []{'|'}, StringSplitOptions.RemoveEmptyEntries);
+
+			if (token.Length == 2)
+			{
+				var organisation = _getOrganisationQuery.Invoke(new GetOrganisationRequest
+				{
+					OrganisationId = token[0]
+				}).Organisation;
+
+				if (organisation != null)
+				{
+					AppContext.CurrentUser.ActiveOrganisation = organisation;
+					AppContext.CurrentUser.OrganisationId = organisation.Id;
+
+					using (Core.Session.SwitchOrg(organisation))
+					{
+						model.Id = token[1];
+
+						var viewModel = GetViewModel(model, new PageRequestWithSort(1, 10, CoreConstants.SortFields.TimestampUtc, sortDescending: true), true);
+
+						if (viewModel == null)
+						{
+							Response.StatusCode = 404;
+							return View("NotFound", new IssueNotFoundViewModel { Id = model.Id.GetFriendlyId() });
+						}
+
+						viewModel.ReadOnly = true;
+						viewModel.Errors.ReadOnly = true;
+
+						return View("index", viewModel);
+					}
+				}
+			}
+
+			ErrorNotification("Failed to determine issue from token");
+			return Redirect(Url.Home());
+		}
+
         [
+		Authorize,
         ImportViewData, 
         GenerateBreadcrumbs(BreadcrumbId.Issue, BreadcrumbId.Issues, WebConstants.CookieSettings.IssueSearchCookieKey),
         PagingView(DefaultSort = CoreConstants.SortFields.TimestampUtc, DefaultSortDescending = true)
@@ -108,9 +160,13 @@ namespace Errordite.Web.Controllers
             return View(viewModel);
         }
 
-        private IssueViewModel GetViewModel(IssueErrorsPostModel postModel, PageRequestWithSort paging)
+        private IssueViewModel GetViewModel(IssueErrorsPostModel postModel, PageRequestWithSort paging, bool useSystemUser = false)
         {
-            var issue = _getIssueQuery.Invoke(new GetIssueRequest { IssueId = postModel.Id, CurrentUser = Core.AppContext.CurrentUser }).Issue;
+            var issue = _getIssueQuery.Invoke(new GetIssueRequest
+	        {
+		        IssueId = postModel.Id, 
+				CurrentUser = useSystemUser ? Errordite.Core.Domain.Organisation.User.System() : Core.AppContext.CurrentUser
+	        }).Issue;
 
             if (issue == null)
                 return null;
@@ -184,7 +240,12 @@ namespace Errordite.Web.Controllers
                 },
                 Errors = GetErrorsViewModel(postModel, paging, extraDataKeys),
                 Update = updateViewModel,
-                Tab = postModel.Tab
+                Tab = postModel.Tab,
+				PublicUrl = "{0}/issue/public?token={1}".FormatWith(
+					_configuration.SiteBaseUrl, 
+					_encryptor.Encrypt("{0}|{1}".FormatWith(
+						Core.AppContext.CurrentUser.ActiveOrganisation.FriendlyId,
+						issue.FriendlyId)).Base64Encode())
             };
 
             //dont let users set an issue to unacknowledged
@@ -198,7 +259,7 @@ namespace Errordite.Web.Controllers
             return viewModel;
         }
 
-        [ImportViewData]
+		[ImportViewData]
         public ActionResult GetReportData(IssueDetailsPostModel postModel)
         {
             var request = new GetIssueReportDataRequest
@@ -228,13 +289,13 @@ namespace Errordite.Web.Controllers
             return new PlainJsonNetResult(data, true);
         }
 
-        [ImportViewData]
+		[Authorize, ImportViewData]
         public ActionResult NotFound(IssueNotFoundViewModel viewModel)
         {
             return View(viewModel);
         }
 
-        [PagingView(DefaultSort = Errordite.Core.CoreConstants.SortFields.TimestampUtc, DefaultSortDescending = true), ImportViewData]
+		[Authorize, PagingView(DefaultSort = Errordite.Core.CoreConstants.SortFields.TimestampUtc, DefaultSortDescending = true), ImportViewData]
         public ActionResult Errors(ErrorCriteriaPostModel postModel)
         {
             var paging = GetSinglePagingRequest();
@@ -285,6 +346,7 @@ namespace Errordite.Web.Controllers
             return model;
         }
 
+		[Authorize]
         public ActionResult History(string issueId)
         {
             var issueMemoizer = new LocalMemoizer<string, Issue>(id => _getIssueQuery.Invoke(new GetIssueRequest
@@ -347,7 +409,7 @@ namespace Errordite.Web.Controllers
             return name;
         }
 
-        [HttpPost, ValidateInput(false), ActionName("AdjustRules"), IfButtonClicked("WhatIf")]
+		[Authorize, HttpPost, ValidateInput(false), ActionName("AdjustRules"), IfButtonClicked("WhatIf")]
         public ActionResult WhatIfAdjustRules(UpdateIssuePostModel postModel)
         {
             if (!ModelState.IsValid)
@@ -380,7 +442,7 @@ namespace Errordite.Web.Controllers
                 });
         }
 
-        [HttpPost, ExportViewData, ValidateInput(false), IfButtonClicked("AdjustRules")]
+		[Authorize, HttpPost, ExportViewData, ValidateInput(false), IfButtonClicked("AdjustRules")]
         public ActionResult AdjustRules(UpdateIssuePostModel postModel)
         {
             if (!ModelState.IsValid)
@@ -449,7 +511,7 @@ namespace Errordite.Web.Controllers
             }
         }
 
-        [HttpPost, ExportViewData]
+		[Authorize, HttpPost, ExportViewData]
         public ActionResult Purge(string issueId)
         {
             try
@@ -473,7 +535,7 @@ namespace Errordite.Web.Controllers
             return RedirectToAction("index", new { id = issueId.GetFriendlyId(), tab = IssueTab.History.ToString() });
         }
 
-        [ActionName("Reprocess"), IfButtonClicked("WhatIf"), HttpPost]
+		[Authorize, ActionName("Reprocess"), IfButtonClicked("WhatIf"), HttpPost]
         public ActionResult WhatIfReprocess(string issueId)
         {
             var request = new ReprocessIssueErrorsRequest
@@ -505,7 +567,7 @@ namespace Errordite.Web.Controllers
             return Content(response.GetMessage(Issue.GetId(issueId)).ToString());
         }
 
-		[HttpPost, ExportViewData]
+		[Authorize, HttpPost, ExportViewData]
 		public ActionResult AddComment(AddCommentViewModel postModel)
 		{
 			if (!ModelState.IsValid)
@@ -529,8 +591,7 @@ namespace Errordite.Web.Controllers
 			return RedirectToAction("index", new { id = postModel.IssueId.GetFriendlyId(), tab = IssueTab.History.ToString() });
 		}
 
-        [HttpPost, ExportViewData]
-        [ActionName("Reprocess"), IfButtonClicked("Reprocess")]
+		[Authorize, HttpPost, ExportViewData, ActionName("Reprocess"), IfButtonClicked("Reprocess")]
         public ActionResult Reprocess(string issueId)
         {
             var request = new ReprocessIssueErrorsRequest
@@ -576,7 +637,7 @@ namespace Errordite.Web.Controllers
             return RedirectToAction("index", new { id = issueId.GetFriendlyId(), tab = IssueTab.Details.ToString() });
         }
 
-        [HttpPost, ExportViewData]
+		[Authorize, HttpPost, ExportViewData]
         public ActionResult Delete(string issueId)
         {
             _deleteIssueCommand.Invoke(new DeleteIssueRequest
