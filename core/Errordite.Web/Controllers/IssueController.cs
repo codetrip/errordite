@@ -90,44 +90,38 @@ namespace Errordite.Web.Controllers
         }
 
 		[
-		ImportViewData,
+        ExportViewData,
 		GenerateBreadcrumbs(BreadcrumbId.Issue, BreadcrumbId.Issues, WebConstants.CookieSettings.IssueSearchCookieKey)
 		]
 		public ActionResult Public(PublicIssuePostModel model)
-		{
-			var token = _encryptor.Decrypt(model.Token.Base64Decode()).Split(new []{'|'}, StringSplitOptions.RemoveEmptyEntries);
+        {
+            string[] parts;
+            var organisation = GetOrganisationForPublicAccess(model.Token, out parts);
 
-			if (token.Length == 2)
-			{
-				var organisation = _getOrganisationQuery.Invoke(new GetOrganisationRequest
-				{
-					OrganisationId = token[0]
-				}).Organisation;
+            if (organisation == null)
+            {
+                ErrorNotification("Failed to resolve organisarion for public access");
+                return new JsonErrorResult(redirect: Url.Home());
+            }
 
-				if (organisation != null)
-				{
-					AppContext.CurrentUser.ActiveOrganisation = organisation;
-					AppContext.CurrentUser.OrganisationId = organisation.Id;
+            using (Core.Session.SwitchOrg(organisation))
+            {
+                model.Id = parts[1];
 
-					using (Core.Session.SwitchOrg(organisation))
-					{
-						model.Id = token[1];
+                var viewModel = GetViewModel(model, new PageRequestWithSort(1, 10, CoreConstants.SortFields.TimestampUtc, sortDescending: true), true);
 
-						var viewModel = GetViewModel(model, new PageRequestWithSort(1, 10, CoreConstants.SortFields.TimestampUtc, sortDescending: true), true);
+                if (viewModel == null)
+                {
+                    Response.StatusCode = 404;
+                    return View("NotFound", new IssueNotFoundViewModel { Id = model.Id.GetFriendlyId() });
+                }
 
-						if (viewModel == null)
-						{
-							Response.StatusCode = 404;
-							return View("NotFound", new IssueNotFoundViewModel { Id = model.Id.GetFriendlyId() });
-						}
+                viewModel.ReadOnly = true;
+                viewModel.Token = model.Token;
+                viewModel.Errors.ReadOnly = true;
 
-						viewModel.ReadOnly = true;
-						viewModel.Errors.ReadOnly = true;
-
-						return View("index", viewModel);
-					}
-				}
-			}
+                return View("index", viewModel);
+            }
 
 			ErrorNotification("Failed to determine issue from token");
 			return Redirect(Url.Home());
@@ -243,9 +237,10 @@ namespace Errordite.Web.Controllers
                 Tab = postModel.Tab,
 				PublicUrl = "{0}/issue/public?token={1}".FormatWith(
 					_configuration.SiteBaseUrl, 
-					_encryptor.Encrypt("{0}|{1}".FormatWith(
-						Core.AppContext.CurrentUser.ActiveOrganisation.FriendlyId,
-						issue.FriendlyId)).Base64Encode())
+					_encryptor.Encrypt("{0}|{1}|{2}".FormatWith(
+                        Core.AppContext.CurrentUser.ActiveOrganisation.FriendlyId, 
+                        issue.FriendlyId, 
+                        Core.AppContext.CurrentUser.ActiveOrganisation.ApiKeySalt)).Base64Encode())
             };
 
             //dont let users set an issue to unacknowledged
@@ -261,6 +256,56 @@ namespace Errordite.Web.Controllers
 
 		[ImportViewData]
         public ActionResult GetReportData(IssueDetailsPostModel postModel)
+		{
+		    Dictionary<string, object> data;
+
+            if (postModel.Token.IsNotNullOrEmpty())
+            {
+                string[] parts;
+                var organisation = GetOrganisationForPublicAccess(postModel.Token, out parts);
+
+                if (organisation == null)
+                {
+                    ErrorNotification("Failed to resolve organisarion for public access");
+                    return new JsonErrorResult(redirect:Url.Home());
+                }
+
+                using (Core.Session.SwitchOrg(organisation))
+                {
+                    data = GetReportDataInternal(postModel);
+                }
+            }
+            else
+            {
+                data = GetReportDataInternal(postModel);
+            }
+
+            return new PlainJsonNetResult(data, true);
+        }
+
+        private Organisation GetOrganisationForPublicAccess(string token, out string[] parts)
+        {
+            parts = _encryptor.Decrypt(token.Base64Decode()).Split(new[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
+
+            if (parts.Length == 3)
+            {
+                var organisation = _getOrganisationQuery.Invoke(new GetOrganisationRequest
+                {
+                    OrganisationId = parts[0]
+                }).Organisation;
+
+                if (organisation != null && organisation.ApiKeySalt == parts[2])
+                {
+                    AppContext.CurrentUser.ActiveOrganisation = organisation;
+                    AppContext.CurrentUser.OrganisationId = organisation.Id;
+                    return organisation;
+                }
+            }
+
+            return null;
+        }
+
+        private Dictionary<string, object> GetReportDataInternal(IssueDetailsPostModel postModel)
         {
             var request = new GetIssueReportDataRequest
             {
@@ -284,12 +329,10 @@ namespace Errordite.Web.Controllers
                 }
             }
 
-            var data = _getIssueReportDataQuery.Invoke(request).Data;
-
-            return new PlainJsonNetResult(data, true);
+            return _getIssueReportDataQuery.Invoke(request).Data;
         }
 
-		[Authorize, ImportViewData]
+        [Authorize, ImportViewData]
         public ActionResult NotFound(IssueNotFoundViewModel viewModel)
         {
             return View(viewModel);
@@ -362,17 +405,17 @@ namespace Errordite.Web.Controllers
             var users = Core.GetUsers();
 
             var results = history.OrderByDescending(h => h.DateAddedUtc).Select(h =>
+            {
+                var user = users.Items.FirstOrDefault(u => u.Id == h.UserId);
+                return RenderPartial("Issue/HistoryItem", new IssueHistoryItemViewModel
                 {
-                    var user = users.Items.FirstOrDefault(u => u.Id == h.UserId);
-                    return RenderPartial("Issue/HistoryItem", new IssueHistoryItemViewModel
-                    {
-                        Message = h.GetMessage(users.Items, issueMemoizer, GetIssueLink),
-                        VerbalTime = h.DateAddedUtc.ToVerbalTimeSinceUtc(Core.AppContext.CurrentUser.ActiveOrganisation.TimezoneId),
-                        UserEmail = user != null ? user.Email : string.Empty,
-                        Username = user != null ? user.FullName : string.Empty,
-                        SystemMessage = h.SystemMessage,
-                    });
+                    Message = h.GetMessage(users.Items, issueMemoizer, GetIssueLink),
+                    VerbalTime = h.DateAddedUtc.ToVerbalTimeSinceUtc(Core.AppContext.CurrentUser.ActiveOrganisation.TimezoneId),
+                    UserEmail = user != null ? user.Email : string.Empty,
+                    Username = user != null ? user.FullName : string.Empty,
+                    SystemMessage = h.SystemMessage,
                 });
+            });
 
             return new JsonSuccessResult(results, allowGet:true);
         }

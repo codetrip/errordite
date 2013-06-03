@@ -27,23 +27,33 @@
 		<div id="status" class="item-info divider" style="width:175px;margin-bottom:5px;">
 			@Model.Details.Status
 		</div>
-		<div class="item-info divider" style="margin-bottom:5px;width:175px">
-			@(new Duration(Model.Details.NotifyFrequency).Description ?? "Never")
-		</div>
-		<div class="item-info heading" style="width:750px">
-			Public Url
-		</div>
-		<div class="item-info full" style="width:750px">
-			<a href="@Model.PublicUrl" style="cursor:pointer" target="_blank">@Model.PublicUrl</a>
-		</div>
+	    <div class="item-info divider" style="margin-bottom:5px;width:175px">
+	        @(new Duration(Model.Details.NotifyFrequency).Description ?? "Never")
+	    </div>
+        @if (!Model.ReadOnly)
+        {
+            <div class="item-info heading" style="width:750px">
+			    Public Url
+		    </div>
+		    <div class="item-info full" style="width:750px;padding-bottom: 5px;">
+			    <a href="@Model.PublicUrl" style="cursor:pointer" target="_blank">@Model.PublicUrl</a>
+		    </div>
+        }
 		@if (Model.Details.Reference.IsNotNullOrEmpty())
 		{
 			<div class="item-info heading" style="width:750px">
 				External Reference
 			</div>
-			<div class="item-info full" style="width:750px">
-				<a href="@Model.Details.Reference" style="cursor:pointer" target="_blank">@Model.Details.Reference</a>
-			</div>
+		    <div class="item-info full" style="width:750px;padding-bottom: 5px;">
+		        @if (Model.Details.Reference.Contains("http"))
+		        {
+		            <a href="@Model.Details.Reference" style="cursor: pointer" target="_blank">@Model.Details.Reference</a>
+		        }
+		        else
+		        {
+		            @Model.Details.Reference
+		        }
+		    </div>
 		}
 	</div>
 	@if (!Model.ReadOnly)

@@ -1,7 +1,7 @@
 (function() {
-
   jQuery(function() {
     var $issue, clearErrors, loadTabData, paging, renderHistory, renderReports;
+
     $issue = $('section#issue');
     if ($issue.length > 0) {
       paging = new window.Paging('/issue/errors?Id=' + $issue.find('#IssueId').val() + '&');
@@ -19,7 +19,7 @@
       renderReports = function() {
         $('div#date-graph').empty();
         $('div#hour-graph').empty();
-        return $.get("/issue/getreportdata?issueId=" + $issue.find('input#IssueId').val() + '&dateRange=' + $issue.find('input#DateRange').val(), function(d) {
+        return $.get("/issue/getreportdata?issueId=" + $issue.find('input#IssueId').val() + '&dateRange=' + $issue.find('input#DateRange').val() + '&token=' + $issue.find('input#Token').val(), function(d) {
           $.jqplot('hour-graph', [d.ByHour.y], {
             seriesDefaults: {
               renderer: $.jqplot.BarRenderer
@@ -63,6 +63,7 @@
       };
       renderHistory = function() {
         var $node, url;
+
         $node = $issue.find('table.history tbody');
         url = '/issue/history?IssueId=' + $issue.find('#IssueId').val();
         return $.get(url, function(data) {
@@ -85,6 +86,7 @@
           },
           success: function(data) {
             var msg;
+
             $('p#reprocess-result').empty();
             msg = $('<span/>').addClass('reprocess-what-if-msg').html(data);
             return $('p#reprocess-result').append(msg);
@@ -96,6 +98,7 @@
       });
       $issue.delegate('ul#action-list a.action', 'click', function(e) {
         var $modal, $reprocess, $this, action;
+
         e.preventDefault();
         $this = $(this);
         action = $this.data('action');
@@ -125,6 +128,7 @@
       });
       $issue.delegate('select#Status', 'change', function() {
         var $this;
+
         $this = $(this);
         if ($this.val() === 'Ignored') {
           return $issue.find('li.inline').removeClass('hidden');
