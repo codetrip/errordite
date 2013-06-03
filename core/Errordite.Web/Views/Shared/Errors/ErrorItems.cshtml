@@ -14,23 +14,33 @@
 					} 
                     <th>Exception</th>            
                     <th>Message</th>             
-                    <th class="version">Version</th>     
-                    <th class="sort-header received-on"><span>Received On</span> @Html.SortLinks(Model.Paging.PagingId, "Timestamp", "Received On")</th>
+	                <th class="version">Version</th>  
+	                @if (!Model.ReadOnly)
+	                {
+		                <th class="sort-header received-on"><span>Received On</span> @Html.SortLinks(Model.Paging.PagingId, "Timestamp", "Received On")</th>
+	                }
+	                else
+	                {
+		                <th>Received On</th>
+	                }
                 </tr>
             </thead>
-            <tbody>
-                @foreach (var error in Model.Errors)
-                {
-                    @Html.Partial("Errors/ErrorItem", error)
-                }
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="@(Model.HideIssues ? 5 : 6)">
-                        @Html.Partial("Pagination", Model.Paging) 
-                    </td>
-                </tr>
-            </tfoot>
+	        <tbody>
+		        @foreach (var error in Model.Errors)
+		        {
+			        @Html.Partial("Errors/ErrorItem", error)
+		        }
+	        </tbody>
+			@if (!Model.ReadOnly)
+			{
+				<tfoot>
+					<tr>
+						<td colspan="@(Model.HideIssues ? 5 : 6)">
+							@Html.Partial("Pagination", Model.Paging) 
+						</td>
+					</tr>
+				</tfoot>
+			}
         </table>
     }
     else if (Model.Errors != null)

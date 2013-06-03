@@ -12,13 +12,13 @@ jQuery ->
 					renderReports()
 				else if $tab.data("val") == "history"
 					renderHistory()
-				$tab.data 'loaded', true	
+				$tab.data 'loaded', true
 
 		renderReports = () -> 
 			$('div#date-graph').empty()
 			$('div#hour-graph').empty()
 
-			$.get "/issue/getreportdata?issueId=" + $issue.find('input#IssueId').val() + '&dateRange=' + $issue.find('input#DateRange').val(),
+			$.get "/issue/getreportdata?issueId=" + $issue.find('input#IssueId').val() + '&dateRange=' + $issue.find('input#DateRange').val() + '&token=' + $issue.find('input#Token').val(),
 				(d) -> 										
 					$.jqplot 'hour-graph', [d.ByHour.y], 
 						seriesDefaults: 
