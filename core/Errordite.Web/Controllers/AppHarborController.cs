@@ -169,7 +169,7 @@ namespace Errordite.Web.Controllers
             {
                 var client = new HttpClient();
                 client.DefaultRequestHeaders.Authorization
-                    = new AuthenticationHeaderValue("basic", Convert.ToBase64String(Encoding.ASCII.GetBytes("{0}:{1}".FormatWith(AuthUsername, AuthPassword))));
+                    = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes("{0}:{1}".FormatWith(AuthUsername, AuthPassword))));
 
                 var httpTask = client.GetAsync(org.CallbackUrl);
                 httpTask.Wait();
