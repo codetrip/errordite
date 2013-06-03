@@ -65,7 +65,9 @@ namespace Errordite.Core.Domain.Organisation
         {
             get { return "null"; }
         }
-	}
+
+        public string CallbackUrl { get; set; }
+    }
 
 	public class CampfireDetails
 	{
