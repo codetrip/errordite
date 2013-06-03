@@ -3,7 +3,7 @@
 @model Errordite.Web.Models.Errors.ExceptionViewModel
            
 <div class="info" @(Model.DisplayInfoTable() ? string.Empty : "style=display:none")>
-	<table class="table table-bordered table-condensed" style="margin-bottom:0">
+	<table class="table table-bordered table-condensed" style="margin-bottom:0;width: 99.5%;">
 		@if (Model.Info.Type.IsNotNullOrEmpty())
 		{
 			<tr>
