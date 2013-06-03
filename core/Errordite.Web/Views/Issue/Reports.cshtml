@@ -6,6 +6,7 @@
 @using (Html.BeginForm("getreportdata", "issue", FormMethod.Get, new {id = "reportform"}))
 {
     @Html.HiddenFor(m => m.IssueId)
+    @Html.HiddenFor(m => m.Token)
     <div class="form form-inline criteria">
         <ul>
             <li>
@@ -17,7 +18,7 @@
                 </div>
             </li>
             <li>
-                <input type="submit" class="btn btn-small btn-blue" value="Go" />
+                <input type="submit" class="btn btn-small btn-blue" style="margin-bottom:2px" value="Go" />
             </li>
         </ul>
     </div>

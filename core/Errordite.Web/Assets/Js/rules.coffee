@@ -4,6 +4,10 @@ jQuery ->
 
 	if $('section#issue, section#addissue').length > 0
 		$body = $ 'body'	
+
+		if $body.find('input#Token').val() != ''
+			return;
+
 		whatifresult = null;	
 		class Errordite.Rule			
 

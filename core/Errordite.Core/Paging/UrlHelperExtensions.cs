@@ -66,7 +66,7 @@ namespace Errordite.Core.Paging
                     new KeyValuePair<string, string>(PagingConstants.QueryStringParameters.PageSortDescending + pagingId, sortDescending.ToString()),
                     new KeyValuePair<string, string>(PagingConstants.QueryStringParameters.PageTab, tab)
                 },
-                sortDescending ? selected ? "Sorted by '{0}' descending".FormatWith(display) : "Sort by '{0}' descending".FormatWith(display) : selected ? "Sorted by '{0}' ascending".FormatWith(display) : "Sort by '{0}' ascending".FormatWith(display),
+                sortDescending ? selected ? "Sorted by '{0}' desc".FormatWith(display) : "Sort by '{0}' desc".FormatWith(display) : selected ? "Sorted by '{0}' asc".FormatWith(display) : "Sort by '{0}' asc".FormatWith(display),
                 sortDescending ? new[] { selected ? "sort sort-desc-selected tool-tip" : "sort sort-desc tool-tip" } : new[] { selected ? "sort sort-asc-selected tool-tip" : "sort sort-asc tool-tip" },
                 new
                 {
