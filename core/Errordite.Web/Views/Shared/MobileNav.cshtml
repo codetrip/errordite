@@ -1,0 +1,82 @@
+﻿@using Errordite.Core.Identity
+@using Errordite.Web.Extensions
+@using Errordite.Web.Models.Navigation
+
+@{
+   var appContext = ViewData.GetAppContext();
+}
+
+<nav class="main-nav">
+	<div class="mobile-nav">
+		<ul class="popup popup-pills">
+			<li class="dropdown">
+				<a class="dropdown-no-toggle" href="@Url.Contact()">Contact Us</a>
+			</li>
+			@if (appContext.AuthenticationStatus != AuthenticationStatus.Authenticated)
+			{
+				<li class="dropdown">
+					<a class="dropdown-no-toggle" href="@Url.SignIn()">Sign In</a>
+				</li>
+				<li class="dropdown">
+					<a class="dropdown-no-toggle" href="@Url.QuickStart()">Getting Started</a>
+				</li>
+				<li class="dropdown">
+					<a class="dropdown-no-toggle" href="@Url.About()">About</a>
+				</li>
+				<li class="dropdown">
+					<a class="dropdown-no-toggle" href="@Url.Pricing()">Pricing</a>
+				</li>
+				<li class="dropdown">
+					<a class="dropdown-no-toggle" href="@Url.Clients()">Clients</a>
+				</li>
+			}
+			else
+			{
+				<li class="dropdown">
+					<a class="dropdown-no-toggle" href="@Url.SignOut()">Sign Out</a>
+				</li>
+			}
+			@if (appContext.AuthenticationStatus == AuthenticationStatus.Authenticated)
+			{
+				<li class="dropdown" id="docs">
+					<a class="dropdown-toggle" data-toggle="dropdown" href="#docs">
+						Docs
+						<b class="caret"></b>
+					</a>
+					<ul class="dropdown-menu">
+						<li><a href="@Url.QuickStart()">Getting Started</a></li>
+						<li><a href="@Url.About()">About</a></li>
+						<li><a href="@Url.Pricing()">Pricing</a></li>
+						<li><a href="@Url.Clients()">Clients</a></li>
+					</ul>
+				</li>
+				<li class="dropdown" id="account">
+					<a class="dropdown-toggle" data-toggle="dropdown" href="#account">
+						Account
+						<b class="caret"></b>
+					</a>
+					<ul class="dropdown-menu">
+						<li><a href="@Url.Profile()">Edit your Profile</a></li>
+						@foreach (var adminPage in Breadcrumbs.GetById(BreadcrumbId.Admin, Url).Children)
+						{
+							<li><a href="@adminPage.Link">@adminPage.Title</a></li>
+						}
+					</ul>
+				</li>
+				<li class="dropdown" id="dashboard">
+					<a class="dropdown-toggle" data-toggle="dropdown" href="#dashboard">
+						Dashboard
+						<b class="caret"></b>
+					</a>
+					<ul class="dropdown-menu">
+						<li><a href="@Url.Issues()">Issues</a></li>
+						<li><a href="@Url.Errors()">Errors</a></li>
+						<li><a href="@Url.ActivityLog()">Activity Log</a></li>
+						<li><a href="@Url.AddIssue()">Add an Issue</a></li>
+					</ul>
+				</li>
+			}
+		</ul>
+	</div>
+	
+</nav>

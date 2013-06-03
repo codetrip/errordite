@@ -1,0 +1,27 @@
+﻿@model Errordite.Web.Models.Issues.IssueDetailsViewModel
+
+<div id="reprocess-modal" class="modal hide">
+	@using (Html.BeginForm("reprocess", "issue", FormMethod.Post, new { id = "reprocessForm" }))
+	{
+		@Html.HiddenFor(m => m.IssueId)
+		<div class="modal-header">
+			<h4 class="formodal">Reprocess Errors</h4>
+		</div>
+		<div class="modal-body">
+			<p>
+				Reprocessing the errors attached to this issue will try to attach each error to another suitable issue. 
+				Any errors for which there is no other suitable issue will remain attached to this issue.
+			</p>
+			<p>
+				If you want to know what would happen if you were to reprocess this issue's errors click <strong>What If?</strong>, 
+				this will run the reprocessing logic but will not actually move any errors.
+			</p>
+			<p id="reprocess-result"></p>
+		</div>  
+		<div class="modal-footer">
+			<input type="submit" class="btn btn-small btn-blue" value="Reprocess" name="reprocess" />
+			<input type="submit" class="btn btn-small btn-blue what-if-reprocess" value="What If?" name="whatif" />
+			<button class="btn btn-small btn-grey" data-dismiss="modal">Cancel</button>
+		</div>
+	}
+</div>

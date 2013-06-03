@@ -1,0 +1,53 @@
+﻿
+@using Errordite.Web.Models.Shared
+@model Errordite.Web.Models.Account.OrganisationSettingsViewModel
+           
+@{
+    ViewBag.Title = "Settings";
+}
+
+@section header
+{
+    @Html.Partial("Account/Tabs") 
+}
+
+<section class="centered">
+	<div class="content">
+		<div class="sidenav">
+            @Html.Partial("Account/SettingTabs", SettingTab.Organisation)
+            <div class="sidenav-content">
+	            <div class="sidenav-tab active">
+		            <p style="padding-bottom:10px">Update your organisation name and timezone below.</p>
+		            <div class="form">
+			            @using (Html.BeginForm("updateorganisation", "account"))
+			            {
+				            <ul>
+					            <li>
+									@Html.LabelFor(m => m.OrganisationName, "Organisation Name")
+									@Html.TextBoxFor(m => m.OrganisationName, new {maxlength = "30"})
+									@Html.ValidationMessageFor(m => m.OrganisationName)
+								</li>
+								<li>
+									@Html.LabelFor(m => m.PrimaryUserId, "Primary Contact")
+									@Html.DropDownListFor(m => m.PrimaryUserId, Model.Users)
+									<i data-title="Please select your organisations primary contact" class="icon-info"></i>
+									@Html.ValidationMessageFor(m => m.PrimaryUserId)
+								</li>
+					            <li>
+									@Html.LabelFor(m => m.OrganisationName, "Timezone") 
+						            @Html.DropDownListFor(m => m.TimezoneId, TimeZoneInfo.GetSystemTimeZones().Select(t => new SelectListItem {Selected = Model.TimezoneId == t.Id || (Model.TimezoneId == null && t.Id == "UTC"), Value = t.Id, Text = t.DisplayName}))									
+									<i data-title="All dates for your organisation will be stored in Errordite with this timezone setting" class="icon-info"></i>
+					            </li>
+					            <li class="buttons">
+						            <input type="submit" value="Save Changes" class="btn btn-medium btn-blue"/>
+					            </li>
+				            </ul>
+			            }
+		            </div>
+	            </div>
+            </div>
+        </div>
+	</div>
+</section>
+
+
