@@ -1,0 +1,79 @@
+﻿
+@using Errordite.Core.Extensions
+@model Errordite.Web.Models.Errors.ExceptionViewModel
+           
+<div class="info" @(Model.DisplayInfoTable() ? string.Empty : "style=display:none")>
+	<table class="table table-bordered table-condensed" style="margin-bottom:0;width: 99.5%;">
+		@if (Model.Info.Type.IsNotNullOrEmpty())
+		{
+			<tr>
+				<td class="word-break" style="width: 300px;">Exception Type</td>
+				<td class="word-break" data-error-attr="Type">@Model.Info.Type</td>
+			</tr>
+		}
+		@if(Model.Info.MethodName.IsNotNullOrEmpty())
+		{
+			<tr>
+				<td class="word-break" style="width: 300px;">Method</td>
+				<td class="word-break" data-error-attr="MethodName">@Model.Info.MethodName</td>
+			</tr>
+		}
+		@if (Model.Info.Module.IsNotNullOrEmpty())
+		{
+			<tr>
+				<td class="word-break" style="width: 300px;">Module</td>
+				<td class="word-break" data-error-attr="Module">@Model.Info.Module</td>
+			</tr>
+		}
+		@if (!Model.InnerException)
+		{
+			if (Model.Error.Url.IsNotNullOrEmpty())
+			{
+				<tr>
+					<td class="word-break" style="width: 300px;">Url</td>
+					<td class="word-break" data-error-attr="Url">@Model.Error.Url</td>
+				</tr>
+			}
+			if (Model.Error.UserAgent.IsNotNullOrEmpty())
+			{
+				<tr>
+					<td class="word-break" style="width: 300px;">User Agent</td>
+					<td class="word-break" data-error-attr="UserAgent">@Model.Error.UserAgent</td>
+				</tr>
+			}
+			if (Model.Error.MachineName.IsNotNullOrEmpty())
+			{
+				<tr>
+					<td class="word-break" style="width: 300px;">Machine Name</td>
+					<td class="word-break" data-error-attr="MachineName">@Model.Error.MachineName</td>
+				</tr>   
+			}  
+		
+            if (Model.Error.ContextData != null)
+            {
+                foreach (var kvp in Model.Error.ContextData)
+			    {
+				    <tr>
+					    <td class="word-break" style="width: 300px;">@kvp.Key</td>
+					    <td class="word-break" data-error-attr="@kvp.Key">@kvp.Value</td>
+				    </tr>
+			    }
+            }
+		}
+        
+		@if (Model.Info.ExtraData != null)
+		{
+			foreach (var kvp in Model.Info.ExtraData)
+			{
+				<tr>
+					<td class="word-break" style="width: 300px;">@kvp.Key</td>
+					<td class="word-break" data-error-attr="@kvp.Key">@kvp.Value</td>
+				</tr>
+			}
+		}
+	</table>
+</div>
+<div class="stacktrace-area">
+    <pre><span data-error-attr="Message" class="st-message">@Model.Info.Message</span>
+    <span data-error-attr="StackTrace" class="stacktrace">@Model.Info.StackTrace</span></pre>
+</div> 

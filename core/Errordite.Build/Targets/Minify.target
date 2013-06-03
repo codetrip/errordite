@@ -1,0 +1,120 @@
+<Project
+	xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
+	ToolsVersion="4.0"
+	DefaultTargets="MinifyResources">
+
+  <Import Project="$(MSBuildProjectDirectory)\..\Imports\Global.imports" />
+  <UsingTask TaskName="CompressorTask" AssemblyFile="$(SourcePath)\lib\Yahoo\Yahoo.Yui.Compressor.dll"></UsingTask>
+  
+  <Target Name="MinifyResources">
+
+    <PropertyGroup>
+      <MinifiedCssOutputPath Condition="'$(BuildNumber)'=='$(BaseBuildNumber)'">$(SourcePath)\core\Errordite.Web\Assets\Css\$(BaseBuildNumber).css</MinifiedCssOutputPath>
+      <MinifiedCssOutputPath Condition="'$(BuildNumber)'!='$(BaseBuildNumber)'">$(OutputPath)\Errordite.Web\Assets\Css\$(BuildNumber).css</MinifiedCssOutputPath>
+      
+      <MinifiedJsOutputPath Condition="'$(BuildNumber)'=='$(BaseBuildNumber)'">$(SourcePath)\core\Errordite.Web\Assets\Js\$(BaseBuildNumber).js</MinifiedJsOutputPath>
+      <MinifiedJsOutputPath Condition="'$(BuildNumber)'!='$(BaseBuildNumber)'">$(OutputPath)\Errordite.Web\Assets\Js\$(BuildNumber).js</MinifiedJsOutputPath>
+    </PropertyGroup>
+    
+    <!--Create the item group that will pull in all the relevant css and javascript-->
+    <ItemGroup>
+      <CssFiles Include="
+          $(SourcePath)\core\Errordite.Web\Assets\Css\lib\normalize.css;
+          $(SourcePath)\core\Errordite.Web\Assets\Css\lib\html5-boilerplate.css;
+          $(SourcePath)\core\Errordite.Web\Assets\Css\lib\prettify.css;
+          $(SourcePath)\core\Errordite.Web\Assets\Css\lib\jquery.jqplot.css;
+          $(SourcePath)\core\Errordite.Web\Assets\Css\lib\daterangepicker.css;
+          $(SourcePath)\core\Errordite.Web\Assets\Css\fonts.css;
+          $(SourcePath)\core\Errordite.Web\Assets\Css\errordite.css;">
+      </CssFiles>
+      <JavaScriptFiles Include="
+          $(SourcePath)\core\Errordite.Web\Assets\Js\lib\jquery-1.8.3.js;
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\prettify.js;
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\jquery.validate.js;
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\jquery.unobtrusive-ajax.js;
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\jquery.validate.unobtrusive.js;
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\jquery.placeholder.js;
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\jquery.form.js;
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\jquery.cookie.js;
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\underscore.js;
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\date.js;
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\daterangepicker.js;
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\bootstrap.js;
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\jqplot\jquery.jqplot.js;
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\jqplot\jqplot.barRenderer.js;
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\jqplot\jqplot.dateAxisRenderer.js;
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\jqplot\jqplot.categoryAxisRenderer.js;
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\jqplot\jqplot.highlighter.js;
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\global.js;
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\components.js;
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\applications.js;
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\home.js;
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\users.js;
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\search.js;
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\groups.js;
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\errors.js;
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\issues.js;
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\issue.js;
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\rules.js;
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\dashboard.js;
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\activity.js;
+          ">
+	  </JavaScriptFiles>
+    </ItemGroup>
+
+    <Delete Files="$(SourcePath)\core\Errordite.Web\js\$(BaseBuildNumber).js;
+                   $(SourcePath)\core\Errordite.Web\css\$(BaseBuildNumber).css" 
+            Condition="'$(BuildNumber)'=='$(BaseBuildNumber)'" />
+
+    <!--Compress the files-->
+    <CompressorTask
+        CssFiles="@(CssFiles)"
+        DeleteCssFiles="false"
+        CssOutputFile="$(MinifiedCssOutputPath)"
+        CssCompressionType="YuiStockCompression"
+        JavaScriptFiles="@(JavaScriptFiles)"
+        ObfuscateJavaScript="True"
+        PreserveAllSemicolons="True"
+        DisableOptimizations="Nope"
+        EncodingType="Default"
+        DeleteJavaScriptFiles="false"
+        LineBreakPosition="-1"
+        JavaScriptOutputFile="$(MinifiedJsOutputPath)"
+        LoggingType="ALittleBit"
+        IsEvalIgnored="false">
+    </CompressorTask>
+  </Target>
+
+  <Target Name="MinifyJqPlot">
+
+    <PropertyGroup>
+      <MinifiedJsOutputPath>$(SourcePath)\core\Errordite.Web\Assets\Js\lib\jqplot\jqplot.min.js</MinifiedJsOutputPath>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <JavaScriptFiles Include="
+			$(SourcePath)\core\Errordite.Web\Assets\Js\lib\jqplot\jquery.jqplot.js;
+			$(SourcePath)\core\Errordite.Web\Assets\Js\lib\jqplot\jqplot.barRenderer.js;
+			$(SourcePath)\core\Errordite.Web\Assets\Js\lib\jqplot\jqplot.dateAxisRenderer.js;
+			$(SourcePath)\core\Errordite.Web\Assets\Js\lib\jqplot\jqplot.categoryAxisRenderer.js;
+			$(SourcePath)\core\Errordite.Web\Assets\Js\lib\jqplot\jqplot.highlighter.js">
+	  </JavaScriptFiles>
+    </ItemGroup>
+
+    <Delete Files="$(SourcePath)\core\Errordite.Web\js\JqPlot\JqPlot.min.js;" />
+
+    <CompressorTask
+        JavaScriptFiles="@(JavaScriptFiles)"
+        ObfuscateJavaScript="True"
+        PreserveAllSemicolons="True"
+        DisableOptimizations="Nope"
+        EncodingType="Default"
+        DeleteJavaScriptFiles="false"
+        LineBreakPosition="-1"
+        JavaScriptOutputFile="$(MinifiedJsOutputPath)"
+        LoggingType="ALittleBit"
+        IsEvalIgnored="false">
+    </CompressorTask>
+  </Target>
+</Project>
+

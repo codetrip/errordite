@@ -1,0 +1,23 @@
+﻿@using Errordite.Core.Web
+@using Errordite.Web.Models.Issues
+@model RuleViewModel
+
+<tr class="rule">
+    <td>
+        @Html.DropDownListFor(m => m.ErrorProperty, Model.Properties, new {@class="rule-prop"})<br />
+        @Html.ValidationMessageFor(m => m.ErrorProperty)
+    </td>
+    <td>
+        @Html.DropDownListForEnum(m => m.StringOperator, Resources.Rules.ResourceManager, htmlAttributes: new { @class = "rule-operator"}, sortByLabel:true, defaultValue:"Equals")
+    </td>
+    <td>
+        @Html.TextAreaFor(m => m.Value, new {@class="rule-val"})<br />
+        @Html.ValidationMessageFor(m => m.Value)
+    </td>
+    <td>
+        <a class="delete" href="#">Remove</a>
+    </td>
+</tr>
+
+
+
