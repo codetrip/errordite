@@ -90,8 +90,13 @@ namespace Errordite.Web.Extensions
             return helper.Action("add", "issues", new { Area = string.Empty });
         }
 
-        public static string Issue(this UrlHelper helper, string id, IssueTab? tab = null)
+        public static string Issue(this UrlHelper helper, string id, IssueTab? tab = null, string token = null)
         {
+            if (token != null)
+            {
+                return helper.Action("public", "issue", tab != null ? (object)new { token, tab = tab.ToString().ToLowerInvariant(), Area = string.Empty } : new { id, Area = string.Empty });
+            }
+
             id = IdHelper.GetFriendlyId(id);
             return helper.Action("index", "issue", tab != null ? (object)new { id, tab = tab.ToString().ToLowerInvariant(), Area = string.Empty } : new { id, Area = string.Empty });
         }

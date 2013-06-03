@@ -14,7 +14,8 @@ namespace Errordite.Web.Models.Issues
         public IssueDetailsViewModel Details { get; set; }
 		public ErrorCriteriaViewModel Errors { get; set; }
 		public bool ReadOnly { get; set; }
-		public string PublicUrl { get; set; }
+        public string Token { get; set; }
+        public string PublicUrl { get; set; }
     }
 
     public class UpdateIssueViewModel : UpdateIssuePostModel
@@ -47,6 +48,7 @@ namespace Errordite.Web.Models.Issues
         public string UserName { get; set; }
         public string ApplicationName { get; set; }
         public string ErrorLimitStatus { get; set; }
+        public string Token { get; set; }
         public bool TestIssue { get; set; }
     }
 
@@ -54,6 +56,7 @@ namespace Errordite.Web.Models.Issues
     {
         public string DateRange { get; set; }
         public string IssueId { get; set; }
+        public string Token { get; set; }
     }
 
     public class IssueHistoryItemViewModel
