@@ -67,29 +67,16 @@ namespace Errordite.Web.Controllers
             }
 
             Trace(SummaryWriter.GetSummary(request));
-
-            var client = new HttpClient();
-            client.DefaultRequestHeaders.Authorization 
-                = new AuthenticationHeaderValue("basic", Convert.ToBase64String(Encoding.ASCII.GetBytes("{0}:{1}".FormatWith(AuthUsername, AuthPassword))));
             
-            var httpTask = client.GetAsync(request.callback_url);
-            httpTask.Wait();
-            httpTask.Result.EnsureSuccessStatusCode();
-
-            var contentTask = httpTask.Result.Content.ReadAsAsync<HerokuCallbackResponse>();
-            contentTask.Wait();
-
-            var callbackResponse = contentTask.Result;
-
             var org = _createOrganisationCommand.Invoke(new CreateOrganisationRequest()
                 {
                     Email = request.heroku_id,
                     FirstName = "Root",
                     LastName = "AppHarbor User",
-                    OrganisationName = callbackResponse.name, //TODO: allow for dup names
+                    OrganisationName = request.heroku_id,
                     Password = Membership.GeneratePassword(10, 5),
                     SpecialUser = SpecialUser.AppHarbor,
-                    CallbackUrl = callbackResponse.callback_url,
+                    CallbackUrl = request.callback_url,
                 });
 
             if (org.Status != CreateOrganisationStatus.Ok)
@@ -175,7 +162,27 @@ namespace Errordite.Web.Controllers
             
             if (mapping == null)
                 throw new HttpException(403, "Organisation {0} not found".FormatWith(id));
-            
+
+            var org = Core.Session.MasterRaven.Load<Organisation>(orgId);
+
+            if (org.Name == mapping.EmailAddress)
+            {
+                var client = new HttpClient();
+                client.DefaultRequestHeaders.Authorization
+                    = new AuthenticationHeaderValue("basic", Convert.ToBase64String(Encoding.ASCII.GetBytes("{0}:{1}".FormatWith(AuthUsername, AuthPassword))));
+
+                var httpTask = client.GetAsync(org.CallbackUrl);
+                httpTask.Wait();
+                httpTask.Result.EnsureSuccessStatusCode();
+
+                var contentTask = httpTask.Result.Content.ReadAsAsync<HerokuCallbackResponse>();
+                contentTask.Wait();
+
+                var callbackResponse = contentTask.Result;
+
+                org.Name = callbackResponse.name;
+            }
+
             var navData = Request.Form["nav-data"];
             var cookie = new HttpCookie("appharbor-nav-data", navData);
 
