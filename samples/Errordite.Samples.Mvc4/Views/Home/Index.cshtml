@@ -1,0 +1,12 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<h2>@ViewBag.Message</h2>
+<p>
+    @using (Html.BeginForm("error", "home")) {
+        @:Preset Error (number from 1 to 4 or leave blank): @Html.TextBox("index")
+        @:Message: @Html.TextBox("errorMessage", "test message")
+        <input type="submit" value="Create Error" />
+    }
+</p>

@@ -1,0 +1,19 @@
+﻿<Project
+	xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
+	ToolsVersion="4.0"
+	DefaultTargets="Main">
+
+  <Target Name="RecycleWebAppPool">
+
+    <Exec Command="&quot;C:\Windows\System32\inetsrv\appcmd.exe&quot; recycle apppool /apppool.name:$(ErrorditeWebsiteHostName)" />
+    
+  </Target>
+  
+  <Target Name="RecycleWebReceptionAppPool">
+
+    <Exec Command="&quot;C:\Windows\System32\inetsrv\appcmd.exe&quot; recycle apppool /apppool.name:$(ErrorditeReceiveHostName)" />
+
+  </Target>
+
+</Project>
+

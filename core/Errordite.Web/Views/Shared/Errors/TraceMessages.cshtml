@@ -1,0 +1,23 @@
+﻿
+@using Errordite.Core.Extensions
+@model IEnumerable<Errordite.Core.Domain.Error.TraceMessage>
+     
+<div class="messages">
+	<table class="table table-bordered table-condensed">
+		<thead>
+			<tr>   
+				<th style="width:155px">Timestamp</th>
+				<th>Message</th> 
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var msg in Model)
+			{
+				<tr> 
+					<td style="width:155px">@msg.Timestamp.ToLocalTimeFormatted()</td>
+					<td>@msg.Message</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+</div>
