@@ -12,7 +12,9 @@ namespace Errordite.Web.Models.Issues
         public IssueTab Tab { get; set; }
         public UpdateIssueViewModel Update { get; set; }
         public IssueDetailsViewModel Details { get; set; }
-        public ErrorCriteriaViewModel Errors { get; set; }
+		public ErrorCriteriaViewModel Errors { get; set; }
+		public bool ReadOnly { get; set; }
+		public string PublicUrl { get; set; }
     }
 
     public class UpdateIssueViewModel : UpdateIssuePostModel
@@ -89,6 +91,11 @@ namespace Errordite.Web.Models.Issues
         public string HistoryMessage { get; set; }
         public string Changeset { get; set; }
     }
+
+	public class PublicIssuePostModel : IssueErrorsPostModel
+	{
+		public string Token { get; set; }
+	}
 
     public class IssueErrorsPostModel : ErrorCriteriaPostModel
     {
