@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Errordite.Samples.Mvc2", "Errordite.Samples.Mvc2.csproj", "{DDB86E7C-D152-417D-9155-F230B564DFA5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Errordite.Samples.Mvc3", "..\Errordite.Samples.Mvc3\Errordite.Samples.Mvc3.csproj", "{1C92C6C1-F9D0-481C-8EF2-6B1E6B790E39}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Errordite.Samples.WebForms", "..\Errordite.Samples.WebForms\Errordite.Samples.WebForms.csproj", "{D05DD1B6-4934-4264-B048-B9319CF9A40F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DDB86E7C-D152-417D-9155-F230B564DFA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDB86E7C-D152-417D-9155-F230B564DFA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDB86E7C-D152-417D-9155-F230B564DFA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDB86E7C-D152-417D-9155-F230B564DFA5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C92C6C1-F9D0-481C-8EF2-6B1E6B790E39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C92C6C1-F9D0-481C-8EF2-6B1E6B790E39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C92C6C1-F9D0-481C-8EF2-6B1E6B790E39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C92C6C1-F9D0-481C-8EF2-6B1E6B790E39}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D05DD1B6-4934-4264-B048-B9319CF9A40F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D05DD1B6-4934-4264-B048-B9319CF9A40F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D05DD1B6-4934-4264-B048-B9319CF9A40F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D05DD1B6-4934-4264-B048-B9319CF9A40F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,29 @@
+﻿@using Errordite.Web.Models.Issues
+@using Errordite.Core.Extensions
+@model IssueDetailsViewModel
+
+<h2>Daily Distribution</h2>
+@using (Html.BeginForm("getreportdata", "issue", FormMethod.Get, new {id = "reportform"}))
+{
+    @Html.HiddenFor(m => m.IssueId)
+    @Html.HiddenFor(m => m.Token)
+    <div class="form form-inline criteria">
+        <ul>
+            <li>
+                <div id="daterange" class="daterange" style="width: 410px">
+                    @Html.HiddenFor(m => m.DateRange)
+                    <i class="icon-calendar"></i>
+                    <span>@(Model.DateRange.IsNullOrEmpty() ? "Select date range" : Model.DateRange)</span>
+                    <b class="caret"></b>
+                </div>
+            </li>
+            <li>
+                <input type="submit" class="btn btn-small btn-blue" style="margin-bottom:2px" value="Go" />
+            </li>
+        </ul>
+    </div>
+}
+<div class="content graph" id="date-graph"></div>
+<h2>Hourly Distribution</h2>
+<div class="content graph" id="hour-graph"></div>
+    

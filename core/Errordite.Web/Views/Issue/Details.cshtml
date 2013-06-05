@@ -1,0 +1,98 @@
+﻿@using Errordite.Core
+@using Errordite.Web.Models.Issues
+@using Errordite.Core.Extensions
+@model IssueViewModel
+
+<h2 class="section-header border"><i class="icon-files"></i>Issue Details</h2>
+<div class="boxed-item issue-details">
+	<div class="item-content">
+		<div class="item-info heading" style="width:200px">
+			Assigned To
+		</div>
+		<div class="item-info heading divider" style="width:200px">
+			Application
+		</div>
+		<div class="item-info heading divider" style="width:175px">
+			Status
+		</div>
+		<div class="item-info heading divider" style="width:175px">
+			Notification Frequency
+		</div>
+		<div class="item-info" style="width:200px;margin-bottom:5px;">
+			@Model.Details.UserName
+		</div>
+		<div class="item-info divider" style="width:200px;margin-bottom:5px;">
+			@Model.Details.ApplicationName
+		</div>
+		<div id="status" class="item-info divider" style="width:175px;margin-bottom:5px;">
+			@Model.Details.Status
+		</div>
+	    <div class="item-info divider" style="margin-bottom:5px;width:175px">
+	        @(new Duration(Model.Details.NotifyFrequency).Description ?? "Never")
+	    </div>
+        @if (!Model.ReadOnly)
+        {
+            <div class="item-info heading" style="width:750px">
+			    Public Url
+		    </div>
+		    <div class="item-info full" style="width:900px;padding-bottom: 5px;">
+			    <a href="@Model.PublicUrl" style="cursor:pointer" target="_blank">@Model.PublicUrl</a>
+		    </div>
+        }
+		@if (Model.Details.Reference.IsNotNullOrEmpty())
+		{
+			<div class="item-info heading" style="width:750px">
+				External Reference
+			</div>
+		    <div class="item-info full" style="width:900px;padding-bottom: 5px;">
+		        @if (Model.Details.Reference.Contains("http"))
+		        {
+		            <a href="@Model.Details.Reference" style="cursor: pointer" target="_blank">@Model.Details.Reference</a>
+		        }
+		        else
+		        {
+		            @Model.Details.Reference
+		        }
+		    </div>
+		}
+	</div>
+	@if (!Model.ReadOnly)
+	{
+		<div class="update-details">
+			<ul id="action-list" class="popup popup-pills">
+				<li class="dropdown blue-pills" id="actions">
+					<a class="dropdown-toggle" data-toggle="dropdown" href="#actions">
+						Issue Actions
+						<b class="caret"></b>
+					</a>
+					<ul id="issue-actions" class="dropdown-menu pull-right" style="width: 208px;">
+						<li><a href="#" id="edit-details">Edit Details</a></li>
+						<li><a href="#" class="action" data-action="comment">Add Comment</a></li>
+						<li class="divider"></li>
+						<li>
+							@using (Html.BeginForm("delete", "issue", FormMethod.Post, new {style = "display:inline-block;width:95%"}))
+							{
+								@Html.Hidden("IssueId", Model.Details.IssueId)
+								<a href="#" class="action" data-action="delete" data-confirmtext="Are you sure you wish to delete this issue?">Delete Issue</a>
+							}
+						</li> 
+						<li>
+							@using (Html.BeginForm("purge", "issue", FormMethod.Post, new { style = "display:inline-block;width:95%" }))
+							{
+								@Html.Hidden("IssueId", Model.Details.IssueId)
+								<a href="#" class="action" data-action="purge" data-confirmtext="Are you sure you wish to delete all the errors associated with this issue?">Delete Errors</a>
+							}
+						</li>
+						<li><a href="#" class="action" data-action="reprocess">Reprocess Errors</a></li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+	}
+	
+</div>
+
+<h2 class="section-header border"><i class="icon-file"></i>Issue Errors</h2>
+<div id="error-items" data-val="@Model.Details.IssueId" class="ajax-container">
+    @Html.Partial("Errors/ErrorItems", Model.Errors)
+</div>

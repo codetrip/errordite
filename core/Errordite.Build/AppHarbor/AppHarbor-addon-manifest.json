@@ -1,0 +1,17 @@
+{
+  "id": "errordite",
+  "api": {
+    "config_vars": [ "ERRORDITE_TOKEN" ],
+    "regions": [ "us" ],
+    "password": "e882f2896c5eb768ba566f52ee2d80fa",
+    "sso_salt": "3a31b4e7de2e95d545050da8b522571f",
+    "production": {
+      "base_url": "https://yourapp.com/heroku/resources",
+      "sso_url": "https://yourapp.com/sso/login"
+    },
+    "test": {
+      "base_url": "http://dev-site.errordite.com/appharbor/resources",
+      "sso_url": "http://dev-site.errordite.com/sso/login"
+    }
+  }
+}
