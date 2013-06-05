@@ -1738,6 +1738,7 @@ section {
     background-repeat: no-repeat;
     background-position: center;
 }
+
 /*-----------------------------------------------------------------------------------*/
 /* SPECIFICS
 /*-----------------------------------------------------------------------------------*/
@@ -1746,6 +1747,12 @@ section {
   float: left;
   width: 295px;
   margin: 15px 0 0 5px;
+}
+
+.logo-anonymous {
+  float: left;
+  width: 120px;
+  margin: 11px 0 0 5px;
 }
 
 .search {
@@ -1803,6 +1810,10 @@ nav {
 	float:right;
     border-bottom:2px solid $darkestbrown; 
     width:540px;
+	z-index:9985;
+  }
+  &.main-nav-anonymous {
+	float:right;
 	z-index:9985;
   }
   .nav {
