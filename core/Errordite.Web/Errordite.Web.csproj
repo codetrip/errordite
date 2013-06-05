@@ -271,8 +271,11 @@
     </Content>
     <Content Include="Assets\Css\img\nav-background.png" />
     <Content Include="Assets\Images\application.png" />
+    <Content Include="Assets\Images\dragIcon.gif" />
+    <Content Include="Assets\Images\dragIconH.gif" />
     <Content Include="Assets\Images\edit.png" />
     <Content Include="Assets\Images\error.png" />
+    <Content Include="Assets\Images\lens.png" />
     <Content Include="Assets\Images\person.png" />
     <Content Include="Assets\Images\trash.png" />
     <Content Include="Assets\Js\activity.js">
@@ -427,6 +430,7 @@
     <Content Include="Assets\Js\issues.js">
       <DependentUpon>issues.coffee</DependentUpon>
     </Content>
+    <Content Include="Assets\Js\lib\amcharts.js" />
     <Content Include="Assets\Js\lib\bootstrap.js" />
     <Content Include="Assets\Js\lib\date.js" />
     <Content Include="Assets\Js\lib\daterangepicker.js" />

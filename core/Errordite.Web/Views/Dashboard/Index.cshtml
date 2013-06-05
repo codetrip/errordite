@@ -45,7 +45,7 @@
                     }
                     
                     <p>
-                        To get started for real download the client and configure it into your application - details @Html.ActionLink("here", "client", "help").  
+                        To get started for real download the client and configure it into your application - details @Html.ActionLink("here", "clients", "docs").  
                     </p>
 
                     @if (Model.TestIssueId != null)
@@ -62,7 +62,7 @@
         @if (Model.HasApplications)
         {
             <h2 class="section-header"><i class="icon-barchart"></i>Errors from the last 7 days</h2>
-            <div class="content graph" id="date-graph"></div>
+            <div id="graph" style="width: 600px; height: 250px;"></div>
             
             <div class="two-col">
                 <h2 class="section-header"><i class="icon-files"></i>Most Recent Issues</h2>
