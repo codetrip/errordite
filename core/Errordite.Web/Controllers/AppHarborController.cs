@@ -24,6 +24,7 @@ namespace Errordite.Web.Controllers
 {
     public class HerokuRequest
     {
+        public string id { get; set; }
         public string heroku_id { get; set; }
         public string plan { get; set; }
         public string callback_url { get; set; }
@@ -49,12 +50,14 @@ namespace Errordite.Web.Controllers
         private ICreateOrganisationCommand _createOrganisationCommand;
         private IDeleteOrganisationCommand _deleteOrganisationCommand;
         private IAuthenticationManager _authenticationManager;
+        private ISetExternallyBilledSubscriptionCommand _setExternallyBilledSubscriptionCommand;
 
-        public AppHarborController(ICreateOrganisationCommand createOrganisationCommand, IDeleteOrganisationCommand deleteOrganisationCommand, IAuthenticationManager authenticationManager)
+        public AppHarborController(ICreateOrganisationCommand createOrganisationCommand, IDeleteOrganisationCommand deleteOrganisationCommand, IAuthenticationManager authenticationManager, ISetExternallyBilledSubscriptionCommand setExternallyBilledSubscriptionCommand)
         {
             _createOrganisationCommand = createOrganisationCommand;
             _deleteOrganisationCommand = deleteOrganisationCommand;
             _authenticationManager = authenticationManager;
+            _setExternallyBilledSubscriptionCommand = setExternallyBilledSubscriptionCommand;
         }
 
         [HttpPost, ActionName("Resources")]
@@ -86,9 +89,23 @@ namespace Errordite.Web.Controllers
                 return Content(org.Status.ToString());
             }
 
+            var setPlanResponse = _setExternallyBilledSubscriptionCommand.Invoke(new SetExternallyBilledSubscriptionRequest()
+                {
+                    ExternalPlanId = request.plan,
+                    PlanType = PaymentPlanType.AppHarbor,
+                    OrganisationId = org.OrganisationId,
+                });
+
+            if (setPlanResponse.Status != SetExternallyBilledSubscriptionStatus.Ok)
+            {
+                Trace(setPlanResponse.Status.ToString());
+                Response.StatusCode = 503;
+                return new PlainJsonNetResult(new {message = setPlanResponse.Status.ToString()});
+            }
+
             //create organisation & application with AppHarbor user
             var application = Core.Session.Raven.Load<Application>(org.ApplicationId);
-            return new PlainJsonNetResult(new{id = IdHelper.GetFriendlyId(org.OrganisationId), config = new {ERRORDITE_TOKEN = application.Token, ERRORDITE_URL = "https://www.errordite.com/receiveerror"}});
+            return new PlainJsonNetResult(new{id = IdHelper.GetFriendlyId(org.OrganisationId), config = new {ERRORDITE_TOKEN = application.Token, ERRORDITE_URL = "https://www.errordite.com/receiveerror"}, message = "Welcome to Errordite!"});
         }
 
         [HttpDelete, ActionName("Resources")]
@@ -116,7 +133,19 @@ namespace Errordite.Web.Controllers
                 return Content("Unauthorized");
             }
 
-            //TODO: implement plan change
+            var response = _setExternallyBilledSubscriptionCommand.Invoke(new SetExternallyBilledSubscriptionRequest()
+                {
+                    ExternalPlanId = request.plan,
+                    PlanType = PaymentPlanType.AppHarbor,
+                    OrganisationId = request.id,
+                });
+
+            if (response.Status != SetExternallyBilledSubscriptionStatus.Ok)
+            {
+                //TODO: log exception
+                Response.StatusCode = 503;
+                return new PlainJsonNetResult(new {message = "Plan not found. We at Errordite will look into this.  In the mean time please choose another plan."});
+            }
 
             return new PlainJsonNetResult(new{});
         }
@@ -163,6 +192,7 @@ namespace Errordite.Web.Controllers
             if (mapping == null)
                 throw new HttpException(403, "Organisation {0} not found".FormatWith(id));
 
+            //TODO: move this into a command (invalidate cache needed I think)
             var org = Core.Session.MasterRaven.Load<Organisation>(orgId);
 
             if (org.Name == mapping.EmailAddress)
