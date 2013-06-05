@@ -27,7 +27,7 @@ jQuery ->
 						dashboard.error()
 					dataType: "json"
 					complete: ->
-						setTimeout dashboard.poll, 15000
+						#setTimeout dashboard.poll, 15000
 				true
 			rendergraph: ->
 				$.ajax
@@ -45,7 +45,7 @@ jQuery ->
 							console.log new Date(data.x[i])
 							chartdata.push
 								date: new Date(data.x[i])
-								errors: Math.round(Math.random() * 40)
+								errors: data.y[i]
 							i++
 						
 						chart.dataProvider = chartdata
@@ -58,11 +58,12 @@ jQuery ->
 						categoryAxis.gridAlpha = 0.07
 						categoryAxis.axisColor = "#DADADA"
 						categoryAxis.showFirstLabel = true
-						categoryAxis.showLastLabel = true
-						categoryAxis.startOnAxis = true
+						categoryAxis.showLastLabel = false
+						categoryAxis.startOnAxis = false
 
 						valueAxis = new AmCharts.ValueAxis()
 						valueAxis.gridAlpha = 0.07
+						valueAxis.dashLength = 5;
 
 						guide = new AmCharts.Guide();
 						guide.value = 0;
@@ -87,6 +88,14 @@ jQuery ->
 						chartCursor.categoryBalloonDateFormat = "DD MMMM"
 						chart.addChartCursor(chartCursor)
 						chart.write("graph")
+
+						$watermark = $('div#graph svg g:last')
+						$rect = $watermark.find 'rect'
+						$rect.removeAttr "height"
+						$rect.removeAttr "y"
+						$text = $watermark.find 'tspan'
+						$text.attr "y", "-1"
+						$text.attr "x", "-8"
 					error: ->
 						dashboard.error()
 					dataType: "json"
@@ -119,5 +128,5 @@ jQuery ->
 		dashboard = new Dashboard();
 		dashboard.rendergraph();
 
-		setTimeout dashboard.poll, 15000
+		#setTimeout dashboard.poll, 15000
 		true

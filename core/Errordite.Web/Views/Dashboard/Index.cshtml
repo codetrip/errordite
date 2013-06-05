@@ -61,11 +61,11 @@
 
         @if (Model.HasApplications)
         {
-            <h2 class="section-header"><i class="icon-barchart"></i>Errors from the last 7 days</h2>
-            <div id="graph" style="width: 600px; height: 250px;"></div>
+            <h2 class="section-header dashboard">Errors from the last month</h2>
+            <div id="graph" style="width: 100%; height: 300px; margin-bottom:20px"></div>
             
             <div class="two-col">
-                <h2 class="section-header"><i class="icon-files"></i>Most Recent Issues</h2>
+                <h2 class="section-header dashboard">Recent Issues</h2>
                 <div id="issues">
                     @foreach(var issue in Model.RecentIssues)
                     {
@@ -75,7 +75,7 @@
 				
             </div>
             <div class="two-col">
-                <h2 class="section-header"><i class="icon-file"></i>Most Recent Errors</h2>
+                <h2 class="section-header dashboard">Recent Errors</h2>
                 <div id="errors">
                     @foreach (var error in Model.RecentErrors)
                     {

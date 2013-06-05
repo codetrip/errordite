@@ -1,11 +1,10 @@
 (function() {
-
   jQuery(function() {
     var $root, Dashboard, dashboard;
+
     $root = $('section#dashboard');
     if ($root.length > 0) {
       Dashboard = (function() {
-
         function Dashboard() {
           this.issueContainer = $('div#issues');
           this.errorContainer = $('div#errors');
@@ -31,9 +30,7 @@
               return dashboard.error();
             },
             dataType: "json",
-            complete: function() {
-              return setTimeout(dashboard.poll, 15000);
-            }
+            complete: function() {}
           });
           return true;
         };
@@ -42,7 +39,8 @@
           $.ajax({
             url: "/dashboard/getgraphdata?applicationId=" + $('input#ApplicationId').val(),
             success: function(data) {
-              var categoryAxis, chart, chartCursor, chartdata, graph, guide, i, valueAxis;
+              var $rect, $text, $watermark, categoryAxis, chart, chartCursor, chartdata, graph, guide, i, valueAxis;
+
               chart = new AmCharts.AmSerialChart();
               chart.pathToImages = "http://www.amcharts.com/lib/images/";
               chart.autoMarginOffset = 3;
@@ -53,7 +51,7 @@
                 console.log(new Date(data.x[i]));
                 chartdata.push({
                   date: new Date(data.x[i]),
-                  errors: Math.round(Math.random() * 40)
+                  errors: data.y[i]
                 });
                 i++;
               }
@@ -66,10 +64,11 @@
               categoryAxis.gridAlpha = 0.07;
               categoryAxis.axisColor = "#DADADA";
               categoryAxis.showFirstLabel = true;
-              categoryAxis.showLastLabel = true;
-              categoryAxis.startOnAxis = true;
+              categoryAxis.showLastLabel = false;
+              categoryAxis.startOnAxis = false;
               valueAxis = new AmCharts.ValueAxis();
               valueAxis.gridAlpha = 0.07;
+              valueAxis.dashLength = 5;
               guide = new AmCharts.Guide();
               guide.value = 0;
               guide.toValue = 1000000;
@@ -90,7 +89,14 @@
               chartCursor.cursorPosition = "mouse";
               chartCursor.categoryBalloonDateFormat = "DD MMMM";
               chart.addChartCursor(chartCursor);
-              return chart.write("graph");
+              chart.write("graph");
+              $watermark = $('div#graph svg g:last');
+              $rect = $watermark.find('rect');
+              $rect.removeAttr("height");
+              $rect.removeAttr("y");
+              $text = $watermark.find('tspan');
+              $text.attr("y", "-1");
+              return $text.attr("x", "-8");
             },
             error: function() {
               return dashboard.error();
@@ -102,6 +108,7 @@
 
         Dashboard.prototype.bind = function(data) {
           var e, i, _i, _j, _len, _len1, _ref, _ref1;
+
           console.log("binding");
           _ref = data.issues;
           for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -133,6 +140,7 @@
 
         Dashboard.prototype.purgeItems = function($container) {
           var count, _results;
+
           count = $container.find(' > div').length;
           _results = [];
           while (count > 100) {
@@ -147,7 +155,6 @@
       })();
       dashboard = new Dashboard();
       dashboard.rendergraph();
-      setTimeout(dashboard.poll, 15000);
       return true;
     }
   });

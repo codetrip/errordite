@@ -17,7 +17,7 @@ namespace Errordite.Core.Issues.Queries
         {
             Trace("Starting...");
 
-            var startDate = DateTime.UtcNow.Date.AddDays(-7);
+            var startDate = DateTime.UtcNow.Date.AddMonths(-1).Date;
             var endDate = DateTime.UtcNow.Date.AddHours(2);
             object data;
 
