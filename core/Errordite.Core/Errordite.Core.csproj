@@ -410,6 +410,7 @@
     <Compile Include="Notifications\Sending\NullSender.cs" />
     <Compile Include="Notifications\Sending\SmtpEmailSender.cs" />
     <Compile Include="Organisations\Commands\ActivateOrganisationCommand.cs" />
+    <Compile Include="Organisations\Commands\ChangeAppHarborSubscriptionCommand.cs" />
     <Compile Include="Organisations\Commands\CompleteSignUpCommand.cs" />
     <Compile Include="Organisations\Commands\CancelSubscriptionCommand.cs" />
     <Compile Include="Organisations\Commands\SetOrganisationHipChatSettingsCommand.cs" />

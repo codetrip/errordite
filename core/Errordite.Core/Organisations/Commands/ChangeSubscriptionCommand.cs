@@ -79,8 +79,8 @@ namespace Errordite.Core.Organisations.Commands
                 }
             }
 
-            var connection = new ChargifyConnect(_configuration.ChargifyUrl, _configuration.ChargifyApiKey, _configuration.ChargifyPassword);
-			var subscription = connection.LoadSubscription(organisation.Subscription.ChargifyId.Value);
+            var chargifyConnect = new ChargifyConnect(_configuration.ChargifyUrl, _configuration.ChargifyApiKey, _configuration.ChargifyPassword);
+			var subscription = chargifyConnect.LoadSubscription(organisation.Subscription.ChargifyId.Value);
 
             if (subscription == null)
             {
@@ -94,13 +94,13 @@ namespace Errordite.Core.Organisations.Commands
 
 			if (newPlan.IsFreeTier)
 			{
-				connection.DeleteSubscription(organisation.Subscription.ChargifyId.Value, "Downgrade");
+				chargifyConnect.DeleteSubscription(organisation.Subscription.ChargifyId.Value, "Downgrade");
 				organisation.Subscription.ChargifyId = null;
 				organisation.Subscription.Status = SubscriptionStatus.Trial;
 			}
 			else
 			{
-				subscription = connection.EditSubscriptionProduct(organisation.Subscription.ChargifyId.Value, request.NewPlanName.ToLowerInvariant());
+				subscription = chargifyConnect.EditSubscriptionProduct(organisation.Subscription.ChargifyId.Value, request.NewPlanName.ToLowerInvariant());
 				organisation.Subscription.ChargifyId = subscription.SubscriptionID;
 				organisation.Subscription.Status = SubscriptionStatus.Active;
 			}
