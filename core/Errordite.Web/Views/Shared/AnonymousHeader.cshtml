@@ -1,0 +1,37 @@
+﻿@using Errordite.Web.Extensions
+
+<div class="welcome-bar-container anonymous">
+	<div class="welcome-bar">
+		 <div class="logo-anonymous">
+            <a href="@Url.Home(ViewData.GetAppContext())"><img alt="Errordite: Home" src="@Url.Content("~/Assets/Images/header-logo.png")"/></a>
+        </div>
+		<nav class="main-nav-anonymous">
+			
+			<ul class="nav">
+				<li class="nav-item">
+					<div class="pull-right" style="margin-top:4px">
+						<a href="@Url.SignUp()" class="btn btn-pink btn-small">Sign Up For Free</a>
+					</div>
+				</li>
+				<li class="nav-item">
+					<a href="@Url.Contact()">Contact Us</a>
+				</li>
+				<li class="nav-item">
+					<a href="@Url.SignIn()">Sign In</a>
+				</li>
+				<li class="nav-item">
+					<a href="@Url.QuickStart()">Getting Started</a>
+				</li>
+				<li class="nav-item">
+					<a href="@Url.About()">About</a>
+				</li>
+				<li class="nav-item">
+					<a href="@Url.Pricing()">Pricing</a>
+				</li>
+				<li class="nav-item">
+					<a href="@Url.Clients()">Clients</a>
+				</li>
+			</ul>
+		</nav>
+	</div>
+</div>

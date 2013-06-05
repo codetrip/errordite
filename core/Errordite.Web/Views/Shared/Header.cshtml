@@ -1,5 +1,4 @@
 ﻿@using Errordite.Core.Domain.Organisation
-@using Errordite.Core.Identity
 @using Errordite.Web
 @using Errordite.Web.Extensions
 @using System.Linq
@@ -18,8 +17,7 @@
     <div class="welcome-bar">
         
 	    <div class="applications">
-		    @if (appContext.AuthenticationStatus == AuthenticationStatus.Authenticated)
-		    {
+		    @{
 			    var applications = ViewData.GetCore().GetApplications().Items;
 			    var selectedApplication = applications.FirstOrDefault(a => a.FriendlyId == ViewData.GetSelectedApplication());
 			    var selectedApplicationName = selectedApplication == null ? null : selectedApplication.Name;
@@ -93,19 +91,12 @@
 	    <div class="search">
 		    @using (Html.BeginForm("index", "search", FormMethod.Get))
 		    {
-			    <div class="search-box" data-title="@(appContext.AuthenticationStatus != AuthenticationStatus.Authenticated ? "Please sign in to enable search" : string.Empty)">
+			    <div class="search-box">
 				    <i class="icon-search"></i>
-				    <input autocomplete="off" class="search-input" id="q" name="q" placeholder="Search your errors & issues..." type="text"  @(appContext.AuthenticationStatus != AuthenticationStatus.Authenticated ? "disabled=disabled" : string.Empty) />
-				    <input type="submit" class="search-btn" value="Go" @(appContext.AuthenticationStatus != AuthenticationStatus.Authenticated ? "disabled=disabled" : string.Empty) />
+				    <input autocomplete="off" class="search-input" id="q" name="q" placeholder="Search your errors & issues..." type="text" />
+				    <input type="submit" class="search-btn" value="Go" />
 			    </div>
 		    }
 	    </div>
-		@if (appContext.AuthenticationStatus == AuthenticationStatus.Anonymous && Request.Url != null && !Request.Url.AbsolutePath.IsIn(Url.Home(), Url.SignUp()))
-		{
-			<div class="pull-right" style="margin-top:17px">
-				<a href="@Url.SignUp()" class="btn btn-pink btn-small">Sign Up For Free</a>
-			</div>
-		}
-        
     </div>
 </div>
