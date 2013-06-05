@@ -6,8 +6,6 @@
     if ($root.length > 0) {
       Dashboard = (function() {
 
-        Dashboard.name = 'Dashboard';
-
         function Dashboard() {
           this.issueContainer = $('div#issues');
           this.errorContainer = $('div#errors');
@@ -44,30 +42,55 @@
           $.ajax({
             url: "/dashboard/getgraphdata?applicationId=" + $('input#ApplicationId').val(),
             success: function(data) {
-              if (dashboard.plot != null) {
-                dashboard.plot.destroy();
+              var categoryAxis, chart, chartCursor, chartdata, graph, guide, i, valueAxis;
+              chart = new AmCharts.AmSerialChart();
+              chart.pathToImages = "http://www.amcharts.com/lib/images/";
+              chart.autoMarginOffset = 3;
+              chart.marginRight = 15;
+              chartdata = [];
+              i = 0;
+              while (i < data.x.length) {
+                console.log(new Date(data.x[i]));
+                chartdata.push({
+                  date: new Date(data.x[i]),
+                  errors: Math.round(Math.random() * 40)
+                });
+                i++;
               }
-              return dashboard.plot = $.jqplot('date-graph', [_.zip(data.x, data.y)], {
-                seriesDefaults: {
-                  renderer: $.jqplot.LineRenderer
-                },
-                axes: {
-                  xaxis: {
-                    renderer: $.jqplot.DateAxisRenderer,
-                    tickOptions: {
-                      formatString: '%a %#d %b'
-                    }
-                  },
-                  yaxis: {
-                    min: 0,
-                    tickInterval: (_.max(data.y)) > 3 ? null : 1
-                  }
-                },
-                highlighter: {
-                  show: true,
-                  sizeAdjust: 7.5
-                }
-              });
+              chart.dataProvider = chartdata;
+              chart.categoryField = "date";
+              categoryAxis = chart.categoryAxis;
+              categoryAxis.parseDates = true;
+              categoryAxis.equalSpacing = true;
+              categoryAxis.minPeriod = "DD";
+              categoryAxis.gridAlpha = 0.07;
+              categoryAxis.axisColor = "#DADADA";
+              categoryAxis.showFirstLabel = true;
+              categoryAxis.showLastLabel = true;
+              categoryAxis.startOnAxis = true;
+              valueAxis = new AmCharts.ValueAxis();
+              valueAxis.gridAlpha = 0.07;
+              guide = new AmCharts.Guide();
+              guide.value = 0;
+              guide.toValue = 1000000;
+              guide.fillColor = "#d7e5ee";
+              guide.fillAlpha = 0.2;
+              guide.lineAlpha = 0;
+              valueAxis.addGuide(guide);
+              chart.addValueAxis(valueAxis);
+              graph = new AmCharts.AmGraph();
+              graph.type = "line";
+              graph.title = "red line";
+              graph.valueField = "errors";
+              graph.lineAlpha = 1;
+              graph.lineColor = "#d1cf2a";
+              graph.fillAlphas = 0.3;
+              chart.addGraph(graph);
+              chartCursor = new AmCharts.ChartCursor();
+              chartCursor.cursorPosition = "mouse";
+              chartCursor.categoryBalloonDateFormat = "DD MMMM";
+              chart.addChartCursor(chartCursor);
+              return chart.write("graph");
             },
             error: function() {
               return dashboard.error();

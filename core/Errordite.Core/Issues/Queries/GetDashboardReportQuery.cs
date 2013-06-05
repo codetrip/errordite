@@ -32,7 +32,7 @@ namespace Errordite.Core.Issues.Queries
                 var range = Enumerable.Range(0, (endDate - startDate).Days + 1).ToList();
                 data = new
                 {
-                    x = range.Select(index => startDate.AddDays(index).Date.ToString("yyyy-MM-dd")),
+					x = range.Select(index => startDate.AddDays(index).Date.ConvertToUnixTimestamp()),
                     y = range.Select(index => FindIssueCount(dateResults, startDate.AddDays(index)))
                 };
             }
@@ -41,7 +41,7 @@ namespace Errordite.Core.Issues.Queries
                 var range = Enumerable.Range(0, (endDate - startDate).Days + 1).ToList();
                 data = new
                 {
-                    x = range.Select(d => startDate.AddDays(d).ToString("yyyy-MM-dd")),
+					x = range.Select(d => startDate.AddDays(d).Date.ConvertToUnixTimestamp()),
                     y = range.Select(d => 0)
                 };
             }
