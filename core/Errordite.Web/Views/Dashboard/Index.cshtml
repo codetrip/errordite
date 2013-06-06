@@ -18,8 +18,7 @@
 
 <section id="dashboard" class="centered">
     <div class="content">
-        @Html.HiddenFor(m => m.LastErrorDisplayed)
-        @Html.HiddenFor(m => m.LastIssueDisplayed)
+        @Html.HiddenFor(m => m.LastPoll)
         @if (Model.SingleApplicationId != null && Model.Stats.Issues < 3)
         {
             <div class="two-col">
@@ -76,12 +75,7 @@
             </div>
             <div class="two-col">
                 <h2 class="section-header dashboard">Recent Errors</h2>
-                <div id="errors">
-                    @foreach (var error in Model.RecentErrors)
-                    {
-                        @Html.Partial("Dashboard/Error", error)
-                    }
-                </div>
+                
             </div>
         }
         <div class="clear"></div>
