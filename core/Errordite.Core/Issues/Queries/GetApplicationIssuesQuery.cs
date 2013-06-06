@@ -27,11 +27,6 @@ namespace Errordite.Core.Issues.Queries
                 query = query.Where(i => i.ApplicationId == Application.GetId(request.ApplicationId));
             }
 
-            if (request.LastFriendlyId.HasValue)
-            {
-                query = query.Where(e => e.FriendlyId > request.LastFriendlyId);
-            }
-
             if (request.StartDate.HasValue)
             {
                 //TODO: I think this should be from the First Error (we are not currently recording this...)
@@ -70,9 +65,6 @@ namespace Errordite.Core.Issues.Queries
                 case "ErrorCount":
                     issues = request.Paging.SortDescending ? issues.OrderByDescending(e => e.ErrorCount) : issues.OrderBy(e => e.ErrorCount);
                     break;
-                case "FriendlyId":
-                    issues = request.Paging.SortDescending ? issues.OrderByDescending(e => e.FriendlyId) : issues.OrderBy(e => e.FriendlyId);
-                    break;
             }
 
             var page = new Page<Issue>(issues.As<Issue>().ToList(), new PagingStatus(request.Paging.PageSize, request.Paging.PageNumber, stats.TotalResults));
@@ -102,6 +94,5 @@ namespace Errordite.Core.Issues.Queries
         public string Query { get; set; }
         public string[] Status { get; set; }
         public PageRequestWithSort Paging { get; set; }
-        public int? LastFriendlyId { get; set; }
     }
 }

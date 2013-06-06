@@ -15,8 +15,7 @@ namespace Errordite.Web.Models.Dashboard
         public string SingleApplicationId { get; set; }
         public string SingleApplicationToken { get; set; }
         public string TestIssueId { get; set; }
-        public int LastIssueDisplayed { get; set; }
-        public int LastErrorDisplayed { get; set; }
+        public DateTimeOffset LastPoll { get; set; }
     }
 
     public class DashboardLinksViewModel

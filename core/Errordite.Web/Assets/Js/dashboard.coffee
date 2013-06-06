@@ -8,28 +8,25 @@ jQuery ->
 		
 			constructor: () ->
 				this.issueContainer = $ 'div#issues'
-				this.errorContainer = $ 'div#errors'
-				this.lastError = $('input#LastErrorDisplayed').val()
-				this.lastIssue = $('input#LastIssueDisplayed').val()
 				this.showItems()
 				Errordite.Spinner.disable();
-			poll: ->
+			refreshIssues: ->
+				dashboard.pollCount++
 				$.ajax
-					url: "/dashboard/update?lastErrorDisplayed=" + dashboard.lastError + '&lastIssueDisplayed=' + dashboard.lastIssue + '&applicationId=' + $('input#ApplicationId').val()
+					url: "/dashboard/update?applicationId=" + $('input#ApplicationId').val()
 					success: (result) ->
 						console.log "success"
 						if result.success
 							dashboard.bind(result.data)
-							dashboard.rendergraph()
 						else
 							dashboard.error()
 					error: ->
 						dashboard.error()
 					dataType: "json"
 					complete: ->
-						#setTimeout dashboard.poll, 15000
+						setTimeout dashboard.refreshIssues, 15000
 				true
-			rendergraph: ->
+			refreshGraph: ->
 				$.ajax
 					url: "/dashboard/getgraphdata?applicationId=" + $('input#ApplicationId').val()
 					success: (data) ->
@@ -103,12 +100,8 @@ jQuery ->
 			bind: (data) ->
 				console.log "binding"
 				for i in data.issues
-					dashboard.issueContainer.prepend i
-				for e in data.errors
-					dashboard.errorContainer.prepend e	
+					dashboard.issueContainer.prepend i	
 
-				dashboard.lastError = data.lastErrorDisplayed
-				dashboard.lastIssue = data.lastIssueDisplayed
 				dashboard.showItems()
 				true
 			error: -> 
@@ -116,17 +109,10 @@ jQuery ->
 				true
 			showItems: ->
 				this.issueContainer.find('div.boxed-item:hidden').show('slow')
-				this.errorContainer.find('div.boxed-item:hidden').show('slow')
-				this.purgeItems this.issueContainer
-				this.purgeItems this.errorContainer
-			purgeItems: ($container) ->
-				count = $container.find(' > div').length
-				while count > 100
-					$container.find(' > div:last-child').remove()
-					count = $container.find(' > div').length
 
 		dashboard = new Dashboard();
-		dashboard.rendergraph();
-
-		#setTimeout dashboard.poll, 15000
+		dashboard.refreshGraph();
+		
+		setTimeout dashboard.refreshGraph, 30000
+		setTimeout dashboard.refreshIssues, 15000
 		true

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using Errordite.Core;
@@ -13,7 +14,6 @@ using Errordite.Web.ActionFilters;
 using Errordite.Web.ActionResults;
 using Errordite.Web.Extensions;
 using Errordite.Web.Models.Dashboard;
-using Errordite.Web.Models.Errors;
 using Errordite.Web.Models.Issues;
 using Errordite.Core.Extensions;
 
@@ -73,48 +73,39 @@ namespace Errordite.Web.Controllers
                     viewModel.SingleApplicationId = applications.Items[0].Id;
                     viewModel.SingleApplicationToken = applications.Items[0].Token;
                 }
-                
-                var issues = _getApplicationIssuesQuery.Invoke(new GetApplicationIssuesRequest
-                {
-                    OrganisationId = Core.AppContext.CurrentUser.OrganisationId,
-                    Paging = new PageRequestWithSort(1, 0),
-                    AssignedTo = Core.AppContext.CurrentUser.Id,
-                    ApplicationId = applicationId
-                }).Issues;
 
                 var recentIssues = _getApplicationIssuesQuery.Invoke(new GetApplicationIssuesRequest
                 {
-                    Paging = new PageRequestWithSort(1, 8, "FriendlyId", true),
+                    Paging = new PageRequestWithSort(1, 8, "LastErrorUtc", true),
                     OrganisationId = Core.AppContext.CurrentUser.OrganisationId,
                     ApplicationId = applicationId
                 }).Issues;
 
                 viewModel.TestIssueId = recentIssues.Items.FirstOrDefault(i => i.TestIssue).IfPoss(i => i.Id);
 
-                var recentErrors = _getApplicationErrorsQuery.Invoke(new GetApplicationErrorsRequest
-                {
-                    Paging = new PageRequestWithSort(1, 8, "FriendlyId", true),
-                    OrganisationId = Core.AppContext.CurrentUser.OrganisationId,
-                    ApplicationId = applicationId
-                }).Errors;
+                //var recentErrors = _getApplicationErrorsQuery.Invoke(new GetApplicationErrorsRequest
+                //{
+                //    Paging = new PageRequestWithSort(1, 8, "TimestampUtc", true),
+                //    OrganisationId = Core.AppContext.CurrentUser.OrganisationId,
+                //    ApplicationId = applicationId
+                //}).Errors;
 
                 var selectedApplication = applicationId.IsNotNullOrEmpty()
                     ? applications.Items.FirstOrDefault(a => a.FriendlyId == applicationId.GetFriendlyId())
                     : null;
 
-                viewModel.LastErrorDisplayed = recentErrors.PagingStatus.TotalItems > 0 ? int.Parse(recentErrors.Items.First().FriendlyId) : -1;
-                viewModel.LastIssueDisplayed = recentIssues.PagingStatus.TotalItems > 0 ? int.Parse(recentIssues.Items.First().FriendlyId) : -1;
+                viewModel.LastPoll = DateTime.UtcNow.ToDateTimeOffset(Core.AppContext.CurrentUser.ActiveOrganisation.TimezoneId);
                 viewModel.Stats = _getOrganisationStatisticsQuery.Invoke(new GetOrganisationStatisticsRequest { ApplicationId = applicationId }).Statistics ?? new Statistics();
-                viewModel.Stats.CurrentUserIssueCount = issues.PagingStatus.TotalItems;
+                viewModel.Stats.CurrentUserIssueCount = recentIssues.PagingStatus.TotalItems;
 				viewModel.RecentIssues = IssueItemViewModel.ConvertSimple(recentIssues.Items, Core.GetUsers().Items);
                 viewModel.SelectedApplicationId = selectedApplication == null ? null : selectedApplication.FriendlyId;
                 viewModel.SelectedApplicationName = selectedApplication == null ? null : selectedApplication.Name;
                 viewModel.Applications = applications.Items;
-                viewModel.RecentErrors = recentErrors.Items.Select(e => new ErrorInstanceViewModel
-	            {
-		            Error = e,
-					ApplicationName = GetApplicationName(applications.Items, e.ApplicationId),
-	            }).ToList();
+                //viewModel.RecentErrors = recentErrors.Items.Select(e => new ErrorInstanceViewModel
+                //{
+                //    Error = e,
+                //    ApplicationName = GetApplicationName(applications.Items, e.ApplicationId),
+                //}).ToList();
                 viewModel.UrlGetter = GetDashboardUrl;
             }
             else
@@ -126,38 +117,36 @@ namespace Errordite.Web.Controllers
             return View(viewModel);
         }
 
-        public ActionResult Update(int lastErrorDisplayed, int lastIssueDisplayed)
+        public ActionResult Update(DateTime lastPoll)
 		{
             var curentApplication = CurrentApplication;
-			var applications = Core.GetApplications();
+			//var applications = Core.GetApplications();
             var applicationId = curentApplication == null ? null : curentApplication.Id;
 
             var issues = _getApplicationIssuesQuery.Invoke(new GetApplicationIssuesRequest
 			{
-				Paging = new PageRequestWithSort(1, 50, "FriendlyId", true),
+                Paging = new PageRequestWithSort(1, 8, "LastErrorUtc", true),
 				OrganisationId = Core.AppContext.CurrentUser.OrganisationId,
-                LastFriendlyId = lastIssueDisplayed,
                 ApplicationId = applicationId
 			}).Issues;
 
-			var errors = _getApplicationErrorsQuery.Invoke(new GetApplicationErrorsRequest
-			{
-                Paging = new PageRequestWithSort(1, 50, "FriendlyId", true),
-				OrganisationId = Core.AppContext.CurrentUser.OrganisationId,
-                LastFriendlyId = lastErrorDisplayed,
-                ApplicationId = applicationId
-			}).Errors;
+            //var errors = _getApplicationErrorsQuery.Invoke(new GetApplicationErrorsRequest
+            //{
+            //    Paging = new PageRequestWithSort(1, 50, "TimestampUtc", true),
+            //    OrganisationId = Core.AppContext.CurrentUser.OrganisationId,
+            //    StartDate = lastPoll,
+            //    ApplicationId = applicationId
+            //}).Errors;
 
 			var result = new
 			{
                 issues = issues == null ? new string[] { } : IssueItemViewModel.ConvertSimple(issues.Items, Core.GetUsers().Items).Select(i => RenderPartial("Dashboard/Issue", i)),
-                errors = errors == null ? new string[] { } : errors.Items.Select(e => new ErrorInstanceViewModel
-	            {
-		            Error = e,
-					ApplicationName = GetApplicationName(applications.Items, e.ApplicationId),
-	            }).Select(e => RenderPartial("Dashboard/Error", e)),
-                lastErrorDisplayed = errors != null && errors.PagingStatus.TotalItems > 0 ? int.Parse(errors.Items.First().FriendlyId) : lastErrorDisplayed,
-                lastIssueDisplayed = issues != null && issues.PagingStatus.TotalItems > 0 ? int.Parse(issues.Items.First().FriendlyId) : lastIssueDisplayed
+                //errors = errors == null ? new string[] { } : errors.Items.Select(e => new ErrorInstanceViewModel
+                //{
+                //    Error = e,
+                //    ApplicationName = GetApplicationName(applications.Items, e.ApplicationId),
+                //}).Select(e => RenderPartial("Dashboard/Error", e)),
+                //lastPoll = DateTime.UtcNow.ToDateTimeOffset(Core.AppContext.CurrentUser.ActiveOrganisation.TimezoneId)
 			};
 
 			return new JsonSuccessResult(result, allowGet: true);
