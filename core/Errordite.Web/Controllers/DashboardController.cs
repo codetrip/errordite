@@ -16,6 +16,7 @@ using Errordite.Web.Extensions;
 using Errordite.Web.Models.Dashboard;
 using Errordite.Web.Models.Issues;
 using Errordite.Core.Extensions;
+using Errordite.Web.Models.Navigation;
 
 namespace Errordite.Web.Controllers
 {
@@ -56,7 +57,7 @@ namespace Errordite.Web.Controllers
             return new PlainJsonNetResult(data, true);
         }
 
-        [ImportViewData, ExportViewData]
+        [ImportViewData, ExportViewData, GenerateBreadcrumbs(BreadcrumbId.Dashboard)]
         public ActionResult Index()
         {
             var curentApplication = CurrentApplication;
