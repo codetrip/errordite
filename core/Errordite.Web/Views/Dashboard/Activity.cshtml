@@ -7,11 +7,6 @@
     ViewBag.Title = "Activity Log";
 }
 
-<div class="dark-container">
-    <section class="centered">
-        @Html.Partial("Dashboard/Links", Model)
-    </section> 
-</div>
 <section id="activity" class="centered">
     @if (Model.Paging.TotalItems > 0)
     {

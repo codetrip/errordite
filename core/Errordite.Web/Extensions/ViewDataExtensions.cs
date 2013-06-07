@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 using Errordite.Core.Web;
 using Errordite.Core;
 using Errordite.Core.Configuration;
 using Errordite.Core.Identity;
+using Errordite.Web.Models.Dashboard;
 using Errordite.Web.Models.Navigation;
 using Errordite.Web.Models.Notifications;
 using Errordite.Core.Extensions;
@@ -85,6 +87,35 @@ namespace Errordite.Web.Extensions
 
             return cookieManager.Get(WebConstants.CookieSettings.ApplicationIdCookieKey);
         }
+
+		public static NavTabs GetActiveTab(this ViewDataDictionary viewData, Uri currentUri)
+		{
+			if(currentUri == null)
+				return NavTabs.None;
+
+			if (currentUri.AbsolutePath.StartsWith("/dashboard/activity"))
+				return NavTabs.Activity;
+
+			if (currentUri.AbsolutePath.StartsWith("/dashboard"))
+				return NavTabs.Dashboard;
+
+			if (currentUri.AbsolutePath.StartsWith("/issues/add"))
+				return NavTabs.AddIssue;
+
+			if (currentUri.AbsolutePath.StartsWith("/errrors"))
+				return NavTabs.Errors;
+
+			if (currentUri.AbsolutePath.StartsWith("/issues"))
+				return NavTabs.Issues;
+
+			if (currentUri.AbsolutePath.StartsWith("/docs"))
+				return NavTabs.Docs;
+
+			if (currentUri.AbsolutePath.StartsWith("/contact"))
+				return NavTabs.None;
+
+			return NavTabs.Account;
+		}
 
         public static void SetCore(this ViewDataDictionary viewData, IErrorditeCore errorditeCore)
         {
