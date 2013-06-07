@@ -1,0 +1,119 @@
+﻿@using Errordite.Core.Extensions
+@using Errordite.Web
+@using Errordite.Web.Extensions
+@using Errordite.Web.Models.Dashboard
+
+@{
+	var appContext = ViewData.GetAppContext();
+	var selectedApplicationId = ViewData.GetSelectedApplication();
+	var activeTab = ViewData.GetActiveTab(Request.Url);
+}
+
+<div class="dark-container">
+	<section class="centered">
+		<div class="quicklinks">
+			<ul>
+				<li @(activeTab == NavTabs.Dashboard ? "class=active" : "")>
+					<a href="@Url.Dashboard(selectedApplicationId)" class="dashboard">
+						Dashboard
+					</a>
+				</li>
+				<li @(activeTab == NavTabs.Issues ? "class=active" : "")>
+					<a href="@Url.Issues(selectedApplicationId)" class="issues">
+						Issues
+					</a>
+				</li>
+				<li @(activeTab == NavTabs.Errors ? "class=active" : "")>
+					<a href="@Url.Errors(selectedApplicationId)" class="errors">
+						Errors
+					</a>
+				</li>
+				<li @(activeTab == NavTabs.AddIssue ? "class=active" : "")>
+					<a href="@Url.AddIssue()" class="addissue">
+						Add Issue
+					</a>
+				</li>
+				<li @(activeTab == NavTabs.Activity ? "class=active" : "")>
+					<a href="@Url.ActivityLog(selectedApplicationId)" class="log">
+						Activity Log
+					</a>
+				</li>
+				<li @(activeTab == NavTabs.Account ? "class=active" : "")>
+					<a href="@Url.Subscription()" class="admin">
+						Account
+					</a>
+				</li>
+				<li @(activeTab == NavTabs.Docs ? "class=active" : "")>
+					<a href="@Url.QuickStart()" class="docs">
+						Docs
+					</a>
+				</li>
+			</ul>
+		</div>
+		<div class="applications">
+		    @{
+			    var applications = ViewData.GetCore().GetApplications().Items;
+			    var selectedApplication = applications.FirstOrDefault(a => a.FriendlyId == ViewData.GetSelectedApplication());
+			    var selectedApplicationName = selectedApplication == null ? null : selectedApplication.Name;
+            
+			    <input type="hidden" value="@(selectedApplication == null ? string.Empty : selectedApplication.FriendlyId)" name="ApplicationId" id="ApplicationId" />
+			    <input type="hidden" value="@appContext.CurrentUser.ActiveOrganisation.Id" name="OrganisationId" id="OrganisationId" />
+				
+			    if (appContext.CurrentUser.Organisations.Count > 1)
+			    {
+				    <ul class="popup popup-pills tool-tip" data-title="Select your active organisation">
+					    <li class="dropdown" id="organisations">
+						    <a class="dropdown-toggle" data-toggle="dropdown" href="#organisations">
+							    @appContext.CurrentUser.ActiveOrganisation.Name
+							    <b class="caret"></b>
+						    </a>
+						    <ul class="dropdown-menu">
+							    @foreach (var organisation in appContext.CurrentUser.Organisations)
+							    {
+								    <li>
+									    <a href="@Url.CurrentRequest("{0}={1}".FormatWith(WebConstants.RouteValues.SetOrganisation, organisation.FriendlyId))">@organisation.Name</a>
+								    </li>
+							    }
+						    </ul>
+					    </li>
+				    </ul>
+			    }
+			    else
+			    {
+				    <span>@appContext.CurrentUser.ActiveOrganisation.Name</span>
+			    }
+                 
+			    if (applications.Count > 1)
+			    {
+				    <ul class="popup popup-pills tool-tip" data-title="Select your active application">
+					    <li class="dropdown" id="applications">
+						    <a class="dropdown-toggle" data-toggle="dropdown" href="#applications">
+							    @if (selectedApplicationName.IsNullOrEmpty())
+							    {
+								    @: All Applications (@applications.Count())
+							    }
+							    else
+							    {
+									@selectedApplicationName
+							    }
+							    <b class="caret"></b>
+						    </a>
+						    <ul class="dropdown-menu">
+							    <li>
+								    <a href="@Url.CurrentRequest("{0}=-1".FormatWith(WebConstants.RouteValues.SetApplication))">All Applications (@applications.Count())</a>
+							    </li>
+							    @foreach (var application in applications)
+							    {
+								    <li>
+									    <a href="@Url.CurrentRequest("{0}={1}".FormatWith(WebConstants.RouteValues.SetApplication, application.FriendlyId))">@application.Name</a>
+								    </li>
+							    }
+						    </ul>
+					    </li>
+				    </ul>
+			    }
+		    }
+	    </div>
+	</section> 
+</div>
+

@@ -24,7 +24,7 @@ jQuery ->
 						dashboard.error()
 					dataType: "json"
 					complete: ->
-						setTimeout dashboard.refreshIssues, 15000
+						setTimeout dashboard.refreshIssues, 30000
 				true
 			refreshGraph: ->
 				$.ajax
@@ -39,7 +39,6 @@ jQuery ->
 						i = 0
 
 						while i < data.x.length
-							console.log new Date(data.x[i])
 							chartdata.push
 								date: new Date(data.x[i])
 								errors: data.y[i]
@@ -73,11 +72,11 @@ jQuery ->
 
 						graph = new AmCharts.AmGraph()
 						graph.type = "line"
-						graph.title = "red line"
 						graph.valueField = "errors"
 						graph.lineAlpha = 1
 						graph.lineColor = "#d1cf2a"
 						graph.fillAlphas = 0.3
+						graph.balloonText = "Errors received: [[value]]";
 						chart.addGraph(graph)
 
 						chartCursor = new AmCharts.ChartCursor()
@@ -96,6 +95,62 @@ jQuery ->
 					error: ->
 						dashboard.error()
 					dataType: "json"
+					complete: ->
+						setTimeout dashboard.refreshGraph, 30000
+				true
+			refreshPieChart: (data) -> 
+				$.ajax
+					url: "/dashboard/updatepiechart?applicationId=" + $('input#ApplicationId').val()
+					success: (data) ->
+						chartdata = []
+						chartdata.push
+							status: "Unacknowledged"
+							count:data.data.Unacknowledged
+							url: "/issues?Status=Unacknowledged"
+						chartdata.push
+							status: "Acknowledged"
+							count:data.data.Acknowledged
+							url: "/issues?Status=Acknowledged"
+						chartdata.push
+							status: "FixReady"
+							count:data.data.FixReady
+							url: "/issues?Status=FixReady"
+						chartdata.push
+							status: "Solved"
+							count:data.data.Solved
+							url: "/issues?Status=Solved"
+						chartdata.push
+							status: "Ignored"
+							count:data.data.Ignored
+							url: "/issues?Status=Ignored"
+
+						piechart = new AmCharts.AmPieChart();
+						piechart.dataProvider = chartdata;
+						piechart.titleField = "status";
+						piechart.valueField = "count";
+						piechart.labelsEnabled = false;
+						piechart.urlField = "url"
+						piechart.colors = ["#C2E0F2", "#92C7E7", "#95C0DF", "#729DB7", "#486C81"]
+
+						legend = new AmCharts.AmLegend();
+						legend.align = "right";
+						legend.markerType = "circle";
+						piechart.addLegend(legend);
+
+						piechart.write("piechart");
+
+						$watermark = $('div#piechart svg g:last')
+						$rect = $watermark.find 'rect'
+						$rect.removeAttr "height"
+						$rect.removeAttr "y"
+						$text = $watermark.find 'tspan'
+						$text.attr "y", "-1"
+						$text.attr "x", "-8"
+					error: ->
+						dashboard.error()
+					dataType: "json"
+					complete: ->
+						setTimeout dashboard.refreshPieChart, 30000
 				true
 			bind: (data) ->
 				console.log "binding"
@@ -112,7 +167,9 @@ jQuery ->
 
 		dashboard = new Dashboard();
 		dashboard.refreshGraph();
+		dashboard.refreshPieChart();
 		
 		setTimeout dashboard.refreshGraph, 30000
-		setTimeout dashboard.refreshIssues, 15000
+		setTimeout dashboard.refreshIssues, 30000
+		setTimeout dashboard.refreshPieChart, 30000
 		true
