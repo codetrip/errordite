@@ -131,16 +131,16 @@ p {
 pre.prettyprint {
   font-size: 12px;
   font-family: Consolas, Menlo, Monaco, Lucida Console;
-  padding: 12px 0 0 15px!important;
+  padding: 12px 0 0 15px !important;
   line-height: 14px;
-  border: 1px solid #D8DEE2!important;
+  border: 1px solid #d8dee2 !important;
   border-radius: 0;
   float: left;
   width: 800px; }
   pre.prettyprint.nested {
     width: 760px; }
   pre.prettyprint.textonly {
-    padding: 12px 0 12px 15px!important; }
+    padding: 12px 0 12px 15px !important; }
 pre.lang-xml .tag {
   color: maroon; }
 pre.lang-xml .att, pre.lang-xml .atn {
@@ -247,23 +247,67 @@ table {
   .trail-container .trail {
     margin: 0 auto;
     width: 980px; }
-    .trail-container .trail ul {
+  .trail-container .crumbs {
+    float: left;
+    width: 400px; }
+    .trail-container .crumbs ul {
       color: #729db7;
       font-weight: 400;
       font-size: 13px;
       margin: 0;
       padding: 0 0 0 5px; }
-    .trail-container .trail .divider {
+    .trail-container .crumbs .divider {
       font-size: 14px;
       padding: 0 2px; }
-    .trail-container .trail li {
+    .trail-container .crumbs li {
       float: left;
       line-height: 42px; }
-      .trail-container .trail li a {
+      .trail-container .crumbs li a {
         color: #729db7;
         font-size: 13px; }
-    .trail-container .trail li.active {
+    .trail-container .crumbs li.active {
       color: #525252; }
+
+.applications {
+  width: 450px;
+  float: right;
+  margin: 0 0 2px 0; }
+  .applications li {
+    line-height: 20px; }
+  .applications .dropdown-menu li {
+    padding: 0; }
+    .applications .dropdown-menu li a {
+      padding: 5px 5px; }
+  .applications .popup-pills {
+    float: left; }
+  .applications ul.popup {
+    margin-bottom: 0;
+    padding: 0;
+    margin-top: 3px; }
+  .applications a {
+    color: #555;
+    font-size: 13px; }
+  .applications a.dropdown-toggle {
+    background-color: #cdd4da;
+    border: 1px solid #555;
+    padding: 5px 7px;
+    width: 200px; }
+    .applications a.dropdown-toggle:hover {
+      text-decoration: none; }
+  .applications .caret {
+    margin: 8px 10px 0 0;
+    border-top: 4px solid #fff; }
+  .applications ul.dropdown-menu {
+    width: 213px;
+    background-color: #92c7e7; }
+    .applications ul.dropdown-menu a {
+      color: #fff; }
+      .applications ul.dropdown-menu a:hover {
+        text-decoration: none; }
+    .applications ul.dropdown-menu li:hover {
+      background-color: #c2e0f2; }
+      .applications ul.dropdown-menu li:hover a {
+        color: #496d82; }
 
 .tabs-container {
   width: 100%;
@@ -732,7 +776,7 @@ section {
   background-position: -108px -18px; }
 
 .icon-arrow-left {
-  background-position: 0 -36px; }
+  background-position: -0 -36px; }
 
 .icon-arrow-right {
   background-position: -165px -18px; }
@@ -1267,8 +1311,8 @@ section {
 /* SPECIFICS
 /*-----------------------------------------------------------------------------------*/
 .quicklinks {
-  width: 740px;
-  text-align: left;
+  width: 980px;
+  text-align: center;
   margin: 10px 0 0 0;
   float: left; }
   .quicklinks ul {
@@ -1329,45 +1373,6 @@ section {
       background-image: url(img/log-hover.png); }
     .quicklinks a:hover {
       text-decoration: none; }
-
-.applications {
-  width: 220px;
-  float: right;
-  margin-top: 7px; }
-  .applications .dropdown-menu li {
-    padding: 0; }
-    .applications .dropdown-menu li a {
-      padding: 5px 5px; }
-  .applications .popup-pills {
-    float: left; }
-  .applications ul.popup {
-    margin-bottom: 0;
-    padding: 0;
-    margin-top: 3px; }
-  .applications a {
-    color: #fff;
-    font-size: 13px; }
-  .applications a.dropdown-toggle {
-    background-color: #414650;
-    border: 0;
-    padding: 6px 7px;
-    width: 200px; }
-    .applications a.dropdown-toggle:hover {
-      text-decoration: none; }
-  .applications .caret {
-    margin: 8px 10px 0 0;
-    border-top: 4px solid #fff; }
-  .applications ul.dropdown-menu {
-    width: 213px;
-    background-color: #92c7e7; }
-    .applications ul.dropdown-menu a {
-      color: #fff; }
-      .applications ul.dropdown-menu a:hover {
-        text-decoration: none; }
-    .applications ul.dropdown-menu li:hover {
-      background-color: #c2e0f2; }
-      .applications ul.dropdown-menu li:hover a {
-        color: #496d82; }
 
 .logo {
   float: left;

@@ -338,6 +338,11 @@ table {
   .trail {
     margin: 0 auto;
     width: $minwidth;
+  }
+  
+.crumbs {
+    float:left;
+    width:400px;
     ul {
         color:$verydarkblue;
         font-weight:400;
@@ -346,21 +351,77 @@ table {
         padding: 0 0 0 5px;
     }
     .divider {
-      font-size: 14px;
-      padding:0 2px;
+        font-size: 14px;
+        padding:0 2px;
     }
     li {
-      float: left;
-      line-height: 42px;
-      a {
+        float: left;
+        line-height: 42px;
+        a {
         color:$verydarkblue;
         font-size: 13px;
-      }
+        }
     }
     li.active {
-      color: $mediumbrown;
+        color: $mediumbrown;
     }
   }
+}
+
+.applications {
+	width:450px;
+	float:right;
+    margin: 0 0 2px 0;
+    li {
+        line-height:20px;
+    }
+	.dropdown-menu li {
+		padding: 0;
+		a {
+			padding: 5px 5px;
+		}
+	}
+	.popup-pills {
+		float:left;
+	}
+	ul.popup {
+		margin-bottom:0;
+		padding:0;
+		margin-top: 3px;
+	}
+	a {
+		color:#555;
+		font-size:13px;
+	}
+	a.dropdown-toggle {
+		background-color: #cdd4da;
+		border:1px solid #555;
+		padding:5px 7px;
+		width:200px;
+		&:hover {
+			text-decoration: none;
+		}
+	}
+	.caret {
+		margin: 8px 10px 0 0;
+		border-top: 4px solid #fff;
+	}
+	ul.dropdown-menu {
+		width:213px;
+		background-color: $mediumblue;
+		a {
+			color:#fff;
+			&:hover {
+				text-decoration: none;
+			}
+		}
+		li:hover {
+			background-color: $lightblue;
+			a { 
+				color:$darkbrown;
+			}
+		}
+	}
 }
 
 .tabs-container {
@@ -1596,8 +1657,8 @@ section {
 /*-----------------------------------------------------------------------------------*/
 
 .quicklinks {
-	width:740px;
-	text-align:left;
+	width:$minwidth;
+	text-align:center;
 	margin: 10px 0 0 0;
 	float:left;
 	ul {
@@ -1677,59 +1738,6 @@ section {
 		}
 		&:hover {
 			text-decoration:none;
-		}
-	}
-}
-
-.applications {
-	width:220px;
-	float:right;
-	margin-top:7px;
-	.dropdown-menu li{
-		padding: 0;
-		a {
-			padding: 5px 5px;
-		}
-	}
-	.popup-pills {
-		float:left;
-	}
-	ul.popup {
-		margin-bottom:0;
-		padding:0;
-		margin-top: 3px;
-	}
-	a {
-		color:#fff;
-		font-size:13px;
-	}
-	a.dropdown-toggle {
-		background-color: $searchbackground;
-		border:0;
-		padding:6px 7px;
-		width:200px;
-		&:hover {
-			text-decoration: none;
-		}
-	}
-	.caret {
-		margin: 8px 10px 0 0;
-		border-top: 4px solid #fff;
-	}
-	ul.dropdown-menu {
-		width:213px;
-		background-color: $mediumblue;
-		a {
-			color:#fff;
-			&:hover {
-				text-decoration: none;
-			}
-		}
-		li:hover {
-			background-color: $lightblue;
-			a { 
-				color:$darkbrown;
-			}
 		}
 	}
 }
