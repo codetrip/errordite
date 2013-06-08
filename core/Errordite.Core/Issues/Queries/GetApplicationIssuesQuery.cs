@@ -64,7 +64,10 @@ namespace Errordite.Core.Issues.Queries
                     break;
                 case "ErrorCount":
                     issues = request.Paging.SortDescending ? issues.OrderByDescending(e => e.ErrorCount) : issues.OrderBy(e => e.ErrorCount);
-                    break;
+					break;
+				case "CreatedOnUtc":
+					issues = request.Paging.SortDescending ? issues.OrderByDescending(e => e.CreatedOnUtc) : issues.OrderBy(e => e.CreatedOnUtc);
+					break;
             }
 
             var page = new Page<Issue>(issues.As<Issue>().ToList(), new PagingStatus(request.Paging.PageSize, request.Paging.PageNumber, stats.TotalResults));

@@ -68,10 +68,9 @@ h2 {
     text-transform: uppercase;
     font-weight: 700;
     font-size: 16px;
-    color: #6B94AC;
-    margin-left: 5px; }
+    color: #6B94AC; }
     h2.section-header.border {
-      padding-bottom: 10px;
+      padding-bottom: 7px;
       border-bottom: 1px solid #8e9090; }
     h2.section-header.dashboard {
       margin: 5px 0; }
@@ -131,16 +130,16 @@ p {
 pre.prettyprint {
   font-size: 12px;
   font-family: Consolas, Menlo, Monaco, Lucida Console;
-  padding: 12px 0 0 15px !important;
+  padding: 12px 0 0 15px!important;
   line-height: 14px;
-  border: 1px solid #d8dee2 !important;
+  border: 1px solid #D8DEE2!important;
   border-radius: 0;
   float: left;
   width: 800px; }
   pre.prettyprint.nested {
     width: 760px; }
   pre.prettyprint.textonly {
-    padding: 12px 0 12px 15px !important; }
+    padding: 12px 0 12px 15px!important; }
 pre.lang-xml .tag {
   color: maroon; }
 pre.lang-xml .att, pre.lang-xml .atn {
@@ -192,7 +191,7 @@ table {
   background-color: #f3f8fc; }
   .issue-title-container .centered {
     background-color: #f3f8fc;
-    padding: 0 0 15px 10px; }
+    padding: 10px 0 15px 10px; }
   .issue-title-container span.details {
     font-size: 13px;
     color: #729db7; }
@@ -243,13 +242,16 @@ table {
   width: 100%;
   background: #f3f8fc;
   height: 43px;
-  float: left; }
+  float: left;
+  border-bottom: 1px solid #efefef; }
+  .trail-container.noborder {
+    border-bottom: 0; }
   .trail-container .trail {
     margin: 0 auto;
     width: 980px; }
   .trail-container .crumbs {
     float: left;
-    width: 400px; }
+    margin-top: 1px; }
     .trail-container .crumbs ul {
       color: #729db7;
       font-weight: 400;
@@ -269,12 +271,24 @@ table {
       color: #525252; }
 
 .applications {
-  width: 450px;
-  float: right;
-  margin: 0 0 2px 0; }
+  float: left;
+  margin: 1px 0 0 0; }
   .applications li {
     line-height: 20px; }
+  .applications span.default {
+    font-weight: 400;
+    font-size: 13px;
+    float: left;
+    margin-top: 12px;
+    padding: 0 5px; }
+  .applications span.divider {
+    font-size: 14px;
+    padding: 0 2px;
+    color: #729db7;
+    float: left;
+    margin-top: 11px; }
   .applications .dropdown-menu li {
+    margin: 0 2px 0 2px;
     padding: 0; }
     .applications .dropdown-menu li a {
       padding: 5px 5px; }
@@ -283,38 +297,43 @@ table {
   .applications ul.popup {
     margin-bottom: 0;
     padding: 0;
-    margin-top: 3px; }
+    border: 0;
+    margin-top: 4px; }
   .applications a {
     color: #555;
     font-size: 13px; }
   .applications a.dropdown-toggle {
-    background-color: #cdd4da;
-    border: 1px solid #555;
     padding: 5px 7px;
-    width: 200px; }
+    border: 0; }
     .applications a.dropdown-toggle:hover {
       text-decoration: none; }
-  .applications .caret {
-    margin: 8px 10px 0 0;
-    border-top: 4px solid #fff; }
+    .applications a.dropdown-toggle .caret {
+      margin: -11px 0px 0 8px;
+      border-top: 4px solid #555;
+      float: right; }
   .applications ul.dropdown-menu {
     width: 213px;
-    background-color: #92c7e7; }
+    background-color: #292c31;
+    margin-top: 7px;
+    -webkit-border-radius: 3px 3px 3px 3px;
+    -moz-border-radius: 3px 3px 3px 3px;
+    border-radius: 3px 3px 3px 3px; }
     .applications ul.dropdown-menu a {
       color: #fff; }
       .applications ul.dropdown-menu a:hover {
         text-decoration: none; }
     .applications ul.dropdown-menu li:hover {
-      background-color: #c2e0f2; }
+      background-color: #414650; }
       .applications ul.dropdown-menu li:hover a {
-        color: #496d82; }
+        color: #fff; }
 
 .tabs-container {
   width: 100%;
   background: #f3f8fc;
   height: 36px;
   border-bottom: 1px solid #dee7ee;
-  float: left; }
+  float: left;
+  padding-top: 4px; }
 
 .wrapper {
   min-height: 100%;
@@ -776,7 +795,7 @@ section {
   background-position: -108px -18px; }
 
 .icon-arrow-left {
-  background-position: -0 -36px; }
+  background-position: 0 -36px; }
 
 .icon-arrow-right {
   background-position: -165px -18px; }
@@ -1299,13 +1318,88 @@ section {
   right: 0;
   bottom: 0;
   left: 0;
-  z-index: 1080;
+  z-index: 10080;
   background-color: #000;
   opacity: 0.3;
   filter: alpha(opacity=30);
   background-image: url("img/ajax-loader.gif");
   background-repeat: no-repeat;
   background-position: center; }
+
+.spinner-parent {
+  display: none;
+  float: left;
+  z-index: 10080;
+  background-color: #555;
+  opacity: 0.1;
+  filter: alpha(opacity=10);
+  background-image: url("img/ajax-loader.gif");
+  background-repeat: no-repeat;
+  background-position: center; }
+  .spinner-parent.graph {
+    width: 904px;
+    height: 251px;
+    margin: -300px 0 0 41px; }
+  .spinner-parent.issues {
+    width: 550px;
+    height: 575px;
+    margin: -595px 0 0 0; }
+  .spinner-parent.piechart {
+    width: 440px;
+    height: 340px;
+    margin: -350px 0 0 0; }
+
+.boxed-item {
+  float: left;
+  width: 98%;
+  margin: 5px 5px 5px 0;
+  position: relative; }
+  .boxed-item.issue-details {
+    border: 0;
+    width: 100%;
+    margin: 0 0 20px 0; }
+    .boxed-item.issue-details .item-content {
+      width: 800px;
+      float: left; }
+    .boxed-item.issue-details .update-details {
+      float: right;
+      width: 155px; }
+      .boxed-item.issue-details .update-details .btn {
+        float: right;
+        margin: 3px 0 0 0; }
+  .boxed-item a {
+    font-size: 13px; }
+  .boxed-item .item-bar {
+    width: 8px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    float: left;
+    margin: 6px; }
+  .boxed-item .item-content {
+    float: right;
+    width: 445px;
+    margin: 5px 5px 5px 0; }
+    .boxed-item .item-content .divider {
+      border-left: 1px solid #95c0df;
+      padding-left: 8px; }
+  .boxed-item .item-info {
+    font-size: 13px;
+    float: left;
+    width: 40%;
+    word-wrap: break-word; }
+    .boxed-item .item-info.heading {
+      text-transform: uppercase;
+      font-size: 10px;
+      color: #aeaeae;
+      font-weight: 600; }
+    .boxed-item .item-info.full {
+      width: 100%; }
+    .boxed-item .item-info.short {
+      width: 14%; }
 
 /*-----------------------------------------------------------------------------------*/
 /* SPECIFICS
@@ -1347,6 +1441,8 @@ section {
         background-image: url(img/issue.png); }
       .quicklinks li.active a.log {
         background-image: url(img/log.png); }
+      .quicklinks li.active a.contact {
+        background-image: url(img/contact.png); }
   .quicklinks a {
     display: block;
     color: #A9A9A8;
@@ -1371,6 +1467,8 @@ section {
       background-image: url(img/issue-hover.png); }
     .quicklinks a.log {
       background-image: url(img/log-hover.png); }
+    .quicklinks a.contact {
+      background-image: url(img/contact-hover.png); }
     .quicklinks a:hover {
       text-decoration: none; }
 
@@ -1383,7 +1481,7 @@ section {
 
 .search {
   float: left;
-  width: 350px;
+  width: 400px;
   border-bottom: 2px solid #393a3b;
   height: 50px;
   margin-top: -2px; }
@@ -1391,7 +1489,7 @@ section {
     background: #414650;
     border: 0;
     height: 26px;
-    width: 275px;
+    width: 325px;
     color: #fff;
     padding: 4px 4px 4px 0; }
     .search .search-input:focus {
@@ -1413,7 +1511,7 @@ section {
     border-radius: 3px; }
   .search .search-box {
     background: #414650;
-    width: 350px;
+    width: 400px;
     height: 35px;
     margin-top: 8px;
     -moz-box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.6);
@@ -1431,7 +1529,7 @@ nav {
   nav.main-nav {
     float: right;
     border-bottom: 2px solid #393a3b;
-    width: 350px;
+    width: 300px;
     z-index: 9985; }
     nav.main-nav.wide {
       width: 700px; }
@@ -1864,11 +1962,11 @@ nav {
   vertical-align: top; }
 
 .search-status {
-  font-size: 13px;
-  font-weight: 400; }
+  font-size: 12px;
+  font-weight: 400;
+  text-transform: none; }
   .search-status a {
-    padding-left: 5px;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 400; }
 
 .issue-error-info {

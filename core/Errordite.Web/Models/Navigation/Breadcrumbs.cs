@@ -72,11 +72,12 @@ namespace Errordite.Web.Models.Navigation
                         new Breadcrumb(BreadcrumbId.AddIssue, string.Empty, "Add Issue"),
                         new Breadcrumb(BreadcrumbId.Issue, string.Empty, "Issue"),
                     }),
-                    new Breadcrumb(BreadcrumbId.Errors, string.Empty, "Errors")
+                    new Breadcrumb(BreadcrumbId.Errors, string.Empty, "Errors"),
+                    new Breadcrumb(BreadcrumbId.ActivityLog, string.Empty, "Activity Log")
                 }),  
-                new Breadcrumb(BreadcrumbId.Home, urlHelper.Home(), "Home", new []
+                new Breadcrumb(BreadcrumbId.Home, urlHelper.QuickStart(), "Docs", new []
                 {
-                    //new Breadcrumb(BreadcrumbId.WhatIsIt, string.Empty, "What Is It"),
+                    new Breadcrumb(BreadcrumbId.Contact, string.Empty, "Contact"),
                     new Breadcrumb(BreadcrumbId.About, "", "About"), 
                     new Breadcrumb(BreadcrumbId.QuickStart, string.Empty, "Quick Start"),
                     new Breadcrumb(BreadcrumbId.Clients, string.Empty, "Client"),
@@ -85,7 +86,7 @@ namespace Errordite.Web.Models.Navigation
                     new Breadcrumb(BreadcrumbId.Privacy, string.Empty, "Privacy"),
                     new Breadcrumb(BreadcrumbId.TermsAndConditions, string.Empty, "Terms and Conditions")
                 }),  
-                new Breadcrumb(BreadcrumbId.Admin, null, "Admin", new []
+                new Breadcrumb(BreadcrumbId.Admin, urlHelper.Subscription(), "Account", new []
                 {
                     new Breadcrumb(BreadcrumbId.Subscription, urlHelper.Subscription(), "Subscription", new []
                     {
@@ -98,8 +99,8 @@ namespace Errordite.Web.Models.Navigation
                     }),
                     new Breadcrumb(BreadcrumbId.Applications, urlHelper.Applications(), "Applications", new []
                     {
-                        new Breadcrumb(BreadcrumbId.AddApplication, string.Empty, "Add Application"),
-                        new Breadcrumb(BreadcrumbId.EditApplication, string.Empty, "Edit Application")
+                        new Breadcrumb(BreadcrumbId.AddApplication, string.Empty, "Add"),
+                        new Breadcrumb(BreadcrumbId.EditApplication, string.Empty, "Edit")
                     }),
                     new Breadcrumb(BreadcrumbId.Users, urlHelper.Users(), "Users", new []
                     {
@@ -155,10 +156,12 @@ namespace Errordite.Web.Models.Navigation
     public enum BreadcrumbId
     {
         Home,
+		Contact,
         Dashboard,
         Issues,
         AddIssue,
         Errors,
+		ActivityLog,
         MergeIssues,
         Issue,
 

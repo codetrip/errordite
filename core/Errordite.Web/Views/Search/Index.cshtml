@@ -10,17 +10,30 @@
     <div class="content">
         <h3>Your search for "@Model.Query" returned the following results...</h3>
         <div class="two-col">
-            <h2 class="section-header"><i class="icon-files"></i>Issues</h2>
+	        <h2 class="section-header" style="margin-bottom:0">Issues</h2>
+	        <span class="search-status">viewing 1 - @Model.Issues.Count() of @Model.IssueTotal issues
+			@if (Model.Issues.Count() < Model.IssueTotal)
+			{
+				@:(<a href='@Url.IssueSearch(Model.Query)'>view all</a>)
+			}
+	        </span>
             @if(Model.IssueTotal > 0)
             {
-                <div class="search-status">
-                    Viewing 1 - @Model.Issues.Count() of @Model.IssueTotal issues 
-                    <a href='@Url.IssueSearch(Model.Query)'>View all issue result</a>
-                </div>
-                foreach(var issue in Model.Issues)
-                {
-                    @Html.Partial("Dashboard/Issue", issue)
-                }
+	            <table class="table table-condensed history">
+					<thead>
+						<tr>
+							<th style="width:300px">Name</th>
+							<th>Last Error</th>
+							<th>Count</th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach(var issue in Model.Issues)
+						{
+							@Html.Partial("Dashboard/Issue", issue)
+						}
+					</tbody>
+				</table>
             }
             else
             {
@@ -29,18 +42,31 @@
                 </div>
             }
         </div>
-        <div class="two-col">
-            <h2 class="section-header"><i class="icon-file"></i>Errors</h2>
+        <div class="two-col" style="margin-left:10px; width:48%">
+	        <h2 class="section-header" style="margin-bottom:0">Errors</h2>
+	        <span class="search-status">viewing 1 - @Model.Errors.Count() of @Model.ErrorTotal errors
+			@if (Model.Errors.Count() < Model.ErrorTotal)
+			{
+				@:(<a href='@Url.ErrorSearch(Model.Query)'>view all</a>)
+			}
+	        </span>
             @if(Model.ErrorTotal > 0)
             {
-                <div class="search-status">
-                    Viewing 1 - @Model.Errors.Count() of @Model.ErrorTotal errors 
-                    <a href='@Url.ErrorSearch(Model.Query)'>View all error results</a>
-                </div>
-                foreach (var error in Model.Errors)
-                {
-                    @Html.Partial("Dashboard/Error", error)
-                }	
+	            <table class="table table-condensed history">
+					<thead>
+						<tr>
+							<th style="width:310px">Name</th>
+							<th>Received On</th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach (var error in Model.Errors)
+						{
+							@Html.Partial("Dashboard/Error", error)
+						}	
+					</tbody>
+				</table>
+                
             }
             else
             {

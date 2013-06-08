@@ -11,11 +11,11 @@ namespace Errordite.Core.Indexing
 		{
             Map = docs => 
                from dailyCount in docs
-			   where !dailyCount.Hidden
+			   where !dailyCount.Historical
                select new
                {
                    dailyCount.ApplicationId,
-                   dailyCount.Date.Date,
+                   dailyCount.Date,
                    dailyCount.Count,
                };
 

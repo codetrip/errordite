@@ -3,10 +3,8 @@
 
 <tr>
 	<td>
-		<a href="@Url.Issue(Model.IssueId)" data-title="@Model.Name" @(Model.Name.Length > 55 ? "class=tool-tip" : "")>
-			@(Model.Name.Length > 55 ? Model.Name.Substring(0, 55) + "..." : Model.Name)
-		</a><br />
-		<span class="table-info">@Model.Status &nbsp; @Model.UserName</span>
+		<a class="word-break" href="@Url.Issue(Model.IssueId)">@Model.Name</a><br />
+		<span class="table-info">@Model.Status</span>
 	</td>
 	<td>@Model.LastError</td>
 	<td><span class="badge badge-info">@Model.ErrorCount</span></td>

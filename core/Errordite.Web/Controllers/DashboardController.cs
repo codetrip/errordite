@@ -7,7 +7,6 @@ using Errordite.Core.Paging;
 using Errordite.Core.Domain;
 using Errordite.Core.Domain.Error;
 using Errordite.Core.Domain.Organisation;
-using Errordite.Core.Errors.Queries;
 using Errordite.Core.Issues.Queries;
 using Errordite.Core.Organisations.Queries;
 using Errordite.Web.ActionFilters;
@@ -24,7 +23,6 @@ namespace Errordite.Web.Controllers
     public class DashboardController : ErrorditeController
     {
         private readonly IGetApplicationIssuesQuery _getApplicationIssuesQuery;
-        private readonly IGetApplicationErrorsQuery _getApplicationErrorsQuery;
         private readonly IGetOrganisationStatisticsQuery _getOrganisationStatisticsQuery;
         private readonly IGetDashboardReportQuery _getDashboardReportQuery;
         private readonly IGetIssueQuery _getIssueQuery;
@@ -32,13 +30,11 @@ namespace Errordite.Web.Controllers
 
         public DashboardController(IGetOrganisationStatisticsQuery getOrganisationStatisticsQuery, 
             IGetApplicationIssuesQuery getApplicationIssuesQuery, 
-            IGetApplicationErrorsQuery getApplicationErrorsQuery, 
             IGetDashboardReportQuery getDashboardReportQuery, 
             IGetIssueQuery getIssueQuery, IGetActivityLogQuery getActivityLogQuery)
         {
             _getOrganisationStatisticsQuery = getOrganisationStatisticsQuery;
             _getApplicationIssuesQuery = getApplicationIssuesQuery;
-            _getApplicationErrorsQuery = getApplicationErrorsQuery;
             _getDashboardReportQuery = getDashboardReportQuery;
             _getIssueQuery = getIssueQuery;
             _getActivityLogQuery = getActivityLogQuery;
@@ -64,7 +60,10 @@ namespace Errordite.Web.Controllers
             var applicationId = curentApplication == null ? null : curentApplication.Id;
             var viewModel = new DashboardViewModel();
             var applications = Core.GetApplications();
-            
+	        var sortId = CookieManager.Get(WebConstants.CookieSettings.DashboardCookieKey);
+
+			viewModel.SortId = sortId.IsNullOrEmpty() ? "1" : sortId;    
+        
             if(applications.PagingStatus.TotalItems > 0)
             {
                 viewModel.HasApplications = true;
@@ -75,9 +74,11 @@ namespace Errordite.Web.Controllers
                     viewModel.SingleApplicationToken = applications.Items[0].Token;
                 }
 
+				var sort = DashboardViewModel.Sorting.First(s => s.Id == viewModel.SortId);
+
                 var recentIssues = _getApplicationIssuesQuery.Invoke(new GetApplicationIssuesRequest
                 {
-                    Paging = new PageRequestWithSort(1, 8, "LastErrorUtc", true),
+					Paging = new PageRequestWithSort(1, 10, sort.SortField, sort.SortDescending),
                     OrganisationId = Core.AppContext.CurrentUser.OrganisationId,
                     ApplicationId = applicationId
                 }).Issues;
@@ -94,6 +95,7 @@ namespace Errordite.Web.Controllers
                 viewModel.Applications = applications.Items;
                 viewModel.UrlGetter = GetDashboardUrl;
 	            viewModel.TotalIssues = recentIssues.PagingStatus.TotalItems;
+	            viewModel.SortOptions = DashboardViewModel.Sorting.ToSelectList(s => s.Id, s => s.DisplayName, s => s.Id == viewModel.SortId);
             }
             else
             {
@@ -114,14 +116,21 @@ namespace Errordite.Web.Controllers
 			return new JsonSuccessResult(stats, allowGet: true);
 		}
 
-        public ActionResult Update()
+        public ActionResult Update(string sortId)
 		{
             var currentApplication = CurrentApplication;
             var applicationId = currentApplication == null ? null : currentApplication.Id;
 
+			if (sortId.IsNotNullOrEmpty())
+				CookieManager.Set(WebConstants.CookieSettings.DashboardCookieKey, sortId, null);
+			else
+				sortId = "1";
+
+	        var sort = DashboardViewModel.Sorting.First(s => s.Id == sortId);
+
             var issues = _getApplicationIssuesQuery.Invoke(new GetApplicationIssuesRequest
 			{
-                Paging = new PageRequestWithSort(1, 8, "LastErrorUtc", true),
+				Paging = new PageRequestWithSort(1, 10, sort.SortField, sort.SortDescending),
 				OrganisationId = Core.AppContext.CurrentUser.OrganisationId,
                 ApplicationId = applicationId
 			}).Issues;
@@ -137,6 +146,7 @@ namespace Errordite.Web.Controllers
 			return new JsonSuccessResult(result, allowGet: true);
 		}
 
+		[GenerateBreadcrumbs(BreadcrumbId.ActivityLog)]
 		public ActionResult Activity()
 		{
 			return View(GetActivityViewModel(1));
@@ -148,7 +158,7 @@ namespace Errordite.Web.Controllers
 			return Content(string.Join("", model.Items.Select(i => RenderPartial("Issue/HistoryItem", i))));
 		}
 
-		public ActivityViewModel GetActivityViewModel(int pageNumber)
+		public ActivityViewModelBase GetActivityViewModel(int pageNumber)
         {
             var curentApplication = CurrentApplication;
             var applicationId = curentApplication == null ? null : curentApplication.Id;
@@ -181,7 +191,7 @@ namespace Errordite.Web.Controllers
                 };
             });
 
-            var model = new ActivityViewModel
+            var model = new ActivityViewModelBase
             {
                 Paging = activity.PagingStatus,
                 Items = items,
@@ -208,11 +218,5 @@ namespace Errordite.Web.Controllers
         {
             return "<a href='{0}'>#{1}</a>".FormatWith(Url.Issue(issueId ?? "0"), IdHelper.GetFriendlyId(issueId ?? "0"));
         }
-
-		private string GetApplicationName(IEnumerable<Application> applications, string applicationId)
-		{
-			var application = applications.FirstOrDefault(a => a.Id == applicationId);
-			return application == null ? "Not Found" : application.Name;
-		}
     }
 }

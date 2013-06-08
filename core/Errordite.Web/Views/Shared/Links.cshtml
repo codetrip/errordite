@@ -4,7 +4,7 @@
 
 @{
 	var selectedApplicationId = ViewData.GetSelectedApplication();
-	var activeTab = ViewData.GetActiveTab(Request.Url);
+	var activeTab = ViewData.GetActiveTab();
 }
 
 <div class="dark-container">
@@ -44,6 +44,11 @@
                 <li @(activeTab == NavTabs.Docs ? "class=active" : "")>
                     <a href="@Url.QuickStart()" class="docs">
                         Docs
+                    </a>
+                </li>
+                <li @(activeTab == NavTabs.Contact ? "class=active" : "")>
+                    <a href="@Url.Contact()" class="contact">
+                        Contact
                     </a>
                 </li>
             </ul>

@@ -28,9 +28,6 @@
 		<nav class="main-nav">
 			<ul class="nav">
 				<li class="nav-item">
-					<a href="@Url.Contact()">Contact Us</a>
-				</li>
-				<li class="nav-item">
 					<a href="@Url.SignOut()">Sign Out</a>
 				</li>
 				@if (appContext.AuthenticationStatus == AuthenticationStatus.Authenticated && (appContext.CurrentUser.Role == UserRole.SuperUser || appContext.Impersonated))

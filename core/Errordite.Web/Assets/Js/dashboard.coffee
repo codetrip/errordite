@@ -4,29 +4,44 @@ jQuery ->
 	$root = $('section#dashboard')
 
 	if $root.length > 0	
+
+		$root.delegate 'select#SortId', 'change', () -> 
+			dashboard.refreshIssues()
+			true
+
 		class Dashboard
 		
 			constructor: () ->
-				this.issueContainer = $ 'div#issues'
-				this.showItems()
+				this.issueContainer = $ 'table#issues tbody'
+				this.graphSpinner = $root.find('div#graph-spinner');
+				this.pieChartSpinner = $root.find('div#piechart-spinner');
+				this.issuesSpinner = $root.find('div#issues-spinner');
 				Errordite.Spinner.disable();
 			refreshIssues: ->
-				dashboard.pollCount++
+				dashboard.issuesSpinner.show()
 				$.ajax
-					url: "/dashboard/update?applicationId=" + $('input#ApplicationId').val()
+					url: "/dashboard/update?applicationId=" + $('input#ApplicationId').val() + '&sortId=' + $('select#SortId').val()
 					success: (result) ->
-						console.log "success"
 						if result.success
-							dashboard.bind(result.data)
+							dashboard.issueContainer.empty()
+							dashboard.issueContainer.hide();
+
+							for i in result.data.issues
+								dashboard.issueContainer.append i
+
+							dashboard.issueContainer.fadeIn(750);
 						else
 							dashboard.error()
+						dashboard.issuesSpinner.hide()
 					error: ->
 						dashboard.error()
+						dashboard.issuesSpinner.hide()
 					dataType: "json"
 					complete: ->
 						setTimeout dashboard.refreshIssues, 30000
 				true
 			refreshGraph: ->
+				dashboard.graphSpinner.show()
 				$.ajax
 					url: "/dashboard/getgraphdata?applicationId=" + $('input#ApplicationId').val()
 					success: (data) ->
@@ -34,6 +49,8 @@ jQuery ->
 						chart.pathToImages = "http://www.amcharts.com/lib/images/"
 						chart.autoMarginOffset = 3
 						chart.marginRight = 15
+						chart.startEffect = "elastic"
+						chart.startDuration = 0.5
 
 						chartdata = []
 						i = 0
@@ -92,13 +109,16 @@ jQuery ->
 						$text = $watermark.find 'tspan'
 						$text.attr "y", "-1"
 						$text.attr "x", "-8"
+						dashboard.graphSpinner.hide()
 					error: ->
 						dashboard.error()
+						dashboard.graphSpinner.hide()
 					dataType: "json"
 					complete: ->
 						setTimeout dashboard.refreshGraph, 30000
 				true
 			refreshPieChart: (data) -> 
+				dashboard.pieChartSpinner.show()
 				$.ajax
 					url: "/dashboard/updatepiechart?applicationId=" + $('input#ApplicationId').val()
 					success: (data) ->
@@ -130,6 +150,10 @@ jQuery ->
 						piechart.valueField = "count";
 						piechart.labelsEnabled = false;
 						piechart.urlField = "url"
+						piechart.sequencedAnimation = true
+						piechart.startRadius = "100%"
+						piechart.startEffect = '>'
+						piechart.balloonText = "Click to view '[[title]]' issues: [[value]]";
 						piechart.colors = ["#C2E0F2", "#92C7E7", "#95C0DF", "#729DB7", "#486C81"]
 
 						legend = new AmCharts.AmLegend();
@@ -146,29 +170,22 @@ jQuery ->
 						$text = $watermark.find 'tspan'
 						$text.attr "y", "-1"
 						$text.attr "x", "-8"
+						dashboard.pieChartSpinner.hide()
 					error: ->
 						dashboard.error()
+						dashboard.pieChartSpinner.hide()
 					dataType: "json"
 					complete: ->
 						setTimeout dashboard.refreshPieChart, 30000
 				true
-			bind: (data) ->
-				console.log "binding"
-				for i in data.issues
-					dashboard.issueContainer.prepend i	
-
-				dashboard.showItems()
-				true
 			error: -> 
 				console.log "error"
 				true
-			showItems: ->
-				this.issueContainer.find('div.boxed-item:hidden').show('slow')
 
-		dashboard = new Dashboard();
-		dashboard.refreshGraph();
-		dashboard.refreshPieChart();
-		
+		dashboard = new Dashboard()
+		dashboard.refreshGraph()
+		dashboard.refreshPieChart()
+
 		setTimeout dashboard.refreshGraph, 30000
 		setTimeout dashboard.refreshIssues, 30000
 		setTimeout dashboard.refreshPieChart, 30000

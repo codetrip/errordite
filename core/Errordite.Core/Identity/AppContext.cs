@@ -30,7 +30,6 @@ namespace Errordite.Core.Identity
         public AuthenticationStatus AuthenticationStatus { get; set; }
         public IAuthenticationManager Authentication { get; set; }
 		public bool Impersonated { get; set; }
-		public bool IsMobileDevice { get; set; }
 
         public static void AddToHttpContext(AppContext context)
         {
