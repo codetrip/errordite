@@ -1,0 +1,11 @@
+﻿@using Errordite.Core.Extensions
+@using Errordite.Web.Extensions
+@model Errordite.Web.Models.Errors.ErrorInstanceViewModel
+
+<tr>
+	<td>
+		<a class="word-break" href="@Url.Issue(Model.Error.IssueId)">@Model.Error.ExceptionInfos.First().Type</a><br />
+		<span class="table-info">@Model.ApplicationName</span>
+	</td>
+	<td>@Model.Error.TimestampUtc.ToLocalTimeFormatted()</td>
+</tr>

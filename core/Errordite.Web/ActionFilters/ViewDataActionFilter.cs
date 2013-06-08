@@ -1,8 +1,10 @@
-﻿using System.Web;
+﻿using System;
+using System.Web;
 using System.Web.Mvc;
 using Errordite.Core.Identity;
 using Errordite.Web.Controllers;
 using Errordite.Web.Extensions;
+using Errordite.Web.Models.Dashboard;
 
 namespace Errordite.Web.ActionFilters
 {
@@ -22,13 +24,11 @@ namespace Errordite.Web.ActionFilters
             if (controller == null)
                 return;
 
-	        var browser = FiftyOne.Foundation.Mobile.Detection.FiftyOneBrowserCapabilities.BrowserCapabilitiesProvider.GetBrowserCapabilities(HttpContext.Current.Request);
-	        controller.Core.AppContext.IsMobileDevice = browser.IsMobileDevice;
-
             result.ViewData.SetCookieManager(controller.CookieManager);
-            result.ViewData.SetCore(controller.Core);
+			result.ViewData.SetActiveTab(GetActiveTab(controller.Request.Url));
             result.ViewData.SetAppContext(controller.Core.AppContext);
-            result.ViewData.SetErrorditeConfiguration(controller.Core.Configuration);
+			result.ViewData.SetErrorditeConfiguration(controller.Core.Configuration);
+			result.ViewData.SetCore(controller.Core);
         }
 
         /// <summary>
@@ -45,5 +45,37 @@ namespace Errordite.Web.ActionFilters
             controller.ViewData.SetAppContext(controller.Core.AppContext);
             controller.ViewData.SetErrorditeConfiguration(controller.Core.Configuration);
         }
+
+		private static NavTabs GetActiveTab(Uri currentUri)
+		{
+			if (currentUri == null)
+				return NavTabs.None;
+
+			if (currentUri.AbsolutePath.StartsWith("/dashboard/activity"))
+				return NavTabs.Activity;
+
+			if (currentUri.AbsolutePath.StartsWith("/dashboard"))
+				return NavTabs.Dashboard;
+
+			if (currentUri.AbsolutePath.StartsWith("/issues/add"))
+				return NavTabs.AddIssue;
+
+			if (currentUri.AbsolutePath.StartsWith("/errors"))
+				return NavTabs.Errors;
+
+			if (currentUri.AbsolutePath.StartsWith("/issues"))
+				return NavTabs.Issues;
+
+			if (currentUri.AbsolutePath.StartsWith("/docs"))
+				return NavTabs.Docs;
+
+			if (currentUri.AbsolutePath.StartsWith("/contact"))
+				return NavTabs.Contact;
+
+			if (currentUri.AbsolutePath.StartsWith("/search"))
+				return NavTabs.None;
+
+			return NavTabs.Account;
+		}
     }
 }

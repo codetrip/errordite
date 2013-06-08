@@ -18,9 +18,9 @@ namespace Errordite.Core.Indexing
         public int ErrorCount { get; set; }
         public string RulesHash { get; set; }
         public string Id { get; set; }
-        public int FriendlyId { get; set; }
         public int MatchPriority { get; set; }
-        public DateTime LastErrorUtc { get; set; }
+		public DateTime LastErrorUtc { get; set; }
+		public DateTime CreatedOnUtc { get; set; }
 		public string Query { get; set; }
     }
 
@@ -39,7 +39,7 @@ namespace Errordite.Core.Indexing
                                 doc.Name,
                                 doc.ErrorCount,
                                 doc.RulesHash,
-                                FriendlyId = int.Parse(doc.Id.Split('/')[1]),
+                                doc.CreatedOnUtc,
                                 Query = new[] { doc.Name, doc.FriendlyId }.Union(doc.Rules.Select(r => r.SearchString)),  
                             };
 
@@ -56,7 +56,7 @@ namespace Errordite.Core.Indexing
             
             Sort(e => e.LastErrorUtc, SortOptions.String);
             Sort(e => e.ErrorCount, SortOptions.Int);
-            Sort(e => e.FriendlyId, SortOptions.Int);
+			Sort(e => e.CreatedOnUtc, SortOptions.String);
         }
     }
 }

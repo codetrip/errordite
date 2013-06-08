@@ -4,28 +4,43 @@
     var $root, Dashboard, dashboard;
     $root = $('section#dashboard');
     if ($root.length > 0) {
+      $root.delegate('select#SortId', 'change', function() {
+        dashboard.refreshIssues();
+        return true;
+      });
       Dashboard = (function() {
 
         function Dashboard() {
-          this.issueContainer = $('div#issues');
-          this.showItems();
+          this.issueContainer = $('table#issues tbody');
+          this.graphSpinner = $root.find('div#graph-spinner');
+          this.pieChartSpinner = $root.find('div#piechart-spinner');
+          this.issuesSpinner = $root.find('div#issues-spinner');
           Errordite.Spinner.disable();
         }
 
         Dashboard.prototype.refreshIssues = function() {
-          dashboard.pollCount++;
+          dashboard.issuesSpinner.show();
           $.ajax({
-            url: "/dashboard/update?applicationId=" + $('input#ApplicationId').val(),
+            url: "/dashboard/update?applicationId=" + $('input#ApplicationId').val() + '&sortId=' + $('select#SortId').val(),
             success: function(result) {
-              console.log("success");
+              var i, _i, _len, _ref;
               if (result.success) {
-                return dashboard.bind(result.data);
+                dashboard.issueContainer.empty();
+                dashboard.issueContainer.hide();
+                _ref = result.data.issues;
+                for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                  i = _ref[_i];
+                  dashboard.issueContainer.append(i);
+                }
+                dashboard.issueContainer.fadeIn(750);
               } else {
-                return dashboard.error();
+                dashboard.error();
               }
+              return dashboard.issuesSpinner.hide();
             },
             error: function() {
-              return dashboard.error();
+              dashboard.error();
+              return dashboard.issuesSpinner.hide();
             },
             dataType: "json",
             complete: function() {
@@ -36,6 +51,7 @@
         };
 
         Dashboard.prototype.refreshGraph = function() {
+          dashboard.graphSpinner.show();
           $.ajax({
             url: "/dashboard/getgraphdata?applicationId=" + $('input#ApplicationId').val(),
             success: function(data) {
@@ -44,6 +60,8 @@
               chart.pathToImages = "http://www.amcharts.com/lib/images/";
               chart.autoMarginOffset = 3;
               chart.marginRight = 15;
+              chart.startEffect = "elastic";
+              chart.startDuration = 0.5;
               chartdata = [];
               i = 0;
               while (i < data.x.length) {
@@ -94,10 +112,12 @@
               $rect.removeAttr("y");
               $text = $watermark.find('tspan');
               $text.attr("y", "-1");
-              return $text.attr("x", "-8");
+              $text.attr("x", "-8");
+              return dashboard.graphSpinner.hide();
             },
             error: function() {
-              return dashboard.error();
+              dashboard.error();
+              return dashboard.graphSpinner.hide();
             },
             dataType: "json",
             complete: function() {
@@ -108,6 +128,7 @@
         };
 
         Dashboard.prototype.refreshPieChart = function(data) {
+          dashboard.pieChartSpinner.show();
           $.ajax({
             url: "/dashboard/updatepiechart?applicationId=" + $('input#ApplicationId').val(),
             success: function(data) {
@@ -144,6 +165,10 @@
               piechart.valueField = "count";
               piechart.labelsEnabled = false;
               piechart.urlField = "url";
+              piechart.sequencedAnimation = true;
+              piechart.startRadius = "100%";
+              piechart.startEffect = '>';
+              piechart.balloonText = "Click to view '[[title]]' issues: [[value]]";
               piechart.colors = ["#C2E0F2", "#92C7E7", "#95C0DF", "#729DB7", "#486C81"];
               legend = new AmCharts.AmLegend();
               legend.align = "right";
@@ -156,10 +181,12 @@
               $rect.removeAttr("y");
               $text = $watermark.find('tspan');
               $text.attr("y", "-1");
-              return $text.attr("x", "-8");
+              $text.attr("x", "-8");
+              return dashboard.pieChartSpinner.hide();
             },
             error: function() {
-              return dashboard.error();
+              dashboard.error();
+              return dashboard.pieChartSpinner.hide();
             },
             dataType: "json",
             complete: function() {
@@ -169,25 +196,9 @@
           return true;
         };
 
-        Dashboard.prototype.bind = function(data) {
-          var i, _i, _len, _ref;
-          console.log("binding");
-          _ref = data.issues;
-          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-            i = _ref[_i];
-            dashboard.issueContainer.prepend(i);
-          }
-          dashboard.showItems();
-          return true;
-        };
-
         Dashboard.prototype.error = function() {
           console.log("error");
           return true;
-        };
-
-        Dashboard.prototype.showItems = function() {
-          return this.issueContainer.find('div.boxed-item:hidden').show('slow');
         };
 
         return Dashboard;

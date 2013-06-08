@@ -74,7 +74,7 @@ namespace Errordite.Web.Controllers
 
 				viewModel.IssueTotal = issues.PagingStatus.TotalItems;
 				viewModel.ErrorTotal = errors.PagingStatus.TotalItems;
-				viewModel.Issues = IssueItemViewModel.Convert(issues.Items, applications.Items, Core.GetUsers().Items);
+				viewModel.Issues = IssueItemViewModel.ConvertSimple(issues.Items, Core.GetUsers().Items, Core.AppContext.CurrentUser.ActiveOrganisation.TimezoneId);
 				viewModel.Errors = errors.Items.Select(e => new ErrorInstanceViewModel
 				{
 					Error = e,

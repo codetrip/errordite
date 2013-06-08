@@ -20,7 +20,8 @@ namespace Errordite.Web.Extensions
         private const string AppContextKey = "app_context_key";
         private const string ConfigurationKey = "configuration_key";
         private const string CookieManagerKey = "cookiemanager_key";
-        private const string ErrorditeCoreKey = "errordite_core_key";
+		private const string ErrorditeCoreKey = "errordite_core_key";
+		private const string ActiveTabKey = "active_tab_key";
 
         public static ErrorditeConfiguration GetConfiguration(this ViewDataDictionary viewData)
         {
@@ -88,35 +89,6 @@ namespace Errordite.Web.Extensions
             return cookieManager.Get(WebConstants.CookieSettings.ApplicationIdCookieKey);
         }
 
-		public static NavTabs GetActiveTab(this ViewDataDictionary viewData, Uri currentUri)
-		{
-			if(currentUri == null)
-				return NavTabs.None;
-
-			if (currentUri.AbsolutePath.StartsWith("/dashboard/activity"))
-				return NavTabs.Activity;
-
-			if (currentUri.AbsolutePath.StartsWith("/dashboard"))
-				return NavTabs.Dashboard;
-
-			if (currentUri.AbsolutePath.StartsWith("/issues/add"))
-				return NavTabs.AddIssue;
-
-			if (currentUri.AbsolutePath.StartsWith("/errrors"))
-				return NavTabs.Errors;
-
-			if (currentUri.AbsolutePath.StartsWith("/issues"))
-				return NavTabs.Issues;
-
-			if (currentUri.AbsolutePath.StartsWith("/docs"))
-				return NavTabs.Docs;
-
-			if (currentUri.AbsolutePath.StartsWith("/contact"))
-				return NavTabs.None;
-
-			return NavTabs.Account;
-		}
-
         public static void SetCore(this ViewDataDictionary viewData, IErrorditeCore errorditeCore)
         {
             viewData[ErrorditeCoreKey] = errorditeCore;
@@ -125,7 +97,17 @@ namespace Errordite.Web.Extensions
         public static IErrorditeCore GetCore(this ViewDataDictionary viewData)
         {
             return viewData[ErrorditeCoreKey] as IErrorditeCore;
-        }
+		}
+
+		public static void SetActiveTab(this ViewDataDictionary viewData, NavTabs activeTab)
+		{
+			viewData[ActiveTabKey] = activeTab;
+		}
+
+		public static NavTabs GetActiveTab(this ViewDataDictionary viewData)
+		{
+			return (NavTabs)viewData[ActiveTabKey];
+		}
 
         public static void SetCookieManager(this ViewDataDictionary viewData, ICookieManager cookieManager)
         {

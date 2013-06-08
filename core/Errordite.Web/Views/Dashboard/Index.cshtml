@@ -1,5 +1,4 @@
-﻿
-@using Errordite.Web.Extensions
+﻿@using Errordite.Web.Extensions
 @using Errordite.Web.Models.Dashboard
 @model DashboardViewModel
            
@@ -16,7 +15,7 @@
                     <p>
 						This is your <strong>dashboard</strong>, where you can see the most recent issues and errors affecting your system, the issues that need your attention, and overall statistics.
                     </p>
-                    <p>h
+                    <p>
                         You do not have much going on at the moment.  
                         Click @Html.ActionLink("here", "generateerror", "applications", new {applicationId = Model.SingleApplicationId, returnUrl = Url.CurrentRequest()}, new{@class="post"}) to generate a test error and get things going.
                     </p>
@@ -48,33 +47,47 @@
             <div class="clear border"></div>
         }
 
-        @if (Model.HasApplications)
+        @if (Model.HasApplications && Model.RecentIssues.Any())
         {
-            <h2 class="section-header dashboard">Errors</h2>
-            <div id="graph" style="width: 100%; height: 300px; margin-bottom:20px"></div>
-            
-            <div class="two-thirds">
-                <h2 class="section-header dashboard">Recent Issues</h2>
-                <table class="table table-condensed history">
-					<thead>
-						<tr>
-							<th style="width:375px">Name</th>
-							<th>Last Error</th>
-							<th>Count</th>
-						</tr>
-					</thead>
-					<tbody>
-						@foreach(var issue in Model.RecentIssues)
-						{
-							@Html.Partial("Dashboard/Issue", issue)
-						}
-					</tbody>
-				</table>
-            </div>
-            <div class="one-third">
-	            <h2 class="section-header dashboard" style="margin-left:7px;">Status Breakdown</h2>
-				<div id="piechart" style="width: 400px; height: 400px;"></div>
-            </div>
+	        <h2 class="section-header dashboard">Errors</h2>
+	        <div id="graph" style="width: 960px; height: 300px; margin-bottom: 20px"></div>
+            <div id="graph-spinner" class="spinner-parent graph"></div>
+
+	        <div class="two-thirds">
+				<div class="form form-inline criteria">
+					<ul>
+						<li style="width:100%">
+							<h2 class="section-header dashboard" style="float:left">Recent Issues</h2>
+							@Html.DropDownListFor(m => m.SortId, Model.SortOptions, new { style="float:right" })
+						</li>
+					</ul>
+				</div>
+		        <table id="issues" class="table table-condensed history">
+			        <thead>
+				        <tr>
+					        <th style="width: 375px">Name</th>
+					        <th>Last Error</th>
+					        <th>Count</th>
+				        </tr>
+			        </thead>
+			        <tbody>
+				        @foreach (var issue in Model.RecentIssues)
+				        {
+					        @Html.Partial("Dashboard/Issue", issue)
+				        }
+			        </tbody>
+		        </table>
+				<div id="issues-spinner" class="spinner-parent issues"></div>
+	        </div>
+	        <div class="one-third">
+		        <h2 class="section-header dashboard" style="margin-left: 7px;">Status Breakdown</h2>
+		        <div id="piechart" style="width: 400px; height: 400px;"></div>
+				<div id="piechart-spinner" class="spinner-parent piechart"></div>
+	        </div>
+        }
+        else
+        {
+	        <span>You currently have no issues or errors</span>
         }
         <div class="clear"></div>
     </div>

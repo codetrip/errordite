@@ -273,6 +273,8 @@
     <Content Include="Assets\Css\img\addissue.png" />
     <Content Include="Assets\Css\img\admin-hover.png" />
     <Content Include="Assets\Css\img\admin.png" />
+    <Content Include="Assets\Css\img\contact-hover.png" />
+    <Content Include="Assets\Css\img\contact.png" />
     <Content Include="Assets\Css\img\docs-hover.png" />
     <Content Include="Assets\Css\img\docs.png" />
     <Content Include="Assets\Css\img\error-hover.png" />
@@ -979,6 +981,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\AnonymousHeader.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Dashboard\Error.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

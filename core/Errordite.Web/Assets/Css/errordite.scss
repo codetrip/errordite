@@ -112,9 +112,8 @@ h2 {
         font-weight:$extraboldfontweight;
         font-size:16px;
 		color:#6B94AC;
-		margin-left: 5px;
         &.border {
-            padding-bottom:10px;
+            padding-bottom:7px;
             border-bottom:1px solid $verylightbrown;
         }
         &.dashboard {
@@ -267,7 +266,7 @@ table {
     background-color: $extralightblue;
     .centered {
         background-color: $extralightblue;
-        padding:0 0 15px 10px;
+        padding:10px 0 15px 10px;
     }
     span.details {
         font-size:13px;
@@ -335,6 +334,10 @@ table {
   background: $extralightblue;
   height: 43px;
   float: left;
+  border-bottom: 1px solid #efefef;
+  &.noborder {
+	border-bottom:0;
+  }
   .trail {
     margin: 0 auto;
     width: $minwidth;
@@ -342,7 +345,7 @@ table {
   
 .crumbs {
     float:left;
-    width:400px;
+	margin-top: 1px;
     ul {
         color:$verydarkblue;
         font-weight:400;
@@ -369,14 +372,28 @@ table {
 }
 
 .applications {
-	width:450px;
-	float:right;
-    margin: 0 0 2px 0;
+	float:left;
+    margin: 1px 0 0 0;
     li {
         line-height:20px;
     }
+	span.default {
+        font-weight:400;
+        font-size: 13px;
+		float:left;
+		margin-top: 12px;
+		padding: 0 5px;
+	}
+	span.divider {
+		font-size: 14px;
+        padding:0 2px;
+		color:#729db7;
+		float:left;
+		margin-top: 11px;
+	}
 	.dropdown-menu li {
-		padding: 0;
+		margin: 0 2px 0 2px;
+		padding:0;
 		a {
 			padding: 5px 5px;
 		}
@@ -387,28 +404,33 @@ table {
 	ul.popup {
 		margin-bottom:0;
 		padding:0;
-		margin-top: 3px;
+		border:0;
+		margin-top: 4px;
 	}
 	a {
 		color:#555;
 		font-size:13px;
 	}
 	a.dropdown-toggle {
-		background-color: #cdd4da;
-		border:1px solid #555;
 		padding:5px 7px;
-		width:200px;
+		border:0;
 		&:hover {
 			text-decoration: none;
 		}
+		.caret {
+			margin: -11px 0px 0 8px;
+			border-top: 4px solid #555;
+			float:right;
+		}
 	}
-	.caret {
-		margin: 8px 10px 0 0;
-		border-top: 4px solid #fff;
-	}
+	
 	ul.dropdown-menu {
 		width:213px;
-		background-color: $mediumblue;
+		background-color: #292c31;
+		margin-top: 7px;
+        -webkit-border-radius: $borderradius $borderradius $borderradius $borderradius;
+        -moz-border-radius: $borderradius $borderradius $borderradius $borderradius;
+        border-radius: $borderradius $borderradius $borderradius $borderradius;
 		a {
 			color:#fff;
 			&:hover {
@@ -416,9 +438,9 @@ table {
 			}
 		}
 		li:hover {
-			background-color: $lightblue;
+			background-color: #414650;
 			a { 
-				color:$darkbrown;
+				color:#fff;
 			}
 		}
 	}
@@ -430,6 +452,7 @@ table {
   height: 36px;
   border-bottom: 1px solid $tabbordercolor;
   float:left;
+  padding-top: 4px;
 }
 
 .wrapper {
@@ -1643,13 +1666,105 @@ section {
     right: 0;
     bottom: 0;
     left: 0;
-    z-index: 1080;
+    z-index: 10080;
     background-color: #000;
     opacity: 0.3;
     filter: alpha(opacity=30);
     background-image: url('img/ajax-loader.gif');
     background-repeat: no-repeat;
     background-position: center;
+}
+
+.spinner-parent {
+	display: none;
+	float:left;
+	z-index: 10080;
+	background-color: #555;
+	opacity: 0.1;
+	filter: alpha(opacity=10);
+	background-image: url('img/ajax-loader.gif');
+	background-repeat: no-repeat;
+	background-position: center;
+	&.graph {
+		width: 904px; 
+		height: 251px;
+		margin:-300px 0 0 41px;
+	}
+	&.issues {
+		width: 550px; 
+		height: 575px;
+		margin:-595px 0 0 0;
+	}
+	&.piechart {
+		width: 440px; 
+		height: 340px;
+		margin:-350px 0 0 0;
+	}
+}
+
+.boxed-item {
+    float:left;
+    width:98%;
+    margin:5px 5px 5px 0;
+    position:relative;
+	&.issue-details {
+		border:0;
+		width:100%;
+		margin:0 0 20px 0;
+		.item-content {
+			width:800px;
+			float:left;
+		}
+		.update-details {
+			float:right;
+			width:155px;
+			.btn {
+				float:right;
+				margin:3px 0 0 0;
+			}
+		}
+	}
+    a {
+        font-size:13px;
+    }
+    .item-bar {
+        width:8px;
+        position:absolute;
+        top:0;
+        bottom:0;
+        -webkit-border-radius: $borderradius;
+        -moz-border-radius: $borderradius;
+        border-radius: $borderradius;
+        float:left;
+        margin:6px;
+    }
+    .item-content {
+        float:right;
+        width:445px;
+        margin:5px 5px 5px 0;
+        .divider {
+            border-left:1px solid $darkblue;
+            padding-left:8px;
+        }
+    }
+    .item-info {
+        font-size:13px;
+        float:left;
+        width:40%;
+        word-wrap: break-word;
+        &.heading {
+            text-transform:uppercase;
+            font-size:10px;
+            color:$darkgrey;
+            font-weight: $boldfontweight;
+        }
+        &.full {
+            width:100%;
+        }
+        &.short {
+            width:14%;
+        }
+    }
 }
 
 /*-----------------------------------------------------------------------------------*/
@@ -1703,6 +1818,9 @@ section {
 			&.log {
 				background-image: url(img/log.png);
 			}
+			&.contact {
+				background-image: url(img/contact.png);
+			}
 		}
 	}
 	a {
@@ -1736,6 +1854,9 @@ section {
 		&.log {
 			background-image: url(img/log-hover.png);
 		}
+		&.contact {
+			background-image: url(img/contact-hover.png);
+		}
 		&:hover {
 			text-decoration:none;
 		}
@@ -1752,7 +1873,7 @@ section {
 
 .search {
   float: left;
-  width: 350px;
+  width: 400px;
   border-bottom: 2px solid #393a3b;
   height:50px;
   margin-top:-2px;
@@ -1760,7 +1881,7 @@ section {
     background: $searchbackground;
     border: 0;
     height: 26px;
-    width: 275px;
+    width: 325px;
     color: #fff;
     padding:4px 4px 4px 0;
     &:focus {
@@ -1785,7 +1906,7 @@ section {
   }
   .search-box {
     background: $searchbackground;
-    width: 350px;
+    width: 400px;
     height: 35px;
 	margin-top:8px;
     -moz-box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.6);
@@ -1806,7 +1927,7 @@ nav {
   &.main-nav {
 	float:right;
     border-bottom:2px solid $darkestbrown; 
-    width:350px;
+    width:300px;
 	z-index:9985;
 	&.wide {
 		width:700px;
@@ -2391,11 +2512,11 @@ nav {
 }
 
 .search-status {
-    font-size:13px;
+    font-size:12px;
     font-weight: $normalfontweight;
+	text-transform:none;
     a {
-        padding-left:5px;
-        font-size:13px;
+		font-size:12px;
         font-weight: $normalfontweight;
     }
 }
