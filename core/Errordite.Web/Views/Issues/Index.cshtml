@@ -1,15 +1,9 @@
 ﻿@using Errordite.Web.Extensions
-@using Errordite.Web.Models.Dashboard
 @using Errordite.Web.Models.Issues
 @model IssueCriteriaViewModel
 
 @{
     ViewBag.Title = "Issues";
-}
-
-@section header
-{
-    @Html.Partial("Dashboard/Tabs", DashboardTab.Issues)
 }
            
 <section class="centered" id="issues">

@@ -4,6 +4,8 @@ namespace Errordite.Core.Extensions
 {
     public static class DateTimeExtensions
     {
+	    private static DateTime _epoch = new DateTime(1970, 1, 1);
+
         public static DateTime RangeEnd(this DateTime date)
         {
             //this is designed for use in an "end of range" search; i.e. if you have specified the date
@@ -13,7 +15,14 @@ namespace Errordite.Core.Extensions
                 return date.AddDays(1);
 
             return date;
-        }
+		}
+
+		public static double ConvertToUnixTimestamp(this DateTime date)
+		{
+			var d2 = date.ToUniversalTime();
+			var ts = new TimeSpan(d2.Ticks - _epoch.Ticks);
+			return ts.TotalMilliseconds;
+		}
 
         public static string ToLocalTimeFormatted(this DateTimeOffset datetimeUtc)
         {

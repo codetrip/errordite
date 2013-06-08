@@ -4,83 +4,189 @@ jQuery ->
 	$root = $('section#dashboard')
 
 	if $root.length > 0	
+
+		$root.delegate 'select#SortId', 'change', () -> 
+			dashboard.refreshIssues()
+			true
+
 		class Dashboard
 		
 			constructor: () ->
-				this.issueContainer = $ 'div#issues'
-				this.errorContainer = $ 'div#errors'
-				this.lastError = $('input#LastErrorDisplayed').val()
-				this.lastIssue = $('input#LastIssueDisplayed').val()
-				this.showItems()
+				this.issueContainer = $ 'table#issues tbody'
+				this.graphSpinner = $root.find('div#graph-spinner');
+				this.pieChartSpinner = $root.find('div#piechart-spinner');
+				this.issuesSpinner = $root.find('div#issues-spinner');
 				Errordite.Spinner.disable();
-			poll: ->
+			refreshIssues: ->
+				dashboard.issuesSpinner.show()
 				$.ajax
-					url: "/dashboard/update?lastErrorDisplayed=" + dashboard.lastError + '&lastIssueDisplayed=' + dashboard.lastIssue + '&applicationId=' + $('input#ApplicationId').val()
+					url: "/dashboard/update?applicationId=" + $('input#ApplicationId').val() + '&sortId=' + $('select#SortId').val()
 					success: (result) ->
-						console.log "success"
 						if result.success
-							dashboard.bind(result.data)
-							dashboard.rendergraph()
+							dashboard.issueContainer.empty()
+							dashboard.issueContainer.hide();
+
+							for i in result.data.issues
+								dashboard.issueContainer.append i
+
+							dashboard.issueContainer.fadeIn(750);
 						else
 							dashboard.error()
+						dashboard.issuesSpinner.hide()
 					error: ->
 						dashboard.error()
+						dashboard.issuesSpinner.hide()
 					dataType: "json"
 					complete: ->
-						setTimeout dashboard.poll, 15000
+						setTimeout dashboard.refreshIssues, 30000
 				true
-			rendergraph: ->
+			refreshGraph: ->
+				dashboard.graphSpinner.show()
 				$.ajax
 					url: "/dashboard/getgraphdata?applicationId=" + $('input#ApplicationId').val()
 					success: (data) ->
-						if dashboard.plot? then dashboard.plot.destroy()
-						dashboard.plot = $.jqplot 'date-graph', 
-							[_.zip data.x, data.y],
-							seriesDefaults:
-								renderer:$.jqplot.LineRenderer
-							axes:
-								xaxis:
-									renderer: $.jqplot.DateAxisRenderer
-									tickOptions:
-										formatString:'%a %#d %b'
-								yaxis:
-									min: 0
-									tickInterval: if (_.max data.y) > 3 then null else 1									
-										
-							highlighter:
-								show: true
-								sizeAdjust: 7.5
+						chart = new AmCharts.AmSerialChart()
+						chart.pathToImages = "http://www.amcharts.com/lib/images/"
+						chart.autoMarginOffset = 3
+						chart.marginRight = 15
+						chart.startEffect = "elastic"
+						chart.startDuration = 0.5
+
+						chartdata = []
+						i = 0
+
+						while i < data.x.length
+							chartdata.push
+								date: new Date(data.x[i])
+								errors: data.y[i]
+							i++
+						
+						chart.dataProvider = chartdata
+						chart.categoryField = "date"
+
+						categoryAxis = chart.categoryAxis
+						categoryAxis.parseDates = true
+						categoryAxis.equalSpacing = true
+						categoryAxis.minPeriod = "DD"
+						categoryAxis.gridAlpha = 0.07
+						categoryAxis.axisColor = "#DADADA"
+						categoryAxis.showFirstLabel = true
+						categoryAxis.showLastLabel = false
+						categoryAxis.startOnAxis = false
+
+						valueAxis = new AmCharts.ValueAxis()
+						valueAxis.gridAlpha = 0.07
+						valueAxis.dashLength = 5;
+
+						guide = new AmCharts.Guide();
+						guide.value = 0;
+						guide.toValue = 1000000;
+						guide.fillColor = "#d7e5ee";
+						guide.fillAlpha = 0.2;
+						guide.lineAlpha = 0
+						valueAxis.addGuide(guide);
+						chart.addValueAxis(valueAxis)
+
+						graph = new AmCharts.AmGraph()
+						graph.type = "line"
+						graph.valueField = "errors"
+						graph.lineAlpha = 1
+						graph.lineColor = "#d1cf2a"
+						graph.fillAlphas = 0.3
+						graph.balloonText = "Errors received: [[value]]";
+						chart.addGraph(graph)
+
+						chartCursor = new AmCharts.ChartCursor()
+						chartCursor.cursorPosition = "mouse"
+						chartCursor.categoryBalloonDateFormat = "DD MMMM"
+						chart.addChartCursor(chartCursor)
+						chart.write("graph")
+
+						$watermark = $('div#graph svg g:last')
+						$rect = $watermark.find 'rect'
+						$rect.removeAttr "height"
+						$rect.removeAttr "y"
+						$text = $watermark.find 'tspan'
+						$text.attr "y", "-1"
+						$text.attr "x", "-8"
+						dashboard.graphSpinner.hide()
 					error: ->
 						dashboard.error()
+						dashboard.graphSpinner.hide()
 					dataType: "json"
+					complete: ->
+						setTimeout dashboard.refreshGraph, 30000
 				true
-			bind: (data) ->
-				console.log "binding"
-				for i in data.issues
-					dashboard.issueContainer.prepend i
-				for e in data.errors
-					dashboard.errorContainer.prepend e	
+			refreshPieChart: (data) -> 
+				dashboard.pieChartSpinner.show()
+				$.ajax
+					url: "/dashboard/updatepiechart?applicationId=" + $('input#ApplicationId').val()
+					success: (data) ->
+						chartdata = []
+						chartdata.push
+							status: "Unacknowledged"
+							count:data.data.Unacknowledged
+							url: "/issues?Status=Unacknowledged"
+						chartdata.push
+							status: "Acknowledged"
+							count:data.data.Acknowledged
+							url: "/issues?Status=Acknowledged"
+						chartdata.push
+							status: "FixReady"
+							count:data.data.FixReady
+							url: "/issues?Status=FixReady"
+						chartdata.push
+							status: "Solved"
+							count:data.data.Solved
+							url: "/issues?Status=Solved"
+						chartdata.push
+							status: "Ignored"
+							count:data.data.Ignored
+							url: "/issues?Status=Ignored"
 
-				dashboard.lastError = data.lastErrorDisplayed
-				dashboard.lastIssue = data.lastIssueDisplayed
-				dashboard.showItems()
+						piechart = new AmCharts.AmPieChart();
+						piechart.dataProvider = chartdata;
+						piechart.titleField = "status";
+						piechart.valueField = "count";
+						piechart.labelsEnabled = false;
+						piechart.urlField = "url"
+						piechart.sequencedAnimation = true
+						piechart.startRadius = "100%"
+						piechart.startEffect = '>'
+						piechart.balloonText = "Click to view '[[title]]' issues: [[value]]";
+						piechart.colors = ["#C2E0F2", "#92C7E7", "#95C0DF", "#729DB7", "#486C81"]
+
+						legend = new AmCharts.AmLegend();
+						legend.align = "right";
+						legend.markerType = "circle";
+						piechart.addLegend(legend);
+
+						piechart.write("piechart");
+
+						$watermark = $('div#piechart svg g:last')
+						$rect = $watermark.find 'rect'
+						$rect.removeAttr "height"
+						$rect.removeAttr "y"
+						$text = $watermark.find 'tspan'
+						$text.attr "y", "-1"
+						$text.attr "x", "-8"
+						dashboard.pieChartSpinner.hide()
+					error: ->
+						dashboard.error()
+						dashboard.pieChartSpinner.hide()
+					dataType: "json"
+					complete: ->
+						setTimeout dashboard.refreshPieChart, 30000
 				true
 			error: -> 
 				console.log "error"
 				true
-			showItems: ->
-				this.issueContainer.find('div.boxed-item:hidden').show('slow')
-				this.errorContainer.find('div.boxed-item:hidden').show('slow')
-				this.purgeItems this.issueContainer
-				this.purgeItems this.errorContainer
-			purgeItems: ($container) ->
-				count = $container.find(' > div').length
-				while count > 100
-					$container.find(' > div:last-child').remove()
-					count = $container.find(' > div').length
 
-		dashboard = new Dashboard();
-		dashboard.rendergraph();
+		dashboard = new Dashboard()
+		dashboard.refreshGraph()
+		dashboard.refreshPieChart()
 
-		setTimeout dashboard.poll, 15000
+		setTimeout dashboard.refreshGraph, 30000
+		setTimeout dashboard.refreshIssues, 30000
+		setTimeout dashboard.refreshPieChart, 30000
 		true

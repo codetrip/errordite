@@ -3,12 +3,11 @@
 @model Errordite.Web.Models.Issues.AddIssueViewModel
            
 @{
-    ViewBag.Title = "Create Issue";
+    ViewBag.Title = "Add Issue";
 }
 
 <section class="centered" id="addissue">
     <div class="content">
-        <h1>Add an issue</h1>
         @using (Html.BeginForm("add", "issues", FormMethod.Post, new { id = "addIssue" }))
         {
             <div class="form double">

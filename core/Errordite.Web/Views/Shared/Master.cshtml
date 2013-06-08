@@ -24,8 +24,17 @@
         <div class="wrapper">
             <header>
                 @Html.Partial("quotasnotification")
-	            @(ViewData.GetAppContext().AuthenticationStatus != AuthenticationStatus.Authenticated ? Html.Partial("anonymousheader") : Html.Partial("header"))
-	            @RenderSection("topheader", required: false)
+
+				@if (ViewData.GetAppContext().AuthenticationStatus == AuthenticationStatus.Authenticated)
+				{
+					@Html.Partial("header")
+					@Html.Partial("links")
+				}
+				else
+				{
+					@Html.Partial("anonymousheader")
+				}
+				
                 @Html.Partial("notifications")
                 @Html.Partial("breadcrumbs")
                 @RenderSection("header", required: false) 

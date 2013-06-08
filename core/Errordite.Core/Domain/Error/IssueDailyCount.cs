@@ -9,7 +9,6 @@ namespace Errordite.Core.Domain.Error
         public string ApplicationId { get; set; }
         public int Count { get; set; }
 		public bool Historical { get; set; }
-		public bool Hidden { get; set; }
         public DateTime Date { get; set; }
 	}
 }

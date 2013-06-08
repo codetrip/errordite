@@ -1,11 +1,8 @@
 ﻿@using Errordite.Core.Domain.Organisation
-@using Errordite.Web
+@using Errordite.Core.Identity
 @using Errordite.Web.Extensions
-@using System.Linq
-@using Errordite.Core.Extensions
 @{
    var appContext = ViewData.GetAppContext();
-   var activeOrganisation = appContext.CurrentUser.ActiveOrganisation;
 }
 
 @if (appContext.CurrentUser.SpecialUser == SpecialUser.AppHarbor)
@@ -14,89 +11,42 @@
 }
 
 <div class="welcome-bar-container">
-    <div class="welcome-bar">
-        
-	    <div class="applications">
-		    @{
-			    var applications = ViewData.GetCore().GetApplications().Items;
-			    var selectedApplication = applications.FirstOrDefault(a => a.FriendlyId == ViewData.GetSelectedApplication());
-			    var selectedApplicationName = selectedApplication == null ? null : selectedApplication.Name;
-            
-			    <input type="hidden" value="@(selectedApplication == null ? string.Empty : selectedApplication.FriendlyId)" name="ApplicationId" id="ApplicationId" />
-			    <input type="hidden" value="@appContext.CurrentUser.ActiveOrganisation.Id" name="OrganisationId" id="OrganisationId" />
-				
-			    if (appContext.CurrentUser.Organisations.Count > 1)
-			    {
-				    <ul class="popup popup-pills">
-					    <li class="dropdown" id="organisations">
-						    <a class="dropdown-toggle" data-toggle="dropdown" href="#organisations">
-							    @appContext.CurrentUser.ActiveOrganisation.Name
-							    <b class="caret"></b>
-						    </a>
-						    <ul class="dropdown-menu">
-							    @foreach (var organisation in appContext.CurrentUser.Organisations)
-							    {
-								    <li>
-									    <a href="@Url.CurrentRequest("{0}={1}".FormatWith(WebConstants.RouteValues.SetOrganisation, organisation.FriendlyId))">@organisation.Name</a>
-								    </li>
-							    }
-						    </ul>
-					    </li>
-				    </ul>
-			    }
-			    else
-			    {
-				    <span class="header-org">@appContext.CurrentUser.ActiveOrganisation.Name</span>
-			    }
-                 
-			    if (applications.Count > 1)
-			    {
-				    <ul class="popup popup-pills" style="margin-left:5px">
-					    <li class="dropdown" id="applications">
-						    <a class="dropdown-toggle" data-toggle="dropdown" href="#applications">
-							    @if (selectedApplicationName.IsNullOrEmpty())
-							    {
-								    @: All Applications (@applications.Count())
-							    }
-							    else
-							    {
-								    @selectedApplicationName
-							    }
-							    <b class="caret"></b>
-						    </a>
-						    <ul class="dropdown-menu">
-							    <li>
-								    <a href="@Url.CurrentRequest("{0}=-1".FormatWith(WebConstants.RouteValues.SetApplication))">All Applications (@applications.Count())</a>
-							    </li>
-							    @foreach (var application in applications)
-							    {
-								    <li>
-									    <a href="@Url.CurrentRequest("{0}={1}".FormatWith(WebConstants.RouteValues.SetApplication, application.FriendlyId))">@application.Name</a>
-								    </li>
-							    }
-						    </ul>
-					    </li>
-				    </ul>
-			    }
-		    }
-	    </div>
-	    @(appContext.IsMobileDevice ? Html.Partial("MobileNav") : Html.Partial("DesktopNav"))
-    </div>
-</div>
-<div class="header-container @(activeOrganisation != null && activeOrganisation.Status == OrganisationStatus.PlanQuotaExceeded ? "tall" : "")">
-    <div class="header">
-        <div class="logo">
-            <a href="@Url.Home(ViewData.GetAppContext())"><img alt="Errordite: Home" src="@Url.Content("~/Assets/Images/header-logo.png")"/></a>
-        </div>
-	    <div class="search">
-		    @using (Html.BeginForm("index", "search", FormMethod.Get))
-		    {
-			    <div class="search-box">
-				    <i class="icon-search"></i>
-				    <input autocomplete="off" class="search-input" id="q" name="q" placeholder="Search your errors & issues..." type="text" />
-				    <input type="submit" class="search-btn" value="Go" />
-			    </div>
-		    }
-	    </div>
-    </div>
+	<div class="welcome-bar">
+		<div class="logo">
+			<a href="@Url.Home(ViewData.GetAppContext())"><img alt="Errordite: Home" src="@Url.Content("~/Assets/Images/header-logo.png")"/></a>
+		</div>
+		<div class="search">
+			@using (Html.BeginForm("index", "search", FormMethod.Get))
+			{
+				<div class="search-box">
+					<i class="icon-search"></i>
+					<input autocomplete="off" class="search-input" id="q" name="q" placeholder="Search your errors & issues..." type="text" />
+					<input type="submit" class="search-btn" value="Go" />
+				</div>
+			}
+		</div>
+		<nav class="main-nav">
+			<ul class="nav">
+				<li class="nav-item">
+					<a href="@Url.SignOut()">Sign Out</a>
+				</li>
+				@if (appContext.AuthenticationStatus == AuthenticationStatus.Authenticated && (appContext.CurrentUser.Role == UserRole.SuperUser || appContext.Impersonated))
+				{
+					<li class="nav-item sysadmin">
+						<a href="@Url.Organisations()">System</a>
+						<div class="pointer"></div>
+						<ul>
+							<li><a href="@Url.Organisations()">Organisations</a></li> 
+							<li><a href="@Url.MessageFailures()">Message Failures</a></li> 
+							<li><a href="@Url.StopPolling()">Stop Polling</a></li> 
+							<li><a href="@Url.SyncIndexes()">Sync Indexes</a></li> 
+							<li><a href="@Url.Impersonate()">Impersonate</a></li> 
+							<li><a href="@Url.FlushAllCaches()">Flush Caches</a></li> 
+						</ul>
+					</li>
+				}
+	            
+			</ul>
+		</nav>
+	</div>
 </div>

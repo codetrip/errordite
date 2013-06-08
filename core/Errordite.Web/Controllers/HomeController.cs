@@ -20,6 +20,7 @@ using Errordite.Web.ActionFilters;
 using Errordite.Web.Models.Home;
 using Errordite.Core.Extensions;
 using Errordite.Web.Extensions;
+using Errordite.Web.Models.Navigation;
 using Raven.Client.Indexes;
 
 namespace Errordite.Web.Controllers
@@ -38,28 +39,6 @@ namespace Errordite.Web.Controllers
 	        _storeFactory = storeFactory;
 	        _session = session;
         }
-
-		public ActionResult FreeTier()
-		{
-			var plans = _session.MasterRaven.Query<PaymentPlan>();
-
-			foreach (var plan in plans)
-			{
-				if (plan.Price == 0m)
-				{
-					plan.Name = PaymentPlanNames.Free;
-					plan.MaximumIssues = 15;
-				}
-
-				if (plan.Name == PaymentPlanNames.Large)
-				{
-					plan.MaximumIssues = int.MaxValue;
-					plan.Price = 249.00m;
-				}
-			}
-
-			return Content("OK");
-		}
 
 		[HttpGet, ExportViewData]
 		public ActionResult SyncIndexes(string orgId)
@@ -112,7 +91,7 @@ namespace Errordite.Web.Controllers
             return View();
         }
 
-        [HttpGet, ImportViewData]
+		[HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.Contact)]
         public ActionResult Contact()
         {
             return View();
