@@ -57,7 +57,7 @@
 				<div class="form form-inline criteria">
 					<ul>
 						<li style="width:100%">
-							<h2 class="section-header dashboard" style="float:left">Recent Issues</h2>
+							<h2 class="section-header dashboard" style="float:left">Issues</h2>
 							@Html.DropDownListFor(m => m.SortId, Model.SortOptions, new { style="float:right" })
 						</li>
 					</ul>
@@ -80,7 +80,7 @@
 				<div id="issues-spinner" class="spinner-parent issues"></div>
 	        </div>
 	        <div class="one-third">
-		        <h2 class="section-header dashboard" style="margin-left: 7px;">Status Breakdown</h2>
+		        <h2 class="section-header dashboard" style="margin-left: 7px;">Status</h2>
 		        <div id="piechart" style="width: 400px; height: 400px;"></div>
 				<div id="piechart-spinner" class="spinner-parent piechart"></div>
 	        </div>
