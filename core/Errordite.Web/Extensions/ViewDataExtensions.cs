@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 using Errordite.Core.Web;
 using Errordite.Core;
 using Errordite.Core.Configuration;
 using Errordite.Core.Identity;
+using Errordite.Web.Models.Dashboard;
 using Errordite.Web.Models.Navigation;
 using Errordite.Web.Models.Notifications;
 using Errordite.Core.Extensions;
@@ -18,7 +20,8 @@ namespace Errordite.Web.Extensions
         private const string AppContextKey = "app_context_key";
         private const string ConfigurationKey = "configuration_key";
         private const string CookieManagerKey = "cookiemanager_key";
-        private const string ErrorditeCoreKey = "errordite_core_key";
+		private const string ErrorditeCoreKey = "errordite_core_key";
+		private const string ActiveTabKey = "active_tab_key";
 
         public static ErrorditeConfiguration GetConfiguration(this ViewDataDictionary viewData)
         {
@@ -94,7 +97,17 @@ namespace Errordite.Web.Extensions
         public static IErrorditeCore GetCore(this ViewDataDictionary viewData)
         {
             return viewData[ErrorditeCoreKey] as IErrorditeCore;
-        }
+		}
+
+		public static void SetActiveTab(this ViewDataDictionary viewData, NavTabs activeTab)
+		{
+			viewData[ActiveTabKey] = activeTab;
+		}
+
+		public static NavTabs GetActiveTab(this ViewDataDictionary viewData)
+		{
+			return (NavTabs)viewData[ActiveTabKey];
+		}
 
         public static void SetCookieManager(this ViewDataDictionary viewData, ICookieManager cookieManager)
         {

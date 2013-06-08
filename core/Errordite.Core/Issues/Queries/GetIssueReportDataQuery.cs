@@ -25,28 +25,31 @@ namespace Errordite.Core.Issues.Queries
                 y = hourlyCount.HourlyCount.Select(h => h.Value)
             });
 
+            var startDate = request.StartDate.Date;
+            var endDate = request.EndDate.Date;
+
             var dateResults = Query<IssueDailyCount, IssueDailyCounts>()
                 .Where(i => i.IssueId == Issue.GetId(request.IssueId))
                 .Where(i => i.Historical == false)
-                .Where(i => i.Date >= request.StartDate && i.Date <= request.EndDate)
+                .Where(i => i.Date >= startDate && i.Date <= endDate)
                 .OrderBy(i => i.Date)
                 .ToList();
 
             if (dateResults.Any())
             {
-                var range = Enumerable.Range(0, (request.EndDate - request.StartDate).Days + 1).ToList();
+                var range = Enumerable.Range(0, (endDate - startDate).Days + 1).ToList();
                 data.Add("ByDate", new
                 {
-                    x = range.Select(index => FindIssueCount(dateResults, request.StartDate.AddDays(index)).Date.ToString("yyyy-MM-dd")),
-                    y = range.Select(index => FindIssueCount(dateResults, request.StartDate.AddDays(index)).Count)
+                    x = range.Select(index => FindIssueCount(dateResults, startDate.AddDays(index)).Date.ConvertToUnixTimestamp()),
+                    y = range.Select(index => FindIssueCount(dateResults, startDate.AddDays(index)).Count)
                 });
             }
             else
             {
-                var range = Enumerable.Range(0, (request.EndDate - request.StartDate).Days + 1).ToList();
+                var range = Enumerable.Range(0, (endDate - startDate).Days + 1).ToList();
                 data.Add("ByDate", new
                 {
-                    x = range.Select(d => request.StartDate.AddDays(d).ToString("yyyy-MM-dd")),
+                    x = range.Select(d => startDate.AddDays(d).ConvertToUnixTimestamp()),
                     y = range.Select(d => 0)
                 });
             }

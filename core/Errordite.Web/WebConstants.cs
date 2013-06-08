@@ -13,6 +13,7 @@ namespace Errordite.Web
             public const string IssueSearchCookieKey = "isck";
             public const string ErrorSearchCookieKey = "esck";
 			public const string ApplicationIdCookieKey = "appid";
+			public const string DashboardCookieKey = "dashboard";
         }
 
         public static class RouteValues

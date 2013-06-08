@@ -31,11 +31,6 @@ namespace Errordite.Core.Errors.Queries
                 query = query.Where(e => e.ApplicationId == Application.GetId(request.ApplicationId));
             }
 
-            if (request.LastFriendlyId.HasValue)
-            {
-                query = query.Where(e => e.FriendlyId > request.LastFriendlyId);
-            }
-
             if (!request.Query.IsNullOrEmpty())
             {
                 query = query.Where(e => e.Query == request.Query);
@@ -64,9 +59,6 @@ namespace Errordite.Core.Errors.Queries
             {
                 case "TimestampUtc":
                     errors = request.Paging.SortDescending ? errors.OrderByDescending(e => e.TimestampUtc) : errors.OrderBy(e => e.TimestampUtc);
-                    break;
-                case "FriendlyId":
-                    errors = request.Paging.SortDescending ? errors.OrderByDescending(e => e.FriendlyId) : errors.OrderBy(e => e.FriendlyId);
                     break;
             }
 
@@ -98,8 +90,6 @@ namespace Errordite.Core.Errors.Queries
         public DateTime? EndDate { get; set; }
 		public string IssueId { get; set; }
         public PageRequestWithSort Paging { get; set; }
-        public int? LastFriendlyId { get; set; }
-
         public DateTime? WaitForIndexStaleAtUtc { get; set; }
     }
 }

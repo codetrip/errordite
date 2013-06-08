@@ -269,10 +269,29 @@
     <Content Include="Assets\Css\errordite.min.css">
       <DependentUpon>errordite.scss</DependentUpon>
     </Content>
+    <Content Include="Assets\Css\img\addissue-hover.png" />
+    <Content Include="Assets\Css\img\addissue.png" />
+    <Content Include="Assets\Css\img\admin-hover.png" />
+    <Content Include="Assets\Css\img\admin.png" />
+    <Content Include="Assets\Css\img\contact-hover.png" />
+    <Content Include="Assets\Css\img\contact.png" />
+    <Content Include="Assets\Css\img\docs-hover.png" />
+    <Content Include="Assets\Css\img\docs.png" />
+    <Content Include="Assets\Css\img\error-hover.png" />
+    <Content Include="Assets\Css\img\error.png" />
+    <Content Include="Assets\Css\img\issue-hover.png" />
+    <Content Include="Assets\Css\img\issue.png" />
+    <Content Include="Assets\Css\img\log-hover.png" />
+    <Content Include="Assets\Css\img\log.png" />
     <Content Include="Assets\Css\img\nav-background.png" />
     <Content Include="Assets\Images\application.png" />
+    <Content Include="Assets\Css\img\dashboard-hover.png" />
+    <Content Include="Assets\Css\img\dashboard.png" />
+    <Content Include="Assets\Images\dragIcon.gif" />
+    <Content Include="Assets\Images\dragIconH.gif" />
     <Content Include="Assets\Images\edit.png" />
     <Content Include="Assets\Images\error.png" />
+    <Content Include="Assets\Images\lens.png" />
     <Content Include="Assets\Images\person.png" />
     <Content Include="Assets\Images\trash.png" />
     <Content Include="Assets\Js\activity.js">
@@ -427,6 +446,7 @@
     <Content Include="Assets\Js\issues.js">
       <DependentUpon>issues.coffee</DependentUpon>
     </Content>
+    <Content Include="Assets\Js\lib\amcharts.js" />
     <Content Include="Assets\Js\lib\bootstrap.js" />
     <Content Include="Assets\Js\lib\date.js" />
     <Content Include="Assets\Js\lib\daterangepicker.js" />
@@ -702,10 +722,7 @@
     <Content Include="Views\Shared\Errors\ErrorItems.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\Dashboard\Links.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shared\Dashboard\Tabs.cshtml" />
+    <Content Include="Views\Shared\Links.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\Account\Tabs.cshtml" />
@@ -857,9 +874,6 @@
     <Content Include="Views\Shared\Dashboard\Issue.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\Dashboard\Error.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Assets\Js\home.coffee" />
   </ItemGroup>
   <ItemGroup>
@@ -956,12 +970,6 @@
     <Content Include="Views\Shared\Header.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\DesktopNav.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shared\MobileNav.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Account\Campfire.cshtml" />
     <Content Include="Views\Account\HipChat.cshtml" />
   </ItemGroup>
@@ -973,6 +981,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\AnonymousHeader.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Dashboard\Error.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

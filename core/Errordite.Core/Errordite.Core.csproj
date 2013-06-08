@@ -251,6 +251,7 @@
     <Compile Include="Exceptions\ErrorditeUnexpectedValueException.cs" />
     <Compile Include="Exceptions\ErrorditeValidationException.cs" />
     <Compile Include="Extensions\AssemblyExtensions.cs" />
+    <Compile Include="Extensions\DoubleExtensions.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="Extensions\DocumentQueryExtensions.cs" />
     <Compile Include="Extensions\DocumentStoreExtensions.cs" />

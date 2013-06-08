@@ -22,13 +22,12 @@
           $(SourcePath)\core\Errordite.Web\Assets\Css\lib\normalize.css;
           $(SourcePath)\core\Errordite.Web\Assets\Css\lib\html5-boilerplate.css;
           $(SourcePath)\core\Errordite.Web\Assets\Css\lib\prettify.css;
-          $(SourcePath)\core\Errordite.Web\Assets\Css\lib\jquery.jqplot.css;
           $(SourcePath)\core\Errordite.Web\Assets\Css\lib\daterangepicker.css;
           $(SourcePath)\core\Errordite.Web\Assets\Css\fonts.css;
           $(SourcePath)\core\Errordite.Web\Assets\Css\errordite.css;">
       </CssFiles>
       <JavaScriptFiles Include="
-          $(SourcePath)\core\Errordite.Web\Assets\Js\lib\jquery-1.8.3.js;
+			  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\jquery-1.8.3.js;
     		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\prettify.js;
     		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\jquery.validate.js;
     		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\jquery.unobtrusive-ajax.js;
@@ -40,11 +39,7 @@
     		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\date.js;
     		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\daterangepicker.js;
     		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\bootstrap.js;
-    		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\jqplot\jquery.jqplot.js;
-    		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\jqplot\jqplot.barRenderer.js;
-    		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\jqplot\jqplot.dateAxisRenderer.js;
-    		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\jqplot\jqplot.categoryAxisRenderer.js;
-    		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\jqplot\jqplot.highlighter.js;
+    		  $(SourcePath)\core\Errordite.Web\Assets\Js\lib\amcharts.js;
     		  $(SourcePath)\core\Errordite.Web\Assets\Js\global.js;
     		  $(SourcePath)\core\Errordite.Web\Assets\Js\components.js;
     		  $(SourcePath)\core\Errordite.Web\Assets\Js\applications.js;

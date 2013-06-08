@@ -1,0 +1,58 @@
+﻿
+@using Errordite.Web.Extensions
+@using Errordite.Web.Models.Dashboard
+
+@{
+	var selectedApplicationId = ViewData.GetSelectedApplication();
+	var activeTab = ViewData.GetActiveTab();
+}
+
+<div class="dark-container">
+    <section class="centered">
+        <div class="quicklinks">
+            <ul>
+                <li @(activeTab == NavTabs.Dashboard ? "class=active" : "")>
+                    <a href="@Url.Dashboard(selectedApplicationId)" class="dashboard">
+                        Dashboard
+                    </a>
+                </li>
+                <li @(activeTab == NavTabs.Issues ? "class=active" : "")>
+                    <a href="@Url.Issues(selectedApplicationId)" class="issues">
+                        Issues
+                    </a>
+                </li>
+                <li @(activeTab == NavTabs.Errors ? "class=active" : "")>
+                    <a href="@Url.Errors(selectedApplicationId)" class="errors">
+                        Errors
+                    </a>
+                </li>
+                <li @(activeTab == NavTabs.AddIssue ? "class=active" : "")>
+                    <a href="@Url.AddIssue()" class="addissue">
+                        Add Issue
+                    </a>
+                </li>
+                <li @(activeTab == NavTabs.Activity ? "class=active" : "")>
+                    <a href="@Url.ActivityLog(selectedApplicationId)" class="log">
+                        Activity Log
+                    </a>
+                </li>
+                <li @(activeTab == NavTabs.Account ? "class=active" : "")>
+                    <a href="@Url.Subscription()" class="admin">
+                        Account
+                    </a>
+                </li>
+                <li @(activeTab == NavTabs.Docs ? "class=active" : "")>
+                    <a href="@Url.QuickStart()" class="docs">
+                        Docs
+                    </a>
+                </li>
+                <li @(activeTab == NavTabs.Contact ? "class=active" : "")>
+                    <a href="@Url.Contact()" class="contact">
+                        Contact
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </section> 
+</div>
+
