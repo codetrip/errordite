@@ -1,7 +1,7 @@
 (function() {
-
   jQuery(function() {
     var $root, Dashboard, dashboard;
+
     $root = $('section#dashboard');
     if ($root.length > 0) {
       $root.delegate('select#SortId', 'change', function() {
@@ -9,7 +9,6 @@
         return true;
       });
       Dashboard = (function() {
-
         function Dashboard() {
           this.issueContainer = $('table#issues tbody');
           this.graphSpinner = $root.find('div#graph-spinner');
@@ -24,6 +23,7 @@
             url: "/dashboard/update?applicationId=" + $('input#ApplicationId').val() + '&sortId=' + $('select#SortId').val(),
             success: function(result) {
               var i, _i, _len, _ref;
+
               if (result.success) {
                 dashboard.issueContainer.empty();
                 dashboard.issueContainer.hide();
@@ -33,10 +33,11 @@
                   dashboard.issueContainer.append(i);
                 }
                 dashboard.issueContainer.fadeIn(750);
+                return dashboard.issuesSpinner.hide();
               } else {
                 dashboard.error();
+                return dashboard.issuesSpinner.hide();
               }
-              return dashboard.issuesSpinner.hide();
             },
             error: function() {
               dashboard.error();
@@ -56,6 +57,7 @@
             url: "/dashboard/getgraphdata?applicationId=" + $('input#ApplicationId').val(),
             success: function(data) {
               var $rect, $text, $watermark, categoryAxis, chart, chartCursor, chartdata, graph, guide, i, valueAxis;
+
               chart = new AmCharts.AmSerialChart();
               chart.pathToImages = "http://www.amcharts.com/lib/images/";
               chart.autoMarginOffset = 3;
@@ -133,6 +135,7 @@
             url: "/dashboard/updatepiechart?applicationId=" + $('input#ApplicationId').val(),
             success: function(data) {
               var $rect, $text, $watermark, chartdata, legend, piechart;
+
               chartdata = [];
               chartdata.push({
                 status: "Unacknowledged",

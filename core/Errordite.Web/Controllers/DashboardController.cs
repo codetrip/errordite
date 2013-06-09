@@ -74,7 +74,7 @@ namespace Errordite.Web.Controllers
                     viewModel.SingleApplicationToken = applications.Items[0].Token;
                 }
 
-				var sort = DashboardViewModel.Sorting.First(s => s.Id == viewModel.SortId);
+				var sort = DashboardViewModel.Sorting.FirstOrDefault(s => s.Id == viewModel.SortId) ?? new DashboardSort("1", "", true, "LastErrorUtc");
 
                 var recentIssues = _getApplicationIssuesQuery.Invoke(new GetApplicationIssuesRequest
                 {
