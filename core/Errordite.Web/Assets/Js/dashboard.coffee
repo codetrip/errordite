@@ -30,9 +30,10 @@ jQuery ->
 								dashboard.issueContainer.append i
 
 							dashboard.issueContainer.fadeIn(750);
+							dashboard.issuesSpinner.hide()
 						else
 							dashboard.error()
-						dashboard.issuesSpinner.hide()
+							dashboard.issuesSpinner.hide()
 					error: ->
 						dashboard.error()
 						dashboard.issuesSpinner.hide()
