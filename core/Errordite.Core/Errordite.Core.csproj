@@ -272,6 +272,7 @@
     <Compile Include="Indexing\IssueHourlyCounts.cs" />
     <Compile Include="Indexing\MessageEnvelopes.cs" />
     <Compile Include="Issues\Commands\AddCommentCommand.cs" />
+    <Compile Include="Issues\Queries\GetMostRecurringIssuesForDateQuery.cs" />
     <Compile Include="Messaging\Commands\CreateSQSQueueCommand.cs" />
     <Compile Include="Messaging\SendCampfireMessage.cs" />
     <Compile Include="Misc\RepositoryPathHelper.cs" />

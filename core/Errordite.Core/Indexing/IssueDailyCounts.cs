@@ -20,7 +20,8 @@ namespace Errordite.Core.Indexing
                     count.Historical
 				};
 
-            Sort(e => e.Date, SortOptions.String);
+			Sort(e => e.Date, SortOptions.String);
+			Sort(e => e.Count, SortOptions.Int);
 		}
 	}
 }
