@@ -63,7 +63,7 @@ namespace Errordite.Web.ActionFilters
 			if (currentUri.AbsolutePath.StartsWith("/errors"))
 				return NavTabs.Errors;
 
-			if (currentUri.AbsolutePath.StartsWith("/issues"))
+			if (currentUri.AbsolutePath.StartsWith("/issue"))
 				return NavTabs.Issues;
 
 			if (currentUri.AbsolutePath.StartsWith("/docs"))

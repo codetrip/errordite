@@ -17,7 +17,7 @@ namespace Errordite.Core.Issues.Queries
         {
             Trace("Starting...");
 
-            var startDate = DateTime.UtcNow.Date.AddDays(-7).Date;
+            var startDate = DateTime.UtcNow.Date.AddDays(-14).Date;
             var endDate = DateTime.UtcNow.Date.AddHours(2);
             object data;
 
@@ -68,7 +68,6 @@ namespace Errordite.Core.Issues.Queries
 
     public class GetDashboardReportRequest 
     {
-        public string OrganisationId { get; set; }
         public string ApplicationId { get; set; }
     }
 }

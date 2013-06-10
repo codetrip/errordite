@@ -4,17 +4,23 @@ using System.Linq;
 using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
+using Errordite.Core.Domain.Master;
 using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Extensions;
+using Errordite.Core.Session;
 
 namespace Errordite.Web.Controllers
 {
     public class MigrationsController : ErrorditeController
     {
-        //
-        // GET: /Migrations/
+		private readonly IAppSession _session;
 
-        public ActionResult Index()
+	    public MigrationsController(IAppSession session)
+	    {
+		    _session = session;
+	    }
+
+	    public ActionResult Index()
         {
             foreach (
                 var method in
@@ -26,6 +32,23 @@ namespace Errordite.Web.Controllers
 
             return new EmptyResult();
         }
+
+		public ActionResult ResetIndex(string indexName)
+		{
+			foreach (var organisation in Core.Session.MasterRaven.Query<Organisation>().GetAllItemsAsList(100))
+			{
+				organisation.RavenInstance = Core.Session.MasterRaven.Load<RavenInstance>(organisation.RavenInstanceId);
+
+				using (_session.SwitchOrg(organisation))
+				{
+					Trace("Syncing {0} Indexes", organisation.Name);
+					_session.Raven.Advanced.DocumentStore.DatabaseCommands.ResetIndex(indexName);
+					Trace("Done Syncing {0} Indexes", organisation.Name);
+				}
+			}
+
+			return Content("OK");
+		}
 
         public ActionResult FreeTier()
         {

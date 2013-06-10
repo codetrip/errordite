@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Web.Mvc;
 using Errordite.Core.Domain.Organisation;
+using Errordite.Web.Models.Errors;
 using Errordite.Web.Models.Issues;
 
 namespace Errordite.Web.Models.Dashboard
@@ -10,20 +11,22 @@ namespace Errordite.Web.Models.Dashboard
 	{
 		public static List<DashboardSort> Sorting = new List<DashboardSort>
 		{
-			new DashboardSort("1", "Sort By: Most Recent Error", true, "LastErrorUtc"),
-			new DashboardSort("2", "Sort By: Most Recent Issue", true, "CreatedOnUtc"),
-			new DashboardSort("3", "Sort By: Highest Error Count", true, "ErrorCount"),
-			new DashboardSort("4", "Sort By: Lowest Error Count", false, "ErrorCount"),
+			new DashboardSort("1", "Issues By Most Recent Error", true, "LastErrorUtc"),
+			new DashboardSort("2", "Issues By Most Recent Issue", true, "CreatedOnUtc"),
+			new DashboardSort("3", "Issues By Highest Error Count", true, "ErrorCount"),
+			new DashboardSort("4", "Issues By Lowest Error Count", false, "ErrorCount"),
+			new DashboardSort("5", "Live Error Feed", false, string.Empty),
 		};
 
 		public bool HasApplications { get; set; }
-        public IEnumerable<IssueItemViewModel> RecentIssues { get; set; }
+		public IEnumerable<IssueItemViewModel> Issues { get; set; }
+		public IEnumerable<ErrorInstanceViewModel> Errors { get; set; }
         public string SingleApplicationId { get; set; }
         public string SingleApplicationToken { get; set; }
 		public string TestIssueId { get; set; }
-		public int TotalIssues { get; set; }
-		public string SortId { get; set; }
-		public IEnumerable<SelectListItem> SortOptions { get; set; }
+		public bool ShowIntro { get; set; }
+		public string ShowMe { get; set; }
+		public IEnumerable<SelectListItem> ShowMeOptions { get; set; }
     }
 
     public class DashboardViewModelBase
