@@ -6,7 +6,11 @@
     if ($root.length > 0) {
       window.Errordite.Spinner.disable();
       $root.delegate('select#ShowMe', 'change', function() {
-        dashboard.update('feed', true);
+        dashboard.update('feed');
+        return true;
+      });
+      $root.delegate('select#PageSize', 'change', function() {
+        dashboard.update('feed');
         return true;
       });
       $root.delegate('button#close-modal', 'click', function() {
@@ -22,17 +26,14 @@
           this.pollingEnabled = true;
         }
 
-        Dashboard.prototype.update = function(mode, purge) {
+        Dashboard.prototype.update = function(mode) {
           if (!dashboard.pollingEnabled) {
             return true;
           }
           $.ajax({
-            url: "/dashboard/update?mode=" + mode + "&showMe=" + $('select#ShowMe').val(),
+            url: "/dashboard/update?mode=" + mode + "&showMe=" + $('select#ShowMe').val() + '&pageSize=' + $('select#PageSize').val(),
             success: function(result) {
               if (result.success) {
-                if (purge) {
-                  dashboard.feedContainer.empty();
-                }
                 if (result.liveErrorFeed) {
                   dashboard.renderErrors(result.data.feed);
                 } else {
@@ -50,7 +51,7 @@
             dataType: "json",
             complete: function() {
               console.log('poll');
-              return setTimeout(dashboard.update, 5000);
+              return setTimeout(dashboard.update, 30000);
             }
           });
           return true;
@@ -72,24 +73,13 @@
         Dashboard.prototype.renderErrors = function(errors) {
           var e, _i, _len;
           if (errors !== null) {
+            dashboard.feedContainer.empty();
             for (_i = 0, _len = errors.length; _i < _len; _i++) {
               e = errors[_i];
               dashboard.feedContainer.prepend(e);
             }
-            dashboard.purgeItems();
           }
           return true;
-        };
-
-        Dashboard.prototype.purgeItems = function() {
-          var count, _results;
-          count = dashboard.feedContainer.find('tr').length;
-          _results = [];
-          while (count > 50) {
-            dashboard.feedContainer.find('tr:last-child').remove();
-            _results.push(count = dashboard.feedContainer.find('tr').length);
-          }
-          return _results;
         };
 
         Dashboard.prototype.showIssueBreakdown = function(date) {
@@ -139,11 +129,13 @@
             chart.categoryField = "date";
             chart.angle = 30;
             chart.depth3D = 20;
+            chart.startDuration = 1;
+            chart.plotAreaFillAlphas = 0.2;
             categoryAxis = chart.categoryAxis;
             categoryAxis.parseDates = true;
             categoryAxis.minPeriod = "DD";
             categoryAxis.gridAlpha = 0.07;
-            categoryAxis.axisColor = "#DADADA";
+            categoryAxis.axisColor = "#d7e5ee";
             categoryAxis.showFirstLabel = true;
             categoryAxis.showLastLabel = true;
             valueAxis = new AmCharts.ValueAxis();
@@ -151,6 +143,7 @@
             valueAxis.gridAlpha = 0.07;
             valueAxis.stackType = "3d";
             valueAxis.dashLength = 5;
+            valueAxis.axisColor = "#d7e5ee";
             guide = new AmCharts.Guide();
             guide.value = 0;
             guide.toValue = 1000000;
@@ -217,15 +210,19 @@
             chart.categoryField = "status";
             chart.angle = 30;
             chart.depth3D = 20;
+            chart.startDuration = 1;
+            chart.plotAreaFillAlphas = 0.2;
             categoryAxis = chart.categoryAxis;
             categoryAxis.showFirstLabel = true;
             categoryAxis.showLastLabel = true;
             categoryAxis.startOnAxis = false;
             categoryAxis.labelRotation = 45;
+            categoryAxis.axisColor = "#d7e5ee";
             valueAxis = new AmCharts.ValueAxis();
             valueAxis.stackType = "3d";
             valueAxis.stackType = "3d";
             valueAxis.dashLength = 3;
+            valueAxis.axisColor = "#d7e5ee";
             guide = new AmCharts.Guide();
             guide.value = 0;
             guide.toValue = 1000000;
