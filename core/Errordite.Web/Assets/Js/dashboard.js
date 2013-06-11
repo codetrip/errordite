@@ -1,7 +1,7 @@
 (function() {
+
   jQuery(function() {
     var $root, Dashboard, dashboard;
-
     $root = $('section#dashboard');
     if ($root.length > 0) {
       window.Errordite.Spinner.disable();
@@ -58,7 +58,6 @@
 
         Dashboard.prototype.renderIssues = function(issues) {
           var i, _i, _len;
-
           if (issues !== null) {
             dashboard.feedContainer.empty();
             for (_i = 0, _len = issues.length; _i < _len; _i++) {
@@ -72,7 +71,6 @@
 
         Dashboard.prototype.renderErrors = function(errors) {
           var e, _i, _len;
-
           if (errors !== null) {
             for (_i = 0, _len = errors.length; _i < _len; _i++) {
               e = errors[_i];
@@ -85,7 +83,6 @@
 
         Dashboard.prototype.purgeItems = function() {
           var count, _results;
-
           count = dashboard.feedContainer.find('tr').length;
           _results = [];
           while (count > 50) {
@@ -101,10 +98,9 @@
             url: "/dashboard/issuebreakdown?dateFormat=" + date,
             success: function(result) {
               var modal;
-
               if (result.success) {
                 modal = $root.find('div#issue-breakdown');
-                dashboard.renderIssueBreakdown(result.data);
+                dashboard.renderIssueBreakdown(result.data, date);
                 modal.modal();
                 return modal.center();
               } else {
@@ -121,7 +117,6 @@
 
         Dashboard.prototype.renderGraph = function(data) {
           var categoryAxis, chart, chartCursor, chartdata, graph, guide, i, valueAxis;
-
           if (data !== null) {
             chartdata = [];
             i = 0;
@@ -140,22 +135,17 @@
                 return dashboard.showIssueBreakdown(event.item.dataContext.date);
               }
             });
-            chart.addListener("rollOverGraphItem", function(event) {
-              return console.log(event.item);
-            });
             chart.dataProvider = chartdata;
             chart.categoryField = "date";
             chart.angle = 30;
             chart.depth3D = 20;
             categoryAxis = chart.categoryAxis;
             categoryAxis.parseDates = true;
-            categoryAxis.equalSpacing = true;
             categoryAxis.minPeriod = "DD";
             categoryAxis.gridAlpha = 0.07;
             categoryAxis.axisColor = "#DADADA";
             categoryAxis.showFirstLabel = true;
             categoryAxis.showLastLabel = true;
-            categoryAxis.startOnAxis = false;
             valueAxis = new AmCharts.ValueAxis();
             valueAxis.stackType = "3d";
             valueAxis.gridAlpha = 0.07;
@@ -190,7 +180,6 @@
 
         Dashboard.prototype.renderPieChart = function(data) {
           var categoryAxis, chart, chartCursor, chartdata, graph, guide, valueAxis;
-
           if (data !== null) {
             chartdata = [];
             chartdata.push({
@@ -232,6 +221,7 @@
             categoryAxis.showFirstLabel = true;
             categoryAxis.showLastLabel = true;
             categoryAxis.startOnAxis = false;
+            categoryAxis.labelRotation = 45;
             valueAxis = new AmCharts.ValueAxis();
             valueAxis.stackType = "3d";
             valueAxis.stackType = "3d";
@@ -262,9 +252,8 @@
           return true;
         };
 
-        Dashboard.prototype.renderIssueBreakdown = function(data) {
+        Dashboard.prototype.renderIssueBreakdown = function(data, date) {
           var $fill, $table, i, issue, totalErrors, _i, _j, _len, _len1;
-
           if (data !== null) {
             $table = $root.find('table#issues tbody');
             $table.empty();
@@ -292,6 +281,7 @@
                 width: (((issue.Count / totalErrors) * 100) * 7) + 'px'
               }, 'slow');
             }
+            $root.find('div#issue-breakdown div.modal-header h4 span').text(date.toString('dddd, MMMM dd yyyy'));
           }
           return true;
         };
@@ -303,7 +293,6 @@
 
         fixWatermark = function(div, x) {
           var $rect, $text, $watermark;
-
           $watermark = $('div#' + div + ' svg g:last');
           $rect = $watermark.find('rect');
           $rect.removeAttr("height");
