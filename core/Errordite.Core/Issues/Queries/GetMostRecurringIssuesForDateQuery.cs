@@ -16,12 +16,9 @@ namespace Errordite.Core.Issues.Queries
         {
             Trace("Starting...");
 
-			var startDate = request.Date.Date;
-	        var endDate = request.Date.Date.RangeEnd();
-
 			var results = Query<IssueDailyCount, IssueDailyCounts>()
                 .ConditionalWhere(i => i.ApplicationId == Application.GetId(request.ApplicationId), request.ApplicationId.IsNotNullOrEmpty)
-                .Where(i => i.Date >= startDate && i.Date <= endDate)
+                .Where(i => i.Date == request.Date.Date)
                 .OrderByDescending(i => i.Count)
 				.Take(10)
                 .ToList();

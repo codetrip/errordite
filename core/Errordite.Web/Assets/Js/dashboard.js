@@ -1,11 +1,17 @@
 (function() {
-
   jQuery(function() {
     var $root, Dashboard, dashboard;
+
     $root = $('section#dashboard');
     if ($root.length > 0) {
+      window.Errordite.Spinner.disable();
       $root.delegate('select#ShowMe', 'change', function() {
         dashboard.update('feed', true);
+        return true;
+      });
+      $root.delegate('button#close-modal', 'click', function() {
+        dashboard.pollingEnabled = true;
+        dashboard.update;
         return true;
       });
       Dashboard = (function() {
@@ -13,9 +19,13 @@
 
         function Dashboard() {
           this.feedContainer = $('table#feed tbody');
+          this.pollingEnabled = true;
         }
 
         Dashboard.prototype.update = function(mode, purge) {
+          if (!dashboard.pollingEnabled) {
+            return true;
+          }
           $.ajax({
             url: "/dashboard/update?mode=" + mode + "&showMe=" + $('select#ShowMe').val(),
             success: function(result) {
@@ -40,7 +50,7 @@
             dataType: "json",
             complete: function() {
               console.log('poll');
-              return setTimeout(dashboard.update, 30000);
+              return setTimeout(dashboard.update, 5000);
             }
           });
           return true;
@@ -48,6 +58,7 @@
 
         Dashboard.prototype.renderIssues = function(issues) {
           var i, _i, _len;
+
           if (issues !== null) {
             dashboard.feedContainer.empty();
             for (_i = 0, _len = issues.length; _i < _len; _i++) {
@@ -61,6 +72,7 @@
 
         Dashboard.prototype.renderErrors = function(errors) {
           var e, _i, _len;
+
           if (errors !== null) {
             for (_i = 0, _len = errors.length; _i < _len; _i++) {
               e = errors[_i];
@@ -73,6 +85,7 @@
 
         Dashboard.prototype.purgeItems = function() {
           var count, _results;
+
           count = dashboard.feedContainer.find('tr').length;
           _results = [];
           while (count > 50) {
@@ -82,17 +95,18 @@
           return _results;
         };
 
-        Dashboard.prototype.showMostSignificantIssues = function(date) {
-          window.Errordite.Spinner.disable();
-          true;
+        Dashboard.prototype.showIssueBreakdown = function(date) {
+          dashboard.pollingEnabled = false;
           $.ajax({
             url: "/dashboard/issuebreakdown?dateFormat=" + date,
             success: function(result) {
               var modal;
+
               if (result.success) {
                 modal = $root.find('div#issue-breakdown');
-                dashboard.renderIssuePieChart(result.data);
-                return modal.modal();
+                dashboard.renderIssueBreakdown(result.data);
+                modal.modal();
+                return modal.center();
               } else {
                 return dashboard.error();
               }
@@ -100,16 +114,14 @@
             error: function() {
               return dashboard.error();
             },
-            dataType: "json",
-            complete: function() {
-              return window.Errordite.Spinner.enable();
-            }
+            dataType: "json"
           });
           return true;
         };
 
         Dashboard.prototype.renderGraph = function(data) {
           var categoryAxis, chart, chartCursor, chartdata, graph, guide, i, valueAxis;
+
           if (data !== null) {
             chartdata = [];
             i = 0;
@@ -125,8 +137,11 @@
             chart.marginRight = 15;
             chart.addListener("clickGraphItem", function(event) {
               if (event.item.dataContext.errors > 0) {
-                return dashboard.showMostSignificantIssues(event.item.dataContext.date);
+                return dashboard.showIssueBreakdown(event.item.dataContext.date);
               }
+            });
+            chart.addListener("rollOverGraphItem", function(event) {
+              return console.log(event.item);
             });
             chart.dataProvider = chartdata;
             chart.categoryField = "date";
@@ -146,7 +161,6 @@
             valueAxis.gridAlpha = 0.07;
             valueAxis.stackType = "3d";
             valueAxis.dashLength = 5;
-            valueAxis.unit = "0";
             guide = new AmCharts.Guide();
             guide.value = 0;
             guide.toValue = 1000000;
@@ -169,13 +183,14 @@
             chartCursor.zoomable = false;
             chart.addChartCursor(chartCursor);
             chart.write("graph");
-            fixWatermark('graph');
+            fixWatermark('graph', "-8");
           }
           return true;
         };
 
         Dashboard.prototype.renderPieChart = function(data) {
-          var chartdata, legend, piechart;
+          var categoryAxis, chart, chartCursor, chartdata, graph, guide, valueAxis;
+
           if (data !== null) {
             chartdata = [];
             chartdata.push({
@@ -203,32 +218,79 @@
               count: data.Ignored,
               url: "/issues?Status=Ignored"
             });
-            piechart = new AmCharts.AmPieChart();
-            piechart.dataProvider = chartdata;
-            piechart.titleField = "status";
-            piechart.valueField = "count";
-            piechart.labelsEnabled = false;
-            piechart.urlField = "url";
-            piechart.balloonText = "Click to view '[[title]]' issues: [[value]]";
-            piechart.colors = ["#C2E0F2", "#92C7E7", "#95C0DF", "#729DB7", "#486C81"];
-            piechart.startDuration = 0;
-            legend = new AmCharts.AmLegend();
-            legend.align = "right";
-            legend.markerType = "circle";
-            piechart.addLegend(legend);
-            piechart.write("piechart");
-            fixWatermark('piechart');
+            chart = new AmCharts.AmSerialChart();
+            chart.autoMarginOffset = 3;
+            chart.marginRight = 15;
+            chart.addListener("clickGraphItem", function(event) {
+              return window.location.href = event.item.dataContext.url;
+            });
+            chart.dataProvider = chartdata;
+            chart.categoryField = "status";
+            chart.angle = 30;
+            chart.depth3D = 20;
+            categoryAxis = chart.categoryAxis;
+            categoryAxis.showFirstLabel = true;
+            categoryAxis.showLastLabel = true;
+            categoryAxis.startOnAxis = false;
+            valueAxis = new AmCharts.ValueAxis();
+            valueAxis.stackType = "3d";
+            valueAxis.stackType = "3d";
+            valueAxis.dashLength = 3;
+            guide = new AmCharts.Guide();
+            guide.value = 0;
+            guide.toValue = 1000000;
+            guide.fillColor = "#d7e5ee";
+            guide.fillAlpha = 0.2;
+            guide.lineAlpha = 0;
+            valueAxis.addGuide(guide);
+            chart.addValueAxis(valueAxis);
+            graph = new AmCharts.AmGraph();
+            graph.type = "column";
+            graph.valueField = "count";
+            graph.lineAlpha = 1;
+            graph.lineColor = "#A9A9A8";
+            graph.fillAlphas = 0.7;
+            graph.balloonText = "[[category]]: [[value]]";
+            chart.addGraph(graph);
+            chartCursor = new AmCharts.ChartCursor();
+            chartCursor.cursorPosition = "mouse";
+            chartCursor.zoomable = false;
+            chart.addChartCursor(chartCursor);
+            chart.write("piechart");
+            fixWatermark('piechart', "0");
           }
           return true;
         };
 
-        Dashboard.prototype.renderIssuePieChart = function(data) {
-          var $table, issue, _i, _len;
+        Dashboard.prototype.renderIssueBreakdown = function(data) {
+          var $fill, $table, i, issue, totalErrors, _i, _j, _len, _len1;
+
           if (data !== null) {
             $table = $root.find('table#issues tbody');
+            $table.empty();
+            totalErrors = 0;
             for (_i = 0, _len = data.length; _i < _len; _i++) {
-              issue = data[_i];
-              $table.append('<tr><td class="graph-fill"><a href="/issue/' + issue.Id + '">' + issue.Name + ' (' + issue.Count + ')</a></td></tr>');
+              i = data[_i];
+              totalErrors += i.Count;
+            }
+            for (_j = 0, _len1 = data.length; _j < _len1; _j++) {
+              issue = data[_j];
+              $table.append('\
+							<tr>\
+								<td>\
+									<div class="graph-col">\
+										<div class="graph-fill"></div>\
+										<div class="graph-count">' + issue.Count + ' <span>-</span></div>\
+										<div class="graph-text">\
+											<a href="/issue/' + issue.Id + '">' + issue.Name.substring(0, 100) + '</a>\
+										</div>\
+									</div>\
+								</td>\
+							</tr>');
+              $fill = $table.find('tr:last td div.graph-fill');
+              $fill.animate({
+                width: (((issue.Count / totalErrors) * 100) * 7) + 'px'
+              }, 'slow');
             }
           }
           return true;
@@ -239,15 +301,16 @@
           return true;
         };
 
-        fixWatermark = function(div) {
+        fixWatermark = function(div, x) {
           var $rect, $text, $watermark;
+
           $watermark = $('div#' + div + ' svg g:last');
           $rect = $watermark.find('rect');
           $rect.removeAttr("height");
           $rect.removeAttr("y");
           $text = $watermark.find('tspan');
           $text.attr("y", "-1");
-          return $text.attr("x", "-8");
+          return $text.attr("x", x);
         };
 
         return Dashboard;

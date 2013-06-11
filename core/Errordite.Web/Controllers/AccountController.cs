@@ -31,7 +31,7 @@ namespace Errordite.Web.Controllers
 		{
 		    var users = Core.GetUsers();
 		    var primaryUser =
-		        users.Items.First(u => u.Id == Core.AppContext.CurrentUser.ActiveOrganisation.PrimaryUserId);
+		        users.Items.First(u => u.Id.ToLowerInvariant() == Core.AppContext.CurrentUser.ActiveOrganisation.PrimaryUserId.ToLowerInvariant());
 
 		    var model = new OrganisationSettingsViewModel
 		    {

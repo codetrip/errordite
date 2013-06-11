@@ -118,7 +118,6 @@ jQuery ->
 			valueAxis.stackType = "3d";
 			valueAxis.gridAlpha = 0.07
 			valueAxis.dashLength = 5;
-			valueAxis.unit = "0";
 
 			guide = new AmCharts.Guide();
 			guide.value = 0;

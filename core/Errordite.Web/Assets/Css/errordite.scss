@@ -2573,6 +2573,7 @@ table.history {
 }
 
 #dashboard {
+
 	span.showme {
 		float:right;
 		margin:8px 5px 0 0;
@@ -2581,4 +2582,65 @@ table.history {
 		font-weight:600;
 		color:$verydarkbrown;
 	}
+
+    .graph-table {
+        margin-left:35px;
+        border-top:0;
+        border-right:0;
+        border-left:1px solid #cdd4da;
+        border-bottom:1px solid #cdd4da;
+        background-color:#fff;
+        width:700px;
+        -webkit-border-radius: 0;
+        -moz-border-radius: 0;
+        border-radius: 0;
+        td {
+            padding: 4px 5px 4px 0;
+            border:0;
+            background-color:#fff;
+        }
+    }
+
+    .graph-col {
+        position:relative;
+        width:700px;
+        height:25px;
+    }
+
+    .graph-fill {
+        position:absolute;
+        top:0px;
+        height:25px;
+        background-color: #D7E5EE;
+        -webkit-border-radius: 0 $borderradius $borderradius 0;
+        -moz-border-radius: 0 $borderradius $borderradius 0;
+        border-radius: 0 $borderradius $borderradius 0;
+    }
+
+    .graph-text {
+        position:absolute;
+        top:3px;
+        left:4px;
+        height:25px;
+        width:700px;
+        a {
+            color:#555;
+            font-size:12px;
+        }
+    }   
+
+    .graph-count {
+        position:absolute;
+        color:#555;
+        top:3px;
+        left:-42px;
+        height:25px;
+        font-size:12px;
+        width:40px;
+        text-align:right;
+        span {
+            margin-left:5px;
+            float:right;
+        }
+    }   
 }
