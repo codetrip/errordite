@@ -57,6 +57,7 @@
 							<h2 class="section-header dashboard" style="float:left">Live Feed</h2>
 							<div style="float:right">
 								@Html.DropDownListFor(m => m.ShowMe, Model.ShowMeOptions, new { style="float:right; width:250px" })
+								@Html.DropDownListFor(m => m.PageSize, Model.PageSizes, new { style="float:right; width:60px;margin-right:5px" })
 								<span class="showme">Show Me:</span>
 							</div>
 							

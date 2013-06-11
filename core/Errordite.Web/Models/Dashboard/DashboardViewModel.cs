@@ -12,10 +12,10 @@ namespace Errordite.Web.Models.Dashboard
 		public static List<DashboardSort> Sorting = new List<DashboardSort>
 		{
 			new DashboardSort("1", "Issues By Most Recent Error", true, "LastErrorUtc"),
-			new DashboardSort("2", "Issues By Most Recent Issue", true, "CreatedOnUtc"),
+			new DashboardSort("2", "Issues By Most Recently Created", true, "CreatedOnUtc"),
 			new DashboardSort("3", "Issues By Highest Error Count", true, "ErrorCount"),
 			new DashboardSort("4", "Issues By Lowest Error Count", false, "ErrorCount"),
-			new DashboardSort("5", "Live Error Feed", false, string.Empty),
+			new DashboardSort("5", "Errors By Most Recently Created", false, string.Empty),
 		};
 
 		public bool HasApplications { get; set; }
@@ -26,7 +26,9 @@ namespace Errordite.Web.Models.Dashboard
 		public string TestIssueId { get; set; }
 		public bool ShowIntro { get; set; }
 		public string ShowMe { get; set; }
+		public int PageSize { get; set; }
 		public IEnumerable<SelectListItem> ShowMeOptions { get; set; }
+		public IEnumerable<SelectListItem> PageSizes { get; set; }
     }
 
     public class DashboardViewModelBase

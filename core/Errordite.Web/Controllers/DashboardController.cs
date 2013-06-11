@@ -57,9 +57,11 @@ namespace Errordite.Web.Controllers
             var applicationId = curentApplication == null ? null : curentApplication.Id;
             var viewModel = new DashboardViewModel();
             var applications = Core.GetApplications();
-	        var showMeId = CookieManager.Get(WebConstants.CookieSettings.DashboardCookieKey);
+	        var preferences = CookieManager.Get(WebConstants.CookieSettings.DashboardCookieKey);
+	        var pref = preferences.IsNullOrEmpty() ? null : preferences.Split('|');
 
-			viewModel.ShowMe = showMeId.IsNullOrEmpty() ? "1" : showMeId;    
+			viewModel.ShowMe = pref == null ? "1" : pref[0];
+	        viewModel.PageSize = pref == null ? 10 : int.Parse(pref[1]); 
         
             if(applications.PagingStatus.TotalItems > 0)
             {
@@ -77,7 +79,7 @@ namespace Errordite.Web.Controllers
 				{
 					var errors = _getApplicationErrorsQuery.Invoke(new GetApplicationErrorsRequest
 					{
-						Paging = new PageRequestWithSort(1, 10, "TimestampUtc", true),
+						Paging = new PageRequestWithSort(1, viewModel.PageSize, "TimestampUtc", true),
 						OrganisationId = Core.AppContext.CurrentUser.OrganisationId,
 						ApplicationId = applicationId
 					}).Errors;
@@ -94,7 +96,7 @@ namespace Errordite.Web.Controllers
 				{
 					var issues = _getApplicationIssuesQuery.Invoke(new GetApplicationIssuesRequest
 					{
-						Paging = new PageRequestWithSort(1, 10, showMe.SortField, showMe.SortDescending),
+						Paging = new PageRequestWithSort(1, viewModel.PageSize, showMe.SortField, showMe.SortDescending),
 						OrganisationId = Core.AppContext.CurrentUser.OrganisationId,
 						ApplicationId = applicationId
 					}).Issues;
@@ -113,6 +115,12 @@ namespace Errordite.Web.Controllers
                 viewModel.Applications = applications.Items;
                 viewModel.UrlGetter = GetDashboardUrl;
 	            viewModel.ShowMeOptions = DashboardViewModel.Sorting.ToSelectList(s => s.Id, s => s.DisplayName, s => s.Id == viewModel.ShowMe);
+	            viewModel.PageSizes = new List<SelectListItem>
+		        {
+			        new SelectListItem {Text = "10", Value = "10", Selected = viewModel.PageSize == 10},
+			        new SelectListItem {Text = "20", Value = "20", Selected = viewModel.PageSize == 20},
+			        new SelectListItem {Text = "30", Value = "30", Selected = viewModel.PageSize == 30}
+		        };
             }
             else
             {
@@ -144,7 +152,7 @@ namespace Errordite.Web.Controllers
 			return new JsonSuccessResult(data, allowGet: true);
 		}
 
-        public ActionResult Update(string mode, string showMe)
+        public ActionResult Update(string mode, string showMe, int pageSize)
         {
 	        object feed = null;
 			object errors = null;
@@ -156,10 +164,7 @@ namespace Errordite.Web.Controllers
 
 			if (mode.IsIn("feed", "undefined"))
 			{
-				if (showMe.IsNotNullOrEmpty())
-					CookieManager.Set(WebConstants.CookieSettings.DashboardCookieKey, showMe, null);
-				else
-					showMe = "1";
+				CookieManager.Set(WebConstants.CookieSettings.DashboardCookieKey, "{0}|{1}".FormatWith(showMe, pageSize), null);
 
 				var sort = DashboardViewModel.Sorting.First(s => s.Id == showMe);
 
@@ -169,7 +174,7 @@ namespace Errordite.Web.Controllers
 					var applications = Core.GetApplications();
 					var items = _getApplicationErrorsQuery.Invoke(new GetApplicationErrorsRequest
 					{
-						Paging = new PageRequestWithSort(1, 10, "TimestampUtc", true),
+						Paging = new PageRequestWithSort(1, pageSize, "TimestampUtc", true),
 						OrganisationId = Core.AppContext.CurrentUser.OrganisationId,
 						ApplicationId = applicationId
 					}).Errors;
@@ -184,7 +189,7 @@ namespace Errordite.Web.Controllers
 				{
 					var items = _getApplicationIssuesQuery.Invoke(new GetApplicationIssuesRequest
 					{
-						Paging = new PageRequestWithSort(1, 10, sort.SortField, sort.SortDescending),
+						Paging = new PageRequestWithSort(1, pageSize, sort.SortField, sort.SortDescending),
 						OrganisationId = Core.AppContext.CurrentUser.OrganisationId,
 						ApplicationId = applicationId
 					}).Issues.Items;

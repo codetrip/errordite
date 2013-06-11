@@ -6,7 +6,10 @@ jQuery ->
 	if $root.length > 0	
 		window.Errordite.Spinner.disable()
 		$root.delegate 'select#ShowMe', 'change', () -> 
-			dashboard.update 'feed', true
+			dashboard.update 'feed'
+			true
+		$root.delegate 'select#PageSize', 'change', () -> 
+			dashboard.update 'feed'
 			true
 		$root.delegate 'button#close-modal', 'click', () -> 
 			dashboard.pollingEnabled = true
@@ -18,17 +21,14 @@ jQuery ->
 			constructor: () ->
 				this.feedContainer = $ 'table#feed tbody'
 				this.pollingEnabled = true;
-			update: (mode, purge) ->
+			update: (mode) ->
 				if not dashboard.pollingEnabled
 					return true
 
 				$.ajax
-					url: "/dashboard/update?mode=" + mode + "&showMe=" + $('select#ShowMe').val()
+					url: "/dashboard/update?mode=" + mode + "&showMe=" + $('select#ShowMe').val() + '&pageSize=' + $('select#PageSize').val() 
 					success: (result) ->
 						if result.success
-							if purge
-								dashboard.feedContainer.empty()
-
 							if result.liveErrorFeed
 								dashboard.renderErrors result.data.feed
 							else
@@ -43,7 +43,7 @@ jQuery ->
 					dataType: "json"
 					complete: ->
 						console.log 'poll'
-						setTimeout dashboard.update, 5000
+						setTimeout dashboard.update, 30000
 				true
 			renderIssues: (issues) ->
 				if issues != null
@@ -56,15 +56,11 @@ jQuery ->
 				true
 			renderErrors: (errors) ->
 				if errors != null
+					dashboard.feedContainer.empty()
+
 					for e in errors
 						dashboard.feedContainer.prepend e
-					dashboard.purgeItems()
 				true
-			purgeItems: ->
-				count = dashboard.feedContainer.find('tr').length
-				while count > 50
-					dashboard.feedContainer.find('tr:last-child').remove()
-					count = dashboard.feedContainer.find('tr').length
 			showIssueBreakdown: (date) ->
 				dashboard.pollingEnabled = false;
 				$.ajax
@@ -110,12 +106,14 @@ jQuery ->
 					chart.categoryField = "date"
 					chart.angle = 30;
 					chart.depth3D = 20;
+					chart.startDuration = 1
+					chart.plotAreaFillAlphas = 0.2
 
 					categoryAxis = chart.categoryAxis
 					categoryAxis.parseDates = true
 					categoryAxis.minPeriod = "DD"
 					categoryAxis.gridAlpha = 0.07
-					categoryAxis.axisColor = "#DADADA"
+					categoryAxis.axisColor = "#d7e5ee"
 					categoryAxis.showFirstLabel = true
 					categoryAxis.showLastLabel = true
 
@@ -124,6 +122,7 @@ jQuery ->
 					valueAxis.gridAlpha = 0.07
 					valueAxis.stackType = "3d";
 					valueAxis.dashLength = 5;
+					valueAxis.axisColor = "#d7e5ee"
 
 					guide = new AmCharts.Guide();
 					guide.value = 0;
@@ -180,22 +179,26 @@ jQuery ->
 					chart.autoMarginOffset = 3
 					chart.marginRight = 15
 					chart.addListener "clickGraphItem", (event) ->
-						window.location.href = event.item.dataContext.url;
+						window.location.href = event.item.dataContext.url
 					chart.dataProvider = chartdata
 					chart.categoryField = "status"
-					chart.angle = 30;
-					chart.depth3D = 20;
+					chart.angle = 30
+					chart.depth3D = 20
+					chart.startDuration = 1
+					chart.plotAreaFillAlphas = 0.2
 
 					categoryAxis = chart.categoryAxis
 					categoryAxis.showFirstLabel = true
 					categoryAxis.showLastLabel = true
 					categoryAxis.startOnAxis = false
 					categoryAxis.labelRotation = 45;
+					categoryAxis.axisColor = "#d7e5ee"
 
 					valueAxis = new AmCharts.ValueAxis()
 					valueAxis.stackType = "3d";
 					valueAxis.stackType = "3d";
 					valueAxis.dashLength = 3;
+					valueAxis.axisColor = "#d7e5ee"
 
 					guide = new AmCharts.Guide();
 					guide.value = 0;
