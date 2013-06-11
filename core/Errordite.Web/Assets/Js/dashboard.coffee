@@ -72,7 +72,7 @@ jQuery ->
 					success: (result) ->
 						if result.success
 							modal = $root.find('div#issue-breakdown')
-							dashboard.renderIssueBreakdown result.data
+							dashboard.renderIssueBreakdown result.data, date
 							modal.modal()
 							modal.center()
 						else
@@ -100,8 +100,11 @@ jQuery ->
 						if event.item.dataContext.errors > 0
 							dashboard.showIssueBreakdown event.item.dataContext.date
 						
-					chart.addListener "rollOverGraphItem", (event) ->
-						console.log event.item
+#					chart.addListener "rollOverGraphItem", (event) ->
+#						document.body.style.cursor="pointer";
+#
+#					chart.addListener "rollOutGraphItem", (event) ->
+#						document.body.style.cursor="default";
 
 					chart.dataProvider = chartdata
 					chart.categoryField = "date"
@@ -110,13 +113,11 @@ jQuery ->
 
 					categoryAxis = chart.categoryAxis
 					categoryAxis.parseDates = true
-					categoryAxis.equalSpacing = true
 					categoryAxis.minPeriod = "DD"
 					categoryAxis.gridAlpha = 0.07
 					categoryAxis.axisColor = "#DADADA"
 					categoryAxis.showFirstLabel = true
 					categoryAxis.showLastLabel = true
-					categoryAxis.startOnAxis = false
 
 					valueAxis = new AmCharts.ValueAxis()
 					valueAxis.stackType = "3d";
@@ -189,6 +190,7 @@ jQuery ->
 					categoryAxis.showFirstLabel = true
 					categoryAxis.showLastLabel = true
 					categoryAxis.startOnAxis = false
+					categoryAxis.labelRotation = 45;
 
 					valueAxis = new AmCharts.ValueAxis()
 					valueAxis.stackType = "3d";
@@ -221,7 +223,7 @@ jQuery ->
 					fixWatermark('piechart', "0")
 				true
 			
-			renderIssueBreakdown: (data) -> 
+			renderIssueBreakdown: (data, date) -> 
 				if data != null
 					$table = $root.find('table#issues tbody')
 					$table.empty()
@@ -245,6 +247,7 @@ jQuery ->
 						$fill = $table.find('tr:last td div.graph-fill')
 						$fill.animate({ width: (((issue.Count / totalErrors) * 100)  * 7) + 'px' }, 'slow');
 
+					$root.find('div#issue-breakdown div.modal-header h4 span').text(date.toString('dddd, MMMM dd yyyy'))
 				true
 			error: -> 
 				console.log "error"
