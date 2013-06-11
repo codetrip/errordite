@@ -4,16 +4,24 @@ jQuery ->
 	$root = $('section#dashboard')
 
 	if $root.length > 0	
-
+		window.Errordite.Spinner.disable()
 		$root.delegate 'select#ShowMe', 'change', () -> 
 			dashboard.update 'feed', true
+			true
+		$root.delegate 'button#close-modal', 'click', () -> 
+			dashboard.pollingEnabled = true
+			dashboard.update
 			true
 
 		class Dashboard
 		
 			constructor: () ->
 				this.feedContainer = $ 'table#feed tbody'
+				this.pollingEnabled = true;
 			update: (mode, purge) ->
+				if not dashboard.pollingEnabled
+					return true
+
 				$.ajax
 					url: "/dashboard/update?mode=" + mode + "&showMe=" + $('select#ShowMe').val()
 					success: (result) ->
@@ -35,7 +43,7 @@ jQuery ->
 					dataType: "json"
 					complete: ->
 						console.log 'poll'
-						setTimeout dashboard.update, 30000
+						setTimeout dashboard.update, 5000
 				true
 			renderIssues: (issues) ->
 				if issues != null
@@ -57,23 +65,21 @@ jQuery ->
 				while count > 50
 					dashboard.feedContainer.find('tr:last-child').remove()
 					count = dashboard.feedContainer.find('tr').length
-			showMostSignificantIssues: (date) ->
-				window.Errordite.Spinner.disable()
-				true
+			showIssueBreakdown: (date) ->
+				dashboard.pollingEnabled = false;
 				$.ajax
 					url: "/dashboard/issuebreakdown?dateFormat=" + date
 					success: (result) ->
 						if result.success
 							modal = $root.find('div#issue-breakdown')
-							dashboard.renderIssuePieChart result.data
-							modal.modal();
+							dashboard.renderIssueBreakdown result.data
+							modal.modal()
+							modal.center()
 						else
 							dashboard.error()
 					error: ->
 						dashboard.error()
 					dataType: "json"
-					complete: ->
-						window.Errordite.Spinner.enable()
 				true
 			renderGraph: (data) ->
 				if data != null
@@ -92,7 +98,11 @@ jQuery ->
 					chart.marginRight = 15
 					chart.addListener "clickGraphItem", (event) ->
 						if event.item.dataContext.errors > 0
-							dashboard.showMostSignificantIssues event.item.dataContext.date
+							dashboard.showIssueBreakdown event.item.dataContext.date
+						
+					chart.addListener "rollOverGraphItem", (event) ->
+						console.log event.item
+
 					chart.dataProvider = chartdata
 					chart.categoryField = "date"
 					chart.angle = 30;
@@ -113,7 +123,6 @@ jQuery ->
 					valueAxis.gridAlpha = 0.07
 					valueAxis.stackType = "3d";
 					valueAxis.dashLength = 5;
-					valueAxis.unit = "0";
 
 					guide = new AmCharts.Guide();
 					guide.value = 0;
@@ -139,7 +148,7 @@ jQuery ->
 					chartCursor.zoomable = false
 					chart.addChartCursor(chartCursor)
 					chart.write("graph")
-					fixWatermark('graph')
+					fixWatermark('graph', "-8")
 				true
 			renderPieChart: (data) -> 
 				if data != null
@@ -165,43 +174,89 @@ jQuery ->
 						count:data.Ignored
 						url: "/issues?Status=Ignored"
 
-					piechart = new AmCharts.AmPieChart();
-					piechart.dataProvider = chartdata;
-					piechart.titleField = "status";
-					piechart.valueField = "count";
-					piechart.labelsEnabled = false;
-					piechart.urlField = "url"
-					piechart.balloonText = "Click to view '[[title]]' issues: [[value]]";
-					piechart.colors = ["#C2E0F2", "#92C7E7", "#95C0DF", "#729DB7", "#486C81"]
-					piechart.startDuration = 0;
+					
+					chart = new AmCharts.AmSerialChart()
+					chart.autoMarginOffset = 3
+					chart.marginRight = 15
+					chart.addListener "clickGraphItem", (event) ->
+						window.location.href = event.item.dataContext.url;
+					chart.dataProvider = chartdata
+					chart.categoryField = "status"
+					chart.angle = 30;
+					chart.depth3D = 20;
 
-					legend = new AmCharts.AmLegend()
-					legend.align = "right"
-					legend.markerType = "circle"
-					piechart.addLegend(legend)
+					categoryAxis = chart.categoryAxis
+					categoryAxis.showFirstLabel = true
+					categoryAxis.showLastLabel = true
+					categoryAxis.startOnAxis = false
 
-					piechart.write("piechart")
-					fixWatermark('piechart')
+					valueAxis = new AmCharts.ValueAxis()
+					valueAxis.stackType = "3d";
+					valueAxis.stackType = "3d";
+					valueAxis.dashLength = 3;
+
+					guide = new AmCharts.Guide();
+					guide.value = 0;
+					guide.toValue = 1000000;
+					guide.fillColor = "#d7e5ee";
+					guide.fillAlpha = 0.2;
+					guide.lineAlpha = 0
+					valueAxis.addGuide(guide);
+					chart.addValueAxis(valueAxis)
+
+					graph = new AmCharts.AmGraph()
+					graph.type = "column";
+					graph.valueField = "count"
+					graph.lineAlpha = 1
+					graph.lineColor = "#A9A9A8"
+					graph.fillAlphas = 0.7
+					graph.balloonText = "[[category]]: [[value]]"
+					chart.addGraph(graph)
+
+					chartCursor = new AmCharts.ChartCursor()
+					chartCursor.cursorPosition = "mouse"
+					chartCursor.zoomable = false
+					chart.addChartCursor(chartCursor)
+					chart.write("piechart")
+					fixWatermark('piechart', "0")
 				true
 			
-			renderIssuePieChart: (data) -> 
+			renderIssueBreakdown: (data) -> 
 				if data != null
 					$table = $root.find('table#issues tbody')
+					$table.empty()
+					totalErrors = 0
+					for i in data
+						totalErrors += i.Count
+
 					for issue in data
-						$table.append('<tr><td class="graph-fill"><a href="/issue/' + issue.Id + '">' + issue.Name + ' (' + issue.Count + ')</a></td></tr>')
+						$table.append('
+							<tr>
+								<td>
+									<div class="graph-col">
+										<div class="graph-fill"></div>
+										<div class="graph-count">' + issue.Count + ' <span>-</span></div>
+										<div class="graph-text">
+											<a href="/issue/' + issue.Id + '">' + issue.Name.substring(0, 100) + '</a>
+										</div>
+									</div>
+								</td>
+							</tr>')
+						$fill = $table.find('tr:last td div.graph-fill')
+						$fill.animate({ width: (((issue.Count / totalErrors) * 100)  * 7) + 'px' }, 'slow');
 
 				true
 			error: -> 
 				console.log "error"
 				true
-			fixWatermark = (div) ->
+			fixWatermark = (div, x) ->
 				$watermark = $('div#' + div + ' svg g:last')
 				$rect = $watermark.find 'rect'
 				$rect.removeAttr "height"
 				$rect.removeAttr "y"
 				$text = $watermark.find 'tspan'
 				$text.attr "y", "-1"
-				$text.attr "x", "-8"
+				$text.attr "x", x
 
 		dashboard = new Dashboard()
 		dashboard.update 'graphs'
