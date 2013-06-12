@@ -21,6 +21,7 @@ jQuery ->
 			constructor: () ->
 				this.feedContainer = $ 'table#feed tbody'
 				this.pollingEnabled = true;
+				this.timeout = null;
 			update: (mode) ->
 				if not dashboard.pollingEnabled
 					return true
@@ -43,7 +44,9 @@ jQuery ->
 					dataType: "json"
 					complete: ->
 						console.log 'poll'
-						setTimeout dashboard.update, 30000
+						if dashboard.timeout != null
+							clearTimeout dashboard.timeout
+						dashboard.timeout = setTimeout dashboard.update, 30000
 				true
 			renderIssues: (issues) ->
 				if issues != null

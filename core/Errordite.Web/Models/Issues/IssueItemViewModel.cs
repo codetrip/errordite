@@ -27,7 +27,7 @@ namespace Errordite.Web.Models.Issues
 		public string LastError { get; set; }
         public string ApplicationName { get; set; }
         public string Name { get; set; }
-        public bool Selected { get; set; }
+		public bool Selected { get; set; }
         public IssueStatus Status { get; set; }
 
         public static List<IssueItemViewModel> Convert(IEnumerable<Issue> issues, IEnumerable<Application> applications, IEnumerable<User> users)
@@ -47,7 +47,7 @@ namespace Errordite.Web.Models.Issues
             }).ToList();
         }
 
-		public static List<IssueItemViewModel> ConvertSimple(IEnumerable<Issue> issues, IEnumerable<User> users, string timezone)
+		public static List<IssueItemViewModel> ConvertSimple(IEnumerable<Issue> issues, IEnumerable<User> users, string timezone, bool showLastError)
 		{
 			return issues.Select(issue => new IssueItemViewModel
 			{
@@ -56,7 +56,7 @@ namespace Errordite.Web.Models.Issues
 				Name = issue.Name,
 				Status = issue.Status,
 				UserName = users.FirstOrDefault(u => u.Id == issue.UserId).IfPoss(u => u.FullName, issue.UserId),
-				LastError = issue.LastErrorUtc.ToVerbalTimeSinceUtc(timezone)
+				LastError = showLastError ? issue.LastErrorUtc.ToVerbalTimeSinceUtc(timezone) : issue.CreatedOnUtc.ToVerbalTimeSinceUtc(timezone),
 			}).ToList();
 		}
     }

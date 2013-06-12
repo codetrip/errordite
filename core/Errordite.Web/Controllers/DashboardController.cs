@@ -58,7 +58,7 @@ namespace Errordite.Web.Controllers
             var viewModel = new DashboardViewModel();
             var applications = Core.GetApplications();
 	        var preferences = CookieManager.Get(WebConstants.CookieSettings.DashboardCookieKey);
-	        var pref = preferences.IsNullOrEmpty() ? null : preferences.Split('|');
+			var pref = preferences.IsNullOrEmpty() || !preferences.Contains("|") ? null : preferences.Split('|');
 
 			viewModel.ShowMe = pref == null ? "1" : pref[0];
 	        viewModel.PageSize = pref == null ? 10 : int.Parse(pref[1]); 
@@ -102,7 +102,7 @@ namespace Errordite.Web.Controllers
 					}).Issues;
 
 					viewModel.TestIssueId = issues.Items.FirstOrDefault(i => i.TestIssue).IfPoss(i => i.Id);
-					viewModel.Issues = IssueItemViewModel.ConvertSimple(issues.Items, Core.GetUsers().Items, Core.AppContext.CurrentUser.ActiveOrganisation.TimezoneId);
+					viewModel.Issues = IssueItemViewModel.ConvertSimple(issues.Items, Core.GetUsers().Items, Core.AppContext.CurrentUser.ActiveOrganisation.TimezoneId, showMe.Id != "2");
 					viewModel.ShowIntro = issues.PagingStatus.TotalItems <= 3 && applications.Items.Count == 1;
 				}
 
@@ -196,7 +196,7 @@ namespace Errordite.Web.Controllers
 
 					feed = items == null || items.Count == 0 ?
 						new string[] { } :
-						IssueItemViewModel.ConvertSimple(items, Core.GetUsers().Items, Core.AppContext.CurrentUser.ActiveOrganisation.TimezoneId)
+						IssueItemViewModel.ConvertSimple(items, Core.GetUsers().Items, Core.AppContext.CurrentUser.ActiveOrganisation.TimezoneId, sort.Id != "2")
 										  .Select(i => RenderPartial("Dashboard/Issue", i));
 				}
 			}

@@ -12,17 +12,17 @@
         <div class="quicklinks">
             <ul>
                 <li @(activeTab == NavTabs.Dashboard ? "class=active" : "")>
-                    <a href="@Url.Dashboard(selectedApplicationId)" class="dashboard">
+                    <a href="@Url.Dashboard()" class="dashboard">
                         Dashboard
                     </a>
                 </li>
                 <li @(activeTab == NavTabs.Issues ? "class=active" : "")>
-                    <a href="@Url.Issues(selectedApplicationId)" class="issues">
+                    <a href="@Url.Issues()" class="issues">
                         Issues
                     </a>
                 </li>
                 <li @(activeTab == NavTabs.Errors ? "class=active" : "")>
-                    <a href="@Url.Errors(selectedApplicationId)" class="errors">
+                    <a href="@Url.Errors()" class="errors">
                         Errors
                     </a>
                 </li>
@@ -32,7 +32,7 @@
                     </a>
                 </li>
                 <li @(activeTab == NavTabs.Activity ? "class=active" : "")>
-                    <a href="@Url.ActivityLog(selectedApplicationId)" class="log">
+                    <a href="@Url.ActivityLog()" class="log">
                         Activity Log
                     </a>
                 </li>
