@@ -24,6 +24,7 @@
         function Dashboard() {
           this.feedContainer = $('table#feed tbody');
           this.pollingEnabled = true;
+          this.timeout = null;
         }
 
         Dashboard.prototype.update = function(mode) {
@@ -51,7 +52,10 @@
             dataType: "json",
             complete: function() {
               console.log('poll');
-              return setTimeout(dashboard.update, 30000);
+              if (dashboard.timeout !== null) {
+                clearTimeout(dashboard.timeout);
+              }
+              return dashboard.timeout = setTimeout(dashboard.update, 30000);
             }
           });
           return true;
