@@ -87,22 +87,22 @@
         };
 
         Dashboard.prototype.showIssueBreakdown = function(date) {
+          var modal;
           dashboard.pollingEnabled = false;
+          modal = $root.find('div#issue-breakdown');
+          modal.modal();
+          modal.center();
           $.ajax({
             url: "/dashboard/issuebreakdown?dateFormat=" + date,
             success: function(result) {
-              var modal;
               if (result.success) {
-                modal = $root.find('div#issue-breakdown');
-                dashboard.renderIssueBreakdown(result.data, date);
-                modal.modal();
-                return modal.center();
+                return dashboard.renderIssueBreakdown(result.data, date);
               } else {
-                return dashboard.error();
+                return modal.find('#breakdown-error').show();
               }
             },
             error: function() {
-              return dashboard.error();
+              return modal.find('#breakdown-error').show();
             },
             dataType: "json"
           });
@@ -133,7 +133,7 @@
             chart.categoryField = "date";
             chart.angle = 30;
             chart.depth3D = 20;
-            chart.startDuration = 1;
+            chart.startDuration = 0;
             chart.plotAreaFillAlphas = 0.2;
             categoryAxis = chart.categoryAxis;
             categoryAxis.parseDates = true;
@@ -214,7 +214,7 @@
             chart.categoryField = "status";
             chart.angle = 30;
             chart.depth3D = 20;
-            chart.startDuration = 1;
+            chart.startDuration = 0;
             chart.plotAreaFillAlphas = 0.2;
             categoryAxis = chart.categoryAxis;
             categoryAxis.showFirstLabel = true;
@@ -239,7 +239,7 @@
             graph.type = "column";
             graph.valueField = "count";
             graph.lineAlpha = 1;
-            graph.lineColor = "#A9A9A8";
+            graph.lineColor = "#FD4A8D";
             graph.fillAlphas = 0.7;
             graph.balloonText = "[[category]]: [[value]]";
             chart.addGraph(graph);

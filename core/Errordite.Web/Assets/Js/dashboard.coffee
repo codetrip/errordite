@@ -66,18 +66,20 @@ jQuery ->
 				true
 			showIssueBreakdown: (date) ->
 				dashboard.pollingEnabled = false;
+				
+				modal = $root.find('div#issue-breakdown')
+				modal.modal()
+				modal.center()
+
 				$.ajax
 					url: "/dashboard/issuebreakdown?dateFormat=" + date
 					success: (result) ->
 						if result.success
-							modal = $root.find('div#issue-breakdown')
 							dashboard.renderIssueBreakdown result.data, date
-							modal.modal()
-							modal.center()
 						else
-							dashboard.error()
+							modal.find('#breakdown-error').show();
 					error: ->
-						dashboard.error()
+							modal.find('#breakdown-error').show();
 					dataType: "json"
 				true
 			renderGraph: (data) ->
@@ -109,7 +111,7 @@ jQuery ->
 					chart.categoryField = "date"
 					chart.angle = 30;
 					chart.depth3D = 20;
-					chart.startDuration = 1
+					chart.startDuration = 0
 					chart.plotAreaFillAlphas = 0.2
 
 					categoryAxis = chart.categoryAxis
@@ -187,7 +189,7 @@ jQuery ->
 					chart.categoryField = "status"
 					chart.angle = 30
 					chart.depth3D = 20
-					chart.startDuration = 1
+					chart.startDuration = 0
 					chart.plotAreaFillAlphas = 0.2
 
 					categoryAxis = chart.categoryAxis
@@ -216,7 +218,7 @@ jQuery ->
 					graph.type = "column";
 					graph.valueField = "count"
 					graph.lineAlpha = 1
-					graph.lineColor = "#A9A9A8"
+					graph.lineColor = "#FD4A8D"
 					graph.fillAlphas = 0.7
 					graph.balloonText = "[[category]]: [[value]]"
 					chart.addGraph(graph)
