@@ -49,7 +49,7 @@ namespace Errordite.Core.Domain.Organisation
 		[ProtoMember(18)]
 		public CampfireDetails CampfireDetails { get; set; }
 		[ProtoMember(19)]
-		public List<ReplayReplacement> ReplayReplacements { get; set; }
+		public bool IsDemoOrganisation { get; set; }
 
         [JsonIgnore]
         public string FriendlyId { get { return Id == null ? string.Empty : Id.Split('/')[1]; } }

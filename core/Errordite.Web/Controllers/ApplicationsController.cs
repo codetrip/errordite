@@ -234,59 +234,5 @@ namespace Errordite.Web.Controllers
 
             return Redirect(Url.Applications());
         }
-
-        [ExportViewData]
-        public ActionResult GenerateError(string applicationid, string returnUrl)
-        {
-            var application = _getApplicationQuery.Invoke(new GetApplicationRequest
-            {
-                CurrentUser = AppContext.CurrentUser,
-                ApplicationId = applicationid,
-                OrganisationId = AppContext.CurrentUser.OrganisationId,
-            }).Application;
-
-            if (application == null)
-            {
-                return HttpNotFound();
-            }
-
-            var task = Core.Session.ReceiveHttpClient.PostJsonAsync("error", new ReceiveErrorRequest
-            {
-                Error = new Error
-                {
-                    ExceptionInfos = new[]{ new ExceptionInfo
-                    {
-                        Type = "Errordite.TestException",
-                        Message = "Test exception",
-                        MethodName = "TestMethod",
-                        Module = "Test.Module",
-                        StackTrace = " at Errordite.TestComponent.TestMethod(TestParam param) in E:\\SourceCode\\Errordite.Test\\TestComponent.cs:line 70\n   at System.Web.Mvc.ActionMethodDispatcher.Execute(ControllerBase controller, Object[] parameters)",
-                        ExtraData = new Dictionary<string, string>
-                        {
-                            {"Url", "http://myapp.com/test?foo=1234"}
-                        },
-                    }}.ToArray(),
-                    MachineName = "Test Machine Name",
-                    TimestampUtc = DateTime.UtcNow,
-                    ApplicationId = application.Id,
-                    OrganisationId = application.OrganisationId,
-                    TestError = true,
-                    Version = application.Version
-                },
-                ApplicationId = application.Id,
-                Organisation = AppContext.CurrentUser.ActiveOrganisation,
-            }).ContinueWith(t =>
-                {
-                    t.Result.EnsureSuccessStatusCode();
-                    return t.Result.Content.ReadAsAsync<ReceiveErrorResponse>().Result;
-                });
-
-            var receiveErrorResponse = task.Result;
-
-            ConfirmationNotification(new MvcHtmlString("Test error generated - attached to issue <a href='{0}'>{1}</a>"
-                .FormatWith(Url.Issue(IdHelper.GetFriendlyId(receiveErrorResponse.IssueId)), IdHelper.GetFriendlyId(receiveErrorResponse.IssueId))));
-
-            return Redirect(returnUrl);
-        }
     }
 }

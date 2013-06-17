@@ -11,9 +11,14 @@ class Initialisation
 	init: (ajax) -> 		
 		#todo - need to distinguish between things to be initialised after an ajax call and those to be globally initialised for the page
 		$('.icon-info').tooltip()
-		$('.tool-tip').tooltip()
 		$('div.search-box').tooltip()
 		$('.dropdown-toggle').dropdown()
+		#$(':input:disabled').removeClass("btn-blue").addClass("disabled").attr("data-title", "This function is not available in demo mode").tooltip()
+		$('.tool-tip').tooltip()
+
+		$('.disabled').attr("data-title", "This function is not available in demo mode").tooltip()
+		$('.disabled').bind 'click', () ->
+			 return false;
 
 		$tabHolders = $('.tabs, .sidenav-tabs')
 

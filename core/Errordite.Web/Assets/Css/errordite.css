@@ -483,9 +483,6 @@ section {
     text-transform: uppercase;
     font-size: 11px;
     white-space: nowrap; }
-    .table th.action-icons-wide {
-      min-width: 80px;
-      width: 80px; }
     .table th.action-icons {
       min-width: 55px;
       width: 55px; }
@@ -592,6 +589,14 @@ section {
     background-color: #8e9090; }
     .btn.btn-grey:hover {
       background-color: #B0B0B0; }
+  .btn.disabled {
+    background-color: #ddd;
+    font-style: italic;
+    color: #555; }
+    .btn.disabled:hover {
+      background-color: #ddd;
+      font-style: italic;
+      color: #555; }
 
 .nobutton {
   background: 0;
@@ -1270,6 +1275,10 @@ section {
 
 .error-container {
   background-color: #ecacac; }
+
+.demo-container {
+  background-color: #2A83B7;
+  color: #fff; }
 
 .video-panel {
   height: 85px;

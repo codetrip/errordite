@@ -1,5 +1,6 @@
 ﻿
 @using System.Globalization
+@using Errordite.Web.Extensions
 @using Errordite.Web.Models.Subscription
 @using Errordite.Core.Extensions
 @model ChangeSubscriptionViewModel
@@ -36,7 +37,7 @@
 						<div class="form">
 							<ul>
 								<li class="buttons">
-									<input class="btn btn-medium btn-blue" data-confirm="Are you sure you want to change your subscription?" type="submit" value="Change Subscription" />
+									<input class="btn btn-medium btn-blue @(ViewData.IsDemoMode() ? "disabled" : string.Empty)" data-confirm="Are you sure you want to change your subscription?" type="submit" value="Change Subscription" />
 								</li>
 							</ul>
 						</div>

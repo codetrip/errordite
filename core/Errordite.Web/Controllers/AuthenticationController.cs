@@ -23,6 +23,7 @@ namespace Errordite.Web.Controllers
         private readonly ICreateOrganisationCommand _createOrganisationCommand;
 		private readonly ICookieManager _cookieManager;
 		private readonly IImpersonationManager _impersonationManager;
+		private static Random _random = new Random();
 
         public AuthenticationController(IAuthenticateUserCommand authenticateUserCommand, 
             IAuthenticationManager authenticationManager, 
@@ -40,6 +41,33 @@ namespace Errordite.Web.Controllers
 	        _cookieManager = cookieManager;
 	        _impersonationManager = impersonationManager;
         }
+
+		[HttpGet]
+		public ActionResult Demo()
+		{
+			_authenticationManager.SignOut();
+
+			var viewModel = new LoginViewModel
+			{
+				Email = "demouser{0}@errordite.com".FormatWith(_random.Next(1, 6)),
+				Password = "demouser"
+			};
+
+			var result = _authenticateUserCommand.Invoke(new AuthenticateUserRequest
+			{
+				Email = viewModel.Email,
+				Password = viewModel.Password,
+				OrganisationId = _cookieManager.Get(CoreConstants.OrganisationIdCookieKey)
+			});
+
+			if (result.Status != AuthenticateUserStatus.Ok)
+			{
+				return RedirectWithViewModel(viewModel, "signin", result.Status.MapToResource(Authentication.ResourceManager));
+			}
+
+			_authenticationManager.SignIn(viewModel.Email);
+			return Redirect(Url.Dashboard());
+		}
 
         [HttpGet]
         public ActionResult Signout()

@@ -15,8 +15,7 @@ namespace Errordite.Web.Models.Test
 				new SelectListItem {Text = "Argument Null Exception", Value = "1", Selected = selected == "1"},
 				new SelectListItem {Text = "Null Reference Exception", Value = "2", Selected = selected == "2"},
 				new SelectListItem {Text = "Divide By Zero Exception", Value = "3", Selected = selected == "3"},
-				new SelectListItem {Text = "Invalid Operation Exception", Value = "4", Selected = selected == "4"},
-				new SelectListItem {Text = "Divide By Zero Exception", Value = "5", Selected = selected == "5"},
+				new SelectListItem {Text = "Invalid Operation Exception", Value = "4", Selected = selected == "4"}
 			};
 		}
 	}

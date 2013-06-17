@@ -11,14 +11,15 @@
         <h3>Your search for "@Model.Query" returned the following results...</h3>
         <div class="two-col">
 	        <h2 class="section-header" style="margin-bottom:0">Issues</h2>
-	        <span class="search-status">viewing 1 - @Model.Issues.Count() of @Model.IssueTotal issues
-			@if (Model.Issues.Count() < Model.IssueTotal)
-			{
-				@:(<a href='@Url.IssueSearch(Model.Query)'>view all</a>)
-			}
-	        </span>
+	        
             @if(Model.IssueTotal > 0)
             {
+				<span class="search-status">viewing 1 - @Model.Issues.Count() of @Model.IssueTotal issues
+				@if (Model.Issues.Count() < Model.IssueTotal)
+				{
+					@:(<a href='@Url.IssueSearch(Model.Query)'>view all</a>)
+				}
+				</span>
 	            <table class="table table-condensed history">
 					<thead>
 						<tr>
@@ -44,14 +45,15 @@
         </div>
         <div class="two-col" style="margin-left:10px; width:48%">
 	        <h2 class="section-header" style="margin-bottom:0">Errors</h2>
-	        <span class="search-status">viewing 1 - @Model.Errors.Count() of @Model.ErrorTotal errors
-			@if (Model.Errors.Count() < Model.ErrorTotal)
-			{
-				@:(<a href='@Url.ErrorSearch(Model.Query)'>view all</a>)
-			}
-	        </span>
+	        
             @if(Model.ErrorTotal > 0)
             {
+				<span class="search-status">viewing 1 - @Model.Errors.Count() of @Model.ErrorTotal errors
+				@if (Model.Errors.Count() < Model.ErrorTotal)
+				{
+					@:(<a href='@Url.ErrorSearch(Model.Query)'>view all</a>)
+				}
+				</span>
 	            <table class="table table-condensed history">
 					<thead>
 						<tr>

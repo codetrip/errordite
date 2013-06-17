@@ -231,6 +231,11 @@ namespace Errordite.Web.Extensions
             return helper.Action("signup", "authentication", new { Area = string.Empty });
         }
 
+		public static string Demo(this UrlHelper helper)
+		{
+			return helper.Action("demo", "authentication", new { Area = string.Empty });
+		}
+
         public static string SignIn(this UrlHelper helper)
         {
             return helper.Action("signin", "authentication", new { Area = string.Empty });

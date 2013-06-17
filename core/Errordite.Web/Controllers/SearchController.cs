@@ -10,6 +10,7 @@ using Errordite.Core.Session;
 using Errordite.Web.ActionFilters;
 using Errordite.Web.Models.Errors;
 using Errordite.Web.Models.Issues;
+using Errordite.Web.Models.Navigation;
 using Errordite.Web.Models.Search;
 using Errordite.Web.Extensions;
 using Errordite.Core.Extensions;
@@ -35,6 +36,7 @@ namespace Errordite.Web.Controllers
 	        _session = session;
 	    }
 
+		[GenerateBreadcrumbs(BreadcrumbId.Dashboard)]
 	    public ActionResult Index(string q)
 	    {
 	        var viewModel = new SearchViewModel

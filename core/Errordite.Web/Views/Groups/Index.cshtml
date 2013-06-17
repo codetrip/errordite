@@ -37,10 +37,13 @@
 									</td>  
 									<td>
 										<a href="@Url.EditGroup(group.Id)"><img src="@Url.Content("~/assets/images/edit.png")" alt="Edit this group" title="Edit this group" width="24" height="24" /></a>
-										@using (Html.BeginForm("delete", "groups", new { groupId = group.Id }, FormMethod.Post, new { style = "display:inline" }))
-										{
-											<a class="delete" href="#"><img src="@Url.Content("~/assets/images/trash.png")" alt="Delete this group" title="Delete this group" width="24" height="24" /></a>
-										}
+										 @if (!ViewData.IsDemoMode())
+										 {
+											 using (Html.BeginForm("delete", "groups", new {groupId = group.Id}, FormMethod.Post, new {style = "display:inline"}))
+											 {
+												 <a class="delete" href="#"><img src="@Url.Content("~/assets/images/trash.png")" alt="Delete this group" title="Delete this group" width="24" height="24" /></a>
+											 }
+										 }
 									</td>             
 								</tr>
 							}

@@ -1,5 +1,6 @@
 ﻿
 @using Errordite.Web.Models.Shared
+@using Errordite.Web.Extensions
 @model Errordite.Web.Models.Account.OrganisationSettingsViewModel
            
 @{
@@ -39,7 +40,7 @@
 									<i data-title="All dates for your organisation will be stored in Errordite with this timezone setting" class="icon-info"></i>
 					            </li>
 					            <li class="buttons">
-						            <input type="submit" value="Save Changes" class="btn btn-medium btn-blue"/>
+						            <input type="submit" value="Save Changes" class="btn btn-medium btn-blue @(ViewData.IsDemoMode() ? "disabled" : string.Empty)"/>
 					            </li>
 				            </ul>
 			            }

@@ -54,7 +54,7 @@
 									<i data-title="Only active applications will receive errors and have issues created." class="icon-info"></i>
 								</li>
 								<li class="buttons">
-									<input type="submit" class="btn btn-medium btn-blue" value="Save" />
+									<input type="submit" class="btn btn-medium btn-blue @(ViewData.IsDemoMode() ? "disabled" : string.Empty)" value="Save" />
 									<a href="@Url.Applications()" class="btn btn-grey btn-medium">Cancel</a>
 								</li>
 							</ul>

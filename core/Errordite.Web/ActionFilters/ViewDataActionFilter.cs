@@ -76,7 +76,7 @@ namespace Errordite.Web.ActionFilters
 				return NavTabs.Contact;
 
 			if (currentUri.AbsolutePath.StartsWith("/search"))
-				return NavTabs.None;
+				return NavTabs.Dashboard;
 
 			return NavTabs.Account;
 		}

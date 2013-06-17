@@ -633,10 +633,6 @@ section {
     text-transform:uppercase;
     font-size:11px;
     white-space: nowrap;
-	&.action-icons-wide {
-		min-width:80px;
-		width:80px;
-	}
 	&.action-icons {
 		min-width:55px;
 		width:55px;
@@ -776,6 +772,16 @@ section {
     background-color:$verylightbrown;
     &:hover {
 		background-color:#B0B0B0;
+    }
+  }
+  &.disabled {
+	background-color: #ddd;
+	font-style:italic;
+	color:#555;
+	&:hover {
+		background-color: #ddd;
+		font-style:italic;
+		color:#555;
     }
   }
 }
@@ -1603,6 +1609,11 @@ section {
 
 .error-container {
     background-color: $red;
+}
+
+.demo-container {
+    background-color: #2A83B7;
+	color:#fff;
 }
 
 .video-panel {

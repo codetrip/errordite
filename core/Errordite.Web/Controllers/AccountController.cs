@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Web.Mvc;
 using Errordite.Core.Domain.Organisation;
-using Errordite.Core.Extensions;
 using Errordite.Core.Organisations.Commands;
 using Errordite.Web.ActionFilters;
 using Errordite.Web.Extensions;
@@ -17,20 +16,20 @@ namespace Errordite.Web.Controllers
         private readonly IUpdateOrganisationCommand _updateOrganisationCommand;
 		private readonly ISetOrganisationHipChatSettingsCommand _setOrganisationHipChatSettingsCommand;
 		private readonly ISetOrganisationCampfireSettingsCommand _setOrganisationCampfireSettingsCommand;
-		private readonly IAddReplayReplacementCommand _addReplayReplacementCommand;
-		private readonly IDeleteReplayReplacementCommand _deleteReplayReplacementCommand;
+		//private readonly IAddReplayReplacementCommand _addReplayReplacementCommand;
+		//private readonly IDeleteReplayReplacementCommand _deleteReplayReplacementCommand;
 
         public AccountController(IUpdateOrganisationCommand updateOrganisationCommand, 
 			ISetOrganisationHipChatSettingsCommand setOrganisationHipChatSettingsCommand, 
-			ISetOrganisationCampfireSettingsCommand setOrganisationCampfireSettingsCommand, 
-			IDeleteReplayReplacementCommand deleteReplayReplacementCommand, 
-			IAddReplayReplacementCommand addReplayReplacementCommand)
+			ISetOrganisationCampfireSettingsCommand setOrganisationCampfireSettingsCommand)
+			//IDeleteReplayReplacementCommand deleteReplayReplacementCommand, 
+			//IAddReplayReplacementCommand addReplayReplacementCommand)
         {
 	        _updateOrganisationCommand = updateOrganisationCommand;
 	        _setOrganisationHipChatSettingsCommand = setOrganisationHipChatSettingsCommand;
 	        _setOrganisationCampfireSettingsCommand = setOrganisationCampfireSettingsCommand;
-	        _deleteReplayReplacementCommand = deleteReplayReplacementCommand;
-	        _addReplayReplacementCommand = addReplayReplacementCommand;
+			//_deleteReplayReplacementCommand = deleteReplayReplacementCommand;
+			//_addReplayReplacementCommand = addReplayReplacementCommand;
         }
 
 		[HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.Settings)]
@@ -91,47 +90,47 @@ namespace Errordite.Web.Controllers
 			});
 		}
 
-		[HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.Settings)]
-		public ActionResult ReplayReplacements()
-		{
-			return View(new ReplayReplacementsViewModel
-			{
-				ReplayReplacements = Core.AppContext.CurrentUser.ActiveOrganisation.ReplayReplacements
-			});
-		}
+		//[HttpGet, ImportViewData, GenerateBreadcrumbs(BreadcrumbId.Settings)]
+		//public ActionResult ReplayReplacements()
+		//{
+		//	return View(new ReplayReplacementsViewModel
+		//	{
+		//		ReplayReplacements = Core.AppContext.CurrentUser.ActiveOrganisation.ReplayReplacements
+		//	});
+		//}
 
-		[HttpPost, ExportViewData]
-		public ActionResult AddReplayReplacement(ReplayReplacementsPostModel model)
-		{
-			if (!ModelState.IsValid)
-				return RedirectWithViewModel(model, "replayreplacements");
+		//[HttpPost, ExportViewData]
+		//public ActionResult AddReplayReplacement(ReplayReplacementsPostModel model)
+		//{
+		//	if (!ModelState.IsValid)
+		//		return RedirectWithViewModel(model, "replayreplacements");
 
-			_addReplayReplacementCommand.Invoke(new AddReplayReplacementRequest
-			{
-				CurrentUser = Core.AppContext.CurrentUser,
-				OrganisationId = Core.AppContext.CurrentUser.OrganisationId,
-				Field = model.Field,
-				Find = model.Find,
-				Replace = model.Replace
-			});
+		//	_addReplayReplacementCommand.Invoke(new AddReplayReplacementRequest
+		//	{
+		//		CurrentUser = Core.AppContext.CurrentUser,
+		//		OrganisationId = Core.AppContext.CurrentUser.OrganisationId,
+		//		Field = model.Field,
+		//		Find = model.Find,
+		//		Replace = model.Replace
+		//	});
 
-			ConfirmationNotification("Replay replacement added successfully");
-			return RedirectToAction("replayreplacements");
-		}
+		//	ConfirmationNotification("Replay replacement added successfully");
+		//	return RedirectToAction("replayreplacements");
+		//}
 
-		[HttpPost, ExportViewData]
-		public ActionResult DeleteReplayReplacement(Guid id)
-		{
-			_deleteReplayReplacementCommand.Invoke(new DeleteReplayReplacementRequest
-			{
-				CurrentUser = Core.AppContext.CurrentUser,
-				OrganisationId = Core.AppContext.CurrentUser.OrganisationId,
-				Id = id
-			});
+		//[HttpPost, ExportViewData]
+		//public ActionResult DeleteReplayReplacement(Guid id)
+		//{
+		//	_deleteReplayReplacementCommand.Invoke(new DeleteReplayReplacementRequest
+		//	{
+		//		CurrentUser = Core.AppContext.CurrentUser,
+		//		OrganisationId = Core.AppContext.CurrentUser.OrganisationId,
+		//		Id = id
+		//	});
 
-			ConfirmationNotification("Replay replacement deleted successfully");
-			return RedirectToAction("replayreplacements");
-		}
+		//	ConfirmationNotification("Replay replacement deleted successfully");
+		//	return RedirectToAction("replayreplacements");
+		//}
 
 		[HttpPost, ExportViewData]
 		public ActionResult SetHipChat(HipChatSettingsViewModel model)

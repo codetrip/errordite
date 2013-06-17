@@ -114,6 +114,11 @@ namespace Errordite.Web.Extensions
             viewData[CookieManagerKey] = cookieManager;
         }
 
+		public static bool IsDemoMode(this ViewDataDictionary viewData)
+		{
+			return viewData.GetAppContext().CurrentUser.ActiveOrganisation.IsDemoOrganisation;
+		}
+
         #endregion
 
         #region Notifications

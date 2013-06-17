@@ -100,7 +100,8 @@ namespace Errordite.Web.Controllers
 							Token = _encryptor.Encrypt("{0}|{1}".FormatWith(mapping.PasswordToken.ToString(), mapping.EmailAddress)).Base64Encode(),
 							UserName = user.FirstName
 						},
-						OrganisationId = Core.AppContext.CurrentUser.OrganisationId
+						OrganisationId = Core.AppContext.CurrentUser.OrganisationId,
+						Organisation = Core.AppContext.CurrentUser.ActiveOrganisation
 					});
 
 					ConfirmationNotification("A new invite has been sent to {0}".FormatWith(user.Email));

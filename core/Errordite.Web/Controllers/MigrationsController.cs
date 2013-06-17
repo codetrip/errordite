@@ -29,7 +29,6 @@ namespace Errordite.Web.Controllers
             {
                 Response.Write("<a href='{0}'>{1}</a><br/>".FormatWith(Url.Action(method.Name), method.Name));
             }
-
             return new EmptyResult();
         }
 

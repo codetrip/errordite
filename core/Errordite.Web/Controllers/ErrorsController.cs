@@ -102,10 +102,10 @@ namespace Errordite.Web.Controllers
 
 				try
 				{
-					if (Core.AppContext.CurrentUser.ActiveOrganisation.ReplayReplacements != null)
-					{
-						url = Core.AppContext.CurrentUser.ActiveOrganisation.ReplayReplacements.Aggregate(url, (current, replacement) => current.Replace(replacement.Find, replacement.Replace));
-					}
+					//if (Core.AppContext.CurrentUser.ActiveOrganisation.ReplayReplacements != null)
+					//{
+					//	url = Core.AppContext.CurrentUser.ActiveOrganisation.ReplayReplacements.Aggregate(url, (current, replacement) => current.Replace(replacement.Find, replacement.Replace));
+					//}
 
 					var response = SynchronousWebRequest.To(url)
 						.WithMethod(GetContextDataItem(error.ContextData, "Request.HttpMethod"))

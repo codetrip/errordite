@@ -35,16 +35,16 @@ namespace Errordite.Core.Organisations.Commands
 
             _authorisationManager.Authorise(organisation, request.CurrentUser);
 
-            if (organisation.ReplayReplacements == null)
-	            organisation.ReplayReplacements = new List<ReplayReplacement>();
+			//if (organisation.ReplayReplacements == null)
+			//	organisation.ReplayReplacements = new List<ReplayReplacement>();
 
-			organisation.ReplayReplacements.Add(new ReplayReplacement
-			{
-				Field = request.Field,
-				Find = request.Find,
-				Replace = request.Replace,
-				Id = Guid.NewGuid()
-			});
+			//organisation.ReplayReplacements.Add(new ReplayReplacement
+			//{
+			//	Field = request.Field,
+			//	Find = request.Find,
+			//	Replace = request.Replace,
+			//	Id = Guid.NewGuid()
+			//});
 
             return new AddReplayReplacementResponse(organisation.Id, request.CurrentUser.Email);
         }

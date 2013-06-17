@@ -27,10 +27,19 @@ namespace Errordite.Core.Notifications.Commands
 
         public virtual SendNotificationResponse Invoke(SendNotificationRequest request)
         {
-            MaybeSendIndividualEmailNotification(request);
-            MaybeSendHipChatNotification(request);
-            MaybeSendGroupEmailNotification(request);
-	        MaybeSendCampfireNotification(request);
+			//dont send emails to demo users, but they may want to try out chat features
+			if (request.Organisation != null && request.Organisation.IsDemoOrganisation)
+			{
+				MaybeSendCampfireNotification(request);
+				MaybeSendHipChatNotification(request);
+			}
+			else
+			{
+				MaybeSendIndividualEmailNotification(request);
+				MaybeSendGroupEmailNotification(request);
+				MaybeSendCampfireNotification(request);
+				MaybeSendHipChatNotification(request);
+			}
 
             return new SendNotificationResponse();
         }

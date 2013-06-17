@@ -36,6 +36,7 @@ namespace Errordite.Core.Configuration
 		public string ChargifyPassword { get { return "x"; } }
 		public int RavenBackupInterval { get; set; }
 		public bool SubscriptionsEnabled { get; set; }
+		public string DemoOrganisationId { get; set; }
 
 	    public string GetReceiveQueueAddress(string organisationId = "1")
         {

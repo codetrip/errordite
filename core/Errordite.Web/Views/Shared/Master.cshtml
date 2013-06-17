@@ -23,6 +23,7 @@
         
         <div class="wrapper">
             <header>
+                @Html.Partial("demomode")
                 @Html.Partial("quotasnotification")
 
 				@if (ViewData.GetAppContext().AuthenticationStatus == AuthenticationStatus.Authenticated)

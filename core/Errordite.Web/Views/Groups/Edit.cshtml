@@ -35,7 +35,7 @@
 									</ul>
 								</li>
 								<li class="buttons">
-									<input class="btn btn-medium btn-blue" type="submit" value="Save" />
+									<input class="btn btn-medium btn-blue @(ViewData.IsDemoMode() ? "disabled" : string.Empty)" type="submit" value="Save" />
 									<a href="@Url.Groups()" class="btn btn-grey btn-medium">Cancel</a>
 								</li>
 							</ul>

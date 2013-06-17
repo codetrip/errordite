@@ -36,19 +36,19 @@ namespace Errordite.Core.Organisations.Commands
 
             _authorisationManager.Authorise(organisation, request.CurrentUser);
 
-			if (organisation.ReplayReplacements == null)
-			{
-				return new DeleteReplayReplacementResponse(organisation.Id, request.CurrentUser.Email, true);
-			}
+			//if (organisation.ReplayReplacements == null)
+			//{
+			//	return new DeleteReplayReplacementResponse(organisation.Id, request.CurrentUser.Email, true);
+			//}
 
-	        var replacement = organisation.ReplayReplacements.FirstOrDefault(r => r.Id == request.Id);
+			//var replacement = organisation.ReplayReplacements.FirstOrDefault(r => r.Id == request.Id);
 
-			if (replacement == null)
-			{
-				return new DeleteReplayReplacementResponse(organisation.Id, request.CurrentUser.Email, true);
-			}
+			//if (replacement == null)
+			//{
+			//	return new DeleteReplayReplacementResponse(organisation.Id, request.CurrentUser.Email, true);
+			//}
 
-	        organisation.ReplayReplacements.Remove(replacement);
+			//organisation.ReplayReplacements.Remove(replacement);
 
             return new DeleteReplayReplacementResponse(organisation.Id, request.CurrentUser.Email);
         }
