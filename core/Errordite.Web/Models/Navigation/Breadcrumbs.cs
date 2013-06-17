@@ -73,7 +73,8 @@ namespace Errordite.Web.Models.Navigation
                         new Breadcrumb(BreadcrumbId.Issue, string.Empty, "Issue"),
                     }),
                     new Breadcrumb(BreadcrumbId.Errors, string.Empty, "Errors"),
-                    new Breadcrumb(BreadcrumbId.ActivityLog, string.Empty, "Activity Log")
+                    new Breadcrumb(BreadcrumbId.ActivityLog, string.Empty, "Activity Log"),
+                    new Breadcrumb(BreadcrumbId.Search, string.Empty, "Search")
                 }),  
                 new Breadcrumb(BreadcrumbId.Home, urlHelper.QuickStart(), "Docs", new []
                 {
@@ -164,6 +165,7 @@ namespace Errordite.Web.Models.Navigation
 		ActivityLog,
         MergeIssues,
         Issue,
+		Search,
 
         QuickStart,
         Pricing,

@@ -15,9 +15,13 @@
     Initialisation.prototype.init = function(ajax) {
       var $tabHolders, controller, tabHolder, _i, _len;
       $('.icon-info').tooltip();
-      $('.tool-tip').tooltip();
       $('div.search-box').tooltip();
       $('.dropdown-toggle').dropdown();
+      $('.tool-tip').tooltip();
+      $('.disabled').attr("data-title", "This function is not available in demo mode").tooltip();
+      $('.disabled').bind('click', function() {
+        return false;
+      });
       $tabHolders = $('.tabs, .sidenav-tabs');
       new Paging().init();
       prettyPrint();

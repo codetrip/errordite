@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using Errordite.Client;
 using Errordite.Core.Applications.Queries;
 using Errordite.Core.Domain;
+using Errordite.Core.Domain.Organisation;
 using Errordite.Core.Receive.Commands;
 using Errordite.Core.Web;
 using Errordite.Web.ActionFilters;
@@ -49,26 +50,32 @@ namespace Errordite.Web.Controllers
 
 		public ClientError GetClientError(string errorId, string token)
 		{
+			string url;
 			var clientError = new ClientError
-			{
-				TimestampUtc = DateTime.UtcNow,
-				Url = "http://www.errordite.com/test/error/" + errorId,
-				Token = token,
-				MachineName = "TEST-MACHINE-1",
-				UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.110 Safari/537.36",
-				Version = "1.0.0.0",
-				ContextData = new ErrorData
 				{
-					{"Request.HttpMethod", "GET"},
-					{"Request.Header.Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"},
-					{"Request.Header.Accept-Encoding", "gzip,deflate,sdch"},
-				},
-				ExceptionInfo = GetExceptionInfoFromErrorTemplate(errorId),
-				Messages = new List<LogMessage>
-				{
-					new LogMessage { Message = "This is an example of a log message captured through our Errordite log4net module", TimestampUtc = DateTime.UtcNow },
-				}
-			};
+					TimestampUtc = DateTime.UtcNow,
+					Token = token,
+					MachineName = "TEST-MACHINE-1",
+					UserAgent =
+						"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.110 Safari/537.36",
+					Version = "1.0.0.0",
+					ContextData = new ErrorData
+					{
+						{"Request.HttpMethod", "GET"},
+						{"Request.Header.Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"},
+						{"Request.Header.Accept-Encoding", "gzip,deflate,sdch"},
+					},
+					ExceptionInfo = GetExceptionInfoFromErrorTemplate(errorId, out url),
+					Messages = new List<LogMessage>
+					{
+						new LogMessage
+						{
+							Message = "This is an example of a log message captured through our Errordite log4net module",
+							TimestampUtc = DateTime.UtcNow
+						},
+					},
+					Url = url
+				};
 
 			return clientError;
 		}
@@ -76,11 +83,11 @@ namespace Errordite.Web.Controllers
 		[HttpPost, ExportViewData]
 		public ActionResult GenerateError(GenerateErrorPostModel model)
 		{
-			var error = JsonConvert.DeserializeObject<ClientError>(model.Json);
+			var clientError = JsonConvert.DeserializeObject<ClientError>(model.Json);
 
 			var response = _getApplicationByTokenQuery.Invoke(new GetApplicationByTokenRequest
             {
-				Token = error.Token,
+				Token = clientError.Token,
                 CurrentUser = Errordite.Core.Domain.Organisation.User.System()
             });
 
@@ -90,47 +97,111 @@ namespace Errordite.Web.Controllers
 				return RedirectToAction("index");
 			}
 
-			try
+			var error = clientError.GetError(response.Application);
+			var success = false;
+			ReceiveErrorResponse receiveErrorResponse = null;
+
+			//try and generate the error 3 times, to catch any concurrency errors if lots of users are generating test errors at the same time
+			for (int i = 0; i < 3; i++)
 			{
-				var task = Core.Session.ReceiveHttpClient.PostJsonAsync("error", new ReceiveErrorRequest
+				try
 				{
-					Error = error.GetError(response.Application),
-					ApplicationId = response.Application.Id,
-					Organisation = AppContext.CurrentUser.ActiveOrganisation,
-				}).ContinueWith(t =>
-				{
-					t.Result.EnsureSuccessStatusCode();
-					return t.Result.Content.ReadAsAsync<ReceiveErrorResponse>().Result;
-				});
-
-				var receiveErrorResponse = task.Result;
-
-				ConfirmationNotification(new MvcHtmlString("Test error generated - attached to issue <a href='{0}'>{1}</a>".FormatWith(
-					Url.Issue(IdHelper.GetFriendlyId(receiveErrorResponse.IssueId)), 
-					IdHelper.GetFriendlyId(receiveErrorResponse.IssueId))));
-
-				return RedirectToAction("index");
+					receiveErrorResponse = Generate(error, response.Application);
+					success = true;
+					break;
+				}
+				catch{}
 			}
-			catch
+
+			if (success)
+			{
+				ConfirmationNotification(new MvcHtmlString("Test error generated - attached to issue <a href='{0}'>{1}</a>".FormatWith(
+						Url.Issue(IdHelper.GetFriendlyId(receiveErrorResponse.IssueId)),
+						IdHelper.GetFriendlyId(receiveErrorResponse.IssueId))));
+			}
+			else
 			{
 				ErrorNotification("Failed to generate error, please try again.");
-				return RedirectToAction("index");
 			}
+			
+			return RedirectToAction("index");
 		}
 
-		private ExceptionInfo GetExceptionInfoFromErrorTemplate(string errorTemplateId)
+		private ReceiveErrorResponse Generate(Core.Domain.Error.Error error, Application application)
+		{
+			var task = Core.Session.ReceiveHttpClient.PostJsonAsync("error", new ReceiveErrorRequest
+			{
+				Error = error,
+				ApplicationId = application.Id,
+				Organisation = AppContext.CurrentUser.ActiveOrganisation,
+			}).ContinueWith(t =>
+			{
+				t.Result.EnsureSuccessStatusCode();
+				return t.Result.Content.ReadAsAsync<ReceiveErrorResponse>().Result;
+			});
+
+			return task.Result;
+		}
+
+		private ExceptionInfo GetExceptionInfoFromErrorTemplate(string errorTemplateId, out string url)
 		{
 			switch (errorTemplateId)
 			{
-				default:
+				case "1":
 					{
+						url = "http://www.errordite.com/test/error/argumentnullexception";
 						return new ExceptionInfo
 						{
-							MethodName = "Errordite.Demo.GenerateError",
+							MethodName = "Errordite.Demo.GenerateArgumentNullException",
 							Message = "Value cannot be null. Parameter name: index",
 							ExceptionType = "System.ArgumentNullException",
 							Source = "Errordite.Test",
 							StackTrace = @"at Errordite.Test.Module.GetFacets()
+at Errordite.Test.Module.ProcessRequest(HttpContext context)
+at System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)"
+						};
+					}
+				case "2":
+					{
+						url = "http://www.errordite.com/test/error/nullreferenceexception";
+						return new ExceptionInfo
+						{
+							MethodName = "Errordite.Demo.GenerateNullReferenceException",
+							Message = "Object reference not set to an instance of an object.",
+							ExceptionType = "System.NullReferenceException",
+							Source = "Errordite.TestNullRef",
+							StackTrace = @"at Errordite.Test.Module.GetObject()
+at Errordite.Test.Module.ProcessRequest(HttpContext context)
+at System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)"
+						};
+					}
+				case "3":
+					{
+						url = "http://www.errordite.com/test/error/dividebyzero";
+						return new ExceptionInfo
+						{
+							MethodName = "Errordite.Demo.GenerateDivideByZeroException",
+							Message = "Attempted to divide by zero.",
+							ExceptionType = "System.DivideByZeroException",
+							Source = "Errordite.TestDivideByZero",
+							StackTrace = @"at Errordite.Test.Module.DivideByZero()
+at Errordite.Test.Module.ProcessRequest(HttpContext context)
+at System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)"
+						};
+					}
+				default:
+					{
+						url = "http://www.errordite.com/test/error/invalidoperationexception";
+						return new ExceptionInfo
+						{
+							MethodName = "Errordite.Demo.GenerateInvalidOperation",
+							Message = "Attempt to do womething which is invalid",
+							ExceptionType = "System.InvalidOperationException",
+							Source = "Errordite.TestInvalidOperation",
+							StackTrace = @"at Errordite.Test.Module.InvalidOperation()
 at Errordite.Test.Module.ProcessRequest(HttpContext context)
 at System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
 at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)"
