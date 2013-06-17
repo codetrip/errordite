@@ -4,7 +4,7 @@ using System.Web.Routing;
 using Errordite.Core.IoC;
 using Errordite.Client;
 using Errordite.Core.Session;
-using Errordite.Receive.Binders;
+using Errordite.Core.Web.Binders;
 using Errordite.Receive.IoC;
 using log4net.Config;
 
@@ -37,7 +37,7 @@ namespace Errordite.Receive
             AreaRegistration.RegisterAllAreas();
 
             RegisterGlobalFilters(GlobalFilters.Filters);
-            RegisterRoutes(RouteTable.Routes); ;
+            RegisterRoutes(RouteTable.Routes);
 
             //used to bind the ClientError Json posted by the client
             ModelBinders.Binders.Add(typeof(ClientError), new ClientErrorModelBinder());

@@ -1,0 +1,15 @@
+﻿@model Errordite.Web.Models.Errors.ReplayErrorViewModel
+
+<section class="centered">
+    <div class="content">
+	    <h3>Failed to execute replay for error '<strong>@Model.ErrorId</strong>'</h3>
+	    <p style="max-width:950px;">
+		    <strong>Url</strong><br />
+		    @Model.Url
+	    </p>
+	    <p style="max-width:950px;">
+		    <strong>Error</strong><br />
+		    @Model.Error
+	    </p>
+    </div>
+</section>

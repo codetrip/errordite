@@ -32,6 +32,7 @@ namespace Errordite.Web.Models.Errors
         public Error Error { get; set; }
         public bool HideIssues { get; set; }
 		public string ApplicationName { get; set; }
+		public bool IsGetMethod { get; set; }
         public IEnumerable<ExceptionViewModel> Exceptions 
 		{
 			get

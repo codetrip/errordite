@@ -71,13 +71,13 @@
     <Reference Include="ChargifyNET">
       <HintPath>..\packages\chargify.1.0.4864.27267\lib\net35\ChargifyNET.dll</HintPath>
     </Reference>
-    <Reference Include="Errordite.Client, Version=1.3.0.0, Culture=neutral, PublicKeyToken=0c2d28c225f773ee, processorArchitecture=MSIL">
+    <Reference Include="Errordite.Client, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Errordite.Client.1.3.41.0\lib\net40\Errordite.Client.dll</HintPath>
+      <HintPath>..\packages\Errordite.Client.1.3.42.0\lib\net40\Errordite.Client.dll</HintPath>
     </Reference>
     <Reference Include="Errordite.Client.Mvc4, Version=1.3.0.0, Culture=neutral, PublicKeyToken=0c2d28c225f773ee, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Errordite.Client.Mvc4.1.3.41.0\lib\net40\Errordite.Client.Mvc4.dll</HintPath>
+      <HintPath>..\packages\Errordite.Client.Mvc4.1.3.42.0\lib\net40\Errordite.Client.Mvc4.dll</HintPath>
     </Reference>
     <Reference Include="FiftyOne.Foundation">
       <HintPath>..\packages\51Degrees.mobi.2.1.18.2\lib\NET40\FiftyOne.Foundation.dll</HintPath>
@@ -284,6 +284,8 @@
     <Content Include="Assets\Css\img\log-hover.png" />
     <Content Include="Assets\Css\img\log.png" />
     <Content Include="Assets\Css\img\nav-background.png" />
+    <Content Include="Assets\Css\img\test-hover.png" />
+    <Content Include="Assets\Css\img\test.png" />
     <Content Include="Assets\Images\application.png" />
     <Content Include="Assets\Css\img\dashboard-hover.png" />
     <Content Include="Assets\Css\img\dashboard.png" />
@@ -316,6 +318,7 @@
     <Compile Include="Controllers\MigrationsController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\SubscriptionController.cs" />
+    <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\AuthenticationController.cs" />
     <Compile Include="Controllers\IssuesController.cs" />
@@ -330,6 +333,7 @@
     <Compile Include="Mappings\GroupToGroupViewModel.cs" />
     <Compile Include="Mappings\UserToEditUserViewModel.cs" />
     <Compile Include="Mappings\UserToUserViewModel.cs" />
+    <Compile Include="Models\Errors\ReplayErrorViewModel.cs" />
     <Compile Include="Models\Shared\SharedTab.cs" />
     <Compile Include="Models\Subscription\CancelSubscriptionViewModel.cs" />
     <Compile Include="Models\Subscription\SubscriptionTab.cs" />
@@ -360,6 +364,7 @@
     <Compile Include="Models\Search\SearchViewModel.cs" />
     <Compile Include="Models\Subscription\PaymentPlanViewModel.cs" />
     <Compile Include="Models\Subscription\SubscriptionCompleteViewModel.cs" />
+    <Compile Include="Models\Test\GenerateErrorViewModel.cs" />
     <Compile Include="Models\Users\AddUserViewModel.cs" />
     <Compile Include="Models\Users\UserViewModel.cs" />
     <Compile Include="Models\Users\EditUserViewModel.cs" />
@@ -478,6 +483,12 @@
     </Content>
     <Content Include="Assets\Js\systemadmin.js">
       <DependentUpon>systemadmin.coffee</DependentUpon>
+    </Content>
+    <Content Include="Assets\Js\test.js">
+      <DependentUpon>test.coffee</DependentUpon>
+    </Content>
+    <Content Include="Assets\Js\test.min.js">
+      <DependentUpon>test.coffee</DependentUpon>
     </Content>
     <Content Include="Assets\Js\users.js">
       <DependentUpon>users.coffee</DependentUpon>
@@ -955,6 +966,18 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\Dashboard\IssueBreakdown.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Errors\Replay.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Account\ReplayReplacements.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Test\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\Js\test.coffee" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

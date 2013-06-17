@@ -1,0 +1,79 @@
+﻿
+@using Errordite.Web.Models.Shared
+@model Errordite.Web.Models.Account.ReplayReplacementsViewModel
+           
+@{
+    ViewBag.Title = "Error Replay Replacements";
+}
+
+@section header
+{
+    @Html.Partial("Account/Tabs") 
+}
+
+<section class="centered">
+	<div class="content">
+		<div class="sidenav">
+            @Html.Partial("Account/SettingTabs", SettingTab.ReplayReplacements)
+            <div class="sidenav-content">
+	            <div class="sidenav-tab active">
+		            <p style="padding-bottom:10px">When replaying an error, you may need to adjust the URL before replaying.</p>
+		            <div class="form">
+			            @using (Html.BeginForm("addreplayreplacement", "account"))
+			            {
+				            @Html.Hidden("Field", "Url");
+				   
+				            <ul>
+					            <li>
+						            @Html.LabelFor(m => m.Find, "Find Value")
+						            @Html.TextBoxFor(m => m.Find)
+						            @Html.ValidationMessageFor(m => m.Find)
+					            </li>
+					            <li>
+						            @Html.LabelFor(m => m.Replace, "Replace With")
+						            @Html.TextBoxFor(m => m.Replace)
+						            @Html.ValidationMessageFor(m => m.Replace)
+					            </li>
+					            <li class="buttons">
+						            <input type="submit" value="Add" class="btn btn-medium btn-blue"/>
+					            </li>
+				            </ul>
+			            }
+		            </div>
+					@if (Model.ReplayReplacements != null && Model.ReplayReplacements.Any())
+					{
+						<table class="table table-condensed history">
+							<thead>
+								<tr>
+									<th>Field</th>
+									<th>Find</th>
+									<th>Replace</th>
+									<th>Delete</th>
+								</tr>
+							</thead>
+							<tbody>
+								@foreach (var replacement in Model.ReplayReplacements)
+								{
+									<tr>
+										<td>Url</td>
+										<td>@replacement.Find</td>
+										<td>@replacement.Replace</td>
+										<td>
+											@using (Html.BeginForm("deletereplayreplacement", "account", new { id = replacement.Id }, FormMethod.Post, new {style="display:inline-block"}))
+											{
+												<button type="submit" class="nobutton"><img src="@Url.Content("~/assets/images/trash.png")" alt="Delete this replay replacement" title="Delete this replay replacement" width="24" height="24" /></button>
+											}
+										</td>
+									</tr>
+								}
+							</tbody>
+						</table>
+					}
+					
+	            </div>
+            </div>
+        </div>
+	</div>
+</section>
+
+

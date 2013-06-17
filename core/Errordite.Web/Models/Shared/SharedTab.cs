@@ -14,5 +14,6 @@ namespace Errordite.Web.Models.Shared
 		Campfire,
 		Organisation,
 		Api,
+		ReplayReplacements
 	}
 }

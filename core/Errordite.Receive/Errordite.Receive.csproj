@@ -64,7 +64,7 @@
     </Reference>
     <Reference Include="Errordite.Client, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Errordite.Client.1.3.36.0\lib\net40\Errordite.Client.dll</HintPath>
+      <HintPath>..\packages\Errordite.Client.1.3.42.0\lib\net40\Errordite.Client.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -129,7 +129,6 @@
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Binders\ClientErrorModelBinder.cs" />
     <Compile Include="Controllers\CacheController.cs" />
     <Compile Include="Controllers\ReceiveErrorController.cs" />
     <Compile Include="Global.asax.cs">

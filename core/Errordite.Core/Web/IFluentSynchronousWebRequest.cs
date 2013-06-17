@@ -42,7 +42,28 @@ namespace Errordite.Core.Web
         /// </summary>
         /// <param name="httpMethod">The HTTP method.</param>
         /// <returns></returns>
-        IFluentSynchronousWebRequest WithMethod(string httpMethod);
+		IFluentSynchronousWebRequest WithMethod(string httpMethod);
+
+		/// <summary>
+		/// Set the Accept for the request
+		/// </summary>
+		/// <param name="accept">The rqeuest accept header.</param>
+		/// <returns></returns>
+		IFluentSynchronousWebRequest Accept(string accept);
+
+		/// <summary>
+		/// Set the Host for the request
+		/// </summary>
+		/// <param name="host">The request host.</param>
+		/// <returns></returns>
+		IFluentSynchronousWebRequest Host(string host);
+
+		/// <summary>
+		/// Set the Connection for the request
+		/// </summary>
+		/// <param name="connection">The request host.</param>
+		/// <returns></returns>
+		IFluentSynchronousWebRequest Connection(string connection);
 
         /// <summary>
         /// Set the HttpMethod for the request, defaults to GET

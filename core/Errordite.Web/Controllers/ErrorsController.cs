@@ -1,14 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 using Errordite.Core.Paging;
 using Errordite.Core;
 using Errordite.Core.Errors.Queries;
+using Errordite.Core.Web;
 using Errordite.Web.ActionFilters;
 using Errordite.Web.Models.Errors;
 using System.Linq;
 using Errordite.Core.Extensions;
 using Errordite.Web.Extensions;
 using Errordite.Web.Models.Navigation;
+using Domain = Errordite.Core.Domain.Error;
 
 namespace Errordite.Web.Controllers
 {
@@ -74,7 +77,11 @@ namespace Errordite.Web.Controllers
                 var errors = _getApplicationErrorsQuery.Invoke(request);
                 
                 viewModel.ErrorsViewModel.Paging = _pagingViewModelGenerator.Generate(PagingConstants.DefaultPagingId, errors.Errors.PagingStatus, pagingRequest);
-                viewModel.ErrorsViewModel.Errors = errors.Errors.Items.Select(e => new ErrorInstanceViewModel { Error = e }).ToList();
+                viewModel.ErrorsViewModel.Errors = errors.Errors.Items.Select(e => new ErrorInstanceViewModel
+	                {
+						Error = e,
+						//IsGetMethod = e.ContextData.ContainsKey("Request.HttpMethod") && e.ContextData["Request.HttpMethod"].ToLowerInvariant() == "get"
+	                }).ToList();
             }
             else
             {
@@ -84,5 +91,60 @@ namespace Errordite.Web.Controllers
 
             return View(viewModel);
         }
+
+		public ActionResult Replay(string id)
+		{
+			var error = Core.Session.Raven.Load<Domain.Error>(Domain.Error.GetId(id));
+
+			if (error != null)
+			{
+				var url = error.Url;
+
+				try
+				{
+					if (Core.AppContext.CurrentUser.ActiveOrganisation.ReplayReplacements != null)
+					{
+						url = Core.AppContext.CurrentUser.ActiveOrganisation.ReplayReplacements.Aggregate(url, (current, replacement) => current.Replace(replacement.Find, replacement.Replace));
+					}
+
+					var response = SynchronousWebRequest.To(url)
+						.WithMethod(GetContextDataItem(error.ContextData, "Request.HttpMethod"))
+						.WithUserAgent(error.UserAgent)
+						.FromReferer(GetContextDataItem(error.ContextData, "Request.Referrer"))
+						.Accept(GetContextDataItem(error.ContextData, "Request.Header.Accept"))
+						.Host(GetContextDataItem(error.ContextData, "Request.Header.Host"))
+						.Connection(GetContextDataItem(error.ContextData, "Request.Header.Connection"))
+						.AddHeader("Cookie", GetContextDataItem(error.ContextData, "Request.Header.Cookie"))
+						.AddHeader("Accept-Language", GetContextDataItem(error.ContextData, "Request.Header.Accept-Language"))
+						.AddHeader("Accept-Encoding", GetContextDataItem(error.ContextData, "Request.Header.Accept-Encoding"))
+						.GetResponse();
+
+					return Content(response.Body);
+				}
+				catch (Exception e)
+				{
+					return View(new ReplayErrorViewModel
+					{
+						Error = e.Message,
+						Url = url,
+						ErrorId = id
+					});
+				}
+			}
+
+			return View(new ReplayErrorViewModel
+			{
+				Error = "Error with Id {0} was not found".FormatWith(id),
+				ErrorId = id
+			});
+		}
+
+		private string GetContextDataItem(Dictionary<string, string> data, string key)
+		{
+			if (data.ContainsKey(key))
+				return data[key];
+
+			return null;
+		}
     }
 }

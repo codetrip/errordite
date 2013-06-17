@@ -52,10 +52,9 @@ namespace Errordite.Core.Organisations.Commands
     public interface IUpdateOrganisationCommand : ICommand<UpdateOrganisationRequest, UpdateOrganisationResponse>
     { }
 
-    public class UpdateOrganisationRequest
+	public class UpdateOrganisationRequest : OrganisationRequestBase
     {
         public string OrganisationId { get; set; }
-        public User CurrentUser { get; set; }
 		public string TimezoneId { get; set; }
         public string Name { get; set; }
         public string PrimaryUserId { get; set; }
