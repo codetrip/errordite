@@ -62,11 +62,20 @@ namespace Errordite.Web.Extensions
             return applicationId != null ? helper.Action("index", "errors", new { applicationId, Area = string.Empty }) : helper.Action("index", "errors", new { Area = string.Empty });
         }
 
+		public static string Test(this UrlHelper helper)
+		{
+			return helper.Action("index", "test", new { Area = string.Empty });
+		}
+
 		public static string ErrorSearch(this UrlHelper helper, string query)
 		{
 			return helper.Action("index", "errors", new { Area = string.Empty, query});
 		}
 
+		public static string Replay(this UrlHelper helper, string id)
+		{
+			return helper.Action("replay", "errors", new { id, Area = string.Empty });
+		}
 
         public static string AllIssues(this UrlHelper helper)
         {
@@ -177,6 +186,11 @@ namespace Errordite.Web.Extensions
         {
             return helper.Action("clients", "docs", new { Area = string.Empty });
         }
+
+		public static string JsonClient(this UrlHelper helper)
+		{
+			return "{0}?tab=other".FormatWith(helper.Action("clients", "docs", new { Area = string.Empty }));
+		}
 
         public static string Api(this UrlHelper helper)
         {
@@ -331,6 +345,11 @@ namespace Errordite.Web.Extensions
 		public static string ApiAccess(this UrlHelper helper)
 		{
 			return helper.Action("apiaccess", "account", new { Area = string.Empty });
+		}
+
+		public static string ReplayReplacements(this UrlHelper helper)
+		{
+			return helper.Action("replayreplacements", "account", new { Area = string.Empty });
 		}
 
         #endregion

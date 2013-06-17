@@ -135,16 +135,16 @@ p {
 pre.prettyprint {
   font-size: 12px;
   font-family: Consolas, Menlo, Monaco, Lucida Console;
-  padding: 12px 0 0 15px !important;
+  padding: 12px 0 0 15px!important;
   line-height: 14px;
-  border: 1px solid #d8dee2 !important;
+  border: 1px solid #D8DEE2!important;
   border-radius: 0;
   float: left;
   width: 800px; }
   pre.prettyprint.nested {
     width: 760px; }
   pre.prettyprint.textonly {
-    padding: 12px 0 12px 15px !important; }
+    padding: 12px 0 12px 15px!important; }
 pre.lang-xml .tag {
   color: maroon; }
 pre.lang-xml .att, pre.lang-xml .atn {
@@ -593,6 +593,10 @@ section {
     .btn.btn-grey:hover {
       background-color: #B0B0B0; }
 
+.nobutton {
+  background: 0;
+  border: 0; }
+
 .paging {
   padding: 0;
   font-size: 11px; }
@@ -800,7 +804,7 @@ section {
   background-position: -108px -18px; }
 
 .icon-arrow-left {
-  background-position: -0 -36px; }
+  background-position: 0 -36px; }
 
 .icon-arrow-right {
   background-position: -165px -18px; }
@@ -893,7 +897,7 @@ section {
     width: 490px; }
   .form.wide select {
     width: 500px; }
-  .form.wide textarea {
+  .form.wide SetToken {
     width: 490px;
     height: 50px; }
 
@@ -1438,6 +1442,8 @@ section {
         background-image: url(img/error.png); }
       .quicklinks li.active a.addissue {
         background-image: url(img/addissue.png); }
+      .quicklinks li.active a.test {
+        background-image: url(img/test.png); }
       .quicklinks li.active a.docs {
         background-image: url(img/docs.png); }
       .quicklinks li.active a.admin {
@@ -1453,7 +1459,7 @@ section {
     color: #A9A9A8;
     vertical-align: middle;
     line-height: 75px;
-    height: 75px;
+    height: 55px;
     font-size: 13px;
     padding-top: 25px;
     background-repeat: no-repeat;
@@ -1464,6 +1470,8 @@ section {
       background-image: url(img/error-hover.png); }
     .quicklinks a.addissue {
       background-image: url(img/addissue-hover.png); }
+    .quicklinks a.test {
+      background-image: url(img/test-hover.png); }
     .quicklinks a.docs {
       background-image: url(img/docs-hover.png); }
     .quicklinks a.admin {
@@ -2064,4 +2072,12 @@ table.history tr.comment {
   #dashboard .graph-count span {
     margin-left: 5px;
     float: right; }
+
+.jsontextinput {
+  width: 950px;
+  height: 400px;
+  font-size: 12px;
+  font-family: Consolas, Menlo, Monaco, Lucida Console;
+  line-height: 15px;
+  color: #080; }
 

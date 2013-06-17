@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 using Errordite.Core.Domain.Organisation;
@@ -48,5 +49,21 @@ namespace Errordite.Web.Models.Account
 	{
 		[Required(ErrorMessage = "Please enter your HipChat authentication token")]
 		public string HipChatAuthToken { get; set; }
+	}
+
+	public class ReplayReplacementsViewModel : ReplayReplacementsPostModel
+	{
+		public List<ReplayReplacement> ReplayReplacements { get; set; }
+	}
+
+	public class ReplayReplacementsPostModel
+	{
+		public Guid Id { get; set; }
+		[Required(ErrorMessage = "Please enter the field this replacement should apply to")]
+		public string Field { get; set; }
+		[Required(ErrorMessage = "Please enter the string you want to be replaced")]
+		public string Find { get; set; }
+		[Required(ErrorMessage = "Please enter string you want to replace the Find string with")]
+		public string Replace { get; set; }
 	}
 }

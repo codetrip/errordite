@@ -377,7 +377,13 @@ namespace Errordite.Web.Controllers
                 Controller = "issue",
                 DateRange = postModel.DateRange,
                 Paging = _pagingViewModelGenerator.Generate(PagingConstants.DefaultPagingId, errors.PagingStatus, paging),
-                Errors = errors.Items.Select(e => new ErrorInstanceViewModel { Error = e, HideIssues = true, PropertiesEligibleForRules = extraDataKeys}).ToList(),
+                Errors = errors.Items.Select(e => new ErrorInstanceViewModel
+	                {
+		                Error = e, 
+						HideIssues = true, 
+						PropertiesEligibleForRules = extraDataKeys,
+						//IsGetMethod = e.ContextData.ContainsKey("Request.HttpMethod") && e.ContextData["Request.HttpMethod"].ToLowerInvariant() == "get"
+	                }).ToList(),
                 HideIssues = true,
                 Id = postModel.Id,
                 Sort = paging.Sort,

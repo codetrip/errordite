@@ -65,6 +65,7 @@ namespace Errordite.Web.Models.Dashboard
 		Docs,
 		AddIssue,
 		None,
-		Contact
+		Contact,
+		Test
     }
 }

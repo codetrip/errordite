@@ -57,7 +57,7 @@
     </Reference>
     <Reference Include="Errordite.Client, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Errordite.Client.1.3.36.0\lib\net40\Errordite.Client.dll</HintPath>
+      <HintPath>..\packages\Errordite.Client.1.3.42.0\lib\net40\Errordite.Client.dll</HintPath>
     </Reference>
     <Reference Include="GrayHills.Matches">
       <HintPath>..\packages\Matches.NET.1.0.2\lib\GrayHills.Matches.dll</HintPath>
@@ -251,6 +251,7 @@
     <Compile Include="Exceptions\ErrorditeUnexpectedValueException.cs" />
     <Compile Include="Exceptions\ErrorditeValidationException.cs" />
     <Compile Include="Extensions\AssemblyExtensions.cs" />
+    <Compile Include="Extensions\ClientErrorExtensions.cs" />
     <Compile Include="Extensions\DoubleExtensions.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="Extensions\DocumentQueryExtensions.cs" />
@@ -415,6 +416,8 @@
     <Compile Include="Organisations\Commands\ChangeAppHarborSubscriptionCommand.cs" />
     <Compile Include="Organisations\Commands\CompleteSignUpCommand.cs" />
     <Compile Include="Organisations\Commands\CancelSubscriptionCommand.cs" />
+    <Compile Include="Organisations\Commands\AddReplayReplacementCommand.cs" />
+    <Compile Include="Organisations\Commands\DeleteReplayReplacementCommand.cs" />
     <Compile Include="Organisations\Commands\SetOrganisationHipChatSettingsCommand.cs" />
     <Compile Include="Organisations\Commands\SetOrganisationCampfireSettingsCommand.cs" />
     <Compile Include="Organisations\Commands\CreateInvoiceCommand.cs" />
@@ -471,6 +474,7 @@
     <Compile Include="Caching\NullCacheInstaller.cs" />
     <Compile Include="Session\IAppSession.cs" />
     <Compile Include="Users\Queries\GetUserByEmailAddressQuery.cs" />
+    <Compile Include="Web\Binders\ClientErrorModelBinder.cs" />
     <Compile Include="Web\ErrorditeApiController.cs" />
     <Compile Include="Web\LoggingHttpMessageHandler.cs" />
     <Compile Include="Session\Actions\RaiseIssueEventCommitAction.cs" />
@@ -533,6 +537,7 @@
     <Content Include="Notifications\Templates\ResetPasswordEmailTemplate.html" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>

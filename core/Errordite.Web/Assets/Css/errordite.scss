@@ -780,6 +780,11 @@ section {
   }
 }
 
+.nobutton {
+	background:0;
+	border:0;
+}
+
 .paging {
   padding: 0;
   font-size: 11px;
@@ -1134,7 +1139,7 @@ section {
 	&.wide {
 		input[type="text"]{width:490px;}
 		select{width:500px}
-		textarea {width:490px;height:50px}
+		SetToken {width:490px;height:50px}
 	}
 }
 
@@ -1812,6 +1817,9 @@ section {
 			&.addissue {
 				background-image: url(img/addissue.png);
 			}
+			&.test {
+				background-image: url(img/test.png);
+			}
 			&.docs {
 				background-image: url(img/docs.png);
 			}
@@ -1834,7 +1842,7 @@ section {
 		color: #A9A9A8;
 		vertical-align: middle;
 		line-height: 75px;
-		height: 75px;
+		height: 55px;
 		font-size:13px;
 		padding-top: 25px;
 		background-repeat: no-repeat;
@@ -1847,6 +1855,9 @@ section {
 		}
 		&.addissue {
 			background-image: url(img/addissue-hover.png);
+		}
+		&.test {
+			background-image: url(img/test-hover.png);
 		}
 		&.docs {
 			background-image: url(img/docs-hover.png);
@@ -2643,4 +2654,13 @@ table.history {
             float:right;
         }
     }   
+}
+
+.jsontextinput {
+    width:950px;
+	height:400px;
+	font-size: 12px;
+	font-family: Consolas, Menlo, Monaco, Lucida Console;
+	line-height:15px;
+	color: #080;
 }

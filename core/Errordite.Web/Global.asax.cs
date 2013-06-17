@@ -16,6 +16,7 @@ using Errordite.Client;
 using Errordite.Core.Domain.Exceptions;
 using Errordite.Core.Session;
 using Errordite.Core.Web;
+using Errordite.Core.Web.Binders;
 using Errordite.Web.ActionFilters;
 using Errordite.Web.Controllers;
 using Errordite.Web.IoC;
@@ -94,7 +95,10 @@ namespace Errordite.Web
             ObjectFactory.Container.Install(new WebInstaller());
 
             var controllerFactory = new WindsorControllerFactory(ObjectFactory.Container.Kernel);
-            ControllerBuilder.Current.SetControllerFactory(controllerFactory);
+			ControllerBuilder.Current.SetControllerFactory(controllerFactory);
+
+			//used to bind the ClientError Json posted by the client
+			ModelBinders.Binders.Add(typeof(ClientError), new ClientErrorModelBinder());
 
             DataAnnotationsModelValidatorProvider.AddImplicitRequiredAttributeForValueTypes = false;
 

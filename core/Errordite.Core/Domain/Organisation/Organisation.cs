@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using Errordite.Core.Domain.Master;
 using Errordite.Core.Extensions;
@@ -47,6 +48,8 @@ namespace Errordite.Core.Domain.Organisation
 		public string HipChatAuthToken { get; set; }
 		[ProtoMember(18)]
 		public CampfireDetails CampfireDetails { get; set; }
+		[ProtoMember(19)]
+		public List<ReplayReplacement> ReplayReplacements { get; set; }
 
         [JsonIgnore]
         public string FriendlyId { get { return Id == null ? string.Empty : Id.Split('/')[1]; } }
@@ -68,6 +71,18 @@ namespace Errordite.Core.Domain.Organisation
 
         public string CallbackUrl { get; set; }
     }
+
+	public class ReplayReplacement
+	{
+		[ProtoMember(1)]
+		public Guid Id { get; set; }
+		[ProtoMember(2)]
+		public string Field { get; set; }
+		[ProtoMember(3)]
+		public string Find { get; set; }
+		[ProtoMember(4)]
+		public string Replace { get; set; }
+	}
 
 	public class CampfireDetails
 	{

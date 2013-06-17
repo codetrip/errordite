@@ -21,7 +21,10 @@ namespace Errordite.Core.Web
         private readonly CookieCollection _requestCookies = new CookieCollection();
         private readonly NameValueCollection _requestParams = new NameValueCollection();
         private readonly WebHeaderCollection _requestHeaders = new WebHeaderCollection();
-        private string _referer = string.Empty;
+		private string _referer = string.Empty;
+		private string _accept = string.Empty;
+		private string _host = string.Empty;
+		private string _connection = string.Empty;
 
         private SynchronousWebRequest(string requestUri)
         {
@@ -38,7 +41,25 @@ namespace Errordite.Core.Web
             return new SynchronousWebRequest(uri);
         }
 
-        public IFluentSynchronousWebRequest FromReferer(string referer)
+	    public IFluentSynchronousWebRequest Accept(string accept)
+	    {
+			_accept = accept;
+			return this;
+	    }
+
+		public IFluentSynchronousWebRequest Connection(string connection)
+		{
+			_connection = connection;
+			return this;
+		}
+
+		public IFluentSynchronousWebRequest Host(string host)
+		{
+			_host = host;
+			return this;
+		}
+
+	    public IFluentSynchronousWebRequest FromReferer(string referer)
         {
             _referer = referer;
             return this;
@@ -52,7 +73,8 @@ namespace Errordite.Core.Web
 
         public IFluentSynchronousWebRequest AddHeader(string name, string value)
         {
-            _requestHeaders.Add(name, value);
+			if (value.IsNotNullOrEmpty())
+				_requestHeaders.Add(name, value);
             return this;
         }
 
@@ -118,6 +140,9 @@ namespace Errordite.Core.Web
                 request.ContentType = _contentType.IsNullOrEmpty() ? HttpConstants.ContentTypes.FormUrlEncoded : _contentType;
                 request.Timeout = _timeout;
                 request.UserAgent = _userAgent;
+	            request.Accept = _accept;
+	            request.Host = _host;
+	            request.Connection = _connection;
 
                 //get the request data byte array
                 byte[] bytes = Encoding.UTF8.GetBytes(requestData);

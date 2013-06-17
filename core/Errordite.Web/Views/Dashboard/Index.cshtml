@@ -45,25 +45,36 @@
 			<div class="clear border"></div>
 		}
 
-		@if (Model.HasApplications)
-		{
-			<h2 class="section-header dashboard">The Last 2 Week's Errors <span>(click on a column to show that days most prevalent issues)</span></h2>
-			<div id="graph" style="width: 960px; height: 300px; margin-bottom: 20px"></div>
+		<h2 class="section-header dashboard">The Last 2 Week's Errors <span>(click on a column to show that days most prevalent issues)</span></h2>
+		<div id="graph" style="width: 960px; height: 300px; margin-bottom: 20px"></div>
 
-			<div class="two-thirds">
-				<div class="form form-inline criteria">
-					<ul>
-						<li style="width:100%">
-							<h2 class="section-header dashboard" style="float:left">Live Feed</h2>
-							<div style="float:right">
-								@Html.DropDownListFor(m => m.ShowMe, Model.ShowMeOptions, new { style="float:right; width:250px" })
-								@Html.DropDownListFor(m => m.PageSize, Model.PageSizes, new { style="float:right; width:60px;margin-right:5px" })
-								<span class="showme">Show Me:</span>
-							</div>
+		<div class="two-thirds">
+			<div class="form form-inline criteria">
+				<ul>
+					<li style="width:100%">
+						<h2 class="section-header dashboard" style="float:left">Live Feed</h2>
+						<div style="float:right">
+							@Html.DropDownListFor(m => m.ShowMe, Model.ShowMeOptions, new { style="float:right; width:250px" })
+							@Html.DropDownListFor(m => m.PageSize, Model.PageSizes, new { style="float:right; width:60px;margin-right:5px" })
+							<span class="showme">Show Me:</span>
+						</div>
 							
-						</li>
-					</ul>
-				</div>
+					</li>
+				</ul>
+			</div>
+			@if ((Model.Errors == null || !Model.Errors.Any()) && Model.Issues == null || !Model.Issues.Any())
+			{
+				if (Model.ShowMe == "5")
+				{
+					<h3>No errors to display</h3>
+				}
+				else
+				{
+					<h3>No issues to display</h3>
+				}
+			}
+			else
+			{
 				<table id="feed" class="table table-condensed history">
 					<tbody>
 						@if (Model.ShowMe == "5")
@@ -83,16 +94,13 @@
 				        
 					</tbody>
 				</table>
-			</div>
-			<div class="one-third">
-				<h2 class="section-header dashboard" style="margin-left: 7px;">Issues by Status<span> (click on a column to view issues)</span></h2>
-				<div id="piechart" style="width: 400px; height: 350px;"></div>
-			</div>
-		}
-		else
-		{
-			<span>You currently have no issues or errors</span>
-		}
+			}
+			
+		</div>
+		<div class="one-third">
+			<h2 class="section-header dashboard" style="margin-left: 7px;">Issues by Status<span> (click on a column to view issues)</span></h2>
+			<div id="piechart" style="width: 400px; height: 350px;"></div>
+		</div>
 		<div class="clear"></div>
 	</div>
 	@Html.Partial("Dashboard/IssueBreakdown")
