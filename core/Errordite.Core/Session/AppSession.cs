@@ -124,6 +124,10 @@ namespace Errordite.Core.Session
                 throw new InvalidOperationException("Cannot set Organisation twice in one session.");
 
 			_organisation = organisation;
+            if (_organisationSession != null)
+                _organisationSession.Dispose();
+
+            _organisationSession = null;
         }
 
 		private void InitialiseReceiveServiceClient()

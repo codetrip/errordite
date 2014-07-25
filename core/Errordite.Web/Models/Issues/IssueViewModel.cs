@@ -50,6 +50,7 @@ namespace Errordite.Web.Models.Issues
         public string ErrorLimitStatus { get; set; }
         public string Token { get; set; }
         public bool TestIssue { get; set; }
+        public string OrganisationId { get; set; }
     }
 
     public class IssueDetailsPostModel

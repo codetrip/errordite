@@ -57,6 +57,9 @@ namespace Errordite.Web.Models.Errors
     [Serializable]
     public class ErrorCriteriaPostModel
     {
+        public string OrgId { get; set; }
+        public string AppId { get; set; }
+
         public string Id { get; set; }
         public string Action { get; set; }
         public string Controller { get; set; }

@@ -15,6 +15,7 @@ namespace Errordite.Core.Identity
     public interface IAppContextFactory
     {
         AppContext Create();
+        bool TryChangeOrg(string orgId);
     }
 
     public class AppContextFactory : ComponentBase, IAppContextFactory, IWantToBeProfiled, IImpersonationManager
@@ -148,6 +149,26 @@ namespace Errordite.Core.Identity
 			_cookieManager.Set(CoreConstants.OrganisationIdCookieKey, organisation.FriendlyId, DateTime.UtcNow.AddMonths(1));
 			return organisation;
 		}
+
+        public bool TryChangeOrg(string orgId)
+        {
+            var context = Create();
+
+            List<Organisation> organisations;
+            GetActiveOrganisation(context.CurrentUser.Email, out organisations);
+
+            var newOrg = organisations.FirstOrDefault(o => o.Id == Organisation.GetId(orgId));
+            
+            if (newOrg == null)
+                return false;
+            
+            _cookieManager.Set(CoreConstants.OrganisationIdCookieKey, newOrg.FriendlyId, DateTime.UtcNow.AddMonths(1));
+            _session.SetOrganisation(newOrg, true);
+            context.CurrentUser.OrganisationId = newOrg.Id;
+            context.CurrentUser.ActiveOrganisation = newOrg;
+            return true;
+
+        }
 
         private AppContext CreateAnonymousUser()
         {

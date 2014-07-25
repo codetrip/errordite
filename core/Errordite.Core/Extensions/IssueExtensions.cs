@@ -36,6 +36,8 @@ namespace Errordite.Core.Extensions
             emailInfo.Method = instance.ExceptionInfos.First().MethodName;
             emailInfo.IssueId = issue.FriendlyId;
             emailInfo.IssueName = issue.Name;
+            emailInfo.AppId = issue.ApplicationId;
+            emailInfo.OrgId = issue.OrganisationId;
             return emailInfo;
         }
     }
