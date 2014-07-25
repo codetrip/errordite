@@ -30,6 +30,7 @@ using Newtonsoft.Json;
 using Raven.Abstractions.Exceptions;
 using Raven.Client;
 using Resources;
+using Application = Errordite.Core.Domain.Organisation.Application;
 
 namespace Errordite.Web.Controllers
 {
@@ -151,6 +152,18 @@ namespace Errordite.Web.Controllers
                 return View("NotFound", new IssueNotFoundViewModel { Id = postModel.Id.GetFriendlyId() });
             }
 
+            if ((postModel.AppId == null || Application.GetId(postModel.AppId) != viewModel.Details.ApplicationId)
+                || (postModel.OrgId == null || Organisation.GetId(postModel.OrgId) != viewModel.Details.OrganisationId)
+                )
+            {
+                var routeValues = Request.RequestContext.RouteData.Values;
+
+                routeValues["appid"] = IdHelper.GetFriendlyId(viewModel.Details.ApplicationId);
+                routeValues["orgid"] = IdHelper.GetFriendlyId(viewModel.Details.OrganisationId);
+
+                return RedirectToRoute(routeValues);
+            }
+
             return View(viewModel);
         }
 
@@ -220,6 +233,8 @@ namespace Errordite.Web.Controllers
             {
                 Details = new IssueDetailsViewModel
                 {
+                    ApplicationId = issue.ApplicationId,
+                    OrganisationId = issue.OrganisationId,
                     ErrorCount = issue.ErrorCount,
                     LastErrorUtc = issue.LastErrorUtc,
                     FirstErrorUtc = issue.CreatedOnUtc,

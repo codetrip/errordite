@@ -69,6 +69,13 @@ namespace Errordite.Web
 
 
             routes.MapRoute(
+                "IssueWithContext",
+                "{controller}/{orgid}/{appid}/{id}",
+                new { action = "index" },
+                new { controller = "issue", action = "index" }
+                );
+
+            routes.MapRoute(
                 "EntityWithId",
                 "{controller}/{id}",
                 new {action = "Index"},

@@ -1,4 +1,5 @@
 ﻿using Errordite.Core.Configuration;
+using Errordite.Core.Domain;
 using HipChat;
 
 namespace Errordite.Core.Notifications.EmailInfo
@@ -7,20 +8,20 @@ namespace Errordite.Core.Notifications.EmailInfo
     {
         public override string ConvertToSimpleMessage(ErrorditeConfiguration configuration)
         {
-            return string.Format(@"<b>{0}:</b> new issue <a href=""{1}/issue/{2}""  target=""_blank"">{2}: {3}</a>",
+            return string.Format(@"<b>{0}:</b> new issue <a href=""{1}""  target=""_blank"">{2}: {3}</a>",
                 ApplicationName, 
-				configuration.SiteBaseUrl, 
+				IssueUrl(configuration),
 				IssueId, 
 				IssueName);
         }
 
 		public override string ConvertToNonHtmlMessage(ErrorditeConfiguration configuration)
 		{
-			return string.Format(@"{0}: new issue created named '{3}', view the issue here... {1}/issue/{2}", 
+			return string.Format(@"{0}: new issue created named '{1}', view the issue here... {2}", 
 				ApplicationName, 
-				configuration.SiteBaseUrl, 
-				IssueId, 
-				IssueName);
+				IssueName, 
+                IssueUrl(configuration)
+				);
 		}
 
         public override HipChat.HipChatClient.BackgroundColor? HipChatColour

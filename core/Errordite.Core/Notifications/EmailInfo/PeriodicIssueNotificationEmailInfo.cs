@@ -7,9 +7,9 @@ namespace Errordite.Core.Notifications.EmailInfo
     {
         public override string ConvertToSimpleMessage(ErrorditeConfiguration configuration)
         {
-            return string.Format(@"<b>{0}:</b> issue <a href=""{1}/issue/{2}""  target=""_blank"">{2}: {3}</a> has occurred. Notification Frequency: {4}",
+            return string.Format(@"<b>{0}:</b> issue <a href=""{1}""  target=""_blank"">{2}: {3}</a> has occurred. Notification Frequency: {4}",
 				ApplicationName, 
-				configuration.SiteBaseUrl, 
+				IssueUrl(configuration),
 				IssueId, 
 				IssueName, 
 				NotificationFrequency);
@@ -17,12 +17,11 @@ namespace Errordite.Core.Notifications.EmailInfo
 
 		public override string ConvertToNonHtmlMessage(ErrorditeConfiguration configuration)
 		{
-			return string.Format(@"{0}: instance of issue '{3}' has occurred. Notification Frequency: {4}, view the issue here... {1}/issue/{2}",
+			return string.Format(@"{0}: instance of issue '{1}' has occurred. Notification Frequency: {2}, view the issue here... {3}",
 				ApplicationName, 
-				configuration.SiteBaseUrl, 
-				IssueId, 
 				IssueName, 
-				NotificationFrequency);
+				NotificationFrequency,
+                IssueUrl(configuration));
 		}
 
         public string NotificationFrequency { get; set; }
