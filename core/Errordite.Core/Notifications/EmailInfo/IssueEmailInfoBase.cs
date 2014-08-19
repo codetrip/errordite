@@ -20,7 +20,7 @@ namespace Errordite.Core.Notifications.EmailInfo
 
         protected string IssueUrl(ErrorditeConfiguration configuration)
         {
-            return string.Format("{0}/{1}/{2}/{3}", configuration.SiteBaseUrl, IdHelper.GetFriendlyId(OrgId), IdHelper.GetFriendlyId(AppId), IdHelper.GetFriendlyId(IssueId));
+            return string.Format("{0}/issue/{1}/{2}/{3}", configuration.SiteBaseUrl, IdHelper.GetFriendlyId(OrgId), IdHelper.GetFriendlyId(AppId), IdHelper.GetFriendlyId(IssueId));
         }
     }
 }
