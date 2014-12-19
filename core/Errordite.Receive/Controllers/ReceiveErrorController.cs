@@ -18,6 +18,8 @@ namespace Errordite.Receive.Controllers
         [HttpPost]
         public ActionResult Index(Client.ClientError clientError)
         {
+            Response.AppendHeader("Access-Control-Allow-Origin", "*");
+
 	        try
 	        {
 				var response = _processIncomingException.Invoke(new ProcessIncomingExceptionRequest
