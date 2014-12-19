@@ -1,0 +1,50 @@
+﻿
+@using Errordite.Core.Extensions
+@using Errordite.Web.Models.Dashboard
+@model ActivityViewModelBase
+           
+@{
+    ViewBag.Title = "Activity Log";
+}
+
+<section id="activity" class="centered">
+    @if (Model.Paging.TotalItems > 0)
+    {
+        <div class="content">
+	        <table class="table table-condensed history" id="history-items">
+		        <thead>
+			        <tr>
+				        <th>User</th>
+				        <th>Occured</th>
+				        <th>Message</th>
+			        </tr>
+		        </thead>
+		        <tbody>
+			        @foreach (var item in Model.Items)
+			        {
+				        Html.RenderPartial("Issue/HistoryItem", item);
+			        }
+		        </tbody>
+	        </table>
+			@if (Model.Paging.TotalPages > 1)
+			{
+				<div>
+					<button id="activity-load-more" class="btn btn-small btn-blue">Load more items</button>
+				</div>
+			}
+        </div>
+    }
+    else
+    {
+        if (Model.SelectedApplicationId.IsNotNullOrEmpty())
+        {
+            <p class="highlight-center">There has been no activity for the "@Model.SelectedApplicationName" application</p>
+        } 
+        else
+        {
+            <p class="highlight-center">There has been no activity for any of your organisation's applications</p>
+        }  
+    }
+</section>
+
+

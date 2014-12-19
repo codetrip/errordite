@@ -1,0 +1,109 @@
+﻿@using Errordite.Web.Extensions
+@using Errordite.Web.Models.Dashboard
+@model DashboardViewModel
+           
+@{
+    ViewBag.Title = "Dashboard";
+}
+
+<section id="dashboard" class="centered">
+	<div class="content">
+		@if (Model.ShowIntro)
+		{
+			<div class="two-col">
+				<div class="small-padding right">
+					<p>
+						This is your <strong>dashboard</strong>, where you can see the most recent issues and errors affecting your system, the issues that need your attention, and overall statistics.
+					</p>
+					<p>
+						You do not have much going on at the moment.  
+						Click @Html.ActionLink("here", "generateerror", "applications", new {applicationId = Model.SingleApplicationId, returnUrl = Url.CurrentRequest()}, new{@class="post"}) to generate a test error and get things going.
+					</p>
+				</div>
+			</div>
+			<div class="two-col">
+				<div class="small-padding right">
+					@if (Model.SingleApplicationId != null)
+					{
+						<p class="textbox">
+							Your default app token is <b>@Model.SingleApplicationToken</b>
+						</p>
+					}
+                    
+					<p>
+						To get started for real download the client and configure it into your application - details @Html.ActionLink("here", "clients", "docs").  
+					</p>
+
+					@if (Model.TestIssueId != null)
+					{
+						<p>
+							You've created a test issue - to see it, click <a href="@Url.Issue(Model.TestIssueId)">here</a>.
+						</p>
+					}
+				</div>
+			</div>
+			<div class="clear border"></div>
+		}
+
+		<h2 class="section-header dashboard">The Last 2 Week's Errors <span>(click on a column to show that days most prevalent issues)</span></h2>
+		<div id="graph" style="width: 960px; height: 300px; margin-bottom: 20px"></div>
+
+		<div class="two-thirds">
+			<div class="form form-inline criteria">
+				<ul>
+					<li style="width:100%">
+						<h2 class="section-header dashboard" style="float:left">Live Feed</h2>
+						<div style="float:right">
+							@Html.DropDownListFor(m => m.ShowMe, Model.ShowMeOptions, new { style="float:right; width:250px" })
+							@Html.DropDownListFor(m => m.PageSize, Model.PageSizes, new { style="float:right; width:60px;margin-right:5px" })
+							<span class="showme">Show Me:</span>
+						</div>
+							
+					</li>
+				</ul>
+			</div>
+			@if ((Model.Errors == null || !Model.Errors.Any()) && Model.Issues == null || !Model.Issues.Any())
+			{
+				if (Model.ShowMe == "5")
+				{
+					<h3>No errors to display</h3>
+				}
+				else
+				{
+					<h3>No issues to display</h3>
+				}
+			}
+			else
+			{
+				<table id="feed" class="table table-condensed history">
+					<tbody>
+						@if (Model.ShowMe == "5" && Model.Errors != null)
+						{
+							foreach (var error in Model.Errors)
+							{
+								@Html.Partial("Dashboard/Error", error)
+							}
+						}
+						else if (Model.Issues != null)
+						{
+							foreach (var issue in Model.Issues)
+							{
+								@Html.Partial("Dashboard/Issue", issue)
+							}
+						}
+				        
+					</tbody>
+				</table>
+			}
+			
+		</div>
+		<div class="one-third">
+			<h2 class="section-header dashboard" style="margin-left: 7px;">Issues by Status<span> (click on a column to view issues)</span></h2>
+			<div id="piechart" style="width: 400px; height: 350px;"></div>
+		</div>
+		<div class="clear"></div>
+	</div>
+	@Html.Partial("Dashboard/IssueBreakdown")
+</section>
+
+

@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<Overrides>
+	<ConfigurationObject ComponentId="ErrorditeConfiguration">
+		<Property Name="DeveloperQueueSuffix" Value="nick" />
+	</ConfigurationObject>
+</Overrides>

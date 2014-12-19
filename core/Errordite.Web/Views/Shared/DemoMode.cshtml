@@ -1,0 +1,21 @@
+﻿@using Errordite.Web.Extensions   
+
+@{
+	var activeOrganisation = ViewData.GetAppContext().CurrentUser.ActiveOrganisation;
+}
+
+@if (activeOrganisation != null && activeOrganisation.IsDemoOrganisation)
+{
+	<div id="notifications" class="demo-container">
+		<section class="centered"> 
+			<div class="notification-container">
+				<div class="notification-icon">
+					<img src="@Url.Content("~/assets/images/demo.png")" alt="Errordite demo mode"/>
+				</div>
+				<div class="notification-text">
+					Errordite demo mode: you are signed in as '@ViewData.GetAppContext().CurrentUser.FullName', <a href="@Url.Test()"><strong>click here</strong></a> to generate some errors. 
+				</div>
+			</div>
+		</section> 
+	</div>
+}

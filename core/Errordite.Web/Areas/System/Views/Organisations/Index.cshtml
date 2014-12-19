@@ -1,0 +1,97 @@
+﻿@using Errordite.Core.Domain.Organisation
+@using Errordite.Core.Extensions
+@using Errordite.Web.Areas.System.Models.Organisations
+@using Errordite.Web.Extensions
+@using System.Web.Mvc.Html
+@model Errordite.Web.Models.Account.OrganisationsViewModel
+
+@{
+    ViewBag.Title = "Organisations";
+}
+
+@section footerassets
+{
+    <script type='text/javascript' src="@Url.Content("~/assets/js/systemadmin.js")"></script>
+}
+
+<section id="organisations" class="centered">
+    <div class="content">
+        @if (Model.Organisations != null && Model.Organisations.Any())
+        {
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Plan Id</th>
+                        <th>Status</th>
+                        <th>Timezone</th>
+                        <th>Created On Utc</th>
+                        <th style="min-width:100px">Stats</th>
+                        <th style="min-width:100px">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var org in Model.Organisations)
+                    {
+                        <tr>
+                            <td>@org.Organisation.FriendlyId</td>
+                            <td>@org.Organisation.Name</td>
+                            <td>@org.Organisation.PaymentPlanId.GetFriendlyId()</td>
+                            <td>@org.Organisation.Status</td>
+                            <td>@org.Organisation.TimezoneId</td>
+                            <td>@org.Organisation.CreatedOnUtc.ToLocalFormatted()</td>
+                            <td>Issues: <span class="orgstat">@org.Stats.Issues</span><br />
+                                Users: <span class="orgstat">@org.Stats.Users</span><br />
+                                Applications: <span class="orgstat">@org.Stats.Applications</span>
+                            </td>
+                            <td>
+                                <a href="@Url.OrganisationUsers(org.Organisation.FriendlyId)">
+                                    <img src="@Url.Content("~/assets/images/person.png")" alt="Users" title="Users" width="24" height="24" /></a>
+                                <a href="@Url.OrganisationApplications(org.Organisation.FriendlyId)">
+                                    <img src="@Url.Content("~/assets/images/application.png")" alt="Applications" title="Applications" width="24" height="24" /></a>
+                                @if (org.Organisation.Status == OrganisationStatus.Active)
+                                {
+                                    <a href="#" class="suspend" data-val="@org.Organisation.Id">
+                                        <img src="@Url.Content("~/assets/images/error.png")" alt="Suspend this organisation" title="Suspend this organisation" width="24" height="24" />
+                                    </a>
+                                }
+                                else
+                                {
+                                    using (Html.BeginForm("activateorganisation", "organisations", FormMethod.Post, new { name = "activateForm", style = "display:inline" }))
+                                    {
+                                    @Html.Hidden("OrganisationId", org.Organisation.Id)
+                                    <a href="#" class="activate" data-val="@org.Organisation.Id">
+                                        <img src="@Url.Content("~/assets/images/edit.png")" alt="Activate this organisation" title="Activate this organisation" width="24" height="24" />
+                                    </a>
+                                    }
+                                }
+                                @using (Html.BeginForm("deleteorganisation", "organisations", FormMethod.Post, new { name = "deleteForm", style = "display:inline" }))
+                                {
+                                    @Html.Hidden("OrganisationId", org.Organisation.Id)
+                                    <a href="#" class="delete" data-val="@org.Organisation.Id">
+                                        <img src="@Url.Content("~/assets/images/trash.png")" alt="Delete this organisation" title="Delete this organisation" width="24" height="24" />
+                                    </a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="10">
+                            @Html.Partial("Pagination", Model.Paging)
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+            @Html.Partial("Organisations/SuspendModal", new SuspendOrganisationViewModel())
+        }
+        else
+        {
+            <div>
+                <p>No organisations were found.</p>
+            </div> 
+        }
+    </div>
+</section>

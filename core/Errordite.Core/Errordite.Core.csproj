@@ -1,0 +1,566 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{418F4BC8-7042-49B1-9F69-95189A2A5837}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Errordite.Core</RootNamespace>
+    <AssemblyName>Errordite.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AWSSDK">
+      <HintPath>..\..\lib\Amazon\AWSSDK.dll</HintPath>
+    </Reference>
+    <Reference Include="BookSleeve, Version=1.1.0.5, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\Booksleeve\BookSleeve.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Core">
+      <HintPath>..\packages\Castle.Core.3.1.0\lib\net40-client\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Facilities.FactorySupport">
+      <HintPath>..\packages\Castle.FactorySupportFacility.3.1.0\lib\net40\Castle.Facilities.FactorySupport.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Windsor">
+      <HintPath>..\packages\Castle.Windsor.3.1.0\lib\net40\Castle.Windsor.dll</HintPath>
+    </Reference>
+    <Reference Include="ChargifyNET">
+      <HintPath>..\packages\chargify.1.0.4864.27267\lib\net35\ChargifyNET.dll</HintPath>
+    </Reference>
+    <Reference Include="Errordite.Client, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Errordite.Client.1.3.42.0\lib\net40\Errordite.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="GrayHills.Matches">
+      <HintPath>..\packages\Matches.NET.1.0.2\lib\GrayHills.Matches.dll</HintPath>
+    </Reference>
+    <Reference Include="HipChat.Net, Version=1.2.0.0, Culture=neutral, PublicKeyToken=85d27803db462816, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\HipChat.Net.1.2\lib\HipChat.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlAgilityPack">
+      <HintPath>..\..\lib\HtmlAgilityPack\HtmlAgilityPack.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Lucene.Net">
+      <HintPath>..\..\lib\Lucene.net\Lucene.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="protobuf-net, Version=2.0.0.480, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\protobuf\protobuf-net.dll</HintPath>
+    </Reference>
+    <Reference Include="Raven.Abstractions, Version=2.0.3.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\RavenDB.Client.2.0.2330\lib\net40\Raven.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Raven.Client.Lightweight, Version=2.0.3.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\RavenDB.Client.2.0.2330\lib\net40\Raven.Client.Lightweight.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Messaging" />
+    <Reference Include="System.Net.Http, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Net.Http.2.0.20710.0\lib\net40\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.4.0.20710.0\lib\net40\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Net.Http.2.0.20710.0\lib\net40\System.Net.Http.WebRequest.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Caching">
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http">
+      <HintPath>..\..\lib\WebApi\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.SelfHost">
+      <HintPath>..\..\lib\WebApi\System.Web.Http.SelfHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\MVC3.0\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.2.0.20715.0\lib\net40\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\Errordite.Build\Assembly\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="ArgumentValidation.cs" />
+    <Compile Include="Auditing\AuditingController.cs" />
+    <Compile Include="Auditing\Auditors\ComponentAuditorBase.cs" />
+    <Compile Include="Auditing\Auditors\DelegateComponentAuditor.cs" />
+    <Compile Include="Auditing\Auditors\Log4NetComponentAuditor.cs" />
+    <Compile Include="Auditing\ComponentAuditorFactory.cs" />
+    <Compile Include="Auditing\Entities\AuditEvent.cs" />
+    <Compile Include="Auditing\Entities\Error.cs" />
+    <Compile Include="Auditing\Entities\IComponentAuditor.cs" />
+    <Compile Include="Auditing\Entities\ISupportsAuditing.cs" />
+    <Compile Include="Auditing\Entities\NoException.cs" />
+    <Compile Include="Auditing\ExceptionUtility.cs" />
+    <Compile Include="Auditing\IErrorAugmenter.cs" />
+    <Compile Include="Caching\CacheKeys.cs" />
+    <Compile Include="Caching\Engines\MemoryCacheEngine.cs" />
+    <Compile Include="Caching\Engines\NullCacheEngine.cs" />
+    <Compile Include="Caching\Engines\RedisCacheEngine.cs" />
+    <Compile Include="Caching\Engines\RedisMemoryHybridCacheEngine.cs" />
+    <Compile Include="Caching\Entities\CacheableRequestBase.cs" />
+    <Compile Include="Caching\Entities\CacheConfiguration.cs" />
+    <Compile Include="Caching\Entities\CacheInvalidationItem.cs" />
+    <Compile Include="Caching\Entities\CacheInvalidationResponseBase.cs" />
+    <Compile Include="Caching\Entities\CacheItemInfo.cs" />
+    <Compile Include="Caching\Entities\CacheKey.cs" />
+    <Compile Include="Caching\Entities\CacheProfile.cs" />
+    <Compile Include="Caching\Entities\CacheProfiles.cs" />
+    <Compile Include="Caching\Interceptors\CacheInterceptor.cs" />
+    <Compile Include="Caching\Interceptors\CacheInvalidationInterceptor.cs" />
+    <Compile Include="Caching\Interfaces\ICacheable.cs" />
+    <Compile Include="Caching\Interfaces\ICacheEngine.cs" />
+    <Compile Include="Caching\Interfaces\ICacheInvalidation.cs" />
+    <Compile Include="Caching\Interfaces\ICacheInvalidator.cs" />
+    <Compile Include="Caching\Invalidation\CacheInvalidator.cs" />
+    <Compile Include="Caching\Messages\ICacheInvalidationMessage.cs" />
+    <Compile Include="Caching\Messages\ICacheProfileInvalidationMessage.cs" />
+    <Compile Include="Caching\ObjectCache.cs" />
+    <Compile Include="Caching\Resources\CacheConstants.cs" />
+    <Compile Include="Caching\Resources\CacheEngines.cs" />
+    <Compile Include="ComponentBase.cs" />
+    <Compile Include="Configuration\ServiceConfiguration.cs" />
+    <Compile Include="Domain\Error\IssueHourlyCount.cs" />
+    <Compile Include="Domain\Master\RavenInstance.cs" />
+    <Compile Include="Domain\Master\UserOrganisationMapping.cs" />
+    <Compile Include="Domain\Error\IssueDailyCount.cs" />
+    <Compile Include="Domain\IdHelper.cs" />
+    <Compile Include="Domain\Organisation\Invoice.cs" />
+    <Compile Include="Domain\Organisation\PaymentPlan.cs" />
+    <Compile Include="Applications\Commands\DeleteApplicationCommand.cs" />
+    <Compile Include="Applications\Commands\EditApplicationCommand.cs" />
+    <Compile Include="Applications\Queries\GetApplicationByTokenQuery.cs" />
+    <Compile Include="Applications\Queries\GetApplicationQuery.cs" />
+    <Compile Include="Applications\Queries\GetApplicationsQuery.cs" />
+    <Compile Include="Authorisation\IAuthorisationManager.cs" />
+    <Compile Include="Caching\CacheInvalidation.cs" />
+    <Compile Include="Caching\RedisDatabase.cs" />
+    <Compile Include="Configuration\ErrorditeConfiguration.cs" />
+    <Compile Include="Domain\Error\IssueHistory.cs" />
+    <Compile Include="Domain\Exceptions\ErrorditeAuthorisationException.cs" />
+    <Compile Include="Domain\Organisation\Notification.cs" />
+    <Compile Include="Domain\Organisation\Statistics.cs" />
+    <Compile Include="Duration.cs" />
+    <Compile Include="Dynamic\AssembliesInBinDirectoryLocator.cs" />
+    <Compile Include="Dynamic\DynamicCodeGeneratorHelper.cs" />
+    <Compile Include="Dynamic\DynamicJsonConverter.cs" />
+    <Compile Include="Dynamic\PropertyMapper.cs" />
+    <Compile Include="Dynamic\RuntimeSerialisationIgnoreAttribute.cs" />
+    <Compile Include="Dynamic\RuntimeXmlSerialiser.cs" />
+    <Compile Include="Dynamic\SummaryWriter.cs" />
+    <Compile Include="Encryption\IEncryptor.cs" />
+    <Compile Include="Encryption\PresetPasswordLocator.cs" />
+    <Compile Include="Encryption\RijndaelSymmetricEncryptor.cs" />
+    <Compile Include="Encryption\SimplePasswordLocator.cs" />
+    <Compile Include="Encryption\TripleDesEncryptor.cs" />
+    <Compile Include="ErrorditeCore.cs" />
+    <Compile Include="Errors\Commands\MakeExceededErrorsUnloggedCommand.cs" />
+    <Compile Include="Errors\Commands\MoveErrorsToNewIssueCommand.cs" />
+    <Compile Include="Exceptions\ErrorditeDeleteSQSMessageException.cs" />
+    <Compile Include="Exceptions\ErrorditeAuditException.cs" />
+    <Compile Include="Exceptions\ErrorditeCacheException.cs" />
+    <Compile Include="Exceptions\ErrorditeCacheInvalidationException.cs" />
+    <Compile Include="Exceptions\ErrorditeCacheProfileNotFoundException.cs" />
+    <Compile Include="Exceptions\ErrorditeConfigurationException.cs" />
+    <Compile Include="Exceptions\ErrorditeDependentComponentException.cs" />
+    <Compile Include="Exceptions\ErrorditeException.cs" />
+    <Compile Include="Exceptions\ErrorditeIoCComponentException.cs" />
+    <Compile Include="Exceptions\ErrorditeMoreUsefulReflectionTypeLoadException.cs" />
+    <Compile Include="Exceptions\ErrorditeRedisConnectivityException.cs" />
+    <Compile Include="Exceptions\ErrorditeRepositoryRootNotFoundException.cs" />
+    <Compile Include="Exceptions\ErrorditeUnexpectedValueException.cs" />
+    <Compile Include="Exceptions\ErrorditeValidationException.cs" />
+    <Compile Include="Extensions\AssemblyExtensions.cs" />
+    <Compile Include="Extensions\ClientErrorExtensions.cs" />
+    <Compile Include="Extensions\DoubleExtensions.cs" />
+    <Compile Include="Extensions\DictionaryExtensions.cs" />
+    <Compile Include="Extensions\DocumentQueryExtensions.cs" />
+    <Compile Include="Extensions\DocumentStoreExtensions.cs" />
+    <Compile Include="Extensions\EnumerableExtensions.cs" />
+    <Compile Include="Extensions\EnumExtensions.cs" />
+    <Compile Include="Extensions\NameValueCollectionExtensions.cs" />
+    <Compile Include="Extensions\ObjectExtensions.cs" />
+    <Compile Include="Extensions\ObjectReflectionExtensions.cs" />
+    <Compile Include="Extensions\PageExtensions.cs" />
+    <Compile Include="Extensions\RavenQueryableExtensions.cs" />
+    <Compile Include="Extensions\DateTimeExtensions.cs" />
+    <Compile Include="Extensions\ExceptionExtensions.cs" />
+    <Compile Include="Extensions\RulesExtensions.cs" />
+    <Compile Include="Extensions\IssueExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Extensions\TypeReflectionExtensions.cs" />
+    <Compile Include="Extensions\XElementExtensions.cs" />
+    <Compile Include="Indexing\IssueHourlyCounts.cs" />
+    <Compile Include="Indexing\MessageEnvelopes.cs" />
+    <Compile Include="Issues\Commands\AddCommentCommand.cs" />
+    <Compile Include="Issues\Queries\GetMostRecurringIssuesForDateQuery.cs" />
+    <Compile Include="Messaging\Commands\CreateSQSQueueCommand.cs" />
+    <Compile Include="Messaging\SendCampfireMessage.cs" />
+    <Compile Include="Misc\RepositoryPathHelper.cs" />
+    <Compile Include="Identity\IImpersonationManager.cs" />
+    <Compile Include="Indexing\Applications.cs" />
+    <Compile Include="Indexing\History.cs" />
+    <Compile Include="Indexing\IssuesExtraDataKeys.cs" />
+    <Compile Include="Indexing\OrganisationDailyCounts.cs" />
+    <Compile Include="Indexing\Organisations.cs" />
+    <Compile Include="Indexing\Groups.cs" />
+    <Compile Include="Indexing\UserOrganisationMappings.cs" />
+    <Compile Include="Indexing\Users.cs" />
+    <Compile Include="Indexing\Issues.cs" />
+    <Compile Include="Indexing\IssueDailyCounts.cs" />
+    <Compile Include="Indexing\Errors.cs" />
+    <Compile Include="Interfaces\ICaptureMethodInfo.cs" />
+    <Compile Include="Interfaces\ICommand.cs" />
+    <Compile Include="Interfaces\ILocator.cs" />
+    <Compile Include="Interfaces\IMappingDefinition.cs" />
+    <Compile Include="Interfaces\IQuery.cs" />
+    <Compile Include="Interfaces\IWantToBeProfiled.cs" />
+    <Compile Include="Interfaces\IWorkflow.cs" />
+    <Compile Include="IoC\AppSessionInstaller.cs" />
+    <Compile Include="IoC\ArrayResolver.cs" />
+    <Compile Include="IoC\ComponentRegistrationExtensions.cs" />
+    <Compile Include="IoC\ConfigurationOverrideContainerInitialiser.cs" />
+    <Compile Include="IoC\IContainerInitialiser.cs" />
+    <Compile Include="IoC\MasterInstallerBase.cs" />
+    <Compile Include="IoC\ObjectFactory.cs" />
+    <Compile Include="IoC\WindsorDependencyResolver.cs" />
+    <Compile Include="IoC\WindsorDependencyScope.cs" />
+    <Compile Include="IoC\WindsorHttpControllerActivator.cs" />
+    <Compile Include="IoC\WindsorInstallerBase.cs" />
+    <Compile Include="Issues\Commands\AdjustRulesCommand.cs" />
+    <Compile Include="Issues\Commands\AddIssueCommand.cs" />
+    <Compile Include="Issues\Commands\BatchStatusUpdateCommand.cs" />
+    <Compile Include="Errors\Queries\GetErrorsThatDoNotMatchNewRulesQuery.cs" />
+    <Compile Include="Issues\Commands\ResetIssueErrorCountsCommand.cs" />
+    <Compile Include="Issues\Commands\ReprocessIssueErrorsCommand.cs" />
+    <Compile Include="Issues\Commands\MergeIssuesCommand.cs" />
+    <Compile Include="Issues\Commands\DeleteIssueCommand.cs" />
+    <Compile Include="Issues\Commands\PurgeIssueCommand.cs" />
+    <Compile Include="Issues\Commands\BatchDeleteIssuesCommand.cs" />
+    <Compile Include="Identity\NoAuthenticationManager.cs" />
+    <Compile Include="Issues\Commands\UpdateIssueDetailsCommand.cs" />
+    <Compile Include="Issues\Queries\GetActivityFeedQuery.cs" />
+    <Compile Include="Issues\Queries\GetDashboardReportQuery.cs" />
+    <Compile Include="Issues\Queries\GetExtraDataKeysForIssueQuery.cs" />
+    <Compile Include="Issues\Queries\GetIssueReportDataQuery.cs" />
+    <Compile Include="Issues\Queries\GetIssueWithMatchingRulesQuery.cs" />
+    <Compile Include="Issues\Queries\GetAllApplicationIssuesQuery.cs" />
+    <Compile Include="Issues\Queries\GetApplicationIssuesQuery.cs" />
+    <Compile Include="Issues\Queries\GetIssueQuery.cs" />
+    <Compile Include="Matching\MatchRuleFactoryFactory.cs" />
+    <Compile Include="Domain\Error\SearchFilter.cs" />
+    <Compile Include="Domain\Organisation\Application.cs" />
+    <Compile Include="Domain\Organisation\Group.cs" />
+    <Compile Include="Errors\Queries\GetApplicationErrorsQuery.cs" />
+    <Compile Include="Groups\Commands\AddGroupCommand.cs" />
+    <Compile Include="Groups\Commands\DeleteGroupCommand.cs" />
+    <Compile Include="Groups\Commands\EditGroupCommand.cs" />
+    <Compile Include="Groups\Queries\GetGroupsQuery.cs" />
+    <Compile Include="Groups\Queries\GetGroupQuery.cs" />
+    <Compile Include="Identity\AppContext.cs" />
+    <Compile Include="Identity\AppContextFactory.cs" />
+    <Compile Include="Identity\CookieIdentity.cs" />
+    <Compile Include="Identity\AuthenticationManager.cs" />
+    <Compile Include="Identity\IAuthenticationManager.cs" />
+    <Compile Include="CoreConstants.cs" />
+    <Compile Include="Domain\Organisation\Organisation.cs" />
+    <Compile Include="Domain\Organisation\User.cs" />
+    <Compile Include="Domain\Error\Issue.cs" />
+    <Compile Include="Domain\Error\IssueStatus.cs" />
+    <Compile Include="Domain\Error\Error.cs" />
+    <Compile Include="Domain\Organisation\UserRole.cs" />
+    <Compile Include="IoC\ErrorditeCoreInstaller.cs" />
+    <Compile Include="IoC\WindsorControllerFactory.cs" />
+    <Compile Include="Matching\MatchRule.cs" />
+    <Compile Include="Matching\PropertyMatchRule.cs" />
+    <Compile Include="Matching\DefaultMatchRuleFactory.cs" />
+    <Compile Include="Configuration\EmailConfiguration.cs" />
+    <Compile Include="Memo.cs" />
+    <Compile Include="Messaging\AmazonSQSMessageSender.cs" />
+    <Compile Include="Messaging\AmazonSQSFactory.cs" />
+    <Compile Include="Messaging\MessageEnvelope.cs" />
+    <Compile Include="Notifications\Commands\SendCampfireMessageCommand.cs" />
+    <Compile Include="Notifications\EmailInfo\AccountSuspendedEmailInfo.cs" />
+    <Compile Include="Notifications\EmailInfo\AddedToOrganisationEmailInfo.cs" />
+    <Compile Include="Notifications\EmailInfo\ContactUsEmailInfo.cs" />
+    <Compile Include="Notifications\EmailInfo\SubscriptionCancelledEmailInfo.cs" />
+    <Compile Include="Notifications\EmailInfo\SubscriptionChangedEmailInfo.cs" />
+    <Compile Include="Notifications\EmailInfo\TrialExpiredEmailInfo.cs" />
+    <Compile Include="Notifications\EmailInfo\SignUpCompleteEmailInfo.cs" />
+    <Compile Include="Notifications\Sending\AmazonSimpleEmailFactory.cs" />
+    <Compile Include="Messaging\MessageBase.cs" />
+    <Compile Include="Messaging\SyncIssueErrorCountsMessage.cs" />
+    <Compile Include="Messaging\ReceiveErrorMessage.cs" />
+    <Compile Include="Messaging\SendHipChatMessage.cs" />
+    <Compile Include="Misc\ErrorditeClientOverrideHelper.cs" />
+    <Compile Include="Monitoring\Commands\ReturnMessageToSourceQueueCommand.cs" />
+    <Compile Include="Monitoring\Queries\GetMessageEnvelopesQuery.cs" />
+    <Compile Include="Notifications\Commands\SendHipChatMessageCommand.cs" />
+    <Compile Include="Notifications\Commands\SendEmailCommand.cs" />
+    <Compile Include="Notifications\Commands\SendNotificationsCommand.cs" />
+    <Compile Include="Notifications\EmailInfo\PeriodicIssueNotificationEmailInfo.cs" />
+    <Compile Include="Notifications\EmailInfo\IssueAssignedToUserEmailInfo.cs" />
+    <Compile Include="Notifications\EmailInfo\IssueEmailInfoBase.cs" />
+    <Compile Include="Notifications\EmailInfo\SolvedIssueRecurrenceEMailInfo.cs" />
+    <Compile Include="Notifications\EmailInfo\NewIssueReceivedEmailInfo.cs" />
+    <Compile Include="Notifications\EmailInfo\NewUserEmailInfo.cs" />
+    <Compile Include="Notifications\EmailInfo\EmailInfoBase.cs" />
+    <Compile Include="Notifications\EmailInfo\ResetPasswordEmailInfo.cs" />
+    <Compile Include="Notifications\Exceptions\ErrorditeEmailNotFoundException.cs" />
+    <Compile Include="Notifications\Exceptions\ErrorditeEmailParameterNotFoundException.cs" />
+    <Compile Include="Notifications\Exceptions\ErrorditeTemplateNotFoundException.cs" />
+    <Compile Include="Notifications\Naming\ConventionalEmailNamingMapper.cs" />
+    <Compile Include="Notifications\Naming\IEmailNamingMapper.cs" />
+    <Compile Include="Notifications\Parsing\DateOnlyAttribute.cs" />
+    <Compile Include="Notifications\Parsing\EmailInfoParser.cs" />
+    <Compile Include="Notifications\Parsing\FriendlyIdAttribute.cs" />
+    <Compile Include="Notifications\Parsing\IEmailInfoParser.cs" />
+    <Compile Include="Notifications\Parsing\IStructConverter.cs" />
+    <Compile Include="Notifications\Parsing\MoneyAttribute.cs" />
+    <Compile Include="Notifications\Parsing\TimeOnlyAttribute.cs" />
+    <Compile Include="Notifications\Queries\EmailParameterType.cs" />
+    <Compile Include="Notifications\Queries\GetEmailInfoQuery.cs" />
+    <Compile Include="Notifications\Rendering\EmailRenderer.cs" />
+    <Compile Include="Notifications\Rendering\EmailRendererState.cs" />
+    <Compile Include="Notifications\Rendering\IEmailRenderer.cs" />
+    <Compile Include="Notifications\Rendering\ITemplateLocator.cs" />
+    <Compile Include="Notifications\Rendering\RendererDirectives.cs" />
+    <Compile Include="Notifications\Rendering\StringExtensions.cs" />
+    <Compile Include="Notifications\Rendering\TemplateLocator.cs" />
+    <Compile Include="Notifications\Sending\AmazonSimpleEmailSender.cs" />
+    <Compile Include="Notifications\Sending\IEmailSender.cs" />
+    <Compile Include="Notifications\Sending\Message.cs" />
+    <Compile Include="Notifications\Sending\NullSender.cs" />
+    <Compile Include="Notifications\Sending\SmtpEmailSender.cs" />
+    <Compile Include="Organisations\Commands\ActivateOrganisationCommand.cs" />
+    <Compile Include="Organisations\Commands\ChangeAppHarborSubscriptionCommand.cs" />
+    <Compile Include="Organisations\Commands\CompleteSignUpCommand.cs" />
+    <Compile Include="Organisations\Commands\CancelSubscriptionCommand.cs" />
+    <Compile Include="Organisations\Commands\AddReplayReplacementCommand.cs" />
+    <Compile Include="Organisations\Commands\DeleteReplayReplacementCommand.cs" />
+    <Compile Include="Organisations\Commands\SetOrganisationHipChatSettingsCommand.cs" />
+    <Compile Include="Organisations\Commands\SetOrganisationCampfireSettingsCommand.cs" />
+    <Compile Include="Organisations\Commands\CreateInvoiceCommand.cs" />
+    <Compile Include="Organisations\Commands\ChangeSubscriptionCommand.cs" />
+    <Compile Include="Organisations\Commands\DeleteOrganisationCommand.cs" />
+    <Compile Include="Organisations\Commands\SuspendOrganisationCommand.cs" />
+    <Compile Include="Organisations\Commands\SetOrganisationTimezoneCommand.cs" />
+    <Compile Include="Organisations\OrganisationRequestBase.cs" />
+    <Compile Include="Organisations\Queries\GetRavenInstancesQuery.cs" />
+    <Compile Include="Organisations\Queries\GetOrganisationByEmailAddressCommand.cs" />
+    <Compile Include="Organisations\Queries\GetOrganisationsQuery.cs" />
+    <Compile Include="Organisations\Queries\GetAvailablePaymentPlansQuery.cs" />
+    <Compile Include="Organisations\Queries\GetOrganisationStatisticsQuery.cs" />
+    <Compile Include="Organisations\Queries\GetOrganisationQuery.cs" />
+    <Compile Include="Issues\ReceptionServiceIssueCache.cs" />
+    <Compile Include="Domain\Organisation\PlanQuotas.cs" />
+    <Compile Include="Paging\Page.cs" />
+    <Compile Include="Paging\PageRequest.cs" />
+    <Compile Include="Paging\PagingConfiguration.cs" />
+    <Compile Include="Paging\PagingConstants.cs" />
+    <Compile Include="Paging\PagingStatus.cs" />
+    <Compile Include="Paging\PagingViewAttribute.cs" />
+    <Compile Include="Paging\PagingViewModel.cs" />
+    <Compile Include="Paging\PagingViewModelGenerator.cs" />
+    <Compile Include="Paging\UrlHelperExtensions.cs" />
+    <Compile Include="Messaging\IMessageSender.cs" />
+    <Compile Include="Misc\OwnThreadQueueProcessor.cs" />
+    <Compile Include="Raven\ShardedRavenDocumentStoreFactory.cs" />
+    <Compile Include="Raven\RavenDocumentStoreFactory.cs" />
+    <Compile Include="Receive\Commands\AttachToExistingIssueCommand.cs" />
+    <Compile Include="Receive\Commands\AttachToNewIssueCommand.cs" />
+    <Compile Include="Receive\Commands\ProcessIncomingExceptionCommand.cs" />
+    <Compile Include="Receive\ExceptionRateLimiter.cs" />
+    <Compile Include="Redis\RedisConfiguration.cs" />
+    <Compile Include="Redis\RedisSession.cs" />
+    <Compile Include="Resources\CoreResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CoreResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources\Notifications.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Notifications.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Serialisation\SimpleXmlSerialiser.cs" />
+    <Compile Include="SerializationHelper.cs" />
+    <Compile Include="Session\Actions\FlushApplicationCacheCommitAction.cs" />
+    <Compile Include="Session\Actions\PollNowCommitAction.cs" />
+    <Compile Include="Session\AppSession.cs" />
+    <Compile Include="Session\Actions\FlushOrganisationCacheCommitAction.cs" />
+    <Compile Include="Session\Actions\UpdateByIndexCommitAction.cs" />
+    <Compile Include="Session\Actions\DeleteByIndexCommitAction.cs" />
+    <Compile Include="Caching\NullCacheInstaller.cs" />
+    <Compile Include="Session\IAppSession.cs" />
+    <Compile Include="Users\Queries\GetUserByEmailAddressQuery.cs" />
+    <Compile Include="Web\Binders\ClientErrorModelBinder.cs" />
+    <Compile Include="Web\ErrorditeApiController.cs" />
+    <Compile Include="Web\LoggingHttpMessageHandler.cs" />
+    <Compile Include="Session\Actions\RaiseIssueEventCommitAction.cs" />
+    <Compile Include="Session\Actions\SendMessageCommitAction.cs" />
+    <Compile Include="Session\SessionAccessBase.cs" />
+    <Compile Include="Session\SessionActionFilterAttribute.cs" />
+    <Compile Include="Session\Actions\SessionCommitAction.cs" />
+    <Compile Include="Session\SessionExtensions.cs" />
+    <Compile Include="Session\Actions\SynchroniseIndexCommitAction.cs" />
+    <Compile Include="Users\Commands\AddUserCommand.cs" />
+    <Compile Include="Users\Commands\DeleteUserCommand.cs" />
+    <Compile Include="Users\Commands\EditUserCommand.cs" />
+    <Compile Include="Authentication\Commands\ResetPasswordCommand.cs" />
+    <Compile Include="Authentication\Commands\SetPasswordCommand.cs" />
+    <Compile Include="Applications\Commands\AddApplicationCommand.cs" />
+    <Compile Include="Authentication\Commands\AuthenticateUserCommand.cs" />
+    <Compile Include="Organisations\Commands\CreateOrganisationCommand.cs" />
+    <Compile Include="Users\Queries\GetUsersQuery.cs" />
+    <Compile Include="Users\Queries\GetUserQuery.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Receive\Commands\ReceiveErrorCommand.cs" />
+    <Compile Include="Web\HttpClientExtensions.cs" />
+    <Compile Include="Web\WebApiSettings.cs" />
+    <Compile Include="Web\BaseController.cs" />
+    <Compile Include="Web\CookieManager.cs" />
+    <Compile Include="Web\HtmlExtensions.cs" />
+    <Compile Include="Web\HttpConstants.cs" />
+    <Compile Include="Web\ICookieManager.cs" />
+    <Compile Include="Web\IFluentSynchronousWebRequest.cs" />
+    <Compile Include="Web\JsonNetJsonValueProvider.cs" />
+    <Compile Include="Web\SynchronousWebRequest.cs" />
+    <Compile Include="Web\SynchronousWebResponse.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\CoreResources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>CoreResources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Notifications.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Notifications.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Notifications\Templates\AccountSuspendedEmailTemplate.html" />
+    <Content Include="Notifications\Templates\AddedToOrganisationEmailTemplate.html" />
+    <Content Include="Notifications\Templates\ContactUsEmailTemplate.html" />
+    <Content Include="Notifications\Templates\SubscriptionChangedEmailTemplate.html" />
+    <Content Include="Notifications\Templates\SubscriptionCancelledEmailTemplate.html" />
+    <Content Include="Notifications\Templates\SignUpCompleteEmailTemplate.html" />
+    <Content Include="Notifications\Templates\TrialExpiredEmailTemplate.html" />
+    <Content Include="Notifications\Templates\PeriodicIssueNotificationEmailTemplate.html" />
+    <Content Include="Notifications\Templates\IssueAssignedToUserEmailTemplate.html" />
+    <Content Include="Notifications\Templates\SolvedIssueRecurrenceEmailTemplate.html" />
+    <Content Include="Notifications\Templates\NewIssueReceivedEmailTemplate.html" />
+    <Content Include="Notifications\Templates\NewUserEmailTemplate.html" />
+    <Content Include="Notifications\Templates\EmailTemplateMasterPage.html" />
+    <Content Include="Notifications\Templates\ResetPasswordEmailTemplate.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
+  <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
+    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
+    <Error Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

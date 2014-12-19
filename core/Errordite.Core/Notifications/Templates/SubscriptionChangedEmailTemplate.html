@@ -1,0 +1,14 @@
+﻿$(Master:EmailTemplateMasterPage)
+$(Placeholder:Subject)Errordite subscription changed
+$(Placeholder:Body)
+
+<tr>
+    <td>
+        <p>Hi $(UserName),</p>
+	    <p>We have processed your request to change your $(OrganisationName)'s subscription from the <b>$(OldPlanName)</b> plan to the <b>$(NewPlanName)</b> plan. 
+		<p>Your new plan settings has already taken affect, however we won't bill you the new amount until your current billing period ends on $(BillingPeriodEndDate).</p>
+	    <p>You will be billed <b>$(BillingAmount)</b> each month until you cancel or change your subscription, your unique subscription id is <b>$(SubscriptionId)</b>.</p>
+	    <p>You can manage your subscription through your subscription area on Errordite <a href="$(ErrorditeUrl)/subscription">here</a>.</p>
+        <p>Thanks for using Errordite!</p>
+    </td>
+</tr>
