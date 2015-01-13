@@ -10,6 +10,7 @@ namespace Errordite.Web.Models.Applications
     {
         public IEnumerable<SelectListItem> ErrorConfigurations { get; set; }
         public IEnumerable<SelectListItem> Users { get; set; }
+        public IEnumerable<SelectListItem> NotificationFrequencies { get; set; }
 		public bool NewOrganisation { get; set; }
 		public bool CampfireEnabled { get; set; }
 		public bool HipChatEnabled { get; set; }
@@ -33,6 +34,7 @@ namespace Errordite.Web.Models.Applications
         public string MatchRuleFactoryId { get; set; }
         public string UserId { get; set; }
         public string Version { get; set; }
+        public string NotificationFrequency { get; set; }
         public bool Active { get; set; }
         public int? HipChatRoomId { get; set; }
 		public int? CampfireRoomId { get; set; }

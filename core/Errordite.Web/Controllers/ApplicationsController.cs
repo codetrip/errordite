@@ -112,7 +112,8 @@ namespace Errordite.Web.Controllers
             viewModel.Version = "1.0.0.0";
 	        viewModel.HipChatEnabled = Core.AppContext.CurrentUser.ActiveOrganisation.HipChatAuthToken.IsNotNullOrEmpty();
 	        viewModel.CampfireEnabled = Core.AppContext.CurrentUser.ActiveOrganisation.CampfireDetails != null;
-
+            viewModel.NotificationFrequencies = IssueController.FrequencyHours;
+            viewModel.NotificationFrequency = "0";
             return View(viewModel);
         }
 
@@ -134,7 +135,8 @@ namespace Errordite.Web.Controllers
                 HipChatRoomId = viewModel.HipChatRoomId,
                 NotificationGroups = viewModel.NotificationGroups.Where(n => n.Selected).Select(g => g.Id).ToList(),
 				CampfireRoomId = viewModel.CampfireRoomId,
-                Version = viewModel.Version
+                Version = viewModel.Version,
+                NotificationFrequency = viewModel.NotificationFrequency
             });
 
             if (response.Status != AddApplicationStatus.Ok)
@@ -162,6 +164,7 @@ namespace Errordite.Web.Controllers
                 }).Application;
 
                 viewModel = Mapper.Map<Application, EditApplicationViewModel>(application);
+                viewModel.NotificationFrequency = application.DefaultNotificationFrequency;
                 viewModel.NotificationGroups = groups.Items.Select(g => new GroupViewModel
                 {
                     Id = g.Id, 
@@ -180,7 +183,7 @@ namespace Errordite.Web.Controllers
 
 			viewModel.HipChatEnabled = Core.AppContext.CurrentUser.ActiveOrganisation.HipChatAuthToken.IsNotNullOrEmpty();
 			viewModel.CampfireEnabled = Core.AppContext.CurrentUser.ActiveOrganisation.CampfireDetails != null;
-
+            viewModel.NotificationFrequencies = IssueController.FrequencyHours;
             return View(viewModel);
         }
 
