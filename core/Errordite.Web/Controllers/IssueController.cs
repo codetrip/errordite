@@ -36,7 +36,7 @@ namespace Errordite.Web.Controllers
 {
     public class IssueController : ErrorditeController
 	{
-		private static readonly IEnumerable<SelectListItem> _frequencyHours = new []
+		public static readonly IEnumerable<SelectListItem> FrequencyHours = new []
 		{
 			new SelectListItem {Text = "Never", Value = "0"},
 			new SelectListItem {Text = "Hourly", Value = new Duration(hours: 1).ToString()},
@@ -225,7 +225,7 @@ namespace Errordite.Web.Controllers
                 Status = issue.Status == IssueStatus.Unacknowledged ? IssueStatus.Acknowledged : issue.Status,
                 NotifyFrequency = issue.NotifyFrequency,
                 Reference = issue.Reference,
-				NotificationFrequencies = _frequencyHours,
+				NotificationFrequencies = FrequencyHours,
 				Comment = null
             };
 

@@ -16,3 +16,4 @@ robocopy "%CD%\core\Errordite.Services\bin\Debug" "%CD%\services\Notifications" 
 net start Errordite.Services$Receive
 net start Errordite.Services$Events
 net start Errordite.Services$Notifications
+pause

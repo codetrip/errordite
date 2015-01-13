@@ -48,7 +48,8 @@ namespace Errordite.Core.Receive.Commands
 				ErrorCount = 1,
 				LastErrorUtc = error.TimestampUtc,
 				OrganisationId = application.OrganisationId,
-				TestIssue = error.TestError
+				TestIssue = error.TestError,
+                NotifyFrequency = application.DefaultNotificationFrequency.IsNullOrEmpty() ? "0" : application.DefaultNotificationFrequency
 			};
 
 			Store(issue);

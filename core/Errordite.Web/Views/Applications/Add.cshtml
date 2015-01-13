@@ -40,6 +40,11 @@
 									<i data-title="Who will the default assignee be for issues created within this application?" class="icon-info"></i>
 									@Html.ValidationMessageFor(m => m.UserId)
 								</li>
+								<li>
+									@Html.LabelFor(m => m.NotificationFrequency, "Notification Frequency")
+									@Html.DropDownListFor(m => m.NotificationFrequency, Model.NotificationFrequencies)
+									<i data-title="Select the default notification frequency for this application" class="icon-info"></i>
+								</li>
 								<li class="sublist">
 									@Html.LabelFor(m => m.NotificationGroups, "Send notifications to these groups")
 									<ul>
