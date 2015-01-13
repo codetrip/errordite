@@ -41,6 +41,8 @@ namespace Errordite.Core.Domain.Organisation
         public string Version { get; set; }
         [ProtoMember(13)]
         public string TimezoneId { get; set; }
+        [ProtoMember(14)]
+        public string DefaultNotificationFrequency { get; set; }
 
         public static string GetId(string friendlyId)
         {

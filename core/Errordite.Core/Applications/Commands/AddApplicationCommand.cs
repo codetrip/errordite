@@ -58,7 +58,8 @@ namespace Errordite.Core.Applications.Commands
                 Version = request.Version,
                 TimezoneId = request.CurrentUser.ActiveOrganisation.TimezoneId,
                 HipChatRoomId = request.HipChatRoomId,
-                CampfireRoomId = request.CampfireRoomId
+                CampfireRoomId = request.CampfireRoomId,
+                DefaultNotificationFrequency = request.NotificationFrequency
             };
 
             Store(application);
@@ -107,6 +108,7 @@ namespace Errordite.Core.Applications.Commands
         public int? HipChatRoomId { get; set; }
         public bool IsActive { get; set; }
         public string Version { get; set; }
+        public string NotificationFrequency { get; set; }
 		public List<string> NotificationGroups { get; set; }
 		public int? CampfireRoomId { get; set; }
 		public bool IsSignUp { get; set; }
