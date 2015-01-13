@@ -207,6 +207,7 @@ namespace Errordite.Web.Controllers
                 NotificationGroups = viewModel.NotificationGroups.Where(n => n.Selected).Select(g => g.Id).ToList(),
 				Version = viewModel.Version,
 				CampfireRoomId = viewModel.CampfireRoomId,
+                NotificationFrequency = viewModel.NotificationFrequency
             });
 
             if (response.Status != EditApplicationStatus.Ok)

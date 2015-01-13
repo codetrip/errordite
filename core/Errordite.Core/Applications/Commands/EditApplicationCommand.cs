@@ -62,6 +62,7 @@ namespace Errordite.Core.Applications.Commands
             application.Version = request.Version;
 			application.HipChatRoomId = request.HipChatRoomId;
 			application.CampfireRoomId = request.CampfireRoomId;
+            application.DefaultNotificationFrequency = request.NotificationFrequency;
 
             Session.SynchroniseIndexes<Indexing.Applications>();
             Session.AddCommitAction(new FlushApplicationCacheCommitAction(_configuration, request.CurrentUser.ActiveOrganisation, application.FriendlyId));
@@ -102,6 +103,7 @@ namespace Errordite.Core.Applications.Commands
         public string MatchRuleFactoryId { get; set; }
         public string Name { get; set; }
         public string UserId { get; set; }
+        public string NotificationFrequency { get; set; }
         public int? HipChatRoomId { get; set; }
         public string Version { get; set; }
         public bool IsActive { get; set; }
