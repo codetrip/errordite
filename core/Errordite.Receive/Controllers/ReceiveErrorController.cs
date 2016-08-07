@@ -6,6 +6,23 @@ using Errordite.Core.Extensions;
 
 namespace Errordite.Receive.Controllers
 {
+    public class CORSActionFilter : ActionFilterAttribute
+    {
+        public override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            if (filterContext.HttpContext.Request.HttpMethod.ToUpperInvariant() == "OPTIONS")
+            {
+                // do nothing let IIS deal with reply!
+                filterContext.Result = new EmptyResult();
+            }
+            else
+            {
+                base.OnActionExecuting(filterContext);
+            }
+        }
+    }
+
+    [CORSActionFilter]
     public class ReceiveErrorController : AuditingController
     {
         private readonly IProcessIncomingExceptionCommand _processIncomingException;
@@ -14,13 +31,10 @@ namespace Errordite.Receive.Controllers
         {
             _processIncomingException = processIncomingException;
         }
-
-        [HttpPost]
+        
         public ActionResult Index(Client.ClientError clientError)
         {
-            Response.AppendHeader("Access-Control-Allow-Origin", "*");
-
-	        try
+            try
 	        {
 				var response = _processIncomingException.Invoke(new ProcessIncomingExceptionRequest
 				{
