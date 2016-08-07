@@ -1,0 +1,112 @@
+﻿@using Errordite.Core.Extensions
+@using Errordite.Core.Identity
+@using Errordite.Web
+@using Errordite.Web.Extensions
+@using Errordite.Web.Models.Dashboard
+@{
+	var breadcrumbs = ViewData.GetBreadcrumbs();
+	var appContext = ViewData.GetAppContext();
+	var activeTab = ViewData.GetActiveTab();
+}
+
+@if (breadcrumbs != null)
+{
+    <div class="trail-container @(activeTab.IsIn(NavTabs.Docs, NavTabs.Account) ? "noborder" : "")">
+	    <div class="trail">
+		    @if (appContext.AuthenticationStatus == AuthenticationStatus.Authenticated)
+		    {
+			    <div class="applications">
+			    @{
+				    var applications = ViewData.GetCore().GetApplications().Items;
+				    var selectedApplication = applications.FirstOrDefault(a => a.FriendlyId == ViewData.GetSelectedApplication());
+				    var selectedApplicationName = selectedApplication == null ? null : selectedApplication.Name;
+            
+				    <input type="hidden" value="@(selectedApplication == null ? string.Empty : selectedApplication.FriendlyId)" name="ApplicationId" id="ApplicationId" />
+				    <input type="hidden" value="@appContext.CurrentUser.ActiveOrganisation.Id" name="OrganisationId" id="OrganisationId" />
+				
+				    if (appContext.CurrentUser.Organisations.Count > 1)
+				    {
+					    <ul class="popup popup-pills">
+						    <li class="dropdown" id="organisations">
+							    <a class="dropdown-toggle" data-toggle="dropdown" href="#organisations">
+								    @appContext.CurrentUser.ActiveOrganisation.Name
+								    <b class="caret"></b>
+							    </a>
+							    <ul class="dropdown-menu">
+								    @foreach (var organisation in appContext.CurrentUser.Organisations)
+								    {
+									    <li>
+										    <a href="@Url.CurrentRequest("{0}={1}".FormatWith(WebConstants.RouteValues.SetOrganisation, organisation.FriendlyId))">@organisation.Name</a>
+									    </li>
+								    }
+							    </ul>
+						    </li>
+					    </ul>
+				    }
+				    else
+				    {
+					    <span class="default">@appContext.CurrentUser.ActiveOrganisation.Name</span>
+				    }
+                    
+				    <span class="divider">&nbsp;›&nbsp;</span>
+
+				    if (applications.Count > 1)
+				    {
+					    <ul class="popup popup-pills" style="margin-left: 5px">
+						    <li class="dropdown" id="applications">
+							    <a class="dropdown-toggle" data-toggle="dropdown" href="#applications">
+								    @if (selectedApplicationName.IsNullOrEmpty())
+								    {
+									    @: All Applications (@applications.Count())
+								    }
+								    else
+								    {
+									    @selectedApplicationName
+								    }
+								    <b class="caret"></b>
+							    </a>
+							    <ul class="dropdown-menu">
+								    <li>
+									    <a href="@Url.CurrentRequest("{0}=-1".FormatWith(WebConstants.RouteValues.SetApplication))">All Applications (@applications.Count())</a>
+								    </li>
+								    @foreach (var application in applications)
+								    {
+									    <li>
+										    <a href="@Url.CurrentRequest("{0}={1}".FormatWith(WebConstants.RouteValues.SetApplication, application.FriendlyId))">@application.Name</a>
+									    </li>
+								    }
+							    </ul>
+						    </li>
+					    </ul>
+				    }
+				    else
+				    {
+					    <span class="default">@applications[0].Name</span>
+				    }
+				    <span class="divider">&nbsp;›&nbsp;</span>
+			    }
+				</div>
+		    }
+		    
+		    <div class="crumbs">
+			    <ul>
+				    @foreach (var breadcrumb in breadcrumbs.Take(breadcrumbs.Count - 1))
+				    {
+					    <li>
+						    @if (breadcrumb.Link != null)
+						    {
+							    <a href="@breadcrumb.Link">@breadcrumb.Title</a>
+						    }
+						    else
+						    {
+							    <span>@breadcrumb.Title</span>
+						    }
+						    <span class="divider">&nbsp;›&nbsp;</span>
+					    </li>
+				    }
+				    <li class="active">@(ViewBag.FinalBreadcrumb ?? ViewBag.Title)</li>
+			    </ul>
+		    </div> 
+	    </div>
+    </div>   
+}

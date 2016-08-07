@@ -1,0 +1,41 @@
+﻿
+@using Errordite.Web.Extensions
+@model Errordite.Web.Models.Test.GenerateErrorViewModel
+           
+@{
+    ViewBag.Title = "Send Test Errors";
+}        
+
+<section class="centered" id="test">
+    <div class="content">
+        <div class="form">
+	        <p>
+		        You can use this interface to send test errors to your Errordite applications, 
+		        select a pre-defined errors template and customise it as required. See <a href="@Url.JsonClient()">this link</a> for a full description of the JSON schema.
+	        </p>
+            @using (Html.BeginForm("generateerror", "test", FormMethod.Post))
+            {
+                <ul>
+                    <li>
+                        @Html.LabelFor(m => m.Token, "Application")
+                        @Html.DropDownListFor(m => m.Token, Model.Applications)
+                        @Html.ValidationMessageFor(m => m.Token)
+                    </li>
+                    <li>
+                        @Html.LabelFor(m => m.ErrorId, "Error Template")
+                        @Html.DropDownListFor(m => m.ErrorId, Model.Errors)
+                        @Html.ValidationMessageFor(m => m.ErrorId)
+                    </li>
+                    <li>
+                        @Html.LabelFor(m => m.Json, "Error Json (feel free to modify)")
+                        @Html.TextAreaFor(m => m.Json, new {@class="jsontextinput", spellcheck="false"})
+                        @Html.ValidationMessageFor(m => m.Json)
+                    </li>
+                    <li class="buttons">
+                        <input class="btn btn-medium btn-blue" type="submit" value="Generate Error" />
+                    </li>
+                </ul>
+            }
+        </div>
+    </div>
+</section>

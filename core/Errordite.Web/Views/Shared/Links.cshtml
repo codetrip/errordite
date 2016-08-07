@@ -1,0 +1,62 @@
+﻿
+@using Errordite.Web.Extensions
+@using Errordite.Web.Models.Dashboard
+
+@{
+	var activeTab = ViewData.GetActiveTab();
+}
+
+<div class="dark-container">
+    <section class="centered">
+        <div class="quicklinks">
+            <ul>
+                <li @(activeTab == NavTabs.Dashboard ? "class=active" : "class=tool-tip") data-title="Go back to your dashboard.">
+                    <a href="@Url.Dashboard()" class="dashboard">
+                        Dashboard
+                    </a>
+                </li>
+                <li @(activeTab == NavTabs.Issues ? "class=active" : "class=tool-tip") data-title="View, search and filter all your issues.">
+                    <a href="@Url.Issues()" class="issues">
+                        Issues
+                    </a>
+                </li>
+                <li @(activeTab == NavTabs.Errors ? "class=active" : "class=tool-tip") data-title="View, search and filter all your errors.">
+                    <a href="@Url.Errors()" class="errors">
+                        Errors
+                    </a>
+                </li>
+                <li @(activeTab == NavTabs.Test ? "class=active" : "class=tool-tip") data-title="Send test errors to your applications.">
+                    <a href="@Url.Test()" class="test">
+                        Test
+                    </a>
+                </li>
+                <li @(activeTab == NavTabs.AddIssue ? "class=active" : "class=tool-tip") data-title="Create an issue from scratch to preempt errors.">
+                    <a href="@Url.AddIssue()" class="addissue">
+                        Add Issue
+                    </a>
+                </li>
+                <li @(activeTab == NavTabs.Activity ? "class=active" : "class=tool-tip") data-title="View a log of recent activity on your account.">
+                    <a href="@Url.ActivityLog()" class="log">
+                        Activity Log
+                    </a>
+                </li>
+                <li @(activeTab == NavTabs.Account ? "class=active" : "class=tool-tip") data-title="Manage your Errordite account.">
+                    <a href="@Url.Subscription()" class="admin">
+                        Account
+                    </a>
+                </li>
+                <li @(activeTab == NavTabs.Docs ? "class=active" : "")>
+                    <a href="@Url.QuickStart()" class="docs">
+                        Docs
+                    </a>
+                </li>
+                <li @(activeTab == NavTabs.Contact ? "class=active" : "")>
+                    <a href="@Url.Contact()" class="contact">
+                        Contact
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </section> 
+</div>
+

@@ -1,0 +1,52 @@
+﻿@using Errordite.Core.Domain.Organisation
+@using Errordite.Core.Identity
+@using Errordite.Web.Extensions
+@{
+   var appContext = ViewData.GetAppContext();
+}
+
+@if (appContext.CurrentUser.SpecialUser == SpecialUser.AppHarbor)
+{
+    Html.RenderPartial("AppHarborHeader");
+}
+
+<div class="welcome-bar-container">
+	<div class="welcome-bar">
+		<div class="logo">
+			<a href="@Url.Home(ViewData.GetAppContext())"><img alt="Errordite: Home" src="@Url.Content("~/Assets/Images/header-logo.png")"/></a>
+		</div>
+		<div class="search">
+			@using (Html.BeginForm("index", "search", FormMethod.Get))
+			{
+				<div class="search-box">
+					<i class="icon-search"></i>
+					<input autocomplete="off" class="search-input" id="q" name="q" placeholder="Search your errors & issues..." type="text" />
+					<input type="submit" class="search-btn" value="Go" />
+				</div>
+			}
+		</div>
+		<nav class="main-nav">
+			<ul class="nav">
+				<li class="nav-item">
+					<a href="@Url.SignOut()">Sign Out</a>
+				</li>
+				@if (appContext.AuthenticationStatus == AuthenticationStatus.Authenticated && (appContext.CurrentUser.Role == UserRole.SuperUser || appContext.Impersonated))
+				{
+					<li class="nav-item sysadmin">
+						<a href="@Url.Organisations()">System</a>
+						<div class="pointer"></div>
+						<ul>
+							<li><a href="@Url.Organisations()">Organisations</a></li> 
+							<li><a href="@Url.MessageFailures()">Message Failures</a></li> 
+							<li><a href="@Url.StopPolling()">Stop Polling</a></li> 
+							<li><a href="@Url.SyncIndexes()">Sync Indexes</a></li> 
+							<li><a href="@Url.Impersonate()">Impersonate</a></li> 
+							<li><a href="@Url.FlushAllCaches()">Flush Caches</a></li> 
+						</ul>
+					</li>
+				}
+	            
+			</ul>
+		</nav>
+	</div>
+</div>

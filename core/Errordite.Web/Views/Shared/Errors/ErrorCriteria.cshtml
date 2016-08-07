@@ -1,0 +1,29 @@
+﻿@using Errordite.Core.Extensions
+@using Errordite.Web.Models.Errors
+@model ErrorCriteriaViewModel
+
+@using (Html.BeginForm(Model.Action, Model.Controller, FormMethod.Get, new { id = "errorsForm"}))
+{
+    @Html.HiddenFor(m => m.Id)
+    <input type="hidden" name="pgst" value="@Model.Sort" id="pgst"/>
+    <input type="hidden" name="pgsd" value="@Model.SortDescending" id="pgsd"/>
+
+    <div class="form form-inline criteria">
+        <ul>
+            <li>
+                @Html.TextBoxFor(m => m.Query, new { autocomplete = "off", placeholder = "Search your errors", style="width:540px;"})
+            </li>
+            <li>
+                 <div id="daterange" class="daterange" style="width:300px">
+                    @Html.HiddenFor(m => m.DateRange)
+                    <i class="icon-calendar"></i>
+                    <span>@(Model.DateRange.IsNullOrEmpty() ? "Select date range" : Model.DateRange)</span>
+                    <b class="caret"></b>
+                </div>
+            </li>
+            <li>
+                <input type="submit" class="btn btn-small btn-blue btn-inline" value="Search" />
+            </li>
+        </ul>
+    </div>
+}
