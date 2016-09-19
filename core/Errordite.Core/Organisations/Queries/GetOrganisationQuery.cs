@@ -26,8 +26,16 @@ namespace Errordite.Core.Organisations.Queries
 
             if (organisation != null)
             {
-                organisation.PaymentPlan = MasterLoad<PaymentPlan>(organisation.PaymentPlanId);
+                if (organisation.PaymentPlanId != null)
+                    organisation.PaymentPlan = MasterLoad<PaymentPlan>(organisation.PaymentPlanId);
                 organisation.RavenInstance = MasterLoad<RavenInstance>(organisation.RavenInstanceId);
+
+                if (organisation.RavenInstance == null && organisation.RavenInstanceId == RavenInstance.Master().Id)
+                {
+                    var ravenInstance = RavenInstance.Master();
+                    MasterStore(ravenInstance);
+                    organisation.RavenInstance = ravenInstance;
+                }
             }
 
             return new GetOrganisationResponse
