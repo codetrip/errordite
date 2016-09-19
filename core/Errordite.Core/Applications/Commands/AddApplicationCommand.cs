@@ -38,7 +38,7 @@ namespace Errordite.Core.Applications.Commands
             }
 
 			//only allow single application for free tier
-            if (request.CurrentUser.ActiveOrganisation.PaymentPlan.IsFreeTier && !request.IsSignUp)
+            if (request.CurrentUser.ActiveOrganisation.PaymentPlan?.IsFreeTier == true && !request.IsSignUp)
             {
                 return new AddApplicationResponse(true)
                 {
