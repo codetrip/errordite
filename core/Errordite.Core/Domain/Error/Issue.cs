@@ -36,11 +36,11 @@ namespace Errordite.Core.Domain.Error
         /// MD5 hash of the rules (should be unique for any given set of rules - allows quick checking for dupes).
         /// Read-only and computed so that we don't have to remember to set it any time we change rules.
         /// </summary>
-        public string RulesHash { get { return Rules.GetHash(); } }
+        public string RulesHash { get { return Rules == null ? string.Empty : Rules.GetHash(); } }
 
         public bool RulesMatch(Error instance)
         {
-            if (Rules.All(r => r.IsMatch(instance)))
+            if (Rules != null && Rules.All(r => r.IsMatch(instance)))
             {
                 return true;
             }
