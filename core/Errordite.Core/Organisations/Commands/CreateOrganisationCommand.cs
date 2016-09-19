@@ -56,7 +56,7 @@ namespace Errordite.Core.Organisations.Commands
                 };
             }
 
-            var freeTrialPlan = _getAvailablePaymentPlansQuery.Invoke(new GetAvailablePaymentPlansRequest()).Plans.First(p => p.IsFreeTier);
+            var freeTrialPlan = _getAvailablePaymentPlansQuery.Invoke(new GetAvailablePaymentPlansRequest()).Plans.FirstOrDefault(p => p.IsFreeTier);
 	        var timezone = request.TimezoneId ?? "UTC";
 	        var date = DateTime.UtcNow.ToDateTimeOffset(timezone);
 
@@ -64,7 +64,7 @@ namespace Errordite.Core.Organisations.Commands
             {
                 Name = request.OrganisationName,
                 Status = OrganisationStatus.Active,
-                PaymentPlanId = freeTrialPlan.Id,
+                PaymentPlanId = freeTrialPlan?.Id,
                 CreatedOnUtc = DateTime.UtcNow,
 				TimezoneId = timezone,
                 PaymentPlan = freeTrialPlan,
