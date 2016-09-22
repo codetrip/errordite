@@ -60,7 +60,7 @@ namespace Errordite.Web.Controllers
 
 				var issues = _getApplicationIssuesQuery.Invoke(new GetApplicationIssuesRequest
 				{
-					Paging = new PageRequestWithSort(1, 10),
+					Paging = new PageRequestWithSort(1, 10) { Sort = nameof(Errordite.Core.Domain.Error.Error.TimestampUtc), SortDescending = true },
 					OrganisationId = Core.AppContext.CurrentUser.OrganisationId,
 					Query = q,
                     ApplicationId = CurrentApplication.IfPoss(a => a.Id),
@@ -68,7 +68,7 @@ namespace Errordite.Web.Controllers
 
 				var errors = _getApplicationErrorsQuery.Invoke(new GetApplicationErrorsRequest
 				{
-					Paging = new PageRequestWithSort(1, 10),
+					Paging = new PageRequestWithSort(1, 10) {Sort = nameof(Errordite.Core.Domain.Error.Error.TimestampUtc), SortDescending = true},
 					OrganisationId = Core.AppContext.CurrentUser.OrganisationId,
 					Query = q,
                     ApplicationId = CurrentApplication.IfPoss(a => a.Id),
