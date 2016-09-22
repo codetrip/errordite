@@ -155,5 +155,8 @@ namespace Errordite.Core.Extensions
 
             return irregularPluralForm ?? (singularForm + "s");
         }
+
+        public static string FirstXCharacters(this string s, int x, string continuationString = "...")
+            => s?.Length > x ? s.Substring(0, x) + "..." : s;
     }
 }
