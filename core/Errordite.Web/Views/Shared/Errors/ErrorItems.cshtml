@@ -16,7 +16,7 @@
                     <th>Message</th>             
 	                @if (!Model.ReadOnly)
 	                {
-		                <th class="sort-header received-on"><span>Received On</span> @Html.SortLinks(Model.Paging.PagingId, "Timestamp", "Received On")</th>
+		                <th class="sort-header received-on"><span>Received On</span> @Html.SortLinks(Model.Paging.PagingId, "TimestampUtc", "Received On")</th>
 	                }
 	                else
 	                {
