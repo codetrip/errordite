@@ -57,3 +57,5 @@ core/Errordite.Web/Assets/Css/1.0.1.0.css
 services\**
 services
 core/.vs/
+tools/grunt/node_modules/
+tools/grunt/.sass-cache/
