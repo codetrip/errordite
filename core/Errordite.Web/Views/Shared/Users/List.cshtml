@@ -1,0 +1,71 @@
+﻿@using Errordite.Core.Domain.Organisation
+@using Errordite.Web.Extensions
+@model Errordite.Web.Models.Users.UsersViewModel
+           
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>  
+            <th>Groups</th>      
+            <th>Status</th> 
+            @if(Model.EnableImpersonation)
+            {
+                <th>Impersonate</th>      
+            }   
+            else
+            {
+				<th class="action-icons"></th>
+            }
+        </tr>  
+    </thead>
+    <tbody>
+        @foreach (var user in Model.Users)
+        {
+            <tr>  
+                <td>@user.Name</td>
+                <td>@user.Email</td>
+                <td>@user.Role</td>
+                <td>@user.Groups</td>
+				<td>
+					@user.Status
+					@if(user.Status == UserStatus.Inactive)
+					{
+						using (Html.BeginForm("resendinvite", "users", new { userId = user.Id }, FormMethod.Post, new {style="display:inline"}))
+                        {
+							<span>(</span><a class="invite" href="#" title="Resend a new user invite to this user">resend invite</a><span>)</span>
+                        }
+					}
+				</td>
+                    
+                @if (Model.EnableImpersonation)
+                {
+                    <td>
+                        <a href="@Url.Impersonate(user.Id, Model.OrganisationId)">Impersonate</a>
+                    </td>  
+                }
+                else
+                {
+                    <td>
+	                    <a href="@Url.EditUser(user.Id)"><img src="@Url.Content("~/assets/images/edit.png")" alt="Edit this user" title="Edit this user" width="24" height="24" /></a>
+	                    @if (!ViewData.IsDemoMode())
+	                    {
+		                    using (Html.BeginForm("delete", "users", new {userId = user.Id}, FormMethod.Post, new {style = "display:inline-block"}))
+		                    {
+			                     <a class="delete" href="#"><img src="@Url.Content("~/assets/images/trash.png")" alt="Delete this users" title="Delete this user" width="24" height="24" /></a>
+		                    }
+	                    }
+                    </td>  
+                }        
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="6">
+                @Html.Partial("Pagination", Model.Paging)
+            </td>
+        </tr>
+    </tfoot>
+</table>

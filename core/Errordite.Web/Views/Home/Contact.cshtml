@@ -1,0 +1,37 @@
+﻿
+@model Errordite.Web.Models.Home.ContactUsViewModel
+           
+@{
+    ViewBag.Title = "Contact Us";
+}        
+
+<section class="centered">
+    <div class="content">
+        <div class="form">
+            <p>Complete the form below to contact us or email us directly at <a href="mailto:errordite@codetrip.co.uk">errordite@codetrip.co.uk</a>. We are looking forward to hearing from you and will get back to you as soon as we can!</p>
+            @using (Html.BeginForm("contact", "home", FormMethod.Post, new { id = "contactUsForm" }))
+            {
+                <ul>
+                    <li>
+                        @Html.LabelFor(m => m.Name, "Name")
+                        @Html.TextBoxFor(m => m.Name, new { autocomplete = "off" })
+                        @Html.ValidationMessageFor(m => m.Name)
+                    </li>
+                    <li>
+                        @Html.LabelFor(m => m.Email, "Email")
+                        @Html.TextBoxFor(m => m.Email, new { autocomplete = "off", id = "contact-us-email" })
+                        @Html.ValidationMessageFor(m => m.Email)
+                    </li>
+                    <li>
+                        @Html.LabelFor(m => m.Message, "Message")
+                        @Html.TextAreaFor(m => m.Message, new { style="width:500px; height:150px; " })
+                        @Html.ValidationMessageFor(m => m.Message)
+                    </li>
+                    <li class="buttons">
+                        <input class="btn btn-medium btn-blue" type="submit" value="Send" />
+                    </li>
+                </ul>
+            }
+        </div>
+    </div>
+</section>

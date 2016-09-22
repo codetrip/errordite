@@ -1,0 +1,41 @@
+﻿@using Errordite.Web.Models.Docs
+@using Errordite.Web.Extensions
+@model IEnumerable<Errordite.Web.Models.Subscription.PaymentPlanViewModel>
+
+@{
+    ViewBag.Title = "Pricing & Plans";
+}   
+
+@section header
+{
+    @Html.Partial("Docs/Tabs", DocsTab.Pricing) 
+}     
+
+<section class="centered">
+    <div class="content help">
+        <h1>Pricing</h1>
+	    <p>
+		    When you sign up to Errordite you get a free, limited usage account, 
+		    if you like what you see and you need more than the free usage account provides, 
+		    you have the option to upgrade to one of our paid subscriptions. With a paid 
+			subscription we will take your credit card details and bill you monthly based on your selected plan, 
+			you can upgrade or downgrade between plans at any time.
+	    </p>
+        <p style="margin-bottom:25px;">
+            If you have any questions regarding our pricing or your needs are not met by one of our plans please <a href="@Url.Contact()">contact Us</a>.
+        </p>
+    
+        @foreach (var paymentPlan in Model)
+        {
+            @Html.Partial("Docs/PaymentPlan", paymentPlan)
+        }
+		
+	    <div class="clear"></div>
+
+	    <p style="margin-top:15px;">
+		    * An issue is a group of errors, defined by a set of rules. Each time a new error is received by Errordite
+			which does not match an existing issues rules we will create a new issue. You can delete an issue at any time if it is no longer relevant to you.
+	    </p>
+    </div>
+    
+</section>

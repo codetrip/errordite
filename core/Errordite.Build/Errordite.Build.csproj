@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{0B57E1B2-4A92-4506-BFD8-5DCAEACC9EDA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Errordite.Build</RootNamespace>
+    <AssemblyName>Errordite.Build</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Build.Framework" />
+    <Reference Include="Microsoft.Build.Utilities.v4.0" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assembly\SharedAssemblyInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tasks\GenerateBuildProject.cs" />
+    <Compile Include="Tasks\SleepTask.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <None Include="Cmd\CopyBuildOutputToReferences.bat" />
+    <None Include="Cmd\Install.cmd" />
+    <None Include="Cmd\RunConfigFileChanger.cmd" />
+    <None Include="Cmd\SignAssembly.cmd" />
+    <None Include="Cmd\ZipOutput.cmd" />
+    <None Include="Configuration\cache.config" />
+    <None Include="Configuration\email.config" />
+    <None Include="Configuration\errordite.config" />
+    <None Include="Configuration\Global.properties" />
+    <None Include="Configuration\InstructionReplacements.inst">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Configuration\log4net.config" />
+    <None Include="Configuration\XmlConfig.inst">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Imports\Global.imports" />
+    <None Include="Key\Errordite.snk" />
+    <None Include="packages.config" />
+    <None Include="Projects\Build.proj" />
+    <None Include="Projects\InstallEventsService.proj" />
+    <None Include="Projects\InstallTasks.proj">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Projects\InstallNotificationsService.proj">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Projects\InstallReceiveWeb.proj">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Projects\InstallReceiveService.proj">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Projects\InstallWeb.proj">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Projects\GenerateMinifiedResources.proj" />
+    <None Include="Projects\InstallMaster.proj">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Projects\Package.proj">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Targets\Common.target">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Targets\Configuration.target">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Targets\PackageInstall.target">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Targets\IIS.target" />
+    <None Include="Targets\Minify.target">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Targets\PackageErrordite.target">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Targets\ServiceControl.target">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Targets\Versioning.target" />
+    <None Include="Tasks\Microsoft.Sdc.Common.tasks" />
+    <None Include="Tasks\MSBuild.Community.Tasks.Targets" />
+    <None Include="Tasks\MSBuild.ExtensionPack.tasks" />
+    <None Include="Tasks\MSBuild.Mercurial.tasks" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Tasks\bin\Microsoft.Build.Utilities.v3.5.dll" />
+    <Content Include="Tasks\ICSharpCode.SharpZipLib.dll" />
+    <Content Include="Tasks\Ionic.Zip.dll" />
+    <Content Include="Tasks\Microsoft.Sdc.Tasks.dll" />
+    <Content Include="Tasks\Microsoft.Sdc.Tasks.pdb" />
+    <Content Include="Tasks\MSBuild.Community.Tasks.dll" />
+    <Content Include="Tasks\MSBuild.Community.Tasks.xml" />
+    <Content Include="Tasks\MSBuild.ExtensionPack.dll" />
+    <Content Include="Tasks\MSBuild.ExtensionPack.Iis7.dll" />
+    <Content Include="Tasks\MSBuild.Mercurial.dll" />
+    <Content Include="Tools\7z.dll" />
+    <Content Include="Tools\7z.exe" />
+    <Content Include="Tools\ILMerge.exe" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
+  <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
+    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
+    <Error Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

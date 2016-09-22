@@ -1,0 +1,48 @@
+﻿@using Errordite.Web.Extensions
+@using Errordite.Web.Models.Groups
+@using Errordite.Web.Models.Shared
+@model AddGroupViewModel
+
+@{
+    ViewBag.Title = "Add Group";
+}
+
+@section header
+{
+    @Html.Partial("Account/Tabs")
+}
+
+<section class="centered">
+	<div class="content">
+		<div class="sidenav">
+            @Html.Partial("Groups/GroupTabs", SharedTab.Add)
+            <div class="sidenav-content">
+                <div class="sidenav-tab active">
+                    @using (Html.BeginForm("add", "groups", FormMethod.Post, new {id = "addGroupForm"}))
+					{
+						<div class="form">
+							<ul>
+								<li>
+									@Html.LabelFor(m => m.Name, "Name")
+									@Html.TextBoxFor(m => m.Name)
+									@Html.ValidationMessageFor(m => m.Name)
+								</li>
+								<li class="sublist">
+									<label>Group Members</label>
+									<ul>
+										@Html.EditorFor(m => m.Users)
+									</ul>
+								</li>
+								<li class="buttons">
+									<input class="btn btn-medium btn-blue @(ViewData.IsDemoMode() ? "disabled" : string.Empty)" type="submit" value="Add" />
+									<a href="@Url.Groups()" class="btn btn-grey btn-medium">Cancel</a>
+								</li>
+							</ul>
+						</div>
+					}
+                </div>
+            </div>
+        </div>
+		
+	</div>
+</section>

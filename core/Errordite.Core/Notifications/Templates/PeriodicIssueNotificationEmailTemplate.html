@@ -1,0 +1,32 @@
+﻿$(Master:EmailTemplateMasterPage)
+$(Placeholder:Subject)$(ApplicationName): Issue $(IssueId) - $(IssueName) - $(NotificationFrequency) notification
+$(Placeholder:Body)
+
+<tr>
+    <td>
+        <p>Hi,</p>
+        <p>We have received a new error on issue $(IssueId) - $(IssueName). We have emailed you as you have not been notified in at least $(NotificationFrequency). 
+        </p>
+        <p><a href="$(ErrorditeUrl)/issue/$(IssueId)" target="_blank">Click here to view the issue</a></p>
+    </td>
+</tr>
+<tr>
+    <td>
+        <span style="font-weight:bold">Application: </span>$(ApplicationName)
+    </td>
+</tr>
+<tr>
+    <td>
+        <span style="font-weight:bold">Exception Type: </span>$(Type)
+    </td>
+</tr>
+<tr>
+    <td>
+        <span style="font-weight:bold">Message: </span>$(ExceptionMessage)
+    </td>
+</tr>
+<tr>
+    <td>
+        <span style="font-weight:bold">Method: </span>$(Method)
+    </td>
+</tr>

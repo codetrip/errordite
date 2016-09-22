@@ -1,0 +1,2 @@
+anvil|ACME Anvil||50|/content/img/products/anvil.jpg
+dynamite|ACME Dynamite|Goes off with a bang|0|/content/img/products/dynamite.jpg
