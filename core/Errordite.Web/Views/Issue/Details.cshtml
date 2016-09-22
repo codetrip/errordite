@@ -30,14 +30,31 @@
 	    <div class="item-info divider" style="margin-bottom:5px;width:175px">
 	        @(new Duration(Model.Details.NotifyFrequency).Description ?? "Never")
 	    </div>
-        @if (!Model.ReadOnly)
+        @if (Model.Errors.Errors.Any(e => e.Error.Url != null))
         {
             <div class="item-info heading" style="width:750px">
-			    Public Url
+			    Urls of these errors
 		    </div>
-		    <div class="item-info full" style="width:900px;padding-bottom: 5px;">
-			    <a href="@Model.PublicUrl" style="cursor:pointer" target="_blank">@Model.PublicUrl</a>
-		    </div>
+	        <div class="item-info full" style="width: 900px; padding-bottom: 5px;">
+		        @{
+			        var urls = Model.Errors.Errors.ToLookup(e => e.Error.Url).OrderByDescending(e => e.Count()).ThenBy(e => e.Key);
+		        }
+		        @foreach (var url in urls.Take(5))
+		        {
+			        <a style="display: block;" href="@url.Key">@url.Key.FirstXCharacters(200) (@url.Count() errors)</a>
+		        }
+				@if (urls.Count() > 5)
+				{
+					<a style="display: block;" href="#" onclick="$('#moreUrls').show();$(this).hide()">see @(urls.Count() - 5) more</a>
+
+					<div id="moreUrls" style="display: none;">
+						@foreach (var url in urls.Skip(5))
+						{
+							<a style="display: block;" href="@url.Key">@url.Key.FirstXCharacters(200) (@url.Count() errors)</a>
+						}
+					</div>
+				}
+	        </div>
         }
 		@if (Model.Details.Reference.IsNotNullOrEmpty())
 		{
