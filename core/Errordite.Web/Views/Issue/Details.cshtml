@@ -30,6 +30,15 @@
 	    <div class="item-info divider" style="margin-bottom:5px;width:175px">
 	        @(new Duration(Model.Details.NotifyFrequency).Description ?? "Never")
 	    </div>
+        @if (!Model.ReadOnly)
+        {
+            <div class="item-info heading" style="width:750px">
+			    Public Url
+		    </div>
+		    <div class="item-info full" style="width:900px;padding-bottom: 5px;">
+			    <a href="@Model.PublicUrl" style="cursor:pointer" target="_blank">@Model.PublicUrl</a>
+		    </div>
+        }
         @if (Model.Errors.Errors.Any(e => e.Error.Url != null))
         {
             <div class="item-info heading" style="width:750px">
